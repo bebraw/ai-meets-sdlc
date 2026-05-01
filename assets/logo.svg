@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 160" role="img" aria-labelledby="title desc">
+  <title id="title">AI meets SDLC</title>
+  <desc id="desc">A refined black and white seminar logo with a lifecycle ring and AI signal node.</desc>
+  <rect width="640" height="160" fill="#f6f4ef" />
+  <g fill="none" stroke="#0b0b0b" stroke-linecap="square" stroke-linejoin="miter">
+    <rect x="16" y="16" width="128" height="128" stroke-width="6" />
+    <path d="M80 38a42 42 0 1 1-34 66" stroke-width="8" />
+    <path d="M80 38h35v35" stroke-width="8" />
+    <path d="M80 122H45V87" stroke-width="8" />
+    <path d="M47 104 25 126" stroke-width="6" />
+    <path d="M113 56 135 34" stroke-width="6" />
+  </g>
+  <g fill="#0b0b0b">
+    <circle cx="80" cy="80" r="14" />
+    <circle cx="25" cy="126" r="6" />
+    <circle cx="135" cy="34" r="6" />
+    <rect x="184" y="36" width="6" height="88" />
+    <text x="216" y="72" font-family="Georgia, 'Times New Roman', serif" font-size="46" font-weight="700">AI meets</text>
+    <text x="216" y="121" font-family="Georgia, 'Times New Roman', serif" font-size="50" font-weight="700">SDLC</text>
+    <text x="434" y="121" font-family="Georgia, 'Times New Roman', serif" font-size="15" font-weight="700" letter-spacing="2">13 OCT 2026</text>
+  </g>
+</svg>

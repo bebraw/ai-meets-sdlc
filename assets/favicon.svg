@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="AI meets SDLC">
+  <rect width="64" height="64" fill="#f6f4ef" />
+  <rect x="5" y="5" width="54" height="54" fill="none" stroke="#0b0b0b" stroke-width="4" />
+  <path d="M32 15a17 17 0 1 1-14 27" fill="none" stroke="#0b0b0b" stroke-width="5" stroke-linecap="square" />
+  <path d="M32 15h14v14" fill="none" stroke="#0b0b0b" stroke-width="5" stroke-linecap="square" stroke-linejoin="miter" />
+  <path d="M32 49H18V35" fill="none" stroke="#0b0b0b" stroke-width="5" stroke-linecap="square" stroke-linejoin="miter" />
+  <circle cx="32" cy="32" r="8" fill="#0b0b0b" />
+  <circle cx="14" cy="50" r="4" fill="#0b0b0b" />
+  <circle cx="50" cy="14" r="4" fill="#0b0b0b" />
+</svg>
