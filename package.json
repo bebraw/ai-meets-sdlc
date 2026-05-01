@@ -1,8 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "build": "npm run clean:tailwind && gustwind --build --output ./build --no-incremental",
-    "clean:tailwind": "node scripts/clean-tailwind-cache.mjs",
+    "build": "gustwind --build --output ./build --no-incremental",
     "db:migrate:local": "wrangler d1 migrations apply ai-meets-sldc-interests --local",
     "dev:env": "node scripts/write-dev-vars.mjs",
     "format": "prettier --write .",
@@ -20,7 +19,7 @@
   },
   "dependencies": {
     "@tailwindcss/typography": "0.5.19",
-    "gustwind": "0.109.0"
+    "gustwind": "0.110.0"
   },
   "devDependencies": {
     "dotenv": "17.4.2",
