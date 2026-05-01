@@ -93,6 +93,12 @@ It exports encrypted D1 rows to R2 under:
 interests/YYYY-MM-DD.json
 ```
 
+Before writing a full backup, the Worker hashes the encrypted row export and
+compares it against `interests/latest.json`. If the hash has not changed, the
+scheduled run exits without writing a new backup. When rows have changed, the
+Worker writes the dated backup and updates `interests/latest.json` with the
+latest key, export time, row count, and row hash.
+
 The backups intentionally contain ciphertext and keyed hashes, not plaintext personal data.
 
 ## Decrypting a Backup

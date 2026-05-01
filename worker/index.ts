@@ -149,19 +149,72 @@ async function backupInterests(env) {
   const { results } = await env.INTERESTS.prepare(
     "SELECT * FROM interests ORDER BY created_at ASC",
   ).all();
+  const rows = results ?? [];
+  const rowsHash = await sha256Hex(JSON.stringify(rows));
+  const latestBackup = await getLatestBackupManifest(env);
+
+  if (latestBackup?.rows_hash === rowsHash) return;
+
+  const exportedAt = new Date().toISOString();
   const body = JSON.stringify(
     {
-      exported_at: new Date().toISOString(),
-      rows: results,
+      exported_at: exportedAt,
+      rows,
     },
     null,
     2,
   );
-  const key = `interests/${new Date().toISOString().slice(0, 10)}.json`;
+  const key = `interests/${exportedAt.slice(0, 10)}.json`;
 
   await env.INTEREST_BACKUPS.put(key, body, {
     httpMetadata: { contentType: "application/json" },
+    customMetadata: { rows_hash: rowsHash },
   });
+
+  await env.INTEREST_BACKUPS.put(
+    "interests/latest.json",
+    JSON.stringify(
+      {
+        key,
+        exported_at: exportedAt,
+        row_count: rows.length,
+        rows_hash: rowsHash,
+      },
+      null,
+      2,
+    ),
+    {
+      httpMetadata: { contentType: "application/json" },
+      customMetadata: { rows_hash: rowsHash },
+    },
+  );
+}
+
+async function getLatestBackupManifest(env) {
+  const latestBackup = await env.INTEREST_BACKUPS.get("interests/latest.json");
+
+  if (!latestBackup) return null;
+
+  if (latestBackup.customMetadata?.rows_hash) {
+    return { rows_hash: latestBackup.customMetadata.rows_hash };
+  }
+
+  try {
+    return await latestBackup.json();
+  } catch {
+    return null;
+  }
+}
+
+async function sha256Hex(value) {
+  const digest = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode(value),
+  );
+
+  return [...new Uint8Array(digest)]
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
 }
 
 async function injectRuntimeConfig(response, env) {
