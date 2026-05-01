@@ -539,14 +539,14 @@
           interestStatus.textContent =
             result.message || "Thanks. You are on the list.";
           interestForm.reset();
-
-          if (window.turnstile && turnstileWidget?.dataset.sitekey) {
-            window.turnstile.reset();
-          }
         } catch (error) {
           interestStatus.textContent =
             error instanceof Error ? error.message : "Submission failed";
         } finally {
+          if (window.turnstile && turnstileWidget?.dataset.sitekey) {
+            window.turnstile.reset();
+          }
+
           submitButton.disabled = false;
         }
       });

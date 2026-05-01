@@ -4,6 +4,18 @@
   "main": "worker/index.ts",
   "compatibility_date": "2026-04-30",
   "compatibility_flags": ["nodejs_compat"],
+  "routes": [
+    {
+      "pattern": "sdlcai.org",
+      "zone_name": "sdlcai.org",
+      "custom_domain": true,
+    },
+    {
+      "pattern": "www.sdlcai.org",
+      "zone_name": "sdlcai.org",
+      "custom_domain": true,
+    },
+  ],
   "assets": {
     "directory": "./build",
     "binding": "ASSETS",

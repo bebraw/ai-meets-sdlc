@@ -54,13 +54,19 @@ async function handleInterest(request, env) {
   }
 
   if (env.TURNSTILE_SECRET_KEY) {
-    const turnstileOk = await verifyTurnstile({
+    const turnstileOutcome = await verifyTurnstile({
       request,
       secret: env.TURNSTILE_SECRET_KEY,
       token: turnstileToken,
     });
 
-    if (!turnstileOk) {
+    if (!turnstileOutcome.success) {
+      console.warn("Turnstile verification failed", {
+        errors: turnstileOutcome["error-codes"] ?? [],
+        hostname: turnstileOutcome.hostname,
+        hasToken: Boolean(turnstileToken),
+      });
+
       return jsonResponse({ error: "Verification failed" }, 400);
     }
   }
@@ -121,7 +127,9 @@ async function handleInterest(request, env) {
 }
 
 async function verifyTurnstile({ request, secret, token }) {
-  if (!token) return false;
+  if (!token) {
+    return { success: false, "error-codes": ["missing-input-response"] };
+  }
 
   const payload = new FormData();
   payload.append("secret", secret);
@@ -142,7 +150,7 @@ async function verifyTurnstile({ request, secret, token }) {
   );
   const outcome = await response.json();
 
-  return outcome.success === true;
+  return outcome;
 }
 
 async function backupInterests(env) {
