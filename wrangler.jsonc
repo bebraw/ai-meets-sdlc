@@ -10,7 +10,7 @@
   },
   "vars": {
     // Public Turnstile site key. Replace this after creating the widget.
-    "TURNSTILE_SITE_KEY": "",
+    "TURNSTILE_SITE_KEY": "0x4AAAAAADGyYOoRrI5BgaNQ",
   },
   "d1_databases": [
     {
