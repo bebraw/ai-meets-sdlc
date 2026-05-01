@@ -1,5 +1,7 @@
 declare global {
   interface Window {
+    onInterestTurnstileExpired?: () => void;
+    onInterestTurnstileSuccess?: () => void;
     turnstile?: {
       reset: () => void;
     };
@@ -92,10 +94,14 @@ function initInterestForm() {
     "[data-interest-form]",
   );
   const interestStatus = document.querySelector("[data-interest-status]");
+  const submitButton = document.querySelector<HTMLButtonElement>(
+    "[data-interest-submit]",
+  );
 
   if (!foundInterestForm) return;
 
   const interestForm = foundInterestForm;
+  let isSubmitting = false;
 
   function setInterestStatus(message: string) {
     if (interestStatus) {
@@ -109,12 +115,36 @@ function initInterestForm() {
     }
   }
 
-  async function submitInterestForm() {
-    const submitButton =
-      interestForm.querySelector<HTMLButtonElement>("button");
+  function hasTurnstileToken() {
+    if (!turnstileWidget || turnstileWidget.hidden) return true;
 
+    return Boolean(
+      interestForm
+        .querySelector<HTMLInputElement>(
+          'input[name="cf-turnstile-response"]',
+        )
+        ?.value.trim(),
+    );
+  }
+
+  function updateSubmitState() {
     if (!submitButton) return;
 
+    submitButton.disabled =
+      isSubmitting || !interestForm.checkValidity() || !hasTurnstileToken();
+  }
+
+  window.onInterestTurnstileSuccess = updateSubmitState;
+  window.onInterestTurnstileExpired = updateSubmitState;
+
+  interestForm.addEventListener("input", updateSubmitState);
+  interestForm.addEventListener("change", updateSubmitState);
+  updateSubmitState();
+
+  async function submitInterestForm() {
+    if (!submitButton || submitButton.disabled) return;
+
+    isSubmitting = true;
     submitButton.disabled = true;
     setInterestStatus("Sending...");
 
@@ -143,7 +173,8 @@ function initInterestForm() {
       );
     } finally {
       resetTurnstile();
-      submitButton.disabled = false;
+      isSubmitting = false;
+      updateSubmitState();
     }
   }
 
