@@ -1,7 +1,8 @@
 {
   "type": "module",
   "scripts": {
-    "build": "gustwind --build --output ./build --no-incremental",
+    "build": "npm run clean:tailwind && gustwind --build --output ./build --no-incremental",
+    "clean:tailwind": "node scripts/clean-tailwind-cache.mjs",
     "db:migrate:local": "wrangler d1 migrations apply ai-meets-sldc-interests --local",
     "dev:env": "node scripts/write-dev-vars.mjs",
     "format": "prettier --write .",
