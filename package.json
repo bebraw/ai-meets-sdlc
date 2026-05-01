@@ -10,7 +10,7 @@
     "start": "gustwind --develop --port 3000",
     "serve": "gustwind --serve --port 3000 --input ./build",
     "validate": "gustwind --validate --input ./build",
-    "worker:build": "npm run build",
+    "worker:build": "npm run build && node scripts/verify-build-output.mjs",
     "worker:dev": "npm run dev:env && npm run worker:build && wrangler dev",
     "deploy": "npm run worker:build && wrangler deploy"
   },

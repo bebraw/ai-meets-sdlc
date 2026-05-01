@@ -41,6 +41,11 @@ npm run worker:dev
 
 ## Production Provisioning
 
+The repository includes `.node-version` with Node 24 because Gustwind requires
+Node 24 or newer. Cloudflare's build image also accepts a `NODE_VERSION`
+environment variable, but the checked-in version file keeps the Git integration
+aligned without dashboard-only configuration.
+
 Create the D1 database and copy the returned `database_id` into `wrangler.jsonc`:
 
 ```bash
