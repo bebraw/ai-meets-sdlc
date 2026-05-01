@@ -5,7 +5,7 @@ Saastamoinen Foundation Stage, Espoo, Finland.
 
 The site is built with Gustwind and HTMLisp, styled with Tailwind CSS, and
 deployed as a Cloudflare Worker with static assets. The production domain is
-`sldcai.org`.
+`sdlcai.org`.
 
 ## Requirements
 

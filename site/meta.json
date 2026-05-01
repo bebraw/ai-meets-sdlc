@@ -2,7 +2,7 @@
   "title": "AI meets SDLC",
   "description": "A one-day seminar at Marsio Saastamoinen Foundation Stage, Aalto University, on how AI is changing software development lifecycles.",
   "language": "en",
-  "url": "https://sldcai.org",
+  "url": "https://sdlcai.org",
   "colors": {
     "ink": "var(--color-ink)",
     "paper": "var(--color-paper)",

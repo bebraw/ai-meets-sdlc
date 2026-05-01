@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "ai-meets-sldc",
+  "name": "ai-meets-sdlc",
   "main": "worker/index.ts",
   "compatibility_date": "2026-04-30",
   "compatibility_flags": ["nodejs_compat"],
@@ -15,9 +15,9 @@
   "d1_databases": [
     {
       "binding": "INTERESTS",
-      "database_name": "ai-meets-sldc-interests",
+      "database_name": "ai-meets-sdlc-interests",
       // Replace after running:
-      // wrangler d1 create ai-meets-sldc-interests
+      // wrangler d1 create ai-meets-sdlc-interests
       "database_id": "970f79a2-d6bd-4632-a2b7-f5c8713083b7",
       "migrations_dir": "migrations",
     },
@@ -25,7 +25,7 @@
   "r2_buckets": [
     {
       "binding": "INTEREST_BACKUPS",
-      "bucket_name": "ai-meets-sldc-interest-backups",
+      "bucket_name": "ai-meets-sdlc-interest-backups",
     },
   ],
   "triggers": {

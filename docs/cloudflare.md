@@ -49,13 +49,13 @@ aligned without dashboard-only configuration.
 Create the D1 database and copy the returned `database_id` into `wrangler.jsonc`:
 
 ```bash
-wrangler d1 create ai-meets-sldc-interests
+wrangler d1 create ai-meets-sdlc-interests
 ```
 
 Create the R2 backup bucket:
 
 ```bash
-wrangler r2 bucket create ai-meets-sldc-interest-backups
+wrangler r2 bucket create ai-meets-sdlc-interest-backups
 ```
 
 Create a Turnstile widget in the Cloudflare dashboard, then set:
@@ -75,7 +75,7 @@ Use a strong `EMAIL_ENCRYPTION_KEY` and keep it outside version control. Losing 
 Apply the D1 migration remotely:
 
 ```bash
-wrangler d1 migrations apply ai-meets-sldc-interests --remote
+wrangler d1 migrations apply ai-meets-sdlc-interests --remote
 ```
 
 Deploy:
