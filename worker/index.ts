@@ -848,6 +848,10 @@ async function handleAdminRegister(
     return jsonResponse({ error: "Choose a ticket tier" }, 400);
   }
 
+  if (!tier.isActive) {
+    return jsonResponse({ error: `${tier.label} is inactive` }, 400);
+  }
+
   const order = await insertManualRegistration({
     clientKeyHash: await getAdminClientKeyHash(request, env),
     email,
