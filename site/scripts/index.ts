@@ -1,17 +1,35 @@
-declare global {
-  interface Window {
-    onInterestTurnstileExpired?: () => void;
-    onInterestTurnstileSuccess?: () => void;
-    turnstile?: {
-      reset: () => void;
-    };
-  }
-}
-
-type InterestResponse = {
+type CheckoutResponse = {
   detail?: string;
   error?: string;
   message?: string;
+  session_id?: string;
+  url?: string;
+};
+
+type OrderResponse = {
+  error?: string;
+  order?: {
+    order_status?: string;
+    payment_status?: string;
+    quantity?: number;
+    ticket_tier_label?: string | null;
+  };
+};
+
+type TicketTier = {
+  available_quantity: number;
+  capacity: number;
+  currency?: string | null;
+  id: string;
+  is_on_sale: boolean;
+  label: string;
+  price_label?: string | null;
+  reserved_quantity: number;
+};
+
+type TicketTiersResponse = {
+  error?: string;
+  tiers?: TicketTier[];
 };
 
 const target = new Date("2026-10-13T09:00:00+03:00");
@@ -72,122 +90,209 @@ function initThemeToggle() {
   });
 }
 
-function initTurnstileWidget() {
-  const turnstileWidget = document.querySelector<HTMLElement>(
-    "[data-turnstile-widget]",
+function initCheckoutForm() {
+  const checkoutForm = document.querySelector<HTMLFormElement>(
+    "[data-checkout-form]",
   );
-
-  if (
-    turnstileWidget &&
-    (!turnstileWidget.dataset.sitekey ||
-      turnstileWidget.dataset.sitekey === "__TURNSTILE_SITE_KEY__")
-  ) {
-    turnstileWidget.hidden = true;
-  }
-
-  return turnstileWidget;
-}
-
-function initInterestForm() {
-  const turnstileWidget = initTurnstileWidget();
-  const foundInterestForm = document.querySelector<HTMLFormElement>(
-    "[data-interest-form]",
-  );
-  const interestStatus = document.querySelector("[data-interest-status]");
+  const checkoutStatus = document.querySelector("[data-checkout-status]");
   const submitButton = document.querySelector<HTMLButtonElement>(
-    "[data-interest-submit]",
+    "[data-checkout-submit]",
+  );
+  const ticketTierSelect = document.querySelector(
+    "[data-ticket-tier-select]",
+  ) as HTMLSelectElement | null;
+  const ticketTierList = document.querySelector(
+    "[data-ticket-tier-list]",
+  ) as HTMLElement | null;
+
+  function setCheckoutStatus(message: string) {
+    if (checkoutStatus) {
+      checkoutStatus.textContent = message;
+    }
+  }
+
+  if (!checkoutForm || !submitButton) return;
+
+  const form = checkoutForm;
+  const button = submitButton;
+  const checkoutOutcome = new URLSearchParams(window.location.search).get(
+    "checkout",
+  );
+  const checkoutSessionId = new URLSearchParams(window.location.search).get(
+    "session_id",
   );
 
-  if (!foundInterestForm) return;
+  if (checkoutOutcome === "success") {
+    setCheckoutStatus("Payment completed. Checking order status...");
 
-  const interestForm = foundInterestForm;
-  let isSubmitting = false;
-
-  function setInterestStatus(message: string) {
-    if (interestStatus) {
-      interestStatus.textContent = message;
+    if (checkoutSessionId) {
+      void refreshOrderStatus(checkoutSessionId);
     }
   }
 
-  function resetTurnstile() {
-    if (window.turnstile && turnstileWidget?.dataset.sitekey) {
-      window.turnstile.reset();
+  async function refreshOrderStatus(sessionId: string) {
+    try {
+      const response = await fetch(
+        `/api/order?session_id=${encodeURIComponent(sessionId)}`,
+      );
+      const result = (await response.json()) as OrderResponse;
+
+      if (!response.ok || result.error) {
+        throw new Error(result.error || "Order status unavailable");
+      }
+
+      const orderStatus = result.order?.order_status || "pending";
+      const quantity = result.order?.quantity;
+      const ticketTierLabel = result.order?.ticket_tier_label;
+      const quantityText =
+        typeof quantity === "number"
+          ? `${quantity} ticket${quantity === 1 ? "" : "s"}`
+          : "ticket order";
+      const tierText = ticketTierLabel ? ` (${ticketTierLabel})` : "";
+
+      setCheckoutStatus(
+        orderStatus === "paid"
+          ? `Order paid for ${quantityText}${tierText}. Stripe will send your receipt.`
+          : `Order status: ${orderStatus}${tierText}. Stripe will send your receipt when payment is complete.`,
+      );
+    } catch (error) {
+      setCheckoutStatus(
+        error instanceof Error ? error.message : "Order status unavailable",
+      );
     }
   }
 
-  function hasTurnstileToken() {
-    if (!turnstileWidget || turnstileWidget.hidden) return true;
-
-    return Boolean(
-      interestForm
-        .querySelector<HTMLInputElement>(
-          'input[name="cf-turnstile-response"]',
-        )
-        ?.value.trim(),
-    );
-  }
-
-  function updateSubmitState() {
-    if (!submitButton) return;
-
-    submitButton.disabled =
-      isSubmitting || !interestForm.checkValidity() || !hasTurnstileToken();
-  }
-
-  window.onInterestTurnstileSuccess = updateSubmitState;
-  window.onInterestTurnstileExpired = updateSubmitState;
-
-  interestForm.addEventListener("input", updateSubmitState);
-  interestForm.addEventListener("change", updateSubmitState);
-  updateSubmitState();
-
-  async function submitInterestForm() {
-    if (!submitButton || submitButton.disabled) return;
-
-    isSubmitting = true;
-    submitButton.disabled = true;
-    setInterestStatus("Sending...");
+  async function refreshTicketTiers() {
+    if (!ticketTierSelect || !ticketTierList) return;
 
     try {
-      const response = await fetch(interestForm.action, {
+      const response = await fetch("/api/ticket-tiers");
+      const result = (await response.json()) as TicketTiersResponse;
+
+      if (!response.ok || result.error || !result.tiers) {
+        throw new Error(result.error || "Ticket tiers unavailable");
+      }
+
+      renderTicketTiers(result.tiers);
+    } catch (error) {
+      ticketTierSelect.innerHTML =
+        '<option value="">Ticket tiers unavailable</option>';
+      ticketTierList.textContent =
+        error instanceof Error ? error.message : "Ticket tiers unavailable";
+      button.disabled = true;
+    }
+  }
+
+  function renderTicketTiers(tiers: TicketTier[]) {
+    if (!ticketTierSelect || !ticketTierList) return;
+
+    const availableTiers = tiers.filter(
+      (tier) => tier.is_on_sale && tier.available_quantity > 0,
+    );
+
+    ticketTierSelect.innerHTML = "";
+
+    for (const tier of tiers) {
+      const option = document.createElement("option");
+      const status =
+        tier.available_quantity > 0
+          ? `${tier.available_quantity} left`
+          : "sold out";
+      const price = tier.price_label ? ` / ${tier.price_label}` : "";
+
+      option.value = tier.id;
+      option.disabled = !tier.is_on_sale || tier.available_quantity < 1;
+      option.textContent = `${tier.label}${price} / ${status}`;
+      ticketTierSelect.add(option);
+    }
+
+    ticketTierList.innerHTML = "";
+
+    for (const tier of tiers) {
+      const row = document.createElement("div");
+      const price = tier.price_label ? ` / ${tier.price_label}` : "";
+      const status = tier.is_on_sale
+        ? `${tier.available_quantity} of ${tier.capacity} left`
+        : "not on sale";
+
+      row.className =
+        "flex items-center justify-between gap-4 bg-paper p-3 text-muted";
+      row.innerHTML = `<strong class="text-ink">${escapeHtml(tier.label)}${escapeHtml(price)}</strong><span>${escapeHtml(status)}</span>`;
+      ticketTierList.appendChild(row);
+    }
+
+    const firstAvailableTier = availableTiers[0];
+
+    if (firstAvailableTier) {
+      ticketTierSelect.value = firstAvailableTier.id;
+      button.disabled = false;
+    } else {
+      button.disabled = true;
+      setCheckoutStatus("Tickets are currently sold out.");
+    }
+  }
+
+  async function submitCheckoutForm() {
+    if (button.disabled || !form.checkValidity()) return;
+
+    button.disabled = true;
+    setCheckoutStatus("Starting checkout...");
+
+    try {
+      const response = await fetch(form.action, {
         method: "POST",
-        body: new FormData(interestForm),
+        body: new FormData(form),
       });
       const contentType = response.headers.get("content-type") || "";
-      const result: InterestResponse = contentType.includes("application/json")
-        ? ((await response.json()) as InterestResponse)
+      const result: CheckoutResponse = contentType.includes("application/json")
+        ? ((await response.json()) as CheckoutResponse)
         : {
             error: `${response.status} ${response.statusText || "Unexpected response"}`,
             detail: await response.text(),
           };
 
-      if (!response.ok || result.error) {
-        throw new Error(result.error || "Submission failed");
+      if (!response.ok || result.error || !result.url) {
+        throw new Error(result.error || "Checkout failed");
       }
 
-      setInterestStatus(result.message || "Thanks. You are on the list.");
-      interestForm.reset();
+      window.location.assign(result.url);
     } catch (error) {
-      setInterestStatus(
-        error instanceof Error ? error.message : "Submission failed",
+      setCheckoutStatus(
+        error instanceof Error ? error.message : "Checkout failed",
       );
-    } finally {
-      resetTurnstile();
-      isSubmitting = false;
-      updateSubmitState();
+      button.disabled = false;
     }
   }
 
-  interestForm.addEventListener("submit", async (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    await submitInterestForm();
+    await submitCheckoutForm();
+  });
+
+  void refreshTicketTiers();
+}
+
+function escapeHtml(value: string) {
+  return value.replace(/[&<>"']/g, (character) => {
+    switch (character) {
+      case "&":
+        return "&amp;";
+      case "<":
+        return "&lt;";
+      case ">":
+        return "&gt;";
+      case '"':
+        return "&quot;";
+      default:
+        return "&#39;";
+    }
   });
 }
 
 renderCountdown();
 setInterval(renderCountdown, 1000);
 initThemeToggle();
-initInterestForm();
+initCheckoutForm();
 
 export {};

@@ -10,6 +10,11 @@ declare namespace Cloudflare {
     INTERESTS: D1Database;
     ASSETS: Fetcher;
     EMAIL_ENCRYPTION_KEY: string;
+    STRIPE_CANCEL_URL: string;
+    STRIPE_SECRET_KEY: string;
+    STRIPE_SUCCESS_URL: string;
+    STRIPE_TICKET_TIERS_JSON: string;
+    STRIPE_WEBHOOK_SECRET: string;
     TURNSTILE_SECRET_KEY: string;
     TURNSTILE_SITE_KEY: string;
   }
@@ -24,7 +29,14 @@ declare namespace NodeJS {
   interface ProcessEnv extends StringifyValues<
     Pick<
       Cloudflare.Env,
-      "EMAIL_ENCRYPTION_KEY" | "TURNSTILE_SECRET_KEY" | "TURNSTILE_SITE_KEY"
+      | "EMAIL_ENCRYPTION_KEY"
+      | "STRIPE_CANCEL_URL"
+      | "STRIPE_SECRET_KEY"
+      | "STRIPE_SUCCESS_URL"
+      | "STRIPE_TICKET_TIERS_JSON"
+      | "STRIPE_WEBHOOK_SECRET"
+      | "TURNSTILE_SECRET_KEY"
+      | "TURNSTILE_SITE_KEY"
     >
   > {}
 }

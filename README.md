@@ -19,13 +19,14 @@ deployed as a Cloudflare Worker with static assets. The production domain is
 - `site/layouts/index.html`: main page markup and client-side behavior.
 - `site/tailwind.css`: font faces, Tailwind theme variables, and global styles.
 - `assets/`: logo, favicon, fonts, and referenced media.
-- `worker/index.ts`: Cloudflare Worker, interest form endpoint, and scheduled
-  backups.
+- `worker/index.ts`: Cloudflare Worker, Stripe Checkout endpoint, interest form
+  endpoint, Stripe webhook order tracking, and scheduled backups.
 - `migrations/`: D1 schema.
 - `scripts/`: local helper scripts for dotenv, backup decryption, and build
   verification.
 - `docs/cloudflare.md`: Cloudflare provisioning, secrets, backup, and deployment
   notes.
+- `docs/stripe-testing.md`: Stripe Checkout and webhook testing instructions.
 
 ## Development
 
@@ -84,6 +85,34 @@ npm run worker:dev
 
 `worker:dev` builds the site, verifies that `build/index.html` exists, and then
 starts Wrangler.
+
+## Ticket Sales
+
+Ticket purchases use Stripe Checkout. Configure these Worker environment
+variables before opening sales:
+
+- `STRIPE_SECRET_KEY`
+- `STRIPE_TICKET_TIERS_JSON`
+- `STRIPE_WEBHOOK_SECRET`
+
+`STRIPE_SUCCESS_URL` and `STRIPE_CANCEL_URL` are optional. When omitted, the
+Worker derives them from the current request origin.
+
+`STRIPE_TICKET_TIERS_JSON` defines the available pools, their Stripe Price IDs,
+capacities, and optional sale windows. Starting Stripe Checkout creates a
+30-minute hold for the selected tier, and paid orders keep consuming capacity.
+
+Stripe webhooks update the local D1 `orders` table. Buyer email is encrypted
+before storage, while Stripe session/payment IDs and payment status remain
+queryable for operations.
+
+Export decrypted order rows with:
+
+```bash
+EMAIL_ENCRYPTION_KEY=... npm run --silent orders:export -- --remote
+```
+
+See [Stripe testing](docs/stripe-testing.md) for the local test flow.
 
 ## Interest List
 

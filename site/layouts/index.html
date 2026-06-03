@@ -21,11 +21,6 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="https://sdlcai.org/og.png" />
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
-    <script
-      src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-      async
-      defer
-    ></script>
     <script>
       (() => {
         const root = document.documentElement;
@@ -80,7 +75,7 @@
             <a class="hover:underline" href="#program">Program</a>
             <a class="hover:underline" href="#venue">Venue</a>
             <a class="hover:underline" href="#speakers">Speakers</a>
-            <a class="hover:underline" href="#interest">Interest</a>
+            <a class="hover:underline" href="#tickets">Tickets</a>
           </div>
           <button
             class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
@@ -180,45 +175,65 @@
                   </div>
                 </div>
                 <p class="mt-5 text-sm leading-6 text-muted">
-                  Date and venue are locked. Registration details and speaker
-                  lineup will follow.
+                  Date and venue are locked. Tickets are handled through Stripe
+                  Checkout.
                 </p>
               </div>
             </aside>
           </div>
         </section>
 
-        <section id="interest" class="border-b border-ink">
+        <section id="tickets" class="border-b border-ink">
           <div
             class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-[1fr_1.2fr] md:px-8"
           >
             <div>
               <p class="font-headline text-sm font-black uppercase text-muted">
-                Tickets are not open yet
+                Seminar registration
               </p>
               <h2
                 class="mt-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl"
               >
-                Get notified
+                Buy tickets
               </h2>
               <p class="mt-6 max-w-xl text-xl leading-8">
-                Leave your email and we will contact you when seminar
-                registration becomes available.
+                Reserve your seat for the one-day AI meets SDLC seminar at Aalto
+                University. Secure card payment is completed in Stripe Checkout.
               </p>
+              <div class="mt-8 grid max-w-xl gap-px border border-ink bg-ink">
+                <div class="flex items-center justify-between bg-paper p-4">
+                  <span class="text-sm font-bold uppercase text-muted"
+                    >Date</span
+                  >
+                  <strong class="text-right">13 October 2026</strong>
+                </div>
+                <div class="flex items-center justify-between bg-paper p-4">
+                  <span class="text-sm font-bold uppercase text-muted"
+                    >Venue</span
+                  >
+                  <strong class="text-right">Marsio, Aalto University</strong>
+                </div>
+                <div class="flex items-center justify-between bg-paper p-4">
+                  <span class="text-sm font-bold uppercase text-muted"
+                    >Tiers</span
+                  >
+                  <strong class="text-right">Early / regular / late</strong>
+                </div>
+              </div>
             </div>
             <form
               class="grid gap-4 border border-ink bg-paper p-5"
-              data-interest-form
+              data-checkout-form
               data-bwignore="true"
               data-1p-ignore
               data-lpignore="true"
               data-protonpass-ignore="true"
-              action="/api/interest"
+              action="/api/checkout"
               method="post"
             >
               <label class="grid gap-2">
                 <span class="text-sm font-bold uppercase text-muted"
-                  >Email</span
+                  >Buyer email</span
                 >
                 <input
                   class="border border-ink bg-paper px-4 py-3 text-lg outline-none focus:ring-2 focus:ring-ink"
@@ -232,78 +247,61 @@
                   required
                 />
               </label>
-              <div class="grid gap-4 md:grid-cols-2">
-                <label class="grid gap-2">
-                  <span class="text-sm font-bold uppercase text-muted"
-                    >Name</span
-                  >
-                  <input
-                    class="border border-ink bg-paper px-4 py-3 text-lg outline-none focus:ring-2 focus:ring-ink"
-                    name="name"
-                    type="text"
-                    autocomplete="name"
-                    data-bwignore="true"
-                    data-1p-ignore
-                    data-lpignore="true"
-                    data-protonpass-ignore="true"
-                  />
-                </label>
-                <label class="grid gap-2">
-                  <span class="text-sm font-bold uppercase text-muted"
-                    >Organization</span
-                  >
-                  <input
-                    class="border border-ink bg-paper px-4 py-3 text-lg outline-none focus:ring-2 focus:ring-ink"
-                    name="organization"
-                    type="text"
-                    autocomplete="organization"
-                    data-bwignore="true"
-                    data-1p-ignore
-                    data-lpignore="true"
-                    data-protonpass-ignore="true"
-                  />
-                </label>
-              </div>
-              <label
-                class="flex items-start gap-2 text-sm leading-6 text-muted"
-              >
-                <input
-                  class="mt-[0.1875rem] h-4 w-4 shrink-0 accent-ink"
-                  name="consent"
-                  type="checkbox"
-                  value="yes"
-                  data-bwignore="true"
-                  data-1p-ignore
-                  data-lpignore="true"
-                  data-protonpass-ignore="true"
+              <label class="grid gap-2">
+                <span class="text-sm font-bold uppercase text-muted"
+                  >Ticket tier</span
+                >
+                <select
+                  class="border border-ink bg-paper px-4 py-3 text-lg outline-none focus:ring-2 focus:ring-ink"
+                  name="ticket_tier"
+                  data-ticket-tier-select
                   required
-                />
-                <span>
-                  I agree to be contacted about AI meets SDLC seminar
-                  registration.
-                </span>
+                >
+                  <option value="">Loading ticket tiers...</option>
+                </select>
+              </label>
+              <label class="grid gap-2">
+                <span class="text-sm font-bold uppercase text-muted"
+                  >Quantity</span
+                >
+                <select
+                  class="border border-ink bg-paper px-4 py-3 text-lg outline-none focus:ring-2 focus:ring-ink"
+                  name="quantity"
+                  required
+                >
+                  <option value="1">1 ticket</option>
+                  <option value="2">2 tickets</option>
+                  <option value="3">3 tickets</option>
+                  <option value="4">4 tickets</option>
+                  <option value="5">5 tickets</option>
+                  <option value="6">6 tickets</option>
+                  <option value="7">7 tickets</option>
+                  <option value="8">8 tickets</option>
+                  <option value="9">9 tickets</option>
+                  <option value="10">10 tickets</option>
+                </select>
               </label>
               <div
-                class="cf-turnstile"
-                data-turnstile-widget
-                data-sitekey="__TURNSTILE_SITE_KEY__"
-                data-theme="light"
-                data-callback="onInterestTurnstileSuccess"
-                data-expired-callback="onInterestTurnstileExpired"
-                data-error-callback="onInterestTurnstileExpired"
+                class="grid gap-px border border-ink bg-ink text-sm"
+                data-ticket-tier-list
+                aria-live="polite"
               ></div>
+              <p class="border border-ink/40 p-4 text-sm leading-6 text-muted">
+                The final price, receipt, and card details are managed by
+                Stripe. A started checkout reserves the selected tier briefly so
+                concurrent buyers do not overbook the same ticket pool.
+              </p>
               <div class="flex flex-col gap-3 md:flex-row md:items-center">
                 <button
                   class="border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink disabled:cursor-not-allowed disabled:border-muted disabled:bg-muted disabled:text-paper disabled:hover:bg-muted disabled:hover:text-paper"
-                  data-interest-submit
+                  data-checkout-submit
                   type="submit"
-                  disabled
                 >
-                  Notify me
+                  Continue to checkout
                 </button>
                 <p
                   class="min-h-6 text-sm font-bold uppercase text-muted"
-                  data-interest-status
+                  data-checkout-status
                   aria-live="polite"
                 ></p>
               </div>

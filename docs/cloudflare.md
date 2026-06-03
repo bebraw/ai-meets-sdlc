@@ -1,19 +1,24 @@
 # Cloudflare Setup
 
-This site is deployed as a Cloudflare Worker with static assets, D1 for the interest list, R2 for encrypted backups, Turnstile for bot protection, and a scheduled Worker trigger for daily backup export.
+This site is deployed as a Cloudflare Worker with static assets, D1 for the interest list, R2 for encrypted backups, Stripe Checkout for ticket sales, Turnstile for bot protection, and a scheduled Worker trigger for daily backup export.
 
 ## Bindings
 
 `wrangler.jsonc` expects these bindings:
 
-| Binding                | Type           | Purpose                                                 |
-| ---------------------- | -------------- | ------------------------------------------------------- |
-| `ASSETS`               | Workers Assets | Serves the Gustwind build output from `build/`.         |
-| `INTERESTS`            | D1             | Stores encrypted interest list submissions.             |
-| `INTEREST_BACKUPS`     | R2             | Stores daily encrypted JSON backups.                    |
-| `TURNSTILE_SITE_KEY`   | Worker var     | Public Turnstile widget site key injected into HTML.    |
-| `TURNSTILE_SECRET_KEY` | Secret         | Server-side Turnstile verification key.                 |
-| `EMAIL_ENCRYPTION_KEY` | Secret         | Key material for encrypting/de-duplicating submissions. |
+| Binding                    | Type           | Purpose                                                            |
+| -------------------------- | -------------- | ------------------------------------------------------------------ |
+| `ASSETS`                   | Workers Assets | Serves the Gustwind build output from `build/`.                    |
+| `INTERESTS`                | D1             | Stores encrypted interest submissions and orders.                  |
+| `INTEREST_BACKUPS`         | R2             | Stores daily encrypted JSON backups.                               |
+| `STRIPE_CANCEL_URL`        | Var/secret     | Optional explicit Checkout cancellation URL.                       |
+| `STRIPE_SECRET_KEY`        | Secret         | Creates server-side Stripe Checkout Sessions.                      |
+| `STRIPE_SUCCESS_URL`       | Var/secret     | Optional explicit Checkout success URL.                            |
+| `STRIPE_TICKET_TIERS_JSON` | Var/secret     | JSON ticket tier definitions with Stripe Price IDs and capacities. |
+| `STRIPE_WEBHOOK_SECRET`    | Secret         | Verifies Stripe webhook events before order updates.               |
+| `TURNSTILE_SITE_KEY`       | Worker var     | Public Turnstile widget site key injected into HTML.               |
+| `TURNSTILE_SECRET_KEY`     | Secret         | Server-side Turnstile verification key.                            |
+| `EMAIL_ENCRYPTION_KEY`     | Secret         | Key material for encrypting/de-duplicating submissions.            |
 
 ## Local Testing
 
@@ -29,7 +34,10 @@ Generate a strong local value for `EMAIL_ENCRYPTION_KEY`, for example:
 openssl rand -base64 32
 ```
 
-Turnstile is optional locally. If `TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` are empty, the form hides the widget and the Worker skips Turnstile verification.
+Stripe and Turnstile are optional locally. If `STRIPE_SECRET_KEY`, `STRIPE_TICKET_TIERS_JSON`, or `STRIPE_WEBHOOK_SECRET` are empty, the related Stripe endpoint returns a configuration error. If `TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` are empty, the Worker skips Turnstile verification for the legacy interest endpoint.
+
+See [Stripe testing](stripe-testing.md) for the full local Checkout and webhook
+verification flow.
 
 Prepare Wrangler's local `.dev.vars`, apply the local D1 migration, and start the Worker:
 
@@ -63,11 +71,68 @@ Create a Turnstile widget in the Cloudflare dashboard, then set:
 - `TURNSTILE_SITE_KEY` in `wrangler.jsonc`
 - `TURNSTILE_SECRET_KEY` as a Worker secret
 
+Create a Stripe Product and Price for each ticket tier, then set:
+
+- `STRIPE_TICKET_TIERS_JSON` to the ticket tier definitions, for example:
+
+```json
+[
+  {
+    "id": "early",
+    "label": "Early bird",
+    "price_id": "price_...",
+    "price_label": "EUR 199",
+    "capacity": 40,
+    "available_until": "2026-07-31T20:59:59Z",
+    "sort_order": 1
+  },
+  {
+    "id": "regular",
+    "label": "Regular",
+    "price_id": "price_...",
+    "price_label": "EUR 299",
+    "capacity": 80,
+    "available_from": "2026-08-01T00:00:00Z",
+    "available_until": "2026-09-30T20:59:59Z",
+    "sort_order": 2
+  },
+  {
+    "id": "late",
+    "label": "Late bird",
+    "price_id": "price_...",
+    "price_label": "EUR 399",
+    "capacity": 30,
+    "available_from": "2026-10-01T00:00:00Z",
+    "sort_order": 3
+  }
+]
+```
+
+- `STRIPE_SECRET_KEY` to the restricted or secret key that can create Checkout Sessions
+- `STRIPE_WEBHOOK_SECRET` to the signing secret for a Stripe webhook endpoint pointed at `/api/stripe-webhook`
+- optionally `STRIPE_SUCCESS_URL` and `STRIPE_CANCEL_URL` if the default domain-derived URLs are not suitable
+
+The Worker exposes `/api/ticket-tiers` for current public availability. During
+Checkout creation it creates an atomic `ticket_reservations` hold if paid orders
+plus active holds can still fit inside the tier capacity. Checkout sessions are
+created with a 30-minute expiration, and Stripe webhooks release or complete the
+hold when the session is paid, expired, or failed.
+
+Subscribe the webhook endpoint to these Checkout events:
+
+- `checkout.session.completed`
+- `checkout.session.async_payment_succeeded`
+- `checkout.session.async_payment_failed`
+- `checkout.session.expired`
+
 Set production secrets:
 
 ```bash
 wrangler secret put EMAIL_ENCRYPTION_KEY
 wrangler secret put TURNSTILE_SECRET_KEY
+wrangler secret put STRIPE_SECRET_KEY
+wrangler secret put STRIPE_TICKET_TIERS_JSON
+wrangler secret put STRIPE_WEBHOOK_SECRET
 ```
 
 Use a strong `EMAIL_ENCRYPTION_KEY` and keep it outside version control. Losing it means existing encrypted submissions and backups cannot be decrypted.
@@ -123,7 +188,7 @@ The script prints CSV with:
 
 ## Data Model
 
-The D1 migration creates `interests` with:
+The D1 migrations create `interests` with:
 
 - encrypted email, name, and organization
 - AES-GCM IV values for each encrypted field
@@ -132,3 +197,23 @@ The D1 migration creates `interests` with:
 - creation timestamp
 
 Plaintext email is not stored in D1 or R2.
+
+They also create `orders` with:
+
+- Stripe Checkout Session ID and Payment Intent ID
+- ticket tier ID, display label, Stripe Price ID, reservation ID, and reservation expiry
+- encrypted buyer email plus keyed HMAC email hash
+- ticket quantity, amount, currency, checkout status, payment status, and order status
+- creation and update timestamps
+
+They also create `ticket_reservations` with:
+
+- reservation ID, ticket tier ID, quantity, and status
+- optional Stripe Checkout Session ID
+- reservation expiry and timestamps
+
+Export decrypted order details with:
+
+```bash
+EMAIL_ENCRYPTION_KEY=... npm run --silent orders:export -- --remote
+```
