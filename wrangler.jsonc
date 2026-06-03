@@ -22,6 +22,7 @@
     "run_worker_first": true,
   },
   "vars": {
+    "CHECKOUTS_ENABLED": "false",
     // Public Turnstile site key. Replace this after creating the widget.
     "TURNSTILE_SITE_KEY": "0x4AAAAAADGyYOoRrI5BgaNQ",
   },

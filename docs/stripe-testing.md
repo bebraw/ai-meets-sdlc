@@ -40,6 +40,7 @@ Set at least these values in `.env`:
 
 ```bash
 EMAIL_ENCRYPTION_KEY=replace-with-a-local-secret
+CHECKOUTS_ENABLED=true
 STRIPE_SECRET_KEY=sk_test_...
 STRIPE_TICKET_TIERS_JSON='[{"id":"early","label":"Early bird","price_id":"price_early_...","price_label":"EUR 199","discount_coupon_id":"coupon_...","capacity":40,"available_until":"2026-07-31T20:59:59Z","sort_order":1},{"id":"regular","label":"Regular","price_id":"price_regular_...","price_label":"EUR 299","capacity":80,"available_from":"2026-08-01T00:00:00Z","available_until":"2026-09-30T20:59:59Z","sort_order":2},{"id":"late","label":"Late bird","price_id":"price_late_...","price_label":"EUR 399","capacity":30,"available_from":"2026-10-01T00:00:00Z","sort_order":3}]'
 STRIPE_WEBHOOK_SECRET=
@@ -144,6 +145,8 @@ The `orders` table should contain:
 
 Run these before production:
 
+- Checkout feature flag: set `CHECKOUTS_ENABLED=false`, restart the Worker, and
+  confirm `/api/checkout` returns `Ticket checkout is not open yet`.
 - Missing Stripe env: clear `STRIPE_SECRET_KEY` or `STRIPE_TICKET_TIERS_JSON`,
   restart the Worker, and confirm checkout returns a configuration error.
 - Sold-out tier: set a tier capacity to `1`, start one Checkout without paying,

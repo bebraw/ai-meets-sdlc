@@ -91,9 +91,13 @@ starts Wrangler.
 Ticket purchases use Stripe Checkout. Configure these Worker environment
 variables before opening sales:
 
+- `CHECKOUTS_ENABLED=true`
 - `STRIPE_SECRET_KEY`
 - `STRIPE_TICKET_TIERS_JSON`
 - `STRIPE_WEBHOOK_SECRET`
+
+Checkout is disabled unless `CHECKOUTS_ENABLED` is exactly `true`. Keep it
+`false` in production while testing locally.
 
 `STRIPE_SUCCESS_URL` and `STRIPE_CANCEL_URL` are optional. When omitted, the
 Worker derives them from the current request origin.

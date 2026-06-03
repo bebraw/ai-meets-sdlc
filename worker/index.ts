@@ -154,6 +154,10 @@ async function handleTicketTiers(env: Env): Promise<Response> {
 }
 
 async function handleCheckout(request: Request, env: Env): Promise<Response> {
+  if (!isCheckoutEnabled(env)) {
+    return jsonResponse({ error: "Ticket checkout is not open yet" }, 503);
+  }
+
   if (!env.STRIPE_SECRET_KEY) {
     return jsonResponse({ error: "Ticket checkout is not configured" }, 503);
   }
@@ -1161,9 +1165,18 @@ async function injectRuntimeConfig(
   const html = await response.text();
 
   return new Response(
-    html.replaceAll("__TURNSTILE_SITE_KEY__", env.TURNSTILE_SITE_KEY ?? ""),
+    html
+      .replaceAll("__TURNSTILE_SITE_KEY__", env.TURNSTILE_SITE_KEY ?? "")
+      .replaceAll(
+        "__CHECKOUTS_ENABLED__",
+        isCheckoutEnabled(env) ? "true" : "false",
+      ),
     response,
   );
+}
+
+function isCheckoutEnabled(env: Env): boolean {
+  return env.CHECKOUTS_ENABLED === "true";
 }
 
 async function encryptText(

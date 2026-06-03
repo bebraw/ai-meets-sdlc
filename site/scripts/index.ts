@@ -115,6 +115,7 @@ function initCheckoutForm() {
 
   const form = checkoutForm;
   const button = submitButton;
+  const checkoutsEnabled = form.dataset.checkoutsEnabled === "true";
   const checkoutOutcome = new URLSearchParams(window.location.search).get(
     "checkout",
   );
@@ -233,6 +234,11 @@ function initCheckoutForm() {
   }
 
   async function submitCheckoutForm() {
+    if (!checkoutsEnabled) {
+      setCheckoutStatus("Ticket checkout is not open yet.");
+      return;
+    }
+
     if (button.disabled || !form.checkValidity()) return;
 
     button.disabled = true;
@@ -270,7 +276,13 @@ function initCheckoutForm() {
     await submitCheckoutForm();
   });
 
-  void refreshTicketTiers();
+  if (checkoutsEnabled) {
+    void refreshTicketTiers();
+  } else {
+    button.disabled = true;
+    ticketTierSelect?.setAttribute("disabled", "true");
+    setCheckoutStatus("Ticket checkout is not open yet.");
+  }
 }
 
 function escapeHtml(value: string) {

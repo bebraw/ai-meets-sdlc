@@ -9,6 +9,7 @@ This site is deployed as a Cloudflare Worker with static assets, D1 for the inte
 | Binding                    | Type           | Purpose                                                            |
 | -------------------------- | -------------- | ------------------------------------------------------------------ |
 | `ASSETS`                   | Workers Assets | Serves the Gustwind build output from `build/`.                    |
+| `CHECKOUTS_ENABLED`        | Worker var     | Enables Checkout only when set exactly to `true`.                  |
 | `INTERESTS`                | D1             | Stores encrypted interest submissions and orders.                  |
 | `INTEREST_BACKUPS`         | R2             | Stores daily encrypted JSON backups.                               |
 | `STRIPE_CANCEL_URL`        | Var/secret     | Optional explicit Checkout cancellation URL.                       |
@@ -34,7 +35,12 @@ Generate a strong local value for `EMAIL_ENCRYPTION_KEY`, for example:
 openssl rand -base64 32
 ```
 
-Stripe and Turnstile are optional locally. If `STRIPE_SECRET_KEY`, `STRIPE_TICKET_TIERS_JSON`, or `STRIPE_WEBHOOK_SECRET` are empty, the related Stripe endpoint returns a configuration error. If `TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` are empty, the Worker skips Turnstile verification for the legacy interest endpoint.
+Stripe and Turnstile are optional locally. Checkout is disabled unless
+`CHECKOUTS_ENABLED=true`. If `STRIPE_SECRET_KEY`, `STRIPE_TICKET_TIERS_JSON`, or
+`STRIPE_WEBHOOK_SECRET` are empty, the related Stripe endpoint returns a
+configuration error after checkout has been enabled. If `TURNSTILE_SITE_KEY` and
+`TURNSTILE_SECRET_KEY` are empty, the Worker skips Turnstile verification for the
+legacy interest endpoint.
 
 See [Stripe testing](stripe-testing.md) for the full local Checkout and webhook
 verification flow.
@@ -73,6 +79,7 @@ Create a Turnstile widget in the Cloudflare dashboard, then set:
 
 Create a Stripe Product and Price for each ticket tier, then set:
 
+- `CHECKOUTS_ENABLED` to `true` only after local Checkout and webhook testing has passed
 - `STRIPE_TICKET_TIERS_JSON` to the ticket tier definitions, for example:
 
 ```json
@@ -140,6 +147,10 @@ wrangler secret put STRIPE_SECRET_KEY
 wrangler secret put STRIPE_TICKET_TIERS_JSON
 wrangler secret put STRIPE_WEBHOOK_SECRET
 ```
+
+`wrangler.jsonc` keeps `CHECKOUTS_ENABLED` at `false` by default. Change that
+Worker var to `true` in Cloudflare, or in `wrangler.jsonc` before a deployment,
+only when you are ready to open Checkout.
 
 Use a strong `EMAIL_ENCRYPTION_KEY` and keep it outside version control. Losing it means existing encrypted submissions and backups cannot be decrypted.
 

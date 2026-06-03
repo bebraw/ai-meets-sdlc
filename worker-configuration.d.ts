@@ -9,6 +9,7 @@ declare namespace Cloudflare {
     INTEREST_BACKUPS: R2Bucket;
     INTERESTS: D1Database;
     ASSETS: Fetcher;
+    CHECKOUTS_ENABLED: string;
     EMAIL_ENCRYPTION_KEY: string;
     STRIPE_CANCEL_URL: string;
     STRIPE_SECRET_KEY: string;
@@ -29,6 +30,7 @@ declare namespace NodeJS {
   interface ProcessEnv extends StringifyValues<
     Pick<
       Cloudflare.Env,
+      | "CHECKOUTS_ENABLED"
       | "EMAIL_ENCRYPTION_KEY"
       | "STRIPE_CANCEL_URL"
       | "STRIPE_SECRET_KEY"
