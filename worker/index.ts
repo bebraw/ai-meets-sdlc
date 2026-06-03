@@ -650,7 +650,7 @@ async function handlePublicSchedule(env: Env): Promise<Response> {
 
   return jsonResponse({
     ok: true,
-    entries: (entries.results ?? []).map(serializeScheduleEntry),
+    entries: (entries.results ?? []).map(serializePublicScheduleEntry),
   });
 }
 
@@ -817,6 +817,19 @@ function serializeScheduleEntry(row: ScheduleEntryRow) {
     starts_at: row.starts_at,
     title: row.title,
     updated_at: row.updated_at,
+  };
+}
+
+function serializePublicScheduleEntry(row: ScheduleEntryRow) {
+  return {
+    description: row.description,
+    ends_at: row.ends_at,
+    entry_type: row.entry_type,
+    location: row.location,
+    organization: row.organization,
+    presenter: row.presenter,
+    starts_at: row.starts_at,
+    title: row.title,
   };
 }
 
