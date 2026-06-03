@@ -56,12 +56,60 @@ interface TicketTierAvailability extends TicketTier {
   reservedQuantity: number;
 }
 
+interface AdminInterestRow {
+  created_at: string;
+  email_ciphertext: string;
+  email_iv: string;
+  name_ciphertext: string | null;
+  name_iv: string | null;
+  organization_ciphertext: string | null;
+  organization_iv: string | null;
+}
+
+interface AdminOrderRow {
+  amount_total: number | null;
+  created_at: string;
+  currency: string | null;
+  email_ciphertext: string | null;
+  email_iv: string | null;
+  order_status: string;
+  payment_status: string;
+  quantity: number;
+  stripe_session_id: string;
+  ticket_tier_label: string | null;
+}
+
 const CHECKOUT_RESERVATION_SECONDS = 30 * 60;
 const CHECKOUT_RESERVATION_MS = CHECKOUT_RESERVATION_SECONDS * 1000;
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
+
+    if (url.pathname === "/api/admin/dashboard") {
+      if (request.method !== "GET") {
+        return jsonResponse({ error: "Method not allowed" }, 405);
+      }
+
+      const authResponse = requireAdminAuth(request, env);
+      if (authResponse) return authResponse;
+
+      return handleAdminDashboard(env);
+    }
+
+    if (url.pathname === "/api/admin/register") {
+      if (request.method !== "POST") {
+        return jsonResponse({ error: "Method not allowed" }, 405);
+      }
+
+      const authResponse = requireAdminAuth(request, env);
+      if (authResponse) return authResponse;
+
+      const mutationAuthResponse = requireAdminMutationRequest(request);
+      if (mutationAuthResponse) return mutationAuthResponse;
+
+      return handleAdminRegister(request, env);
+    }
 
     if (url.pathname === "/api/ticket-tiers") {
       if (request.method !== "GET") {
@@ -101,6 +149,11 @@ export default {
       }
 
       return handleInterest(request, env);
+    }
+
+    if (url.pathname === "/admin" || url.pathname.startsWith("/admin/")) {
+      const authResponse = requireAdminAuth(request, env);
+      if (authResponse) return authResponse;
     }
 
     const response = await env.ASSETS.fetch(request);
@@ -151,6 +204,245 @@ async function handleTicketTiers(env: Env): Promise<Response> {
       reserved_quantity: tier.reservedQuantity,
     })),
   });
+}
+
+async function handleAdminDashboard(env: Env): Promise<Response> {
+  if (!env.INTERESTS || !env.EMAIL_ENCRYPTION_KEY) {
+    return jsonResponse({ error: "Admin storage is not configured" }, 503);
+  }
+
+  const tiers = getTicketTiers(env);
+  const availability = await getTicketTierAvailability(env, tiers, new Date());
+  const [interestRows, orderRows] = await Promise.all([
+    env.INTERESTS.prepare(
+      `SELECT
+        email_ciphertext,
+        email_iv,
+        name_ciphertext,
+        name_iv,
+        organization_ciphertext,
+        organization_iv,
+        created_at
+      FROM interests
+      ORDER BY created_at DESC`,
+    ).all<AdminInterestRow>(),
+    env.INTERESTS.prepare(
+      `SELECT
+        stripe_session_id,
+        ticket_tier_label,
+        email_ciphertext,
+        email_iv,
+        quantity,
+        amount_total,
+        currency,
+        payment_status,
+        order_status,
+        created_at
+      FROM orders
+      ORDER BY created_at DESC`,
+    ).all<AdminOrderRow>(),
+  ]);
+  const interests = await Promise.all(
+    (interestRows.results ?? []).map((row) =>
+      decryptAdminInterest(row, env.EMAIL_ENCRYPTION_KEY),
+    ),
+  );
+  const orders = await Promise.all(
+    (orderRows.results ?? []).map((row) =>
+      decryptAdminOrder(row, env.EMAIL_ENCRYPTION_KEY),
+    ),
+  );
+
+  return jsonResponse({
+    ok: true,
+    interests,
+    orders,
+    tiers: availability.map((tier) => ({
+      available_from: tier.availableFrom ?? null,
+      available_quantity: tier.availableQuantity,
+      available_until: tier.availableUntil ?? null,
+      capacity: tier.capacity,
+      currency: tier.currency ?? null,
+      discount_coupon_id: tier.discountCouponId ?? null,
+      id: tier.id,
+      is_on_sale: tier.isOnSale,
+      label: tier.label,
+      price_id: tier.priceId,
+      price_label: tier.priceLabel ?? null,
+      reserved_quantity: tier.reservedQuantity,
+    })),
+  });
+}
+
+async function handleAdminRegister(
+  request: Request,
+  env: Env,
+): Promise<Response> {
+  if (!env.INTERESTS || !env.EMAIL_ENCRYPTION_KEY) {
+    return jsonResponse({ error: "Admin storage is not configured" }, 503);
+  }
+
+  const formData = await request.formData();
+  const email = normalizeEmail(formData.get("email"));
+  const quantity = normalizeQuantity(formData.get("quantity"));
+  const ticketTierId = normalizeOptionalText(formData.get("ticket_tier"), 80);
+  const tier = getTicketTiers(env).find(
+    (candidate) => candidate.id === ticketTierId,
+  );
+
+  if (!email || !isLikelyEmail(email)) {
+    return jsonResponse({ error: "Enter a valid email address" }, 400);
+  }
+
+  if (!quantity) {
+    return jsonResponse({ error: "Choose between 1 and 10 tickets" }, 400);
+  }
+
+  if (!tier) {
+    return jsonResponse({ error: "Choose a ticket tier" }, 400);
+  }
+
+  const order = await insertManualRegistration({
+    email,
+    env,
+    quantity,
+    tier,
+  });
+
+  if (!order) {
+    return jsonResponse(
+      { error: `${tier.label} does not have enough tickets left` },
+      409,
+    );
+  }
+
+  return jsonResponse({ ok: true, order });
+}
+
+async function decryptAdminInterest(
+  row: AdminInterestRow,
+  keyMaterial: string,
+) {
+  return {
+    created_at: row.created_at,
+    email: await decryptText(row.email_ciphertext, row.email_iv, keyMaterial),
+    name:
+      row.name_ciphertext && row.name_iv
+        ? await decryptText(row.name_ciphertext, row.name_iv, keyMaterial)
+        : null,
+    organization:
+      row.organization_ciphertext && row.organization_iv
+        ? await decryptText(
+            row.organization_ciphertext,
+            row.organization_iv,
+            keyMaterial,
+          )
+        : null,
+  };
+}
+
+async function decryptAdminOrder(row: AdminOrderRow, keyMaterial: string) {
+  return {
+    amount_total: row.amount_total,
+    created_at: row.created_at,
+    currency: row.currency,
+    email:
+      row.email_ciphertext && row.email_iv
+        ? await decryptText(row.email_ciphertext, row.email_iv, keyMaterial)
+        : null,
+    order_status: row.order_status,
+    payment_status: row.payment_status,
+    quantity: row.quantity,
+    stripe_session_id: row.stripe_session_id,
+    ticket_tier_label: row.ticket_tier_label,
+  };
+}
+
+async function insertManualRegistration({
+  email,
+  env,
+  quantity,
+  tier,
+}: {
+  email: string;
+  env: Env;
+  quantity: number;
+  tier: TicketTier;
+}) {
+  const now = new Date().toISOString();
+  const sessionId = `admin_manual_${crypto.randomUUID()}`;
+  const encryptedEmail = await encryptText(email, env.EMAIL_ENCRYPTION_KEY);
+  const emailHash = await hashEmail(email, env.EMAIL_ENCRYPTION_KEY);
+  const result = await env.INTERESTS.prepare(
+    `INSERT INTO orders (
+      stripe_session_id,
+      stripe_payment_intent_id,
+      ticket_tier_id,
+      ticket_tier_label,
+      stripe_price_id,
+      reservation_id,
+      email_hash,
+      email_ciphertext,
+      email_iv,
+      quantity,
+      amount_total,
+      currency,
+      checkout_status,
+      payment_status,
+      order_status,
+      stripe_event_id,
+      reservation_expires_at,
+      created_at,
+      updated_at
+    )
+    SELECT ?, NULL, ?, ?, ?, NULL, ?, ?, ?, ?, NULL, ?, 'manual', 'manual',
+      'paid', NULL, NULL, ?, ?
+    WHERE (
+      SELECT COALESCE(SUM(quantity), 0)
+      FROM orders
+      WHERE ticket_tier_id = ?
+        AND order_status = 'paid'
+    ) + (
+      SELECT COALESCE(SUM(quantity), 0)
+      FROM ticket_reservations
+      WHERE ticket_tier_id = ?
+        AND status = 'held'
+        AND expires_at > ?
+    ) + ? <= ?`,
+  )
+    .bind(
+      sessionId,
+      tier.id,
+      tier.label,
+      tier.priceId,
+      emailHash,
+      encryptedEmail.ciphertext,
+      encryptedEmail.iv,
+      quantity,
+      tier.currency ?? null,
+      now,
+      now,
+      tier.id,
+      tier.id,
+      now,
+      quantity,
+      tier.capacity,
+    )
+    .run();
+
+  if (result.meta.changes !== 1) return null;
+
+  return {
+    amount_total: null,
+    created_at: now,
+    currency: tier.currency ?? null,
+    email,
+    order_status: "paid",
+    payment_status: "manual",
+    quantity,
+    stripe_session_id: sessionId,
+    ticket_tier_label: tier.label,
+  };
 }
 
 async function handleCheckout(request: Request, env: Env): Promise<Response> {
@@ -1179,6 +1471,71 @@ function isCheckoutEnabled(env: Env): boolean {
   return env.CHECKOUTS_ENABLED === "true";
 }
 
+function requireAdminAuth(request: Request, env: Env): Response | null {
+  if (!env.ADMIN_PASSWORD) {
+    return jsonResponse({ error: "Admin auth is not configured" }, 503);
+  }
+
+  const authorization = request.headers.get("authorization") ?? "";
+  const password = getAdminPasswordFromAuthorization(authorization);
+
+  if (password && timingSafeEqualText(password, env.ADMIN_PASSWORD)) {
+    return null;
+  }
+
+  return new Response("Authentication required", {
+    status: 401,
+    headers: {
+      "www-authenticate": 'Basic realm="AI meets SDLC admin"',
+    },
+  });
+}
+
+function requireAdminMutationRequest(request: Request): Response | null {
+  const origin = request.headers.get("origin");
+  const expectedOrigin = getRequestOrigin(request);
+
+  if (origin && origin !== expectedOrigin) {
+    return jsonResponse({ error: "Invalid request origin" }, 403);
+  }
+
+  if (request.headers.get("x-admin-action") !== "register") {
+    return jsonResponse({ error: "Missing admin action header" }, 403);
+  }
+
+  return null;
+}
+
+function getAdminPasswordFromAuthorization(authorization: string): string {
+  const [scheme = "", credentials = ""] = authorization.split(" ", 2);
+
+  if (scheme.toLowerCase() === "bearer") return credentials;
+
+  if (scheme.toLowerCase() !== "basic" || !credentials) return "";
+
+  try {
+    const decoded = atob(credentials);
+    const separator = decoded.indexOf(":");
+
+    return separator >= 0 ? decoded.slice(separator + 1) : "";
+  } catch {
+    return "";
+  }
+}
+
+function timingSafeEqualText(left: string, right: string): boolean {
+  const leftBytes = new TextEncoder().encode(left);
+  const rightBytes = new TextEncoder().encode(right);
+  const length = Math.max(leftBytes.length, rightBytes.length);
+  let mismatch = leftBytes.length ^ rightBytes.length;
+
+  for (let index = 0; index < length; index += 1) {
+    mismatch |= (leftBytes[index] ?? 0) ^ (rightBytes[index] ?? 0);
+  }
+
+  return mismatch === 0;
+}
+
 async function encryptText(
   value: string,
   keyMaterial: string,
@@ -1197,6 +1554,21 @@ async function encryptText(
   };
 }
 
+async function decryptText(
+  ciphertext: string,
+  iv: string,
+  keyMaterial: string,
+): Promise<string> {
+  const key = await importAesKey(keyMaterial);
+  const plaintext = await crypto.subtle.decrypt(
+    { name: "AES-GCM", iv: base64Decode(iv) },
+    key,
+    base64Decode(ciphertext),
+  );
+
+  return new TextDecoder().decode(plaintext);
+}
+
 async function hashEmail(email: string, keyMaterial: string): Promise<string> {
   const key = await importHmacKey(keyMaterial);
   const signature = await crypto.subtle.sign(
@@ -1211,7 +1583,10 @@ async function hashEmail(email: string, keyMaterial: string): Promise<string> {
 async function importAesKey(keyMaterial: string): Promise<CryptoKey> {
   const bytes = await deriveBytes(keyMaterial, "email-encryption");
 
-  return crypto.subtle.importKey("raw", bytes, "AES-GCM", false, ["encrypt"]);
+  return crypto.subtle.importKey("raw", bytes, "AES-GCM", false, [
+    "decrypt",
+    "encrypt",
+  ]);
 }
 
 async function importHmacKey(keyMaterial: string): Promise<CryptoKey> {
@@ -1303,6 +1678,20 @@ function base64Encode(bytes: Uint8Array): string {
   }
 
   return btoa(binary);
+}
+
+function base64Decode(value: string): ArrayBuffer {
+  const binary = atob(value);
+  const bytes = new Uint8Array(binary.length);
+
+  for (let index = 0; index < binary.length; index += 1) {
+    bytes[index] = binary.charCodeAt(index);
+  }
+
+  return bytes.buffer.slice(
+    bytes.byteOffset,
+    bytes.byteOffset + bytes.byteLength,
+  );
 }
 
 function hexEncode(bytes: Uint8Array): string {

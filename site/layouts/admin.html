@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI meets SDLC admin</title>
+    <meta name="robots" content="noindex,nofollow" />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <script>
+      (() => {
+        const root = document.documentElement;
+        let theme = "light";
+
+        try {
+          const stored = localStorage.getItem("sdlcai-theme");
+          const prefersDark = matchMedia(
+            "(prefers-color-scheme: dark)",
+          ).matches;
+          theme =
+            stored === "dark" || stored === "light"
+              ? stored
+              : prefersDark
+                ? "dark"
+                : "light";
+        } catch {
+          theme = "light";
+        }
+
+        root.classList.toggle("dark", theme === "dark");
+        root.dataset.theme = theme;
+      })();
+    </script>
+    <noop &foreach="styles as style">
+      <link &href="style.href" &rel="style.rel" />
+    </noop>
+  </head>
+  <body class="bg-paper text-ink">
+    <div class="min-h-screen">
+      <header class="border-b border-ink">
+        <nav
+          class="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-5 md:flex-row md:items-center md:justify-between md:px-8"
+        >
+          <a
+            href="/"
+            class="inline-flex items-center"
+            aria-label="AI meets SDLC"
+          >
+            <img
+              src="/assets/logo.svg"
+              alt="AI meets SDLC"
+              class="h-10 w-auto dark:invert"
+            />
+          </a>
+          <div class="flex items-center gap-3">
+            <button
+              class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+              type="button"
+              data-refresh-admin
+            >
+              Refresh
+            </button>
+            <button
+              class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+              type="button"
+              data-theme-toggle
+              aria-label="Toggle dark mode"
+            >
+              <span data-theme-label>Dark</span>
+            </button>
+          </div>
+        </nav>
+      </header>
+
+      <main class="mx-auto max-w-7xl px-5 py-8 md:px-8">
+        <section
+          class="grid gap-6 border-b border-ink pb-8 md:grid-cols-[1fr_26rem]"
+        >
+          <div>
+            <p class="font-headline text-sm font-black uppercase text-muted">
+              Event operations
+            </p>
+            <h1
+              class="mt-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl"
+            >
+              Admin desk
+            </h1>
+          </div>
+          <form
+            class="grid gap-4 border border-ink bg-paper p-5"
+            data-admin-register-form
+          >
+            <h2 class="font-headline text-2xl font-black uppercase">
+              Register attendee
+            </h2>
+            <label class="grid gap-2">
+              <span class="text-sm font-bold uppercase text-muted">Email</span>
+              <input
+                class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                name="email"
+                type="email"
+                autocomplete="off"
+                required
+              />
+            </label>
+            <div class="grid gap-4 md:grid-cols-[1fr_7rem]">
+              <label class="grid gap-2">
+                <span class="text-sm font-bold uppercase text-muted">Tier</span>
+                <select
+                  class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                  name="ticket_tier"
+                  data-admin-tier-select
+                  required
+                ></select>
+              </label>
+              <label class="grid gap-2">
+                <span class="text-sm font-bold uppercase text-muted">Qty</span>
+                <input
+                  class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                  name="quantity"
+                  type="number"
+                  min="1"
+                  max="10"
+                  value="1"
+                  required
+                />
+              </label>
+            </div>
+            <button
+              class="border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink disabled:cursor-not-allowed disabled:border-muted disabled:bg-muted disabled:text-paper"
+              data-admin-register-submit
+              type="submit"
+            >
+              Register
+            </button>
+            <p
+              class="min-h-6 text-sm font-bold uppercase text-muted"
+              data-admin-status
+            ></p>
+          </form>
+        </section>
+
+        <section
+          class="grid gap-px border border-ink bg-ink"
+          data-admin-metrics
+        ></section>
+
+        <section class="mt-8 grid gap-8">
+          <div>
+            <div class="mb-3 flex items-end justify-between gap-4">
+              <h2 class="font-headline text-3xl font-black uppercase">
+                Ticket tiers
+              </h2>
+              <p class="text-sm font-bold uppercase text-muted">
+                Capacity, availability, prices, discounts
+              </p>
+            </div>
+            <div class="overflow-x-auto border border-ink">
+              <table
+                class="w-full min-w-[820px] border-collapse text-left text-sm"
+              >
+                <thead class="bg-ink text-paper">
+                  <tr>
+                    <th class="px-3 py-2">Tier</th>
+                    <th class="px-3 py-2">Price</th>
+                    <th class="px-3 py-2">Discount code</th>
+                    <th class="px-3 py-2">Sale window</th>
+                    <th class="px-3 py-2 text-right">Held/Paid</th>
+                    <th class="px-3 py-2 text-right">Left</th>
+                  </tr>
+                </thead>
+                <tbody data-admin-tiers></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div>
+            <div class="mb-3 flex items-end justify-between gap-4">
+              <h2 class="font-headline text-3xl font-black uppercase">
+                Registrations
+              </h2>
+              <p class="text-sm font-bold uppercase text-muted">
+                Paid Stripe orders and manual entries
+              </p>
+            </div>
+            <div class="overflow-x-auto border border-ink">
+              <table
+                class="w-full min-w-[980px] border-collapse text-left text-sm"
+              >
+                <thead class="bg-ink text-paper">
+                  <tr>
+                    <th class="px-3 py-2">Email</th>
+                    <th class="px-3 py-2">Tier</th>
+                    <th class="px-3 py-2 text-right">Qty</th>
+                    <th class="px-3 py-2">Status</th>
+                    <th class="px-3 py-2">Payment</th>
+                    <th class="px-3 py-2">Created</th>
+                    <th class="px-3 py-2">Session</th>
+                  </tr>
+                </thead>
+                <tbody data-admin-orders></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div>
+            <div class="mb-3 flex items-end justify-between gap-4">
+              <h2 class="font-headline text-3xl font-black uppercase">
+                Preregistrations
+              </h2>
+              <p class="text-sm font-bold uppercase text-muted">
+                Decrypted interest-list contacts
+              </p>
+            </div>
+            <div class="overflow-x-auto border border-ink">
+              <table
+                class="w-full min-w-[820px] border-collapse text-left text-sm"
+              >
+                <thead class="bg-ink text-paper">
+                  <tr>
+                    <th class="px-3 py-2">Email</th>
+                    <th class="px-3 py-2">Name</th>
+                    <th class="px-3 py-2">Organization</th>
+                    <th class="px-3 py-2">Created</th>
+                  </tr>
+                </thead>
+                <tbody data-admin-interests></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <noop &foreach="scripts as script">
+      <script &src="script.src" &type="script.type"></script>
+    </noop>
+  </body>
+</html>

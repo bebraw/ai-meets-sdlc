@@ -10,5 +10,17 @@
         "ogDescription": "A one-day seminar on how AI is changing the software development lifecycle."
       }
     }
+  },
+  "admin": {
+    "layout": "admin",
+    "scripts": [{ "name": "admin" }],
+    "context": {
+      "meta": {
+        "title": "AI meets SDLC admin",
+        "description": "Authenticated event administration for AI meets SDLC.",
+        "ogEyebrow": "Admin",
+        "ogDescription": "Authenticated event administration."
+      }
+    }
   }
 }

@@ -4,6 +4,7 @@ import { config } from "dotenv";
 config();
 
 const values = {
+  ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
   EMAIL_ENCRYPTION_KEY: process.env.EMAIL_ENCRYPTION_KEY,
   STRIPE_CANCEL_URL: process.env.STRIPE_CANCEL_URL ?? "",
   STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY ?? "",
@@ -17,6 +18,13 @@ const values = {
 if (!values.EMAIL_ENCRYPTION_KEY) {
   console.error(
     "Missing EMAIL_ENCRYPTION_KEY. Copy .env.example to .env and set a local secret.",
+  );
+  process.exit(1);
+}
+
+if (!values.ADMIN_PASSWORD) {
+  console.error(
+    "Missing ADMIN_PASSWORD. Copy .env.example to .env and set a local admin password.",
   );
   process.exit(1);
 }

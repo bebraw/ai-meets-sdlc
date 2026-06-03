@@ -8,6 +8,7 @@ This site is deployed as a Cloudflare Worker with static assets, D1 for the inte
 
 | Binding                    | Type           | Purpose                                                            |
 | -------------------------- | -------------- | ------------------------------------------------------------------ |
+| `ADMIN_PASSWORD`           | Secret         | Protects `/admin` and `/api/admin/*` with Basic Auth.              |
 | `ASSETS`                   | Workers Assets | Serves the Gustwind build output from `build/`.                    |
 | `CHECKOUTS_ENABLED`        | Worker var     | Enables Checkout only when set exactly to `true`.                  |
 | `INTERESTS`                | D1             | Stores encrypted interest submissions and orders.                  |
@@ -131,6 +132,14 @@ plus active holds can still fit inside the tier capacity. Checkout sessions are
 created with a 30-minute expiration, and Stripe webhooks release or complete the
 hold when the session is paid, expired, or failed.
 
+The authenticated admin interface is available at `/admin` after setting
+`ADMIN_PASSWORD`. The browser shows the native Basic Auth prompt; use any
+username and the configured password. The admin API decrypts interest-list and
+order emails for display, shows configured ticket tiers including optional
+`discount_coupon_id` values, and can create manual paid registrations. Manual
+registrations are inserted atomically against the same tier capacity calculation
+used by public checkout.
+
 Subscribe the webhook endpoint to these Checkout events:
 
 - `checkout.session.completed`
@@ -142,6 +151,7 @@ Set production secrets:
 
 ```bash
 wrangler secret put EMAIL_ENCRYPTION_KEY
+wrangler secret put ADMIN_PASSWORD
 wrangler secret put TURNSTILE_SECRET_KEY
 wrangler secret put STRIPE_SECRET_KEY
 wrangler secret put STRIPE_TICKET_TIERS_JSON
