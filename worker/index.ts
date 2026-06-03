@@ -1609,14 +1609,6 @@ async function getVerifiedLocalCheckoutOrder(
     return null;
   }
 
-  const configuredTier = (
-    await getTicketTiers(env, {
-      includeInactive: true,
-    })
-  ).find((tier) => tier.id === ticketTierId);
-
-  if (!configuredTier || configuredTier.priceId !== ticketPriceId) return null;
-
   const order = await env.INTERESTS.prepare(
     `SELECT quantity, reservation_id, ticket_tier_id, stripe_price_id
     FROM orders
