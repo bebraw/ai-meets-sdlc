@@ -86,6 +86,7 @@ interface AdminCfpProposalRow {
   email_ciphertext: string;
   email_iv: string;
   format: string;
+  id: number;
   name_ciphertext: string;
   name_iv: string;
   organization_ciphertext: string | null;
@@ -94,6 +95,23 @@ interface AdminCfpProposalRow {
   summary_iv: string;
   title_ciphertext: string;
   title_iv: string;
+}
+
+interface ScheduleEntryRow {
+  cfp_proposal_id: number | null;
+  created_at: string;
+  description: string | null;
+  ends_at: string | null;
+  entry_type: string;
+  id: number;
+  is_published: number;
+  location: string | null;
+  organization: string | null;
+  presenter: string | null;
+  sort_order: number;
+  starts_at: string;
+  title: string;
+  updated_at: string;
 }
 
 interface LocalCheckoutOrder {
@@ -131,10 +149,38 @@ export default {
       const authResponse = await requireAdminAuth(request, env);
       if (authResponse) return authResponse;
 
-      const mutationAuthResponse = requireAdminMutationRequest(request);
+      const mutationAuthResponse = requireAdminMutationRequest(
+        request,
+        "register",
+      );
       if (mutationAuthResponse) return mutationAuthResponse;
 
       return handleAdminRegister(request, env);
+    }
+
+    if (url.pathname === "/api/admin/schedule") {
+      if (request.method !== "POST") {
+        return jsonResponse({ error: "Method not allowed" }, 405);
+      }
+
+      const authResponse = await requireAdminAuth(request, env);
+      if (authResponse) return authResponse;
+
+      const mutationAuthResponse = requireAdminMutationRequest(
+        request,
+        "schedule",
+      );
+      if (mutationAuthResponse) return mutationAuthResponse;
+
+      return handleAdminScheduleMutation(request, env);
+    }
+
+    if (url.pathname === "/api/schedule") {
+      if (request.method !== "GET") {
+        return jsonResponse({ error: "Method not allowed" }, 405);
+      }
+
+      return handlePublicSchedule(env);
     }
 
     if (url.pathname === "/api/ticket-tiers") {
@@ -305,6 +351,7 @@ async function handleAdminDashboard(
           format,
           email_ciphertext,
           email_iv,
+          id,
           name_ciphertext,
           name_iv,
           organization_ciphertext,
@@ -354,6 +401,7 @@ async function handleAdminDashboard(
     ok: true,
     interests,
     orders,
+    schedule_entries: await getAdminScheduleEntries(env),
     tiers: availability.map((tier) => ({
       available_from: tier.availableFrom ?? null,
       available_quantity: tier.availableQuantity,
@@ -369,6 +417,228 @@ async function handleAdminDashboard(
       reserved_quantity: tier.reservedQuantity,
     })),
   });
+}
+
+async function getAdminScheduleEntries(env: Env) {
+  const entries = await env.INTERESTS.prepare(
+    `SELECT
+      id,
+      starts_at,
+      ends_at,
+      entry_type,
+      title,
+      presenter,
+      organization,
+      description,
+      location,
+      cfp_proposal_id,
+      is_published,
+      sort_order,
+      created_at,
+      updated_at
+    FROM schedule_entries
+    ORDER BY starts_at ASC, sort_order ASC, id ASC`,
+  ).all<ScheduleEntryRow>();
+
+  return (entries.results ?? []).map(serializeScheduleEntry);
+}
+
+async function handlePublicSchedule(env: Env): Promise<Response> {
+  if (!env.INTERESTS) {
+    return jsonResponse({ error: "Schedule storage is not configured" }, 503);
+  }
+
+  const entries = await env.INTERESTS.prepare(
+    `SELECT
+      id,
+      starts_at,
+      ends_at,
+      entry_type,
+      title,
+      presenter,
+      organization,
+      description,
+      location,
+      cfp_proposal_id,
+      is_published,
+      sort_order,
+      created_at,
+      updated_at
+    FROM schedule_entries
+    WHERE is_published = 1
+    ORDER BY starts_at ASC, sort_order ASC, id ASC`,
+  ).all<ScheduleEntryRow>();
+
+  return jsonResponse({
+    ok: true,
+    entries: (entries.results ?? []).map(serializeScheduleEntry),
+  });
+}
+
+async function handleAdminScheduleMutation(
+  request: Request,
+  env: Env,
+): Promise<Response> {
+  if (!env.INTERESTS) {
+    return jsonResponse({ error: "Schedule storage is not configured" }, 503);
+  }
+
+  const formData = await request.formData();
+  const action = normalizeOptionalText(formData.get("action"), 20);
+  const id = normalizePositiveInteger(formData.get("id"), 999999999);
+
+  if (action === "delete") {
+    if (!id) return jsonResponse({ error: "Choose a schedule entry" }, 400);
+
+    await env.INTERESTS.prepare("DELETE FROM schedule_entries WHERE id = ?")
+      .bind(id)
+      .run();
+
+    return jsonResponse({ ok: true, deleted_id: id });
+  }
+
+  const startsAt = normalizeScheduleDate(formData.get("starts_at"));
+  const endsAt = normalizeScheduleDate(formData.get("ends_at"));
+  const entryType = normalizeScheduleEntryType(formData.get("entry_type"));
+  const title = normalizeOptionalText(formData.get("title"), 180);
+  const presenter = normalizeOptionalText(formData.get("presenter"), 160);
+  const organization = normalizeOptionalText(formData.get("organization"), 160);
+  const description = normalizeOptionalText(formData.get("description"), 1200);
+  const location = normalizeOptionalText(formData.get("location"), 160);
+  const cfpProposalId = normalizePositiveInteger(
+    formData.get("cfp_proposal_id"),
+    999999999,
+  );
+  const sortOrder = normalizeInteger(formData.get("sort_order"), 0, 9999);
+  const isPublished = formData.get("is_published") === "yes" ? 1 : 0;
+
+  if (!startsAt) {
+    return jsonResponse({ error: "Enter a valid start time" }, 400);
+  }
+
+  if (endsAt && Date.parse(endsAt) <= Date.parse(startsAt)) {
+    return jsonResponse({ error: "End time must be after start time" }, 400);
+  }
+
+  if (!entryType) {
+    return jsonResponse({ error: "Choose an entry type" }, 400);
+  }
+
+  if (!title) {
+    return jsonResponse({ error: "Enter a schedule title" }, 400);
+  }
+
+  if (cfpProposalId) {
+    const cfpProposal = await env.INTERESTS.prepare(
+      "SELECT id FROM cfp_proposals WHERE id = ?",
+    )
+      .bind(cfpProposalId)
+      .first<{ id: number }>();
+
+    if (!cfpProposal) {
+      return jsonResponse(
+        { error: "Selected CFP proposal was not found" },
+        400,
+      );
+    }
+  }
+
+  const now = new Date().toISOString();
+
+  if (id) {
+    const result = await env.INTERESTS.prepare(
+      `UPDATE schedule_entries
+      SET
+        starts_at = ?,
+        ends_at = ?,
+        entry_type = ?,
+        title = ?,
+        presenter = ?,
+        organization = ?,
+        description = ?,
+        location = ?,
+        cfp_proposal_id = ?,
+        is_published = ?,
+        sort_order = ?,
+        updated_at = ?
+      WHERE id = ?`,
+    )
+      .bind(
+        startsAt,
+        endsAt || null,
+        entryType,
+        title,
+        presenter || null,
+        organization || null,
+        description || null,
+        location || null,
+        cfpProposalId || null,
+        isPublished,
+        sortOrder,
+        now,
+        id,
+      )
+      .run();
+
+    if (result.meta.changes !== 1) {
+      return jsonResponse({ error: "Schedule entry was not found" }, 404);
+    }
+  } else {
+    await env.INTERESTS.prepare(
+      `INSERT INTO schedule_entries (
+        starts_at,
+        ends_at,
+        entry_type,
+        title,
+        presenter,
+        organization,
+        description,
+        location,
+        cfp_proposal_id,
+        is_published,
+        sort_order,
+        created_at,
+        updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    )
+      .bind(
+        startsAt,
+        endsAt || null,
+        entryType,
+        title,
+        presenter || null,
+        organization || null,
+        description || null,
+        location || null,
+        cfpProposalId || null,
+        isPublished,
+        sortOrder,
+        now,
+        now,
+      )
+      .run();
+  }
+
+  return jsonResponse({ ok: true });
+}
+
+function serializeScheduleEntry(row: ScheduleEntryRow) {
+  return {
+    cfp_proposal_id: row.cfp_proposal_id,
+    created_at: row.created_at,
+    description: row.description,
+    ends_at: row.ends_at,
+    entry_type: row.entry_type,
+    id: row.id,
+    is_published: row.is_published === 1,
+    location: row.location,
+    organization: row.organization,
+    presenter: row.presenter,
+    sort_order: row.sort_order,
+    starts_at: row.starts_at,
+    title: row.title,
+    updated_at: row.updated_at,
+  };
 }
 
 async function handleAdminRegister(
@@ -468,6 +738,7 @@ async function decryptAdminCfpProposal(
     created_at: row.created_at,
     email: await decryptText(row.email_ciphertext, row.email_iv, keyMaterial),
     format: row.format,
+    id: row.id,
     name: await decryptText(row.name_ciphertext, row.name_iv, keyMaterial),
     organization:
       row.organization_ciphertext && row.organization_iv
@@ -1700,9 +1971,15 @@ async function backupInterests(env: Env): Promise<void> {
   const { results: cfpProposalResults } = await env.INTERESTS.prepare(
     "SELECT * FROM cfp_proposals ORDER BY created_at ASC",
   ).all();
+  const { results: scheduleEntryResults } = await env.INTERESTS.prepare(
+    "SELECT * FROM schedule_entries ORDER BY starts_at ASC, sort_order ASC",
+  ).all();
   const rows = results ?? [];
   const cfpProposals = cfpProposalResults ?? [];
-  const rowsHash = await sha256Hex(JSON.stringify({ cfpProposals, rows }));
+  const scheduleEntries = scheduleEntryResults ?? [];
+  const rowsHash = await sha256Hex(
+    JSON.stringify({ cfpProposals, rows, scheduleEntries }),
+  );
   const latestBackup = await getLatestBackupManifest(env);
 
   if (latestBackup?.rows_hash === rowsHash) return;
@@ -1713,6 +1990,7 @@ async function backupInterests(env: Env): Promise<void> {
       cfp_proposals: cfpProposals,
       exported_at: exportedAt,
       rows,
+      schedule_entries: scheduleEntries,
     },
     null,
     2,
@@ -1732,6 +2010,7 @@ async function backupInterests(env: Env): Promise<void> {
         exported_at: exportedAt,
         cfp_proposal_count: cfpProposals.length,
         row_count: rows.length,
+        schedule_entry_count: scheduleEntries.length,
         rows_hash: rowsHash,
       },
       null,
@@ -1915,7 +2194,10 @@ function getClientKey(request: Request): string {
   );
 }
 
-function requireAdminMutationRequest(request: Request): Response | null {
+function requireAdminMutationRequest(
+  request: Request,
+  expectedAction: string,
+): Response | null {
   const origin = request.headers.get("origin");
   const expectedOrigin = getRequestOrigin(request);
 
@@ -1923,7 +2205,7 @@ function requireAdminMutationRequest(request: Request): Response | null {
     return jsonResponse({ error: "Invalid request origin" }, 403);
   }
 
-  if (request.headers.get("x-admin-action") !== "register") {
+  if (request.headers.get("x-admin-action") !== expectedAction) {
     return jsonResponse({ error: "Missing admin action header" }, 403);
   }
 
@@ -2051,6 +2333,31 @@ function normalizeQuantity(value: FormDataEntryValue | null): number {
     : 0;
 }
 
+function normalizePositiveInteger(
+  value: FormDataEntryValue | null,
+  max: number,
+): number {
+  if (typeof value !== "string" || !value.trim()) return 0;
+
+  const number = Number(value);
+
+  return Number.isInteger(number) && number >= 1 && number <= max ? number : 0;
+}
+
+function normalizeInteger(
+  value: FormDataEntryValue | null,
+  min: number,
+  max: number,
+): number {
+  if (typeof value !== "string" || !value.trim()) return min;
+
+  const number = Number(value);
+
+  return Number.isInteger(number) && number >= min && number <= max
+    ? number
+    : min;
+}
+
 function normalizeAdminPageLimit(value: string | null): number {
   const limit = Number(value ?? 50);
 
@@ -2069,6 +2376,34 @@ function normalizeCfpFormat(value: FormDataEntryValue | null): string {
   if (value !== "poster" && value !== "pitch_15") return "";
 
   return value;
+}
+
+function normalizeScheduleEntryType(value: FormDataEntryValue | null): string {
+  if (
+    value !== "talk" &&
+    value !== "workshop" &&
+    value !== "panel" &&
+    value !== "poster" &&
+    value !== "break" &&
+    value !== "other"
+  ) {
+    return "";
+  }
+
+  return value;
+}
+
+function normalizeScheduleDate(value: FormDataEntryValue | null): string {
+  if (typeof value !== "string" || !value.trim()) return "";
+
+  const trimmed = value.trim();
+  const date = new Date(
+    /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(trimmed)
+      ? `${trimmed}:00+03:00`
+      : trimmed,
+  );
+
+  return Number.isNaN(date.getTime()) ? "" : date.toISOString();
 }
 
 function normalizeStripeId(value: string | null, maxLength: number): string {

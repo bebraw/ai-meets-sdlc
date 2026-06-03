@@ -146,6 +146,196 @@
 
         <section class="mt-8 grid gap-8">
           <div>
+            <div
+              class="mb-3 flex flex-col gap-3 md:flex-row md:items-end md:justify-between"
+            >
+              <div>
+                <h2 class="font-headline text-3xl font-black uppercase">
+                  Schedule planner
+                </h2>
+                <p class="text-sm font-bold uppercase text-muted">
+                  Public seminar day entries
+                </p>
+              </div>
+              <a
+                class="inline-flex border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+                href="/#schedule"
+              >
+                View public schedule
+              </a>
+            </div>
+            <div class="grid gap-5 lg:grid-cols-[24rem_1fr]">
+              <form
+                class="grid gap-4 border border-ink bg-paper p-5"
+                data-admin-schedule-form
+              >
+                <input name="id" type="hidden" data-schedule-id />
+                <input name="action" type="hidden" value="save" />
+                <h3 class="font-headline text-2xl font-black uppercase">
+                  Schedule entry
+                </h3>
+                <label class="grid gap-2">
+                  <span class="text-sm font-bold uppercase text-muted"
+                    >Use CFP proposal</span
+                  >
+                  <select
+                    class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                    name="cfp_proposal_id"
+                    data-schedule-cfp-select
+                  >
+                    <option value="">Custom entry</option>
+                  </select>
+                </label>
+                <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-1">
+                  <label class="grid gap-2">
+                    <span class="text-sm font-bold uppercase text-muted"
+                      >Start</span
+                    >
+                    <input
+                      class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                      name="starts_at"
+                      type="datetime-local"
+                      required
+                    />
+                  </label>
+                  <label class="grid gap-2">
+                    <span class="text-sm font-bold uppercase text-muted"
+                      >End</span
+                    >
+                    <input
+                      class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                      name="ends_at"
+                      type="datetime-local"
+                    />
+                  </label>
+                </div>
+                <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-1">
+                  <label class="grid gap-2">
+                    <span class="text-sm font-bold uppercase text-muted"
+                      >Type</span
+                    >
+                    <select
+                      class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                      name="entry_type"
+                      required
+                    >
+                      <option value="talk">Talk</option>
+                      <option value="workshop">Workshop</option>
+                      <option value="panel">Panel</option>
+                      <option value="poster">Poster</option>
+                      <option value="break">Break</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </label>
+                  <label class="grid gap-2">
+                    <span class="text-sm font-bold uppercase text-muted"
+                      >Sort</span
+                    >
+                    <input
+                      class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                      name="sort_order"
+                      type="number"
+                      min="0"
+                      max="9999"
+                      value="0"
+                    />
+                  </label>
+                </div>
+                <label class="grid gap-2">
+                  <span class="text-sm font-bold uppercase text-muted"
+                    >Title</span
+                  >
+                  <input
+                    class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                    name="title"
+                    maxlength="180"
+                    required
+                  />
+                </label>
+                <label class="grid gap-2">
+                  <span class="text-sm font-bold uppercase text-muted"
+                    >Presenter</span
+                  >
+                  <input
+                    class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                    name="presenter"
+                    maxlength="160"
+                  />
+                </label>
+                <label class="grid gap-2">
+                  <span class="text-sm font-bold uppercase text-muted"
+                    >Organization</span
+                  >
+                  <input
+                    class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                    name="organization"
+                    maxlength="160"
+                  />
+                </label>
+                <label class="grid gap-2">
+                  <span class="text-sm font-bold uppercase text-muted"
+                    >Location</span
+                  >
+                  <input
+                    class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                    name="location"
+                    maxlength="160"
+                  />
+                </label>
+                <label class="grid gap-2">
+                  <span class="text-sm font-bold uppercase text-muted"
+                    >Description</span
+                  >
+                  <textarea
+                    class="min-h-24 border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                    name="description"
+                    maxlength="1200"
+                  ></textarea>
+                </label>
+                <label class="flex gap-3 border border-ink/40 p-4 text-sm">
+                  <input name="is_published" type="checkbox" value="yes" />
+                  <span>Publish on the public schedule</span>
+                </label>
+                <div class="flex flex-col gap-3 md:flex-row md:items-center">
+                  <button
+                    class="border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink disabled:cursor-not-allowed disabled:border-muted disabled:bg-muted disabled:text-paper"
+                    data-admin-schedule-submit
+                    type="submit"
+                  >
+                    Save entry
+                  </button>
+                  <button
+                    class="border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper"
+                    data-admin-schedule-clear
+                    type="button"
+                  >
+                    Clear
+                  </button>
+                </div>
+              </form>
+
+              <div class="overflow-x-auto border border-ink">
+                <table
+                  class="w-full min-w-[980px] border-collapse text-left text-sm"
+                >
+                  <thead class="bg-ink text-paper">
+                    <tr>
+                      <th class="px-3 py-2">Time</th>
+                      <th class="px-3 py-2">Type</th>
+                      <th class="px-3 py-2">Title</th>
+                      <th class="px-3 py-2">Presenter</th>
+                      <th class="px-3 py-2">Location</th>
+                      <th class="px-3 py-2">State</th>
+                      <th class="px-3 py-2">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody data-admin-schedule-entries></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div>
             <div class="mb-3 flex items-end justify-between gap-4">
               <h2 class="font-headline text-3xl font-black uppercase">
                 CFP proposals
@@ -160,6 +350,7 @@
               >
                 <thead class="bg-ink text-paper">
                   <tr>
+                    <th class="px-3 py-2">ID</th>
                     <th class="px-3 py-2">Format</th>
                     <th class="px-3 py-2">Title</th>
                     <th class="px-3 py-2">Presenter</th>

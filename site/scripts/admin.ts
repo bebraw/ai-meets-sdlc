@@ -22,10 +22,28 @@ type AdminCfpProposal = {
   created_at: string;
   email: string;
   format: string;
+  id: number;
   name: string;
   organization: string | null;
   summary: string;
   title: string;
+};
+
+type AdminScheduleEntry = {
+  cfp_proposal_id: number | null;
+  created_at: string;
+  description: string | null;
+  ends_at: string | null;
+  entry_type: string;
+  id: number;
+  is_published: boolean;
+  location: string | null;
+  organization: string | null;
+  presenter: string | null;
+  sort_order: number;
+  starts_at: string;
+  title: string;
+  updated_at: string;
 };
 
 type AdminTier = {
@@ -57,6 +75,7 @@ type AdminDashboardResponse = {
   limit?: number;
   offset?: number;
   orders?: AdminOrder[];
+  schedule_entries?: AdminScheduleEntry[];
   tiers?: AdminTier[];
 };
 
@@ -64,6 +83,14 @@ type AdminRegisterResponse = {
   error?: string;
   order?: AdminOrder;
 };
+
+type AdminScheduleResponse = {
+  deleted_id?: number;
+  error?: string;
+};
+
+let currentCfpProposals: AdminCfpProposal[] = [];
+let currentScheduleEntries: AdminScheduleEntry[] = [];
 
 function setTheme(theme: "dark" | "light") {
   const themeLabel = document.querySelector("[data-theme-label]");
@@ -107,6 +134,18 @@ function initAdmin() {
   const submit = document.querySelector(
     "[data-admin-register-submit]",
   ) as HTMLButtonElement | null;
+  const scheduleForm = document.querySelector(
+    "[data-admin-schedule-form]",
+  ) as HTMLFormElement | null;
+  const scheduleSubmit = document.querySelector(
+    "[data-admin-schedule-submit]",
+  ) as HTMLButtonElement | null;
+  const scheduleClear = document.querySelector(
+    "[data-admin-schedule-clear]",
+  ) as HTMLButtonElement | null;
+  const scheduleCfpSelect = document.querySelector(
+    "[data-schedule-cfp-select]",
+  ) as HTMLSelectElement | null;
 
   function setStatus(message: string) {
     if (status) {
@@ -130,6 +169,7 @@ function initAdmin() {
         counts: result.counts,
         interests: result.interests ?? [],
         orders: result.orders ?? [],
+        scheduleEntries: result.schedule_entries ?? [],
         tiers: result.tiers,
       });
       setStatus(
@@ -174,6 +214,61 @@ function initAdmin() {
     }
   });
 
+  scheduleForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (!scheduleForm.checkValidity() || scheduleSubmit?.disabled) return;
+
+    scheduleSubmit?.setAttribute("disabled", "true");
+    setStatus("Saving schedule entry...");
+
+    try {
+      const response = await fetch("/api/admin/schedule", {
+        headers: {
+          "x-admin-action": "schedule",
+        },
+        method: "POST",
+        body: new FormData(scheduleForm),
+      });
+      const result = (await response.json()) as AdminScheduleResponse;
+
+      if (!response.ok || result.error) {
+        throw new Error(result.error || "Schedule save failed");
+      }
+
+      resetScheduleForm();
+      setStatus("Schedule entry saved.");
+      await loadDashboard();
+    } catch (error) {
+      setStatus(
+        error instanceof Error ? error.message : "Schedule save failed",
+      );
+    } finally {
+      scheduleSubmit?.removeAttribute("disabled");
+    }
+  });
+
+  scheduleClear?.addEventListener("click", () => {
+    resetScheduleForm();
+  });
+
+  scheduleCfpSelect?.addEventListener("change", () => {
+    const proposal = currentCfpProposals.find(
+      (candidate) => String(candidate.id) === scheduleCfpSelect.value,
+    );
+
+    if (!proposal || !scheduleForm) return;
+
+    setScheduleField(
+      "entry_type",
+      proposal.format === "poster" ? "poster" : "talk",
+    );
+    setScheduleField("title", proposal.title);
+    setScheduleField("presenter", proposal.name);
+    setScheduleField("organization", proposal.organization || "");
+    setScheduleField("description", proposal.summary);
+  });
+
   refreshButton?.addEventListener("click", () => {
     void loadDashboard();
   });
@@ -186,16 +281,22 @@ function renderDashboard({
   counts,
   interests,
   orders,
+  scheduleEntries,
   tiers,
 }: {
   cfpProposals: AdminCfpProposal[];
   counts: AdminCounts | undefined;
   interests: AdminInterest[];
   orders: AdminOrder[];
+  scheduleEntries: AdminScheduleEntry[];
   tiers: AdminTier[];
 }) {
+  currentCfpProposals = cfpProposals;
+  currentScheduleEntries = scheduleEntries;
   renderMetrics({ cfpProposals, counts, interests, orders, tiers });
   renderCfpProposals(cfpProposals);
+  renderScheduleCfpSelect(cfpProposals);
+  renderScheduleEntries(scheduleEntries);
   renderTierSelect(tiers);
   renderTiers(tiers);
   renderOrders(orders);
@@ -257,6 +358,7 @@ function renderCfpProposals(proposals: AdminCfpProposal[]) {
 
   for (const proposal of proposals) {
     appendRow(body, [
+      String(proposal.id),
       formatCfpFormat(proposal.format),
       proposal.title,
       proposal.name,
@@ -266,6 +368,87 @@ function renderCfpProposals(proposals: AdminCfpProposal[]) {
       proposal.bio || "",
       formatDate(proposal.created_at),
     ]);
+  }
+}
+
+function renderScheduleCfpSelect(proposals: AdminCfpProposal[]) {
+  const select = document.querySelector(
+    "[data-schedule-cfp-select]",
+  ) as HTMLSelectElement | null;
+  const currentValue = select?.value || "";
+
+  if (!select) return;
+
+  select.innerHTML = "";
+
+  const customOption = document.createElement("option");
+  customOption.value = "";
+  customOption.textContent = "Custom entry";
+  select.add(customOption);
+
+  for (const proposal of proposals) {
+    const option = document.createElement("option");
+
+    option.value = String(proposal.id);
+    option.textContent = `#${proposal.id} ${formatCfpFormat(proposal.format)} / ${proposal.title} / ${proposal.name}`;
+    select.add(option);
+  }
+
+  select.value = currentValue;
+}
+
+function renderScheduleEntries(entries: AdminScheduleEntry[]) {
+  const body = document.querySelector("[data-admin-schedule-entries]");
+
+  if (!body) return;
+
+  body.innerHTML = "";
+
+  for (const entry of entries) {
+    const row = document.createElement("tr");
+
+    row.className = "border-t border-ink";
+
+    for (const value of [
+      formatScheduleRange(entry),
+      formatScheduleEntryType(entry.entry_type),
+      entry.title,
+      entry.presenter || entry.organization || "",
+      entry.location || "",
+      entry.is_published ? "Published" : "Draft",
+    ]) {
+      const cell = document.createElement("td");
+
+      cell.className = "px-3 py-2 align-top";
+      cell.textContent = value;
+      row.appendChild(cell);
+    }
+
+    const actionCell = document.createElement("td");
+    const editButton = document.createElement("button");
+    const deleteButton = document.createElement("button");
+
+    actionCell.className = "flex gap-2 px-3 py-2";
+    editButton.className =
+      "border border-ink px-2 py-1 text-xs font-bold uppercase transition hover:bg-ink hover:text-paper";
+    editButton.type = "button";
+    editButton.textContent = "Edit";
+    editButton.addEventListener("click", () => {
+      populateScheduleForm(entry);
+    });
+
+    deleteButton.className =
+      "border border-ink px-2 py-1 text-xs font-bold uppercase transition hover:bg-ink hover:text-paper";
+    deleteButton.type = "button";
+    deleteButton.textContent = "Delete";
+    deleteButton.addEventListener("click", () => {
+      void deleteScheduleEntry(entry);
+    });
+
+    actionCell.appendChild(editButton);
+    actionCell.appendChild(deleteButton);
+    row.appendChild(actionCell);
+    body.appendChild(row);
   }
 }
 
@@ -345,6 +528,100 @@ function renderInterests(interests: AdminInterest[]) {
   }
 }
 
+function populateScheduleForm(entry: AdminScheduleEntry) {
+  setScheduleField("id", String(entry.id));
+  setScheduleField("cfp_proposal_id", String(entry.cfp_proposal_id ?? ""));
+  setScheduleField("starts_at", toDateTimeLocal(entry.starts_at));
+  setScheduleField("ends_at", toDateTimeLocal(entry.ends_at));
+  setScheduleField("entry_type", entry.entry_type);
+  setScheduleField("sort_order", String(entry.sort_order));
+  setScheduleField("title", entry.title);
+  setScheduleField("presenter", entry.presenter || "");
+  setScheduleField("organization", entry.organization || "");
+  setScheduleField("location", entry.location || "");
+  setScheduleField("description", entry.description || "");
+  setScheduleChecked("is_published", entry.is_published);
+}
+
+function resetScheduleForm() {
+  const form = document.querySelector(
+    "[data-admin-schedule-form]",
+  ) as HTMLFormElement | null;
+
+  form?.reset();
+  setScheduleField("id", "");
+  setScheduleField("sort_order", "0");
+  setScheduleChecked("is_published", false);
+}
+
+async function deleteScheduleEntry(entry: AdminScheduleEntry) {
+  const confirmed = window.confirm(`Delete schedule entry "${entry.title}"?`);
+
+  if (!confirmed) return;
+
+  const formData = new FormData();
+
+  formData.set("action", "delete");
+  formData.set("id", String(entry.id));
+
+  const response = await fetch("/api/admin/schedule", {
+    headers: {
+      "x-admin-action": "schedule",
+    },
+    method: "POST",
+    body: formData,
+  });
+  const result = (await response.json()) as AdminScheduleResponse;
+
+  if (!response.ok || result.error) {
+    window.alert(result.error || "Schedule delete failed");
+    return;
+  }
+
+  currentScheduleEntries = currentScheduleEntries.filter(
+    (candidate) => candidate.id !== entry.id,
+  );
+  renderScheduleEntries(currentScheduleEntries);
+}
+
+function setScheduleField(name: string, value: string) {
+  const field = document.querySelector(
+    `[data-admin-schedule-form] [name="${name}"]`,
+  ) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null;
+
+  if (field) {
+    field.value = value;
+  }
+}
+
+function setScheduleChecked(name: string, checked: boolean) {
+  const field = document.querySelector(
+    `[data-admin-schedule-form] [name="${name}"]`,
+  ) as HTMLInputElement | null;
+
+  if (field) {
+    field.checked = checked;
+  }
+}
+
+function formatScheduleRange(entry: AdminScheduleEntry): string {
+  const start = formatTime(entry.starts_at);
+  const end = formatTime(entry.ends_at);
+
+  return end ? `${start}-${end}` : start;
+}
+
+function formatScheduleEntryType(value: string): string {
+  if (value === "talk") return "Talk";
+  if (value === "workshop") return "Workshop";
+  if (value === "panel") return "Panel";
+  if (value === "poster") return "Poster";
+  if (value === "break") return "Break";
+  if (value === "other") return "Other";
+
+  return value;
+}
+
 function appendRow(body: Element, cells: string[]) {
   const row = document.createElement("tr");
 
@@ -391,6 +668,41 @@ function formatDate(value: string): string {
     month: "short",
     year: "numeric",
   });
+}
+
+function formatTime(value: string | null): string {
+  if (!value) return "";
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) return value;
+
+  return date.toLocaleTimeString(undefined, {
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Europe/Helsinki",
+  });
+}
+
+function toDateTimeLocal(value: string | null): string {
+  if (!value) return "";
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) return "";
+
+  const parts = new Intl.DateTimeFormat("sv-SE", {
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    month: "2-digit",
+    timeZone: "Europe/Helsinki",
+    year: "numeric",
+  }).formatToParts(date);
+  const part = (type: string) =>
+    parts.find((candidate) => candidate.type === type)?.value ?? "";
+
+  return `${part("year")}-${part("month")}-${part("day")}T${part("hour")}:${part("minute")}`;
 }
 
 initThemeToggle();
