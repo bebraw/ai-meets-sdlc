@@ -79,6 +79,13 @@ interface AdminOrderRow {
   ticket_tier_label: string | null;
 }
 
+interface LocalCheckoutOrder {
+  quantity: number;
+  reservation_id: string | null;
+  stripe_price_id: string | null;
+  ticket_tier_id: string | null;
+}
+
 const CHECKOUT_RESERVATION_SECONDS = 30 * 60;
 const CHECKOUT_RESERVATION_MS = CHECKOUT_RESERVATION_SECONDS * 1000;
 
@@ -728,6 +735,19 @@ async function handleStripeWebhook(
       event.type === "checkout.session.async_payment_failed" ||
       event.type === "checkout.session.expired")
   ) {
+    if (!(await getVerifiedLocalCheckoutOrder(env, session))) {
+      console.warn(
+        "Ignoring Stripe Checkout event without matching local order",
+        {
+          eventId: event.id,
+          eventType: event.type,
+          stripeSessionId: session.id,
+        },
+      );
+
+      return jsonResponse({ received: true, ignored: true });
+    }
+
     const orderStatus = getOrderStatusFromSession(event.type, session);
 
     await upsertOrderFromCheckoutSession({
@@ -863,6 +883,68 @@ async function upsertOrderFromCheckoutSession({
       updatedAt,
     )
     .run();
+}
+
+async function getVerifiedLocalCheckoutOrder(
+  env: Env,
+  session: StripeCheckoutSession,
+): Promise<LocalCheckoutOrder | null> {
+  if (session.metadata?.event !== "AI meets SDLC") return null;
+
+  const reservationId = normalizeOptionalText(
+    session.metadata?.reservation_id ?? null,
+    80,
+  );
+  const ticketTierId = normalizeOptionalText(
+    session.metadata?.ticket_tier ?? null,
+    80,
+  );
+  const ticketPriceId = normalizeStripeId(
+    session.metadata?.ticket_price_id ?? null,
+    255,
+  );
+  const quantity = normalizeQuantity(session.metadata?.quantity ?? null);
+
+  if (!reservationId || !ticketTierId || !ticketPriceId || !quantity) {
+    return null;
+  }
+
+  const configuredTier = getTicketTiers(env).find(
+    (tier) => tier.id === ticketTierId,
+  );
+
+  if (!configuredTier || configuredTier.priceId !== ticketPriceId) return null;
+
+  const order = await env.INTERESTS.prepare(
+    `SELECT quantity, reservation_id, ticket_tier_id, stripe_price_id
+    FROM orders
+    WHERE stripe_session_id = ?`,
+  )
+    .bind(session.id)
+    .first<LocalCheckoutOrder>();
+
+  if (!order) return null;
+
+  if (
+    order.quantity !== quantity ||
+    order.reservation_id !== reservationId ||
+    order.ticket_tier_id !== ticketTierId ||
+    order.stripe_price_id !== ticketPriceId
+  ) {
+    return null;
+  }
+
+  const reservation = await env.INTERESTS.prepare(
+    `SELECT id
+    FROM ticket_reservations
+    WHERE id = ?
+      AND stripe_session_id = ?
+      AND ticket_tier_id = ?`,
+  )
+    .bind(reservationId, session.id, ticketTierId)
+    .first<{ id: string }>();
+
+  return reservation ? order : null;
 }
 
 async function verifyStripeWebhookSignature({
