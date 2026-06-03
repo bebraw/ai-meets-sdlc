@@ -13,8 +13,6 @@
     "interests:export": "node scripts/export-interest-contacts.mjs",
     "orders:export": "node scripts/export-orders.mjs",
     "quality:gate": "npm run worker:build && npm run validate",
-    "start": "gustwind --develop --port 3000",
-    "serve": "gustwind --serve --port 3000 --input ./build",
     "types:check": "tsc --noEmit",
     "types:generate": "wrangler types worker-configuration.d.ts",
     "validate": "gustwind --validate --input ./build",

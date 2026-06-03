@@ -36,22 +36,10 @@ Install dependencies:
 npm install
 ```
 
-Run the Gustwind development server:
-
-```bash
-npm start
-```
-
 Build the static site:
 
 ```bash
 npm run build
-```
-
-Serve the generated build locally:
-
-```bash
-npm run serve
 ```
 
 Format and validate:
