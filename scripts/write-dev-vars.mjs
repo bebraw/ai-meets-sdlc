@@ -5,6 +5,7 @@ config();
 
 const values = {
   ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
+  CFP_ENABLED: process.env.CFP_ENABLED ?? "false",
   EMAIL_ENCRYPTION_KEY: process.env.EMAIL_ENCRYPTION_KEY,
   STRIPE_CANCEL_URL: process.env.STRIPE_CANCEL_URL ?? "",
   STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY ?? "",

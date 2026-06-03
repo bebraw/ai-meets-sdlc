@@ -6,6 +6,11 @@ type CheckoutResponse = {
   url?: string;
 };
 
+type CfpResponse = {
+  error?: string;
+  message?: string;
+};
+
 type OrderResponse = {
   error?: string;
   order?: {
@@ -285,6 +290,68 @@ function initCheckoutForm() {
   }
 }
 
+function initCfpForm() {
+  const cfpSection = document.querySelector(
+    "[data-cfp-section]",
+  ) as HTMLElement | null;
+  const cfpNav = document.querySelector("[data-cfp-nav]") as HTMLElement | null;
+  const cfpForm = document.querySelector(
+    "[data-cfp-form]",
+  ) as HTMLFormElement | null;
+  const cfpStatus = document.querySelector("[data-cfp-status]");
+  const submitButton = document.querySelector(
+    "[data-cfp-submit]",
+  ) as HTMLButtonElement | null;
+  const cfpEnabled = cfpSection?.dataset.cfpEnabled === "true";
+
+  function setCfpStatus(message: string) {
+    if (cfpStatus) {
+      cfpStatus.textContent = message;
+    }
+  }
+
+  if (!cfpSection || !cfpForm || !submitButton) return;
+
+  if (!cfpEnabled) {
+    cfpSection.remove();
+    cfpNav?.remove();
+    return;
+  }
+
+  cfpSection.classList.remove("hidden");
+  cfpNav?.classList.remove("hidden");
+
+  cfpForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (submitButton.disabled || !cfpForm.checkValidity()) return;
+
+    submitButton.disabled = true;
+    setCfpStatus("Submitting proposal...");
+
+    try {
+      const response = await fetch(cfpForm.action, {
+        method: "POST",
+        body: new FormData(cfpForm),
+      });
+      const result = (await response.json()) as CfpResponse;
+
+      if (!response.ok || result.error) {
+        throw new Error(result.error || "Proposal submission failed");
+      }
+
+      cfpForm.reset();
+      setCfpStatus(result.message || "Proposal received.");
+    } catch (error) {
+      setCfpStatus(
+        error instanceof Error ? error.message : "Proposal submission failed",
+      );
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+}
+
 function escapeHtml(value: string) {
   return value.replace(/[&<>"']/g, (character) => {
     switch (character) {
@@ -306,5 +373,6 @@ renderCountdown();
 setInterval(renderCountdown, 1000);
 initThemeToggle();
 initCheckoutForm();
+initCfpForm();
 
 export {};

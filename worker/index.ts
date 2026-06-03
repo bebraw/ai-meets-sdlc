@@ -79,6 +79,23 @@ interface AdminOrderRow {
   ticket_tier_label: string | null;
 }
 
+interface AdminCfpProposalRow {
+  bio_ciphertext: string | null;
+  bio_iv: string | null;
+  created_at: string;
+  email_ciphertext: string;
+  email_iv: string;
+  format: string;
+  name_ciphertext: string;
+  name_iv: string;
+  organization_ciphertext: string | null;
+  organization_iv: string | null;
+  summary_ciphertext: string;
+  summary_iv: string;
+  title_ciphertext: string;
+  title_iv: string;
+}
+
 interface LocalCheckoutOrder {
   quantity: number;
   reservation_id: string | null;
@@ -134,6 +151,14 @@ export default {
       }
 
       return handleCheckout(request, env);
+    }
+
+    if (url.pathname === "/api/cfp") {
+      if (request.method !== "POST") {
+        return jsonResponse({ error: "Method not allowed" }, 405);
+      }
+
+      return handleCfpProposal(request, env);
     }
 
     if (url.pathname === "/api/order") {
@@ -228,10 +253,16 @@ async function handleAdminDashboard(
   const offset = normalizeAdminPageOffset(url.searchParams.get("offset"));
   const tiers = getTicketTiers(env);
   const availability = await getTicketTierAvailability(env, tiers, new Date());
-  const [interestRows, orderRows, interestCount, orderCount] =
-    await Promise.all([
-      env.INTERESTS.prepare(
-        `SELECT
+  const [
+    interestRows,
+    orderRows,
+    interestCount,
+    orderCount,
+    cfpRows,
+    cfpCount,
+  ] = await Promise.all([
+    env.INTERESTS.prepare(
+      `SELECT
         email_ciphertext,
         email_iv,
         name_ciphertext,
@@ -242,11 +273,11 @@ async function handleAdminDashboard(
       FROM interests
       ORDER BY created_at DESC
       LIMIT ? OFFSET ?`,
-      )
-        .bind(limit, offset)
-        .all<AdminInterestRow>(),
-      env.INTERESTS.prepare(
-        `SELECT
+    )
+      .bind(limit, offset)
+      .all<AdminInterestRow>(),
+    env.INTERESTS.prepare(
+      `SELECT
         stripe_session_id,
         ticket_tier_label,
         email_ciphertext,
@@ -260,16 +291,41 @@ async function handleAdminDashboard(
       FROM orders
       ORDER BY created_at DESC
       LIMIT ? OFFSET ?`,
-      )
-        .bind(limit, offset)
-        .all<AdminOrderRow>(),
-      env.INTERESTS.prepare("SELECT COUNT(*) AS count FROM interests").first<{
-        count: number;
-      }>(),
-      env.INTERESTS.prepare("SELECT COUNT(*) AS count FROM orders").first<{
-        count: number;
-      }>(),
-    ]);
+    )
+      .bind(limit, offset)
+      .all<AdminOrderRow>(),
+    env.INTERESTS.prepare("SELECT COUNT(*) AS count FROM interests").first<{
+      count: number;
+    }>(),
+    env.INTERESTS.prepare("SELECT COUNT(*) AS count FROM orders").first<{
+      count: number;
+    }>(),
+    env.INTERESTS.prepare(
+      `SELECT
+          format,
+          email_ciphertext,
+          email_iv,
+          name_ciphertext,
+          name_iv,
+          organization_ciphertext,
+          organization_iv,
+          title_ciphertext,
+          title_iv,
+          summary_ciphertext,
+          summary_iv,
+          bio_ciphertext,
+          bio_iv,
+          created_at
+        FROM cfp_proposals
+        ORDER BY created_at DESC
+        LIMIT ? OFFSET ?`,
+    )
+      .bind(limit, offset)
+      .all<AdminCfpProposalRow>(),
+    env.INTERESTS.prepare("SELECT COUNT(*) AS count FROM cfp_proposals").first<{
+      count: number;
+    }>(),
+  ]);
   const interests = await Promise.all(
     (interestRows.results ?? []).map((row) =>
       decryptAdminInterest(row, env.EMAIL_ENCRYPTION_KEY),
@@ -280,12 +336,19 @@ async function handleAdminDashboard(
       decryptAdminOrder(row, env.EMAIL_ENCRYPTION_KEY),
     ),
   );
+  const cfpProposals = await Promise.all(
+    (cfpRows.results ?? []).map((row) =>
+      decryptAdminCfpProposal(row, env.EMAIL_ENCRYPTION_KEY),
+    ),
+  );
 
   return jsonResponse({
     counts: {
+      cfp_proposals: Number(cfpCount?.count ?? 0),
       interests: Number(interestCount?.count ?? 0),
       orders: Number(orderCount?.count ?? 0),
     },
+    cfp_proposals: cfpProposals,
     limit,
     offset,
     ok: true,
@@ -393,6 +456,36 @@ async function decryptAdminOrder(row: AdminOrderRow, keyMaterial: string) {
   };
 }
 
+async function decryptAdminCfpProposal(
+  row: AdminCfpProposalRow,
+  keyMaterial: string,
+) {
+  return {
+    bio:
+      row.bio_ciphertext && row.bio_iv
+        ? await decryptText(row.bio_ciphertext, row.bio_iv, keyMaterial)
+        : null,
+    created_at: row.created_at,
+    email: await decryptText(row.email_ciphertext, row.email_iv, keyMaterial),
+    format: row.format,
+    name: await decryptText(row.name_ciphertext, row.name_iv, keyMaterial),
+    organization:
+      row.organization_ciphertext && row.organization_iv
+        ? await decryptText(
+            row.organization_ciphertext,
+            row.organization_iv,
+            keyMaterial,
+          )
+        : null,
+    summary: await decryptText(
+      row.summary_ciphertext,
+      row.summary_iv,
+      keyMaterial,
+    ),
+    title: await decryptText(row.title_ciphertext, row.title_iv, keyMaterial),
+  };
+}
+
 async function insertManualRegistration({
   clientKeyHash,
   email,
@@ -493,6 +586,115 @@ async function insertManualRegistration({
     stripe_session_id: sessionId,
     ticket_tier_label: tier.label,
   };
+}
+
+async function handleCfpProposal(
+  request: Request,
+  env: Env,
+): Promise<Response> {
+  if (!isCfpEnabled(env)) {
+    return jsonResponse({ error: "Call for proposals is not open" }, 503);
+  }
+
+  if (!env.INTERESTS || !env.EMAIL_ENCRYPTION_KEY) {
+    return jsonResponse({ error: "CFP storage is not configured" }, 503);
+  }
+
+  const formData = await request.formData();
+  const email = normalizeEmail(formData.get("email"));
+  const name = normalizeOptionalText(formData.get("name"), 120);
+  const organization = normalizeOptionalText(formData.get("organization"), 160);
+  const format = normalizeCfpFormat(formData.get("format"));
+  const title = normalizeOptionalText(formData.get("title"), 180);
+  const summary = normalizeOptionalText(formData.get("summary"), 2400);
+  const bio = normalizeOptionalText(formData.get("bio"), 1200);
+  const consent = formData.get("consent") === "yes";
+
+  if (!email || !isLikelyEmail(email)) {
+    return jsonResponse({ error: "Enter a valid email address" }, 400);
+  }
+
+  if (!name) {
+    return jsonResponse({ error: "Enter the presenter name" }, 400);
+  }
+
+  if (!format) {
+    return jsonResponse({ error: "Choose poster or 15 minute pitch" }, 400);
+  }
+
+  if (!title) {
+    return jsonResponse({ error: "Enter a proposal title" }, 400);
+  }
+
+  if (!summary || summary.length < 80) {
+    return jsonResponse(
+      { error: "Enter a proposal summary of at least 80 characters" },
+      400,
+    );
+  }
+
+  if (!consent) {
+    return jsonResponse({ error: "Consent is required" }, 400);
+  }
+
+  const keyMaterial = env.EMAIL_ENCRYPTION_KEY;
+  const emailHash = await hashEmail(email, keyMaterial);
+  const encryptedEmail = await encryptText(email, keyMaterial);
+  const encryptedName = await encryptText(name, keyMaterial);
+  const encryptedOrganization = organization
+    ? await encryptText(organization, keyMaterial)
+    : null;
+  const encryptedTitle = await encryptText(title, keyMaterial);
+  const encryptedSummary = await encryptText(summary, keyMaterial);
+  const encryptedBio = bio ? await encryptText(bio, keyMaterial) : null;
+  const createdAt = new Date().toISOString();
+  const consentText =
+    "I understand CFP acceptance covers only the event participation ticket.";
+
+  await env.INTERESTS.prepare(
+    `INSERT INTO cfp_proposals (
+      format,
+      email_hash,
+      email_ciphertext,
+      email_iv,
+      name_ciphertext,
+      name_iv,
+      organization_ciphertext,
+      organization_iv,
+      title_ciphertext,
+      title_iv,
+      summary_ciphertext,
+      summary_iv,
+      bio_ciphertext,
+      bio_iv,
+      consent_text,
+      created_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+  )
+    .bind(
+      format,
+      emailHash,
+      encryptedEmail.ciphertext,
+      encryptedEmail.iv,
+      encryptedName.ciphertext,
+      encryptedName.iv,
+      encryptedOrganization?.ciphertext ?? null,
+      encryptedOrganization?.iv ?? null,
+      encryptedTitle.ciphertext,
+      encryptedTitle.iv,
+      encryptedSummary.ciphertext,
+      encryptedSummary.iv,
+      encryptedBio?.ciphertext ?? null,
+      encryptedBio?.iv ?? null,
+      consentText,
+      createdAt,
+    )
+    .run();
+
+  return jsonResponse({
+    ok: true,
+    message: "Proposal received. We will review it after the CFP closes.",
+  });
 }
 
 async function handleCheckout(request: Request, env: Env): Promise<Response> {
@@ -1495,8 +1697,12 @@ async function backupInterests(env: Env): Promise<void> {
   const { results } = await env.INTERESTS.prepare(
     "SELECT * FROM interests ORDER BY created_at ASC",
   ).all();
+  const { results: cfpProposalResults } = await env.INTERESTS.prepare(
+    "SELECT * FROM cfp_proposals ORDER BY created_at ASC",
+  ).all();
   const rows = results ?? [];
-  const rowsHash = await sha256Hex(JSON.stringify(rows));
+  const cfpProposals = cfpProposalResults ?? [];
+  const rowsHash = await sha256Hex(JSON.stringify({ cfpProposals, rows }));
   const latestBackup = await getLatestBackupManifest(env);
 
   if (latestBackup?.rows_hash === rowsHash) return;
@@ -1504,6 +1710,7 @@ async function backupInterests(env: Env): Promise<void> {
   const exportedAt = new Date().toISOString();
   const body = JSON.stringify(
     {
+      cfp_proposals: cfpProposals,
       exported_at: exportedAt,
       rows,
     },
@@ -1523,6 +1730,7 @@ async function backupInterests(env: Env): Promise<void> {
       {
         key,
         exported_at: exportedAt,
+        cfp_proposal_count: cfpProposals.length,
         row_count: rows.length,
         rows_hash: rowsHash,
       },
@@ -1584,6 +1792,7 @@ async function injectRuntimeConfig(
   return new Response(
     html
       .replaceAll("__TURNSTILE_SITE_KEY__", env.TURNSTILE_SITE_KEY ?? "")
+      .replaceAll("__CFP_ENABLED__", isCfpEnabled(env) ? "true" : "false")
       .replaceAll(
         "__CHECKOUTS_ENABLED__",
         isCheckoutEnabled(env) ? "true" : "false",
@@ -1594,6 +1803,10 @@ async function injectRuntimeConfig(
 
 function isCheckoutEnabled(env: Env): boolean {
   return env.CHECKOUTS_ENABLED === "true";
+}
+
+function isCfpEnabled(env: Env): boolean {
+  return env.CFP_ENABLED === "true";
 }
 
 async function requireAdminAuth(
@@ -1850,6 +2063,12 @@ function normalizeAdminPageOffset(value: string | null): number {
   const offset = Number(value ?? 0);
 
   return Number.isInteger(offset) && offset >= 0 ? offset : 0;
+}
+
+function normalizeCfpFormat(value: FormDataEntryValue | null): string {
+  if (value !== "poster" && value !== "pitch_15") return "";
+
+  return value;
 }
 
 function normalizeStripeId(value: string | null, maxLength: number): string {

@@ -11,6 +11,7 @@ This site is deployed as a Cloudflare Worker with static assets, D1 for the inte
 | `ADMIN_PASSWORD`           | Secret         | Protects `/admin` and `/api/admin/*` with Basic Auth.              |
 | `ASSETS`                   | Workers Assets | Serves the Gustwind build output from `build/`.                    |
 | `CHECKOUTS_ENABLED`        | Worker var     | Enables Checkout only when set exactly to `true`.                  |
+| `CFP_ENABLED`              | Worker var     | Enables the public CFP form only when set exactly to `true`.       |
 | `INTERESTS`                | D1             | Stores encrypted interest submissions and orders.                  |
 | `INTEREST_BACKUPS`         | R2             | Stores daily encrypted JSON backups.                               |
 | `STRIPE_CANCEL_URL`        | Var/secret     | Optional explicit Checkout cancellation URL.                       |
@@ -37,7 +38,8 @@ openssl rand -base64 32
 ```
 
 Stripe and Turnstile are optional locally. Checkout is disabled unless
-`CHECKOUTS_ENABLED=true`. If `STRIPE_SECRET_KEY`, `STRIPE_TICKET_TIERS_JSON`, or
+`CHECKOUTS_ENABLED=true`, and the CFP form is disabled unless
+`CFP_ENABLED=true`. If `STRIPE_SECRET_KEY`, `STRIPE_TICKET_TIERS_JSON`, or
 `STRIPE_WEBHOOK_SECRET` are empty, the related Stripe endpoint returns a
 configuration error after checkout has been enabled. If `TURNSTILE_SITE_KEY` and
 `TURNSTILE_SECRET_KEY` are empty, the Worker skips Turnstile verification for the
@@ -81,6 +83,7 @@ Create a Turnstile widget in the Cloudflare dashboard, then set:
 Create a Stripe Product and Price for each ticket tier, then set:
 
 - `CHECKOUTS_ENABLED` to `true` only after local Checkout and webhook testing has passed
+- `CFP_ENABLED` to `true` only when the public call for proposals should be visible
 - `STRIPE_TICKET_TIERS_JSON` to the ticket tier definitions, for example:
 
 ```json
@@ -135,8 +138,8 @@ hold when the session is paid, expired, or failed.
 The authenticated admin interface is available at `/admin` after setting
 `ADMIN_PASSWORD`. The browser shows the native Basic Auth prompt; use any
 username and the configured password. The admin API decrypts interest-list and
-order emails for display, shows configured ticket tiers including optional
-`discount_coupon_id` values, and can create manual paid registrations. Manual
+order emails plus CFP proposals for display, shows configured ticket tiers
+including optional `discount_coupon_id` values, and can create manual paid registrations. Manual
 registrations are inserted atomically against the same tier capacity calculation
 used by public checkout. Failed admin authentication attempts are rate limited
 through D1, and manual registrations write an audit row containing the order ID,
@@ -167,6 +170,11 @@ wrangler secret put STRIPE_WEBHOOK_SECRET
 Worker var to `true` in Cloudflare, or in `wrangler.jsonc` before a deployment,
 only when you are ready to open Checkout.
 
+`CFP_ENABLED` also defaults to `false`. Change it to `true` only when you are
+ready to show the CFP form. The public CFP accepts posters and 15 minute pitches;
+longer slots are curated separately. The consent text states that acceptance
+covers only the event participation ticket.
+
 Use a strong `EMAIL_ENCRYPTION_KEY` and keep it outside version control. Losing it means existing encrypted submissions and backups cannot be decrypted.
 
 Apply the D1 migration remotely:
@@ -195,11 +203,11 @@ It exports encrypted D1 rows to R2 under:
 interests/YYYY-MM-DD.json
 ```
 
-Before writing a full backup, the Worker hashes the encrypted row export and
-compares it against `interests/latest.json`. If the hash has not changed, the
-scheduled run exits without writing a new backup. When rows have changed, the
-Worker writes the dated backup and updates `interests/latest.json` with the
-latest key, export time, row count, and row hash.
+Before writing a full backup, the Worker hashes the encrypted interest and CFP
+row export and compares it against `interests/latest.json`. If the hash has not
+changed, the scheduled run exits without writing a new backup. When rows have
+changed, the Worker writes the dated backup and updates `interests/latest.json`
+with the latest key, export time, row counts, and row hash.
 
 The backups intentionally contain ciphertext and keyed hashes, not plaintext personal data.
 
@@ -248,6 +256,12 @@ They also create admin security tables with:
 
 - hashed admin client keys and authentication attempt timestamps for throttling
 - manual registration audit rows without plaintext email or IP addresses
+
+They also create `cfp_proposals` with:
+
+- encrypted presenter email, name, organization, proposal title, summary, and bio
+- CFP format (`poster` or `pitch_15`)
+- keyed HMAC email hash, consent text, and creation timestamp
 
 Export decrypted order details with:
 

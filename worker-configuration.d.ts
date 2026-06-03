@@ -11,6 +11,7 @@ declare namespace Cloudflare {
     ADMIN_PASSWORD: string;
     ASSETS: Fetcher;
     CHECKOUTS_ENABLED: string;
+    CFP_ENABLED: string;
     EMAIL_ENCRYPTION_KEY: string;
     STRIPE_CANCEL_URL: string;
     STRIPE_SECRET_KEY: string;
@@ -33,6 +34,7 @@ declare namespace NodeJS {
       Cloudflare.Env,
       | "ADMIN_PASSWORD"
       | "CHECKOUTS_ENABLED"
+      | "CFP_ENABLED"
       | "EMAIL_ENCRYPTION_KEY"
       | "STRIPE_CANCEL_URL"
       | "STRIPE_SECRET_KEY"

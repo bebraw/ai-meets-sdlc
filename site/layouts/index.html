@@ -76,6 +76,7 @@
             <a class="hover:underline" href="#venue">Venue</a>
             <a class="hover:underline" href="#speakers">Speakers</a>
             <a class="hover:underline" href="#tickets">Tickets</a>
+            <a class="hidden hover:underline" href="#cfp" data-cfp-nav>CFP</a>
           </div>
           <button
             class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
@@ -303,6 +304,170 @@
                 <p
                   class="min-h-6 text-sm font-bold uppercase text-muted"
                   data-checkout-status
+                  aria-live="polite"
+                ></p>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <section
+          id="cfp"
+          class="hidden border-b border-ink bg-paper"
+          data-cfp-section
+          data-cfp-enabled="__CFP_ENABLED__"
+        >
+          <div
+            class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-[0.9fr_1.1fr] md:px-8"
+          >
+            <div>
+              <p class="font-headline text-sm font-black uppercase text-muted">
+                Call for proposals
+              </p>
+              <h2
+                class="mt-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl"
+              >
+                Posters and pitches
+              </h2>
+              <p class="mt-6 max-w-xl text-xl leading-8">
+                Submit a focused proposal for either a poster or a 15 minute
+                pitch. Longer invited slots are curated separately.
+              </p>
+              <div class="mt-8 grid max-w-xl gap-px border border-ink bg-ink">
+                <div class="flex items-center justify-between bg-paper p-4">
+                  <span class="text-sm font-bold uppercase text-muted"
+                    >Formats</span
+                  >
+                  <strong class="text-right">Poster / 15 minute pitch</strong>
+                </div>
+                <div class="flex items-center justify-between bg-paper p-4">
+                  <span class="text-sm font-bold uppercase text-muted"
+                    >Acceptance</span
+                  >
+                  <strong class="text-right">Participation ticket only</strong>
+                </div>
+              </div>
+            </div>
+
+            <form
+              class="grid gap-4 border border-ink bg-paper p-5"
+              data-cfp-form
+              action="/api/cfp"
+              method="post"
+            >
+              <div class="grid gap-4 md:grid-cols-2">
+                <label class="grid gap-2">
+                  <span class="text-sm font-bold uppercase text-muted"
+                    >Presenter name</span
+                  >
+                  <input
+                    class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                    name="name"
+                    autocomplete="name"
+                    required
+                  />
+                </label>
+                <label class="grid gap-2">
+                  <span class="text-sm font-bold uppercase text-muted"
+                    >Email</span
+                  >
+                  <input
+                    class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                    name="email"
+                    type="email"
+                    autocomplete="email"
+                    required
+                  />
+                </label>
+              </div>
+              <label class="grid gap-2">
+                <span class="text-sm font-bold uppercase text-muted"
+                  >Organization</span
+                >
+                <input
+                  class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                  name="organization"
+                  autocomplete="organization"
+                />
+              </label>
+              <div class="grid gap-3">
+                <span class="text-sm font-bold uppercase text-muted"
+                  >Format</span
+                >
+                <div
+                  class="grid gap-px border border-ink bg-ink md:grid-cols-2"
+                >
+                  <label class="flex gap-3 bg-paper p-4">
+                    <input name="format" type="radio" value="poster" required />
+                    <span>
+                      <strong class="block uppercase">Poster</strong>
+                      <span class="text-sm text-muted">For hallway review</span>
+                    </span>
+                  </label>
+                  <label class="flex gap-3 bg-paper p-4">
+                    <input
+                      name="format"
+                      type="radio"
+                      value="pitch_15"
+                      required
+                    />
+                    <span>
+                      <strong class="block uppercase">15 minute pitch</strong>
+                      <span class="text-sm text-muted">Short talk format</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+              <label class="grid gap-2">
+                <span class="text-sm font-bold uppercase text-muted"
+                  >Proposal title</span
+                >
+                <input
+                  class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                  name="title"
+                  maxlength="180"
+                  required
+                />
+              </label>
+              <label class="grid gap-2">
+                <span class="text-sm font-bold uppercase text-muted"
+                  >Summary</span
+                >
+                <textarea
+                  class="min-h-36 border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                  name="summary"
+                  maxlength="2400"
+                  required
+                ></textarea>
+              </label>
+              <label class="grid gap-2">
+                <span class="text-sm font-bold uppercase text-muted"
+                  >Presenter bio</span
+                >
+                <textarea
+                  class="min-h-24 border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                  name="bio"
+                  maxlength="1200"
+                ></textarea>
+              </label>
+              <label class="flex gap-3 border border-ink/40 p-4 text-sm">
+                <input name="consent" type="checkbox" value="yes" required />
+                <span>
+                  I understand that acceptance covers only the event
+                  participation ticket.
+                </span>
+              </label>
+              <div class="flex flex-col gap-3 md:flex-row md:items-center">
+                <button
+                  class="border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink disabled:cursor-not-allowed disabled:border-muted disabled:bg-muted disabled:text-paper"
+                  data-cfp-submit
+                  type="submit"
+                >
+                  Submit proposal
+                </button>
+                <p
+                  class="min-h-6 text-sm font-bold uppercase text-muted"
+                  data-cfp-status
                   aria-live="polite"
                 ></p>
               </div>

@@ -17,6 +17,17 @@ type AdminOrder = {
   ticket_tier_label: string | null;
 };
 
+type AdminCfpProposal = {
+  bio: string | null;
+  created_at: string;
+  email: string;
+  format: string;
+  name: string;
+  organization: string | null;
+  summary: string;
+  title: string;
+};
+
 type AdminTier = {
   available_from: string | null;
   available_quantity: number;
@@ -33,12 +44,14 @@ type AdminTier = {
 };
 
 type AdminCounts = {
+  cfp_proposals: number;
   interests: number;
   orders: number;
 };
 
 type AdminDashboardResponse = {
   counts?: AdminCounts;
+  cfp_proposals?: AdminCfpProposal[];
   error?: string;
   interests?: AdminInterest[];
   limit?: number;
@@ -113,6 +126,7 @@ function initAdmin() {
       }
 
       renderDashboard({
+        cfpProposals: result.cfp_proposals ?? [],
         counts: result.counts,
         interests: result.interests ?? [],
         orders: result.orders ?? [],
@@ -120,7 +134,7 @@ function initAdmin() {
       });
       setStatus(
         result.counts
-          ? `Showing latest ${result.limit ?? 50} rows per table; totals: ${result.counts.interests} preregistrations, ${result.counts.orders} registrations.`
+          ? `Showing latest ${result.limit ?? 50} rows per table; totals: ${result.counts.cfp_proposals} CFP proposals, ${result.counts.interests} preregistrations, ${result.counts.orders} registrations.`
           : `Showing latest ${result.limit ?? 50} rows per table.`,
       );
     } catch (error) {
@@ -168,17 +182,20 @@ function initAdmin() {
 }
 
 function renderDashboard({
+  cfpProposals,
   counts,
   interests,
   orders,
   tiers,
 }: {
+  cfpProposals: AdminCfpProposal[];
   counts: AdminCounts | undefined;
   interests: AdminInterest[];
   orders: AdminOrder[];
   tiers: AdminTier[];
 }) {
-  renderMetrics({ counts, interests, orders, tiers });
+  renderMetrics({ cfpProposals, counts, interests, orders, tiers });
+  renderCfpProposals(cfpProposals);
   renderTierSelect(tiers);
   renderTiers(tiers);
   renderOrders(orders);
@@ -186,11 +203,13 @@ function renderDashboard({
 }
 
 function renderMetrics({
+  cfpProposals,
   counts,
   interests,
   orders,
   tiers,
 }: {
+  cfpProposals: AdminCfpProposal[];
   counts: AdminCounts | undefined;
   interests: AdminInterest[];
   orders: AdminOrder[];
@@ -205,11 +224,12 @@ function renderMetrics({
   if (!root) return;
 
   root.innerHTML = "";
-  root.className = "mt-8 grid gap-px border border-ink bg-ink md:grid-cols-4";
+  root.className = "mt-8 grid gap-px border border-ink bg-ink md:grid-cols-5";
 
   for (const metric of [
     ["Paid tickets", String(paidTickets)],
     ["Capacity", String(capacity)],
+    ["CFP proposals", String(counts?.cfp_proposals ?? cfpProposals.length)],
     ["Preregistrations", String(counts?.interests ?? interests.length)],
     ["Orders", String(counts?.orders ?? orders.length)],
   ]) {
@@ -225,6 +245,27 @@ function renderMetrics({
     item.appendChild(label);
     item.appendChild(value);
     root.appendChild(item);
+  }
+}
+
+function renderCfpProposals(proposals: AdminCfpProposal[]) {
+  const body = document.querySelector("[data-admin-cfp-proposals]");
+
+  if (!body) return;
+
+  body.innerHTML = "";
+
+  for (const proposal of proposals) {
+    appendRow(body, [
+      formatCfpFormat(proposal.format),
+      proposal.title,
+      proposal.name,
+      proposal.email,
+      proposal.organization || "",
+      proposal.summary,
+      proposal.bio || "",
+      formatDate(proposal.created_at),
+    ]);
   }
 }
 
@@ -327,6 +368,13 @@ function formatSaleWindow(tier: AdminTier): string {
   const status = tier.is_on_sale ? "on sale" : "closed";
 
   return `${start} to ${end} (${status})`;
+}
+
+function formatCfpFormat(value: string): string {
+  if (value === "poster") return "Poster";
+  if (value === "pitch_15") return "15 minute pitch";
+
+  return value;
 }
 
 function formatDate(value: string): string {
