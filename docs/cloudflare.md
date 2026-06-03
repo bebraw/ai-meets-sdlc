@@ -82,6 +82,7 @@ Create a Stripe Product and Price for each ticket tier, then set:
     "label": "Early bird",
     "price_id": "price_...",
     "price_label": "EUR 199",
+    "discount_coupon_id": "coupon_...",
     "capacity": 40,
     "available_until": "2026-07-31T20:59:59Z",
     "sort_order": 1
@@ -107,6 +108,11 @@ Create a Stripe Product and Price for each ticket tier, then set:
   }
 ]
 ```
+
+`discount_coupon_id` is optional. When present on the selected tier, the Worker
+passes that Stripe Coupon ID to Checkout as an automatic discount for that
+session. Tiers without a configured coupon continue to allow Stripe promotion
+codes in Checkout.
 
 - `STRIPE_SECRET_KEY` to the restricted or secret key that can create Checkout Sessions
 - `STRIPE_WEBHOOK_SECRET` to the signing secret for a Stripe webhook endpoint pointed at `/api/stripe-webhook`

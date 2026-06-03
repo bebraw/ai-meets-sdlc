@@ -42,6 +42,7 @@ interface TicketTier {
   availableUntil?: string | undefined;
   capacity: number;
   currency?: string | undefined;
+  discountCouponId?: string | undefined;
   id: string;
   label: string;
   priceId: string;
@@ -239,7 +240,6 @@ async function handleCheckout(request: Request, env: Env): Promise<Response> {
     ),
     "line_items[0][price]": selectedTier.priceId,
     "line_items[0][quantity]": String(quantity),
-    allow_promotion_codes: "true",
     billing_address_collection: "auto",
     "metadata[event]": "AI meets SDLC",
     "metadata[event_date]": "2026-10-13",
@@ -249,6 +249,13 @@ async function handleCheckout(request: Request, env: Env): Promise<Response> {
     "metadata[ticket_tier]": selectedTier.id,
     "metadata[ticket_tier_label]": selectedTier.label,
   });
+
+  if (selectedTier.discountCouponId) {
+    payload.set("discounts[0][coupon]", selectedTier.discountCouponId);
+    payload.set("metadata[discount_coupon_id]", selectedTier.discountCouponId);
+  } else {
+    payload.set("allow_promotion_codes", "true");
+  }
 
   if (email) {
     payload.set("customer_email", email);
@@ -295,6 +302,9 @@ async function handleCheckout(request: Request, env: Env): Promise<Response> {
         quantity: String(quantity),
         reservation_id: reservationId,
         reservation_expires_at: reservationExpiresAt,
+        ...(selectedTier.discountCouponId
+          ? { discount_coupon_id: selectedTier.discountCouponId }
+          : {}),
         ticket_price_id: selectedTier.priceId,
         ticket_tier: selectedTier.id,
         ticket_tier_label: selectedTier.label,
@@ -704,6 +714,11 @@ function normalizeTicketTier(value: unknown, index: number): TicketTier | null {
     capacity,
     currency:
       typeof source.currency === "string" ? source.currency.trim() : undefined,
+    discountCouponId: getTierString(
+      source,
+      "discount_coupon_id",
+      "discountCouponId",
+    ),
     id,
     label,
     priceId,
@@ -722,6 +737,22 @@ function normalizeTicketTier(value: unknown, index: number): TicketTier | null {
           ? source.sortOrder
           : index,
   };
+}
+
+function getTierString(
+  source: Record<string, unknown>,
+  snakeCaseKey: string,
+  camelCaseKey: string,
+): string | undefined {
+  const value =
+    typeof source[snakeCaseKey] === "string"
+      ? source[snakeCaseKey]
+      : typeof source[camelCaseKey] === "string"
+        ? source[camelCaseKey]
+        : "";
+  const normalized = value.trim();
+
+  return normalized || undefined;
 }
 
 function normalizeTierDate(value: unknown): string | undefined {

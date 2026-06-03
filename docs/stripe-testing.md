@@ -15,6 +15,13 @@ price_regular_...
 price_late_...
 ```
 
+If a tier should receive an automatic discount, create a test Coupon in Stripe
+and copy its Coupon ID:
+
+```text
+coupon_...
+```
+
 Copy the test secret key:
 
 ```text
@@ -34,7 +41,7 @@ Set at least these values in `.env`:
 ```bash
 EMAIL_ENCRYPTION_KEY=replace-with-a-local-secret
 STRIPE_SECRET_KEY=sk_test_...
-STRIPE_TICKET_TIERS_JSON='[{"id":"early","label":"Early bird","price_id":"price_early_...","price_label":"EUR 199","capacity":40,"available_until":"2026-07-31T20:59:59Z","sort_order":1},{"id":"regular","label":"Regular","price_id":"price_regular_...","price_label":"EUR 299","capacity":80,"available_from":"2026-08-01T00:00:00Z","available_until":"2026-09-30T20:59:59Z","sort_order":2},{"id":"late","label":"Late bird","price_id":"price_late_...","price_label":"EUR 399","capacity":30,"available_from":"2026-10-01T00:00:00Z","sort_order":3}]'
+STRIPE_TICKET_TIERS_JSON='[{"id":"early","label":"Early bird","price_id":"price_early_...","price_label":"EUR 199","discount_coupon_id":"coupon_...","capacity":40,"available_until":"2026-07-31T20:59:59Z","sort_order":1},{"id":"regular","label":"Regular","price_id":"price_regular_...","price_label":"EUR 299","capacity":80,"available_from":"2026-08-01T00:00:00Z","available_until":"2026-09-30T20:59:59Z","sort_order":2},{"id":"late","label":"Late bird","price_id":"price_late_...","price_label":"EUR 399","capacity":30,"available_from":"2026-10-01T00:00:00Z","sort_order":3}]'
 STRIPE_WEBHOOK_SECRET=
 ```
 
