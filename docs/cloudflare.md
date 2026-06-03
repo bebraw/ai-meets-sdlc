@@ -138,7 +138,10 @@ username and the configured password. The admin API decrypts interest-list and
 order emails for display, shows configured ticket tiers including optional
 `discount_coupon_id` values, and can create manual paid registrations. Manual
 registrations are inserted atomically against the same tier capacity calculation
-used by public checkout.
+used by public checkout. Failed admin authentication attempts are rate limited
+through D1, and manual registrations write an audit row containing the order ID,
+ticket tier, quantity, keyed email hash, and hashed client key. For production,
+also put `/admin` and `/api/admin/*` behind Cloudflare Access or a WAF rule.
 
 Subscribe the webhook endpoint to these Checkout events:
 
@@ -238,6 +241,11 @@ They also create `ticket_reservations` with:
 - reservation ID, ticket tier ID, quantity, and status
 - optional Stripe Checkout Session ID
 - reservation expiry and timestamps
+
+They also create admin security tables with:
+
+- hashed admin client keys and authentication attempt timestamps for throttling
+- manual registration audit rows without plaintext email or IP addresses
 
 Export decrypted order details with:
 

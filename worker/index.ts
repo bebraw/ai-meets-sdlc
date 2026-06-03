@@ -88,6 +88,8 @@ interface LocalCheckoutOrder {
 
 const CHECKOUT_RESERVATION_SECONDS = 30 * 60;
 const CHECKOUT_RESERVATION_MS = CHECKOUT_RESERVATION_SECONDS * 1000;
+const ADMIN_AUTH_WINDOW_MS = 15 * 60 * 1000;
+const ADMIN_AUTH_MAX_FAILURES = 10;
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
@@ -98,7 +100,7 @@ export default {
         return jsonResponse({ error: "Method not allowed" }, 405);
       }
 
-      const authResponse = requireAdminAuth(request, env);
+      const authResponse = await requireAdminAuth(request, env);
       if (authResponse) return authResponse;
 
       return handleAdminDashboard(env);
@@ -109,7 +111,7 @@ export default {
         return jsonResponse({ error: "Method not allowed" }, 405);
       }
 
-      const authResponse = requireAdminAuth(request, env);
+      const authResponse = await requireAdminAuth(request, env);
       if (authResponse) return authResponse;
 
       const mutationAuthResponse = requireAdminMutationRequest(request);
@@ -159,7 +161,7 @@ export default {
     }
 
     if (url.pathname === "/admin" || url.pathname.startsWith("/admin/")) {
-      const authResponse = requireAdminAuth(request, env);
+      const authResponse = await requireAdminAuth(request, env);
       if (authResponse) return authResponse;
     }
 
@@ -310,6 +312,7 @@ async function handleAdminRegister(
   }
 
   const order = await insertManualRegistration({
+    clientKeyHash: await getAdminClientKeyHash(request, env),
     email,
     env,
     quantity,
@@ -366,11 +369,13 @@ async function decryptAdminOrder(row: AdminOrderRow, keyMaterial: string) {
 }
 
 async function insertManualRegistration({
+  clientKeyHash,
   email,
   env,
   quantity,
   tier,
 }: {
+  clientKeyHash: string;
   email: string;
   env: Env;
   quantity: number;
@@ -438,6 +443,19 @@ async function insertManualRegistration({
     .run();
 
   if (result.meta.changes !== 1) return null;
+
+  await env.INTERESTS.prepare(
+    `INSERT INTO admin_registration_audit (
+      order_stripe_session_id,
+      email_hash,
+      ticket_tier_id,
+      quantity,
+      client_key_hash,
+      created_at
+    ) VALUES (?, ?, ?, ?, ?, ?)`,
+  )
+    .bind(sessionId, emailHash, tier.id, quantity, clientKeyHash, now)
+    .run();
 
   return {
     amount_total: null,
@@ -1553,17 +1571,44 @@ function isCheckoutEnabled(env: Env): boolean {
   return env.CHECKOUTS_ENABLED === "true";
 }
 
-function requireAdminAuth(request: Request, env: Env): Response | null {
+async function requireAdminAuth(
+  request: Request,
+  env: Env,
+): Promise<Response | null> {
   if (!env.ADMIN_PASSWORD) {
     return jsonResponse({ error: "Admin auth is not configured" }, 503);
+  }
+
+  if (!env.INTERESTS) {
+    return jsonResponse({ error: "Admin auth storage is not configured" }, 503);
+  }
+
+  const clientKeyHash = await getAdminClientKeyHash(request, env);
+  const failedAttempts = await countRecentFailedAdminAuthAttempts(
+    env,
+    clientKeyHash,
+  );
+
+  if (failedAttempts >= ADMIN_AUTH_MAX_FAILURES) {
+    return new Response("Too many failed authentication attempts", {
+      status: 429,
+      headers: {
+        "retry-after": String(Math.ceil(ADMIN_AUTH_WINDOW_MS / 1000)),
+      },
+    });
   }
 
   const authorization = request.headers.get("authorization") ?? "";
   const password = getAdminPasswordFromAuthorization(authorization);
 
   if (password && timingSafeEqualText(password, env.ADMIN_PASSWORD)) {
+    await recordAdminAuthAttempt(env, clientKeyHash, true);
+    await clearFailedAdminAuthAttempts(env, clientKeyHash);
+
     return null;
   }
+
+  await recordAdminAuthAttempt(env, clientKeyHash, false);
 
   return new Response("Authentication required", {
     status: 401,
@@ -1571,6 +1616,65 @@ function requireAdminAuth(request: Request, env: Env): Response | null {
       "www-authenticate": 'Basic realm="AI meets SDLC admin"',
     },
   });
+}
+
+async function countRecentFailedAdminAuthAttempts(
+  env: Env,
+  clientKeyHash: string,
+): Promise<number> {
+  const cutoff = new Date(Date.now() - ADMIN_AUTH_WINDOW_MS).toISOString();
+  const row = await env.INTERESTS.prepare(
+    `SELECT COUNT(*) AS count
+    FROM admin_auth_attempts
+    WHERE client_key_hash = ?
+      AND success = 0
+      AND created_at >= ?`,
+  )
+    .bind(clientKeyHash, cutoff)
+    .first<{ count: number }>();
+
+  return Number(row?.count ?? 0);
+}
+
+async function recordAdminAuthAttempt(
+  env: Env,
+  clientKeyHash: string,
+  success: boolean,
+): Promise<void> {
+  await env.INTERESTS.prepare(
+    `INSERT INTO admin_auth_attempts (client_key_hash, success, created_at)
+    VALUES (?, ?, ?)`,
+  )
+    .bind(clientKeyHash, success ? 1 : 0, new Date().toISOString())
+    .run();
+}
+
+async function clearFailedAdminAuthAttempts(
+  env: Env,
+  clientKeyHash: string,
+): Promise<void> {
+  await env.INTERESTS.prepare(
+    `DELETE FROM admin_auth_attempts
+    WHERE client_key_hash = ?
+      AND success = 0`,
+  )
+    .bind(clientKeyHash)
+    .run();
+}
+
+async function getAdminClientKeyHash(
+  request: Request,
+  env: Env,
+): Promise<string> {
+  return sha256Hex(`admin-auth:${env.ADMIN_PASSWORD}:${getClientKey(request)}`);
+}
+
+function getClientKey(request: Request): string {
+  return (
+    request.headers.get("cf-connecting-ip") ||
+    request.headers.get("x-forwarded-for")?.split(",", 1)[0]?.trim() ||
+    "unknown"
+  );
 }
 
 function requireAdminMutationRequest(request: Request): Response | null {
