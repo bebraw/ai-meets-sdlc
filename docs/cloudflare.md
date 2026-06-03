@@ -141,7 +141,9 @@ registrations are inserted atomically against the same tier capacity calculation
 used by public checkout. Failed admin authentication attempts are rate limited
 through D1, and manual registrations write an audit row containing the order ID,
 ticket tier, quantity, keyed email hash, and hashed client key. For production,
-also put `/admin` and `/api/admin/*` behind Cloudflare Access or a WAF rule.
+also put `/admin` and `/api/admin/*` behind Cloudflare Access or a WAF rule. The
+dashboard returns a bounded page of decrypted rows, defaulting to 50 and capped
+at 100; use the export scripts for full decrypted exports.
 
 Subscribe the webhook endpoint to these Checkout events:
 

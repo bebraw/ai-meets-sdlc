@@ -32,9 +32,17 @@ type AdminTier = {
   reserved_quantity: number;
 };
 
+type AdminCounts = {
+  interests: number;
+  orders: number;
+};
+
 type AdminDashboardResponse = {
+  counts?: AdminCounts;
   error?: string;
   interests?: AdminInterest[];
+  limit?: number;
+  offset?: number;
   orders?: AdminOrder[];
   tiers?: AdminTier[];
 };
@@ -105,11 +113,16 @@ function initAdmin() {
       }
 
       renderDashboard({
+        counts: result.counts,
         interests: result.interests ?? [],
         orders: result.orders ?? [],
         tiers: result.tiers,
       });
-      setStatus("Admin data loaded.");
+      setStatus(
+        result.counts
+          ? `Showing latest ${result.limit ?? 50} rows per table; totals: ${result.counts.interests} preregistrations, ${result.counts.orders} registrations.`
+          : `Showing latest ${result.limit ?? 50} rows per table.`,
+      );
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Admin data failed");
     }
@@ -155,15 +168,17 @@ function initAdmin() {
 }
 
 function renderDashboard({
+  counts,
   interests,
   orders,
   tiers,
 }: {
+  counts: AdminCounts | undefined;
   interests: AdminInterest[];
   orders: AdminOrder[];
   tiers: AdminTier[];
 }) {
-  renderMetrics({ interests, orders, tiers });
+  renderMetrics({ counts, interests, orders, tiers });
   renderTierSelect(tiers);
   renderTiers(tiers);
   renderOrders(orders);
@@ -171,10 +186,12 @@ function renderDashboard({
 }
 
 function renderMetrics({
+  counts,
   interests,
   orders,
   tiers,
 }: {
+  counts: AdminCounts | undefined;
   interests: AdminInterest[];
   orders: AdminOrder[];
   tiers: AdminTier[];
@@ -193,8 +210,8 @@ function renderMetrics({
   for (const metric of [
     ["Paid tickets", String(paidTickets)],
     ["Capacity", String(capacity)],
-    ["Preregistrations", String(interests.length)],
-    ["Tiers", String(tiers.length)],
+    ["Preregistrations", String(counts?.interests ?? interests.length)],
+    ["Orders", String(counts?.orders ?? orders.length)],
   ]) {
     const item = document.createElement("div");
     const label = document.createElement("p");

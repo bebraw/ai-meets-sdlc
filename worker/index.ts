@@ -103,7 +103,7 @@ export default {
       const authResponse = await requireAdminAuth(request, env);
       if (authResponse) return authResponse;
 
-      return handleAdminDashboard(env);
+      return handleAdminDashboard(request, env);
     }
 
     if (url.pathname === "/api/admin/register") {
@@ -215,16 +215,23 @@ async function handleTicketTiers(env: Env): Promise<Response> {
   });
 }
 
-async function handleAdminDashboard(env: Env): Promise<Response> {
+async function handleAdminDashboard(
+  request: Request,
+  env: Env,
+): Promise<Response> {
   if (!env.INTERESTS || !env.EMAIL_ENCRYPTION_KEY) {
     return jsonResponse({ error: "Admin storage is not configured" }, 503);
   }
 
+  const url = new URL(request.url);
+  const limit = normalizeAdminPageLimit(url.searchParams.get("limit"));
+  const offset = normalizeAdminPageOffset(url.searchParams.get("offset"));
   const tiers = getTicketTiers(env);
   const availability = await getTicketTierAvailability(env, tiers, new Date());
-  const [interestRows, orderRows] = await Promise.all([
-    env.INTERESTS.prepare(
-      `SELECT
+  const [interestRows, orderRows, interestCount, orderCount] =
+    await Promise.all([
+      env.INTERESTS.prepare(
+        `SELECT
         email_ciphertext,
         email_iv,
         name_ciphertext,
@@ -233,10 +240,13 @@ async function handleAdminDashboard(env: Env): Promise<Response> {
         organization_iv,
         created_at
       FROM interests
-      ORDER BY created_at DESC`,
-    ).all<AdminInterestRow>(),
-    env.INTERESTS.prepare(
-      `SELECT
+      ORDER BY created_at DESC
+      LIMIT ? OFFSET ?`,
+      )
+        .bind(limit, offset)
+        .all<AdminInterestRow>(),
+      env.INTERESTS.prepare(
+        `SELECT
         stripe_session_id,
         ticket_tier_label,
         email_ciphertext,
@@ -248,9 +258,18 @@ async function handleAdminDashboard(env: Env): Promise<Response> {
         order_status,
         created_at
       FROM orders
-      ORDER BY created_at DESC`,
-    ).all<AdminOrderRow>(),
-  ]);
+      ORDER BY created_at DESC
+      LIMIT ? OFFSET ?`,
+      )
+        .bind(limit, offset)
+        .all<AdminOrderRow>(),
+      env.INTERESTS.prepare("SELECT COUNT(*) AS count FROM interests").first<{
+        count: number;
+      }>(),
+      env.INTERESTS.prepare("SELECT COUNT(*) AS count FROM orders").first<{
+        count: number;
+      }>(),
+    ]);
   const interests = await Promise.all(
     (interestRows.results ?? []).map((row) =>
       decryptAdminInterest(row, env.EMAIL_ENCRYPTION_KEY),
@@ -263,6 +282,12 @@ async function handleAdminDashboard(env: Env): Promise<Response> {
   );
 
   return jsonResponse({
+    counts: {
+      interests: Number(interestCount?.count ?? 0),
+      orders: Number(orderCount?.count ?? 0),
+    },
+    limit,
+    offset,
     ok: true,
     interests,
     orders,
@@ -1811,6 +1836,20 @@ function normalizeQuantity(value: FormDataEntryValue | null): number {
   return Number.isInteger(quantity) && quantity >= 1 && quantity <= 10
     ? quantity
     : 0;
+}
+
+function normalizeAdminPageLimit(value: string | null): number {
+  const limit = Number(value ?? 50);
+
+  if (!Number.isInteger(limit)) return 50;
+
+  return Math.min(100, Math.max(1, limit));
+}
+
+function normalizeAdminPageOffset(value: string | null): number {
+  const offset = Number(value ?? 0);
+
+  return Number.isInteger(offset) && offset >= 0 ? offset : 0;
 }
 
 function normalizeStripeId(value: string | null, maxLength: number): string {
