@@ -16,7 +16,6 @@ declare namespace Cloudflare {
     STRIPE_CANCEL_URL: string;
     STRIPE_SECRET_KEY: string;
     STRIPE_SUCCESS_URL: string;
-    STRIPE_TICKET_TIERS_JSON: string;
     STRIPE_WEBHOOK_SECRET: string;
     TURNSTILE_SECRET_KEY: string;
     TURNSTILE_SITE_KEY: string;
@@ -39,7 +38,6 @@ declare namespace NodeJS {
       | "STRIPE_CANCEL_URL"
       | "STRIPE_SECRET_KEY"
       | "STRIPE_SUCCESS_URL"
-      | "STRIPE_TICKET_TIERS_JSON"
       | "STRIPE_WEBHOOK_SECRET"
       | "TURNSTILE_SECRET_KEY"
       | "TURNSTILE_SITE_KEY"

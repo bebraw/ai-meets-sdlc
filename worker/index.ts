@@ -44,6 +44,7 @@ interface TicketTier {
   currency?: string | undefined;
   discountCouponId?: string | undefined;
   id: string;
+  isActive: boolean;
   label: string;
   priceId: string;
   priceLabel?: string | undefined;
@@ -77,6 +78,20 @@ interface AdminOrderRow {
   quantity: number;
   stripe_session_id: string;
   ticket_tier_label: string | null;
+}
+
+interface TicketTierRow {
+  available_from: string | null;
+  available_until: string | null;
+  capacity: number;
+  currency: string | null;
+  discount_coupon_id: string | null;
+  id: string;
+  is_active: number;
+  label: string;
+  price_label: string | null;
+  sort_order: number;
+  stripe_price_id: string;
 }
 
 interface AdminCfpProposalRow {
@@ -175,6 +190,23 @@ export default {
       return handleAdminScheduleMutation(request, env);
     }
 
+    if (url.pathname === "/api/admin/ticket-tier") {
+      if (request.method !== "POST") {
+        return jsonResponse({ error: "Method not allowed" }, 405);
+      }
+
+      const authResponse = await requireAdminAuth(request, env);
+      if (authResponse) return authResponse;
+
+      const mutationAuthResponse = requireAdminMutationRequest(
+        request,
+        "ticket-tier",
+      );
+      if (mutationAuthResponse) return mutationAuthResponse;
+
+      return handleAdminTicketTierMutation(request, env);
+    }
+
     if (url.pathname === "/api/schedule") {
       if (request.method !== "GET") {
         return jsonResponse({ error: "Method not allowed" }, 405);
@@ -261,7 +293,7 @@ async function handleTicketTiers(env: Env): Promise<Response> {
     return jsonResponse({ error: "Ticket inventory is not configured" }, 503);
   }
 
-  const tiers = getTicketTiers(env);
+  const tiers = await getTicketTiers(env);
 
   if (tiers.length === 0) {
     return jsonResponse({ error: "Ticket tiers are not configured" }, 503);
@@ -297,7 +329,7 @@ async function handleAdminDashboard(
   const url = new URL(request.url);
   const limit = normalizeAdminPageLimit(url.searchParams.get("limit"));
   const offset = normalizeAdminPageOffset(url.searchParams.get("offset"));
-  const tiers = getTicketTiers(env);
+  const tiers = await getTicketTiers(env, { includeInactive: true });
   const availability = await getTicketTierAvailability(env, tiers, new Date());
   const [
     interestRows,
@@ -410,13 +442,160 @@ async function handleAdminDashboard(
       currency: tier.currency ?? null,
       discount_coupon_id: tier.discountCouponId ?? null,
       id: tier.id,
+      is_active: tier.isActive,
       is_on_sale: tier.isOnSale,
       label: tier.label,
       price_id: tier.priceId,
       price_label: tier.priceLabel ?? null,
       reserved_quantity: tier.reservedQuantity,
+      sort_order: tier.sortOrder,
     })),
   });
+}
+
+async function handleAdminTicketTierMutation(
+  request: Request,
+  env: Env,
+): Promise<Response> {
+  if (!env.INTERESTS) {
+    return jsonResponse(
+      { error: "Ticket tier storage is not configured" },
+      503,
+    );
+  }
+
+  const formData = await request.formData();
+  const action = normalizeOptionalText(formData.get("action"), 20);
+  const id = normalizeTicketTierId(formData.get("id"));
+
+  if (action === "delete") {
+    if (!id) return jsonResponse({ error: "Choose a ticket tier" }, 400);
+
+    const references = await env.INTERESTS.prepare(
+      `SELECT
+        (
+          SELECT COUNT(*)
+          FROM orders
+          WHERE ticket_tier_id = ?
+        ) + (
+          SELECT COUNT(*)
+          FROM ticket_reservations
+          WHERE ticket_tier_id = ?
+        ) AS count`,
+    )
+      .bind(id, id)
+      .first<{ count: number }>();
+
+    if (Number(references?.count ?? 0) > 0) {
+      return jsonResponse(
+        {
+          error:
+            "This tier has orders or reservations. Deactivate it instead of deleting it.",
+        },
+        409,
+      );
+    }
+
+    await env.INTERESTS.prepare("DELETE FROM ticket_tiers WHERE id = ?")
+      .bind(id)
+      .run();
+
+    return jsonResponse({ ok: true, deleted_id: id });
+  }
+
+  const label = normalizeOptionalText(formData.get("label"), 120);
+  const priceId = normalizeStripeId(
+    normalizeOptionalText(formData.get("price_id"), 255),
+    255,
+  );
+  const priceLabel = normalizeOptionalText(formData.get("price_label"), 80);
+  const currency = normalizeCurrency(formData.get("currency"));
+  const capacity = normalizeInteger(formData.get("capacity"), 0, 100000);
+  const discountCouponId = normalizeStripeId(
+    normalizeOptionalText(formData.get("discount_coupon_id"), 255),
+    255,
+  );
+  const availableFrom = normalizeScheduleDate(formData.get("available_from"));
+  const availableUntil = normalizeScheduleDate(formData.get("available_until"));
+  const sortOrder = normalizeInteger(formData.get("sort_order"), 0, 9999);
+  const isActive = formData.get("is_active") === "yes" ? 1 : 0;
+
+  if (!id) {
+    return jsonResponse(
+      {
+        error: "Enter a tier ID using letters, numbers, underscores, or dashes",
+      },
+      400,
+    );
+  }
+
+  if (!label) {
+    return jsonResponse({ error: "Enter a tier label" }, 400);
+  }
+
+  if (!priceId) {
+    return jsonResponse({ error: "Enter a Stripe Price ID" }, 400);
+  }
+
+  if (capacity < 1) {
+    return jsonResponse({ error: "Capacity must be at least 1" }, 400);
+  }
+
+  if (availableFrom && availableUntil) {
+    if (Date.parse(availableUntil) <= Date.parse(availableFrom)) {
+      return jsonResponse({ error: "Sale end must be after sale start" }, 400);
+    }
+  }
+
+  const now = new Date().toISOString();
+
+  await env.INTERESTS.prepare(
+    `INSERT INTO ticket_tiers (
+      id,
+      label,
+      stripe_price_id,
+      price_label,
+      currency,
+      capacity,
+      discount_coupon_id,
+      available_from,
+      available_until,
+      sort_order,
+      is_active,
+      created_at,
+      updated_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(id) DO UPDATE SET
+      label = excluded.label,
+      stripe_price_id = excluded.stripe_price_id,
+      price_label = excluded.price_label,
+      currency = excluded.currency,
+      capacity = excluded.capacity,
+      discount_coupon_id = excluded.discount_coupon_id,
+      available_from = excluded.available_from,
+      available_until = excluded.available_until,
+      sort_order = excluded.sort_order,
+      is_active = excluded.is_active,
+      updated_at = excluded.updated_at`,
+  )
+    .bind(
+      id,
+      label,
+      priceId,
+      priceLabel || null,
+      currency || null,
+      capacity,
+      discountCouponId || null,
+      availableFrom || null,
+      availableUntil || null,
+      sortOrder,
+      isActive,
+      now,
+      now,
+    )
+    .run();
+
+  return jsonResponse({ ok: true });
 }
 
 async function getAdminScheduleEntries(env: Env) {
@@ -653,7 +832,7 @@ async function handleAdminRegister(
   const email = normalizeEmail(formData.get("email"));
   const quantity = normalizeQuantity(formData.get("quantity"));
   const ticketTierId = normalizeOptionalText(formData.get("ticket_tier"), 80);
-  const tier = getTicketTiers(env).find(
+  const tier = (await getTicketTiers(env, { includeInactive: true })).find(
     (candidate) => candidate.id === ticketTierId,
   );
 
@@ -985,7 +1164,7 @@ async function handleCheckout(request: Request, env: Env): Promise<Response> {
   const email = normalizeEmail(formData.get("email"));
   const quantity = normalizeQuantity(formData.get("quantity"));
   const selectedTierId = normalizeOptionalText(formData.get("ticket_tier"), 80);
-  const tiers = getTicketTiers(env);
+  const tiers = await getTicketTiers(env);
 
   if (tiers.length === 0) {
     return jsonResponse({ error: "Ticket tiers are not configured" }, 503);
@@ -1060,7 +1239,7 @@ async function handleCheckout(request: Request, env: Env): Promise<Response> {
     "line_items[0][price]": selectedTier.priceId,
     "line_items[0][quantity]": String(quantity),
     billing_address_collection: "auto",
-    "metadata[event]": "AI meets SDLC",
+    "metadata[event]": "SDLCAI",
     "metadata[event_date]": "2026-10-13",
     "metadata[reservation_id]": reservationId,
     "metadata[reservation_expires_at]": reservationExpiresAt,
@@ -1405,7 +1584,12 @@ async function getVerifiedLocalCheckoutOrder(
   env: Env,
   session: StripeCheckoutSession,
 ): Promise<LocalCheckoutOrder | null> {
-  if (session.metadata?.event !== "AI meets SDLC") return null;
+  if (
+    session.metadata?.event !== "SDLCAI" &&
+    session.metadata?.event !== "AI meets SDLC"
+  ) {
+    return null;
+  }
 
   const reservationId = normalizeOptionalText(
     session.metadata?.reservation_id ?? null,
@@ -1425,9 +1609,11 @@ async function getVerifiedLocalCheckoutOrder(
     return null;
   }
 
-  const configuredTier = getTicketTiers(env).find(
-    (tier) => tier.id === ticketTierId,
-  );
+  const configuredTier = (
+    await getTicketTiers(env, {
+      includeInactive: true,
+    })
+  ).find((tier) => tier.id === ticketTierId);
 
   if (!configuredTier || configuredTier.priceId !== ticketPriceId) return null;
 
@@ -1558,103 +1744,43 @@ function isStripeCheckoutSession(
   );
 }
 
-function getTicketTiers(env: Env): TicketTier[] {
-  if (!env.STRIPE_TICKET_TIERS_JSON) return [];
+async function getTicketTiers(
+  env: Env,
+  options: { includeInactive?: boolean } = {},
+): Promise<TicketTier[]> {
+  if (!env.INTERESTS) return [];
 
-  try {
-    const parsed = JSON.parse(env.STRIPE_TICKET_TIERS_JSON);
+  const rows = await env.INTERESTS.prepare(
+    `SELECT
+      id,
+      label,
+      stripe_price_id,
+      price_label,
+      currency,
+      capacity,
+      discount_coupon_id,
+      available_from,
+      available_until,
+      sort_order,
+      is_active
+    FROM ticket_tiers
+    ${options.includeInactive ? "" : "WHERE is_active = 1"}
+    ORDER BY sort_order ASC, id ASC`,
+  ).all<TicketTierRow>();
 
-    if (!Array.isArray(parsed)) return [];
-
-    return parsed
-      .map((value, index) => normalizeTicketTier(value, index))
-      .filter((tier): tier is TicketTier => Boolean(tier))
-      .sort((left, right) => left.sortOrder - right.sortOrder);
-  } catch (error) {
-    console.error("Invalid STRIPE_TICKET_TIERS_JSON", {
-      message: error instanceof Error ? error.message : "Invalid JSON",
-    });
-
-    return [];
-  }
-}
-
-function normalizeTicketTier(value: unknown, index: number): TicketTier | null {
-  if (typeof value !== "object" || value === null) return null;
-
-  const source = value as Record<string, unknown>;
-  const id = typeof source.id === "string" ? source.id.trim() : "";
-  const label = typeof source.label === "string" ? source.label.trim() : "";
-  const priceId =
-    typeof source.price_id === "string"
-      ? source.price_id.trim()
-      : typeof source.priceId === "string"
-        ? source.priceId.trim()
-        : "";
-  const capacity =
-    typeof source.capacity === "number" && Number.isInteger(source.capacity)
-      ? source.capacity
-      : 0;
-
-  if (!id || !label || !priceId || capacity < 1) return null;
-
-  return {
-    availableFrom: normalizeTierDate(
-      source.available_from ?? source.availableFrom,
-    ),
-    availableUntil: normalizeTierDate(
-      source.available_until ?? source.availableUntil,
-    ),
-    capacity,
-    currency:
-      typeof source.currency === "string" ? source.currency.trim() : undefined,
-    discountCouponId: getTierString(
-      source,
-      "discount_coupon_id",
-      "discountCouponId",
-    ),
-    id,
-    label,
-    priceId,
-    priceLabel:
-      typeof source.price_label === "string"
-        ? source.price_label.trim()
-        : typeof source.priceLabel === "string"
-          ? source.priceLabel.trim()
-          : undefined,
-    sortOrder:
-      typeof source.sort_order === "number" &&
-      Number.isFinite(source.sort_order)
-        ? source.sort_order
-        : typeof source.sortOrder === "number" &&
-            Number.isFinite(source.sortOrder)
-          ? source.sortOrder
-          : index,
-  };
-}
-
-function getTierString(
-  source: Record<string, unknown>,
-  snakeCaseKey: string,
-  camelCaseKey: string,
-): string | undefined {
-  const value =
-    typeof source[snakeCaseKey] === "string"
-      ? source[snakeCaseKey]
-      : typeof source[camelCaseKey] === "string"
-        ? source[camelCaseKey]
-        : "";
-  const normalized = value.trim();
-
-  return normalized || undefined;
-}
-
-function normalizeTierDate(value: unknown): string | undefined {
-  if (typeof value !== "string" || !value.trim()) return undefined;
-
-  const date = new Date(value);
-
-  return Number.isNaN(date.getTime()) ? undefined : date.toISOString();
+  return (rows.results ?? []).map((row) => ({
+    availableFrom: row.available_from ?? undefined,
+    availableUntil: row.available_until ?? undefined,
+    capacity: row.capacity,
+    currency: row.currency ?? undefined,
+    discountCouponId: row.discount_coupon_id ?? undefined,
+    id: row.id,
+    isActive: row.is_active === 1,
+    label: row.label,
+    priceId: row.stripe_price_id,
+    priceLabel: row.price_label ?? undefined,
+    sortOrder: row.sort_order,
+  }));
 }
 
 async function getTicketTierAvailability(
@@ -1708,7 +1834,7 @@ async function getTicketTierAvailability(
     return {
       ...tier,
       availableQuantity: Math.max(0, tier.capacity - reservedQuantity),
-      isOnSale: isAfterStart && isBeforeEnd,
+      isOnSale: tier.isActive && isAfterStart && isBeforeEnd,
       reservedQuantity,
     };
   });
@@ -1882,7 +2008,7 @@ async function handleInterest(request: Request, env: Env): Promise<Response> {
     ? await encryptText(organization, keyMaterial)
     : null;
   const consentText =
-    "I agree to be contacted about AI meets SDLC seminar registration.";
+    "I agree to be contacted about SDLCAI seminar registration.";
   const createdAt = new Date().toISOString();
 
   try {
@@ -2130,7 +2256,7 @@ async function requireAdminAuth(
   return new Response("Authentication required", {
     status: 401,
     headers: {
-      "www-authenticate": 'Basic realm="AI meets SDLC admin"',
+      "www-authenticate": 'Basic realm="SDLCAI admin"',
     },
   });
 }
@@ -2376,6 +2502,18 @@ function normalizeCfpFormat(value: FormDataEntryValue | null): string {
   if (value !== "poster" && value !== "pitch_15") return "";
 
   return value;
+}
+
+function normalizeTicketTierId(value: FormDataEntryValue | null): string {
+  const normalized = normalizeOptionalText(value, 80);
+
+  return /^[A-Za-z0-9_-]+$/.test(normalized) ? normalized : "";
+}
+
+function normalizeCurrency(value: FormDataEntryValue | null): string {
+  const normalized = normalizeOptionalText(value, 3).toLowerCase();
+
+  return /^[a-z]{3}$/.test(normalized) ? normalized : "";
 }
 
 function normalizeScheduleEntryType(value: FormDataEntryValue | null): string {

@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SDLCAI schedule</title>
+    <meta
+      name="description"
+      content="Public schedule for SDLCAI, a one-day seminar at Marsio Saastamoinen Foundation Stage, Aalto University."
+    />
+    <meta property="og:title" content="SDLCAI schedule" />
+    <meta
+      property="og:description"
+      content="13 October 2026 at Marsio Saastamoinen Foundation Stage, Aalto University, Espoo."
+    />
+    <meta property="og:url" content="https://sdlcai.org/schedule" />
+    <meta property="og:image" content="https://sdlcai.org/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://sdlcai.org/og.png" />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <script>
+      (() => {
+        const root = document.documentElement;
+        let theme = "light";
+
+        try {
+          const stored = localStorage.getItem("sdlcai-theme");
+          const prefersDark = matchMedia(
+            "(prefers-color-scheme: dark)",
+          ).matches;
+          theme =
+            stored === "dark" || stored === "light"
+              ? stored
+              : prefersDark
+                ? "dark"
+                : "light";
+        } catch {
+          theme = "light";
+        }
+
+        root.classList.toggle("dark", theme === "dark");
+        root.dataset.theme = theme;
+      })();
+    </script>
+    <noop &foreach="styles as style">
+      <link &href="style.href" &rel="style.rel" />
+    </noop>
+  </head>
+  <body class="bg-paper text-ink">
+    <div class="min-h-screen overflow-hidden">
+      <header class="relative border-b border-ink">
+        <div
+          class="absolute inset-y-0 right-0 hidden w-[42vw] text-ink/10 halftone-xl md:block"
+        ></div>
+        <nav
+          class="relative mx-auto flex max-w-7xl items-center justify-between px-5 py-5 md:px-8"
+        >
+          <a href="/" class="inline-flex items-center" aria-label="SDLCAI">
+            <img
+              src="/assets/logo.svg"
+              alt="SDLCAI"
+              class="h-10 w-auto dark:invert"
+            />
+          </a>
+          <div
+            class="hidden items-center gap-8 text-sm font-bold uppercase md:flex"
+          >
+            <a class="hover:underline" href="/">Home</a>
+            <a class="hover:underline" href="/#program">Program</a>
+            <a class="hover:underline" href="/#tickets">Tickets</a>
+          </div>
+          <button
+            class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+            type="button"
+            data-theme-toggle
+            aria-label="Toggle dark mode"
+          >
+            <span data-theme-label>Dark</span>
+          </button>
+        </nav>
+      </header>
+
+      <main>
+        <section class="relative border-b border-ink">
+          <div
+            class="absolute -left-20 top-20 h-72 w-72 rounded-full border border-ink/20 text-ink/15 halftone"
+          ></div>
+          <div class="relative mx-auto max-w-7xl px-5 py-16 md:px-8">
+            <p
+              class="mb-6 inline-flex border border-ink px-3 py-1 text-sm font-bold uppercase"
+            >
+              13 October 2026 / Marsio Saastamoinen Foundation Stage / Espoo
+            </p>
+            <h1
+              class="max-w-5xl font-headline text-[clamp(4rem,12vw,10rem)] font-black uppercase leading-[0.78] tracking-normal text-balance"
+            >
+              Schedule
+            </h1>
+            <p class="mt-8 max-w-3xl text-2xl leading-tight md:text-3xl">
+              The public SDLCAI seminar day schedule. Published sessions appear
+              here as the program is confirmed.
+            </p>
+          </div>
+        </section>
+
+        <section class="border-b border-ink bg-paper">
+          <div class="mx-auto max-w-7xl px-5 py-12 md:px-8">
+            <div
+              class="grid gap-px border border-ink bg-ink"
+              data-public-schedule
+              aria-live="polite"
+            >
+              <div class="bg-paper p-5">
+                <p class="font-headline text-2xl font-black uppercase">
+                  Schedule is being planned
+                </p>
+                <p class="mt-3 leading-7 text-muted">
+                  The public seminar schedule will appear here when sessions are
+                  published.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer
+        class="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-8 text-sm text-muted md:flex-row md:items-center md:justify-between md:px-8"
+      >
+        <p>
+          SDLCAI / 13 October 2026 / Marsio Saastamoinen Foundation Stage /
+          sdlcai.org
+        </p>
+        <p>
+          Responsible organizer:
+          <a class="underline" href="https://survivejs.com/"
+            >Juho Vepsäläinen</a
+          >
+        </p>
+      </footer>
+    </div>
+    <noop &foreach="scripts as script">
+      <script &src="script.src" &type="script.type"></script>
+    </noop>
+  </body>
+</html>

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AI meets SDLC admin</title>
+    <title>SDLCAI admin</title>
     <meta name="robots" content="noindex,nofollow" />
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
     <script>
@@ -40,14 +40,10 @@
         <nav
           class="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-5 md:flex-row md:items-center md:justify-between md:px-8"
         >
-          <a
-            href="/"
-            class="inline-flex items-center"
-            aria-label="AI meets SDLC"
-          >
+          <a href="/" class="inline-flex items-center" aria-label="SDLCAI">
             <img
               src="/assets/logo.svg"
-              alt="AI meets SDLC"
+              alt="SDLCAI"
               class="h-10 w-auto dark:invert"
             />
           </a>
@@ -159,7 +155,7 @@
               </div>
               <a
                 class="inline-flex border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-                href="/#schedule"
+                href="/schedule"
               >
                 View public schedule
               </a>
@@ -367,30 +363,188 @@
           </div>
 
           <div>
-            <div class="mb-3 flex items-end justify-between gap-4">
-              <h2 class="font-headline text-3xl font-black uppercase">
-                Ticket tiers
-              </h2>
-              <p class="text-sm font-bold uppercase text-muted">
-                Capacity, availability, prices, discounts
-              </p>
+            <div
+              class="mb-3 flex flex-col gap-3 md:flex-row md:items-end md:justify-between"
+            >
+              <div>
+                <h2 class="font-headline text-3xl font-black uppercase">
+                  Ticket tiers
+                </h2>
+                <p class="text-sm font-bold uppercase text-muted">
+                  Capacity, availability, prices, discounts
+                </p>
+              </div>
             </div>
-            <div class="overflow-x-auto border border-ink">
-              <table
-                class="w-full min-w-[820px] border-collapse text-left text-sm"
+            <div class="grid gap-5 lg:grid-cols-[24rem_1fr]">
+              <form
+                class="grid gap-4 border border-ink bg-paper p-5"
+                data-admin-tier-form
               >
-                <thead class="bg-ink text-paper">
-                  <tr>
-                    <th class="px-3 py-2">Tier</th>
-                    <th class="px-3 py-2">Price</th>
-                    <th class="px-3 py-2">Discount code</th>
-                    <th class="px-3 py-2">Sale window</th>
-                    <th class="px-3 py-2 text-right">Held/Paid</th>
-                    <th class="px-3 py-2 text-right">Left</th>
-                  </tr>
-                </thead>
-                <tbody data-admin-tiers></tbody>
-              </table>
+                <input name="action" type="hidden" value="save" />
+                <h3 class="font-headline text-2xl font-black uppercase">
+                  Tier details
+                </h3>
+                <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-1">
+                  <label class="grid gap-2">
+                    <span class="text-sm font-bold uppercase text-muted"
+                      >ID</span
+                    >
+                    <input
+                      class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                      name="id"
+                      maxlength="80"
+                      pattern="[A-Za-z0-9_-]+"
+                      required
+                    />
+                  </label>
+                  <label class="grid gap-2">
+                    <span class="text-sm font-bold uppercase text-muted"
+                      >Label</span
+                    >
+                    <input
+                      class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                      name="label"
+                      maxlength="120"
+                      required
+                    />
+                  </label>
+                </div>
+                <label class="grid gap-2">
+                  <span class="text-sm font-bold uppercase text-muted"
+                    >Stripe price ID</span
+                  >
+                  <input
+                    class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                    name="price_id"
+                    maxlength="255"
+                    required
+                  />
+                </label>
+                <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-1">
+                  <label class="grid gap-2">
+                    <span class="text-sm font-bold uppercase text-muted"
+                      >Price label</span
+                    >
+                    <input
+                      class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                      name="price_label"
+                      maxlength="80"
+                      placeholder="EUR 299"
+                    />
+                  </label>
+                  <label class="grid gap-2">
+                    <span class="text-sm font-bold uppercase text-muted"
+                      >Currency</span
+                    >
+                    <input
+                      class="border border-ink bg-paper px-4 py-3 uppercase outline-none focus:ring-2 focus:ring-ink"
+                      name="currency"
+                      maxlength="3"
+                      placeholder="eur"
+                    />
+                  </label>
+                </div>
+                <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-1">
+                  <label class="grid gap-2">
+                    <span class="text-sm font-bold uppercase text-muted"
+                      >Capacity</span
+                    >
+                    <input
+                      class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                      name="capacity"
+                      type="number"
+                      min="1"
+                      max="100000"
+                      required
+                    />
+                  </label>
+                  <label class="grid gap-2">
+                    <span class="text-sm font-bold uppercase text-muted"
+                      >Sort</span
+                    >
+                    <input
+                      class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                      name="sort_order"
+                      type="number"
+                      min="0"
+                      max="9999"
+                      value="0"
+                    />
+                  </label>
+                </div>
+                <label class="grid gap-2">
+                  <span class="text-sm font-bold uppercase text-muted"
+                    >Discount coupon ID</span
+                  >
+                  <input
+                    class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                    name="discount_coupon_id"
+                    maxlength="255"
+                  />
+                </label>
+                <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-1">
+                  <label class="grid gap-2">
+                    <span class="text-sm font-bold uppercase text-muted"
+                      >Sale start</span
+                    >
+                    <input
+                      class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                      name="available_from"
+                      type="datetime-local"
+                    />
+                  </label>
+                  <label class="grid gap-2">
+                    <span class="text-sm font-bold uppercase text-muted"
+                      >Sale end</span
+                    >
+                    <input
+                      class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                      name="available_until"
+                      type="datetime-local"
+                    />
+                  </label>
+                </div>
+                <label class="flex gap-3 border border-ink/40 p-4 text-sm">
+                  <input name="is_active" type="checkbox" value="yes" checked />
+                  <span>Active for checkout and manual registration</span>
+                </label>
+                <div class="flex flex-col gap-3 md:flex-row md:items-center">
+                  <button
+                    class="border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink disabled:cursor-not-allowed disabled:border-muted disabled:bg-muted disabled:text-paper"
+                    data-admin-tier-submit
+                    type="submit"
+                  >
+                    Save tier
+                  </button>
+                  <button
+                    class="border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper"
+                    data-admin-tier-clear
+                    type="button"
+                  >
+                    Clear
+                  </button>
+                </div>
+              </form>
+
+              <div class="overflow-x-auto border border-ink">
+                <table
+                  class="w-full min-w-[940px] border-collapse text-left text-sm"
+                >
+                  <thead class="bg-ink text-paper">
+                    <tr>
+                      <th class="px-3 py-2">Tier</th>
+                      <th class="px-3 py-2">Price</th>
+                      <th class="px-3 py-2">Discount code</th>
+                      <th class="px-3 py-2">Sale window</th>
+                      <th class="px-3 py-2 text-right">Held/Paid</th>
+                      <th class="px-3 py-2 text-right">Left</th>
+                      <th class="px-3 py-2">State</th>
+                      <th class="px-3 py-2">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody data-admin-tiers></tbody>
+                </table>
+              </div>
             </div>
           </div>
 

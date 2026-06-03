@@ -1,6 +1,6 @@
-# AI Meets SDLC
+# SDLCAI
 
-Website for the AI meets SDLC seminar, held 13 October 2026 at Marsio Saastamoinen Foundation Stage, Espoo, Finland.
+Website for the SDLCAI seminar, held 13 October 2026 at Marsio Saastamoinen Foundation Stage, Espoo, Finland.
 
 The site is built with Gustwind and HTMLisp, styled with Tailwind CSS, and
 deployed as a Cloudflare Worker with static assets. The production domain is
@@ -93,7 +93,6 @@ variables before opening sales:
 
 - `CHECKOUTS_ENABLED=true`
 - `STRIPE_SECRET_KEY`
-- `STRIPE_TICKET_TIERS_JSON`
 - `STRIPE_WEBHOOK_SECRET`
 
 Checkout is disabled unless `CHECKOUTS_ENABLED` is exactly `true`. Keep it
@@ -102,8 +101,9 @@ Checkout is disabled unless `CHECKOUTS_ENABLED` is exactly `true`. Keep it
 `STRIPE_SUCCESS_URL` and `STRIPE_CANCEL_URL` are optional. When omitted, the
 Worker derives them from the current request origin.
 
-`STRIPE_TICKET_TIERS_JSON` defines the available pools, their Stripe Price IDs,
-capacities, and optional sale windows. Starting Stripe Checkout creates a
+Ticket tiers are maintained in the authenticated admin interface and stored in
+D1. Each tier defines the available pool, Stripe Price ID, capacity, optional
+discount coupon, and optional sale window. Starting Stripe Checkout creates a
 30-minute hold for the selected tier, and paid orders keep consuming capacity.
 
 Stripe webhooks update the local D1 `orders` table. Buyer email is encrypted

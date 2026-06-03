@@ -54,11 +54,13 @@ type AdminTier = {
   currency: string | null;
   discount_coupon_id: string | null;
   id: string;
+  is_active: boolean;
   is_on_sale: boolean;
   label: string;
   price_id: string;
   price_label: string | null;
   reserved_quantity: number;
+  sort_order: number;
 };
 
 type AdminCounts = {
@@ -89,8 +91,14 @@ type AdminScheduleResponse = {
   error?: string;
 };
 
+type AdminTierResponse = {
+  deleted_id?: string;
+  error?: string;
+};
+
 let currentCfpProposals: AdminCfpProposal[] = [];
 let currentScheduleEntries: AdminScheduleEntry[] = [];
+let currentTiers: AdminTier[] = [];
 
 function setTheme(theme: "dark" | "light") {
   const themeLabel = document.querySelector("[data-theme-label]");
@@ -146,6 +154,15 @@ function initAdmin() {
   const scheduleCfpSelect = document.querySelector(
     "[data-schedule-cfp-select]",
   ) as HTMLSelectElement | null;
+  const tierForm = document.querySelector(
+    "[data-admin-tier-form]",
+  ) as HTMLFormElement | null;
+  const tierSubmit = document.querySelector(
+    "[data-admin-tier-submit]",
+  ) as HTMLButtonElement | null;
+  const tierClear = document.querySelector(
+    "[data-admin-tier-clear]",
+  ) as HTMLButtonElement | null;
 
   function setStatus(message: string) {
     if (status) {
@@ -269,6 +286,44 @@ function initAdmin() {
     setScheduleField("description", proposal.summary);
   });
 
+  tierForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (!tierForm.checkValidity() || tierSubmit?.disabled) return;
+
+    tierSubmit?.setAttribute("disabled", "true");
+    setStatus("Saving ticket tier...");
+
+    try {
+      const response = await fetch("/api/admin/ticket-tier", {
+        headers: {
+          "x-admin-action": "ticket-tier",
+        },
+        method: "POST",
+        body: new FormData(tierForm),
+      });
+      const result = (await response.json()) as AdminTierResponse;
+
+      if (!response.ok || result.error) {
+        throw new Error(result.error || "Ticket tier save failed");
+      }
+
+      resetTierForm();
+      setStatus("Ticket tier saved.");
+      await loadDashboard();
+    } catch (error) {
+      setStatus(
+        error instanceof Error ? error.message : "Ticket tier save failed",
+      );
+    } finally {
+      tierSubmit?.removeAttribute("disabled");
+    }
+  });
+
+  tierClear?.addEventListener("click", () => {
+    resetTierForm();
+  });
+
   refreshButton?.addEventListener("click", () => {
     void loadDashboard();
   });
@@ -293,6 +348,7 @@ function renderDashboard({
 }) {
   currentCfpProposals = cfpProposals;
   currentScheduleEntries = scheduleEntries;
+  currentTiers = tiers;
   renderMetrics({ cfpProposals, counts, interests, orders, tiers });
   renderCfpProposals(cfpProposals);
   renderScheduleCfpSelect(cfpProposals);
@@ -464,10 +520,11 @@ function renderTierSelect(tiers: AdminTier[]) {
   for (const tier of tiers) {
     const option = document.createElement("option");
     const price = tier.price_label ? ` / ${tier.price_label}` : "";
+    const state = tier.is_active ? "" : " / inactive";
 
     option.value = tier.id;
-    option.disabled = tier.available_quantity < 1;
-    option.textContent = `${tier.label}${price} / ${tier.available_quantity} left`;
+    option.disabled = !tier.is_active || tier.available_quantity < 1;
+    option.textContent = `${tier.label}${price} / ${tier.available_quantity} left${state}`;
     select.add(option);
   }
 }
@@ -480,14 +537,54 @@ function renderTiers(tiers: AdminTier[]) {
   body.innerHTML = "";
 
   for (const tier of tiers) {
-    appendRow(body, [
+    const row = document.createElement("tr");
+
+    row.className = "border-t border-ink";
+
+    for (const [index, value] of [
       `${tier.label} (${tier.id})`,
       tier.price_label || tier.price_id,
       tier.discount_coupon_id || "None",
       formatSaleWindow(tier),
       `${tier.reserved_quantity}/${tier.capacity}`,
       String(tier.available_quantity),
-    ]);
+      tier.is_active ? "Active" : "Inactive",
+    ].entries()) {
+      const cell = document.createElement("td");
+
+      cell.className =
+        index === 4 || index === 5
+          ? "px-3 py-2 text-right align-top"
+          : "px-3 py-2 align-top";
+      cell.textContent = value;
+      row.appendChild(cell);
+    }
+
+    const actionCell = document.createElement("td");
+    const editButton = document.createElement("button");
+    const deleteButton = document.createElement("button");
+
+    actionCell.className = "flex gap-2 px-3 py-2";
+    editButton.className =
+      "border border-ink px-2 py-1 text-xs font-bold uppercase transition hover:bg-ink hover:text-paper";
+    editButton.type = "button";
+    editButton.textContent = "Edit";
+    editButton.addEventListener("click", () => {
+      populateTierForm(tier);
+    });
+
+    deleteButton.className =
+      "border border-ink px-2 py-1 text-xs font-bold uppercase transition hover:bg-ink hover:text-paper";
+    deleteButton.type = "button";
+    deleteButton.textContent = "Delete";
+    deleteButton.addEventListener("click", () => {
+      void deleteTier(tier);
+    });
+
+    actionCell.appendChild(editButton);
+    actionCell.appendChild(deleteButton);
+    row.appendChild(actionCell);
+    body.appendChild(row);
   }
 }
 
@@ -584,6 +681,79 @@ async function deleteScheduleEntry(entry: AdminScheduleEntry) {
   renderScheduleEntries(currentScheduleEntries);
 }
 
+function populateTierForm(tier: AdminTier) {
+  setTierField("id", tier.id);
+  setTierField("label", tier.label);
+  setTierField("price_id", tier.price_id);
+  setTierField("price_label", tier.price_label || "");
+  setTierField("currency", tier.currency || "");
+  setTierField("capacity", String(tier.capacity));
+  setTierField("discount_coupon_id", tier.discount_coupon_id || "");
+  setTierField("available_from", toDateTimeLocal(tier.available_from));
+  setTierField("available_until", toDateTimeLocal(tier.available_until));
+  setTierField("sort_order", String(tier.sort_order));
+  setTierChecked("is_active", tier.is_active);
+}
+
+function resetTierForm() {
+  const form = document.querySelector(
+    "[data-admin-tier-form]",
+  ) as HTMLFormElement | null;
+
+  form?.reset();
+  setTierField("sort_order", "0");
+  setTierChecked("is_active", true);
+}
+
+async function deleteTier(tier: AdminTier) {
+  const confirmed = window.confirm(`Delete ticket tier "${tier.label}"?`);
+
+  if (!confirmed) return;
+
+  const formData = new FormData();
+
+  formData.set("action", "delete");
+  formData.set("id", tier.id);
+
+  const response = await fetch("/api/admin/ticket-tier", {
+    headers: {
+      "x-admin-action": "ticket-tier",
+    },
+    method: "POST",
+    body: formData,
+  });
+  const result = (await response.json()) as AdminTierResponse;
+
+  if (!response.ok || result.error) {
+    window.alert(result.error || "Ticket tier delete failed");
+    return;
+  }
+
+  currentTiers = currentTiers.filter((candidate) => candidate.id !== tier.id);
+  renderTiers(currentTiers);
+  renderTierSelect(currentTiers);
+}
+
+function setTierField(name: string, value: string) {
+  const field = document.querySelector(
+    `[data-admin-tier-form] [name="${name}"]`,
+  ) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null;
+
+  if (field) {
+    field.value = value;
+  }
+}
+
+function setTierChecked(name: string, checked: boolean) {
+  const field = document.querySelector(
+    `[data-admin-tier-form] [name="${name}"]`,
+  ) as HTMLInputElement | null;
+
+  if (field) {
+    field.checked = checked;
+  }
+}
+
 function setScheduleField(name: string, value: string) {
   const field = document.querySelector(
     `[data-admin-schedule-form] [name="${name}"]`,
@@ -642,7 +812,11 @@ function appendRow(body: Element, cells: string[]) {
 function formatSaleWindow(tier: AdminTier): string {
   const start = tier.available_from ? formatDate(tier.available_from) : "Now";
   const end = tier.available_until ? formatDate(tier.available_until) : "Open";
-  const status = tier.is_on_sale ? "on sale" : "closed";
+  const status = tier.is_active
+    ? tier.is_on_sale
+      ? "on sale"
+      : "closed"
+    : "inactive";
 
   return `${start} to ${end} (${status})`;
 }

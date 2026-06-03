@@ -6,22 +6,21 @@ This site is deployed as a Cloudflare Worker with static assets, D1 for the inte
 
 `wrangler.jsonc` expects these bindings:
 
-| Binding                    | Type           | Purpose                                                            |
-| -------------------------- | -------------- | ------------------------------------------------------------------ |
-| `ADMIN_PASSWORD`           | Secret         | Protects `/admin` and `/api/admin/*` with Basic Auth.              |
-| `ASSETS`                   | Workers Assets | Serves the Gustwind build output from `build/`.                    |
-| `CHECKOUTS_ENABLED`        | Worker var     | Enables Checkout only when set exactly to `true`.                  |
-| `CFP_ENABLED`              | Worker var     | Enables the public CFP form only when set exactly to `true`.       |
-| `INTERESTS`                | D1             | Stores encrypted interest submissions and orders.                  |
-| `INTEREST_BACKUPS`         | R2             | Stores daily encrypted JSON backups.                               |
-| `STRIPE_CANCEL_URL`        | Var/secret     | Optional explicit Checkout cancellation URL.                       |
-| `STRIPE_SECRET_KEY`        | Secret         | Creates server-side Stripe Checkout Sessions.                      |
-| `STRIPE_SUCCESS_URL`       | Var/secret     | Optional explicit Checkout success URL.                            |
-| `STRIPE_TICKET_TIERS_JSON` | Var/secret     | JSON ticket tier definitions with Stripe Price IDs and capacities. |
-| `STRIPE_WEBHOOK_SECRET`    | Secret         | Verifies Stripe webhook events before order updates.               |
-| `TURNSTILE_SITE_KEY`       | Worker var     | Public Turnstile widget site key injected into HTML.               |
-| `TURNSTILE_SECRET_KEY`     | Secret         | Server-side Turnstile verification key.                            |
-| `EMAIL_ENCRYPTION_KEY`     | Secret         | Key material for encrypting/de-duplicating submissions.            |
+| Binding                 | Type           | Purpose                                                      |
+| ----------------------- | -------------- | ------------------------------------------------------------ |
+| `ADMIN_PASSWORD`        | Secret         | Protects `/admin` and `/api/admin/*` with Basic Auth.        |
+| `ASSETS`                | Workers Assets | Serves the Gustwind build output from `build/`.              |
+| `CHECKOUTS_ENABLED`     | Worker var     | Enables Checkout only when set exactly to `true`.            |
+| `CFP_ENABLED`           | Worker var     | Enables the public CFP form only when set exactly to `true`. |
+| `INTERESTS`             | D1             | Stores encrypted interest submissions and orders.            |
+| `INTEREST_BACKUPS`      | R2             | Stores daily encrypted JSON backups.                         |
+| `STRIPE_CANCEL_URL`     | Var/secret     | Optional explicit Checkout cancellation URL.                 |
+| `STRIPE_SECRET_KEY`     | Secret         | Creates server-side Stripe Checkout Sessions.                |
+| `STRIPE_SUCCESS_URL`    | Var/secret     | Optional explicit Checkout success URL.                      |
+| `STRIPE_WEBHOOK_SECRET` | Secret         | Verifies Stripe webhook events before order updates.         |
+| `TURNSTILE_SITE_KEY`    | Worker var     | Public Turnstile widget site key injected into HTML.         |
+| `TURNSTILE_SECRET_KEY`  | Secret         | Server-side Turnstile verification key.                      |
+| `EMAIL_ENCRYPTION_KEY`  | Secret         | Key material for encrypting/de-duplicating submissions.      |
 
 ## Local Testing
 
@@ -39,8 +38,8 @@ openssl rand -base64 32
 
 Stripe and Turnstile are optional locally. Checkout is disabled unless
 `CHECKOUTS_ENABLED=true`, and the CFP form is disabled unless
-`CFP_ENABLED=true`. If `STRIPE_SECRET_KEY`, `STRIPE_TICKET_TIERS_JSON`, or
-`STRIPE_WEBHOOK_SECRET` are empty, the related Stripe endpoint returns a
+`CFP_ENABLED=true`. If `STRIPE_SECRET_KEY` or `STRIPE_WEBHOOK_SECRET` are empty,
+the related Stripe endpoint returns a
 configuration error after checkout has been enabled. If `TURNSTILE_SITE_KEY` and
 `TURNSTILE_SECRET_KEY` are empty, the Worker skips Turnstile verification for the
 legacy interest endpoint.
@@ -84,46 +83,12 @@ Create a Stripe Product and Price for each ticket tier, then set:
 
 - `CHECKOUTS_ENABLED` to `true` only after local Checkout and webhook testing has passed
 - `CFP_ENABLED` to `true` only when the public call for proposals should be visible
-- `STRIPE_TICKET_TIERS_JSON` to the ticket tier definitions, for example:
-
-```json
-[
-  {
-    "id": "early",
-    "label": "Early bird",
-    "price_id": "price_...",
-    "price_label": "EUR 199",
-    "discount_coupon_id": "coupon_...",
-    "capacity": 40,
-    "available_until": "2026-07-31T20:59:59Z",
-    "sort_order": 1
-  },
-  {
-    "id": "regular",
-    "label": "Regular",
-    "price_id": "price_...",
-    "price_label": "EUR 299",
-    "capacity": 80,
-    "available_from": "2026-08-01T00:00:00Z",
-    "available_until": "2026-09-30T20:59:59Z",
-    "sort_order": 2
-  },
-  {
-    "id": "late",
-    "label": "Late bird",
-    "price_id": "price_...",
-    "price_label": "EUR 399",
-    "capacity": 30,
-    "available_from": "2026-10-01T00:00:00Z",
-    "sort_order": 3
-  }
-]
-```
-
-`discount_coupon_id` is optional. When present on the selected tier, the Worker
-passes that Stripe Coupon ID to Checkout as an automatic discount for that
-session. Tiers without a configured coupon continue to allow Stripe promotion
-codes in Checkout.
+- create ticket tiers in `/admin` after migrations have been applied. Each tier
+  needs a stable ID, display label, Stripe Price ID, capacity, and optional sale
+  window. `discount_coupon_id` is optional. When present on the selected tier,
+  the Worker passes that Stripe Coupon ID to Checkout as an automatic discount
+  for that session. Tiers without a configured coupon continue to allow Stripe
+  promotion codes in Checkout.
 
 - `STRIPE_SECRET_KEY` to the restricted or secret key that can create Checkout Sessions
 - `STRIPE_WEBHOOK_SECRET` to the signing secret for a Stripe webhook endpoint pointed at `/api/stripe-webhook`
@@ -162,7 +127,6 @@ wrangler secret put EMAIL_ENCRYPTION_KEY
 wrangler secret put ADMIN_PASSWORD
 wrangler secret put TURNSTILE_SECRET_KEY
 wrangler secret put STRIPE_SECRET_KEY
-wrangler secret put STRIPE_TICKET_TIERS_JSON
 wrangler secret put STRIPE_WEBHOOK_SECRET
 ```
 

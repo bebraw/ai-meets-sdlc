@@ -4,10 +4,22 @@
     "scripts": [{ "name": "index" }],
     "context": {
       "meta": {
-        "title": "AI meets SDLC",
+        "title": "SDLCAI",
         "description": "A one-day seminar at Marsio Saastamoinen Foundation Stage, Aalto University, on how AI is changing software development lifecycles.",
         "ogEyebrow": "13 October 2026 / Marsio",
         "ogDescription": "A one-day seminar on how AI is changing the software development lifecycle."
+      }
+    }
+  },
+  "schedule": {
+    "layout": "schedule",
+    "scripts": [{ "name": "schedule" }],
+    "context": {
+      "meta": {
+        "title": "SDLCAI schedule",
+        "description": "Public schedule for SDLCAI.",
+        "ogEyebrow": "Schedule",
+        "ogDescription": "Published seminar day schedule."
       }
     }
   },
@@ -16,8 +28,8 @@
     "scripts": [{ "name": "admin" }],
     "context": {
       "meta": {
-        "title": "AI meets SDLC admin",
-        "description": "Authenticated event administration for AI meets SDLC.",
+        "title": "SDLCAI admin",
+        "description": "Authenticated event administration for SDLCAI.",
         "ogEyebrow": "Admin",
         "ogDescription": "Authenticated event administration."
       }
