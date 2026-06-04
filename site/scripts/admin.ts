@@ -63,6 +63,16 @@ type AdminTier = {
   sort_order: number;
 };
 
+type AdminFeatureFlag = {
+  default_enabled: boolean;
+  description: string;
+  enabled: boolean;
+  key: string;
+  label: string;
+  source: string;
+  updated_at: string | null;
+};
+
 type AdminCounts = {
   cfp_proposals: number;
   interests: number;
@@ -73,6 +83,7 @@ type AdminDashboardResponse = {
   counts?: AdminCounts;
   cfp_proposals?: AdminCfpProposal[];
   error?: string;
+  feature_flags?: AdminFeatureFlag[];
   interests?: AdminInterest[];
   limit?: number;
   offset?: number;
@@ -94,6 +105,11 @@ type AdminScheduleResponse = {
 type AdminTierResponse = {
   deleted_id?: string;
   error?: string;
+};
+
+type AdminFeatureFlagResponse = {
+  error?: string;
+  feature_flags?: AdminFeatureFlag[];
 };
 
 let currentCfpProposals: AdminCfpProposal[] = [];
@@ -163,6 +179,12 @@ function initAdmin() {
   const tierClear = document.querySelector(
     "[data-admin-tier-clear]",
   ) as HTMLButtonElement | null;
+  const featureFlagForm = document.querySelector(
+    "[data-admin-feature-flags-form]",
+  ) as HTMLFormElement | null;
+  const featureFlagSubmit = document.querySelector(
+    "[data-admin-feature-flags-submit]",
+  ) as HTMLButtonElement | null;
 
   function setStatus(message: string) {
     if (status) {
@@ -184,6 +206,7 @@ function initAdmin() {
       renderDashboard({
         cfpProposals: result.cfp_proposals ?? [],
         counts: result.counts,
+        featureFlags: result.feature_flags ?? [],
         interests: result.interests ?? [],
         orders: result.orders ?? [],
         scheduleEntries: result.schedule_entries ?? [],
@@ -324,6 +347,52 @@ function initAdmin() {
     resetTierForm();
   });
 
+  featureFlagForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (featureFlagSubmit?.disabled) return;
+
+    featureFlagSubmit?.setAttribute("disabled", "true");
+    setStatus("Saving feature flags...");
+
+    try {
+      const formData = new FormData(featureFlagForm);
+      const flagKeys = formData.getAll("flag_key");
+
+      for (const key of flagKeys) {
+        const flagFormData = new FormData();
+        const normalizedKey = typeof key === "string" ? key : "";
+
+        flagFormData.set("key", normalizedKey);
+        if (formData.get(`flag_enabled:${normalizedKey}`) === "yes") {
+          flagFormData.set("enabled", "yes");
+        }
+
+        const response = await fetch("/api/admin/feature-flag", {
+          headers: {
+            "x-admin-action": "feature-flag",
+          },
+          method: "POST",
+          body: flagFormData,
+        });
+        const result = (await response.json()) as AdminFeatureFlagResponse;
+
+        if (!response.ok || result.error) {
+          throw new Error(result.error || "Feature flag save failed");
+        }
+      }
+
+      setStatus("Feature flags saved.");
+      await loadDashboard();
+    } catch (error) {
+      setStatus(
+        error instanceof Error ? error.message : "Feature flag save failed",
+      );
+    } finally {
+      featureFlagSubmit?.removeAttribute("disabled");
+    }
+  });
+
   refreshButton?.addEventListener("click", () => {
     void loadDashboard();
   });
@@ -334,6 +403,7 @@ function initAdmin() {
 function renderDashboard({
   cfpProposals,
   counts,
+  featureFlags,
   interests,
   orders,
   scheduleEntries,
@@ -341,6 +411,7 @@ function renderDashboard({
 }: {
   cfpProposals: AdminCfpProposal[];
   counts: AdminCounts | undefined;
+  featureFlags: AdminFeatureFlag[];
   interests: AdminInterest[];
   orders: AdminOrder[];
   scheduleEntries: AdminScheduleEntry[];
@@ -350,6 +421,7 @@ function renderDashboard({
   currentScheduleEntries = scheduleEntries;
   currentTiers = tiers;
   renderMetrics({ cfpProposals, counts, interests, orders, tiers });
+  renderFeatureFlags(featureFlags);
   renderCfpProposals(cfpProposals);
   renderScheduleCfpSelect(cfpProposals);
   renderScheduleEntries(scheduleEntries);
@@ -357,6 +429,55 @@ function renderDashboard({
   renderTiers(tiers);
   renderOrders(orders);
   renderInterests(interests);
+}
+
+function renderFeatureFlags(flags: AdminFeatureFlag[]) {
+  const root = document.querySelector("[data-admin-feature-flags]");
+
+  if (!root) return;
+
+  root.innerHTML = "";
+
+  for (const flag of flags) {
+    const item = document.createElement("label");
+    const input = document.createElement("input");
+    const hiddenKey = document.createElement("input");
+    const content = document.createElement("span");
+    const title = document.createElement("strong");
+    const description = document.createElement("span");
+    const meta = document.createElement("span");
+
+    item.className =
+      "grid gap-3 border border-ink/40 p-4 md:grid-cols-[auto_1fr]";
+    input.className = "mt-1 h-5 w-5";
+    input.type = "checkbox";
+    input.name = `flag_enabled:${flag.key}`;
+    input.value = "yes";
+    input.checked = flag.enabled;
+
+    hiddenKey.type = "hidden";
+    hiddenKey.name = "flag_key";
+    hiddenKey.value = flag.key;
+
+    content.className = "grid gap-1";
+    title.className = "text-base font-bold uppercase";
+    title.textContent = flag.label;
+    description.className = "text-sm text-muted";
+    description.textContent = flag.description;
+    meta.className = "text-xs font-bold uppercase text-muted";
+    meta.textContent =
+      flag.source === "admin"
+        ? `Admin override / ${flag.updated_at ? formatDate(flag.updated_at) : "saved"}`
+        : `Env default / ${flag.default_enabled ? "enabled" : "disabled"}`;
+
+    content.appendChild(title);
+    content.appendChild(description);
+    content.appendChild(meta);
+    item.appendChild(input);
+    item.appendChild(hiddenKey);
+    item.appendChild(content);
+    root.appendChild(item);
+  }
 }
 
 function renderMetrics({

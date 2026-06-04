@@ -10,8 +10,8 @@ This site is deployed as a Cloudflare Worker with static assets, D1 for the inte
 | ----------------------- | -------------- | ------------------------------------------------------------ |
 | `ADMIN_PASSWORD`        | Secret         | Protects `/admin` and `/api/admin/*` with Basic Auth.        |
 | `ASSETS`                | Workers Assets | Serves the Gustwind build output from `build/`.              |
-| `CHECKOUTS_ENABLED`     | Worker var     | Enables Checkout only when set exactly to `true`.            |
-| `CFP_ENABLED`           | Worker var     | Enables the public CFP form only when set exactly to `true`. |
+| `CHECKOUTS_ENABLED`     | Worker var     | Default Checkout flag before `/admin` stores an override.    |
+| `CFP_ENABLED`           | Worker var     | Default CFP flag before `/admin` stores an override.         |
 | `INTERESTS`             | D1             | Stores encrypted interest submissions and orders.            |
 | `INTEREST_BACKUPS`      | R2             | Stores daily encrypted JSON backups.                         |
 | `STRIPE_CANCEL_URL`     | Var/secret     | Optional explicit Checkout cancellation URL.                 |
@@ -36,9 +36,11 @@ Generate a strong local value for `EMAIL_ENCRYPTION_KEY`, for example:
 openssl rand -base64 32
 ```
 
-Stripe and Turnstile are optional locally. Checkout is disabled unless
-`CHECKOUTS_ENABLED=true`, and the CFP form is disabled unless
-`CFP_ENABLED=true`. If `STRIPE_SECRET_KEY` or `STRIPE_WEBHOOK_SECRET` are empty,
+Stripe and Turnstile are optional locally. Checkout is disabled unless the
+checkout feature flag is enabled, and the CFP form is disabled unless the CFP
+feature flag is enabled. `CHECKOUTS_ENABLED` and `CFP_ENABLED` remain the
+defaults before admin-managed flag values have been saved. If
+`STRIPE_SECRET_KEY` or `STRIPE_WEBHOOK_SECRET` are empty,
 the related Stripe endpoint returns a
 configuration error after checkout has been enabled. If `TURNSTILE_SITE_KEY` and
 `TURNSTILE_SECRET_KEY` are empty, the Worker skips Turnstile verification for the
@@ -79,10 +81,10 @@ Create a Turnstile widget in the Cloudflare dashboard, then set:
 - `TURNSTILE_SITE_KEY` in `wrangler.jsonc`
 - `TURNSTILE_SECRET_KEY` as a Worker secret
 
-Create a Stripe Product and Price for each ticket tier, then set:
+Create a Stripe Product and Price for each ticket tier, then:
 
-- `CHECKOUTS_ENABLED` to `true` only after local Checkout and webhook testing has passed
-- `CFP_ENABLED` to `true` only when the public call for proposals should be visible
+- enable the checkout feature flag in `/admin` only after local Checkout and webhook testing has passed
+- enable the CFP feature flag in `/admin` only when the public call for proposals should be visible
 - create ticket tiers in `/admin` after migrations have been applied. Each tier
   needs a stable ID, display label, Stripe Price ID, capacity, and optional sale
   window. `discount_coupon_id` is optional. When present on the selected tier,
@@ -104,7 +106,8 @@ The authenticated admin interface is available at `/admin` after setting
 `ADMIN_PASSWORD`. The browser shows the native Basic Auth prompt; use any
 username and the configured password. The admin API decrypts interest-list and
 order emails plus CFP proposals for display, shows configured ticket tiers
-including optional `discount_coupon_id` values, and can create manual paid registrations. Manual
+including optional `discount_coupon_id` values, manages public CFP and checkout
+feature flags, and can create manual paid registrations. Manual
 registrations are inserted atomically against the same tier capacity calculation
 used by public checkout. Failed admin authentication attempts are rate limited
 through D1, and manual registrations write an audit row containing the order ID,
@@ -130,14 +133,15 @@ wrangler secret put STRIPE_SECRET_KEY
 wrangler secret put STRIPE_WEBHOOK_SECRET
 ```
 
-`wrangler.jsonc` keeps `CHECKOUTS_ENABLED` at `false` by default. Change that
-Worker var to `true` in Cloudflare, or in `wrangler.jsonc` before a deployment,
-only when you are ready to open Checkout.
+`wrangler.jsonc` keeps `CHECKOUTS_ENABLED` at `false` by default. After
+migrations have been applied, use `/admin` to open or close Checkout without a
+Worker redeploy. Set the Worker var to `true` only if Checkout should default to
+open before an admin override exists.
 
-`CFP_ENABLED` also defaults to `false`. Change it to `true` only when you are
-ready to show the CFP form. The public CFP accepts posters and 15 minute pitches;
-longer slots are curated separately. The consent text states that acceptance
-covers only the event participation ticket.
+`CFP_ENABLED` also defaults to `false`. After migrations have been applied, use
+`/admin` to show or hide the CFP form without a Worker redeploy. The public CFP
+accepts posters and 15 minute pitches; longer slots are curated separately. The
+consent text states that acceptance covers only the event participation ticket.
 
 Use a strong `EMAIL_ENCRYPTION_KEY` and keep it outside version control. Losing it means existing encrypted submissions and backups cannot be decrypted.
 

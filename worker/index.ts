@@ -129,6 +129,14 @@ interface ScheduleEntryRow {
   updated_at: string;
 }
 
+interface FeatureFlagRow {
+  description: string | null;
+  enabled: number;
+  key: string;
+  label: string;
+  updated_at: string;
+}
+
 interface LocalCheckoutOrder {
   quantity: number;
   reservation_id: string | null;
@@ -140,6 +148,22 @@ const CHECKOUT_RESERVATION_SECONDS = 30 * 60;
 const CHECKOUT_RESERVATION_MS = CHECKOUT_RESERVATION_SECONDS * 1000;
 const ADMIN_AUTH_WINDOW_MS = 15 * 60 * 1000;
 const ADMIN_AUTH_MAX_FAILURES = 10;
+const FEATURE_FLAGS = [
+  {
+    description: "Allows visitors to submit CFP proposals.",
+    envKey: "CFP_ENABLED",
+    key: "cfp",
+    label: "CFP form",
+  },
+  {
+    description: "Allows visitors to start Stripe Checkout for ticket tiers.",
+    envKey: "CHECKOUTS_ENABLED",
+    key: "checkout",
+    label: "Ticket checkout",
+  },
+] as const;
+
+type FeatureFlagKey = (typeof FEATURE_FLAGS)[number]["key"];
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
@@ -205,6 +229,23 @@ export default {
       if (mutationAuthResponse) return mutationAuthResponse;
 
       return handleAdminTicketTierMutation(request, env);
+    }
+
+    if (url.pathname === "/api/admin/feature-flag") {
+      if (request.method !== "POST") {
+        return jsonResponse({ error: "Method not allowed" }, 405);
+      }
+
+      const authResponse = await requireAdminAuth(request, env);
+      if (authResponse) return authResponse;
+
+      const mutationAuthResponse = requireAdminMutationRequest(
+        request,
+        "feature-flag",
+      );
+      if (mutationAuthResponse) return mutationAuthResponse;
+
+      return handleAdminFeatureFlagMutation(request, env);
     }
 
     if (url.pathname === "/api/schedule") {
@@ -329,6 +370,7 @@ async function handleAdminDashboard(
   const url = new URL(request.url);
   const limit = normalizeAdminPageLimit(url.searchParams.get("limit"));
   const offset = normalizeAdminPageOffset(url.searchParams.get("offset"));
+  const featureFlags = await getFeatureFlags(env);
   const tiers = await getTicketTiers(env, { includeInactive: true });
   const availability = await getTicketTierAvailability(env, tiers, new Date());
   const [
@@ -428,6 +470,7 @@ async function handleAdminDashboard(
       orders: Number(orderCount?.count ?? 0),
     },
     cfp_proposals: cfpProposals,
+    feature_flags: featureFlags,
     limit,
     offset,
     ok: true,
@@ -596,6 +639,67 @@ async function handleAdminTicketTierMutation(
     .run();
 
   return jsonResponse({ ok: true });
+}
+
+async function handleAdminFeatureFlagMutation(
+  request: Request,
+  env: Env,
+): Promise<Response> {
+  if (!env.INTERESTS) {
+    return jsonResponse(
+      { error: "Feature flag storage is not configured" },
+      503,
+    );
+  }
+
+  const formData = await request.formData();
+  const key = normalizeFeatureFlagKey(formData.get("key"));
+  const definition = key
+    ? FEATURE_FLAGS.find((candidate) => candidate.key === key)
+    : null;
+
+  if (!definition) {
+    return jsonResponse({ error: "Choose a feature flag" }, 400);
+  }
+
+  const enabled = formData.get("enabled") === "yes" ? 1 : 0;
+  const now = new Date().toISOString();
+
+  try {
+    await env.INTERESTS.prepare(
+      `INSERT INTO feature_flags (
+        key,
+        enabled,
+        label,
+        description,
+        created_at,
+        updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?)
+      ON CONFLICT(key) DO UPDATE SET
+        enabled = excluded.enabled,
+        label = excluded.label,
+        description = excluded.description,
+        updated_at = excluded.updated_at`,
+    )
+      .bind(
+        definition.key,
+        enabled,
+        definition.label,
+        definition.description,
+        now,
+        now,
+      )
+      .run();
+  } catch (error) {
+    if (!isMissingFeatureFlagsTableError(error)) throw error;
+
+    return jsonResponse(
+      { error: "Feature flag migration has not been applied" },
+      503,
+    );
+  }
+
+  return jsonResponse({ ok: true, feature_flags: await getFeatureFlags(env) });
 }
 
 async function getAdminScheduleEntries(env: Env) {
@@ -1059,7 +1163,7 @@ async function handleCfpProposal(
   request: Request,
   env: Env,
 ): Promise<Response> {
-  if (!isCfpEnabled(env)) {
+  if (!(await isCfpEnabled(env))) {
     return jsonResponse({ error: "Call for proposals is not open" }, 503);
   }
 
@@ -1165,7 +1269,7 @@ async function handleCfpProposal(
 }
 
 async function handleCheckout(request: Request, env: Env): Promise<Response> {
-  if (!isCheckoutEnabled(env)) {
+  if (!(await isCheckoutEnabled(env))) {
     return jsonResponse({ error: "Ticket checkout is not open yet" }, 503);
   }
 
@@ -2202,25 +2306,82 @@ async function injectRuntimeConfig(
   env: Env,
 ): Promise<Response> {
   const html = await response.text();
+  const [cfpEnabled, checkoutEnabled] = await Promise.all([
+    isCfpEnabled(env),
+    isCheckoutEnabled(env),
+  ]);
 
   return new Response(
     html
       .replaceAll("__TURNSTILE_SITE_KEY__", env.TURNSTILE_SITE_KEY ?? "")
-      .replaceAll("__CFP_ENABLED__", isCfpEnabled(env) ? "true" : "false")
-      .replaceAll(
-        "__CHECKOUTS_ENABLED__",
-        isCheckoutEnabled(env) ? "true" : "false",
-      ),
+      .replaceAll("__CFP_ENABLED__", cfpEnabled ? "true" : "false")
+      .replaceAll("__CHECKOUTS_ENABLED__", checkoutEnabled ? "true" : "false"),
     response,
   );
 }
 
-function isCheckoutEnabled(env: Env): boolean {
-  return env.CHECKOUTS_ENABLED === "true";
+async function getFeatureFlags(env: Env) {
+  let rows: D1Result<FeatureFlagRow> | null = null;
+
+  if (env.INTERESTS) {
+    try {
+      rows = await env.INTERESTS.prepare(
+        `SELECT key, enabled, label, description, updated_at
+        FROM feature_flags
+        WHERE key IN (${FEATURE_FLAGS.map(() => "?").join(", ")})`,
+      )
+        .bind(...FEATURE_FLAGS.map((flag) => flag.key))
+        .all<FeatureFlagRow>();
+    } catch (error) {
+      if (!isMissingFeatureFlagsTableError(error)) throw error;
+    }
+  }
+
+  const rowsByKey = new Map(
+    (rows?.results ?? []).map((row) => [row.key, row] as const),
+  );
+
+  return FEATURE_FLAGS.map((definition) => {
+    const row = rowsByKey.get(definition.key);
+    const defaultEnabled = getEnvFeatureFlag(env, definition.envKey);
+
+    return {
+      default_enabled: defaultEnabled,
+      description: row?.description ?? definition.description,
+      enabled: row ? row.enabled === 1 : defaultEnabled,
+      key: definition.key,
+      label: row?.label ?? definition.label,
+      source: row ? "admin" : "env",
+      updated_at: row?.updated_at ?? null,
+    };
+  });
 }
 
-function isCfpEnabled(env: Env): boolean {
-  return env.CFP_ENABLED === "true";
+async function isCheckoutEnabled(env: Env): Promise<boolean> {
+  const flag = (await getFeatureFlags(env)).find(
+    (candidate) => candidate.key === "checkout",
+  );
+
+  return flag?.enabled ?? getEnvFeatureFlag(env, "CHECKOUTS_ENABLED");
+}
+
+async function isCfpEnabled(env: Env): Promise<boolean> {
+  const flag = (await getFeatureFlags(env)).find(
+    (candidate) => candidate.key === "cfp",
+  );
+
+  return flag?.enabled ?? getEnvFeatureFlag(env, "CFP_ENABLED");
+}
+
+function getEnvFeatureFlag(env: Env, key: "CFP_ENABLED" | "CHECKOUTS_ENABLED") {
+  return env[key] === "true";
+}
+
+function isMissingFeatureFlagsTableError(error: unknown): boolean {
+  return (
+    error instanceof Error &&
+    error.message.toLowerCase().includes("feature_flags")
+  );
 }
 
 async function requireAdminAuth(
@@ -2517,6 +2678,16 @@ function normalizeTicketTierId(value: FormDataEntryValue | null): string {
   const normalized = normalizeOptionalText(value, 80);
 
   return /^[A-Za-z0-9_-]+$/.test(normalized) ? normalized : "";
+}
+
+function normalizeFeatureFlagKey(
+  value: FormDataEntryValue | null,
+): FeatureFlagKey | "" {
+  const normalized = normalizeOptionalText(value, 80);
+
+  return FEATURE_FLAGS.some((flag) => flag.key === normalized)
+    ? (normalized as FeatureFlagKey)
+    : "";
 }
 
 function normalizeCurrency(value: FormDataEntryValue | null): string {

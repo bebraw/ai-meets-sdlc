@@ -83,8 +83,9 @@ variables before opening sales:
 - `STRIPE_SECRET_KEY`
 - `STRIPE_WEBHOOK_SECRET`
 
-Checkout is disabled unless `CHECKOUTS_ENABLED` is exactly `true`. Keep it
-`false` in production while testing locally.
+Checkout is disabled unless the admin-managed checkout flag is enabled. The
+`CHECKOUTS_ENABLED` Worker variable remains the default before a flag value has
+been saved in `/admin`; keep it `false` in production while testing locally.
 
 `STRIPE_SUCCESS_URL` and `STRIPE_CANCEL_URL` are optional. When omitted, the
 Worker derives them from the current request origin.

@@ -140,6 +140,35 @@
           data-admin-metrics
         ></section>
 
+        <section
+          class="mt-8 grid gap-5 border border-ink bg-paper p-5 md:grid-cols-[1fr_16rem]"
+        >
+          <div>
+            <h2 class="font-headline text-3xl font-black uppercase">
+              Feature flags
+            </h2>
+            <p class="mt-2 text-sm font-bold uppercase text-muted">
+              Public CFP and checkout availability
+            </p>
+          </div>
+          <form
+            class="grid gap-4 md:col-span-2"
+            data-admin-feature-flags-form
+          >
+            <div class="grid gap-3 md:grid-cols-2" data-admin-feature-flags>
+            </div>
+            <div>
+              <button
+                class="border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink disabled:cursor-not-allowed disabled:border-muted disabled:bg-muted disabled:text-paper"
+                data-admin-feature-flags-submit
+                type="submit"
+              >
+                Save flags
+              </button>
+            </div>
+          </form>
+        </section>
+
         <section class="mt-8 grid gap-8">
           <div>
             <div
