@@ -22,7 +22,8 @@ export async function getTicketTiers(
       available_from,
       available_until,
       sort_order,
-      is_active
+      is_active,
+      tito_release_slug
     FROM ticket_tiers
     ${options.includeInactive ? "" : "WHERE is_active = 1"}
     ORDER BY sort_order ASC, id ASC`,
@@ -40,6 +41,7 @@ export async function getTicketTiers(
     priceId: row.stripe_price_id,
     priceLabel: row.price_label ?? undefined,
     sortOrder: row.sort_order,
+    titoReleaseSlug: row.tito_release_slug ?? undefined,
   }));
 }
 

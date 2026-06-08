@@ -10,6 +10,7 @@ declare namespace Cloudflare {
     INTERESTS: D1Database;
     ADMIN_PASSWORD: string;
     ASSETS: Fetcher;
+    CHECKOUT_PROVIDER: string;
     CHECKOUTS_ENABLED: string;
     CFP_ENABLED: string;
     EMAIL_ENCRYPTION_KEY: string;
@@ -17,6 +18,7 @@ declare namespace Cloudflare {
     STRIPE_SECRET_KEY: string;
     STRIPE_SUCCESS_URL: string;
     STRIPE_WEBHOOK_SECRET: string;
+    TITO_EVENT_PATH: string;
     TURNSTILE_SECRET_KEY: string;
     TURNSTILE_SITE_KEY: string;
   }
@@ -31,6 +33,7 @@ declare namespace NodeJS {
   interface ProcessEnv extends StringifyValues<
     Pick<
       Cloudflare.Env,
+      | "CHECKOUT_PROVIDER"
       | "ADMIN_PASSWORD"
       | "CHECKOUTS_ENABLED"
       | "CFP_ENABLED"
@@ -39,6 +42,7 @@ declare namespace NodeJS {
       | "STRIPE_SECRET_KEY"
       | "STRIPE_SUCCESS_URL"
       | "STRIPE_WEBHOOK_SECRET"
+      | "TITO_EVENT_PATH"
       | "TURNSTILE_SECRET_KEY"
       | "TURNSTILE_SITE_KEY"
     >

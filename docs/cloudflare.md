@@ -1,30 +1,33 @@
 # Cloudflare Setup
 
-This site is deployed as a Cloudflare Worker with static assets, D1 for the interest list, R2 for encrypted backups, Stripe Checkout for ticket sales, Turnstile for bot protection, and a scheduled Worker trigger for daily backup export.
+This site is deployed as a Cloudflare Worker with static assets, D1 for the interest list, R2 for encrypted backups, Stripe Checkout or Tito for ticket sales, Turnstile for bot protection, and a scheduled Worker trigger for daily backup export.
 
 ## Bindings
 
 `wrangler.jsonc` expects these bindings:
 
-| Binding                 | Type           | Purpose                                                      |
-| ----------------------- | -------------- | ------------------------------------------------------------ |
-| `ADMIN_PASSWORD`        | Secret         | Protects `/admin` and `/api/admin/*` with Basic Auth.        |
-| `ASSETS`                | Workers Assets | Serves the Gustwind build output from `build/`.              |
-| `CHECKOUTS_ENABLED`     | Worker var     | Default Checkout flag before `/admin` stores an override.    |
-| `CFP_ENABLED`           | Worker var     | Default CFP flag before `/admin` stores an override.         |
-| `INTERESTS`             | D1             | Stores encrypted interest submissions and orders.            |
-| `INTEREST_BACKUPS`      | R2             | Stores daily encrypted JSON backups.                         |
-| `STRIPE_CANCEL_URL`     | Var/secret     | Optional explicit Checkout cancellation URL.                 |
-| `STRIPE_SECRET_KEY`     | Secret         | Creates server-side Stripe Checkout Sessions.                |
-| `STRIPE_SUCCESS_URL`    | Var/secret     | Optional explicit Checkout success URL.                      |
-| `STRIPE_WEBHOOK_SECRET` | Secret         | Verifies Stripe webhook events before order updates.         |
-| `TURNSTILE_SITE_KEY`    | Worker var     | Public Turnstile widget site key injected into HTML.         |
-| `TURNSTILE_SECRET_KEY`  | Secret         | Server-side Turnstile verification key.                      |
-| `EMAIL_ENCRYPTION_KEY`  | Secret         | Key material for encrypting/de-duplicating submissions.      |
+| Binding                 | Type           | Purpose                                                   |
+| ----------------------- | -------------- | --------------------------------------------------------- |
+| `ADMIN_PASSWORD`        | Secret         | Protects `/admin` and `/api/admin/*` with Basic Auth.     |
+| `ASSETS`                | Workers Assets | Serves the Gustwind build output from `build/`.           |
+| `CHECKOUT_PROVIDER`     | Worker var     | Checkout provider: `stripe` or `tito`.                    |
+| `CHECKOUTS_ENABLED`     | Worker var     | Default Checkout flag before `/admin` stores an override. |
+| `CFP_ENABLED`           | Worker var     | Default CFP flag before `/admin` stores an override.      |
+| `INTERESTS`             | D1             | Stores encrypted interest submissions and orders.         |
+| `INTEREST_BACKUPS`      | R2             | Stores daily encrypted JSON backups.                      |
+| `STRIPE_CANCEL_URL`     | Var/secret     | Optional explicit Checkout cancellation URL.              |
+| `STRIPE_SECRET_KEY`     | Secret         | Creates server-side Stripe Checkout Sessions.             |
+| `STRIPE_SUCCESS_URL`    | Var/secret     | Optional explicit Checkout success URL.                   |
+| `STRIPE_WEBHOOK_SECRET` | Secret         | Verifies Stripe webhook events before order updates.      |
+| `TITO_EVENT_PATH`       | Worker var     | Tito event path, for example `account-slug/event-slug`.   |
+| `TURNSTILE_SITE_KEY`    | Worker var     | Public Turnstile widget site key injected into HTML.      |
+| `TURNSTILE_SECRET_KEY`  | Secret         | Server-side Turnstile verification key.                   |
+| `EMAIL_ENCRYPTION_KEY`  | Secret         | Key material for encrypting/de-duplicating submissions.   |
 
 ## Local Testing
 
-Copy the example dotenv file and set a local-only encryption key:
+Copy the example dotenv file and set local-only values there. `.env` is the
+source of truth for local development:
 
 ```bash
 cp .env.example .env
@@ -36,26 +39,32 @@ Generate a strong local value for `EMAIL_ENCRYPTION_KEY`, for example:
 openssl rand -base64 32
 ```
 
-Stripe and Turnstile are optional locally. Checkout is disabled unless the
+Stripe, Tito, and Turnstile are optional locally. Checkout is disabled unless the
 checkout feature flag is enabled, and the CFP form is disabled unless the CFP
 feature flag is enabled. `CHECKOUTS_ENABLED` and `CFP_ENABLED` remain the
-defaults before admin-managed flag values have been saved. If
-`STRIPE_SECRET_KEY` or `STRIPE_WEBHOOK_SECRET` are empty,
-the related Stripe endpoint returns a
-configuration error after checkout has been enabled. If `TURNSTILE_SITE_KEY` and
-`TURNSTILE_SECRET_KEY` are empty, the Worker skips Turnstile verification for the
-legacy interest endpoint.
+defaults before admin-managed flag values have been saved. `CHECKOUT_PROVIDER`
+selects the checkout integration and defaults to `stripe`. If
+`STRIPE_SECRET_KEY` or `STRIPE_WEBHOOK_SECRET` are empty, the related Stripe
+endpoint returns a configuration error after checkout has been enabled. If
+`CHECKOUT_PROVIDER=tito`, checkout returns Tito share URLs and requires
+`TITO_EVENT_PATH` plus a `tito_release_slug` on the selected tier. If
+`TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` are empty, the Worker skips
+Turnstile verification for the legacy interest endpoint.
 
 See [Stripe testing](stripe-testing.md) for the full local Checkout and webhook
 verification flow.
 
-Prepare Wrangler's local `.dev.vars`, apply the local D1 migration, and start the Worker:
+Prepare Wrangler's local `.dev.vars`, apply the local D1 migration, and start
+the Worker:
 
 ```bash
 npm run dev:env
 npm run db:migrate:local
 npm run worker:dev
 ```
+
+Do not edit `.dev.vars` directly. `npm run dev:env` regenerates it from `.env`
+for Wrangler local development.
 
 ## Production Provisioning
 
@@ -81,13 +90,17 @@ Create a Turnstile widget in the Cloudflare dashboard, then set:
 - `TURNSTILE_SITE_KEY` in `wrangler.jsonc`
 - `TURNSTILE_SECRET_KEY` as a Worker secret
 
-Create a Stripe Product and Price for each ticket tier, then:
+Create a Stripe Product and Price for each ticket tier if Stripe remains the
+active checkout provider. If Tito is the active checkout provider, create the
+ticket releases in Tito and copy each release slug from the Tito share URL.
+Then:
 
 - enable the checkout feature flag in `/admin` only after local Checkout and webhook testing has passed
 - enable the CFP feature flag in `/admin` only when the public call for proposals should be visible
 - create ticket tiers in `/admin` after migrations have been applied. Each tier
   needs a stable ID, display label, Stripe Price ID, capacity, and optional sale
-  window. `discount_coupon_id` is optional. When present on the selected tier,
+  window. For Tito checkout, also set `tito_release_slug` for every public tier.
+  `discount_coupon_id` is optional. When present on the selected tier,
   the Worker passes that Stripe Coupon ID to Checkout as an automatic discount
   for that session. Tiers without a configured coupon continue to allow Stripe
   promotion codes in Checkout.
@@ -95,19 +108,29 @@ Create a Stripe Product and Price for each ticket tier, then:
 - `STRIPE_SECRET_KEY` to the restricted or secret key that can create Checkout Sessions
 - `STRIPE_WEBHOOK_SECRET` to the signing secret for a Stripe webhook endpoint pointed at `/api/stripe-webhook`
 - optionally `STRIPE_SUCCESS_URL` and `STRIPE_CANCEL_URL` if the default domain-derived URLs are not suitable
+- `TITO_EVENT_PATH` to the Tito event path, for example `aalto/ai-meets-sdlc`
 
-The Worker exposes `/api/ticket-tiers` for current public availability. During
-Checkout creation it creates an atomic `ticket_reservations` hold if paid orders
-plus active holds can still fit inside the tier capacity. Checkout sessions are
-created with a 30-minute expiration, and Stripe webhooks release or complete the
-hold when the session is paid, expired, or failed.
+When `CHECKOUT_PROVIDER=tito`, `/api/checkout` validates the selected local
+tier, then redirects buyers to Tito's hosted ticket URL in the form
+`https://ti.to/{account}/{event}/with/{release}?{release}=quantity`. Tito
+remains the system of record for payment, email confirmation, refunds, and
+ticket inventory. When `CHECKOUT_PROVIDER=stripe`, the Worker uses Stripe
+Checkout as before.
+
+The Worker exposes `/api/ticket-tiers` for locally configured public
+availability. During Stripe Checkout creation it creates an atomic
+`ticket_reservations` hold if paid orders plus active holds can still fit inside
+the tier capacity. Stripe Checkout sessions are created with a 30-minute
+expiration, and Stripe webhooks release or complete the hold when the session is
+paid, expired, or failed.
 
 The authenticated admin interface is available at `/admin` after setting
 `ADMIN_PASSWORD`. The browser shows the native Basic Auth prompt; use any
 username and the configured password. The admin API decrypts interest-list and
 order emails plus CFP proposals for display, shows configured ticket tiers
-including optional `discount_coupon_id` values, manages public CFP and checkout
-feature flags, and can create manual paid registrations. Manual
+including optional `discount_coupon_id` and `tito_release_slug` values, manages
+public CFP and checkout feature flags, and can create manual paid registrations.
+Manual
 registrations are inserted atomically against the same tier capacity calculation
 used by public checkout. Failed admin authentication attempts are rate limited
 through D1, and manual registrations write an audit row containing the order ID,

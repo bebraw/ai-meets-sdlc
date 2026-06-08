@@ -21,6 +21,7 @@ import { jsonResponse } from "../utils/response";
 
 const CHECKOUT_RESERVATION_SECONDS = 30 * 60;
 const CHECKOUT_RESERVATION_MS = CHECKOUT_RESERVATION_SECONDS * 1000;
+type CheckoutProvider = "stripe" | "tito";
 
 export async function handleCheckout(
   request: Request,
@@ -30,12 +31,8 @@ export async function handleCheckout(
     return jsonResponse({ error: "Ticket checkout is not open yet" }, 503);
   }
 
-  if (!env.STRIPE_SECRET_KEY) {
-    return jsonResponse({ error: "Ticket checkout is not configured" }, 503);
-  }
-
-  if (!env.INTERESTS || !env.EMAIL_ENCRYPTION_KEY) {
-    return jsonResponse({ error: "Order tracking is not configured" }, 503);
+  if (!env.INTERESTS) {
+    return jsonResponse({ error: "Ticket inventory is not configured" }, 503);
   }
 
   const formData = await request.formData();
@@ -88,6 +85,22 @@ export async function handleCheckout(
 
   if (email && !isLikelyEmail(email)) {
     return jsonResponse({ error: "Enter a valid email address" }, 400);
+  }
+
+  if (getCheckoutProvider(env) === "tito") {
+    return startTitoCheckout({
+      env,
+      quantity,
+      tier: selectedTier,
+    });
+  }
+
+  if (!env.STRIPE_SECRET_KEY) {
+    return jsonResponse({ error: "Ticket checkout is not configured" }, 503);
+  }
+
+  if (!env.EMAIL_ENCRYPTION_KEY) {
+    return jsonResponse({ error: "Order tracking is not configured" }, 503);
   }
 
   const reservationExpiresAt = new Date(
@@ -197,4 +210,58 @@ export async function handleCheckout(
   });
 
   return jsonResponse({ ok: true, session_id: session.id, url: session.url });
+}
+
+function getCheckoutProvider(env: Env): CheckoutProvider {
+  return env.CHECKOUT_PROVIDER === "tito" ? "tito" : "stripe";
+}
+
+function startTitoCheckout({
+  env,
+  quantity,
+  tier,
+}: {
+  env: Env;
+  quantity: number;
+  tier: { id: string; label: string; titoReleaseSlug?: string | undefined };
+}): Response {
+  const eventPath = normalizeTitoEventPath(env.TITO_EVENT_PATH);
+
+  if (!eventPath) {
+    return jsonResponse({ error: "Tito checkout is not configured" }, 503);
+  }
+
+  if (!tier.titoReleaseSlug) {
+    return jsonResponse(
+      { error: `${tier.label} is missing a Tito release slug` },
+      503,
+    );
+  }
+
+  const checkoutUrl = new URL(
+    `https://ti.to/${eventPath}/with/${encodeURIComponent(tier.titoReleaseSlug)}`,
+  );
+
+  checkoutUrl.searchParams.set(tier.titoReleaseSlug, String(quantity));
+  checkoutUrl.searchParams.set("source", "sdlcai_site");
+  checkoutUrl.searchParams.set("tier", tier.id);
+
+  return jsonResponse({
+    ok: true,
+    provider: "tito",
+    release_slug: tier.titoReleaseSlug,
+    url: checkoutUrl.toString(),
+  });
+}
+
+function normalizeTitoEventPath(value: string | undefined): string {
+  if (!value) return "";
+
+  const normalized = value.trim().replace(/^\/+|\/+$/g, "");
+
+  return /^[A-Za-z0-9][A-Za-z0-9_-]*\/[A-Za-z0-9][A-Za-z0-9_-]*$/.test(
+    normalized,
+  )
+    ? normalized
+    : "";
 }

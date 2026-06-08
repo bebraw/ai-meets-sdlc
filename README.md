@@ -52,12 +52,14 @@ npm run validate
 
 ## Worker Development
 
-Copy `.env.example` to `.env`, set a local `EMAIL_ENCRYPTION_KEY`, then generate
-Wrangler's `.dev.vars`:
+Copy `.env.example` to `.env`, then set local values there. `.env` is the
+source of truth for local development. Generate Wrangler's `.dev.vars` from it:
 
 ```bash
 npm run dev:env
 ```
+
+Do not edit `.dev.vars` directly; it is generated for `wrangler dev`.
 
 Apply the local D1 migration:
 
@@ -76,12 +78,22 @@ starts Wrangler.
 
 ## Ticket Sales
 
-Ticket purchases use Stripe Checkout. Configure these Worker environment
-variables before opening sales:
+Ticket purchases use the provider selected by `CHECKOUT_PROVIDER`, either
+`stripe` or `tito`. Configure these Worker environment variables before opening
+sales:
 
 - `CHECKOUTS_ENABLED=true`
+- `CHECKOUT_PROVIDER=stripe` or `CHECKOUT_PROVIDER=tito`
+
+For Stripe checkout, set:
+
 - `STRIPE_SECRET_KEY`
 - `STRIPE_WEBHOOK_SECRET`
+
+For Tito checkout, set:
+
+- `TITO_EVENT_PATH`
+- `tito_release_slug` on each public ticket tier in `/admin`
 
 Checkout is disabled unless the admin-managed checkout flag is enabled. The
 `CHECKOUTS_ENABLED` Worker variable remains the default before a flag value has
@@ -91,9 +103,11 @@ been saved in `/admin`; keep it `false` in production while testing locally.
 Worker derives them from the current request origin.
 
 Ticket tiers are maintained in the authenticated admin interface and stored in
-D1. Each tier defines the available pool, Stripe Price ID, capacity, optional
-discount coupon, and optional sale window. Starting Stripe Checkout creates a
-30-minute hold for the selected tier, and paid orders keep consuming capacity.
+D1. Each tier defines the available pool, Stripe Price ID, optional Tito release
+slug, capacity, optional discount coupon, and optional sale window. Starting
+Stripe Checkout creates a 30-minute hold for the selected tier, and paid orders
+keep consuming local capacity. Tito checkout redirects to Tito's hosted checkout
+and leaves final inventory, payment, and confirmation handling to Tito.
 
 Stripe webhooks update the local D1 `orders` table. Buyer email is encrypted
 before storage, while Stripe session/payment IDs and payment status remain

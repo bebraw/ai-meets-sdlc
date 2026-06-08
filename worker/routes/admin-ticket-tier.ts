@@ -70,6 +70,10 @@ export async function handleAdminTicketTierMutation(
     normalizeOptionalText(formData.get("discount_coupon_id"), 255),
     255,
   );
+  const titoReleaseSlug = normalizeOptionalText(
+    formData.get("tito_release_slug"),
+    255,
+  );
   const availableFrom = normalizeScheduleDate(formData.get("available_from"));
   const availableUntil = normalizeScheduleDate(formData.get("available_until"));
   const sortOrder = normalizeInteger(formData.get("sort_order"), 0, 9999);
@@ -113,13 +117,14 @@ export async function handleAdminTicketTierMutation(
       currency,
       capacity,
       discount_coupon_id,
+      tito_release_slug,
       available_from,
       available_until,
       sort_order,
       is_active,
       created_at,
       updated_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(id) DO UPDATE SET
       label = excluded.label,
       stripe_price_id = excluded.stripe_price_id,
@@ -127,6 +132,7 @@ export async function handleAdminTicketTierMutation(
       currency = excluded.currency,
       capacity = excluded.capacity,
       discount_coupon_id = excluded.discount_coupon_id,
+      tito_release_slug = excluded.tito_release_slug,
       available_from = excluded.available_from,
       available_until = excluded.available_until,
       sort_order = excluded.sort_order,
@@ -141,6 +147,7 @@ export async function handleAdminTicketTierMutation(
       currency || null,
       capacity,
       discountCouponId || null,
+      titoReleaseSlug || null,
       availableFrom || null,
       availableUntil || null,
       sortOrder,

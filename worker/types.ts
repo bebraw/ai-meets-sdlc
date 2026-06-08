@@ -49,6 +49,7 @@ export interface TicketTier {
   priceId: string;
   priceLabel?: string | undefined;
   sortOrder: number;
+  titoReleaseSlug?: string | undefined;
 }
 
 export interface TicketTierAvailability extends TicketTier {
@@ -69,6 +70,7 @@ export interface TicketTierRow {
   price_label: string | null;
   sort_order: number;
   stripe_price_id: string;
+  tito_release_slug: string | null;
 }
 
 export interface AdminInterestRow {

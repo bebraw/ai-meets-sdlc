@@ -158,8 +158,8 @@ function initCheckoutForm() {
 
       setCheckoutStatus(
         orderStatus === "paid"
-          ? `Order paid for ${quantityText}${tierText}. Stripe will send your receipt.`
-          : `Order status: ${orderStatus}${tierText}. Stripe will send your receipt when payment is complete.`,
+          ? `Order paid for ${quantityText}${tierText}. Your receipt will be sent by the payment provider.`
+          : `Order status: ${orderStatus}${tierText}. Your receipt will be sent when payment is complete.`,
       );
     } catch (error) {
       setCheckoutStatus(

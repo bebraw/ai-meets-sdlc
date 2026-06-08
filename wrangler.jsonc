@@ -24,6 +24,8 @@
   "vars": {
     "CHECKOUTS_ENABLED": "false",
     "CFP_ENABLED": "false",
+    "CHECKOUT_PROVIDER": "stripe",
+    "TITO_EVENT_PATH": "",
     // Public Turnstile site key. Replace this after creating the widget.
     "TURNSTILE_SITE_KEY": "0x4AAAAAADGyYOoRrI5BgaNQ",
   },

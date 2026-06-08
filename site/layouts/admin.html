@@ -151,12 +151,11 @@
               Public CFP and checkout availability
             </p>
           </div>
-          <form
-            class="grid gap-4 md:col-span-2"
-            data-admin-feature-flags-form
-          >
-            <div class="grid gap-3 md:grid-cols-2" data-admin-feature-flags>
-            </div>
+          <form class="grid gap-4 md:col-span-2" data-admin-feature-flags-form>
+            <div
+              class="grid gap-3 md:grid-cols-2"
+              data-admin-feature-flags
+            ></div>
             <div>
               <button
                 class="border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink disabled:cursor-not-allowed disabled:border-muted disabled:bg-muted disabled:text-paper"
@@ -449,6 +448,17 @@
                     required
                   />
                 </label>
+                <label class="grid gap-2">
+                  <span class="text-sm font-bold uppercase text-muted"
+                    >Tito release slug</span
+                  >
+                  <input
+                    class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                    name="tito_release_slug"
+                    maxlength="255"
+                    placeholder="gjdvhrugccg"
+                  />
+                </label>
                 <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-1">
                   <label class="grid gap-2">
                     <span class="text-sm font-bold uppercase text-muted"
@@ -563,6 +573,7 @@
                     <tr>
                       <th class="px-3 py-2">Tier</th>
                       <th class="px-3 py-2">Price</th>
+                      <th class="px-3 py-2">Tito release</th>
                       <th class="px-3 py-2">Discount code</th>
                       <th class="px-3 py-2">Sale window</th>
                       <th class="px-3 py-2 text-right">Held/Paid</th>

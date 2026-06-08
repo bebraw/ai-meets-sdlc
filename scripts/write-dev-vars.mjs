@@ -5,12 +5,15 @@ config();
 
 const values = {
   ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
+  CHECKOUT_PROVIDER: process.env.CHECKOUT_PROVIDER ?? "stripe",
+  CHECKOUTS_ENABLED: process.env.CHECKOUTS_ENABLED ?? "false",
   CFP_ENABLED: process.env.CFP_ENABLED ?? "false",
   EMAIL_ENCRYPTION_KEY: process.env.EMAIL_ENCRYPTION_KEY,
   STRIPE_CANCEL_URL: process.env.STRIPE_CANCEL_URL ?? "",
   STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY ?? "",
   STRIPE_SUCCESS_URL: process.env.STRIPE_SUCCESS_URL ?? "",
   STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET ?? "",
+  TITO_EVENT_PATH: process.env.TITO_EVENT_PATH ?? "",
   TURNSTILE_SECRET_KEY: process.env.TURNSTILE_SECRET_KEY ?? "",
   TURNSTILE_SITE_KEY: process.env.TURNSTILE_SITE_KEY ?? "",
 };

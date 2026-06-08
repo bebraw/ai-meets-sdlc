@@ -149,6 +149,7 @@ export async function handleAdminDashboard(
       price_label: tier.priceLabel ?? null,
       reserved_quantity: tier.reservedQuantity,
       sort_order: tier.sortOrder,
+      tito_release_slug: tier.titoReleaseSlug ?? null,
     })),
   });
 }

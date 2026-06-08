@@ -61,6 +61,7 @@ type AdminTier = {
   price_label: string | null;
   reserved_quantity: number;
   sort_order: number;
+  tito_release_slug: string | null;
 };
 
 type AdminFeatureFlag = {
@@ -665,6 +666,7 @@ function renderTiers(tiers: AdminTier[]) {
     for (const [index, value] of [
       `${tier.label} (${tier.id})`,
       tier.price_label || tier.price_id,
+      tier.tito_release_slug || "None",
       tier.discount_coupon_id || "None",
       formatSaleWindow(tier),
       `${tier.reserved_quantity}/${tier.capacity}`,
@@ -674,7 +676,7 @@ function renderTiers(tiers: AdminTier[]) {
       const cell = document.createElement("td");
 
       cell.className =
-        index === 4 || index === 5
+        index === 5 || index === 6
           ? "px-3 py-2 text-right align-top"
           : "px-3 py-2 align-top";
       cell.textContent = value;
@@ -807,6 +809,7 @@ function populateTierForm(tier: AdminTier) {
   setTierField("label", tier.label);
   setTierField("price_id", tier.price_id);
   setTierField("price_label", tier.price_label || "");
+  setTierField("tito_release_slug", tier.tito_release_slug || "");
   setTierField("currency", tier.currency || "");
   setTierField("capacity", String(tier.capacity));
   setTierField("discount_coupon_id", tier.discount_coupon_id || "");
