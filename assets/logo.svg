@@ -1,16 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 160" role="img" aria-labelledby="title desc">
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 160 160"
+  role="img"
+  aria-labelledby="title desc"
+>
   <title id="title">SDLCAI</title>
-  <desc id="desc">Black and white SDLCAI seminar wordmark.</desc>
-  <rect width="520" height="160" fill="#f6f4ef" />
-  <text
-    x="22"
-    y="126"
-    fill="#0b0b0b"
-    font-family="Impact, Arial Black, Helvetica, sans-serif"
-    font-size="138"
-    font-weight="900"
-    letter-spacing="0"
-  >
-    SDLCAI
-  </text>
+  <desc id="desc">Square SDLCAI AI frame mark.</desc>
+  <rect width="160" height="160" fill="#f6f4ef" />
+  <rect x="14" y="14" width="132" height="132" fill="#0b0b0b" />
+  <rect
+    x="26"
+    y="26"
+    width="108"
+    height="108"
+    fill="none"
+    stroke="#f6f4ef"
+    stroke-width="8"
+  />
+  <g fill="none" stroke="#f6f4ef" stroke-linecap="square" stroke-width="8">
+    <path d="M48 108 80 50l33 58" stroke-linejoin="miter" />
+    <path d="M63 86h35M118 50v58" />
+  </g>
+  <g fill="#f6f4ef">
+    <circle cx="40" cy="40" r="7" />
+    <circle cx="120" cy="40" r="7" />
+    <circle cx="40" cy="120" r="7" />
+    <circle cx="120" cy="120" r="7" />
+  </g>
 </svg>

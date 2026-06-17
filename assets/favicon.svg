@@ -1,13 +1,28 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="SDLCAI">
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 160 160"
+  role="img"
+  aria-label="SDLCAI"
+>
   <rect width="160" height="160" fill="#f6f4ef" />
-  <g fill="#0b0b0b">
-    <path d="M16 16h128v6H16zM16 138h128v6H16zM16 16h6v128h-6zM138 16h6v128h-6z" />
-    <path fill-rule="evenodd" d="M80 34a46 46 0 1 1-39 70l8-5a36 36 0 1 0 31-55z" />
-    <path d="M80 34h39v39h-10V51L86 74l-7-7 23-23H80z" />
-    <path d="M80 126H41V87h10v22l23-23 7 7-23 23h22z" />
-    <circle cx="80" cy="80" r="14" />
-    <circle cx="25" cy="126" r="6" />
-    <circle cx="135" cy="34" r="6" />
-    <path d="m47 104 5 5-22 22-5-5zM113 56l-5-5 22-22 5 5z" />
+  <rect x="14" y="14" width="132" height="132" fill="#0b0b0b" />
+  <rect
+    x="26"
+    y="26"
+    width="108"
+    height="108"
+    fill="none"
+    stroke="#f6f4ef"
+    stroke-width="8"
+  />
+  <g fill="none" stroke="#f6f4ef" stroke-linecap="square" stroke-width="8">
+    <path d="M48 108 80 50l33 58" stroke-linejoin="miter" />
+    <path d="M63 86h35M118 50v58" />
+  </g>
+  <g fill="#f6f4ef">
+    <circle cx="40" cy="40" r="7" />
+    <circle cx="120" cy="40" r="7" />
+    <circle cx="40" cy="120" r="7" />
+    <circle cx="120" cy="120" r="7" />
   </g>
 </svg>
