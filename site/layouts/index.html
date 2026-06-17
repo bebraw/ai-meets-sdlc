@@ -79,6 +79,7 @@
             <a class="hover:underline" href="#organizers">Organizers</a>
             <a class="hover:underline" href="#speakers">Speakers</a>
             <a class="hover:underline" href="#interest">Interest</a>
+            <a class="hover:underline" href="/design-system/">System</a>
           </div>
           <button
             class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
@@ -203,17 +204,13 @@
               <p class="font-headline text-sm font-black uppercase text-muted">
                 Tickets are not open yet
               </p>
-              <h2
-                class="mt-3 flex items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl"
-              >
-                <span class="min-w-0">Get notified</span>
-                <a
-                  href="#interest"
-                  class="mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
-                  aria-label="Link to get notified section"
-                  >#</a
-                >
-              </h2>
+              <SectionHeading
+                &title="(id 'Get notified')"
+                &href="(id '#interest')"
+                &ariaLabel="(id 'Link to get notified section')"
+                &className="(id 'mt-3 flex items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl')"
+                &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink')"
+              ></SectionHeading>
               <p class="mt-6 max-w-xl text-xl leading-8">
                 Leave your email and we will contact you when seminar
                 registration becomes available.
@@ -333,59 +330,43 @@
               >
                 Brief
               </p>
-              <h2
-                class="mt-3 flex items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl"
-              >
-                <span class="min-w-0">A day for builders</span>
-                <a
-                  href="#program"
-                  class="mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-paper/45 transition hover:text-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper"
-                  aria-label="Link to program section"
-                  >#</a
-                >
-              </h2>
+              <SectionHeading
+                &title="(id 'A day for builders')"
+                &href="(id '#program')"
+                &ariaLabel="(id 'Link to program section')"
+                &className="(id 'mt-3 flex items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl')"
+                &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-paper/45 transition hover:text-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-paper')"
+              ></SectionHeading>
             </div>
             <div class="grid gap-4 md:grid-cols-2">
-              <article class="border border-paper p-5">
-                <h3 class="font-headline text-2xl font-black uppercase">
-                  Overview
-                </h3>
-                <p class="mt-4 leading-7 text-paper/75">
-                  The first pass frames the seminar around adoption patterns,
-                  technical leverage, and the risks that appear when AI touches
-                  planning, implementation, review, testing, and maintenance.
-                </p>
-              </article>
-              <article class="border border-paper p-5">
-                <h3 class="font-headline text-2xl font-black uppercase">
-                  Targets
-                </h3>
-                <p class="mt-4 leading-7 text-paper/75">
-                  Engineering leaders, software practitioners, researchers, and
-                  product teams looking for grounded ways to evaluate AI across
-                  SDLC workflows.
-                </p>
-              </article>
-              <article class="border border-paper p-5">
-                <h3 class="font-headline text-2xl font-black uppercase">
-                  Format
-                </h3>
-                <p class="mt-4 leading-7 text-paper/75">
-                  A single-track day with short talks, themed blocks, panel
-                  discussion, posters, and structured time for hallway
-                  conversation.
-                </p>
-              </article>
-              <article class="border border-paper p-5">
-                <h3 class="font-headline text-2xl font-black uppercase">
-                  Themes
-                </h3>
-                <p class="mt-4 leading-7 text-paper/75">
-                  AI-assisted development, evaluation, governance, testing
-                  strategy, developer experience, and the organizational changes
-                  that follow.
-                </p>
-              </article>
+              <TextCard
+                &title="(id 'Overview')"
+                &body="(id 'The first pass frames the seminar around adoption patterns, technical leverage, and the risks that appear when AI touches planning, implementation, review, testing, and maintenance.')"
+                &className="(id 'border border-paper p-5')"
+                &titleClassName="(id 'font-headline text-2xl font-black uppercase')"
+                &bodyClassName="(id 'mt-4 leading-7 text-paper/75')"
+              ></TextCard>
+              <TextCard
+                &title="(id 'Targets')"
+                &body="(id 'Engineering leaders, software practitioners, researchers, and product teams looking for grounded ways to evaluate AI across SDLC workflows.')"
+                &className="(id 'border border-paper p-5')"
+                &titleClassName="(id 'font-headline text-2xl font-black uppercase')"
+                &bodyClassName="(id 'mt-4 leading-7 text-paper/75')"
+              ></TextCard>
+              <TextCard
+                &title="(id 'Format')"
+                &body="(id 'A single-track day with short talks, themed blocks, panel discussion, posters, and structured time for hallway conversation.')"
+                &className="(id 'border border-paper p-5')"
+                &titleClassName="(id 'font-headline text-2xl font-black uppercase')"
+                &bodyClassName="(id 'mt-4 leading-7 text-paper/75')"
+              ></TextCard>
+              <TextCard
+                &title="(id 'Themes')"
+                &body="(id 'AI-assisted development, evaluation, governance, testing strategy, developer experience, and the organizational changes that follow.')"
+                &className="(id 'border border-paper p-5')"
+                &titleClassName="(id 'font-headline text-2xl font-black uppercase')"
+                &bodyClassName="(id 'mt-4 leading-7 text-paper/75')"
+              ></TextCard>
             </div>
           </div>
         </section>
@@ -398,205 +379,97 @@
               <p class="font-headline text-sm font-black uppercase text-muted">
                 Schedule draft
               </p>
-              <h2
-                class="mt-3 flex items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl"
-              >
-                <span class="min-w-0">Day flow</span>
-                <a
-                  href="#schedule"
-                  class="mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink"
-                  aria-label="Link to schedule section"
-                  >#</a
-                >
-              </h2>
+              <SectionHeading
+                &title="(id 'Day flow')"
+                &href="(id '#schedule')"
+                &ariaLabel="(id 'Link to schedule section')"
+                &className="(id 'mt-3 flex items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl')"
+                &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
+              ></SectionHeading>
               <p class="mt-6 max-w-xs text-xl leading-8 text-muted">
                 Timing and themes are the stable parts. Speaker details will be
                 announced separately.
               </p>
             </div>
             <div class="grid border border-ink">
-              <div class="grid border-b border-ink md:grid-cols-[10rem_1fr]">
-                <time
-                  class="border-b border-ink p-4 font-headline text-2xl font-black uppercase leading-none md:border-b-0 md:border-r"
-                  >08:00-08:50</time
-                >
-                <div class="p-4">
-                  <h3 class="font-headline text-2xl font-black uppercase">
-                    Doors open
-                  </h3>
-                  <p class="mt-2 leading-7 text-muted">Coffee and arrivals.</p>
-                </div>
-              </div>
-              <div class="grid border-b border-ink md:grid-cols-[10rem_1fr]">
-                <time
-                  class="border-b border-ink p-4 font-headline text-2xl font-black uppercase leading-none md:border-b-0 md:border-r"
-                  >08:50-09:00</time
-                >
-                <div class="p-4">
-                  <h3 class="font-headline text-2xl font-black uppercase">
-                    Opening
-                  </h3>
-                  <p class="mt-2 leading-7 text-muted">
-                    Welcome and framing for the day.
-                  </p>
-                </div>
-              </div>
-              <div class="grid border-b border-ink md:grid-cols-[10rem_1fr]">
-                <time
-                  class="border-b border-ink p-4 font-headline text-2xl font-black uppercase leading-none md:border-b-0 md:border-r"
-                  >09:00-10:30</time
-                >
-                <div class="p-4">
-                  <h3 class="font-headline text-2xl font-black uppercase">
-                    Industry perspectives
-                  </h3>
-                  <p class="mt-2 leading-7 text-muted">
-                    Talks or a joint session on applied AI in software
-                    development, ending with a brief panel.
-                  </p>
-                </div>
-              </div>
-              <div class="grid border-b border-ink md:grid-cols-[10rem_1fr]">
-                <time
-                  class="border-b border-ink p-4 font-headline text-2xl font-black uppercase leading-none md:border-b-0 md:border-r"
-                  >10:30-11:00</time
-                >
-                <div class="p-4">
-                  <h3 class="font-headline text-2xl font-black uppercase">
-                    Break
-                  </h3>
-                  <p class="mt-2 leading-7 text-muted">
-                    Coffee and hallway discussion.
-                  </p>
-                </div>
-              </div>
-              <div class="grid border-b border-ink md:grid-cols-[10rem_1fr]">
-                <time
-                  class="border-b border-ink p-4 font-headline text-2xl font-black uppercase leading-none md:border-b-0 md:border-r"
-                  >11:00-12:30</time
-                >
-                <div class="p-4">
-                  <h3 class="font-headline text-2xl font-black uppercase">
-                    Views from academia
-                  </h3>
-                  <p class="mt-2 leading-7 text-muted">
-                    Short research-driven talks on AI and software development.
-                  </p>
-                </div>
-              </div>
-              <div class="grid border-b border-ink md:grid-cols-[10rem_1fr]">
-                <time
-                  class="border-b border-ink p-4 font-headline text-2xl font-black uppercase leading-none md:border-b-0 md:border-r"
-                  >12:30-13:30</time
-                >
-                <div class="p-4">
-                  <h3 class="font-headline text-2xl font-black uppercase">
-                    Lunch and posters
-                  </h3>
-                  <p class="mt-2 leading-7 text-muted">
-                    Lunch break with poster sessions.
-                  </p>
-                </div>
-              </div>
-              <div class="grid border-b border-ink md:grid-cols-[10rem_1fr]">
-                <time
-                  class="border-b border-ink p-4 font-headline text-2xl font-black uppercase leading-none md:border-b-0 md:border-r"
-                  >13:30-15:00</time
-                >
-                <div class="p-4">
-                  <h3 class="font-headline text-2xl font-black uppercase">
-                    Views from industry
-                  </h3>
-                  <p class="mt-2 leading-7 text-muted">
-                    Short field reports from teams applying AI across the SDLC.
-                  </p>
-                </div>
-              </div>
-              <div class="grid border-b border-ink md:grid-cols-[10rem_1fr]">
-                <time
-                  class="border-b border-ink p-4 font-headline text-2xl font-black uppercase leading-none md:border-b-0 md:border-r"
-                  >15:00-15:30</time
-                >
-                <div class="p-4">
-                  <h3 class="font-headline text-2xl font-black uppercase">
-                    Afternoon coffee
-                  </h3>
-                  <p class="mt-2 leading-7 text-muted">
-                    Break and informal discussion.
-                  </p>
-                </div>
-              </div>
-              <div class="grid border-b border-ink md:grid-cols-[10rem_1fr]">
-                <time
-                  class="border-b border-ink p-4 font-headline text-2xl font-black uppercase leading-none md:border-b-0 md:border-r"
-                  >15:30-17:00</time
-                >
-                <div class="p-4">
-                  <h3 class="font-headline text-2xl font-black uppercase">
-                    Academia
-                  </h3>
-                  <p class="mt-2 leading-7 text-muted">
-                    Deeper academic sessions on current research and open
-                    questions.
-                  </p>
-                </div>
-              </div>
-              <div class="grid border-b border-ink md:grid-cols-[10rem_1fr]">
-                <time
-                  class="border-b border-ink p-4 font-headline text-2xl font-black uppercase leading-none md:border-b-0 md:border-r"
-                  >17:00-17:15</time
-                >
-                <div class="p-4">
-                  <h3 class="font-headline text-2xl font-black uppercase">
-                    Short break
-                  </h3>
-                  <p class="mt-2 leading-7 text-muted">
-                    Reset before the closing panel.
-                  </p>
-                </div>
-              </div>
-              <div class="grid border-b border-ink md:grid-cols-[10rem_1fr]">
-                <time
-                  class="border-b border-ink p-4 font-headline text-2xl font-black uppercase leading-none md:border-b-0 md:border-r"
-                  >17:15-17:45</time
-                >
-                <div class="p-4">
-                  <h3 class="font-headline text-2xl font-black uppercase">
-                    Closing panel
-                  </h3>
-                  <p class="mt-2 leading-7 text-muted">
-                    Academia and industry in discussion.
-                  </p>
-                </div>
-              </div>
-              <div class="grid border-b border-ink md:grid-cols-[10rem_1fr]">
-                <time
-                  class="border-b border-ink p-4 font-headline text-2xl font-black uppercase leading-none md:border-b-0 md:border-r"
-                  >17:45-18:00</time
-                >
-                <div class="p-4">
-                  <h3 class="font-headline text-2xl font-black uppercase">
-                    Wrap-up
-                  </h3>
-                  <p class="mt-2 leading-7 text-muted">
-                    Closing remarks and group photos.
-                  </p>
-                </div>
-              </div>
-              <div class="grid md:grid-cols-[10rem_1fr]">
-                <time
-                  class="border-b border-ink p-4 font-headline text-2xl font-black uppercase leading-none md:border-b-0 md:border-r"
-                  >18:00-21:00</time
-                >
-                <div class="p-4">
-                  <h3 class="font-headline text-2xl font-black uppercase">
-                    Afterparty
-                  </h3>
-                  <p class="mt-2 leading-7 text-muted">
-                    Informal evening gathering.
-                  </p>
-                </div>
-              </div>
+              <ScheduleRow
+                &time="(id '08:00-08:50')"
+                &title="(id 'Doors open')"
+                &body="(id 'Coffee and arrivals.')"
+                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+              ></ScheduleRow>
+              <ScheduleRow
+                &time="(id '08:50-09:00')"
+                &title="(id 'Opening')"
+                &body="(id 'Welcome and framing for the day.')"
+                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+              ></ScheduleRow>
+              <ScheduleRow
+                &time="(id '09:00-10:30')"
+                &title="(id 'Industry perspectives')"
+                &body="(id 'Talks or a joint session on applied AI in software development, ending with a brief panel.')"
+                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+              ></ScheduleRow>
+              <ScheduleRow
+                &time="(id '10:30-11:00')"
+                &title="(id 'Break')"
+                &body="(id 'Coffee and hallway discussion.')"
+                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+              ></ScheduleRow>
+              <ScheduleRow
+                &time="(id '11:00-12:30')"
+                &title="(id 'Views from academia')"
+                &body="(id 'Short research-driven talks on AI and software development.')"
+                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+              ></ScheduleRow>
+              <ScheduleRow
+                &time="(id '12:30-13:30')"
+                &title="(id 'Lunch and posters')"
+                &body="(id 'Lunch break with poster sessions.')"
+                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+              ></ScheduleRow>
+              <ScheduleRow
+                &time="(id '13:30-15:00')"
+                &title="(id 'Views from industry')"
+                &body="(id 'Short field reports from teams applying AI across the SDLC.')"
+                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+              ></ScheduleRow>
+              <ScheduleRow
+                &time="(id '15:00-15:30')"
+                &title="(id 'Afternoon coffee')"
+                &body="(id 'Break and informal discussion.')"
+                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+              ></ScheduleRow>
+              <ScheduleRow
+                &time="(id '15:30-17:00')"
+                &title="(id 'Academia')"
+                &body="(id 'Deeper academic sessions on current research and open questions.')"
+                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+              ></ScheduleRow>
+              <ScheduleRow
+                &time="(id '17:00-17:15')"
+                &title="(id 'Short break')"
+                &body="(id 'Reset before the closing panel.')"
+                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+              ></ScheduleRow>
+              <ScheduleRow
+                &time="(id '17:15-17:45')"
+                &title="(id 'Closing panel')"
+                &body="(id 'Academia and industry in discussion.')"
+                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+              ></ScheduleRow>
+              <ScheduleRow
+                &time="(id '17:45-18:00')"
+                &title="(id 'Wrap-up')"
+                &body="(id 'Closing remarks and group photos.')"
+                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+              ></ScheduleRow>
+              <ScheduleRow
+                &time="(id '18:00-21:00')"
+                &title="(id 'Afterparty')"
+                &body="(id 'Informal evening gathering.')"
+                &className="(id 'grid md:grid-cols-[10rem_1fr]')"
+              ></ScheduleRow>
             </div>
           </div>
         </section>
@@ -612,19 +485,13 @@
               <p class="font-headline text-sm font-black uppercase text-muted">
                 Venue
               </p>
-              <h2
-                class="mt-3 flex items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl"
-              >
-                <span class="min-w-0"
-                  >Marsio Saastamoinen Foundation Stage</span
-                >
-                <a
-                  href="#venue"
-                  class="mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink"
-                  aria-label="Link to venue section"
-                  >#</a
-                >
-              </h2>
+              <SectionHeading
+                &title="(id 'Marsio Saastamoinen Foundation Stage')"
+                &href="(id '#venue')"
+                &ariaLabel="(id 'Link to venue section')"
+                &className="(id 'mt-3 flex items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl')"
+                &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
+              ></SectionHeading>
             </div>
             <div class="space-y-6">
               <figure class="border border-ink bg-paper p-3">
@@ -651,12 +518,11 @@
                   >, Otaniemi: a high-production setting for talks, demos, and
                   direct discussion between academia and industry.
                 </p>
-                <a
-                  href="https://studios.aalto.fi/marsio-stage/"
-                  class="inline-flex border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper"
-                >
-                  View venue details
-                </a>
+                <ActionLink
+                  &href="(id 'https://studios.aalto.fi/marsio-stage/')"
+                  &label="(id 'View venue details')"
+                  &className="(id 'inline-flex border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper')"
+                ></ActionLink>
               </div>
             </div>
           </div>
@@ -674,17 +540,13 @@
                 >
                   Organizers
                 </p>
-                <h2
-                  class="mt-3 flex max-w-xs items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:max-w-none md:text-7xl"
-                >
-                  <span class="min-w-0">Same team as Future Frontend</span>
-                  <a
-                    href="#organizers"
-                    class="mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-paper/45 transition hover:text-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper"
-                    aria-label="Link to organizers section"
-                    >#</a
-                  >
-                </h2>
+                <SectionHeading
+                  &title="(id 'Same team as Future Frontend')"
+                  &href="(id '#organizers')"
+                  &ariaLabel="(id 'Link to organizers section')"
+                  &className="(id 'mt-3 flex max-w-xs items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:max-w-none md:text-7xl')"
+                  &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-paper/45 transition hover:text-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper')"
+                ></SectionHeading>
                 <div
                   class="mt-8 max-w-xs space-y-5 text-xl leading-8 text-paper/80 md:max-w-none"
                 >
@@ -706,114 +568,42 @@
                 <div
                   class="grid max-w-xs grid-cols-2 gap-px border border-paper bg-paper sm:max-w-sm sm:grid-cols-3 md:max-w-none"
                 >
-                  <figure class="group bg-ink">
-                    <img
-                      src="/assets/organizers/juho.webp"
-                      alt="Juho Vepsäläinen"
-                      class="aspect-square w-full object-cover grayscale transition duration-300 group-hover:grayscale-0"
-                    />
-                    <figcaption
-                      class="border-t border-paper px-3 py-2 text-sm font-bold uppercase"
-                    >
-                      Juho Vepsäläinen
-                    </figcaption>
-                  </figure>
-                  <figure class="group bg-ink">
-                    <img
-                      src="/assets/organizers/eemeli.webp"
-                      alt="Eemeli Aro"
-                      class="aspect-square w-full object-cover grayscale transition duration-300 group-hover:grayscale-0"
-                    />
-                    <figcaption
-                      class="border-t border-paper px-3 py-2 text-sm font-bold uppercase"
-                    >
-                      Eemeli Aro
-                    </figcaption>
-                  </figure>
-                  <figure class="group bg-ink">
-                    <img
-                      src="/assets/organizers/harri.webp"
-                      alt="Harri Määttä"
-                      class="aspect-square w-full object-cover grayscale transition duration-300 group-hover:grayscale-0"
-                    />
-                    <figcaption
-                      class="border-t border-paper px-3 py-2 text-sm font-bold uppercase"
-                    >
-                      Harri Määttä
-                    </figcaption>
-                  </figure>
-                  <figure class="group bg-ink">
-                    <img
-                      src="/assets/organizers/toni.webp"
-                      alt="Toni Ristola"
-                      class="aspect-square w-full object-cover grayscale transition duration-300 group-hover:grayscale-0"
-                    />
-                    <figcaption
-                      class="border-t border-paper px-3 py-2 text-sm font-bold uppercase"
-                    >
-                      Toni Ristola
-                    </figcaption>
-                  </figure>
-                  <figure class="group bg-ink">
-                    <img
-                      src="/assets/organizers/tuuli.webp"
-                      alt="Tuuli Tiilikainen"
-                      class="aspect-square w-full object-cover grayscale transition duration-300 group-hover:grayscale-0"
-                    />
-                    <figcaption
-                      class="border-t border-paper px-3 py-2 text-sm font-bold uppercase"
-                    >
-                      Tuuli Tiilikainen
-                    </figcaption>
-                  </figure>
-                  <figure class="group bg-ink">
-                    <img
-                      src="/assets/organizers/juhis.webp"
-                      alt="Juha-Matti Santala"
-                      class="aspect-square w-full object-cover grayscale transition duration-300 group-hover:grayscale-0"
-                    />
-                    <figcaption
-                      class="border-t border-paper px-3 py-2 text-sm font-bold uppercase"
-                    >
-                      Juha-Matti Santala
-                    </figcaption>
-                  </figure>
-                  <figure class="group bg-ink">
-                    <img
-                      src="/assets/organizers/emilia.webp"
-                      alt="Emilia Hjelm"
-                      class="aspect-square w-full object-cover grayscale transition duration-300 group-hover:grayscale-0"
-                    />
-                    <figcaption
-                      class="border-t border-paper px-3 py-2 text-sm font-bold uppercase"
-                    >
-                      Emilia Hjelm
-                    </figcaption>
-                  </figure>
-                  <figure class="group bg-ink">
-                    <img
-                      src="/assets/organizers/jussi.webp"
-                      alt="Jussi Kinnula"
-                      class="aspect-square w-full object-cover grayscale transition duration-300 group-hover:grayscale-0"
-                    />
-                    <figcaption
-                      class="border-t border-paper px-3 py-2 text-sm font-bold uppercase"
-                    >
-                      Jussi Kinnula
-                    </figcaption>
-                  </figure>
-                  <figure class="group bg-ink">
-                    <img
-                      src="/assets/organizers/elsa.webp"
-                      alt="Elsa Nyrhinen"
-                      class="aspect-square w-full object-cover grayscale transition duration-300 group-hover:grayscale-0"
-                    />
-                    <figcaption
-                      class="border-t border-paper px-3 py-2 text-sm font-bold uppercase"
-                    >
-                      Elsa Nyrhinen
-                    </figcaption>
-                  </figure>
+                  <OrganizerCard
+                    &name="(id 'Juho Vepsäläinen')"
+                    &src="(id '/assets/organizers/juho.webp')"
+                  ></OrganizerCard>
+                  <OrganizerCard
+                    &name="(id 'Eemeli Aro')"
+                    &src="(id '/assets/organizers/eemeli.webp')"
+                  ></OrganizerCard>
+                  <OrganizerCard
+                    &name="(id 'Harri Määttä')"
+                    &src="(id '/assets/organizers/harri.webp')"
+                  ></OrganizerCard>
+                  <OrganizerCard
+                    &name="(id 'Toni Ristola')"
+                    &src="(id '/assets/organizers/toni.webp')"
+                  ></OrganizerCard>
+                  <OrganizerCard
+                    &name="(id 'Tuuli Tiilikainen')"
+                    &src="(id '/assets/organizers/tuuli.webp')"
+                  ></OrganizerCard>
+                  <OrganizerCard
+                    &name="(id 'Juha-Matti Santala')"
+                    &src="(id '/assets/organizers/juhis.webp')"
+                  ></OrganizerCard>
+                  <OrganizerCard
+                    &name="(id 'Emilia Hjelm')"
+                    &src="(id '/assets/organizers/emilia.webp')"
+                  ></OrganizerCard>
+                  <OrganizerCard
+                    &name="(id 'Jussi Kinnula')"
+                    &src="(id '/assets/organizers/jussi.webp')"
+                  ></OrganizerCard>
+                  <OrganizerCard
+                    &name="(id 'Elsa Nyrhinen')"
+                    &src="(id '/assets/organizers/elsa.webp')"
+                  ></OrganizerCard>
                 </div>
               </div>
             </div>
@@ -823,17 +613,13 @@
         <section id="speakers" class="border-b border-ink">
           <div class="mx-auto max-w-7xl px-5 py-16 md:px-8">
             <div class="grid gap-8 md:grid-cols-[1fr_2fr]">
-              <h2
-                class="flex items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl"
-              >
-                <span class="min-w-0">Speaker themes</span>
-                <a
-                  href="#speakers"
-                  class="mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink"
-                  aria-label="Link to speaker themes section"
-                  >#</a
-                >
-              </h2>
+              <SectionHeading
+                &title="(id 'Speaker themes')"
+                &href="(id '#speakers')"
+                &ariaLabel="(id 'Link to speaker themes section')"
+                &className="(id 'flex items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl')"
+                &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
+              ></SectionHeading>
               <div class="grid gap-px border border-ink bg-ink md:grid-cols-3">
                 <div class="bg-paper p-5">
                   <p class="font-headline text-3xl font-black uppercase">01</p>

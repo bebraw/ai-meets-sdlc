@@ -15,7 +15,10 @@
     {
       "path": "./node_modules/gustwind/plugins/htmlisp-renderer/mod.js",
       "options": {
-        "components": [{ "path": "./site/layouts" }],
+        "components": [
+          { "path": "./site/layouts" },
+          { "path": "./site/components" }
+        ],
         "globalUtilitiesPath": "./site/globalUtilities.ts"
       }
     },

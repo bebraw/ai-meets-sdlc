@@ -10,5 +10,17 @@
         "ogDescription": "A one-day seminar on how AI is changing the software development lifecycle."
       }
     }
+  },
+  "design-system": {
+    "layout": "design-system",
+    "scripts": [{ "name": "index" }],
+    "context": {
+      "meta": {
+        "title": "SDLCAI Design System",
+        "description": "Reusable SDLCAI htmlisp components, typography, colors, and layout primitives.",
+        "ogEyebrow": "Design system",
+        "ogDescription": "Reusable SDLCAI htmlisp components and visual primitives."
+      }
+    }
   }
 }
