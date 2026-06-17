@@ -63,8 +63,9 @@ npm run validate
 
 ## Worker Development
 
-Copy `.env.example` to `.env`, set a local `EMAIL_ENCRYPTION_KEY`, then generate
-Wrangler's `.dev.vars`:
+Copy `.env.example` to `.env`, set local `EMAIL_ENCRYPTION_KEY`,
+`ADMIN_USERNAME`, and `ADMIN_PASSWORD` values, then generate Wrangler's
+`.dev.vars`:
 
 ```bash
 npm run dev:env
@@ -114,6 +115,10 @@ EMAIL_ENCRYPTION_KEY=... npm run --silent interests:export -- --local
 EMAIL_ENCRYPTION_KEY=... npm run --silent interests:export -- --input backup.json
 EMAIL_ENCRYPTION_KEY=... npm run --silent interests:export -- --remote --format json
 ```
+
+The deployed Worker also serves `/admin/` behind HTTP Basic auth. Set
+`ADMIN_USERNAME` and `ADMIN_PASSWORD` as Worker secrets to enable it. The page
+lists interested people and links to `/api/admin/interests.csv` for CSV export.
 
 ## Deployment
 

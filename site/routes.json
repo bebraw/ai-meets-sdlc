@@ -22,5 +22,17 @@
         "ogDescription": "Reusable SDLCAI htmlisp components and visual primitives."
       }
     }
+  },
+  "admin": {
+    "layout": "admin",
+    "scripts": [{ "name": "index" }],
+    "context": {
+      "meta": {
+        "title": "SDLCAI Admin",
+        "description": "Admin tools for SDLCAI interest list management.",
+        "ogEyebrow": "Admin",
+        "ogDescription": "Admin tools for SDLCAI interest list management."
+      }
+    }
   }
 }

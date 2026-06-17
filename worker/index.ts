@@ -11,6 +11,18 @@ interface EncryptedText {
   iv: string;
 }
 
+interface InterestContact {
+  created_at: string;
+  email: string;
+  name: string;
+  organization: string;
+}
+
+interface AdminBindings {
+  ADMIN_PASSWORD?: string;
+  ADMIN_USERNAME?: string;
+}
+
 interface BackupManifest {
   rows_hash?: string;
 }
@@ -18,6 +30,44 @@ interface BackupManifest {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
+
+    if (url.pathname === "/admin") {
+      return Response.redirect(`${url.origin}/admin/`, 308);
+    }
+
+    if (isAdminPath(url.pathname)) {
+      const unauthorizedResponse = await requireAdmin(request, env);
+
+      if (unauthorizedResponse) return unauthorizedResponse;
+    }
+
+    if (url.pathname === "/api/admin/interests") {
+      if (request.method !== "GET") {
+        return jsonResponse({ error: "Method not allowed" }, 405);
+      }
+
+      const contacts = await readInterestContacts(env);
+
+      return jsonResponse({ contacts, count: contacts.length }, 200, {
+        "cache-control": "no-store",
+      });
+    }
+
+    if (url.pathname === "/api/admin/interests.csv") {
+      if (request.method !== "GET") {
+        return jsonResponse({ error: "Method not allowed" }, 405);
+      }
+
+      const contacts = await readInterestContacts(env);
+
+      return new Response(formatContactsCsv(contacts), {
+        headers: {
+          "cache-control": "no-store",
+          "content-disposition": 'attachment; filename="sdlcai-interests.csv"',
+          "content-type": "text/csv; charset=utf-8",
+        },
+      });
+    }
 
     if (url.pathname === "/api/interest") {
       if (request.method !== "POST") {
@@ -144,6 +194,155 @@ async function handleInterest(request: Request, env: Env): Promise<Response> {
   });
 }
 
+function isAdminPath(pathname: string): boolean {
+  return pathname === "/admin/" || pathname.startsWith("/api/admin/");
+}
+
+async function requireAdmin(
+  request: Request,
+  env: Env,
+): Promise<Response | null> {
+  const adminEnv = env as Env & AdminBindings;
+
+  if (!adminEnv.ADMIN_USERNAME || !adminEnv.ADMIN_PASSWORD) {
+    return new Response("Admin auth is not configured.", {
+      status: 503,
+      headers: { "content-type": "text/plain; charset=utf-8" },
+    });
+  }
+
+  const credentials = parseBasicAuth(request.headers.get("authorization"));
+  const isAuthorized =
+    credentials &&
+    (await timingSafeEqual(credentials.username, adminEnv.ADMIN_USERNAME)) &&
+    (await timingSafeEqual(credentials.password, adminEnv.ADMIN_PASSWORD));
+
+  if (isAuthorized) return null;
+
+  return new Response("Authentication required.", {
+    status: 401,
+    headers: {
+      "content-type": "text/plain; charset=utf-8",
+      "www-authenticate": 'Basic realm="SDLCAI Admin", charset="UTF-8"',
+    },
+  });
+}
+
+function parseBasicAuth(
+  authorization: string | null,
+): { password: string; username: string } | null {
+  if (!authorization?.startsWith("Basic ")) return null;
+
+  try {
+    const decoded = atob(authorization.slice("Basic ".length));
+    const separatorIndex = decoded.indexOf(":");
+
+    if (separatorIndex < 0) return null;
+
+    return {
+      username: decoded.slice(0, separatorIndex),
+      password: decoded.slice(separatorIndex + 1),
+    };
+  } catch {
+    return null;
+  }
+}
+
+async function timingSafeEqual(a: string, b: string): Promise<boolean> {
+  const [aHash, bHash] = await Promise.all([sha256Bytes(a), sha256Bytes(b)]);
+
+  if (aHash.byteLength !== bHash.byteLength) return false;
+
+  let difference = 0;
+
+  for (let index = 0; index < aHash.byteLength; index++) {
+    difference |= aHash[index]! ^ bHash[index]!;
+  }
+
+  return difference === 0;
+}
+
+async function readInterestContacts(env: Env): Promise<InterestContact[]> {
+  if (!env.INTERESTS) {
+    throw new Error("Interest storage is not configured");
+  }
+
+  if (!env.EMAIL_ENCRYPTION_KEY) {
+    throw new Error("Encryption is not configured");
+  }
+
+  const { results } = await env.INTERESTS.prepare(
+    `SELECT
+      email_ciphertext,
+      email_iv,
+      name_ciphertext,
+      name_iv,
+      organization_ciphertext,
+      organization_iv,
+      created_at
+    FROM interests
+    ORDER BY created_at ASC`,
+  ).all();
+  const rows = results ?? [];
+
+  return Promise.all(
+    rows.map((row) => decryptInterestContact(row, env.EMAIL_ENCRYPTION_KEY)),
+  );
+}
+
+async function decryptInterestContact(
+  row: Record<string, unknown>,
+  keyMaterial: string,
+): Promise<InterestContact> {
+  return {
+    email: await decryptText(
+      assertString(row.email_ciphertext),
+      assertString(row.email_iv),
+      keyMaterial,
+    ),
+    name:
+      typeof row.name_ciphertext === "string" && typeof row.name_iv === "string"
+        ? await decryptText(row.name_ciphertext, row.name_iv, keyMaterial)
+        : "",
+    organization:
+      typeof row.organization_ciphertext === "string" &&
+      typeof row.organization_iv === "string"
+        ? await decryptText(
+            row.organization_ciphertext,
+            row.organization_iv,
+            keyMaterial,
+          )
+        : "",
+    created_at: typeof row.created_at === "string" ? row.created_at : "",
+  };
+}
+
+function assertString(value: unknown): string {
+  if (typeof value !== "string") {
+    throw new Error("Expected encrypted interest field to be a string");
+  }
+
+  return value;
+}
+
+function formatContactsCsv(contacts: InterestContact[]): string {
+  const rows = [
+    ["email", "name", "organization", "created_at"],
+    ...contacts.map((contact) => [
+      contact.email,
+      contact.name,
+      contact.organization,
+      contact.created_at,
+    ]),
+  ];
+
+  return `${rows.map((row) => row.map(formatCsvValue).join(",")).join("\n")}\n`;
+}
+
+function formatCsvValue(value: string): string {
+  return `"${value.replaceAll('"', '""')}"`;
+}
+
 async function verifyTurnstile({
   request,
   secret,
@@ -253,14 +452,18 @@ function isBackupManifest(value: unknown): value is BackupManifest {
 }
 
 async function sha256Hex(value: string): Promise<string> {
+  const digest = await sha256Bytes(value);
+
+  return [...digest].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+async function sha256Bytes(value: string): Promise<Uint8Array> {
   const digest = await crypto.subtle.digest(
     "SHA-256",
     new TextEncoder().encode(value),
   );
 
-  return [...new Uint8Array(digest)]
-    .map((byte) => byte.toString(16).padStart(2, "0"))
-    .join("");
+  return new Uint8Array(digest);
 }
 
 async function injectRuntimeConfig(
@@ -293,6 +496,21 @@ async function encryptText(
   };
 }
 
+async function decryptText(
+  ciphertext: string,
+  iv: string,
+  keyMaterial: string,
+): Promise<string> {
+  const key = await importAesKey(keyMaterial);
+  const plaintext = await crypto.subtle.decrypt(
+    { name: "AES-GCM", iv: base64Decode(iv) },
+    key,
+    base64Decode(ciphertext),
+  );
+
+  return new TextDecoder().decode(plaintext);
+}
+
 async function hashEmail(email: string, keyMaterial: string): Promise<string> {
   const key = await importHmacKey(keyMaterial);
   const signature = await crypto.subtle.sign(
@@ -307,7 +525,10 @@ async function hashEmail(email: string, keyMaterial: string): Promise<string> {
 async function importAesKey(keyMaterial: string): Promise<CryptoKey> {
   const bytes = await deriveBytes(keyMaterial, "email-encryption");
 
-  return crypto.subtle.importKey("raw", bytes, "AES-GCM", false, ["encrypt"]);
+  return crypto.subtle.importKey("raw", bytes, "AES-GCM", false, [
+    "decrypt",
+    "encrypt",
+  ]);
 }
 
 async function importHmacKey(keyMaterial: string): Promise<CryptoKey> {
@@ -360,10 +581,15 @@ function isLikelyEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
-function jsonResponse(payload: JsonObject, status = 200): Response {
+function jsonResponse(
+  payload: JsonObject,
+  status = 200,
+  headers: HeadersInit = {},
+): Response {
   return new Response(JSON.stringify(payload), {
     status,
     headers: {
+      ...headers,
       "content-type": "application/json; charset=utf-8",
     },
   });
@@ -377,4 +603,15 @@ function base64Encode(bytes: Uint8Array): string {
   }
 
   return btoa(binary);
+}
+
+function base64Decode(value: string): Uint8Array<ArrayBuffer> {
+  const binary = atob(value);
+  const bytes: Uint8Array<ArrayBuffer> = new Uint8Array(binary.length);
+
+  for (let index = 0; index < binary.length; index++) {
+    bytes[index] = binary.charCodeAt(index);
+  }
+
+  return bytes;
 }

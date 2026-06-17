@@ -11,6 +11,8 @@ This site is deployed as a Cloudflare Worker with static assets, D1 for the inte
 | `ASSETS`               | Workers Assets | Serves the Gustwind build output from `build/`.         |
 | `INTERESTS`            | D1             | Stores encrypted interest list submissions.             |
 | `INTEREST_BACKUPS`     | R2             | Stores daily encrypted JSON backups.                    |
+| `ADMIN_USERNAME`       | Secret         | Username for HTTP Basic auth protecting `/admin/`.      |
+| `ADMIN_PASSWORD`       | Secret         | Password for HTTP Basic auth protecting `/admin/`.      |
 | `TURNSTILE_SITE_KEY`   | Worker var     | Public Turnstile widget site key injected into HTML.    |
 | `TURNSTILE_SECRET_KEY` | Secret         | Server-side Turnstile verification key.                 |
 | `EMAIL_ENCRYPTION_KEY` | Secret         | Key material for encrypting/de-duplicating submissions. |
@@ -29,7 +31,7 @@ Generate a strong local value for `EMAIL_ENCRYPTION_KEY`, for example:
 openssl rand -base64 32
 ```
 
-Turnstile is optional locally. If `TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` are empty, the form hides the widget and the Worker skips Turnstile verification.
+Turnstile is optional locally. If `TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` are empty, the form hides the widget and the Worker skips Turnstile verification. `ADMIN_USERNAME` and `ADMIN_PASSWORD` are required locally to open `/admin/`.
 
 Prepare Wrangler's local `.dev.vars`, apply the local D1 migration, and start the Worker:
 
@@ -66,11 +68,16 @@ Create a Turnstile widget in the Cloudflare dashboard, then set:
 Set production secrets:
 
 ```bash
+wrangler secret put ADMIN_USERNAME
+wrangler secret put ADMIN_PASSWORD
 wrangler secret put EMAIL_ENCRYPTION_KEY
 wrangler secret put TURNSTILE_SECRET_KEY
 ```
 
 Use a strong `EMAIL_ENCRYPTION_KEY` and keep it outside version control. Losing it means existing encrypted submissions and backups cannot be decrypted.
+
+The admin page is available at `/admin/`. It is protected with HTTP Basic auth
+and can list decrypted interested people or export them as CSV.
 
 Apply the D1 migration remotely:
 

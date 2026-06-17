@@ -4,14 +4,22 @@ import { config } from "dotenv";
 config();
 
 const values = {
+  ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
+  ADMIN_USERNAME: process.env.ADMIN_USERNAME,
   EMAIL_ENCRYPTION_KEY: process.env.EMAIL_ENCRYPTION_KEY,
   TURNSTILE_SECRET_KEY: process.env.TURNSTILE_SECRET_KEY ?? "",
   TURNSTILE_SITE_KEY: process.env.TURNSTILE_SITE_KEY ?? "",
 };
 
-if (!values.EMAIL_ENCRYPTION_KEY) {
+const missingRequiredValues = [
+  "ADMIN_PASSWORD",
+  "ADMIN_USERNAME",
+  "EMAIL_ENCRYPTION_KEY",
+].filter((key) => !values[key]);
+
+if (missingRequiredValues.length) {
   console.error(
-    "Missing EMAIL_ENCRYPTION_KEY. Copy .env.example to .env and set a local secret.",
+    `Missing ${missingRequiredValues.join(", ")}. Copy .env.example to .env and set local secrets.`,
   );
   process.exit(1);
 }

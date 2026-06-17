@@ -9,6 +9,8 @@ declare namespace Cloudflare {
     INTEREST_BACKUPS: R2Bucket;
     INTERESTS: D1Database;
     ASSETS: Fetcher;
+    ADMIN_PASSWORD: string;
+    ADMIN_USERNAME: string;
     EMAIL_ENCRYPTION_KEY: string;
     TURNSTILE_SECRET_KEY: string;
     TURNSTILE_SITE_KEY: string;
@@ -24,7 +26,11 @@ declare namespace NodeJS {
   interface ProcessEnv extends StringifyValues<
     Pick<
       Cloudflare.Env,
-      "EMAIL_ENCRYPTION_KEY" | "TURNSTILE_SECRET_KEY" | "TURNSTILE_SITE_KEY"
+      | "ADMIN_PASSWORD"
+      | "ADMIN_USERNAME"
+      | "EMAIL_ENCRYPTION_KEY"
+      | "TURNSTILE_SECRET_KEY"
+      | "TURNSTILE_SITE_KEY"
     >
   > {}
 }
