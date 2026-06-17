@@ -79,6 +79,10 @@ export default {
 
     const response = await env.ASSETS.fetch(request);
 
+    if (response.status === 404 && acceptsHtml(request)) {
+      return serveNotFound(request, env, response);
+    }
+
     if (response.headers.get("content-type")?.includes("text/html")) {
       return injectRuntimeConfig(response, env);
     }
@@ -195,7 +199,37 @@ async function handleInterest(request: Request, env: Env): Promise<Response> {
 }
 
 function isAdminPath(pathname: string): boolean {
-  return pathname === "/admin/" || pathname.startsWith("/api/admin/");
+  return (
+    pathname === "/admin/" ||
+    pathname.startsWith("/admin/") ||
+    pathname.startsWith("/api/admin/")
+  );
+}
+
+function acceptsHtml(request: Request): boolean {
+  if (!["GET", "HEAD"].includes(request.method)) return false;
+
+  const accept = request.headers.get("accept") ?? "";
+
+  return accept.includes("text/html");
+}
+
+async function serveNotFound(
+  request: Request,
+  env: Env,
+  originalResponse: Response,
+): Promise<Response> {
+  const url = new URL(request.url);
+  const notFoundUrl = new URL("/404/", url.origin);
+  const notFoundResponse = await env.ASSETS.fetch(
+    new Request(notFoundUrl, request),
+  );
+
+  if (!notFoundResponse.headers.get("content-type")?.includes("text/html")) {
+    return originalResponse;
+  }
+
+  return injectRuntimeConfig(notFoundResponse, env, 404);
 }
 
 async function requireAdmin(
@@ -469,12 +503,18 @@ async function sha256Bytes(value: string): Promise<Uint8Array> {
 async function injectRuntimeConfig(
   response: Response,
   env: Env,
+  status = response.status,
 ): Promise<Response> {
   const html = await response.text();
 
   return new Response(
     html.replaceAll("__TURNSTILE_SITE_KEY__", env.TURNSTILE_SITE_KEY ?? ""),
-    response,
+    {
+      headers: response.headers,
+      status,
+      statusText:
+        status === response.status ? response.statusText : "Not Found",
+    },
   );
 }
 

@@ -34,5 +34,17 @@
         "ogDescription": "Admin tools for SDLCAI interest list management."
       }
     }
+  },
+  "404": {
+    "layout": "404",
+    "scripts": [{ "name": "index" }],
+    "context": {
+      "meta": {
+        "title": "Page not found",
+        "description": "The requested SDLCAI page could not be found.",
+        "ogEyebrow": "404",
+        "ogDescription": "The requested SDLCAI page could not be found."
+      }
+    }
   }
 }
