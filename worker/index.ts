@@ -97,7 +97,7 @@ async function handleInterest(request: Request, env: Env): Promise<Response> {
     ? await encryptText(organization, keyMaterial)
     : null;
   const consentText =
-    "I agree to be contacted about AI meets SDLC seminar registration.";
+    "I agree to be contacted about SDLCAI seminar registration.";
   const createdAt = new Date().toISOString();
 
   try {
