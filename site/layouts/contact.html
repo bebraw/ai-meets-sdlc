@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SDLCAI Contact</title>
+    <meta
+      name="description"
+      content="Contact details for SDLCAI and Toska Osuuskunta."
+    />
+    <meta property="og:title" content="SDLCAI Contact" />
+    <meta
+      property="og:description"
+      content="Contact details for SDLCAI and Toska Osuuskunta."
+    />
+    <meta property="og:url" content="https://sdlcai.org/contact/" />
+    <meta property="og:image" content="https://sdlcai.org/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://sdlcai.org/og.png" />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <script>
+      (() => {
+        const root = document.documentElement;
+        let theme = "light";
+
+        try {
+          const stored = localStorage.getItem("sdlcai-theme");
+          const prefersDark = matchMedia(
+            "(prefers-color-scheme: dark)",
+          ).matches;
+          theme =
+            stored === "dark" || stored === "light"
+              ? stored
+              : prefersDark
+                ? "dark"
+                : "light";
+        } catch {
+          theme = "light";
+        }
+
+        root.classList.toggle("dark", theme === "dark");
+        root.dataset.theme = theme;
+      })();
+    </script>
+    <noop &foreach="styles as style">
+      <link &href="style.href" &rel="style.rel" />
+    </noop>
+  </head>
+  <body class="bg-paper text-ink">
+    <div class="min-h-screen overflow-hidden">
+      <header class="relative border-b border-ink">
+        <div
+          class="absolute inset-y-0 right-0 hidden w-[42vw] text-ink/10 halftone-xl md:block"
+        ></div>
+        <nav
+          class="relative mx-auto flex max-w-7xl items-center justify-between px-5 py-5 md:px-8"
+        >
+          <a href="/" class="inline-flex items-center" aria-label="SDLCAI">
+            <img
+              src="/assets/logo.svg"
+              alt="SDLCAI"
+              class="h-10 w-auto dark:invert"
+            />
+          </a>
+          <div class="flex items-center gap-3">
+            <a
+              class="hidden text-sm font-bold uppercase hover:underline sm:inline"
+              href="/"
+              >Home</a
+            >
+            <button
+              class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+              type="button"
+              data-theme-toggle
+              aria-label="Toggle dark mode"
+            >
+              <span data-theme-label>Dark</span>
+            </button>
+          </div>
+        </nav>
+      </header>
+
+      <main>
+        <section class="relative border-b border-ink">
+          <div
+            class="absolute -right-24 top-16 h-80 w-80 rounded-full border border-ink/20 text-ink/15 halftone"
+          ></div>
+          <div
+            class="relative mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-[0.7fr_1fr] md:px-8 md:py-24"
+          >
+            <div>
+              <p class="font-headline text-sm font-black uppercase text-muted">
+                SDLCAI
+              </p>
+              <h1
+                class="mt-3 font-headline text-[clamp(4.5rem,15vw,13rem)] font-black uppercase leading-[0.76]"
+              >
+                Contact
+              </h1>
+            </div>
+            <div class="grid content-end gap-6 border-y border-ink py-6">
+              <p class="max-w-3xl text-xl leading-8 text-muted">
+                SDLCAI is organized by Toska Osuuskunta. Use these details for
+                seminar correspondence and invoicing.
+              </p>
+              <div class="flex flex-wrap gap-3">
+                <a
+                  class="inline-flex border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
+                  href="mailto:info@futurefrontend.com"
+                  >Email</a
+                >
+                <a
+                  class="inline-flex border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper"
+                  href="/"
+                  >Back home</a
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="border-b border-ink">
+          <div
+            class="mx-auto grid max-w-7xl gap-px bg-ink px-5 py-12 md:grid-cols-3 md:px-8 md:py-16"
+          >
+            <div class="bg-paper p-5">
+              <p class="font-headline text-sm font-black uppercase text-muted">
+                Organization
+              </p>
+              <address
+                class="mt-8 not-italic text-2xl font-bold leading-tight md:text-3xl"
+              >
+                TOSKA Osuuskunta<br />
+                c/o Toska Osuuskunta<br />
+                Suonotkontie 1 B 22<br />
+                00630 HELSINKI
+              </address>
+            </div>
+            <div class="bg-paper p-5">
+              <p class="font-headline text-sm font-black uppercase text-muted">
+                Email
+              </p>
+              <p
+                class="mt-8 break-words text-2xl font-bold leading-tight md:text-3xl"
+              >
+                info &lt;at&gt; futurefrontend.com
+              </p>
+            </div>
+            <div class="bg-paper p-5">
+              <p class="font-headline text-sm font-black uppercase text-muted">
+                VAT
+              </p>
+              <p class="mt-8 text-2xl font-bold leading-tight md:text-3xl">
+                FI30883078
+              </p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <noop &foreach="scripts as script">
+      <script &src="script.src" &type="script.type"></script>
+    </noop>
+  </body>
+</html>

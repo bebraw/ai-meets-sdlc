@@ -35,6 +35,18 @@
       }
     }
   },
+  "contact": {
+    "layout": "contact",
+    "scripts": [{ "name": "index" }],
+    "context": {
+      "meta": {
+        "title": "SDLCAI Contact",
+        "description": "Contact details for SDLCAI and Toska Osuuskunta.",
+        "ogEyebrow": "Contact",
+        "ogDescription": "Contact details for SDLCAI and Toska Osuuskunta."
+      }
+    }
+  },
   "404": {
     "layout": "404",
     "scripts": [{ "name": "index" }],
