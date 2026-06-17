@@ -5,111 +5,145 @@
   viewBox="0 0 1200 630"
 >
   <defs>
-    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
-      <circle cx="3" cy="3" r="2.2" fill="#0b0b0b" opacity="0.16" />
+    <pattern id="halftone" width="18" height="18" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.8" fill="#0b0b0b" opacity="0.18" />
     </pattern>
+    <pattern
+      id="fine-halftone"
+      width="10"
+      height="10"
+      patternUnits="userSpaceOnUse"
+    >
+      <circle cx="1.4" cy="1.4" r="1.1" fill="#f6f4ef" opacity="0.22" />
+    </pattern>
+    <style>
+      .headline {
+        font-family: "Finlandica Headline", "Arial Black", Impact, sans-serif;
+        font-weight: 900;
+      }
+
+      .text {
+        font-family: "Finlandica Text", Arial, sans-serif;
+        font-weight: 700;
+      }
+    </style>
   </defs>
+
   <rect width="1200" height="630" fill="#f6f4ef" />
-  <rect x="846" y="0" width="354" height="630" fill="url(#dots)" />
+  <rect x="0" y="0" width="1200" height="630" fill="url(#halftone)" />
+  <rect x="58" y="54" width="1084" height="522" fill="#f6f4ef" />
   <rect
-    x="60"
+    x="58"
     y="54"
-    width="1080"
+    width="1084"
     height="522"
     fill="none"
     stroke="#0b0b0b"
     stroke-width="6"
   />
-  <rect
-    x="96"
-    y="84"
-    width="160"
-    height="160"
-    fill="none"
-    stroke="#0b0b0b"
-    stroke-width="10"
-  />
-  <path
-    d="M128 202 173 113l49 89"
-    fill="none"
-    stroke="#0b0b0b"
-    stroke-width="10"
-    stroke-linecap="square"
-    stroke-linejoin="miter"
-  />
-  <path
-    d="M150 168h51M226 113v89"
-    fill="none"
-    stroke="#0b0b0b"
-    stroke-width="10"
-    stroke-linecap="square"
-  />
-  <circle cx="122" cy="110" r="9" fill="#0b0b0b" />
-  <circle cx="236" cy="110" r="9" fill="#0b0b0b" />
-  <circle cx="122" cy="230" r="9" fill="#0b0b0b" />
-  <circle cx="236" cy="230" r="9" fill="#0b0b0b" />
-  <path
-    d="M302 126h86c36 0 64 22 64 50s-28 50-64 50h-30"
-    fill="none"
-    stroke="#0b0b0b"
-    stroke-width="10"
-    stroke-linecap="square"
-    stroke-linejoin="miter"
-  />
-  <path
-    d="m374 194-34 32 34 32M462 226h-46"
-    fill="none"
-    stroke="#0b0b0b"
-    stroke-width="10"
-    stroke-linecap="square"
-    stroke-linejoin="miter"
-  />
+
+  <rect x="838" y="54" width="304" height="522" fill="#0b0b0b" />
+  <rect x="838" y="54" width="304" height="522" fill="url(#fine-halftone)" />
+
+  <rect x="96" y="88" width="402" height="48" fill="#0b0b0b" />
+  <text
+    x="116"
+    y="121"
+    class="text"
+    fill="#f6f4ef"
+    font-size="24"
+    letter-spacing="2"
+  >
+    13 OCTOBER 2026 / ESPOO
+  </text>
+
+  <text
+    x="92"
+    y="302"
+    class="headline"
+    fill="#0b0b0b"
+    font-size="168"
+    letter-spacing="-2"
+  >
+    SDLCAI
+  </text>
+  <rect x="96" y="336" width="702" height="4" fill="#0b0b0b" />
+
   <text
     x="96"
-    y="356"
+    y="410"
+    class="headline"
     fill="#0b0b0b"
-    font-family="Georgia, serif"
-    font-size="92"
-    font-weight="700"
-    &children="(get context meta.title)"
-  ></text>
-  <text
-    x="100"
-    y="418"
-    fill="#69645d"
-    font-family="Arial, sans-serif"
-    font-size="28"
-    font-weight="700"
-    letter-spacing="4"
-    text-transform="uppercase"
-    &children="(get context meta.ogEyebrow)"
-  ></text>
-  <text
-    x="100"
-    y="482"
-    fill="#0b0b0b"
-    font-family="Georgia, serif"
-    font-size="34"
+    font-size="72"
+    letter-spacing="0"
   >
-    A one-day seminar on how AI is changing
+    AI MEETS SDLC
+  </text>
+  <text x="100" y="462" class="text" fill="#69645d" font-size="30">
+    Marsio Saastamoinen Foundation Stage
+  </text>
+  <text x="100" y="505" class="text" fill="#69645d" font-size="30">
+    Aalto University
+  </text>
+
+  <g transform="translate(884 100)">
+    <rect
+      x="0"
+      y="0"
+      width="212"
+      height="212"
+      fill="none"
+      stroke="#f6f4ef"
+      stroke-width="10"
+    />
+    <path
+      d="M44 152 101 52l58 100"
+      fill="none"
+      stroke="#f6f4ef"
+      stroke-width="10"
+      stroke-linecap="square"
+      stroke-linejoin="miter"
+    />
+    <path
+      d="M73 116h58M164 52v100"
+      fill="none"
+      stroke="#f6f4ef"
+      stroke-width="10"
+      stroke-linecap="square"
+    />
+    <circle cx="26" cy="26" r="9" fill="#f6f4ef" />
+    <circle cx="186" cy="26" r="9" fill="#f6f4ef" />
+    <circle cx="26" cy="186" r="9" fill="#f6f4ef" />
+    <circle cx="186" cy="186" r="9" fill="#f6f4ef" />
+  </g>
+
+  <text
+    x="1096"
+    y="390"
+    class="headline"
+    fill="#f6f4ef"
+    font-size="86"
+    text-anchor="end"
+  >
+    2026
   </text>
   <text
-    x="100"
-    y="523"
-    fill="#0b0b0b"
-    font-family="Georgia, serif"
-    font-size="34"
+    x="1096"
+    y="448"
+    class="text"
+    fill="#b7b0a4"
+    font-size="19"
+    letter-spacing="2"
+    text-anchor="end"
   >
-    the software development lifecycle.
+    A DAY FOR BUILDERS
   </text>
-  <rect x="100" y="548" width="232" height="10" fill="#0b0b0b" />
   <text
-    x="1086"
-    y="556"
-    fill="#0b0b0b"
-    font-family="Arial, sans-serif"
+    x="1096"
+    y="522"
+    class="text"
+    fill="#f6f4ef"
     font-size="22"
-    font-weight="700"
     letter-spacing="3"
     text-anchor="end"
   >
