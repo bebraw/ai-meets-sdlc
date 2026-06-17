@@ -47,6 +47,18 @@
       }
     }
   },
+  "privacy-policy": {
+    "layout": "privacy-policy",
+    "scripts": [{ "name": "index" }],
+    "context": {
+      "meta": {
+        "title": "SDLCAI Privacy Policy",
+        "description": "Privacy policy for SDLCAI and Toska Osuuskunta.",
+        "ogEyebrow": "Privacy",
+        "ogDescription": "Privacy policy for SDLCAI and Toska Osuuskunta."
+      }
+    }
+  },
   "404": {
     "layout": "404",
     "scripts": [{ "name": "index" }],
