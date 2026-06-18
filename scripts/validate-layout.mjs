@@ -31,6 +31,12 @@ const homePageViewports = [
   { name: "before-tablet", width: 767, height: 1024 },
   { name: "before-hero-rail", width: 899, height: 900 },
 ];
+const mobileSafariViewports = [
+  { name: "iphone-se", width: 320, height: 740 },
+  { name: "iphone-15", width: 393, height: 852 },
+  { name: "iphone-15-plus", width: 430, height: 932 },
+  { name: "iphone-15-landscape", width: 852, height: 393 },
+];
 
 const browserCandidates = [
   process.env.LAYOUT_BROWSER_PATH,
@@ -592,6 +598,74 @@ function getRouteViewports(route) {
   return viewports;
 }
 
+function createPlaywrightSessionAdapter(page) {
+  return {
+    async send(method, params = {}) {
+      if (method !== "Runtime.evaluate") {
+        throw new Error(`Unsupported Playwright adapter method: ${method}`);
+      }
+
+      return {
+        result: {
+          value: await page.evaluate(params.expression),
+        },
+      };
+    },
+  };
+}
+
+async function validateMobileSafari(serverPort, failures) {
+  const { webkit, devices } = await import("playwright");
+  const browser = await webkit.launch();
+  const baseDevice = devices["iPhone 15"];
+  let validationCount = 0;
+
+  try {
+    for (const route of routes) {
+      for (const viewport of mobileSafariViewports) {
+        const context = await browser.newContext({
+          ...baseDevice,
+          viewport: {
+            width: viewport.width,
+            height: viewport.height,
+          },
+          isMobile: true,
+          hasTouch: true,
+        });
+        const page = await context.newPage();
+        const url = `http://127.0.0.1:${serverPort}${route}`;
+
+        try {
+          await page.goto(url, { waitUntil: "load" });
+          validationCount += 1;
+
+          const session = createPlaywrightSessionAdapter(page);
+          const pageFailures = [
+            ...(await evaluateLayout(session)),
+            ...(await evaluatePageLayout(session)),
+          ];
+
+          for (const failure of pageFailures) {
+            failures.push({
+              browser: "mobile-safari-webkit",
+              route,
+              viewport: viewport.name,
+              size: `${viewport.width}x${viewport.height}`,
+              ...failure,
+            });
+          }
+        } finally {
+          await context.close();
+        }
+      }
+    }
+  } finally {
+    await browser.close();
+  }
+
+  return validationCount;
+}
+
 async function main() {
   const browserPath = await findBrowser();
   const userDataDir = await mkdtemp(path.join(tmpdir(), "sdlcai-layout-"));
@@ -653,6 +727,7 @@ async function main() {
 
           for (const failure of pageFailures) {
             failures.push({
+              browser: "chromium",
               route,
               viewport: viewport.name,
               size: `${viewport.width}x${viewport.height}`,
@@ -664,6 +739,8 @@ async function main() {
         }
       }
     }
+
+    validationCount += await validateMobileSafari(serverPort, failures);
   } finally {
     browser.kill();
     server.close();

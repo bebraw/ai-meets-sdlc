@@ -12,6 +12,7 @@
     "interests:decrypt": "node scripts/decrypt-interests.mjs",
     "interests:export": "node scripts/export-interest-contacts.mjs",
     "layout:check": "node scripts/validate-layout.mjs",
+    "layout:install-browsers": "playwright install webkit",
     "quality:gate": "npm run worker:build && npm run validate && npm run layout:check",
     "start": "gustwind --develop --port 3000",
     "serve": "gustwind --serve --port 3000 --input ./build",
@@ -32,6 +33,7 @@
   "devDependencies": {
     "@types/node": "25.6.0",
     "dotenv": "17.4.2",
+    "playwright": "1.61.0",
     "prettier": "3.8.3",
     "typescript": "6.0.3",
     "wrangler": "4.86.0"
