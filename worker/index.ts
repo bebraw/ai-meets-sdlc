@@ -133,6 +133,10 @@ async function handleInterest(request: Request, env: Env): Promise<Response> {
     return jsonResponse({ error: "Consent is required" }, 400);
   }
 
+  if (hasConfiguredTurnstileSiteKey(env) && !env.TURNSTILE_SECRET_KEY) {
+    return jsonResponse({ error: "Verification is not configured" }, 503);
+  }
+
   if (env.TURNSTILE_SECRET_KEY) {
     const turnstileOutcome = await verifyTurnstile({
       request,
@@ -623,6 +627,13 @@ function getTurnstileToken(formData: FormData): string {
     .filter(Boolean);
 
   return values.at(-1) ?? "";
+}
+
+function hasConfiguredTurnstileSiteKey(env: Env): boolean {
+  return Boolean(
+    env.TURNSTILE_SITE_KEY?.trim() &&
+      env.TURNSTILE_SITE_KEY !== "__TURNSTILE_SITE_KEY__",
+  );
 }
 
 function isLikelyEmail(value: string): boolean {

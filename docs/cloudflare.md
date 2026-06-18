@@ -31,7 +31,7 @@ Generate a strong local value for `EMAIL_ENCRYPTION_KEY`, for example:
 openssl rand -base64 32
 ```
 
-Turnstile is optional locally. If `TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` are empty, the form hides the widget and the Worker skips Turnstile verification. `ADMIN_USERNAME` and `ADMIN_PASSWORD` are required locally to open `/admin/`.
+Turnstile is optional locally. If `TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` are empty, the form hides the widget and the Worker skips Turnstile verification. If `TURNSTILE_SITE_KEY` is configured, `TURNSTILE_SECRET_KEY` is required and interest submissions fail closed without it. `ADMIN_USERNAME` and `ADMIN_PASSWORD` are required locally to open `/admin/`.
 
 Prepare Wrangler's local `.dev.vars`, apply the local D1 migration, and start the Worker:
 
