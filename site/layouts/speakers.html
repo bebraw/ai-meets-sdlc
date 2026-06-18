@@ -47,6 +47,7 @@
       <div class="grid gap-5">
         <noop &foreach="speakerItems as speakerItem">
           <article
+            &id="speakerItem.anchor"
             class="grid overflow-hidden border border-ink bg-paper lg:grid-cols-[18rem_1fr] lg:items-start"
           >
             <figure class="border-b border-ink lg:border-b-0 lg:border-r">
@@ -57,10 +58,18 @@
                 loading="lazy"
               />
               <figcaption class="border-t border-ink p-4">
-                <p
-                  class="font-headline text-3xl font-black uppercase leading-none"
-                  &children="speakerItem.name"
-                ></p>
+                <div class="flex items-start gap-3">
+                  <p
+                    class="min-w-0 font-headline text-3xl font-black uppercase leading-none"
+                    &children="speakerItem.name"
+                  ></p>
+                  <a
+                    &href="speakerItem.anchorHref"
+                    class="mt-[0.06em] shrink-0 font-headline text-xl font-black leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+                    aria-label="Link to speaker"
+                    >#</a
+                  >
+                </div>
                 <p
                   class="mt-3 text-sm font-bold uppercase leading-5 text-muted"
                   &children="speakerItem.role"
