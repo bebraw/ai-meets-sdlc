@@ -1,782 +1,606 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SDLCAI</title>
-    <meta
-      name="description"
-      content="A one-day seminar at Marsio Saastamoinen Foundation Stage, Aalto University, on how AI is changing software development lifecycles."
-    />
-    <meta property="og:title" content="SDLCAI" />
-    <meta
-      property="og:description"
-      content="13 October 2026 at Marsio Saastamoinen Foundation Stage, Aalto University, Espoo."
-    />
-    <meta property="og:url" content="https://sdlcai.org" />
-    <meta property="og:image" content="https://sdlcai.org/og.png?v=20260618" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://sdlcai.org/og.png?v=20260618" />
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Event",
-        "name": "SDLCAI: AI Meets SDLC",
-        "description": "A one-day seminar at Marsio Saastamoinen Foundation Stage, Aalto University, on how AI is changing software development lifecycles.",
-        "startDate": "2026-10-13T08:00:00+03:00",
-        "endDate": "2026-10-13T21:00:00+03:00",
-        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-        "eventStatus": "https://schema.org/EventScheduled",
-        "image": "https://sdlcai.org/og.png?v=20260618",
-        "url": "https://sdlcai.org/",
-        "location": {
-          "@type": "Place",
-          "name": "Marsio Saastamoinen Foundation Stage",
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Espoo",
-            "addressCountry": "FI"
-          }
-        },
-        "organizer": {
-          "@type": "Organization",
-          "name": "Toska Osuuskunta",
-          "url": "https://sdlcai.org/"
-        }
-      }
-    </script>
-    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
-    <script
-      src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-      async
-      defer
-    ></script>
-    <script>
-      (() => {
-        const root = document.documentElement;
-        let theme = "light";
-
-        try {
-          const stored = localStorage.getItem("sdlcai-theme");
-          const prefersDark = matchMedia(
-            "(prefers-color-scheme: dark)",
-          ).matches;
-          theme =
-            stored === "dark" || stored === "light"
-              ? stored
-              : prefersDark
-                ? "dark"
-                : "light";
-        } catch {
-          theme = "light";
-        }
-
-        root.classList.toggle("dark", theme === "dark");
-        root.dataset.theme = theme;
-      })();
-    </script>
-    <noop &foreach="styles as style">
-      <link &href="style.href" &rel="style.rel" />
-    </noop>
-  </head>
-  <body class="bg-paper text-ink">
-    <div class="min-h-screen overflow-hidden">
-      <header class="relative border-b border-ink">
-        <div
-          class="absolute inset-y-0 right-0 hidden w-[42vw] text-ink/10 halftone-xl md:block"
-        ></div>
-        <nav
-          class="relative mx-auto flex max-w-7xl items-center justify-between px-5 py-5 md:px-8"
+<BaseLayout
+  &title="(id 'SDLCAI')"
+  &description="(id 'A one-day seminar at Marsio Saastamoinen Foundation Stage, Aalto University, on how AI is changing software development lifecycles.')"
+  &ogDescription="(id '13 October 2026 at Marsio Saastamoinen Foundation Stage, Aalto University, Espoo.')"
+  &url="(id 'https://sdlcai.org')"
+  &eventSchema="(id 'true')"
+  &turnstile="(id 'true')"
+>
+  <section class="relative border-b border-ink">
+    <div
+      class="absolute -left-20 top-20 h-72 w-72 rounded-full border border-ink/20 text-ink/15 halftone"
+    ></div>
+    <div
+      class="relative mx-auto grid max-w-7xl gap-8 overflow-hidden px-5 py-8 sm:px-8 md:py-14 min-[900px]:grid-cols-[minmax(0,1fr)_20rem] min-[900px]:items-start lg:grid-cols-[minmax(0,1fr)_26rem] lg:gap-12"
+    >
+      <div class="relative min-w-0">
+        <p
+          class="mb-5 block max-w-xs border border-ink px-3 py-1 text-sm font-bold uppercase leading-tight break-words sm:max-w-sm md:inline-block md:max-w-full"
         >
-          <a href="/" class="inline-flex items-center" aria-label="SDLCAI">
-            <img
-              src="/assets/logo.svg"
-              alt="SDLCAI"
-              class="h-10 w-auto dark:invert"
-            />
-          </a>
-          <MainNavigation
-            &className="(id 'hidden items-center gap-8 text-sm font-bold uppercase md:flex')"
-            &linkClassName="(id 'hover:underline')"
-          ></MainNavigation>
-          <button
-            class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-            type="button"
-            data-theme-toggle
-            aria-label="Toggle dark mode"
-          >
-            <span data-theme-label>Dark</span>
-          </button>
-        </nav>
-        <div class="relative border-t border-ink md:hidden">
-          <div class="mx-auto max-w-7xl px-5 py-3">
-            <MainNavigation
-              &className="(id 'flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-bold uppercase leading-none')"
-              &linkClassName="(id 'whitespace-nowrap hover:underline')"
-            ></MainNavigation>
+          13 October 2026 / Marsio Saastamoinen Foundation Stage / Espoo
+        </p>
+        <h1
+          class="font-headline text-[clamp(3.35rem,15vw,14.5rem)] font-black uppercase leading-[0.72] tracking-normal"
+        >
+          SDLCAI
+        </h1>
+        <div
+          class="mt-7 grid max-w-xs border-y border-ink sm:max-w-sm md:max-w-5xl md:grid-cols-[0.42fr_0.58fr]"
+        >
+          <div class="border-b border-ink py-4 md:border-b-0 md:border-r">
+            <p
+              class="font-headline text-[clamp(2rem,5vw,4.8rem)] font-black uppercase leading-[0.82]"
+            >
+              AI meets SDLC
+            </p>
+          </div>
+          <div class="grid gap-4 py-4 md:pl-6">
+            <p class="text-xl leading-tight md:text-2xl">
+              A focused seminar on what happens when AI moves from isolated
+              coding assistants into the full software development lifecycle.
+            </p>
+            <p class="text-base leading-7 text-muted">
+              Expect concrete cases, technical judgement, and hard questions
+              about engineering quality, delivery, and organizations adopting AI
+              in practice.
+            </p>
           </div>
         </div>
-      </header>
+      </div>
 
-      <main>
-        <section class="relative border-b border-ink">
-          <div
-            class="absolute -left-20 top-20 h-72 w-72 rounded-full border border-ink/20 text-ink/15 halftone"
-          ></div>
-          <div
-            class="relative mx-auto grid max-w-7xl gap-8 overflow-hidden px-5 py-8 sm:px-8 md:py-14 min-[900px]:grid-cols-[minmax(0,1fr)_20rem] min-[900px]:items-start lg:grid-cols-[minmax(0,1fr)_26rem] lg:gap-12"
-          >
-            <div class="relative min-w-0">
-              <p
-                class="mb-5 block max-w-xs border border-ink px-3 py-1 text-sm font-bold uppercase leading-tight break-words sm:max-w-sm md:inline-block md:max-w-full"
+      <aside
+        class="relative grid max-w-xs gap-5 sm:max-w-sm min-[900px]:max-w-none"
+      >
+        <div
+          class="border border-ink bg-paper p-5 shadow-[12px_12px_0_var(--color-ink)]"
+        >
+          <p class="mb-4 font-headline text-sm font-black uppercase">
+            Countdown to seminar
+          </p>
+          <div data-countdown class="grid grid-cols-2 border border-ink">
+            <div class="border-b border-r border-ink p-4">
+              <strong
+                data-countdown-unit="days"
+                class="block font-headline text-6xl font-black leading-none"
+                >000</strong
               >
-                13 October 2026 / Marsio Saastamoinen Foundation Stage / Espoo
-              </p>
-              <h1
-                class="font-headline text-[clamp(3.35rem,15vw,14.5rem)] font-black uppercase leading-[0.72] tracking-normal"
-              >
-                SDLCAI
-              </h1>
-              <div
-                class="mt-7 grid max-w-xs border-y border-ink sm:max-w-sm md:max-w-5xl md:grid-cols-[0.42fr_0.58fr]"
-              >
-                <div class="border-b border-ink py-4 md:border-b-0 md:border-r">
-                  <p
-                    class="font-headline text-[clamp(2rem,5vw,4.8rem)] font-black uppercase leading-[0.82]"
-                  >
-                    AI meets SDLC
-                  </p>
-                </div>
-                <div class="grid gap-4 py-4 md:pl-6">
-                  <p class="text-xl leading-tight md:text-2xl">
-                    A focused seminar on what happens when AI moves from
-                    isolated coding assistants into the full software
-                    development lifecycle.
-                  </p>
-                  <p class="text-base leading-7 text-muted">
-                    Expect concrete cases, technical judgement, and hard
-                    questions about engineering quality, delivery, and
-                    organizations adopting AI in practice.
-                  </p>
-                </div>
-              </div>
+              <span class="text-sm font-bold uppercase text-muted">Days</span>
             </div>
-
-            <aside
-              class="relative grid max-w-xs gap-5 sm:max-w-sm min-[900px]:max-w-none"
-            >
-              <div
-                class="border border-ink bg-paper p-5 shadow-[12px_12px_0_var(--color-ink)]"
+            <div class="border-b border-ink p-4">
+              <strong
+                data-countdown-unit="hours"
+                class="block font-headline text-6xl font-black leading-none"
+                >00</strong
               >
-                <p class="mb-4 font-headline text-sm font-black uppercase">
-                  Countdown to seminar
-                </p>
-                <div data-countdown class="grid grid-cols-2 border border-ink">
-                  <div class="border-b border-r border-ink p-4">
-                    <strong
-                      data-countdown-unit="days"
-                      class="block font-headline text-6xl font-black leading-none"
-                      >000</strong
-                    >
-                    <span class="text-sm font-bold uppercase text-muted"
-                      >Days</span
-                    >
-                  </div>
-                  <div class="border-b border-ink p-4">
-                    <strong
-                      data-countdown-unit="hours"
-                      class="block font-headline text-6xl font-black leading-none"
-                      >00</strong
-                    >
-                    <span class="text-sm font-bold uppercase text-muted"
-                      >Hours</span
-                    >
-                  </div>
-                  <div class="border-r border-ink p-4">
-                    <strong
-                      data-countdown-unit="minutes"
-                      class="block font-headline text-6xl font-black leading-none"
-                      >00</strong
-                    >
-                    <span class="text-sm font-bold uppercase text-muted"
-                      >Minutes</span
-                    >
-                  </div>
-                  <div class="p-4">
-                    <strong
-                      data-countdown-unit="seconds"
-                      class="block font-headline text-6xl font-black leading-none"
-                      >00</strong
-                    >
-                    <span class="text-sm font-bold uppercase text-muted"
-                      >Seconds</span
-                    >
-                  </div>
-                </div>
-                <p class="mt-5 text-sm leading-6 text-muted">
-                  Date and venue are locked. Registration details and speaker
-                  lineup will follow.
-                </p>
-                <ActionLink
-                  &href="(id '/calendar.ics')"
-                  &label="(id 'Add to calendar')"
-                  &className="(id 'mt-5 inline-flex border border-ink px-4 py-3 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper')"
-                ></ActionLink>
-              </div>
-            </aside>
+              <span class="text-sm font-bold uppercase text-muted">Hours</span>
+            </div>
+            <div class="border-r border-ink p-4">
+              <strong
+                data-countdown-unit="minutes"
+                class="block font-headline text-6xl font-black leading-none"
+                >00</strong
+              >
+              <span class="text-sm font-bold uppercase text-muted"
+                >Minutes</span
+              >
+            </div>
+            <div class="p-4">
+              <strong
+                data-countdown-unit="seconds"
+                class="block font-headline text-6xl font-black leading-none"
+                >00</strong
+              >
+              <span class="text-sm font-bold uppercase text-muted"
+                >Seconds</span
+              >
+            </div>
           </div>
-        </section>
+          <p class="mt-5 text-sm leading-6 text-muted">
+            Date and venue are locked. Registration details and speaker lineup
+            will follow.
+          </p>
+          <ActionLink
+            &href="(id '/calendar.ics')"
+            &label="(id 'Add to calendar')"
+            &className="(id 'mt-5 inline-flex border border-ink px-4 py-3 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper')"
+          ></ActionLink>
+        </div>
+      </aside>
+    </div>
+  </section>
 
-        <section id="interest" class="border-b border-ink">
-          <div
-            class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-[1fr_1.2fr] md:px-8"
-          >
-            <div class="min-w-0">
-              <p class="font-headline text-sm font-black uppercase text-muted">
-                Tickets are not open yet
-              </p>
-              <SectionHeading
-                &title="(id 'Get notified')"
-                &href="(id '#interest')"
-                &ariaLabel="(id 'Link to get notified section')"
-                &className="(id 'mt-3 flex min-w-0 items-start gap-3 font-headline text-4xl font-black uppercase leading-none sm:text-5xl md:text-6xl xl:text-7xl')"
-                &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink')"
-              ></SectionHeading>
-              <p class="mt-6 max-w-xl text-xl leading-8">
-                Leave your email and we will contact you when seminar
-                registration becomes available.
-              </p>
-            </div>
-            <form
-              class="grid min-w-0 gap-4 border border-ink bg-paper p-5"
-              data-interest-form
+  <section id="interest" class="border-b border-ink">
+    <div
+      class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-[1fr_1.2fr] md:px-8"
+    >
+      <div class="min-w-0">
+        <p class="font-headline text-sm font-black uppercase text-muted">
+          Tickets are not open yet
+        </p>
+        <SectionHeading
+          &title="(id 'Get notified')"
+          &href="(id '#interest')"
+          &ariaLabel="(id 'Link to get notified section')"
+          &className="(id 'mt-3 flex min-w-0 items-start gap-3 font-headline text-4xl font-black uppercase leading-none sm:text-5xl md:text-6xl xl:text-7xl')"
+          &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink')"
+        ></SectionHeading>
+        <p class="mt-6 max-w-xl text-xl leading-8">
+          Leave your email and we will contact you when seminar registration
+          becomes available.
+        </p>
+      </div>
+      <form
+        class="grid min-w-0 gap-4 border border-ink bg-paper p-5"
+        data-interest-form
+        data-bwignore="true"
+        data-1p-ignore
+        data-lpignore="true"
+        data-protonpass-ignore="true"
+        action="/api/interest"
+        method="post"
+      >
+        <label class="grid gap-2">
+          <span class="text-sm font-bold uppercase text-muted">Email</span>
+          <input
+            class="min-w-0 border border-ink bg-paper px-4 py-3 text-lg outline-none focus:ring-2 focus:ring-ink"
+            name="email"
+            type="email"
+            autocomplete="email"
+            data-bwignore="true"
+            data-1p-ignore
+            data-lpignore="true"
+            data-protonpass-ignore="true"
+            required
+          />
+        </label>
+        <div class="grid min-w-0 gap-4 md:grid-cols-2">
+          <label class="grid gap-2">
+            <span class="text-sm font-bold uppercase text-muted">Name</span>
+            <input
+              class="min-w-0 border border-ink bg-paper px-4 py-3 text-lg outline-none focus:ring-2 focus:ring-ink"
+              name="name"
+              type="text"
+              autocomplete="name"
               data-bwignore="true"
               data-1p-ignore
               data-lpignore="true"
               data-protonpass-ignore="true"
-              action="/api/interest"
-              method="post"
+            />
+          </label>
+          <label class="grid gap-2">
+            <span class="text-sm font-bold uppercase text-muted"
+              >Organization</span
             >
-              <label class="grid gap-2">
-                <span class="text-sm font-bold uppercase text-muted"
-                  >Email</span
-                >
-                <input
-                  class="min-w-0 border border-ink bg-paper px-4 py-3 text-lg outline-none focus:ring-2 focus:ring-ink"
-                  name="email"
-                  type="email"
-                  autocomplete="email"
-                  data-bwignore="true"
-                  data-1p-ignore
-                  data-lpignore="true"
-                  data-protonpass-ignore="true"
-                  required
-                />
-              </label>
-              <div class="grid min-w-0 gap-4 md:grid-cols-2">
-                <label class="grid gap-2">
-                  <span class="text-sm font-bold uppercase text-muted"
-                    >Name</span
-                  >
-                  <input
-                    class="min-w-0 border border-ink bg-paper px-4 py-3 text-lg outline-none focus:ring-2 focus:ring-ink"
-                    name="name"
-                    type="text"
-                    autocomplete="name"
-                    data-bwignore="true"
-                    data-1p-ignore
-                    data-lpignore="true"
-                    data-protonpass-ignore="true"
-                  />
-                </label>
-                <label class="grid gap-2">
-                  <span class="text-sm font-bold uppercase text-muted"
-                    >Organization</span
-                  >
-                  <input
-                    class="min-w-0 border border-ink bg-paper px-4 py-3 text-lg outline-none focus:ring-2 focus:ring-ink"
-                    name="organization"
-                    type="text"
-                    autocomplete="organization"
-                    data-bwignore="true"
-                    data-1p-ignore
-                    data-lpignore="true"
-                    data-protonpass-ignore="true"
-                  />
-                </label>
-              </div>
-              <label
-                class="flex items-start gap-2 text-sm leading-6 text-muted"
-              >
-                <input
-                  class="mt-[0.1875rem] h-4 w-4 shrink-0 accent-ink"
-                  name="consent"
-                  type="checkbox"
-                  value="yes"
-                  data-bwignore="true"
-                  data-1p-ignore
-                  data-lpignore="true"
-                  data-protonpass-ignore="true"
-                  required
-                />
-                <span>
-                  I agree to be contacted about SDLCAI seminar registration.
-                </span>
-              </label>
-              <div
-                class="cf-turnstile"
-                data-turnstile-widget
-                data-sitekey="__TURNSTILE_SITE_KEY__"
-                data-theme="light"
-                data-callback="onInterestTurnstileSuccess"
-                data-expired-callback="onInterestTurnstileExpired"
-                data-error-callback="onInterestTurnstileExpired"
-              ></div>
-              <noscript>
-                <p class="border border-ink bg-paper p-4 text-sm leading-6">
-                  JavaScript is required for the spam check. You can still
-                  request registration updates by emailing
-                  info@futurefrontend.com.
-                </p>
-              </noscript>
-              <div class="flex flex-col gap-3 md:flex-row md:items-center">
-                <button
-                  class="border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink disabled:cursor-not-allowed disabled:border-muted disabled:bg-muted disabled:text-paper disabled:hover:bg-muted disabled:hover:text-paper"
-                  data-interest-submit
-                  type="submit"
-                >
-                  Notify me
-                </button>
-                <p
-                  class="min-h-6 text-sm font-bold uppercase text-muted"
-                  data-interest-status
-                  aria-live="polite"
-                ></p>
-              </div>
-            </form>
-          </div>
-        </section>
-
-        <section id="program" class="border-b border-ink bg-ink text-paper">
-          <div
-            class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-[22rem_1fr] md:px-8"
-          >
-            <div class="min-w-0">
-              <p
-                class="font-headline text-sm font-black uppercase text-paper/60"
-              >
-                Brief
-              </p>
-              <SectionHeading
-                &title="(id 'A day for builders')"
-                &href="(id '#program')"
-                &ariaLabel="(id 'Link to program section')"
-                &className="(id 'mt-3 flex min-w-0 items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-6xl xl:text-7xl')"
-                &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-paper/45 transition hover:text-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-paper')"
-              ></SectionHeading>
-            </div>
-            <div class="grid gap-4 md:grid-cols-2">
-              <TextCard
-                &title="(id 'Overview')"
-                &body="(id 'The first pass frames the seminar around adoption patterns, technical leverage, and the risks that appear when AI touches planning, implementation, review, testing, and maintenance.')"
-                &className="(id 'border border-paper p-5')"
-                &titleClassName="(id 'font-headline text-2xl font-black uppercase')"
-                &bodyClassName="(id 'mt-4 leading-7 text-paper/75')"
-              ></TextCard>
-              <TextCard
-                &title="(id 'Targets')"
-                &body="(id 'Engineering leaders, software practitioners, researchers, and product teams looking for grounded ways to evaluate AI across SDLC workflows.')"
-                &className="(id 'border border-paper p-5')"
-                &titleClassName="(id 'font-headline text-2xl font-black uppercase')"
-                &bodyClassName="(id 'mt-4 leading-7 text-paper/75')"
-              ></TextCard>
-              <TextCard
-                &title="(id 'Format')"
-                &body="(id 'A single-track day with short talks, themed blocks, panel discussion, posters, and structured time for hallway conversation.')"
-                &className="(id 'border border-paper p-5')"
-                &titleClassName="(id 'font-headline text-2xl font-black uppercase')"
-                &bodyClassName="(id 'mt-4 leading-7 text-paper/75')"
-              ></TextCard>
-              <TextCard
-                &title="(id 'Themes')"
-                &body="(id 'AI-assisted development, evaluation, governance, testing strategy, developer experience, and the organizational changes that follow.')"
-                &className="(id 'border border-paper p-5')"
-                &titleClassName="(id 'font-headline text-2xl font-black uppercase')"
-                &bodyClassName="(id 'mt-4 leading-7 text-paper/75')"
-              ></TextCard>
-            </div>
-          </div>
-        </section>
-
-        <section id="schedule" class="border-b border-ink">
-          <div
-            class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-[22rem_1fr] md:px-8"
-          >
-            <div>
-              <p class="font-headline text-sm font-black uppercase text-muted">
-                Schedule draft
-              </p>
-              <SectionHeading
-                &title="(id 'Day flow')"
-                &href="(id '#schedule')"
-                &ariaLabel="(id 'Link to schedule section')"
-                &className="(id 'mt-3 flex items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl')"
-                &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
-              ></SectionHeading>
-              <p class="mt-6 max-w-xs text-xl leading-8 text-muted">
-                Timing and themes are the stable parts. Speaker details will be
-                announced separately.
-              </p>
-            </div>
-            <div class="grid border border-ink">
-              <ScheduleRow
-                &time="(id '08:00-08:50')"
-                &title="(id 'Doors open')"
-                &body="(id 'Coffee and arrivals.')"
-                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-              <ScheduleRow
-                &time="(id '08:50-09:00')"
-                &title="(id 'Opening')"
-                &body="(id 'Welcome and framing for the day.')"
-                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-              <ScheduleRow
-                &time="(id '09:00-10:30')"
-                &title="(id 'Industry perspectives')"
-                &body="(id 'Talks or a joint session on applied AI in software development, ending with a brief panel.')"
-                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-              <ScheduleRow
-                &time="(id '10:30-11:00')"
-                &title="(id 'Break')"
-                &body="(id 'Coffee and hallway discussion.')"
-                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-              <ScheduleRow
-                &time="(id '11:00-12:30')"
-                &title="(id 'Views from academia')"
-                &body="(id 'Short research-driven talks on AI and software development.')"
-                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-              <ScheduleRow
-                &time="(id '12:30-13:30')"
-                &title="(id 'Lunch and posters')"
-                &body="(id 'Lunch break with poster sessions.')"
-                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-              <ScheduleRow
-                &time="(id '13:30-15:00')"
-                &title="(id 'Views from industry')"
-                &body="(id 'Short field reports from teams applying AI across the SDLC.')"
-                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-              <ScheduleRow
-                &time="(id '15:00-15:30')"
-                &title="(id 'Afternoon coffee')"
-                &body="(id 'Break and informal discussion.')"
-                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-              <ScheduleRow
-                &time="(id '15:30-17:00')"
-                &title="(id 'Academia')"
-                &body="(id 'Deeper academic sessions on current research and open questions.')"
-                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-              <ScheduleRow
-                &time="(id '17:00-17:15')"
-                &title="(id 'Short break')"
-                &body="(id 'Reset before the closing panel.')"
-                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-              <ScheduleRow
-                &time="(id '17:15-17:45')"
-                &title="(id 'Closing panel')"
-                &body="(id 'Academia and industry in discussion.')"
-                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-              <ScheduleRow
-                &time="(id '17:45-18:00')"
-                &title="(id 'Wrap-up')"
-                &body="(id 'Closing remarks and group photos.')"
-                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-              <ScheduleRow
-                &time="(id '18:00-21:00')"
-                &title="(id 'Afterparty')"
-                &body="(id 'Informal evening gathering.')"
-                &className="(id 'grid md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-            </div>
-          </div>
-        </section>
-
-        <section id="venue" class="relative border-b border-ink">
-          <div
-            class="absolute inset-y-0 left-0 w-20 text-ink/20 halftone md:w-40"
-          ></div>
-          <div
-            class="relative mx-auto grid max-w-7xl gap-12 px-5 py-16 md:px-8 lg:grid-cols-[1fr_1fr]"
-          >
-            <div class="min-w-0">
-              <p class="font-headline text-sm font-black uppercase text-muted">
-                Venue
-              </p>
-              <SectionHeading
-                &title="(id 'Marsio Saastamoinen Foundation Stage')"
-                &href="(id '#venue')"
-                &ariaLabel="(id 'Link to venue section')"
-                &className="(id 'mt-3 flex min-w-0 items-start gap-3 font-headline text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl xl:text-7xl')"
-                &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
-              ></SectionHeading>
-            </div>
-            <div class="space-y-6">
-              <figure class="border border-ink bg-paper p-3">
-                <img
-                  src="/assets/marsio-saastamoinen-stage.jpg"
-                  alt="A panel discussion on the Saastamoinen Foundation Stage"
-                  class="aspect-[16/9] w-full object-cover grayscale transition duration-300 hover:grayscale-0 focus:grayscale-0"
-                />
-                <figcaption class="mt-3 text-sm leading-6 text-muted">
-                  Photo source:
-                  <a
-                    class="underline"
-                    href="https://studios.aalto.fi/marsio-stage/"
-                    >Aalto Studios, Saastamoinen Foundation Stage</a
-                  >.
-                </figcaption>
-              </figure>
-              <div class="space-y-6 text-xl leading-8">
-                <p>
-                  The seminar is planned for the Saastamoinen Foundation Stage
-                  in Marsio at
-                  <a class="underline" href="https://www.aalto.fi/"
-                    >Aalto University</a
-                  >, Otaniemi: a high-production setting for talks, demos, and
-                  direct discussion between academia and industry.
-                </p>
-                <ActionLink
-                  &href="(id 'https://studios.aalto.fi/marsio-stage/')"
-                  &label="(id 'View venue details')"
-                  &className="(id 'inline-flex border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper')"
-                ></ActionLink>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section
-          id="organizers"
-          class="overflow-hidden border-b border-ink bg-ink text-paper"
-        >
-          <div class="mx-auto max-w-7xl px-5 py-16 md:px-8">
-            <div
-              class="grid gap-10 min-[700px]:grid-cols-[0.84fr_1.16fr] min-[700px]:items-start md:grid-cols-[0.9fr_1.4fr]"
-            >
-              <div>
-                <p
-                  class="font-headline text-sm font-black uppercase text-paper/60"
-                >
-                  Organizers
-                </p>
-                <SectionHeading
-                  &title="(id 'Same team as Future Frontend')"
-                  &href="(id '#organizers')"
-                  &ariaLabel="(id 'Link to organizers section')"
-                  &className="(id 'mt-3 flex max-w-xs items-start gap-3 font-headline text-5xl font-black uppercase leading-none min-[700px]:max-w-none min-[700px]:text-4xl md:text-7xl')"
-                  &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-paper/45 transition hover:text-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper')"
-                ></SectionHeading>
-                <div
-                  class="mt-8 max-w-xs space-y-5 text-xl leading-8 text-paper/80 min-[700px]:max-w-none min-[700px]:text-lg min-[700px]:leading-7 md:text-xl md:leading-8"
-                >
-                  <p>
-                    SDLCAI is organized by Toska Osuuskunta, the cooperative
-                    behind
-                    <a class="underline" href="https://futurefrontend.com/"
-                      >Future Frontend</a
-                    >.
-                  </p>
-                  <p>
-                    In addition to this seminar and Future Frontend, the group
-                    has previously organized the React Finland and GraphQL
-                    Finland conferences.
-                  </p>
-                </div>
-              </div>
-              <div>
-                <div
-                  class="grid max-w-xs grid-cols-2 gap-px border border-paper bg-paper sm:max-w-sm sm:grid-cols-3 min-[700px]:max-w-none"
-                >
-                  <OrganizerCard
-                    &name="(id 'Juho Vepsäläinen')"
-                    &src="(id '/assets/organizers/juho.webp')"
-                  ></OrganizerCard>
-                  <OrganizerCard
-                    &name="(id 'Eemeli Aro')"
-                    &src="(id '/assets/organizers/eemeli.webp')"
-                  ></OrganizerCard>
-                  <OrganizerCard
-                    &name="(id 'Harri Määttä')"
-                    &src="(id '/assets/organizers/harri.webp')"
-                  ></OrganizerCard>
-                  <OrganizerCard
-                    &name="(id 'Toni Ristola')"
-                    &src="(id '/assets/organizers/toni.webp')"
-                  ></OrganizerCard>
-                  <OrganizerCard
-                    &name="(id 'Tuuli Tiilikainen')"
-                    &src="(id '/assets/organizers/tuuli.webp')"
-                  ></OrganizerCard>
-                  <OrganizerCard
-                    &name="(id 'Juha-Matti Santala')"
-                    &src="(id '/assets/organizers/juhis.webp')"
-                  ></OrganizerCard>
-                  <OrganizerCard
-                    &name="(id 'Emilia Hjelm')"
-                    &src="(id '/assets/organizers/emilia.webp')"
-                  ></OrganizerCard>
-                  <OrganizerCard
-                    &name="(id 'Jussi Kinnula')"
-                    &src="(id '/assets/organizers/jussi.webp')"
-                  ></OrganizerCard>
-                  <OrganizerCard
-                    &name="(id 'Elsa Nyrhinen')"
-                    &src="(id '/assets/organizers/elsa.webp')"
-                  ></OrganizerCard>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="speakers" class="border-b border-ink">
-          <div class="mx-auto max-w-7xl px-5 py-16 md:px-8">
-            <div class="grid gap-8 md:grid-cols-[1fr_2fr]">
-              <SectionHeading
-                &title="(id 'Speaker themes')"
-                &href="(id '#speakers')"
-                &ariaLabel="(id 'Link to speaker themes section')"
-                &className="(id 'flex items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl')"
-                &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
-              ></SectionHeading>
-              <div class="grid gap-px border border-ink bg-ink md:grid-cols-3">
-                <div class="bg-paper p-5">
-                  <p class="font-headline text-3xl font-black uppercase">01</p>
-                  <p class="mt-10 text-lg leading-7">
-                    AI in real engineering pipelines
-                  </p>
-                </div>
-                <div class="bg-paper p-5">
-                  <p class="font-headline text-3xl font-black uppercase">02</p>
-                  <p class="mt-10 text-lg leading-7">
-                    Quality, testing, and review under automation
-                  </p>
-                </div>
-                <div class="bg-paper p-5">
-                  <p class="font-headline text-3xl font-black uppercase">03</p>
-                  <p class="mt-10 text-lg leading-7">
-                    Leadership and governance for AI adoption
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="sponsors" class="border-b border-ink">
-          <div class="mx-auto max-w-7xl px-5 py-16 md:px-8">
-            <div class="grid gap-10 xl:grid-cols-[0.85fr_1.15fr]">
-              <div class="min-w-0">
-                <p
-                  class="font-headline text-sm font-black uppercase text-muted"
-                >
-                  Sponsors
-                </p>
-                <SectionHeading
-                  &title="(id 'Partners making the day possible')"
-                  &href="(id '#sponsors')"
-                  &ariaLabel="(id 'Link to sponsors section')"
-                  &className="(id 'mt-3 flex min-w-0 items-start gap-3 font-headline text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl xl:text-7xl')"
-                  &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
-                ></SectionHeading>
-              </div>
-              <div class="grid min-w-0 gap-px border border-ink bg-ink">
-                <a
-                  class="group grid min-w-0 gap-6 bg-paper p-5 transition hover:bg-ink hover:text-paper md:p-6 xl:grid-cols-[12rem_1fr]"
-                  href="https://www.aalto.fi/"
-                >
-                  <div
-                    class="grid min-h-40 place-items-center border border-ink bg-[#f6f4ef] p-6 transition group-hover:border-paper"
-                  >
-                    <img
-                      src="/assets/sponsors/aalto-university.svg"
-                      alt="Aalto University"
-                      class="max-h-28 w-full object-contain"
-                    />
-                  </div>
-                  <div class="grid min-w-0 content-between gap-8">
-                    <div>
-                      <p
-                        class="font-headline text-sm font-black uppercase text-muted transition group-hover:text-paper/60"
-                      >
-                        Location sponsor
-                      </p>
-                      <h3
-                        class="mt-3 break-words font-headline text-4xl font-black uppercase leading-none md:text-6xl"
-                      >
-                        Aalto University
-                      </h3>
-                    </div>
-                    <p class="max-w-xl text-xl leading-8">
-                      Aalto University hosts SDLCAI at Marsio Saastamoinen
-                      Foundation Stage in Otaniemi, Espoo.
-                    </p>
-                  </div>
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <footer
-        class="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-8 text-sm text-muted md:px-8"
-      >
-        <MainNavigation
-          &className="(id 'flex flex-wrap gap-x-6 gap-y-2 font-bold uppercase text-ink')"
-          &linkClassName="(id 'hover:underline')"
-        ></MainNavigation>
-        <div
-          class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between"
-        >
-          <p>
-            SDLCAI / 13 October 2026 / Marsio Saastamoinen Foundation Stage /
-            sdlcai.org
-          </p>
-          <p>
-            Organized by: Toska Osuuskunta /
-            <a class="font-bold uppercase hover:underline" href="/contact/"
-              >Contact</a
-            >
-            /
-            <a class="font-bold uppercase hover:underline" href="/for-sponsors/"
-              >Sponsors</a
-            >
-            /
-            <a
-              class="font-bold uppercase hover:underline"
-              href="/privacy-policy/"
-              >Privacy policy</a
-            >
-          </p>
+            <input
+              class="min-w-0 border border-ink bg-paper px-4 py-3 text-lg outline-none focus:ring-2 focus:ring-ink"
+              name="organization"
+              type="text"
+              autocomplete="organization"
+              data-bwignore="true"
+              data-1p-ignore
+              data-lpignore="true"
+              data-protonpass-ignore="true"
+            />
+          </label>
         </div>
-      </footer>
+        <label class="flex items-start gap-2 text-sm leading-6 text-muted">
+          <input
+            class="mt-[0.1875rem] h-4 w-4 shrink-0 accent-ink"
+            name="consent"
+            type="checkbox"
+            value="yes"
+            data-bwignore="true"
+            data-1p-ignore
+            data-lpignore="true"
+            data-protonpass-ignore="true"
+            required
+          />
+          <span>
+            I agree to be contacted about SDLCAI seminar registration.
+          </span>
+        </label>
+        <div
+          class="cf-turnstile"
+          data-turnstile-widget
+          data-sitekey="__TURNSTILE_SITE_KEY__"
+          data-theme="light"
+          data-callback="onInterestTurnstileSuccess"
+          data-expired-callback="onInterestTurnstileExpired"
+          data-error-callback="onInterestTurnstileExpired"
+        ></div>
+        <noscript>
+          <p class="border border-ink bg-paper p-4 text-sm leading-6">
+            JavaScript is required for the spam check. You can still request
+            registration updates by emailing info@futurefrontend.com.
+          </p>
+        </noscript>
+        <div class="flex flex-col gap-3 md:flex-row md:items-center">
+          <button
+            class="border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink disabled:cursor-not-allowed disabled:border-muted disabled:bg-muted disabled:text-paper disabled:hover:bg-muted disabled:hover:text-paper"
+            data-interest-submit
+            type="submit"
+          >
+            Notify me
+          </button>
+          <p
+            class="min-h-6 text-sm font-bold uppercase text-muted"
+            data-interest-status
+            aria-live="polite"
+          ></p>
+        </div>
+      </form>
     </div>
-    <noop &foreach="scripts as script">
-      <script &src="script.src" &type="script.type"></script>
-    </noop>
-  </body>
-</html>
+  </section>
+
+  <section id="program" class="border-b border-ink bg-ink text-paper">
+    <div
+      class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-[22rem_1fr] md:px-8"
+    >
+      <div class="min-w-0">
+        <p class="font-headline text-sm font-black uppercase text-paper/60">
+          Brief
+        </p>
+        <SectionHeading
+          &title="(id 'A day for builders')"
+          &href="(id '#program')"
+          &ariaLabel="(id 'Link to program section')"
+          &className="(id 'mt-3 flex min-w-0 items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-6xl xl:text-7xl')"
+          &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-paper/45 transition hover:text-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-paper')"
+        ></SectionHeading>
+      </div>
+      <div class="grid gap-4 md:grid-cols-2">
+        <TextCard
+          &title="(id 'Overview')"
+          &body="(id 'The first pass frames the seminar around adoption patterns, technical leverage, and the risks that appear when AI touches planning, implementation, review, testing, and maintenance.')"
+          &className="(id 'border border-paper p-5')"
+          &titleClassName="(id 'font-headline text-2xl font-black uppercase')"
+          &bodyClassName="(id 'mt-4 leading-7 text-paper/75')"
+        ></TextCard>
+        <TextCard
+          &title="(id 'Targets')"
+          &body="(id 'Engineering leaders, software practitioners, researchers, and product teams looking for grounded ways to evaluate AI across SDLC workflows.')"
+          &className="(id 'border border-paper p-5')"
+          &titleClassName="(id 'font-headline text-2xl font-black uppercase')"
+          &bodyClassName="(id 'mt-4 leading-7 text-paper/75')"
+        ></TextCard>
+        <TextCard
+          &title="(id 'Format')"
+          &body="(id 'A single-track day with short talks, themed blocks, panel discussion, posters, and structured time for hallway conversation.')"
+          &className="(id 'border border-paper p-5')"
+          &titleClassName="(id 'font-headline text-2xl font-black uppercase')"
+          &bodyClassName="(id 'mt-4 leading-7 text-paper/75')"
+        ></TextCard>
+        <TextCard
+          &title="(id 'Themes')"
+          &body="(id 'AI-assisted development, evaluation, governance, testing strategy, developer experience, and the organizational changes that follow.')"
+          &className="(id 'border border-paper p-5')"
+          &titleClassName="(id 'font-headline text-2xl font-black uppercase')"
+          &bodyClassName="(id 'mt-4 leading-7 text-paper/75')"
+        ></TextCard>
+      </div>
+    </div>
+  </section>
+
+  <section id="schedule" class="border-b border-ink">
+    <div
+      class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-[22rem_1fr] md:px-8"
+    >
+      <div>
+        <p class="font-headline text-sm font-black uppercase text-muted">
+          Schedule draft
+        </p>
+        <SectionHeading
+          &title="(id 'Day flow')"
+          &href="(id '#schedule')"
+          &ariaLabel="(id 'Link to schedule section')"
+          &className="(id 'mt-3 flex items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl')"
+          &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
+        ></SectionHeading>
+        <p class="mt-6 max-w-xs text-xl leading-8 text-muted">
+          Timing and themes are the stable parts. Speaker details will be
+          announced separately.
+        </p>
+      </div>
+      <div class="grid border border-ink">
+        <ScheduleRow
+          &time="(id '08:00-08:50')"
+          &title="(id 'Doors open')"
+          &body="(id 'Coffee and arrivals.')"
+          &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+        <ScheduleRow
+          &time="(id '08:50-09:00')"
+          &title="(id 'Opening')"
+          &body="(id 'Welcome and framing for the day.')"
+          &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+        <ScheduleRow
+          &time="(id '09:00-10:30')"
+          &title="(id 'Industry perspectives')"
+          &body="(id 'Talks or a joint session on applied AI in software development, ending with a brief panel.')"
+          &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+        <ScheduleRow
+          &time="(id '10:30-11:00')"
+          &title="(id 'Break')"
+          &body="(id 'Coffee and hallway discussion.')"
+          &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+        <ScheduleRow
+          &time="(id '11:00-12:30')"
+          &title="(id 'Views from academia')"
+          &body="(id 'Short research-driven talks on AI and software development.')"
+          &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+        <ScheduleRow
+          &time="(id '12:30-13:30')"
+          &title="(id 'Lunch and posters')"
+          &body="(id 'Lunch break with poster sessions.')"
+          &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+        <ScheduleRow
+          &time="(id '13:30-15:00')"
+          &title="(id 'Views from industry')"
+          &body="(id 'Short field reports from teams applying AI across the SDLC.')"
+          &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+        <ScheduleRow
+          &time="(id '15:00-15:30')"
+          &title="(id 'Afternoon coffee')"
+          &body="(id 'Break and informal discussion.')"
+          &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+        <ScheduleRow
+          &time="(id '15:30-17:00')"
+          &title="(id 'Academia')"
+          &body="(id 'Deeper academic sessions on current research and open questions.')"
+          &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+        <ScheduleRow
+          &time="(id '17:00-17:15')"
+          &title="(id 'Short break')"
+          &body="(id 'Reset before the closing panel.')"
+          &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+        <ScheduleRow
+          &time="(id '17:15-17:45')"
+          &title="(id 'Closing panel')"
+          &body="(id 'Academia and industry in discussion.')"
+          &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+        <ScheduleRow
+          &time="(id '17:45-18:00')"
+          &title="(id 'Wrap-up')"
+          &body="(id 'Closing remarks and group photos.')"
+          &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+        <ScheduleRow
+          &time="(id '18:00-21:00')"
+          &title="(id 'Afterparty')"
+          &body="(id 'Informal evening gathering.')"
+          &className="(id 'grid md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+      </div>
+    </div>
+  </section>
+
+  <section id="venue" class="relative border-b border-ink">
+    <div
+      class="absolute inset-y-0 left-0 w-20 text-ink/20 halftone md:w-40"
+    ></div>
+    <div
+      class="relative mx-auto grid max-w-7xl gap-12 px-5 py-16 md:px-8 lg:grid-cols-[1fr_1fr]"
+    >
+      <div class="min-w-0">
+        <p class="font-headline text-sm font-black uppercase text-muted">
+          Venue
+        </p>
+        <SectionHeading
+          &title="(id 'Marsio Saastamoinen Foundation Stage')"
+          &href="(id '#venue')"
+          &ariaLabel="(id 'Link to venue section')"
+          &className="(id 'mt-3 flex min-w-0 items-start gap-3 font-headline text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl xl:text-7xl')"
+          &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
+        ></SectionHeading>
+      </div>
+      <div class="space-y-6">
+        <figure class="border border-ink bg-paper p-3">
+          <img
+            src="/assets/marsio-saastamoinen-stage.jpg"
+            alt="A panel discussion on the Saastamoinen Foundation Stage"
+            class="aspect-[16/9] w-full object-cover grayscale transition duration-300 hover:grayscale-0 focus:grayscale-0"
+          />
+          <figcaption class="mt-3 text-sm leading-6 text-muted">
+            Photo source:
+            <a class="underline" href="https://studios.aalto.fi/marsio-stage/"
+              >Aalto Studios, Saastamoinen Foundation Stage</a
+            >.
+          </figcaption>
+        </figure>
+        <div class="space-y-6 text-xl leading-8">
+          <p>
+            The seminar is planned for the Saastamoinen Foundation Stage in
+            Marsio at
+            <a class="underline" href="https://www.aalto.fi/"
+              >Aalto University</a
+            >, Otaniemi: a high-production setting for talks, demos, and direct
+            discussion between academia and industry.
+          </p>
+          <ActionLink
+            &href="(id 'https://studios.aalto.fi/marsio-stage/')"
+            &label="(id 'View venue details')"
+            &className="(id 'inline-flex border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper')"
+          ></ActionLink>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section
+    id="organizers"
+    class="overflow-hidden border-b border-ink bg-ink text-paper"
+  >
+    <div class="mx-auto max-w-7xl px-5 py-16 md:px-8">
+      <div
+        class="grid gap-10 min-[700px]:grid-cols-[0.84fr_1.16fr] min-[700px]:items-start md:grid-cols-[0.9fr_1.4fr]"
+      >
+        <div>
+          <p class="font-headline text-sm font-black uppercase text-paper/60">
+            Organizers
+          </p>
+          <SectionHeading
+            &title="(id 'Same team as Future Frontend')"
+            &href="(id '#organizers')"
+            &ariaLabel="(id 'Link to organizers section')"
+            &className="(id 'mt-3 flex max-w-xs items-start gap-3 font-headline text-5xl font-black uppercase leading-none min-[700px]:max-w-none min-[700px]:text-4xl md:text-7xl')"
+            &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-paper/45 transition hover:text-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper')"
+          ></SectionHeading>
+          <div
+            class="mt-8 max-w-xs space-y-5 text-xl leading-8 text-paper/80 min-[700px]:max-w-none min-[700px]:text-lg min-[700px]:leading-7 md:text-xl md:leading-8"
+          >
+            <p>
+              SDLCAI is organized by Toska Osuuskunta, the cooperative behind
+              <a class="underline" href="https://futurefrontend.com/"
+                >Future Frontend</a
+              >.
+            </p>
+            <p>
+              In addition to this seminar and Future Frontend, the group has
+              previously organized the React Finland and GraphQL Finland
+              conferences.
+            </p>
+          </div>
+        </div>
+        <div>
+          <div
+            class="grid max-w-xs grid-cols-2 gap-px border border-paper bg-paper sm:max-w-sm sm:grid-cols-3 min-[700px]:max-w-none"
+          >
+            <OrganizerCard
+              &name="(id 'Juho Vepsäläinen')"
+              &src="(id '/assets/organizers/juho.webp')"
+            ></OrganizerCard>
+            <OrganizerCard
+              &name="(id 'Eemeli Aro')"
+              &src="(id '/assets/organizers/eemeli.webp')"
+            ></OrganizerCard>
+            <OrganizerCard
+              &name="(id 'Harri Määttä')"
+              &src="(id '/assets/organizers/harri.webp')"
+            ></OrganizerCard>
+            <OrganizerCard
+              &name="(id 'Toni Ristola')"
+              &src="(id '/assets/organizers/toni.webp')"
+            ></OrganizerCard>
+            <OrganizerCard
+              &name="(id 'Tuuli Tiilikainen')"
+              &src="(id '/assets/organizers/tuuli.webp')"
+            ></OrganizerCard>
+            <OrganizerCard
+              &name="(id 'Juha-Matti Santala')"
+              &src="(id '/assets/organizers/juhis.webp')"
+            ></OrganizerCard>
+            <OrganizerCard
+              &name="(id 'Emilia Hjelm')"
+              &src="(id '/assets/organizers/emilia.webp')"
+            ></OrganizerCard>
+            <OrganizerCard
+              &name="(id 'Jussi Kinnula')"
+              &src="(id '/assets/organizers/jussi.webp')"
+            ></OrganizerCard>
+            <OrganizerCard
+              &name="(id 'Elsa Nyrhinen')"
+              &src="(id '/assets/organizers/elsa.webp')"
+            ></OrganizerCard>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="speakers" class="border-b border-ink">
+    <div class="mx-auto max-w-7xl px-5 py-16 md:px-8">
+      <div class="grid gap-8 md:grid-cols-[1fr_2fr]">
+        <SectionHeading
+          &title="(id 'Speaker themes')"
+          &href="(id '#speakers')"
+          &ariaLabel="(id 'Link to speaker themes section')"
+          &className="(id 'flex items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl')"
+          &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
+        ></SectionHeading>
+        <div class="grid gap-px border border-ink bg-ink md:grid-cols-3">
+          <div class="bg-paper p-5">
+            <p class="font-headline text-3xl font-black uppercase">01</p>
+            <p class="mt-10 text-lg leading-7">
+              AI in real engineering pipelines
+            </p>
+          </div>
+          <div class="bg-paper p-5">
+            <p class="font-headline text-3xl font-black uppercase">02</p>
+            <p class="mt-10 text-lg leading-7">
+              Quality, testing, and review under automation
+            </p>
+          </div>
+          <div class="bg-paper p-5">
+            <p class="font-headline text-3xl font-black uppercase">03</p>
+            <p class="mt-10 text-lg leading-7">
+              Leadership and governance for AI adoption
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sponsors" class="border-b border-ink">
+    <div class="mx-auto max-w-7xl px-5 py-16 md:px-8">
+      <div class="grid gap-10 xl:grid-cols-[0.85fr_1.15fr]">
+        <div class="min-w-0">
+          <p class="font-headline text-sm font-black uppercase text-muted">
+            Sponsors
+          </p>
+          <SectionHeading
+            &title="(id 'Partners making the day possible')"
+            &href="(id '#sponsors')"
+            &ariaLabel="(id 'Link to sponsors section')"
+            &className="(id 'mt-3 flex min-w-0 items-start gap-3 font-headline text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl xl:text-7xl')"
+            &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
+          ></SectionHeading>
+        </div>
+        <div class="grid min-w-0 gap-px border border-ink bg-ink">
+          <a
+            class="group grid min-w-0 gap-6 bg-paper p-5 transition hover:bg-ink hover:text-paper md:p-6 xl:grid-cols-[12rem_1fr]"
+            href="https://www.aalto.fi/"
+          >
+            <div
+              class="grid min-h-40 place-items-center border border-ink bg-[#f6f4ef] p-6 transition group-hover:border-paper"
+            >
+              <img
+                src="/assets/sponsors/aalto-university.svg"
+                alt="Aalto University"
+                class="max-h-28 w-full object-contain"
+              />
+            </div>
+            <div class="grid min-w-0 content-between gap-8">
+              <div>
+                <p
+                  class="font-headline text-sm font-black uppercase text-muted transition group-hover:text-paper/60"
+                >
+                  Location sponsor
+                </p>
+                <h3
+                  class="mt-3 break-words font-headline text-4xl font-black uppercase leading-none md:text-6xl"
+                >
+                  Aalto University
+                </h3>
+              </div>
+              <p class="max-w-xl text-xl leading-8">
+                Aalto University hosts SDLCAI at Marsio Saastamoinen Foundation
+                Stage in Otaniemi, Espoo.
+              </p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

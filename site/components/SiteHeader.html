@@ -1,0 +1,36 @@
+<header class="relative border-b border-ink">
+  <div
+    class="absolute inset-y-0 right-0 hidden w-[42vw] text-ink/10 halftone-xl md:block"
+  ></div>
+  <nav
+    class="relative mx-auto flex max-w-7xl items-center justify-between px-5 py-5 md:px-8"
+  >
+    <a href="/" class="inline-flex items-center" aria-label="SDLCAI">
+      <img
+        src="/assets/logo.svg"
+        alt="SDLCAI"
+        class="h-10 w-auto dark:invert"
+      />
+    </a>
+    <MainNavigation
+      &className="(id 'hidden items-center gap-8 text-sm font-bold uppercase md:flex')"
+      &linkClassName="(id 'hover:underline')"
+    ></MainNavigation>
+    <button
+      class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+      type="button"
+      data-theme-toggle
+      aria-label="Toggle dark mode"
+    >
+      <span data-theme-label>Dark</span>
+    </button>
+  </nav>
+  <div class="relative border-t border-ink md:hidden">
+    <div class="mx-auto max-w-7xl px-5 py-3">
+      <MainNavigation
+        &className="(id 'flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-bold uppercase leading-none')"
+        &linkClassName="(id 'whitespace-nowrap hover:underline')"
+      ></MainNavigation>
+    </div>
+  </div>
+</header>

@@ -14,6 +14,13 @@ type InterestResponse = {
   message?: string;
 };
 
+type InterestContact = {
+  created_at: string;
+  email: string;
+  name: string;
+  organization: string;
+};
+
 const target = new Date("2026-10-13T09:00:00+03:00");
 const units: [string, number][] = [
   ["days", 24 * 60 * 60 * 1000],
@@ -120,9 +127,7 @@ function initInterestForm() {
 
     return Boolean(
       interestForm
-        .querySelector<HTMLInputElement>(
-          'input[name="cf-turnstile-response"]',
-        )
+        .querySelector<HTMLInputElement>('input[name="cf-turnstile-response"]')
         ?.value.trim(),
     );
   }
@@ -185,9 +190,79 @@ function initInterestForm() {
   });
 }
 
+function initAdminInterests() {
+  const rowsRoot = document.querySelector("[data-admin-interests]");
+  const status = document.querySelector("[data-admin-status]");
+
+  if (!rowsRoot) return;
+
+  const rows = rowsRoot;
+
+  function setStatus(message: string) {
+    if (status) status.textContent = message;
+  }
+
+  function cell(value: string) {
+    const td = document.createElement("td");
+    td.className = "border-t border-ink px-4 py-3 align-top";
+    td.textContent = value || "-";
+
+    return td;
+  }
+
+  function renderRows(contacts: InterestContact[]) {
+    rows.replaceChildren();
+
+    if (!contacts.length) {
+      const tr = document.createElement("tr");
+      const td = cell("No interested people yet.");
+      td.colSpan = 4;
+      tr.appendChild(td);
+      rows.appendChild(tr);
+      return;
+    }
+
+    for (const contact of contacts) {
+      const tr = document.createElement("tr");
+      tr.appendChild(cell(contact.email));
+      tr.appendChild(cell(contact.name));
+      tr.appendChild(cell(contact.organization));
+      tr.appendChild(cell(contact.created_at));
+      rows.appendChild(tr);
+    }
+  }
+
+  async function loadInterests() {
+    try {
+      const response = await fetch("/api/admin/interests", {
+        headers: { accept: "application/json" },
+      });
+
+      if (!response.ok) {
+        throw new Error(`${response.status} ${response.statusText}`);
+      }
+
+      const payload = (await response.json()) as {
+        contacts?: InterestContact[];
+      };
+      const contacts = Array.isArray(payload.contacts) ? payload.contacts : [];
+
+      renderRows(contacts);
+      setStatus(`${contacts.length} people`);
+    } catch (error) {
+      renderRows([]);
+      setStatus("Failed to load");
+      console.error(error);
+    }
+  }
+
+  void loadInterests();
+}
+
 renderCountdown();
 setInterval(renderCountdown, 1000);
 initThemeToggle();
 initInterestForm();
+initAdminInterests();
 
 export {};

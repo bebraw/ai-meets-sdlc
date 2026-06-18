@@ -1,287 +1,188 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SDLCAI Design System</title>
-    <meta
-      name="description"
-      content="Reusable SDLCAI htmlisp components, typography, colors, and layout primitives."
-    />
-    <meta property="og:title" content="SDLCAI Design System" />
-    <meta
-      property="og:description"
-      content="Reusable SDLCAI htmlisp components and visual primitives."
-    />
-    <meta property="og:url" content="https://sdlcai.org/design-system/" />
-    <meta property="og:image" content="https://sdlcai.org/og.png?v=20260618" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://sdlcai.org/og.png?v=20260618" />
-    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
-    <script>
-      (() => {
-        const root = document.documentElement;
-        let theme = "light";
-
-        try {
-          const stored = localStorage.getItem("sdlcai-theme");
-          const prefersDark = matchMedia(
-            "(prefers-color-scheme: dark)",
-          ).matches;
-          theme =
-            stored === "dark" || stored === "light"
-              ? stored
-              : prefersDark
-                ? "dark"
-                : "light";
-        } catch {
-          theme = "light";
-        }
-
-        root.classList.toggle("dark", theme === "dark");
-        root.dataset.theme = theme;
-      })();
-    </script>
-    <noop &foreach="styles as style">
-      <link &href="style.href" &rel="style.rel" />
-    </noop>
-  </head>
-  <body class="bg-paper text-ink">
-    <div class="min-h-screen overflow-hidden">
-      <header class="relative border-b border-ink">
-        <nav
-          class="relative mx-auto flex max-w-7xl items-center justify-between px-5 py-5 md:px-8"
+<BaseLayout
+  &title="(id 'SDLCAI Design System')"
+  &description="(id 'Reusable SDLCAI htmlisp components, typography, colors, and layout primitives.')"
+  &ogDescription="(id 'Reusable SDLCAI htmlisp components and visual primitives.')"
+  &url="(id 'https://sdlcai.org/design-system/')"
+>
+  <section class="border-b border-ink">
+    <div
+      class="mx-auto grid max-w-7xl gap-8 px-5 py-12 md:px-8 md:py-16 lg:grid-cols-[0.72fr_1fr]"
+    >
+      <div class="min-w-0">
+        <p class="font-headline text-sm font-black uppercase text-muted">
+          SDLCAI design system
+        </p>
+        <h1
+          class="mt-3 max-w-3xl font-headline text-4xl font-black uppercase leading-none sm:text-5xl md:text-8xl"
         >
-          <a href="/" class="inline-flex items-center" aria-label="SDLCAI">
-            <img
-              src="/assets/logo.svg"
-              alt="SDLCAI"
-              class="h-10 w-auto dark:invert"
-            />
-          </a>
-          <div
-            class="hidden items-center gap-8 text-sm font-bold uppercase md:flex"
+          <span class="block">Brutal,</span>
+          <span class="block">dense,</span>
+          <span class="block">reusable</span>
+        </h1>
+      </div>
+      <div class="grid min-w-0 content-end gap-5 text-xl leading-8">
+        <p>
+          This page shows the small htmlisp component layer used by the site.
+          Components keep the brutal border-and-type language consistent without
+          hiding layout decisions.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <span class="border border-ink px-3 py-1 text-sm font-bold uppercase"
+            >Ink</span
           >
-            <a class="hover:underline" href="/">Home</a>
-            <a class="hover:underline" href="/#program">Program</a>
-            <a class="hover:underline" href="/#schedule">Schedule</a>
-            <a class="hover:underline" href="/#organizers">Organizers</a>
-          </div>
-          <button
-            class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-            type="button"
-            data-theme-toggle
-            aria-label="Toggle dark mode"
+          <span
+            class="border border-ink bg-ink px-3 py-1 text-sm font-bold uppercase text-paper"
+            >Paper</span
           >
-            <span data-theme-label>Dark</span>
-          </button>
-        </nav>
-      </header>
-
-      <main>
-        <section class="border-b border-ink">
-          <div
-            class="mx-auto grid max-w-7xl gap-8 px-5 py-12 md:px-8 md:py-16 lg:grid-cols-[0.72fr_1fr]"
+          <span
+            class="border border-ink px-3 py-1 text-sm font-bold uppercase text-muted"
+            >Muted</span
           >
-            <div class="min-w-0">
-              <p class="font-headline text-sm font-black uppercase text-muted">
-                SDLCAI design system
-              </p>
-              <h1
-                class="mt-3 max-w-3xl font-headline text-4xl font-black uppercase leading-none sm:text-5xl md:text-8xl"
-              >
-                <span class="block">Brutal,</span>
-                <span class="block">dense,</span>
-                <span class="block">reusable</span>
-              </h1>
-            </div>
-            <div class="grid min-w-0 content-end gap-5 text-xl leading-8">
-              <p>
-                This page shows the small htmlisp component layer used by the
-                site. Components keep the brutal border-and-type language
-                consistent without hiding layout decisions.
-              </p>
-              <div class="flex flex-wrap gap-3">
-                <span
-                  class="border border-ink px-3 py-1 text-sm font-bold uppercase"
-                  >Ink</span
-                >
-                <span
-                  class="border border-ink bg-ink px-3 py-1 text-sm font-bold uppercase text-paper"
-                  >Paper</span
-                >
-                <span
-                  class="border border-ink px-3 py-1 text-sm font-bold uppercase text-muted"
-                  >Muted</span
-                >
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="typography" class="border-b border-ink">
-          <div
-            class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:px-8 lg:grid-cols-[22rem_1fr]"
-          >
-            <div class="min-w-0">
-              <p class="font-headline text-sm font-black uppercase text-muted">
-                Typography
-              </p>
-              <SectionHeading
-                &title="(id 'Headings')"
-                &href="(id '#typography')"
-                &ariaLabel="(id 'Link to typography section')"
-                &className="(id 'mt-3 flex min-w-0 items-start gap-3 break-words font-headline text-3xl font-black uppercase leading-none sm:text-4xl md:text-[4.05rem]')"
-                &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
-              ></SectionHeading>
-            </div>
-            <div class="grid min-w-0 gap-6">
-              <div class="border-y border-ink py-5">
-                <p
-                  class="font-headline text-4xl font-black uppercase leading-[0.75] md:text-[clamp(3rem,11vw,8rem)]"
-                >
-                  AI meets SDLC
-                </p>
-              </div>
-              <p class="max-w-3xl text-xl leading-8 text-muted">
-                Use headline type for section identity and dense text blocks for
-                supporting material. Keep line height tight only on display
-                text.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section id="components" class="border-b border-ink bg-ink text-paper">
-          <div class="mx-auto max-w-7xl px-5 py-16 md:px-8">
-            <div class="mb-10 grid gap-6 lg:grid-cols-[28rem_1fr]">
-              <div class="min-w-0">
-                <p
-                  class="font-headline text-sm font-black uppercase text-paper/60"
-                >
-                  Components
-                </p>
-                <SectionHeading
-                  &title="(id 'Core primitives')"
-                  &href="(id '#components')"
-                  &ariaLabel="(id 'Link to components section')"
-                  &className="(id 'mt-3 flex min-w-0 items-start gap-3 break-words font-headline text-3xl font-black uppercase leading-none sm:text-4xl md:text-7xl')"
-                  &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-paper/45 transition hover:text-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper')"
-                ></SectionHeading>
-              </div>
-              <p
-                class="max-w-3xl min-w-0 self-end text-xl leading-8 text-paper/75"
-              >
-                The components intentionally accept class strings. The system
-                standardizes structure and accessibility while leaving page
-                composition explicit.
-              </p>
-            </div>
-
-            <div class="grid min-w-0 gap-5 md:grid-cols-2">
-              <TextCard
-                &title="(id 'TextCard')"
-                &body="(id 'Bordered editorial cards for overview, target, format, and similar short content.')"
-                &className="(id 'min-w-0 border border-paper p-5')"
-                &titleClassName="(id 'font-headline text-2xl font-black uppercase')"
-                &bodyClassName="(id 'mt-4 break-words leading-7 text-paper/75')"
-              ></TextCard>
-              <article class="min-w-0 border border-paper p-5">
-                <h3 class="font-headline text-2xl font-black uppercase">
-                  ActionLink
-                </h3>
-                <p class="mt-4 break-words leading-7 text-paper/75">
-                  Reusable call-to-action anchor with caller-owned classes.
-                </p>
-                <ActionLink
-                  &href="(id '/')"
-                  &label="(id 'View home')"
-                  &className="(id 'mt-6 inline-flex border border-paper px-5 py-3 text-base font-bold uppercase transition hover:bg-paper hover:text-ink')"
-                ></ActionLink>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        <section id="schedule-sample" class="border-b border-ink">
-          <div
-            class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:px-8 lg:grid-cols-[22rem_1fr]"
-          >
-            <div class="min-w-0">
-              <p class="font-headline text-sm font-black uppercase text-muted">
-                ScheduleRow
-              </p>
-              <h2
-                class="mt-3 break-words font-headline text-4xl font-black uppercase leading-none md:text-7xl"
-              >
-                Time blocks
-              </h2>
-            </div>
-            <div class="grid min-w-0 border border-ink">
-              <ScheduleRow
-                &time="(id '09:00-10:30')"
-                &title="(id 'Industry perspectives')"
-                &body="(id 'Talks or a joint session on applied AI in software development, ending with a brief panel.')"
-                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-              <ScheduleRow
-                &time="(id '10:30-11:00')"
-                &title="(id 'Break')"
-                &body="(id 'Coffee and hallway discussion.')"
-                &className="(id 'grid md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-            </div>
-          </div>
-        </section>
-
-        <section id="people" class="border-b border-ink bg-ink text-paper">
-          <div
-            class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:px-8 lg:grid-cols-[22rem_1fr]"
-          >
-            <div class="min-w-0">
-              <p
-                class="font-headline text-sm font-black uppercase text-paper/60"
-              >
-                OrganizerCard
-              </p>
-              <h2
-                class="mt-3 break-words font-headline text-4xl font-black uppercase leading-none md:text-7xl"
-              >
-                People grid
-              </h2>
-            </div>
-            <div
-              class="grid max-w-xs min-w-0 grid-cols-2 gap-px border border-paper bg-paper sm:max-w-sm sm:grid-cols-3 md:max-w-none"
-            >
-              <OrganizerCard
-                &name="(id 'Juho Vepsäläinen')"
-                &src="(id '/assets/organizers/juho.webp')"
-              ></OrganizerCard>
-              <OrganizerCard
-                &name="(id 'Elsa Nyrhinen')"
-                &src="(id '/assets/organizers/elsa.webp')"
-              ></OrganizerCard>
-              <OrganizerCard
-                &name="(id 'Eemeli Aro')"
-                &src="(id '/assets/organizers/eemeli.webp')"
-              ></OrganizerCard>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <footer
-        class="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-8 text-sm text-muted md:flex-row md:items-center md:justify-between md:px-8"
-      >
-        <p>SDLCAI design system / htmlisp components</p>
-        <a class="font-bold uppercase hover:underline" href="/">Back home</a>
-      </footer>
+        </div>
+      </div>
     </div>
-    <noop &foreach="scripts as script">
-      <script &src="script.src" &type="script.type"></script>
-    </noop>
-  </body>
-</html>
+  </section>
+
+  <section id="typography" class="border-b border-ink">
+    <div
+      class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:px-8 lg:grid-cols-[22rem_1fr]"
+    >
+      <div class="min-w-0">
+        <p class="font-headline text-sm font-black uppercase text-muted">
+          Typography
+        </p>
+        <SectionHeading
+          &title="(id 'Headings')"
+          &href="(id '#typography')"
+          &ariaLabel="(id 'Link to typography section')"
+          &className="(id 'mt-3 flex min-w-0 items-start gap-3 break-words font-headline text-3xl font-black uppercase leading-none sm:text-4xl md:text-[4.05rem]')"
+          &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
+        ></SectionHeading>
+      </div>
+      <div class="grid min-w-0 gap-6">
+        <div class="border-y border-ink py-5">
+          <p
+            class="font-headline text-4xl font-black uppercase leading-[0.75] md:text-[clamp(3rem,11vw,8rem)]"
+          >
+            AI meets SDLC
+          </p>
+        </div>
+        <p class="max-w-3xl text-xl leading-8 text-muted">
+          Use headline type for section identity and dense text blocks for
+          supporting material. Keep line height tight only on display text.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="components" class="border-b border-ink bg-ink text-paper">
+    <div class="mx-auto max-w-7xl px-5 py-16 md:px-8">
+      <div class="mb-10 grid gap-6 lg:grid-cols-[28rem_1fr]">
+        <div class="min-w-0">
+          <p class="font-headline text-sm font-black uppercase text-paper/60">
+            Components
+          </p>
+          <SectionHeading
+            &title="(id 'Core primitives')"
+            &href="(id '#components')"
+            &ariaLabel="(id 'Link to components section')"
+            &className="(id 'mt-3 flex min-w-0 items-start gap-3 break-words font-headline text-3xl font-black uppercase leading-none sm:text-4xl md:text-7xl')"
+            &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-paper/45 transition hover:text-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper')"
+          ></SectionHeading>
+        </div>
+        <p class="max-w-3xl min-w-0 self-end text-xl leading-8 text-paper/75">
+          The components intentionally accept class strings. The system
+          standardizes structure and accessibility while leaving page
+          composition explicit.
+        </p>
+      </div>
+
+      <div class="grid min-w-0 gap-5 md:grid-cols-2">
+        <TextCard
+          &title="(id 'TextCard')"
+          &body="(id 'Bordered editorial cards for overview, target, format, and similar short content.')"
+          &className="(id 'min-w-0 border border-paper p-5')"
+          &titleClassName="(id 'font-headline text-2xl font-black uppercase')"
+          &bodyClassName="(id 'mt-4 break-words leading-7 text-paper/75')"
+        ></TextCard>
+        <article class="min-w-0 border border-paper p-5">
+          <h3 class="font-headline text-2xl font-black uppercase">
+            ActionLink
+          </h3>
+          <p class="mt-4 break-words leading-7 text-paper/75">
+            Reusable call-to-action anchor with caller-owned classes.
+          </p>
+          <ActionLink
+            &href="(id '/')"
+            &label="(id 'View home')"
+            &className="(id 'mt-6 inline-flex border border-paper px-5 py-3 text-base font-bold uppercase transition hover:bg-paper hover:text-ink')"
+          ></ActionLink>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="schedule-sample" class="border-b border-ink">
+    <div
+      class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:px-8 lg:grid-cols-[22rem_1fr]"
+    >
+      <div class="min-w-0">
+        <p class="font-headline text-sm font-black uppercase text-muted">
+          ScheduleRow
+        </p>
+        <h2
+          class="mt-3 break-words font-headline text-4xl font-black uppercase leading-none md:text-7xl"
+        >
+          Time blocks
+        </h2>
+      </div>
+      <div class="grid min-w-0 border border-ink">
+        <ScheduleRow
+          &time="(id '09:00-10:30')"
+          &title="(id 'Industry perspectives')"
+          &body="(id 'Talks or a joint session on applied AI in software development, ending with a brief panel.')"
+          &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+        <ScheduleRow
+          &time="(id '10:30-11:00')"
+          &title="(id 'Break')"
+          &body="(id 'Coffee and hallway discussion.')"
+          &className="(id 'grid md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+      </div>
+    </div>
+  </section>
+
+  <section id="people" class="border-b border-ink bg-ink text-paper">
+    <div
+      class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:px-8 lg:grid-cols-[22rem_1fr]"
+    >
+      <div class="min-w-0">
+        <p class="font-headline text-sm font-black uppercase text-paper/60">
+          OrganizerCard
+        </p>
+        <h2
+          class="mt-3 break-words font-headline text-4xl font-black uppercase leading-none md:text-7xl"
+        >
+          People grid
+        </h2>
+      </div>
+      <div
+        class="grid max-w-xs min-w-0 grid-cols-2 gap-px border border-paper bg-paper sm:max-w-sm sm:grid-cols-3 md:max-w-none"
+      >
+        <OrganizerCard
+          &name="(id 'Juho Vepsäläinen')"
+          &src="(id '/assets/organizers/juho.webp')"
+        ></OrganizerCard>
+        <OrganizerCard
+          &name="(id 'Elsa Nyrhinen')"
+          &src="(id '/assets/organizers/elsa.webp')"
+        ></OrganizerCard>
+        <OrganizerCard
+          &name="(id 'Eemeli Aro')"
+          &src="(id '/assets/organizers/eemeli.webp')"
+        ></OrganizerCard>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

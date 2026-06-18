@@ -1,129 +1,48 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Page not found</title>
-    <meta
-      name="description"
-      content="The requested SDLCAI page could not be found."
-    />
-    <meta name="robots" content="noindex,nofollow" />
-    <meta property="og:title" content="Page not found" />
-    <meta
-      property="og:description"
-      content="The requested SDLCAI page could not be found."
-    />
-    <meta property="og:url" content="https://sdlcai.org/404/" />
-    <meta property="og:image" content="https://sdlcai.org/og.png?v=20260618" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://sdlcai.org/og.png?v=20260618" />
-    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
-    <script>
-      (() => {
-        const root = document.documentElement;
-        let theme = "light";
-
-        try {
-          const stored = localStorage.getItem("sdlcai-theme");
-          const prefersDark = matchMedia(
-            "(prefers-color-scheme: dark)",
-          ).matches;
-          theme =
-            stored === "dark" || stored === "light"
-              ? stored
-              : prefersDark
-                ? "dark"
-                : "light";
-        } catch {
-          theme = "light";
-        }
-
-        root.classList.toggle("dark", theme === "dark");
-        root.dataset.theme = theme;
-      })();
-    </script>
-    <noop &foreach="styles as style">
-      <link &href="style.href" &rel="style.rel" />
-    </noop>
-  </head>
-  <body class="bg-paper text-ink">
-    <div class="min-h-screen overflow-hidden">
-      <header class="relative border-b border-ink">
-        <div
-          class="absolute inset-y-0 right-0 hidden w-[42vw] text-ink/10 halftone-xl md:block"
-        ></div>
-        <nav
-          class="relative mx-auto flex max-w-7xl items-center justify-between px-5 py-5 md:px-8"
+<BaseLayout
+  &title="(id 'Page not found')"
+  &description="(id 'The requested SDLCAI page could not be found.')"
+  &ogDescription="(id 'The requested SDLCAI page could not be found.')"
+  &url="(id 'https://sdlcai.org/404/')"
+  &robots="(id 'noindex,nofollow')"
+>
+  <section class="relative border-b border-ink">
+    <div
+      class="absolute -left-20 top-20 h-72 w-72 rounded-full border border-ink/20 text-ink/15 halftone"
+    ></div>
+    <div
+      class="relative mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-[0.6fr_1fr] md:px-8 md:py-24"
+    >
+      <div>
+        <p class="font-headline text-sm font-black uppercase text-muted">404</p>
+        <h1
+          class="mt-3 font-headline text-[clamp(5rem,20vw,16rem)] font-black uppercase leading-[0.72]"
         >
-          <a href="/" class="inline-flex items-center" aria-label="SDLCAI">
-            <img
-              src="/assets/logo.svg"
-              alt="SDLCAI"
-              class="h-10 w-auto dark:invert"
-            />
-          </a>
-          <button
-            class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-            type="button"
-            data-theme-toggle
-            aria-label="Toggle dark mode"
+          Lost
+        </h1>
+      </div>
+      <div class="grid content-end gap-6 border-y border-ink py-6">
+        <h2
+          class="font-headline text-5xl font-black uppercase leading-none md:text-7xl"
+        >
+          Page not found
+        </h2>
+        <p class="max-w-2xl text-xl leading-8 text-muted">
+          The page may have moved, or the URL may be wrong. Return to the
+          seminar homepage to continue.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a
+            class="inline-flex border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
+            href="/"
+            >Back home</a
           >
-            <span data-theme-label>Dark</span>
-          </button>
-        </nav>
-      </header>
-
-      <main>
-        <section class="relative border-b border-ink">
-          <div
-            class="absolute -left-20 top-20 h-72 w-72 rounded-full border border-ink/20 text-ink/15 halftone"
-          ></div>
-          <div
-            class="relative mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-[0.6fr_1fr] md:px-8 md:py-24"
+          <a
+            class="inline-flex border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper"
+            href="/#interest"
+            >Get notified</a
           >
-            <div>
-              <p class="font-headline text-sm font-black uppercase text-muted">
-                404
-              </p>
-              <h1
-                class="mt-3 font-headline text-[clamp(5rem,20vw,16rem)] font-black uppercase leading-[0.72]"
-              >
-                Lost
-              </h1>
-            </div>
-            <div class="grid content-end gap-6 border-y border-ink py-6">
-              <h2
-                class="font-headline text-5xl font-black uppercase leading-none md:text-7xl"
-              >
-                Page not found
-              </h2>
-              <p class="max-w-2xl text-xl leading-8 text-muted">
-                The page may have moved, or the URL may be wrong. Return to the
-                seminar homepage to continue.
-              </p>
-              <div class="flex flex-wrap gap-3">
-                <a
-                  class="inline-flex border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
-                  href="/"
-                  >Back home</a
-                >
-                <a
-                  class="inline-flex border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper"
-                  href="/#interest"
-                  >Get notified</a
-                >
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
+        </div>
+      </div>
     </div>
-    <noop &foreach="scripts as script">
-      <script &src="script.src" &type="script.type"></script>
-    </noop>
-  </body>
-</html>
+  </section>
+</BaseLayout>

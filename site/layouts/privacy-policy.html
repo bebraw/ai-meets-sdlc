@@ -1,416 +1,319 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SDLCAI Privacy Policy</title>
-    <meta
-      name="description"
-      content="Privacy policy for SDLCAI and Toska Osuuskunta."
-    />
-    <meta property="og:title" content="SDLCAI Privacy Policy" />
-    <meta
-      property="og:description"
-      content="Privacy policy for SDLCAI and Toska Osuuskunta."
-    />
-    <meta property="og:url" content="https://sdlcai.org/privacy-policy/" />
-    <meta property="og:image" content="https://sdlcai.org/og.png?v=20260618" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://sdlcai.org/og.png?v=20260618" />
-    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
-    <script>
-      (() => {
-        const root = document.documentElement;
-        let theme = "light";
-
-        try {
-          const stored = localStorage.getItem("sdlcai-theme");
-          const prefersDark = matchMedia(
-            "(prefers-color-scheme: dark)",
-          ).matches;
-          theme =
-            stored === "dark" || stored === "light"
-              ? stored
-              : prefersDark
-                ? "dark"
-                : "light";
-        } catch {
-          theme = "light";
-        }
-
-        root.classList.toggle("dark", theme === "dark");
-        root.dataset.theme = theme;
-      })();
-    </script>
-    <noop &foreach="styles as style">
-      <link &href="style.href" &rel="style.rel" />
-    </noop>
-  </head>
-  <body class="bg-paper text-ink">
-    <div class="min-h-screen overflow-hidden">
-      <header class="relative border-b border-ink">
-        <div
-          class="absolute inset-y-0 right-0 hidden w-[42vw] text-ink/10 halftone-xl md:block"
-        ></div>
-        <nav
-          class="relative mx-auto flex max-w-7xl items-center justify-between px-5 py-5 md:px-8"
+<BaseLayout
+  &title="(id 'SDLCAI Privacy Policy')"
+  &description="(id 'Privacy policy for SDLCAI and Toska Osuuskunta.')"
+  &ogDescription="(id 'Privacy policy for SDLCAI and Toska Osuuskunta.')"
+  &url="(id 'https://sdlcai.org/privacy-policy/')"
+>
+  <section class="relative border-b border-ink">
+    <div
+      class="absolute -right-24 top-16 h-80 w-80 rounded-full border border-ink/20 text-ink/15 halftone"
+    ></div>
+    <div
+      class="relative mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-[0.85fr_1fr] md:px-8 md:py-24"
+    >
+      <div>
+        <p class="font-headline text-sm font-black uppercase text-muted">
+          SDLCAI
+        </p>
+        <h1
+          class="mt-3 font-headline text-[clamp(3.8rem,12vw,10rem)] font-black uppercase leading-[0.78]"
         >
-          <a href="/" class="inline-flex items-center" aria-label="SDLCAI">
-            <img
-              src="/assets/logo.svg"
-              alt="SDLCAI"
-              class="h-10 w-auto dark:invert"
-            />
-          </a>
-          <div class="flex items-center gap-3">
-            <a
-              class="hidden text-sm font-bold uppercase hover:underline sm:inline"
-              href="/"
-              >Home</a
-            >
-            <button
-              class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-              type="button"
-              data-theme-toggle
-              aria-label="Toggle dark mode"
-            >
-              <span data-theme-label>Dark</span>
-            </button>
-          </div>
-        </nav>
-      </header>
-
-      <main>
-        <section class="relative border-b border-ink">
-          <div
-            class="absolute -right-24 top-16 h-80 w-80 rounded-full border border-ink/20 text-ink/15 halftone"
-          ></div>
-          <div
-            class="relative mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-[0.85fr_1fr] md:px-8 md:py-24"
+          Privacy Policy
+        </h1>
+      </div>
+      <div class="grid content-end gap-6 border-y border-ink py-6">
+        <p class="max-w-3xl text-xl leading-8 text-muted">
+          Toska Osuuskunta is committed to protecting your privacy. This policy
+          describes how personal data is handled for SDLCAI.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a
+            class="inline-flex border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
+            href="/contact/"
+            >Contact</a
           >
-            <div>
-              <p class="font-headline text-sm font-black uppercase text-muted">
-                SDLCAI
-              </p>
-              <h1
-                class="mt-3 font-headline text-[clamp(3.8rem,12vw,10rem)] font-black uppercase leading-[0.78]"
-              >
-                Privacy Policy
-              </h1>
-            </div>
-            <div class="grid content-end gap-6 border-y border-ink py-6">
-              <p class="max-w-3xl text-xl leading-8 text-muted">
-                Toska Osuuskunta is committed to protecting your privacy. This
-                policy describes how personal data is handled for SDLCAI.
-              </p>
-              <div class="flex flex-wrap gap-3">
-                <a
-                  class="inline-flex border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
-                  href="/contact/"
-                  >Contact</a
-                >
-                <a
-                  class="inline-flex border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper"
-                  href="/"
-                  >Back home</a
-                >
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="border-b border-ink">
-          <div class="mx-auto max-w-5xl px-5 py-12 md:px-8 md:py-16">
-            <article class="grid gap-10 text-lg leading-8">
-              <p>
-                Please take time to review our practices. If there are any
-                practice matters that do not suit your consent, we recommend not
-                using this site.
-              </p>
-
-              <section class="border-t border-ink pt-6" id="responsible-party">
-                <h2
-                  class="font-headline text-3xl font-black uppercase leading-none md:text-5xl"
-                >
-                  Party Responsible for Processing Data
-                </h2>
-                <div class="mt-6 grid gap-4 md:grid-cols-2">
-                  <address
-                    class="not-italic text-2xl font-bold leading-tight md:text-3xl"
-                  >
-                    Toni Ristola<br />
-                    TOSKA Osuuskunta<br />
-                    c/o Toska Osuuskunta<br />
-                    Suonotkontie 1 B 22<br />
-                    00630 HELSINKI
-                  </address>
-                  <p class="break-words text-2xl font-bold leading-tight">
-                    info &lt;at&gt; futurefrontend.com
-                  </p>
-                </div>
-                <p class="mt-6 text-muted">
-                  The responsible party is the natural or legal person who
-                  jointly with others decides on the purposes and means of
-                  processing personal data, such as names and email addresses.
-                </p>
-              </section>
-
-              <section class="border-t border-ink pt-6" id="collecting">
-                <h2
-                  class="font-headline text-3xl font-black uppercase leading-none md:text-5xl"
-                >
-                  Collecting Information
-                </h2>
-                <p class="mt-6 text-muted">
-                  We collect information from you when you register on our site
-                  or fill out a form. When filling out our contact form you may
-                  be asked to enter your name, email, and phone number. Please
-                  do not submit your personal information if you would not like
-                  us to collect it.
-                </p>
-              </section>
-
-              <section class="border-t border-ink pt-6" id="using">
-                <h2
-                  class="font-headline text-3xl font-black uppercase leading-none md:text-5xl"
-                >
-                  Using Your Information
-                </h2>
-                <p class="mt-6 text-muted">
-                  We will use your personal information for the following
-                  purposes:
-                </p>
-                <ul class="mt-4 grid gap-3 text-muted">
-                  <li>
-                    <strong class="text-ink">Personalizing our website.</strong>
-                    We would like to create the best experience for you. By
-                    using your personal information, we are able to cater our
-                    site towards your needs.
-                  </li>
-                  <li>
-                    <strong class="text-ink">Improving our website.</strong>
-                    Through the information and feedback given, we are able to
-                    improve our site thanks to your insights.
-                  </li>
-                  <li>
-                    <strong class="text-ink"
-                      >Improving customer service.</strong
-                    >
-                    Your information will allow us to create a more effective
-                    customer service experience by utilizing the data provided.
-                  </li>
-                </ul>
-              </section>
-
-              <section class="border-t border-ink pt-6" id="consent">
-                <h2
-                  class="font-headline text-3xl font-black uppercase leading-none md:text-5xl"
-                >
-                  Revocation of Consent
-                </h2>
-                <p class="mt-6 text-muted">
-                  Many data processing operations are only possible with your
-                  express consent. You may revoke your consent at any time with
-                  future effect. An informal email making this request is
-                  sufficient. The data processed before we receive your request
-                  may still be legally processed.
-                </p>
-              </section>
-
-              <section class="border-t border-ink pt-6" id="deletion">
-                <h2
-                  class="font-headline text-3xl font-black uppercase leading-none md:text-5xl"
-                >
-                  Information, Blocking, Deletion
-                </h2>
-                <p class="mt-6 text-muted">
-                  As permitted by law, you have the right to be provided at any
-                  time with information free of charge about any of your
-                  personal data that is stored as well as its origin, the
-                  recipient and the purpose for which it has been processed. You
-                  also have the right to have this data corrected, blocked or
-                  deleted. You can contact us at any time using the address
-                  given in our legal notice if you have further questions on the
-                  topic of personal data.
-                </p>
-              </section>
-
-              <section class="border-t border-ink pt-6" id="third-party">
-                <h2
-                  class="font-headline text-3xl font-black uppercase leading-none md:text-5xl"
-                >
-                  Third Party Services
-                </h2>
-                <p class="mt-6 text-muted">
-                  Depending on what features and services you use we store
-                  different data.
-                </p>
-
-                <div class="mt-8 grid gap-px bg-ink md:grid-cols-2">
-                  <div class="bg-paper p-5">
-                    <h3 class="font-headline text-2xl font-black uppercase">
-                      Cloudflare
-                    </h3>
-                    <p class="mt-4 text-muted">
-                      The website is hosted via the service Cloudflare. By
-                      visiting the website Cloudflare stores access logs
-                      including the IP addresses, stored for less than 30 days.
-                      Learn more in the
-                      <a
-                        class="font-bold text-ink underline"
-                        href="https://www.cloudflare.com/privacypolicy/"
-                        >Cloudflare Privacy Policy</a
-                      >.
-                    </p>
-                  </div>
-                  <div class="bg-paper p-5">
-                    <h3 class="font-headline text-2xl font-black uppercase">
-                      Tito
-                    </h3>
-                    <p class="mt-4 text-muted">
-                      We use Tito to manage and process tickets of the
-                      conference. An up to date compilation of the personal data
-                      they collect and how long they retain it can be found in
-                      their
-                      <a
-                        class="font-bold text-ink underline"
-                        href="https://ti.to/privacy"
-                        >Tito Privacy Policy</a
-                      >.
-                    </p>
-                  </div>
-                  <div class="bg-paper p-5">
-                    <h3 class="font-headline text-2xl font-black uppercase">
-                      Stripe
-                    </h3>
-                    <p class="mt-4 text-muted">
-                      If you purchase a ticket the payment is handled by Stripe.
-                      They store the cardholder name, email address, unique
-                      customer identifier, order ID, bank account details,
-                      payment card details, card expiration date, CVC code,
-                      date, time, amount of transaction, merchant name, ID and
-                      location. For further details please see the
-                      <a
-                        class="font-bold text-ink underline"
-                        href="https://stripe.com/at/privacy/"
-                        >Stripe Privacy Statement</a
-                      >.
-                    </p>
-                  </div>
-                  <div class="bg-paper p-5">
-                    <h3 class="font-headline text-2xl font-black uppercase">
-                      Mailjet
-                    </h3>
-                    <p class="mt-4 text-muted">
-                      If you would like to receive our newsletter, we require a
-                      valid email address as well as information that allows us
-                      to verify that you own the specified email address and
-                      agree to receive the newsletter. No additional data is
-                      collected or is only collected on a voluntary basis.
-                    </p>
-                    <p class="mt-4 text-muted">
-                      We only use this data to send the requested information
-                      and do not pass it on to third parties. You can revoke
-                      consent to the storage of your data and email address as
-                      well as their use for sending the newsletter at any time,
-                      for example through the unsubscribe link in the
-                      newsletter.
-                    </p>
-                    <p class="mt-4 text-muted">
-                      For further details please see the
-                      <a
-                        class="font-bold text-ink underline"
-                        href="https://www.mailjet.com/legal/privacy-policy/"
-                        >Mailjet Privacy Statement</a
-                      >.
-                    </p>
-                  </div>
-                  <div class="bg-paper p-5">
-                    <h3 class="font-headline text-2xl font-black uppercase">
-                      Google Drive
-                    </h3>
-                    <p class="mt-4 text-muted">
-                      Google Drive is used to store and edit our internal
-                      documents. Some of these documents contain names, email
-                      addresses, payment information, company information and
-                      profile pictures collected when a ticket is purchased.
-                      Learn more in the
-                      <a
-                        class="font-bold text-ink underline"
-                        href="https://policies.google.com/privacy?hl=en-GB"
-                        >Google Privacy Policy</a
-                      >.
-                    </p>
-                  </div>
-                  <div class="bg-paper p-5">
-                    <h3 class="font-headline text-2xl font-black uppercase">
-                      Amazon Web Services
-                    </h3>
-                    <p class="mt-4 text-muted">
-                      Amazon Web Services are used to manage domains, DNS and
-                      emails. Some emails contain private information including
-                      email addresses and names. Learn more from the
-                      <a
-                        class="font-bold text-ink underline"
-                        href="https://aws.amazon.com/privacy/"
-                        >Amazon Privacy Notice</a
-                      >
-                      and
-                      <a
-                        class="font-bold text-ink underline"
-                        href="https://aws.amazon.com/compliance/data-privacy-faq/"
-                        >Amazon Privacy FAQ</a
-                      >.
-                    </p>
-                  </div>
-                </div>
-              </section>
-
-              <section class="border-t border-ink pt-6" id="questions">
-                <h2
-                  class="font-headline text-3xl font-black uppercase leading-none md:text-5xl"
-                >
-                  Questions and Feedback
-                </h2>
-                <p class="mt-6 text-muted">
-                  We try to keep our privacy policy transparent and easy to
-                  understand. In case you have questions or do not understand
-                  parts of it, please let us know if we can improve it further:
-                  <strong class="break-words text-ink"
-                    >info &lt;at&gt; futurefrontend.com</strong
-                  >.
-                </p>
-              </section>
-
-              <section class="border-t border-ink pt-6" id="changes">
-                <h2
-                  class="font-headline text-3xl font-black uppercase leading-none md:text-5xl"
-                >
-                  Changes
-                </h2>
-                <p class="mt-6 text-muted">
-                  We reserve the right to update or modify this Privacy Policy
-                  from time to time without prior notice. Please review this
-                  document especially before you provide any information. Your
-                  continued use of the services after any changes or revisions
-                  to this Privacy Policy shall indicate your agreement with the
-                  terms of such revised Privacy Policy.
-                </p>
-                <p class="mt-4 font-bold">
-                  The last update to our Privacy Statement was posted on March
-                  5th, 2019.
-                </p>
-              </section>
-            </article>
-          </div>
-        </section>
-      </main>
+          <a
+            class="inline-flex border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper"
+            href="/"
+            >Back home</a
+          >
+        </div>
+      </div>
     </div>
-    <noop &foreach="scripts as script">
-      <script &src="script.src" &type="script.type"></script>
-    </noop>
-  </body>
-</html>
+  </section>
+
+  <section class="border-b border-ink">
+    <div class="mx-auto max-w-5xl px-5 py-12 md:px-8 md:py-16">
+      <article class="grid gap-10 text-lg leading-8">
+        <p>
+          Please take time to review our practices. If there are any practice
+          matters that do not suit your consent, we recommend not using this
+          site.
+        </p>
+
+        <section class="border-t border-ink pt-6" id="responsible-party">
+          <h2
+            class="font-headline text-3xl font-black uppercase leading-none md:text-5xl"
+          >
+            Party Responsible for Processing Data
+          </h2>
+          <div class="mt-6 grid gap-4 md:grid-cols-2">
+            <address
+              class="not-italic text-2xl font-bold leading-tight md:text-3xl"
+            >
+              Toni Ristola<br />
+              TOSKA Osuuskunta<br />
+              c/o Toska Osuuskunta<br />
+              Suonotkontie 1 B 22<br />
+              00630 HELSINKI
+            </address>
+            <p class="break-words text-2xl font-bold leading-tight">
+              info &lt;at&gt; futurefrontend.com
+            </p>
+          </div>
+          <p class="mt-6 text-muted">
+            The responsible party is the natural or legal person who jointly
+            with others decides on the purposes and means of processing personal
+            data, such as names and email addresses.
+          </p>
+        </section>
+
+        <section class="border-t border-ink pt-6" id="collecting">
+          <h2
+            class="font-headline text-3xl font-black uppercase leading-none md:text-5xl"
+          >
+            Collecting Information
+          </h2>
+          <p class="mt-6 text-muted">
+            We collect information from you when you register on our site or
+            fill out a form. When filling out our contact form you may be asked
+            to enter your name, email, and phone number. Please do not submit
+            your personal information if you would not like us to collect it.
+          </p>
+        </section>
+
+        <section class="border-t border-ink pt-6" id="using">
+          <h2
+            class="font-headline text-3xl font-black uppercase leading-none md:text-5xl"
+          >
+            Using Your Information
+          </h2>
+          <p class="mt-6 text-muted">
+            We will use your personal information for the following purposes:
+          </p>
+          <ul class="mt-4 grid gap-3 text-muted">
+            <li>
+              <strong class="text-ink">Personalizing our website.</strong>
+              We would like to create the best experience for you. By using your
+              personal information, we are able to cater our site towards your
+              needs.
+            </li>
+            <li>
+              <strong class="text-ink">Improving our website.</strong>
+              Through the information and feedback given, we are able to improve
+              our site thanks to your insights.
+            </li>
+            <li>
+              <strong class="text-ink">Improving customer service.</strong>
+              Your information will allow us to create a more effective customer
+              service experience by utilizing the data provided.
+            </li>
+          </ul>
+        </section>
+
+        <section class="border-t border-ink pt-6" id="consent">
+          <h2
+            class="font-headline text-3xl font-black uppercase leading-none md:text-5xl"
+          >
+            Revocation of Consent
+          </h2>
+          <p class="mt-6 text-muted">
+            Many data processing operations are only possible with your express
+            consent. You may revoke your consent at any time with future effect.
+            An informal email making this request is sufficient. The data
+            processed before we receive your request may still be legally
+            processed.
+          </p>
+        </section>
+
+        <section class="border-t border-ink pt-6" id="deletion">
+          <h2
+            class="font-headline text-3xl font-black uppercase leading-none md:text-5xl"
+          >
+            Information, Blocking, Deletion
+          </h2>
+          <p class="mt-6 text-muted">
+            As permitted by law, you have the right to be provided at any time
+            with information free of charge about any of your personal data that
+            is stored as well as its origin, the recipient and the purpose for
+            which it has been processed. You also have the right to have this
+            data corrected, blocked or deleted. You can contact us at any time
+            using the address given in our legal notice if you have further
+            questions on the topic of personal data.
+          </p>
+        </section>
+
+        <section class="border-t border-ink pt-6" id="third-party">
+          <h2
+            class="font-headline text-3xl font-black uppercase leading-none md:text-5xl"
+          >
+            Third Party Services
+          </h2>
+          <p class="mt-6 text-muted">
+            Depending on what features and services you use we store different
+            data.
+          </p>
+
+          <div class="mt-8 grid gap-px bg-ink md:grid-cols-2">
+            <div class="bg-paper p-5">
+              <h3 class="font-headline text-2xl font-black uppercase">
+                Cloudflare
+              </h3>
+              <p class="mt-4 text-muted">
+                The website is hosted via the service Cloudflare. By visiting
+                the website Cloudflare stores access logs including the IP
+                addresses, stored for less than 30 days. Learn more in the
+                <a
+                  class="font-bold text-ink underline"
+                  href="https://www.cloudflare.com/privacypolicy/"
+                  >Cloudflare Privacy Policy</a
+                >.
+              </p>
+            </div>
+            <div class="bg-paper p-5">
+              <h3 class="font-headline text-2xl font-black uppercase">Tito</h3>
+              <p class="mt-4 text-muted">
+                We use Tito to manage and process tickets of the conference. An
+                up to date compilation of the personal data they collect and how
+                long they retain it can be found in their
+                <a
+                  class="font-bold text-ink underline"
+                  href="https://ti.to/privacy"
+                  >Tito Privacy Policy</a
+                >.
+              </p>
+            </div>
+            <div class="bg-paper p-5">
+              <h3 class="font-headline text-2xl font-black uppercase">
+                Stripe
+              </h3>
+              <p class="mt-4 text-muted">
+                If you purchase a ticket the payment is handled by Stripe. They
+                store the cardholder name, email address, unique customer
+                identifier, order ID, bank account details, payment card
+                details, card expiration date, CVC code, date, time, amount of
+                transaction, merchant name, ID and location. For further details
+                please see the
+                <a
+                  class="font-bold text-ink underline"
+                  href="https://stripe.com/at/privacy/"
+                  >Stripe Privacy Statement</a
+                >.
+              </p>
+            </div>
+            <div class="bg-paper p-5">
+              <h3 class="font-headline text-2xl font-black uppercase">
+                Mailjet
+              </h3>
+              <p class="mt-4 text-muted">
+                If you would like to receive our newsletter, we require a valid
+                email address as well as information that allows us to verify
+                that you own the specified email address and agree to receive
+                the newsletter. No additional data is collected or is only
+                collected on a voluntary basis.
+              </p>
+              <p class="mt-4 text-muted">
+                We only use this data to send the requested information and do
+                not pass it on to third parties. You can revoke consent to the
+                storage of your data and email address as well as their use for
+                sending the newsletter at any time, for example through the
+                unsubscribe link in the newsletter.
+              </p>
+              <p class="mt-4 text-muted">
+                For further details please see the
+                <a
+                  class="font-bold text-ink underline"
+                  href="https://www.mailjet.com/legal/privacy-policy/"
+                  >Mailjet Privacy Statement</a
+                >.
+              </p>
+            </div>
+            <div class="bg-paper p-5">
+              <h3 class="font-headline text-2xl font-black uppercase">
+                Google Drive
+              </h3>
+              <p class="mt-4 text-muted">
+                Google Drive is used to store and edit our internal documents.
+                Some of these documents contain names, email addresses, payment
+                information, company information and profile pictures collected
+                when a ticket is purchased. Learn more in the
+                <a
+                  class="font-bold text-ink underline"
+                  href="https://policies.google.com/privacy?hl=en-GB"
+                  >Google Privacy Policy</a
+                >.
+              </p>
+            </div>
+            <div class="bg-paper p-5">
+              <h3 class="font-headline text-2xl font-black uppercase">
+                Amazon Web Services
+              </h3>
+              <p class="mt-4 text-muted">
+                Amazon Web Services are used to manage domains, DNS and emails.
+                Some emails contain private information including email
+                addresses and names. Learn more from the
+                <a
+                  class="font-bold text-ink underline"
+                  href="https://aws.amazon.com/privacy/"
+                  >Amazon Privacy Notice</a
+                >
+                and
+                <a
+                  class="font-bold text-ink underline"
+                  href="https://aws.amazon.com/compliance/data-privacy-faq/"
+                  >Amazon Privacy FAQ</a
+                >.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="border-t border-ink pt-6" id="questions">
+          <h2
+            class="font-headline text-3xl font-black uppercase leading-none md:text-5xl"
+          >
+            Questions and Feedback
+          </h2>
+          <p class="mt-6 text-muted">
+            We try to keep our privacy policy transparent and easy to
+            understand. In case you have questions or do not understand parts of
+            it, please let us know if we can improve it further:
+            <strong class="break-words text-ink"
+              >info &lt;at&gt; futurefrontend.com</strong
+            >.
+          </p>
+        </section>
+
+        <section class="border-t border-ink pt-6" id="changes">
+          <h2
+            class="font-headline text-3xl font-black uppercase leading-none md:text-5xl"
+          >
+            Changes
+          </h2>
+          <p class="mt-6 text-muted">
+            We reserve the right to update or modify this Privacy Policy from
+            time to time without prior notice. Please review this document
+            especially before you provide any information. Your continued use of
+            the services after any changes or revisions to this Privacy Policy
+            shall indicate your agreement with the terms of such revised Privacy
+            Policy.
+          </p>
+          <p class="mt-4 font-bold">
+            The last update to our Privacy Statement was posted on March 5th,
+            2019.
+          </p>
+        </section>
+      </article>
+    </div>
+  </section>
+</BaseLayout>

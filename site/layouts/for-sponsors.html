@@ -1,477 +1,348 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SDLCAI For Sponsors</title>
-    <meta
-      name="description"
-      content="Sponsorship opportunities for SDLCAI, a one-day seminar on AI across the software development lifecycle."
-    />
-    <meta property="og:title" content="SDLCAI For Sponsors" />
-    <meta
-      property="og:description"
-      content="Sponsor a focused AI and software development lifecycle seminar at Aalto University."
-    />
-    <meta property="og:url" content="https://sdlcai.org/for-sponsors/" />
-    <meta property="og:image" content="https://sdlcai.org/og.png?v=20260618" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://sdlcai.org/og.png?v=20260618" />
-    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
-    <script>
-      (() => {
-        const root = document.documentElement;
-        let theme = "light";
-
-        try {
-          const stored = localStorage.getItem("sdlcai-theme");
-          const prefersDark = matchMedia(
-            "(prefers-color-scheme: dark)",
-          ).matches;
-          theme =
-            stored === "dark" || stored === "light"
-              ? stored
-              : prefersDark
-                ? "dark"
-                : "light";
-        } catch {
-          theme = "light";
-        }
-
-        root.classList.toggle("dark", theme === "dark");
-        root.dataset.theme = theme;
-      })();
-    </script>
-    <noop &foreach="styles as style">
-      <link &href="style.href" &rel="style.rel" />
-    </noop>
-  </head>
-  <body class="bg-paper text-ink">
-    <div class="min-h-screen overflow-hidden">
-      <header class="relative border-b border-ink">
-        <div
-          class="absolute inset-y-0 right-0 hidden w-[42vw] text-ink/10 halftone-xl md:block"
-        ></div>
-        <nav
-          class="relative mx-auto flex max-w-7xl items-center justify-between px-5 py-5 md:px-8"
+<BaseLayout
+  &title="(id 'SDLCAI For Sponsors')"
+  &description="(id 'Sponsorship opportunities for SDLCAI, a one-day seminar on AI across the software development lifecycle.')"
+  &ogDescription="(id 'Sponsor a focused AI and software development lifecycle seminar at Aalto University.')"
+  &url="(id 'https://sdlcai.org/for-sponsors/')"
+>
+  <section class="relative border-b border-ink">
+    <div
+      class="absolute -left-20 top-20 h-72 w-72 rounded-full border border-ink/20 text-ink/15 halftone"
+    ></div>
+    <div class="relative mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-24">
+      <div class="min-w-0">
+        <p class="font-headline text-sm font-black uppercase text-muted">
+          13 October 2026 / Aalto University / Espoo
+        </p>
+        <h1
+          class="mt-3 font-headline text-[clamp(3.8rem,14vw,12rem)] font-black uppercase leading-[0.74]"
         >
-          <a href="/" class="inline-flex items-center" aria-label="SDLCAI">
-            <img
-              src="/assets/logo.svg"
-              alt="SDLCAI"
-              class="h-10 w-auto dark:invert"
-            />
-          </a>
-          <div class="flex items-center gap-3">
-            <a
-              class="hidden text-sm font-bold uppercase hover:underline sm:inline"
-              href="/"
-              >Home</a
-            >
-            <button
-              class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-              type="button"
-              data-theme-toggle
-              aria-label="Toggle dark mode"
-            >
-              <span data-theme-label>Dark</span>
-            </button>
-          </div>
-        </nav>
-      </header>
-
-      <main>
-        <section class="relative border-b border-ink">
-          <div
-            class="absolute -left-20 top-20 h-72 w-72 rounded-full border border-ink/20 text-ink/15 halftone"
-          ></div>
-          <div class="relative mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-24">
-            <div class="min-w-0">
-              <p class="font-headline text-sm font-black uppercase text-muted">
-                13 October 2026 / Aalto University / Espoo
-              </p>
-              <h1
-                class="mt-3 font-headline text-[clamp(3.8rem,14vw,12rem)] font-black uppercase leading-[0.74]"
-              >
-                For Sponsors
-              </h1>
-            </div>
-            <div
-              class="mt-8 grid gap-6 border-y border-ink py-6 md:ml-auto md:max-w-3xl"
-            >
-              <p class="max-w-3xl text-xl leading-8 text-muted">
-                SDLCAI brings software practitioners, engineering leaders,
-                researchers, and product teams together for a focused day on how
-                AI changes the full software development lifecycle.
-              </p>
-              <div class="flex flex-wrap gap-3">
-                <a
-                  class="inline-flex border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
-                  href="mailto:info@futurefrontend.com?subject=SDLCAI%20sponsorship"
-                  >Sponsor SDLCAI</a
-                >
-                <a
-                  class="inline-flex border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper"
-                  href="#packages"
-                  >Packages</a
-                >
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="border-b border-ink">
-          <div
-            class="mx-auto grid max-w-7xl gap-px bg-ink px-5 py-12 md:grid-cols-4 md:px-8 md:py-16"
+          For Sponsors
+        </h1>
+      </div>
+      <div
+        class="mt-8 grid gap-6 border-y border-ink py-6 md:ml-auto md:max-w-3xl"
+      >
+        <p class="max-w-3xl text-xl leading-8 text-muted">
+          SDLCAI brings software practitioners, engineering leaders,
+          researchers, and product teams together for a focused day on how AI
+          changes the full software development lifecycle.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a
+            class="inline-flex border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
+            href="mailto:info@futurefrontend.com?subject=SDLCAI%20sponsorship"
+            >Sponsor SDLCAI</a
           >
-            <div class="bg-paper p-5">
-              <p class="font-headline text-sm font-black uppercase text-muted">
-                Format
-              </p>
-              <p class="mt-8 font-headline text-4xl font-black uppercase">
-                One day
-              </p>
-              <p class="mt-4 leading-7 text-muted">
-                A single-track seminar where everyone shares the same talks,
-                breaks, and hallway conversations.
-              </p>
-            </div>
-            <div class="bg-paper p-5">
-              <p class="font-headline text-sm font-black uppercase text-muted">
-                Audience
-              </p>
-              <p class="mt-8 font-headline text-4xl font-black uppercase">
-                Builders
-              </p>
-              <p class="mt-4 leading-7 text-muted">
-                Senior developers, technical leaders, researchers, consultants,
-                product teams, and public sector technology buyers.
-              </p>
-            </div>
-            <div class="bg-paper p-5">
-              <p class="font-headline text-sm font-black uppercase text-muted">
-                Theme
-              </p>
-              <p class="mt-8 font-headline text-4xl font-black uppercase">
-                AI in SDLC
-              </p>
-              <p class="mt-4 leading-7 text-muted">
-                Planning, architecture, coding, review, testing, operations,
-                governance, and the organizational change around them.
-              </p>
-            </div>
-            <div class="bg-paper p-5">
-              <p class="font-headline text-sm font-black uppercase text-muted">
-                Venue
-              </p>
-              <p class="mt-8 font-headline text-4xl font-black uppercase">
-                Marsio
-              </p>
-              <p class="mt-4 leading-7 text-muted">
-                Hosted at Marsio Saastamoinen Foundation Stage in Aalto
-                University's Otaniemi campus.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section class="border-b border-ink">
-          <div
-            class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:px-8 lg:grid-cols-[0.8fr_1.2fr]"
+          <a
+            class="inline-flex border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper"
+            href="#packages"
+            >Packages</a
           >
-            <div class="min-w-0">
-              <p class="font-headline text-sm font-black uppercase text-muted">
-                Why sponsor
-              </p>
-              <SectionHeading
-                &title="(id 'Be visible where AI work becomes engineering work')"
-                &href="(id '#why-sponsor')"
-                &ariaLabel="(id 'Link to why sponsor section')"
-                &className="(id 'mt-3 flex min-w-0 items-start gap-3 font-headline text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl xl:text-7xl')"
-                &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink')"
-              ></SectionHeading>
-            </div>
-            <div id="why-sponsor" class="grid gap-px border border-ink bg-ink">
-              <article class="min-w-0 bg-paper p-5">
-                <h2
-                  class="break-words font-headline text-3xl font-black uppercase"
-                >
-                  Reach the people making AI adoption decisions
-                </h2>
-                <p class="mt-4 text-lg leading-8 text-muted">
-                  SDLCAI is positioned for teams that have moved beyond demos.
-                  Sponsors meet people evaluating tools, changing delivery
-                  practices, and deciding where AI belongs in production
-                  software development.
-                </p>
-              </article>
-              <article class="min-w-0 bg-paper p-5">
-                <h2
-                  class="break-words font-headline text-3xl font-black uppercase"
-                >
-                  Support an independent technical program
-                </h2>
-                <p class="mt-4 text-lg leading-8 text-muted">
-                  Sponsorship helps cover speaker travel, venue production,
-                  catering, and attendee experience. Sponsor packages do not buy
-                  speaker slots, so the program can stay useful and technically
-                  credible.
-                </p>
-              </article>
-              <article class="min-w-0 bg-paper p-5">
-                <h2
-                  class="break-words font-headline text-3xl font-black uppercase"
-                >
-                  Create practical conversations
-                </h2>
-                <p class="mt-4 text-lg leading-8 text-muted">
-                  The day is designed for repeated contact: shared sessions,
-                  focused breaks, posters, and enough space for sponsors to
-                  discuss hiring, services, tools, research, and partnerships.
-                </p>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        <section class="border-b border-ink bg-ink text-paper">
-          <div
-            class="mx-auto grid max-w-7xl gap-8 px-5 py-16 md:grid-cols-[1fr_1fr] md:px-8"
-          >
-            <div class="grid content-between gap-8">
-              <div>
-                <p
-                  class="font-headline text-sm font-black uppercase text-paper/60"
-                >
-                  Venue visibility
-                </p>
-                <h2
-                  class="mt-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl"
-                >
-                  A stage built for shared attention
-                </h2>
-              </div>
-              <p class="max-w-2xl text-xl leading-8 text-paper/75">
-                Marsio gives the seminar a compact campus setting with a clear
-                main stage, nearby break areas, and a natural flow between talks
-                and sponsor conversations.
-              </p>
-            </div>
-            <figure class="border border-paper bg-paper text-ink">
-              <img
-                src="/assets/marsio-saastamoinen-stage.jpg"
-                alt="Marsio Saastamoinen Foundation Stage"
-                class="aspect-[4/3] w-full object-cover grayscale"
-              />
-              <figcaption class="border-t border-ink p-4 text-sm text-muted">
-                Marsio Saastamoinen Foundation Stage, Aalto University.
-              </figcaption>
-            </figure>
-          </div>
-        </section>
-
-        <section id="packages" class="border-b border-ink">
-          <div class="mx-auto max-w-7xl px-5 py-16 md:px-8">
-            <div class="grid min-w-0 gap-8">
-              <div class="max-w-3xl min-w-0">
-                <p
-                  class="font-headline text-sm font-black uppercase text-muted"
-                >
-                  Sponsor packages
-                </p>
-                <h2
-                  class="mt-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl"
-                >
-                  Packages for SDLCAI
-                </h2>
-                <p class="mt-6 text-lg leading-8 text-muted">
-                  Pricing is VAT 0. Packages are intentionally compact for a
-                  focused one-day seminar.
-                </p>
-              </div>
-              <div
-                class="min-w-0 max-w-full overflow-x-auto border border-ink [-webkit-overflow-scrolling:touch]"
-              >
-                <table
-                  class="w-[44rem] min-w-full table-fixed border-collapse text-left md:w-full"
-                >
-                  <colgroup>
-                    <col class="w-[33%]" />
-                    <col class="w-[16.75%]" />
-                    <col class="w-[16.75%]" />
-                    <col class="w-[16.75%]" />
-                    <col class="w-[16.75%]" />
-                  </colgroup>
-                  <thead class="bg-ink text-paper">
-                    <tr>
-                      <th class="p-3 text-sm font-bold uppercase md:p-4">
-                        Package
-                      </th>
-                      <th class="p-3 text-sm font-bold uppercase md:p-4">
-                        Brand
-                      </th>
-                      <th class="p-3 text-sm font-bold uppercase md:p-4">
-                        Tech
-                      </th>
-                      <th class="p-3 text-sm font-bold uppercase md:p-4">
-                        Epic
-                      </th>
-                      <th class="p-3 text-sm font-bold uppercase md:p-4">
-                        Partner
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr class="border-t border-ink">
-                      <th class="p-3 font-bold uppercase md:p-4">Cost</th>
-                      <td class="p-3 md:p-4">500 EUR</td>
-                      <td class="p-3 md:p-4">1,500 EUR</td>
-                      <td class="p-3 md:p-4">2,500 EUR</td>
-                      <td class="p-3 md:p-4">Call us</td>
-                    </tr>
-                    <tr class="border-t border-ink">
-                      <th class="p-3 font-bold uppercase md:p-4">Available</th>
-                      <td class="p-3 md:p-4">10</td>
-                      <td class="p-3 md:p-4">4</td>
-                      <td class="p-3 md:p-4">2</td>
-                      <td class="p-3 md:p-4">1</td>
-                    </tr>
-                    <tr class="border-t border-ink">
-                      <th class="p-3 font-bold uppercase md:p-4">
-                        Tickets included
-                      </th>
-                      <td class="p-3 md:p-4">1</td>
-                      <td class="p-3 md:p-4">2</td>
-                      <td class="p-3 md:p-4">4</td>
-                      <td class="p-3 md:p-4">Custom</td>
-                    </tr>
-                    <tr class="border-t border-ink">
-                      <th class="p-3 font-bold uppercase md:p-4">
-                        Ticket discount
-                      </th>
-                      <td class="p-3 md:p-4">15%</td>
-                      <td class="p-3 md:p-4">30%</td>
-                      <td class="p-3 md:p-4">50%</td>
-                      <td class="p-3 md:p-4">100%</td>
-                    </tr>
-                    <tr class="border-t border-ink">
-                      <th class="p-3 font-bold uppercase md:p-4">
-                        Logo on website
-                      </th>
-                      <td class="p-3 md:p-4">Small</td>
-                      <td class="p-3 md:p-4">Medium</td>
-                      <td class="p-3 md:p-4">Large</td>
-                      <td class="p-3 md:p-4">Lead</td>
-                    </tr>
-                    <tr class="border-t border-ink">
-                      <th class="p-3 font-bold uppercase md:p-4">
-                        Roll up in venue
-                      </th>
-                      <td class="p-3 md:p-4">Yes</td>
-                      <td class="p-3 md:p-4">Yes</td>
-                      <td class="p-3 md:p-4">Yes</td>
-                      <td class="p-3 md:p-4">Yes</td>
-                    </tr>
-                    <tr class="border-t border-ink">
-                      <th class="p-3 font-bold uppercase md:p-4">
-                        Logo between talks
-                      </th>
-                      <td class="p-3 md:p-4">-</td>
-                      <td class="p-3 md:p-4">Yes</td>
-                      <td class="p-3 md:p-4">Yes</td>
-                      <td class="p-3 md:p-4">Yes</td>
-                    </tr>
-                    <tr class="border-t border-ink">
-                      <th class="p-3 font-bold uppercase md:p-4">
-                        Booth space
-                      </th>
-                      <td class="p-3 md:p-4">-</td>
-                      <td class="p-3 md:p-4">Small</td>
-                      <td class="p-3 md:p-4">Medium</td>
-                      <td class="p-3 md:p-4">Custom</td>
-                    </tr>
-                    <tr class="border-t border-ink">
-                      <th class="p-3 font-bold uppercase md:p-4">
-                        Special requests
-                      </th>
-                      <td class="p-3 md:p-4">-</td>
-                      <td class="p-3 md:p-4">-</td>
-                      <td class="p-3 md:p-4">Yes</td>
-                      <td class="p-3 md:p-4">Yes</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="border-b border-ink">
-          <div
-            class="mx-auto grid max-w-7xl gap-8 px-5 py-16 md:grid-cols-[1fr_1fr] md:px-8"
-          >
-            <div>
-              <p class="font-headline text-sm font-black uppercase text-muted">
-                Sponsor policy
-              </p>
-              <h2
-                class="mt-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl"
-              >
-                Credibility first
-              </h2>
-            </div>
-            <div class="grid gap-6 text-lg leading-8 text-muted">
-              <p>
-                Sponsors are visible throughout the event, but the program is
-                selected on merit. We do not sell talk slots as part of sponsor
-                packages.
-              </p>
-              <p>
-                We are happy to coordinate practical extras such as sponsor
-                activities, demos, recruiting conversations, and useful attendee
-                materials when they fit the event.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section class="bg-ink text-paper">
-          <div class="mx-auto max-w-7xl px-5 py-16 md:px-8">
-            <div
-              class="grid gap-8 border-y border-paper py-8 md:grid-cols-[1fr_auto] md:items-center"
-            >
-              <div>
-                <p
-                  class="font-headline text-sm font-black uppercase text-paper/60"
-                >
-                  How to sponsor
-                </p>
-                <h2
-                  class="mt-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl"
-                >
-                  Start with a short email
-                </h2>
-                <p class="mt-6 max-w-2xl text-xl leading-8 text-paper/75">
-                  Tell us which package you are considering and what you want to
-                  achieve. We will confirm availability and send the details
-                  needed for contracting.
-                </p>
-              </div>
-              <p
-                class="border border-paper bg-paper px-5 py-3 text-base font-bold uppercase text-ink"
-              >
-                info &lt;at&gt; futurefrontend dot com
-              </p>
-            </div>
-          </div>
-        </section>
-      </main>
+        </div>
+      </div>
     </div>
-    <noop &foreach="scripts as script">
-      <script &src="script.src" &type="script.type"></script>
-    </noop>
-  </body>
-</html>
+  </section>
+
+  <section class="border-b border-ink">
+    <div
+      class="mx-auto grid max-w-7xl gap-px bg-ink px-5 py-12 md:grid-cols-4 md:px-8 md:py-16"
+    >
+      <div class="bg-paper p-5">
+        <p class="font-headline text-sm font-black uppercase text-muted">
+          Format
+        </p>
+        <p class="mt-8 font-headline text-4xl font-black uppercase">One day</p>
+        <p class="mt-4 leading-7 text-muted">
+          A single-track seminar where everyone shares the same talks, breaks,
+          and hallway conversations.
+        </p>
+      </div>
+      <div class="bg-paper p-5">
+        <p class="font-headline text-sm font-black uppercase text-muted">
+          Audience
+        </p>
+        <p class="mt-8 font-headline text-4xl font-black uppercase">Builders</p>
+        <p class="mt-4 leading-7 text-muted">
+          Senior developers, technical leaders, researchers, consultants,
+          product teams, and public sector technology buyers.
+        </p>
+      </div>
+      <div class="bg-paper p-5">
+        <p class="font-headline text-sm font-black uppercase text-muted">
+          Theme
+        </p>
+        <p class="mt-8 font-headline text-4xl font-black uppercase">
+          AI in SDLC
+        </p>
+        <p class="mt-4 leading-7 text-muted">
+          Planning, architecture, coding, review, testing, operations,
+          governance, and the organizational change around them.
+        </p>
+      </div>
+      <div class="bg-paper p-5">
+        <p class="font-headline text-sm font-black uppercase text-muted">
+          Venue
+        </p>
+        <p class="mt-8 font-headline text-4xl font-black uppercase">Marsio</p>
+        <p class="mt-4 leading-7 text-muted">
+          Hosted at Marsio Saastamoinen Foundation Stage in Aalto University's
+          Otaniemi campus.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-ink">
+    <div
+      class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:px-8 lg:grid-cols-[0.8fr_1.2fr]"
+    >
+      <div class="min-w-0">
+        <p class="font-headline text-sm font-black uppercase text-muted">
+          Why sponsor
+        </p>
+        <SectionHeading
+          &title="(id 'Be visible where AI work becomes engineering work')"
+          &href="(id '#why-sponsor')"
+          &ariaLabel="(id 'Link to why sponsor section')"
+          &className="(id 'mt-3 flex min-w-0 items-start gap-3 font-headline text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl xl:text-7xl')"
+          &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink')"
+        ></SectionHeading>
+      </div>
+      <div id="why-sponsor" class="grid gap-px border border-ink bg-ink">
+        <article class="min-w-0 bg-paper p-5">
+          <h2 class="break-words font-headline text-3xl font-black uppercase">
+            Reach the people making AI adoption decisions
+          </h2>
+          <p class="mt-4 text-lg leading-8 text-muted">
+            SDLCAI is positioned for teams that have moved beyond demos.
+            Sponsors meet people evaluating tools, changing delivery practices,
+            and deciding where AI belongs in production software development.
+          </p>
+        </article>
+        <article class="min-w-0 bg-paper p-5">
+          <h2 class="break-words font-headline text-3xl font-black uppercase">
+            Support an independent technical program
+          </h2>
+          <p class="mt-4 text-lg leading-8 text-muted">
+            Sponsorship helps cover speaker travel, venue production, catering,
+            and attendee experience. Sponsor packages do not buy speaker slots,
+            so the program can stay useful and technically credible.
+          </p>
+        </article>
+        <article class="min-w-0 bg-paper p-5">
+          <h2 class="break-words font-headline text-3xl font-black uppercase">
+            Create practical conversations
+          </h2>
+          <p class="mt-4 text-lg leading-8 text-muted">
+            The day is designed for repeated contact: shared sessions, focused
+            breaks, posters, and enough space for sponsors to discuss hiring,
+            services, tools, research, and partnerships.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-ink bg-ink text-paper">
+    <div
+      class="mx-auto grid max-w-7xl gap-8 px-5 py-16 md:grid-cols-[1fr_1fr] md:px-8"
+    >
+      <div class="grid content-between gap-8">
+        <div>
+          <p class="font-headline text-sm font-black uppercase text-paper/60">
+            Venue visibility
+          </p>
+          <h2
+            class="mt-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl"
+          >
+            A stage built for shared attention
+          </h2>
+        </div>
+        <p class="max-w-2xl text-xl leading-8 text-paper/75">
+          Marsio gives the seminar a compact campus setting with a clear main
+          stage, nearby break areas, and a natural flow between talks and
+          sponsor conversations.
+        </p>
+      </div>
+      <figure class="border border-paper bg-paper text-ink">
+        <img
+          src="/assets/marsio-saastamoinen-stage.jpg"
+          alt="Marsio Saastamoinen Foundation Stage"
+          class="aspect-[4/3] w-full object-cover grayscale"
+        />
+        <figcaption class="border-t border-ink p-4 text-sm text-muted">
+          Marsio Saastamoinen Foundation Stage, Aalto University.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="packages" class="border-b border-ink">
+    <div class="mx-auto max-w-7xl px-5 py-16 md:px-8">
+      <div class="grid min-w-0 gap-8">
+        <div class="max-w-3xl min-w-0">
+          <p class="font-headline text-sm font-black uppercase text-muted">
+            Sponsor packages
+          </p>
+          <h2
+            class="mt-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl"
+          >
+            Packages for SDLCAI
+          </h2>
+          <p class="mt-6 text-lg leading-8 text-muted">
+            Pricing is VAT 0. Packages are intentionally compact for a focused
+            one-day seminar.
+          </p>
+        </div>
+        <div
+          class="min-w-0 max-w-full overflow-x-auto border border-ink [-webkit-overflow-scrolling:touch]"
+        >
+          <table
+            class="w-[44rem] min-w-full table-fixed border-collapse text-left md:w-full"
+          >
+            <colgroup>
+              <col class="w-[33%]" />
+              <col class="w-[16.75%]" />
+              <col class="w-[16.75%]" />
+              <col class="w-[16.75%]" />
+              <col class="w-[16.75%]" />
+            </colgroup>
+            <thead class="bg-ink text-paper">
+              <tr>
+                <th class="p-3 text-sm font-bold uppercase md:p-4">Package</th>
+                <th class="p-3 text-sm font-bold uppercase md:p-4">Brand</th>
+                <th class="p-3 text-sm font-bold uppercase md:p-4">Tech</th>
+                <th class="p-3 text-sm font-bold uppercase md:p-4">Epic</th>
+                <th class="p-3 text-sm font-bold uppercase md:p-4">Partner</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-t border-ink">
+                <th class="p-3 font-bold uppercase md:p-4">Cost</th>
+                <td class="p-3 md:p-4">500 EUR</td>
+                <td class="p-3 md:p-4">1,500 EUR</td>
+                <td class="p-3 md:p-4">2,500 EUR</td>
+                <td class="p-3 md:p-4">Call us</td>
+              </tr>
+              <tr class="border-t border-ink">
+                <th class="p-3 font-bold uppercase md:p-4">Available</th>
+                <td class="p-3 md:p-4">10</td>
+                <td class="p-3 md:p-4">4</td>
+                <td class="p-3 md:p-4">2</td>
+                <td class="p-3 md:p-4">1</td>
+              </tr>
+              <tr class="border-t border-ink">
+                <th class="p-3 font-bold uppercase md:p-4">Tickets included</th>
+                <td class="p-3 md:p-4">1</td>
+                <td class="p-3 md:p-4">2</td>
+                <td class="p-3 md:p-4">4</td>
+                <td class="p-3 md:p-4">Custom</td>
+              </tr>
+              <tr class="border-t border-ink">
+                <th class="p-3 font-bold uppercase md:p-4">Ticket discount</th>
+                <td class="p-3 md:p-4">15%</td>
+                <td class="p-3 md:p-4">30%</td>
+                <td class="p-3 md:p-4">50%</td>
+                <td class="p-3 md:p-4">100%</td>
+              </tr>
+              <tr class="border-t border-ink">
+                <th class="p-3 font-bold uppercase md:p-4">Logo on website</th>
+                <td class="p-3 md:p-4">Small</td>
+                <td class="p-3 md:p-4">Medium</td>
+                <td class="p-3 md:p-4">Large</td>
+                <td class="p-3 md:p-4">Lead</td>
+              </tr>
+              <tr class="border-t border-ink">
+                <th class="p-3 font-bold uppercase md:p-4">Roll up in venue</th>
+                <td class="p-3 md:p-4">Yes</td>
+                <td class="p-3 md:p-4">Yes</td>
+                <td class="p-3 md:p-4">Yes</td>
+                <td class="p-3 md:p-4">Yes</td>
+              </tr>
+              <tr class="border-t border-ink">
+                <th class="p-3 font-bold uppercase md:p-4">
+                  Logo between talks
+                </th>
+                <td class="p-3 md:p-4">-</td>
+                <td class="p-3 md:p-4">Yes</td>
+                <td class="p-3 md:p-4">Yes</td>
+                <td class="p-3 md:p-4">Yes</td>
+              </tr>
+              <tr class="border-t border-ink">
+                <th class="p-3 font-bold uppercase md:p-4">Booth space</th>
+                <td class="p-3 md:p-4">-</td>
+                <td class="p-3 md:p-4">Small</td>
+                <td class="p-3 md:p-4">Medium</td>
+                <td class="p-3 md:p-4">Custom</td>
+              </tr>
+              <tr class="border-t border-ink">
+                <th class="p-3 font-bold uppercase md:p-4">Special requests</th>
+                <td class="p-3 md:p-4">-</td>
+                <td class="p-3 md:p-4">-</td>
+                <td class="p-3 md:p-4">Yes</td>
+                <td class="p-3 md:p-4">Yes</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-ink">
+    <div
+      class="mx-auto grid max-w-7xl gap-8 px-5 py-16 md:grid-cols-[1fr_1fr] md:px-8"
+    >
+      <div>
+        <p class="font-headline text-sm font-black uppercase text-muted">
+          Sponsor policy
+        </p>
+        <h2
+          class="mt-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl"
+        >
+          Credibility first
+        </h2>
+      </div>
+      <div class="grid gap-6 text-lg leading-8 text-muted">
+        <p>
+          Sponsors are visible throughout the event, but the program is selected
+          on merit. We do not sell talk slots as part of sponsor packages.
+        </p>
+        <p>
+          We are happy to coordinate practical extras such as sponsor
+          activities, demos, recruiting conversations, and useful attendee
+          materials when they fit the event.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-ink text-paper">
+    <div class="mx-auto max-w-7xl px-5 py-16 md:px-8">
+      <div
+        class="grid gap-8 border-y border-paper py-8 md:grid-cols-[1fr_auto] md:items-center"
+      >
+        <div>
+          <p class="font-headline text-sm font-black uppercase text-paper/60">
+            How to sponsor
+          </p>
+          <h2
+            class="mt-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl"
+          >
+            Start with a short email
+          </h2>
+          <p class="mt-6 max-w-2xl text-xl leading-8 text-paper/75">
+            Tell us which package you are considering and what you want to
+            achieve. We will confirm availability and send the details needed
+            for contracting.
+          </p>
+        </div>
+        <p
+          class="border border-paper bg-paper px-5 py-3 text-base font-bold uppercase text-ink"
+        >
+          info &lt;at&gt; futurefrontend dot com
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

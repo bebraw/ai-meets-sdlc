@@ -1,272 +1,148 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SDLCAI Schedule</title>
-    <meta
-      name="description"
-      content="Schedule for SDLCAI, a one-day seminar on AI across the software development lifecycle."
-    />
-    <meta property="og:title" content="SDLCAI Schedule" />
-    <meta
-      property="og:description"
-      content="The SDLCAI seminar schedule for 13 October 2026 at Aalto University."
-    />
-    <meta property="og:url" content="https://sdlcai.org/schedule/" />
-    <meta property="og:image" content="https://sdlcai.org/og.png?v=20260618" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://sdlcai.org/og.png?v=20260618" />
-    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
-    <script>
-      (() => {
-        const root = document.documentElement;
-        let theme = "light";
-
-        try {
-          const stored = localStorage.getItem("sdlcai-theme");
-          const prefersDark = matchMedia(
-            "(prefers-color-scheme: dark)",
-          ).matches;
-          theme =
-            stored === "dark" || stored === "light"
-              ? stored
-              : prefersDark
-                ? "dark"
-                : "light";
-        } catch {
-          theme = "light";
-        }
-
-        root.classList.toggle("dark", theme === "dark");
-        root.dataset.theme = theme;
-      })();
-    </script>
-    <noop &foreach="styles as style">
-      <link &href="style.href" &rel="style.rel" />
-    </noop>
-  </head>
-  <body class="bg-paper text-ink">
-    <div class="min-h-screen overflow-hidden">
-      <header class="relative border-b border-ink">
-        <div
-          class="absolute inset-y-0 right-0 hidden w-[42vw] text-ink/10 halftone-xl md:block"
-        ></div>
-        <nav
-          class="relative mx-auto flex max-w-7xl items-center justify-between px-5 py-5 md:px-8"
+<BaseLayout
+  &title="(id 'SDLCAI Schedule')"
+  &description="(id 'Schedule for SDLCAI, a one-day seminar on AI across the software development lifecycle.')"
+  &ogDescription="(id 'The SDLCAI seminar schedule for 13 October 2026 at Aalto University.')"
+  &url="(id 'https://sdlcai.org/schedule/')"
+>
+  <section class="relative border-b border-ink">
+    <div
+      class="absolute -left-20 top-20 h-72 w-72 rounded-full border border-ink/20 text-ink/15 halftone"
+    ></div>
+    <div class="relative mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-24">
+      <div class="min-w-0">
+        <p class="font-headline text-sm font-black uppercase text-muted">
+          13 October 2026 / Marsio / Espoo
+        </p>
+        <h1
+          class="mt-3 font-headline text-[clamp(4rem,16vw,13rem)] font-black uppercase leading-[0.74]"
         >
-          <a href="/" class="inline-flex items-center" aria-label="SDLCAI">
-            <img
-              src="/assets/logo.svg"
-              alt="SDLCAI"
-              class="h-10 w-auto dark:invert"
-            />
-          </a>
-          <MainNavigation
-            &className="(id 'hidden items-center gap-8 text-sm font-bold uppercase md:flex')"
-            &linkClassName="(id 'hover:underline')"
-          ></MainNavigation>
-          <button
-            class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-            type="button"
-            data-theme-toggle
-            aria-label="Toggle dark mode"
-          >
-            <span data-theme-label>Dark</span>
-          </button>
-        </nav>
-        <div class="relative border-t border-ink md:hidden">
-          <div class="mx-auto max-w-7xl px-5 py-3">
-            <MainNavigation
-              &className="(id 'flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-bold uppercase leading-none')"
-              &linkClassName="(id 'whitespace-nowrap hover:underline')"
-            ></MainNavigation>
-          </div>
-        </div>
-      </header>
-
-      <main>
-        <section class="relative border-b border-ink">
-          <div
-            class="absolute -left-20 top-20 h-72 w-72 rounded-full border border-ink/20 text-ink/15 halftone"
-          ></div>
-          <div class="relative mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-24">
-            <div class="min-w-0">
-              <p class="font-headline text-sm font-black uppercase text-muted">
-                13 October 2026 / Marsio / Espoo
-              </p>
-              <h1
-                class="mt-3 font-headline text-[clamp(4rem,16vw,13rem)] font-black uppercase leading-[0.74]"
-              >
-                Schedule
-              </h1>
-            </div>
-            <div
-              class="mt-8 grid gap-6 border-y border-ink py-6 md:ml-auto md:max-w-3xl"
-            >
-              <p class="max-w-3xl text-xl leading-8 text-muted">
-                A single-track day for software practitioners, researchers, and
-                engineering leaders. Detailed talk titles and speakers can be
-                dropped in here as they are confirmed.
-              </p>
-              <div class="flex flex-wrap gap-3">
-                <a
-                  class="inline-flex border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
-                  href="/calendar.ics"
-                  >Add to calendar</a
-                >
-                <a
-                  class="inline-flex border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper"
-                  href="/speakers/"
-                  >Speakers</a
-                >
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="border-b border-ink">
-          <div
-            class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-[22rem_1fr] md:px-8"
-          >
-            <div>
-              <p class="font-headline text-sm font-black uppercase text-muted">
-                Schedule draft
-              </p>
-              <SectionHeading
-                &title="(id 'Day flow')"
-                &href="(id '#day-flow')"
-                &ariaLabel="(id 'Link to day flow section')"
-                &className="(id 'mt-3 flex items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl')"
-                &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
-              ></SectionHeading>
-              <p class="mt-6 max-w-xs text-xl leading-8 text-muted">
-                Timing and themes are in place. The page is ready for the final
-                content pass.
-              </p>
-            </div>
-            <div id="day-flow" class="grid border border-ink">
-              <ScheduleRow
-                &time="(id '08:00-08:50')"
-                &title="(id 'Doors open')"
-                &body="(id 'Coffee and arrivals.')"
-                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-              <ScheduleRow
-                &time="(id '08:50-09:00')"
-                &title="(id 'Opening')"
-                &body="(id 'Welcome and framing for the day.')"
-                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-              <ScheduleRow
-                &time="(id '09:00-10:30')"
-                &title="(id 'Industry perspectives')"
-                &body="(id 'Talks or a joint session on applied AI in software development, ending with a brief panel.')"
-                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-              <ScheduleRow
-                &time="(id '10:30-11:00')"
-                &title="(id 'Break')"
-                &body="(id 'Coffee and hallway discussion.')"
-                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-              <ScheduleRow
-                &time="(id '11:00-12:30')"
-                &title="(id 'Views from academia')"
-                &body="(id 'Short research-driven talks on AI and software development.')"
-                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-              <ScheduleRow
-                &time="(id '12:30-13:30')"
-                &title="(id 'Lunch and posters')"
-                &body="(id 'Lunch break with poster sessions.')"
-                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-              <ScheduleRow
-                &time="(id '13:30-15:00')"
-                &title="(id 'Views from industry')"
-                &body="(id 'Short field reports from teams applying AI across the SDLC.')"
-                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-              <ScheduleRow
-                &time="(id '15:00-15:30')"
-                &title="(id 'Afternoon coffee')"
-                &body="(id 'Break and informal discussion.')"
-                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-              <ScheduleRow
-                &time="(id '15:30-17:00')"
-                &title="(id 'Academia')"
-                &body="(id 'Deeper academic sessions on current research and open questions.')"
-                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-              <ScheduleRow
-                &time="(id '17:00-17:15')"
-                &title="(id 'Short break')"
-                &body="(id 'Reset before the closing panel.')"
-                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-              <ScheduleRow
-                &time="(id '17:15-17:45')"
-                &title="(id 'Closing panel')"
-                &body="(id 'Academia and industry in discussion.')"
-                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-              <ScheduleRow
-                &time="(id '17:45-18:00')"
-                &title="(id 'Wrap-up')"
-                &body="(id 'Closing remarks and group photos.')"
-                &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-              <ScheduleRow
-                &time="(id '18:00-21:00')"
-                &title="(id 'Afterparty')"
-                &body="(id 'Informal evening gathering.')"
-                &className="(id 'grid md:grid-cols-[10rem_1fr]')"
-              ></ScheduleRow>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <footer
-        class="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-8 text-sm text-muted md:px-8"
+          Schedule
+        </h1>
+      </div>
+      <div
+        class="mt-8 grid gap-6 border-y border-ink py-6 md:ml-auto md:max-w-3xl"
       >
-        <MainNavigation
-          &className="(id 'flex flex-wrap gap-x-6 gap-y-2 font-bold uppercase text-ink')"
-          &linkClassName="(id 'hover:underline')"
-        ></MainNavigation>
-        <div
-          class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between"
-        >
-          <p>
-            SDLCAI / 13 October 2026 / Marsio Saastamoinen Foundation Stage /
-            sdlcai.org
-          </p>
-          <p>
-            Organized by: Toska Osuuskunta /
-            <a class="font-bold uppercase hover:underline" href="/contact/"
-              >Contact</a
-            >
-            /
-            <a class="font-bold uppercase hover:underline" href="/for-sponsors/"
-              >Sponsors</a
-            >
-            /
-            <a
-              class="font-bold uppercase hover:underline"
-              href="/privacy-policy/"
-              >Privacy policy</a
-            >
-          </p>
+        <p class="max-w-3xl text-xl leading-8 text-muted">
+          A single-track day for software practitioners, researchers, and
+          engineering leaders. Detailed talk titles and speakers can be dropped
+          in here as they are confirmed.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a
+            class="inline-flex border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
+            href="/calendar.ics"
+            >Add to calendar</a
+          >
+          <a
+            class="inline-flex border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper"
+            href="/speakers/"
+            >Speakers</a
+          >
         </div>
-      </footer>
+      </div>
     </div>
-    <noop &foreach="scripts as script">
-      <script &src="script.src" &type="script.type"></script>
-    </noop>
-  </body>
-</html>
+  </section>
+
+  <section class="border-b border-ink">
+    <div
+      class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-[22rem_1fr] md:px-8"
+    >
+      <div>
+        <p class="font-headline text-sm font-black uppercase text-muted">
+          Schedule draft
+        </p>
+        <SectionHeading
+          &title="(id 'Day flow')"
+          &href="(id '#day-flow')"
+          &ariaLabel="(id 'Link to day flow section')"
+          &className="(id 'mt-3 flex items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl')"
+          &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
+        ></SectionHeading>
+        <p class="mt-6 max-w-xs text-xl leading-8 text-muted">
+          Timing and themes are in place. The page is ready for the final
+          content pass.
+        </p>
+      </div>
+      <div id="day-flow" class="grid border border-ink">
+        <ScheduleRow
+          &time="(id '08:00-08:50')"
+          &title="(id 'Doors open')"
+          &body="(id 'Coffee and arrivals.')"
+          &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+        <ScheduleRow
+          &time="(id '08:50-09:00')"
+          &title="(id 'Opening')"
+          &body="(id 'Welcome and framing for the day.')"
+          &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+        <ScheduleRow
+          &time="(id '09:00-10:30')"
+          &title="(id 'Industry perspectives')"
+          &body="(id 'Talks or a joint session on applied AI in software development, ending with a brief panel.')"
+          &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+        <ScheduleRow
+          &time="(id '10:30-11:00')"
+          &title="(id 'Break')"
+          &body="(id 'Coffee and hallway discussion.')"
+          &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+        <ScheduleRow
+          &time="(id '11:00-12:30')"
+          &title="(id 'Views from academia')"
+          &body="(id 'Short research-driven talks on AI and software development.')"
+          &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+        <ScheduleRow
+          &time="(id '12:30-13:30')"
+          &title="(id 'Lunch and posters')"
+          &body="(id 'Lunch break with poster sessions.')"
+          &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+        <ScheduleRow
+          &time="(id '13:30-15:00')"
+          &title="(id 'Views from industry')"
+          &body="(id 'Short field reports from teams applying AI across the SDLC.')"
+          &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+        <ScheduleRow
+          &time="(id '15:00-15:30')"
+          &title="(id 'Afternoon coffee')"
+          &body="(id 'Break and informal discussion.')"
+          &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+        <ScheduleRow
+          &time="(id '15:30-17:00')"
+          &title="(id 'Academia')"
+          &body="(id 'Deeper academic sessions on current research and open questions.')"
+          &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+        <ScheduleRow
+          &time="(id '17:00-17:15')"
+          &title="(id 'Short break')"
+          &body="(id 'Reset before the closing panel.')"
+          &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+        <ScheduleRow
+          &time="(id '17:15-17:45')"
+          &title="(id 'Closing panel')"
+          &body="(id 'Academia and industry in discussion.')"
+          &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+        <ScheduleRow
+          &time="(id '17:45-18:00')"
+          &title="(id 'Wrap-up')"
+          &body="(id 'Closing remarks and group photos.')"
+          &className="(id 'grid border-b border-ink md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+        <ScheduleRow
+          &time="(id '18:00-21:00')"
+          &title="(id 'Afterparty')"
+          &body="(id 'Informal evening gathering.')"
+          &className="(id 'grid md:grid-cols-[10rem_1fr]')"
+        ></ScheduleRow>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
