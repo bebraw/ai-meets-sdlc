@@ -3,6 +3,9 @@
     "layout": "index",
     "scripts": [{ "name": "index" }],
     "dataSources": {
+      "seminar": {
+        "operation": "seminar"
+      },
       "scheduleItems": {
         "operation": "scheduleItems"
       }
@@ -19,6 +22,11 @@
   "design-system": {
     "layout": "design-system",
     "scripts": [{ "name": "index" }],
+    "dataSources": {
+      "seminar": {
+        "operation": "seminar"
+      }
+    },
     "context": {
       "meta": {
         "title": "SDLCAI Design System",
@@ -31,6 +39,11 @@
   "for-sponsors": {
     "layout": "for-sponsors",
     "scripts": [{ "name": "index" }],
+    "dataSources": {
+      "seminar": {
+        "operation": "seminar"
+      }
+    },
     "context": {
       "meta": {
         "title": "SDLCAI For Sponsors",
@@ -44,6 +57,9 @@
     "layout": "schedule",
     "scripts": [{ "name": "index" }],
     "dataSources": {
+      "seminar": {
+        "operation": "seminar"
+      },
       "scheduleItems": {
         "operation": "scheduleItems"
       }
@@ -61,6 +77,9 @@
     "layout": "speakers",
     "scripts": [{ "name": "index" }],
     "dataSources": {
+      "seminar": {
+        "operation": "seminar"
+      },
       "speakerItems": {
         "operation": "speakerItems"
       }
@@ -70,13 +89,18 @@
         "title": "SDLCAI Speakers",
         "description": "Speakers and themes for SDLCAI, a one-day seminar on AI across the software development lifecycle.",
         "ogEyebrow": "Speakers",
-        "ogDescription": "Speaker lineup and themes for SDLCAI."
+        "ogDescription": "Speaker talks and themes for SDLCAI."
       }
     }
   },
   "admin": {
     "layout": "admin",
     "scripts": [{ "name": "index" }],
+    "dataSources": {
+      "seminar": {
+        "operation": "seminar"
+      }
+    },
     "context": {
       "meta": {
         "title": "SDLCAI Admin",
@@ -89,6 +113,11 @@
   "contact": {
     "layout": "contact",
     "scripts": [{ "name": "index" }],
+    "dataSources": {
+      "seminar": {
+        "operation": "seminar"
+      }
+    },
     "context": {
       "meta": {
         "title": "SDLCAI Contact",
@@ -101,6 +130,11 @@
   "privacy-policy": {
     "layout": "privacy-policy",
     "scripts": [{ "name": "index" }],
+    "dataSources": {
+      "seminar": {
+        "operation": "seminar"
+      }
+    },
     "context": {
       "meta": {
         "title": "SDLCAI Privacy Policy",
@@ -113,6 +147,11 @@
   "404": {
     "layout": "404",
     "scripts": [{ "name": "index" }],
+    "dataSources": {
+      "seminar": {
+        "operation": "seminar"
+      }
+    },
     "context": {
       "meta": {
         "title": "Page not found",

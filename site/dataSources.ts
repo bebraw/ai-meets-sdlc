@@ -1,9 +1,12 @@
 import schedule from "./data/schedule.json" with { type: "json" };
+import seminarData from "./data/seminar.json" with { type: "json" };
 
 function init() {
   const scheduleItems = getScheduleItems();
+  const seminar = getSeminar();
 
   return {
+    seminar: () => seminar,
     scheduleItems: () => scheduleItems,
     speakerItems: () =>
       scheduleItems.flatMap((item) =>
@@ -26,6 +29,18 @@ function init() {
           };
         }),
       ),
+  };
+}
+
+function getSeminar() {
+  return {
+    ...seminarData,
+    display: {
+      dateVenueLocation: `${seminarData.date.display} / ${seminarData.venue.name} / ${seminarData.location.display}`,
+      dateShortVenueLocation: `${seminarData.date.display} / ${seminarData.venue.shortName} / ${seminarData.location.display}`,
+      dateUniversityLocation: `${seminarData.date.display} / Aalto University / ${seminarData.location.display}`,
+      footer: `${seminarData.name} / ${seminarData.date.display} / ${seminarData.venue.name} / sdlcai.org`,
+    },
   };
 }
 

@@ -1,0 +1,17 @@
+{
+  "$schema": "./seminar.schema.json",
+  "name": "SDLCAI",
+  "date": {
+    "iso": "2026-10-13",
+    "display": "13 October 2026"
+  },
+  "venue": {
+    "name": "Marsio Saastamoinen Foundation Stage",
+    "shortName": "Marsio"
+  },
+  "location": {
+    "city": "Espoo",
+    "country": "FI",
+    "display": "Espoo"
+  }
+}

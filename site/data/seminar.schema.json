@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sdlcai.org/schemas/seminar.schema.json",
+  "title": "SDLCAI seminar",
+  "type": "object",
+  "required": ["name", "date", "venue", "location"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "date": {
+      "type": "object",
+      "required": ["iso", "display"],
+      "additionalProperties": false,
+      "properties": {
+        "iso": {
+          "type": "string",
+          "format": "date"
+        },
+        "display": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "venue": {
+      "type": "object",
+      "required": ["name", "shortName"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "shortName": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "location": {
+      "type": "object",
+      "required": ["city", "country", "display"],
+      "additionalProperties": false,
+      "properties": {
+        "city": {
+          "type": "string",
+          "minLength": 1
+        },
+        "country": {
+          "type": "string",
+          "minLength": 1
+        },
+        "display": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

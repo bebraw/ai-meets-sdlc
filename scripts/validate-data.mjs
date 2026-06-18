@@ -4,18 +4,25 @@ import process from "node:process";
 
 const schedulePath = path.resolve("site/data/schedule.json");
 const scheduleSchemaPath = path.resolve("site/data/schedule.schema.json");
+const seminarPath = path.resolve("site/data/seminar.json");
+const seminarSchemaPath = path.resolve("site/data/seminar.schema.json");
 const timeRangePattern =
   /^([01][0-9]|2[0-3]):[0-5][0-9]-([01][0-9]|2[0-3]):[0-5][0-9]$/;
+const isoDatePattern = /^\d{4}-\d{2}-\d{2}$/;
 
 const errors = [];
 
-const [schedule, scheduleSchema] = await Promise.all([
+const [schedule, scheduleSchema, seminar, seminarSchema] = await Promise.all([
   readJson(schedulePath),
   readJson(scheduleSchemaPath),
+  readJson(seminarPath),
+  readJson(seminarSchemaPath),
 ]);
 
 validateScheduleSchema(scheduleSchema);
 await validateSchedule(schedule);
+validateSeminarSchema(seminarSchema);
+validateSeminar(seminar);
 
 if (errors.length) {
   console.error("Data validation failed:");
@@ -66,6 +73,90 @@ function validateScheduleSchema(schema) {
   if (!itemProperties?.talks) {
     errors.push("site/data/schedule.schema.json is missing talks.");
   }
+}
+
+function validateSeminarSchema(schema) {
+  if (!isObject(schema)) return;
+
+  if (schema.title !== "SDLCAI seminar") {
+    errors.push("site/data/seminar.schema.json has an unexpected title.");
+  }
+
+  for (const field of ["name", "date", "venue", "location"]) {
+    if (!schema.properties?.[field]) {
+      errors.push(`site/data/seminar.schema.json is missing ${field}.`);
+    }
+
+    if (!schema.required?.includes(field)) {
+      errors.push(`site/data/seminar.schema.json must require ${field}.`);
+    }
+  }
+}
+
+function validateSeminar(seminar) {
+  if (!isObject(seminar)) {
+    errors.push("site/data/seminar.json must be an object.");
+    return;
+  }
+
+  const allowedRootKeys = new Set([
+    "$schema",
+    "name",
+    "date",
+    "venue",
+    "location",
+  ]);
+
+  for (const key of Object.keys(seminar)) {
+    if (!allowedRootKeys.has(key)) {
+      errors.push(`site/data/seminar.json has unknown root field "${key}".`);
+    }
+  }
+
+  if (!isNonEmptyString(seminar.name)) {
+    errors.push("site/data/seminar.json name must be a non-empty string.");
+  }
+
+  if (!isObject(seminar.date)) {
+    errors.push("site/data/seminar.json date must be an object.");
+  }
+
+  validateOptionalObject({
+    value: seminar.date,
+    path: "site/data/seminar.json date",
+    allowedFields: ["iso", "display"],
+    requiredFields: ["iso", "display"],
+  });
+
+  if (isNonEmptyString(seminar.date?.iso)) {
+    if (!isoDatePattern.test(seminar.date.iso)) {
+      errors.push("site/data/seminar.json date.iso must use YYYY-MM-DD.");
+    } else if (Number.isNaN(Date.parse(`${seminar.date.iso}T00:00:00Z`))) {
+      errors.push("site/data/seminar.json date.iso must be a valid date.");
+    }
+  }
+
+  if (!isObject(seminar.venue)) {
+    errors.push("site/data/seminar.json venue must be an object.");
+  }
+
+  validateOptionalObject({
+    value: seminar.venue,
+    path: "site/data/seminar.json venue",
+    allowedFields: ["name", "shortName"],
+    requiredFields: ["name", "shortName"],
+  });
+
+  if (!isObject(seminar.location)) {
+    errors.push("site/data/seminar.json location must be an object.");
+  }
+
+  validateOptionalObject({
+    value: seminar.location,
+    path: "site/data/seminar.json location",
+    allowedFields: ["city", "country", "display"],
+    requiredFields: ["city", "country", "display"],
+  });
 }
 
 async function validateSchedule(schedule) {
