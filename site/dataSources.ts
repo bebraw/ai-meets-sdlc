@@ -1,5 +1,9 @@
+import schedule from "./data/schedule.json" with { type: "json" };
+
 function init() {
-  return {};
+  return {
+    scheduleItems: () => schedule.items,
+  };
 }
 
 export { init };

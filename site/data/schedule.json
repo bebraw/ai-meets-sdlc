@@ -1,0 +1,70 @@
+{
+  "$schema": "./schedule.schema.json",
+  "items": [
+    {
+      "time": "08:00-08:50",
+      "title": "Doors open",
+      "body": "Coffee and arrivals."
+    },
+    {
+      "time": "08:50-09:00",
+      "title": "Opening",
+      "body": "Welcome and framing for the day."
+    },
+    {
+      "time": "09:00-10:30",
+      "title": "Industry perspectives",
+      "body": "Talks or a joint session on applied AI in software development, ending with a brief panel."
+    },
+    {
+      "time": "10:30-11:00",
+      "title": "Break",
+      "body": "Coffee and hallway discussion."
+    },
+    {
+      "time": "11:00-12:30",
+      "title": "Views from academia",
+      "body": "Short research-driven talks on AI and software development."
+    },
+    {
+      "time": "12:30-13:30",
+      "title": "Lunch and posters",
+      "body": "Lunch break with poster sessions."
+    },
+    {
+      "time": "13:30-15:00",
+      "title": "Views from industry",
+      "body": "Short field reports from teams applying AI across the SDLC."
+    },
+    {
+      "time": "15:00-15:30",
+      "title": "Afternoon coffee",
+      "body": "Break and informal discussion."
+    },
+    {
+      "time": "15:30-17:00",
+      "title": "Academia",
+      "body": "Deeper academic sessions on current research and open questions."
+    },
+    {
+      "time": "17:00-17:15",
+      "title": "Short break",
+      "body": "Reset before the closing panel."
+    },
+    {
+      "time": "17:15-17:45",
+      "title": "Closing panel",
+      "body": "Academia and industry in discussion."
+    },
+    {
+      "time": "17:45-18:00",
+      "title": "Wrap-up",
+      "body": "Closing remarks and group photos."
+    },
+    {
+      "time": "18:00-21:00",
+      "title": "Afterparty",
+      "body": "Informal evening gathering."
+    }
+  ]
+}

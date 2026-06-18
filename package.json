@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "gustwind --build --output ./build --no-incremental",
+    "data:validate": "node scripts/validate-data.mjs",
     "db:migrate:local": "wrangler d1 migrations apply ai-meets-sdlc-interests --local",
     "db:migrate:remote": "wrangler d1 migrations apply ai-meets-sdlc-interests --remote",
     "dev:env": "node scripts/write-dev-vars.mjs",
@@ -18,7 +19,7 @@
     "serve": "gustwind --serve --port 3000 --input ./build",
     "types:check": "tsc --noEmit",
     "types:generate": "wrangler types worker-configuration.d.ts",
-    "validate": "gustwind --validate --input ./build",
+    "validate": "npm run data:validate && gustwind --validate --input ./build",
     "worker:build": "npm run types:check && npm run build && node scripts/verify-build-output.mjs",
     "worker:dev": "npm run dev:env && npm run worker:build && wrangler dev",
     "deploy": "npm run worker:build && wrangler deploy"

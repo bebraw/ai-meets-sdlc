@@ -2,6 +2,11 @@
   "/": {
     "layout": "index",
     "scripts": [{ "name": "index" }],
+    "dataSources": {
+      "scheduleItems": {
+        "operation": "scheduleItems"
+      }
+    },
     "context": {
       "meta": {
         "title": "SDLCAI",
@@ -38,6 +43,11 @@
   "schedule": {
     "layout": "schedule",
     "scripts": [{ "name": "index" }],
+    "dataSources": {
+      "scheduleItems": {
+        "operation": "scheduleItems"
+      }
+    },
     "context": {
       "meta": {
         "title": "SDLCAI Schedule",
