@@ -5,6 +5,9 @@
     "dataSources": {
       "scheduleItems": {
         "operation": "scheduleItems"
+      },
+      "speakerItems": {
+        "operation": "speakerItems"
       }
     },
     "context": {
@@ -60,6 +63,11 @@
   "speakers": {
     "layout": "speakers",
     "scripts": [{ "name": "index" }],
+    "dataSources": {
+      "speakerItems": {
+        "operation": "speakerItems"
+      }
+    },
     "context": {
       "meta": {
         "title": "SDLCAI Speakers",

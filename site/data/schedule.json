@@ -24,7 +24,19 @@
     {
       "time": "11:00-12:30",
       "title": "Views from academia",
-      "body": "Short research-driven talks on AI and software development."
+      "body": "Short research-driven talks on AI and software development.",
+      "speaker": {
+        "name": "Dr Muhammad Waseem",
+        "role": "Vice Head of GPT Lab, Tampere University",
+        "photo": "/assets/speakers/muhammad-waseem.webp",
+        "website": "https://drmwaseem.com/",
+        "scholar": "https://scholar.google.com/citations?user=ufGtcBUAAAAJ&hl=en",
+        "bio": "Dr Muhammad Waseem is the Vice Head of GPT Lab at Tampere University. His research focuses on software engineering, generative AI, software architecture, and AI-assisted software development. He is currently supervising PhD and master’s students and has authored more than 90 research papers published in leading software engineering venues, including JSS, IST, ICSE, ECSA, and others."
+      },
+      "talk": {
+        "title": "GenAI in Software Engineering: What Works, What Fails, What’s Next",
+        "abstract": "This talk examines the current role of Generative AI in software engineering, moving beyond the hype around coding assistants. It discusses where GenAI is already useful, such as implementation, testing, documentation, and refactoring, and where progress remains limited, such as requirements, architecture, and long-term maintenance. The talk also highlights key open questions around measurement, verification, security, developer expertise, and the future shape of software engineering work."
+      }
     },
     {
       "time": "12:30-13:30",

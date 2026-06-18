@@ -1,13 +1,70 @@
-<div &class="className">
+<div &id="anchor" &class="className">
   <time
     class="border-b border-ink p-4 font-headline text-2xl font-black uppercase leading-none md:border-b-0 md:border-r"
     &children="time"
   ></time>
   <div class="p-4">
-    <h3
-      class="font-headline text-2xl font-black uppercase"
-      &children="title"
-    ></h3>
+    <div class="flex items-start gap-3">
+      <h3
+        class="min-w-0 font-headline text-2xl font-black uppercase"
+        &children="title"
+      ></h3>
+      <a
+        &href="anchorHref"
+        class="mt-[0.08em] shrink-0 font-headline text-xl font-black leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        aria-label="Link to schedule session"
+        >#</a
+      >
+    </div>
     <p class="mt-2 leading-7 text-muted" &children="body"></p>
+    <div
+      class="mt-5 grid gap-5 border-t border-ink pt-5 min-[720px]:grid-cols-[8rem_1fr]"
+      &visibleIf="talk"
+    >
+      <img
+        &visibleIf="speaker.photo"
+        &src="speaker.photo"
+        &alt="speaker.name"
+        class="aspect-square w-32 border border-ink object-cover grayscale min-[720px]:w-full"
+        loading="lazy"
+      />
+      <div class="grid gap-4">
+        <div>
+          <p class="font-headline text-sm font-black uppercase text-muted">
+            Talk
+          </p>
+          <h4
+            class="mt-2 font-headline text-3xl font-black uppercase leading-none"
+            &children="talk.title"
+          ></h4>
+        </div>
+        <p class="leading-7 text-muted" &children="talk.abstract"></p>
+        <div &visibleIf="speaker" class="border-t border-ink pt-4">
+          <p
+            class="font-headline text-2xl font-black uppercase"
+            &children="speaker.name"
+          ></p>
+          <p
+            class="mt-1 font-bold leading-6 text-muted"
+            &children="speaker.role"
+          ></p>
+          <p class="mt-3 leading-7 text-muted" &children="speaker.bio"></p>
+          <div class="mt-4 flex flex-wrap gap-3">
+            <a
+              &visibleIf="speaker.website"
+              &href="speaker.website"
+              class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+              >Website</a
+            >
+            <a
+              &visibleIf="speaker.scholar"
+              &href="speaker.scholar"
+              class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+              >Scholar</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

@@ -1,4 +1,4 @@
-import { readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
@@ -15,7 +15,7 @@ const [schedule, scheduleSchema] = await Promise.all([
 ]);
 
 validateScheduleSchema(scheduleSchema);
-validateSchedule(schedule);
+await validateSchedule(schedule);
 
 if (errors.length) {
   console.error("Data validation failed:");
@@ -64,7 +64,7 @@ function validateScheduleSchema(schema) {
   }
 }
 
-function validateSchedule(schedule) {
+async function validateSchedule(schedule) {
   if (!isObject(schedule)) {
     errors.push("site/data/schedule.json must be an object.");
     return;
@@ -89,15 +89,21 @@ function validateSchedule(schedule) {
 
   let previousEnd = -1;
 
-  schedule.items.forEach((item, index) => {
+  for (const [index, item] of schedule.items.entries()) {
     const itemPath = `site/data/schedule.json items[${index}]`;
 
     if (!isObject(item)) {
       errors.push(`${itemPath} must be an object.`);
-      return;
+      continue;
     }
 
-    const allowedItemKeys = new Set(["time", "title", "body"]);
+    const allowedItemKeys = new Set([
+      "time",
+      "title",
+      "body",
+      "speaker",
+      "talk",
+    ]);
 
     for (const key of Object.keys(item)) {
       if (!allowedItemKeys.has(key)) {
@@ -105,17 +111,40 @@ function validateSchedule(schedule) {
       }
     }
 
-    for (const field of allowedItemKeys) {
+    for (const field of ["time", "title", "body"]) {
       if (!isNonEmptyString(item[field])) {
         errors.push(`${itemPath}.${field} must be a non-empty string.`);
       }
     }
 
-    if (!isNonEmptyString(item.time)) return;
+    validateOptionalObject({
+      value: item.speaker,
+      path: `${itemPath}.speaker`,
+      allowedFields: ["name", "role", "photo", "website", "scholar", "bio"],
+      requiredFields: ["name", "role", "bio"],
+    });
+
+    validateOptionalObject({
+      value: item.talk,
+      path: `${itemPath}.talk`,
+      allowedFields: ["title", "abstract"],
+      requiredFields: ["title", "abstract"],
+    });
+
+    if (
+      typeof item.talk !== "undefined" &&
+      typeof item.speaker === "undefined"
+    ) {
+      errors.push(`${itemPath}.talk requires a speaker.`);
+    }
+
+    await validateSpeakerLinks(item.speaker, `${itemPath}.speaker`);
+
+    if (!isNonEmptyString(item.time)) continue;
 
     if (!timeRangePattern.test(item.time)) {
       errors.push(`${itemPath}.time must use HH:MM-HH:MM in 24-hour time.`);
-      return;
+      continue;
     }
 
     const [start, end] = item.time.split("-").map(timeToMinutes);
@@ -129,7 +158,7 @@ function validateSchedule(schedule) {
     }
 
     previousEnd = end;
-  });
+  }
 }
 
 function isObject(value) {
@@ -138,6 +167,69 @@ function isObject(value) {
 
 function isNonEmptyString(value) {
   return typeof value === "string" && value.trim().length > 0;
+}
+
+function validateOptionalObject({
+  value,
+  path: objectPath,
+  allowedFields,
+  requiredFields,
+}) {
+  if (typeof value === "undefined") return;
+
+  if (!isObject(value)) {
+    errors.push(`${objectPath} must be an object.`);
+    return;
+  }
+
+  const allowedFieldSet = new Set(allowedFields);
+
+  for (const key of Object.keys(value)) {
+    if (!allowedFieldSet.has(key)) {
+      errors.push(`${objectPath} has unknown field "${key}".`);
+    }
+  }
+
+  for (const field of requiredFields) {
+    if (!isNonEmptyString(value[field])) {
+      errors.push(`${objectPath}.${field} must be a non-empty string.`);
+    }
+  }
+
+  for (const [field, fieldValue] of Object.entries(value)) {
+    if (typeof fieldValue !== "undefined" && !isNonEmptyString(fieldValue)) {
+      errors.push(`${objectPath}.${field} must be a non-empty string.`);
+    }
+  }
+}
+
+async function validateSpeakerLinks(speaker, speakerPath) {
+  if (!isObject(speaker)) return;
+
+  for (const field of ["website", "scholar"]) {
+    if (typeof speaker[field] === "undefined") continue;
+
+    try {
+      new URL(speaker[field]);
+    } catch {
+      errors.push(`${speakerPath}.${field} must be a valid URL.`);
+    }
+  }
+
+  if (typeof speaker.photo === "undefined") return;
+
+  if (!/^\/assets\/.+\.(webp|png|jpg|jpeg)$/.test(speaker.photo)) {
+    errors.push(
+      `${speakerPath}.photo must point to a web image under /assets/.`,
+    );
+    return;
+  }
+
+  try {
+    await access(path.resolve(speaker.photo.slice(1)));
+  } catch {
+    errors.push(`${speakerPath}.photo points to a missing file.`);
+  }
 }
 
 function timeToMinutes(time) {

@@ -1,9 +1,13 @@
 <div &id="id" &class="className">
   <noop &foreach="scheduleItems as scheduleItem">
     <ScheduleRow
+      &anchor="scheduleItem.anchor"
+      &anchorHref="scheduleItem.anchorHref"
       &time="scheduleItem.time"
       &title="scheduleItem.title"
       &body="scheduleItem.body"
+      &speaker="scheduleItem.speaker"
+      &talk="scheduleItem.talk"
       &className="(id 'grid border-b border-ink last:border-b-0 md:grid-cols-[10rem_1fr]')"
     ></ScheduleRow>
   </noop>
