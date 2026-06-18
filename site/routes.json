@@ -23,6 +23,18 @@
       }
     }
   },
+  "for-sponsors": {
+    "layout": "for-sponsors",
+    "scripts": [{ "name": "index" }],
+    "context": {
+      "meta": {
+        "title": "SDLCAI For Sponsors",
+        "description": "Sponsorship opportunities for SDLCAI, a one-day seminar on AI across the software development lifecycle.",
+        "ogEyebrow": "For sponsors",
+        "ogDescription": "Sponsor a focused AI and software development lifecycle seminar at Aalto University."
+      }
+    }
+  },
   "admin": {
     "layout": "admin",
     "scripts": [{ "name": "index" }],
