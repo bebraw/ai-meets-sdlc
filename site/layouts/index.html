@@ -281,60 +281,6 @@
     </div>
   </section>
 
-  <section id="speakers" class="border-b border-ink">
-    <div
-      class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:px-8 lg:grid-cols-[22rem_1fr]"
-    >
-      <div class="min-w-0">
-        <p class="font-headline text-sm font-black uppercase text-muted">
-          Lineup
-        </p>
-        <SectionHeading
-          &title="(id 'Speakers')"
-          &href="(id '#speakers')"
-          &ariaLabel="(id 'Link to speakers section')"
-          &className="(id 'mt-3 flex min-w-0 items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl')"
-          &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
-        ></SectionHeading>
-        <p class="mt-6 max-w-xs text-xl leading-8 text-muted">
-          Meet the researchers and practitioners joining the program.
-        </p>
-        <ActionLink
-          &href="(id '/speakers/')"
-          &label="(id 'View speaker details')"
-          &className="(id 'mt-6 inline-flex border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper')"
-        ></ActionLink>
-      </div>
-      <div
-        class="grid gap-px border border-ink bg-ink sm:grid-cols-2 xl:grid-cols-3"
-      >
-        <noop &foreach="speakerItems as speakerItem">
-          <a
-            href="/speakers/#speakers"
-            class="group grid bg-paper transition hover:bg-ink hover:text-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
-          >
-            <img
-              &src="speakerItem.photo"
-              &alt="speakerItem.name"
-              class="aspect-square w-full object-cover grayscale transition duration-300 group-hover:grayscale-0 group-focus-visible:grayscale-0"
-              loading="lazy"
-            />
-            <div class="border-t border-ink p-4 group-hover:border-paper">
-              <p
-                class="font-headline text-3xl font-black uppercase leading-none"
-                &children="speakerItem.name"
-              ></p>
-              <p
-                class="mt-3 text-sm font-bold uppercase leading-5 text-muted group-hover:text-paper/70"
-                &children="speakerItem.role"
-              ></p>
-            </div>
-          </a>
-        </noop>
-      </div>
-    </div>
-  </section>
-
   <section id="schedule" class="border-b border-ink">
     <div
       class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:px-8 lg:grid-cols-[22rem_1fr]"

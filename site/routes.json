@@ -5,9 +5,6 @@
     "dataSources": {
       "scheduleItems": {
         "operation": "scheduleItems"
-      },
-      "speakerItems": {
-        "operation": "speakerItems"
       }
     },
     "context": {
