@@ -77,6 +77,14 @@ export default {
       return handleInterest(request, env);
     }
 
+    if (url.pathname === "/calendar.ics") {
+      if (request.method !== "GET" && request.method !== "HEAD") {
+        return jsonResponse({ error: "Method not allowed" }, 405);
+      }
+
+      return calendarResponse();
+    }
+
     const response = await env.ASSETS.fetch(request);
 
     if (response.status === 404 && acceptsHtml(request)) {
@@ -631,6 +639,36 @@ function jsonResponse(
     headers: {
       ...headers,
       "content-type": "application/json; charset=utf-8",
+    },
+  });
+}
+
+function calendarResponse(): Response {
+  const calendar = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//SDLCAI//Seminar//EN",
+    "CALSCALE:GREGORIAN",
+    "METHOD:PUBLISH",
+    "X-WR-CALNAME:SDLCAI",
+    "BEGIN:VEVENT",
+    "UID:20261013@sdlcai.org",
+    "DTSTAMP:20260618T000000Z",
+    "DTSTART:20261013T050000Z",
+    "DTEND:20261013T180000Z",
+    "SUMMARY:SDLCAI: AI Meets SDLC",
+    "DESCRIPTION:A one-day seminar on AI across the software development lifecycle.",
+    "LOCATION:Marsio Saastamoinen Foundation Stage, Aalto University, Espoo, Finland",
+    "URL:https://sdlcai.org/",
+    "END:VEVENT",
+    "END:VCALENDAR",
+  ].join("\r\n");
+
+  return new Response(`${calendar}\r\n`, {
+    headers: {
+      "cache-control": "public, max-age=3600",
+      "content-disposition": 'attachment; filename="sdlcai.ics"',
+      "content-type": "text/calendar; charset=utf-8",
     },
   });
 }
