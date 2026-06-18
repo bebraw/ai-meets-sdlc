@@ -275,8 +275,8 @@
 
         <section id="packages" class="border-b border-ink">
           <div class="mx-auto max-w-7xl px-5 py-16 md:px-8">
-            <div class="grid gap-8">
-              <div class="max-w-3xl">
+            <div class="grid min-w-0 gap-8">
+              <div class="max-w-3xl min-w-0">
                 <p
                   class="font-headline text-sm font-black uppercase text-muted"
                 >
@@ -292,9 +292,11 @@
                   focused one-day seminar.
                 </p>
               </div>
-              <div class="overflow-x-auto border border-ink">
+              <div
+                class="min-w-0 max-w-full overflow-x-auto border border-ink [-webkit-overflow-scrolling:touch]"
+              >
                 <table
-                  class="min-w-[44rem] table-fixed border-collapse text-left md:w-full md:min-w-0"
+                  class="w-[44rem] min-w-full table-fixed border-collapse text-left md:w-full"
                 >
                   <colgroup>
                     <col class="w-[33%]" />

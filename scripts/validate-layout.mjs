@@ -531,6 +531,46 @@ async function evaluatePageLayout(session) {
 
       }
 
+      if (route === "/for-sponsors/" && viewportWidth < 768) {
+        const packageTable = document.querySelector("#packages table");
+        const scroller = packageTable?.parentElement;
+
+        if (!packageTable || !scroller) {
+          fail("sponsor-packages-table-missing", {
+            hasPackageTable: Boolean(packageTable),
+            hasScroller: Boolean(scroller),
+          });
+
+          return failures;
+        }
+
+        const scrollerRect = rectOf(scroller);
+        const tableRect = rectOf(packageTable);
+        const overflowTolerance = 2;
+
+        if (scrollerRect.right > viewportWidth + overflowTolerance) {
+          fail("sponsor-packages-scroller-overflows-viewport", {
+            scrollerRect,
+            viewportWidth,
+          });
+        }
+
+        if (scroller.scrollWidth <= scroller.clientWidth) {
+          fail("sponsor-packages-table-not-scrollable", {
+            clientWidth: scroller.clientWidth,
+            scrollWidth: scroller.scrollWidth,
+            tableRect,
+          });
+        }
+
+        if (tableRect.width <= scrollerRect.width) {
+          fail("sponsor-packages-table-not-wider-than-scroller", {
+            scrollerRect,
+            tableRect,
+          });
+        }
+      }
+
       return failures;
     })()
   `;
