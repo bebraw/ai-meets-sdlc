@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SDLCAI Speakers</title>
+    <meta
+      name="description"
+      content="Speakers and themes for SDLCAI, a one-day seminar on AI across the software development lifecycle."
+    />
+    <meta property="og:title" content="SDLCAI Speakers" />
+    <meta
+      property="og:description"
+      content="Speaker lineup and themes for SDLCAI."
+    />
+    <meta property="og:url" content="https://sdlcai.org/speakers/" />
+    <meta property="og:image" content="https://sdlcai.org/og.png?v=20260618" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://sdlcai.org/og.png?v=20260618" />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <script>
+      (() => {
+        const root = document.documentElement;
+        let theme = "light";
+
+        try {
+          const stored = localStorage.getItem("sdlcai-theme");
+          const prefersDark = matchMedia(
+            "(prefers-color-scheme: dark)",
+          ).matches;
+          theme =
+            stored === "dark" || stored === "light"
+              ? stored
+              : prefersDark
+                ? "dark"
+                : "light";
+        } catch {
+          theme = "light";
+        }
+
+        root.classList.toggle("dark", theme === "dark");
+        root.dataset.theme = theme;
+      })();
+    </script>
+    <noop &foreach="styles as style">
+      <link &href="style.href" &rel="style.rel" />
+    </noop>
+  </head>
+  <body class="bg-paper text-ink">
+    <div class="min-h-screen overflow-hidden">
+      <header class="relative border-b border-ink">
+        <div
+          class="absolute inset-y-0 right-0 hidden w-[42vw] text-ink/10 halftone-xl md:block"
+        ></div>
+        <nav
+          class="relative mx-auto flex max-w-7xl items-center justify-between px-5 py-5 md:px-8"
+        >
+          <a href="/" class="inline-flex items-center" aria-label="SDLCAI">
+            <img
+              src="/assets/logo.svg"
+              alt="SDLCAI"
+              class="h-10 w-auto dark:invert"
+            />
+          </a>
+          <MainNavigation
+            &className="(id 'hidden items-center gap-8 text-sm font-bold uppercase md:flex')"
+            &linkClassName="(id 'hover:underline')"
+          ></MainNavigation>
+          <button
+            class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+            type="button"
+            data-theme-toggle
+            aria-label="Toggle dark mode"
+          >
+            <span data-theme-label>Dark</span>
+          </button>
+        </nav>
+        <div class="relative border-t border-ink md:hidden">
+          <div class="mx-auto max-w-7xl px-5 py-3">
+            <MainNavigation
+              &className="(id 'flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-bold uppercase leading-none')"
+              &linkClassName="(id 'whitespace-nowrap hover:underline')"
+            ></MainNavigation>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <section class="relative border-b border-ink">
+          <div
+            class="absolute -right-24 top-16 h-80 w-80 rounded-full border border-ink/20 text-ink/15 halftone"
+          ></div>
+          <div
+            class="relative mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-[0.7fr_1fr] md:px-8 md:py-24"
+          >
+            <div>
+              <p class="font-headline text-sm font-black uppercase text-muted">
+                SDLCAI
+              </p>
+              <h1
+                class="mt-3 font-headline text-[clamp(4rem,16vw,13rem)] font-black uppercase leading-[0.74]"
+              >
+                Speakers
+              </h1>
+            </div>
+            <div class="grid content-end gap-6 border-y border-ink py-6">
+              <p class="max-w-3xl text-xl leading-8 text-muted">
+                This page is ready for the confirmed lineup, talk titles,
+                affiliations, and portraits. The current structure keeps the
+                theme framing visible until the final speaker content lands.
+              </p>
+              <div class="flex flex-wrap gap-3">
+                <a
+                  class="inline-flex border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
+                  href="/schedule/"
+                  >Schedule</a
+                >
+                <a
+                  class="inline-flex border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper"
+                  href="/#interest"
+                  >Get notified</a
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="border-b border-ink">
+          <div class="mx-auto max-w-7xl px-5 py-16 md:px-8">
+            <div class="grid gap-8 md:grid-cols-[1fr_2fr]">
+              <SectionHeading
+                &title="(id 'Speaker themes')"
+                &href="(id '#themes')"
+                &ariaLabel="(id 'Link to speaker themes section')"
+                &className="(id 'flex items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl')"
+                &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
+              ></SectionHeading>
+              <div
+                id="themes"
+                class="grid gap-px border border-ink bg-ink md:grid-cols-3"
+              >
+                <div class="bg-paper p-5">
+                  <p class="font-headline text-3xl font-black uppercase">01</p>
+                  <p class="mt-10 text-lg leading-7">
+                    AI in real engineering pipelines
+                  </p>
+                </div>
+                <div class="bg-paper p-5">
+                  <p class="font-headline text-3xl font-black uppercase">02</p>
+                  <p class="mt-10 text-lg leading-7">
+                    Quality, testing, and review under automation
+                  </p>
+                </div>
+                <div class="bg-paper p-5">
+                  <p class="font-headline text-3xl font-black uppercase">03</p>
+                  <p class="mt-10 text-lg leading-7">
+                    Leadership and governance for AI adoption
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="border-b border-ink bg-ink text-paper">
+          <div
+            class="mx-auto grid max-w-7xl gap-8 px-5 py-16 md:grid-cols-[22rem_1fr] md:px-8"
+          >
+            <div>
+              <p
+                class="font-headline text-sm font-black uppercase text-paper/60"
+              >
+                Lineup
+              </p>
+              <h2
+                class="mt-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl"
+              >
+                Coming next
+              </h2>
+            </div>
+            <div class="grid gap-4 md:grid-cols-2">
+              <TextCard
+                &title="(id 'Confirmed speakers')"
+                &body="(id 'Use this area for speaker cards once names, affiliations, portraits, and talk abstracts are ready.')"
+                &className="(id 'border border-paper p-5')"
+                &titleClassName="(id 'font-headline text-2xl font-black uppercase')"
+                &bodyClassName="(id 'mt-4 leading-7 text-paper/75')"
+              ></TextCard>
+              <TextCard
+                &title="(id 'Talk details')"
+                &body="(id 'The page can support individual talk descriptions, panel roles, and links back into the dedicated schedule page.')"
+                &className="(id 'border border-paper p-5')"
+                &titleClassName="(id 'font-headline text-2xl font-black uppercase')"
+                &bodyClassName="(id 'mt-4 leading-7 text-paper/75')"
+              ></TextCard>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer
+        class="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-8 text-sm text-muted md:px-8"
+      >
+        <MainNavigation
+          &className="(id 'flex flex-wrap gap-x-6 gap-y-2 font-bold uppercase text-ink')"
+          &linkClassName="(id 'hover:underline')"
+        ></MainNavigation>
+        <div
+          class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between"
+        >
+          <p>
+            SDLCAI / 13 October 2026 / Marsio Saastamoinen Foundation Stage /
+            sdlcai.org
+          </p>
+          <p>
+            Organized by: Toska Osuuskunta /
+            <a class="font-bold uppercase hover:underline" href="/contact/"
+              >Contact</a
+            >
+            /
+            <a class="font-bold uppercase hover:underline" href="/for-sponsors/"
+              >Sponsors</a
+            >
+            /
+            <a
+              class="font-bold uppercase hover:underline"
+              href="/privacy-policy/"
+              >Privacy policy</a
+            >
+          </p>
+        </div>
+      </footer>
+    </div>
+    <noop &foreach="scripts as script">
+      <script &src="script.src" &type="script.type"></script>
+    </noop>
+  </body>
+</html>

@@ -35,6 +35,30 @@
       }
     }
   },
+  "schedule": {
+    "layout": "schedule",
+    "scripts": [{ "name": "index" }],
+    "context": {
+      "meta": {
+        "title": "SDLCAI Schedule",
+        "description": "Schedule for SDLCAI, a one-day seminar on AI across the software development lifecycle.",
+        "ogEyebrow": "Schedule",
+        "ogDescription": "The SDLCAI seminar schedule for 13 October 2026 at Aalto University."
+      }
+    }
+  },
+  "speakers": {
+    "layout": "speakers",
+    "scripts": [{ "name": "index" }],
+    "context": {
+      "meta": {
+        "title": "SDLCAI Speakers",
+        "description": "Speakers and themes for SDLCAI, a one-day seminar on AI across the software development lifecycle.",
+        "ogEyebrow": "Speakers",
+        "ogDescription": "Speaker lineup and themes for SDLCAI."
+      }
+    }
+  },
   "admin": {
     "layout": "admin",
     "scripts": [{ "name": "index" }],
