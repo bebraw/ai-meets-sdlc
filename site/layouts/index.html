@@ -165,7 +165,9 @@
               </div>
             </div>
 
-            <aside class="relative grid max-w-xs gap-5 sm:max-w-sm min-[900px]:max-w-none">
+            <aside
+              class="relative grid max-w-xs gap-5 sm:max-w-sm min-[900px]:max-w-none"
+            >
               <div
                 class="border border-ink bg-paper p-5 shadow-[12px_12px_0_var(--color-ink)]"
               >
@@ -232,7 +234,7 @@
           <div
             class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-[1fr_1.2fr] md:px-8"
           >
-            <div>
+            <div class="min-w-0">
               <p class="font-headline text-sm font-black uppercase text-muted">
                 Tickets are not open yet
               </p>
@@ -240,7 +242,7 @@
                 &title="(id 'Get notified')"
                 &href="(id '#interest')"
                 &ariaLabel="(id 'Link to get notified section')"
-                &className="(id 'mt-3 flex items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl')"
+                &className="(id 'mt-3 flex min-w-0 items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-6xl xl:text-7xl')"
                 &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink')"
               ></SectionHeading>
               <p class="mt-6 max-w-xl text-xl leading-8">
@@ -362,7 +364,7 @@
           <div
             class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-[22rem_1fr] md:px-8"
           >
-            <div>
+            <div class="min-w-0">
               <p
                 class="font-headline text-sm font-black uppercase text-paper/60"
               >
@@ -372,7 +374,7 @@
                 &title="(id 'A day for builders')"
                 &href="(id '#program')"
                 &ariaLabel="(id 'Link to program section')"
-                &className="(id 'mt-3 flex items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl')"
+                &className="(id 'mt-3 flex min-w-0 items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-6xl xl:text-7xl')"
                 &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-paper/45 transition hover:text-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-paper')"
               ></SectionHeading>
             </div>
@@ -519,7 +521,7 @@
           <div
             class="relative mx-auto grid max-w-7xl gap-12 px-5 py-16 md:px-8 lg:grid-cols-[1fr_1fr]"
           >
-            <div>
+            <div class="min-w-0">
               <p class="font-headline text-sm font-black uppercase text-muted">
                 Venue
               </p>
@@ -527,7 +529,7 @@
                 &title="(id 'Marsio Saastamoinen Foundation Stage')"
                 &href="(id '#venue')"
                 &ariaLabel="(id 'Link to venue section')"
-                &className="(id 'mt-3 flex items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl')"
+                &className="(id 'mt-3 flex min-w-0 items-start gap-3 font-headline text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl xl:text-7xl')"
                 &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
               ></SectionHeading>
             </div>
@@ -571,7 +573,9 @@
           class="overflow-hidden border-b border-ink bg-ink text-paper"
         >
           <div class="mx-auto max-w-7xl px-5 py-16 md:px-8">
-            <div class="grid gap-10 min-[700px]:grid-cols-[0.84fr_1.16fr] min-[700px]:items-start md:grid-cols-[0.9fr_1.4fr]">
+            <div
+              class="grid gap-10 min-[700px]:grid-cols-[0.84fr_1.16fr] min-[700px]:items-start md:grid-cols-[0.9fr_1.4fr]"
+            >
               <div>
                 <p
                   class="font-headline text-sm font-black uppercase text-paper/60"
@@ -684,8 +688,8 @@
 
         <section id="sponsors" class="border-b border-ink">
           <div class="mx-auto max-w-7xl px-5 py-16 md:px-8">
-            <div class="grid gap-10 lg:grid-cols-[0.85fr_1.15fr]">
-              <div>
+            <div class="grid gap-10 xl:grid-cols-[0.85fr_1.15fr]">
+              <div class="min-w-0">
                 <p
                   class="font-headline text-sm font-black uppercase text-muted"
                 >
@@ -695,13 +699,13 @@
                   &title="(id 'Partners making the day possible')"
                   &href="(id '#sponsors')"
                   &ariaLabel="(id 'Link to sponsors section')"
-                  &className="(id 'mt-3 flex items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl')"
+                  &className="(id 'mt-3 flex min-w-0 items-start gap-3 font-headline text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl xl:text-7xl')"
                   &anchorClassName="(id 'mt-[0.06em] inline-block shrink-0 text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
                 ></SectionHeading>
               </div>
-              <div class="grid gap-px border border-ink bg-ink">
+              <div class="grid min-w-0 gap-px border border-ink bg-ink">
                 <a
-                  class="group grid gap-6 bg-paper p-5 transition hover:bg-ink hover:text-paper md:p-6 lg:grid-cols-[12rem_1fr]"
+                  class="group grid min-w-0 gap-6 bg-paper p-5 transition hover:bg-ink hover:text-paper md:p-6 xl:grid-cols-[12rem_1fr]"
                   href="https://www.aalto.fi/"
                 >
                   <div
@@ -713,7 +717,7 @@
                       class="max-h-28 w-full object-contain"
                     />
                   </div>
-                  <div class="grid content-between gap-8">
+                  <div class="grid min-w-0 content-between gap-8">
                     <div>
                       <p
                         class="font-headline text-sm font-black uppercase text-muted transition group-hover:text-paper/60"
@@ -721,7 +725,7 @@
                         Location sponsor
                       </p>
                       <h3
-                        class="mt-3 font-headline text-4xl font-black uppercase leading-none md:text-6xl"
+                        class="mt-3 break-words font-headline text-4xl font-black uppercase leading-none md:text-6xl"
                       >
                         Aalto University
                       </h3>
@@ -758,9 +762,7 @@
               >Contact</a
             >
             /
-            <a
-              class="font-bold uppercase hover:underline"
-              href="/for-sponsors/"
+            <a class="font-bold uppercase hover:underline" href="/for-sponsors/"
               >Sponsors</a
             >
             /

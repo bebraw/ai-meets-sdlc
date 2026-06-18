@@ -16,10 +16,20 @@ const routes = [
   "/privacy-policy/",
 ];
 const viewports = [
+  { name: "small-mobile", width: 320, height: 740 },
   { name: "mobile", width: 390, height: 844 },
+  { name: "large-mobile", width: 640, height: 900 },
   { name: "tablet", width: 768, height: 1024 },
+  { name: "hero-rail-start", width: 900, height: 900 },
+  { name: "small-desktop", width: 1024, height: 900 },
   { name: "desktop", width: 1440, height: 900 },
+  { name: "large-desktop", width: 1920, height: 1080 },
   { name: "wide-short", width: 2560, height: 800 },
+];
+const homePageViewports = [
+  ...viewports,
+  { name: "before-tablet", width: 767, height: 1024 },
+  { name: "before-hero-rail", width: 899, height: 900 },
 ];
 
 const browserCandidates = [
@@ -384,6 +394,43 @@ async function evaluateLayout(session) {
         }
       }
 
+      const headlineElements = [...document.querySelectorAll("h1,h2,h3")]
+        .filter(isVisible);
+
+      for (const element of headlineElements) {
+        const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+
+        while (walker.nextNode()) {
+          const node = walker.currentNode;
+          const text = node.textContent;
+          const words = text.matchAll(/[A-Za-z][A-Za-z0-9]{3,}/g);
+
+          for (const word of words) {
+            const range = document.createRange();
+            range.setStart(node, word.index);
+            range.setEnd(node, word.index + word[0].length);
+
+            const lineTops = [
+              ...new Set(
+                [...range.getClientRects()]
+                  .filter((item) => item.width > 1 && item.height > 1)
+                  .map((item) => Math.round(item.top)),
+              ),
+            ];
+
+            range.detach();
+
+            if (lineTops.length > 1) {
+              failures.push({
+                type: "word-fragmentation",
+                element: describe(element),
+                word: word[0],
+              });
+            }
+          }
+        }
+      }
+
       return failures;
     })()
   `;
@@ -397,24 +444,136 @@ async function evaluateLayout(session) {
   return result.result.value;
 }
 
+async function evaluatePageLayout(session) {
+  const expression = String.raw`
+    (async () => {
+      await document.fonts.ready;
+      window.scrollTo(0, 0);
+
+      const failures = [];
+      const route = window.location.pathname;
+      const viewportWidth = window.innerWidth;
+      const minReadableMeasure = 340;
+
+      const rectOf = (element) => {
+        const rect = element.getBoundingClientRect();
+
+        return {
+          left: Math.round(rect.left),
+          top: Math.round(rect.top),
+          right: Math.round(rect.right),
+          bottom: Math.round(rect.bottom),
+          width: Math.round(rect.width),
+          height: Math.round(rect.height),
+        };
+      };
+
+      const fail = (type, details) => {
+        failures.push({
+          type,
+          ...details,
+        });
+      };
+
+      if (route === "/") {
+        const title = document.querySelector("h1");
+        const intro = [...document.querySelectorAll("p")].find((element) =>
+          element.textContent.includes("A focused seminar"),
+        );
+        const countdown = document.querySelector("aside");
+
+        if (!title || !intro || !countdown) {
+          fail("home-hero-missing-elements", {
+            hasTitle: Boolean(title),
+            hasIntro: Boolean(intro),
+            hasCountdown: Boolean(countdown),
+          });
+
+          return failures;
+        }
+
+        const titleRect = rectOf(title);
+        const introRect = rectOf(intro);
+        const countdownRect = rectOf(countdown);
+        const countdownIsRail = countdownRect.top < titleRect.bottom;
+
+        if (viewportWidth >= 768 && viewportWidth < 900) {
+          if (countdownIsRail) {
+            fail("home-hero-countdown-rail-too-early", {
+              titleRect,
+              countdownRect,
+            });
+          }
+
+          if (introRect.width < minReadableMeasure) {
+            fail("home-hero-intro-too-narrow", {
+              introRect,
+              minReadableMeasure,
+            });
+          }
+        }
+
+        if (viewportWidth >= 900) {
+          if (!countdownIsRail) {
+            fail("home-hero-countdown-not-railed", {
+              titleRect,
+              countdownRect,
+            });
+          }
+
+          if (countdownRect.left <= titleRect.left) {
+            fail("home-hero-countdown-not-right-of-title", {
+              titleRect,
+              countdownRect,
+            });
+          }
+        }
+
+      }
+
+      return failures;
+    })()
+  `;
+
+  const result = await session.send("Runtime.evaluate", {
+    expression,
+    awaitPromise: true,
+    returnByValue: true,
+  });
+
+  return result.result.value;
+}
+
+function getRouteViewports(route) {
+  if (route === "/") {
+    return homePageViewports;
+  }
+
+  return viewports;
+}
+
 async function main() {
   const browserPath = await findBrowser();
   const userDataDir = await mkdtemp(path.join(tmpdir(), "sdlcai-layout-"));
   const browserPort = await getFreePort();
   const { server, port: serverPort } = await startServer();
   let browserErrorOutput = "";
-  const browser = spawn(browserPath, [
-    "--headless=new",
-    "--disable-gpu",
-    "--no-first-run",
-    "--no-default-browser-check",
-    "--no-sandbox",
-    `--remote-debugging-port=${browserPort}`,
-    `--user-data-dir=${userDataDir}`,
-    "about:blank",
-  ], {
-    stdio: ["ignore", "ignore", "pipe"],
-  });
+  const browser = spawn(
+    browserPath,
+    [
+      "--headless=new",
+      "--disable-gpu",
+      "--no-first-run",
+      "--no-default-browser-check",
+      "--no-sandbox",
+      `--remote-debugging-port=${browserPort}`,
+      `--user-data-dir=${userDataDir}`,
+      "about:blank",
+    ],
+    {
+      stdio: ["ignore", "ignore", "pipe"],
+    },
+  );
   browser.stderr.setEncoding("utf8");
   browser.stderr.on("data", (chunk) => {
     browserErrorOutput += chunk;
@@ -431,6 +590,7 @@ async function main() {
   });
 
   const failures = [];
+  let validationCount = 0;
 
   try {
     await Promise.race([
@@ -439,13 +599,17 @@ async function main() {
     ]);
 
     for (const route of routes) {
-      for (const viewport of viewports) {
+      for (const viewport of getRouteViewports(route)) {
         const session = await createPage(browserPort);
         const url = `http://127.0.0.1:${serverPort}${route}`;
 
         try {
           await navigate(session, url, viewport);
-          const pageFailures = await evaluateLayout(session);
+          validationCount += 1;
+          const pageFailures = [
+            ...(await evaluateLayout(session)),
+            ...(await evaluatePageLayout(session)),
+          ];
 
           for (const failure of pageFailures) {
             failures.push({
@@ -481,7 +645,7 @@ async function main() {
   }
 
   console.log(
-    `Validated ${routes.length} routes across ${viewports.length} viewport sizes.`,
+    `Validated ${routes.length} routes across ${validationCount} route/viewport combinations.`,
   );
 }
 
