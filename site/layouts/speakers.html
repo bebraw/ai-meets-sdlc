@@ -9,19 +9,19 @@
       class="absolute -right-24 top-16 h-80 w-80 rounded-full border border-ink/20 text-ink/15 halftone"
     ></div>
     <div
-      class="relative mx-auto grid max-w-7xl gap-8 overflow-hidden px-5 py-12 md:px-8 md:py-20 xl:grid-cols-[minmax(0,1fr)_minmax(18rem,24rem)] xl:gap-12"
+      class="relative mx-auto grid max-w-7xl gap-8 overflow-hidden px-5 py-12 md:px-8 md:py-20"
     >
       <div class="min-w-0">
         <p class="font-headline text-sm font-black uppercase text-muted">
           SDLCAI
         </p>
         <h1
-          class="mt-3 max-w-full break-words font-headline text-[clamp(4rem,13vw,11rem)] font-black uppercase leading-[0.74] tracking-normal"
+          class="mt-3 max-w-full whitespace-nowrap font-headline text-[clamp(3rem,11vw,11rem)] font-black uppercase leading-[0.74] tracking-normal"
         >
           Speakers
         </h1>
       </div>
-      <div class="grid content-end gap-6 border-y border-ink py-6">
+      <div class="grid max-w-3xl gap-6 border-y border-ink py-6">
         <p class="max-w-3xl text-xl leading-8 text-muted">
           Researchers and practitioners working where AI changes the software
           development lifecycle.
@@ -42,24 +42,9 @@
     </div>
   </section>
 
-  <section class="border-b border-ink">
-    <div
-      class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:px-8 lg:grid-cols-[22rem_1fr]"
-    >
-      <div class="min-w-0">
-        <p class="font-headline text-sm font-black uppercase text-muted">
-          Lineup
-        </p>
-        <h2
-          class="mt-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl"
-        >
-          Speakers
-        </h2>
-        <p class="mt-6 max-w-xs text-xl leading-8 text-muted">
-          Talk details, bios, and links for the people taking the stage.
-        </p>
-      </div>
-      <div id="speakers" class="grid gap-5">
+  <section id="speakers" class="border-b border-ink">
+    <div class="mx-auto max-w-7xl px-5 py-16 md:px-8">
+      <div class="grid gap-5">
         <noop &foreach="speakerItems as speakerItem">
           <article
             class="grid overflow-hidden border border-ink bg-paper lg:grid-cols-[18rem_1fr] lg:items-start"

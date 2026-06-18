@@ -15,9 +15,6 @@
       "items": {
         "type": "object",
         "required": ["time", "title", "body"],
-        "dependentRequired": {
-          "talk": ["speaker"]
-        },
         "additionalProperties": false,
         "properties": {
           "time": {
@@ -32,49 +29,57 @@
             "type": "string",
             "minLength": 1
           },
-          "speaker": {
-            "type": "object",
-            "required": ["name", "role", "bio"],
-            "additionalProperties": false,
-            "properties": {
-              "name": {
-                "type": "string",
-                "minLength": 1
-              },
-              "role": {
-                "type": "string",
-                "minLength": 1
-              },
-              "photo": {
-                "type": "string",
-                "pattern": "^/assets/.+\\.(webp|png|jpg|jpeg)$"
-              },
-              "website": {
-                "type": "string",
-                "format": "uri"
-              },
-              "scholar": {
-                "type": "string",
-                "format": "uri"
-              },
-              "bio": {
-                "type": "string",
-                "minLength": 1
-              }
-            }
-          },
-          "talk": {
-            "type": "object",
-            "required": ["title", "abstract"],
-            "additionalProperties": false,
-            "properties": {
-              "title": {
-                "type": "string",
-                "minLength": 1
-              },
-              "abstract": {
-                "type": "string",
-                "minLength": 1
+          "talks": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["time", "title", "abstract", "speaker"],
+              "additionalProperties": false,
+              "properties": {
+                "time": {
+                  "type": "string",
+                  "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]-([01][0-9]|2[0-3]):[0-5][0-9]$"
+                },
+                "title": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "abstract": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "speaker": {
+                  "type": "object",
+                  "required": ["name", "role", "bio"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "role": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "photo": {
+                      "type": "string",
+                      "pattern": "^/assets/.+\\.(webp|png|jpg|jpeg)$"
+                    },
+                    "website": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "scholar": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "bio": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                }
               }
             }
           }

@@ -17,54 +17,59 @@
       >
     </div>
     <p class="mt-2 leading-7 text-muted" &children="body"></p>
-    <div
-      class="mt-5 grid gap-5 border-t border-ink pt-5 min-[720px]:grid-cols-[8rem_1fr]"
-      &visibleIf="talk"
-    >
-      <img
-        &visibleIf="speaker.photo"
-        &src="speaker.photo"
-        &alt="speaker.name"
-        class="aspect-square w-32 border border-ink object-cover grayscale min-[720px]:w-full"
-        loading="lazy"
-      />
-      <div class="grid gap-4">
-        <div>
-          <p class="font-headline text-sm font-black uppercase text-muted">
-            Talk
-          </p>
-          <h4
-            class="mt-2 font-headline text-3xl font-black uppercase leading-none"
-            &children="talk.title"
-          ></h4>
-        </div>
-        <p class="leading-7 text-muted" &children="talk.abstract"></p>
-        <div &visibleIf="speaker" class="border-t border-ink pt-4">
-          <p
-            class="font-headline text-2xl font-black uppercase"
-            &children="speaker.name"
-          ></p>
-          <p
-            class="mt-1 font-bold leading-6 text-muted"
-            &children="speaker.role"
-          ></p>
-          <p class="mt-3 leading-7 text-muted" &children="speaker.bio"></p>
-          <div class="mt-4 flex flex-wrap gap-3">
-            <a
-              &visibleIf="speaker.website"
-              &href="speaker.website"
-              class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-              >Website</a
-            >
-            <a
-              &visibleIf="speaker.scholar"
-              &href="speaker.scholar"
-              class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-              >Scholar</a
-            >
+    <div class="mt-5 grid gap-5 border-t border-ink pt-5" &visibleIf="talks">
+      <noop &foreach="talks as talkItem">
+        <article class="grid gap-5 min-[720px]:grid-cols-[8rem_1fr]">
+          <img
+            &visibleIf="talkItem.speaker.photo"
+            &src="talkItem.speaker.photo"
+            &alt="talkItem.speaker.name"
+            class="aspect-square w-32 border border-ink object-cover grayscale min-[720px]:w-full"
+            loading="lazy"
+          />
+          <div class="grid gap-4">
+            <div>
+              <p
+                class="font-headline text-sm font-black uppercase text-muted"
+                &children="talkItem.time"
+              ></p>
+              <h4
+                class="mt-2 font-headline text-3xl font-black uppercase leading-none"
+                &children="talkItem.title"
+              ></h4>
+            </div>
+            <p class="leading-7 text-muted" &children="talkItem.abstract"></p>
+            <div class="border-t border-ink pt-4">
+              <p
+                class="font-headline text-2xl font-black uppercase"
+                &children="talkItem.speaker.name"
+              ></p>
+              <p
+                class="mt-1 font-bold leading-6 text-muted"
+                &children="talkItem.speaker.role"
+              ></p>
+              <p
+                class="mt-3 leading-7 text-muted"
+                &children="talkItem.speaker.bio"
+              ></p>
+              <div class="mt-4 flex flex-wrap gap-3">
+                <a
+                  &visibleIf="talkItem.speaker.website"
+                  &href="talkItem.speaker.website"
+                  class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+                  >Website</a
+                >
+                <a
+                  &visibleIf="talkItem.speaker.scholar"
+                  &href="talkItem.speaker.scholar"
+                  class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+                  >Scholar</a
+                >
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </article>
+      </noop>
     </div>
   </div>
 </div>

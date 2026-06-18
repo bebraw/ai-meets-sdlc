@@ -62,6 +62,10 @@ function validateScheduleSchema(schema) {
       errors.push(`site/data/schedule.schema.json must require ${field}.`);
     }
   }
+
+  if (!itemProperties?.talks) {
+    errors.push("site/data/schedule.schema.json is missing talks.");
+  }
 }
 
 async function validateSchedule(schedule) {
@@ -97,13 +101,7 @@ async function validateSchedule(schedule) {
       continue;
     }
 
-    const allowedItemKeys = new Set([
-      "time",
-      "title",
-      "body",
-      "speaker",
-      "talk",
-    ]);
+    const allowedItemKeys = new Set(["time", "title", "body", "talks"]);
 
     for (const key of Object.keys(item)) {
       if (!allowedItemKeys.has(key)) {
@@ -117,47 +115,26 @@ async function validateSchedule(schedule) {
       }
     }
 
-    validateOptionalObject({
-      value: item.speaker,
-      path: `${itemPath}.speaker`,
-      allowedFields: ["name", "role", "photo", "website", "scholar", "bio"],
-      requiredFields: ["name", "role", "bio"],
-    });
+    let start = null;
+    let end = null;
 
-    validateOptionalObject({
-      value: item.talk,
-      path: `${itemPath}.talk`,
-      allowedFields: ["title", "abstract"],
-      requiredFields: ["title", "abstract"],
-    });
+    if (isNonEmptyString(item.time) && timeRangePattern.test(item.time)) {
+      [start, end] = item.time.split("-").map(timeToMinutes);
 
-    if (
-      typeof item.talk !== "undefined" &&
-      typeof item.speaker === "undefined"
-    ) {
-      errors.push(`${itemPath}.talk requires a speaker.`);
-    }
+      if (end <= start) {
+        errors.push(`${itemPath}.time must end after it starts.`);
+      }
 
-    await validateSpeakerLinks(item.speaker, `${itemPath}.speaker`);
+      if (start < previousEnd) {
+        errors.push(`${itemPath}.time overlaps the previous schedule item.`);
+      }
 
-    if (!isNonEmptyString(item.time)) continue;
-
-    if (!timeRangePattern.test(item.time)) {
+      previousEnd = end;
+    } else if (isNonEmptyString(item.time)) {
       errors.push(`${itemPath}.time must use HH:MM-HH:MM in 24-hour time.`);
-      continue;
     }
 
-    const [start, end] = item.time.split("-").map(timeToMinutes);
-
-    if (end <= start) {
-      errors.push(`${itemPath}.time must end after it starts.`);
-    }
-
-    if (start < previousEnd) {
-      errors.push(`${itemPath}.time overlaps the previous schedule item.`);
-    }
-
-    previousEnd = end;
+    await validateTalks(item.talks, `${itemPath}.talks`, start, end);
   }
 }
 
@@ -229,6 +206,84 @@ async function validateSpeakerLinks(speaker, speakerPath) {
     await access(path.resolve(speaker.photo.slice(1)));
   } catch {
     errors.push(`${speakerPath}.photo points to a missing file.`);
+  }
+}
+
+async function validateTalks(talks, talksPath, sessionStart, sessionEnd) {
+  if (typeof talks === "undefined") return;
+
+  if (!Array.isArray(talks)) {
+    errors.push(`${talksPath} must be an array.`);
+    return;
+  }
+
+  if (talks.length === 0) {
+    errors.push(`${talksPath} must not be empty.`);
+  }
+
+  let previousTalkEnd = -1;
+
+  for (const [index, talk] of talks.entries()) {
+    const talkPath = `${talksPath}[${index}]`;
+
+    if (!isObject(talk)) {
+      errors.push(`${talkPath} must be an object.`);
+      continue;
+    }
+
+    const allowedTalkKeys = new Set(["time", "title", "abstract", "speaker"]);
+
+    for (const key of Object.keys(talk)) {
+      if (!allowedTalkKeys.has(key)) {
+        errors.push(`${talkPath} has unknown field "${key}".`);
+      }
+    }
+
+    for (const field of ["time", "title", "abstract"]) {
+      if (!isNonEmptyString(talk[field])) {
+        errors.push(`${talkPath}.${field} must be a non-empty string.`);
+      }
+    }
+
+    if (!isObject(talk.speaker)) {
+      errors.push(`${talkPath}.speaker must be an object.`);
+    } else {
+      validateOptionalObject({
+        value: talk.speaker,
+        path: `${talkPath}.speaker`,
+        allowedFields: ["name", "role", "photo", "website", "scholar", "bio"],
+        requiredFields: ["name", "role", "bio"],
+      });
+
+      await validateSpeakerLinks(talk.speaker, `${talkPath}.speaker`);
+    }
+
+    if (!isNonEmptyString(talk.time)) continue;
+
+    if (!timeRangePattern.test(talk.time)) {
+      errors.push(`${talkPath}.time must use HH:MM-HH:MM in 24-hour time.`);
+      continue;
+    }
+
+    const [talkStart, talkEnd] = talk.time.split("-").map(timeToMinutes);
+
+    if (talkEnd <= talkStart) {
+      errors.push(`${talkPath}.time must end after it starts.`);
+    }
+
+    if (
+      typeof sessionStart === "number" &&
+      typeof sessionEnd === "number" &&
+      (talkStart < sessionStart || talkEnd > sessionEnd)
+    ) {
+      errors.push(`${talkPath}.time must fit within the parent session.`);
+    }
+
+    if (talkStart < previousTalkEnd) {
+      errors.push(`${talkPath}.time overlaps the previous talk.`);
+    }
+
+    previousTalkEnd = talkEnd;
   }
 }
 

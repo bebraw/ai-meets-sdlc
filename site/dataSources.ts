@@ -6,16 +6,19 @@ function init() {
   return {
     scheduleItems: () => scheduleItems,
     speakerItems: () =>
-      scheduleItems
-        .filter((item) => item.speaker && item.talk)
-        .map((item) => ({
-          ...item.speaker,
+      scheduleItems.flatMap((item) =>
+        (item.talks ?? []).map((talk) => ({
+          ...talk.speaker,
           anchor: item.anchor,
           scheduleHref: item.scheduleHref,
-          time: item.time,
+          time: talk.time,
           sessionTitle: item.title,
-          talk: item.talk,
+          talk: {
+            title: talk.title,
+            abstract: talk.abstract,
+          },
         })),
+      ),
   };
 }
 
