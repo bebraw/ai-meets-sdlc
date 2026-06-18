@@ -70,16 +70,10 @@
               class="h-10 w-auto dark:invert"
             />
           </a>
-          <div
-            class="hidden items-center gap-8 text-sm font-bold uppercase md:flex"
-          >
-            <a class="hover:underline" href="#program">Program</a>
-            <a class="hover:underline" href="#schedule">Schedule</a>
-            <a class="hover:underline" href="#venue">Venue</a>
-            <a class="hover:underline" href="#organizers">Organizers</a>
-            <a class="hover:underline" href="#speakers">Speakers</a>
-            <a class="hover:underline" href="#interest">Interest</a>
-          </div>
+          <MainNavigation
+            &className="(id 'hidden items-center gap-8 text-sm font-bold uppercase md:flex')"
+            &linkClassName="(id 'hover:underline')"
+          ></MainNavigation>
           <button
             class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
             type="button"
@@ -700,22 +694,32 @@
       </main>
 
       <footer
-        class="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-8 text-sm text-muted md:flex-row md:items-center md:justify-between md:px-8"
+        class="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-8 text-sm text-muted md:px-8"
       >
-        <p>
-          SDLCAI / 13 October 2026 / Marsio Saastamoinen Foundation Stage /
-          sdlcai.org
-        </p>
-        <p>
-          Organized by: Toska Osuuskunta /
-          <a class="font-bold uppercase hover:underline" href="/contact/"
-            >Contact</a
-          >
-          /
-          <a class="font-bold uppercase hover:underline" href="/privacy-policy/"
-            >Privacy policy</a
-          >
-        </p>
+        <MainNavigation
+          &className="(id 'flex flex-wrap gap-x-6 gap-y-2 font-bold uppercase text-ink')"
+          &linkClassName="(id 'hover:underline')"
+        ></MainNavigation>
+        <div
+          class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between"
+        >
+          <p>
+            SDLCAI / 13 October 2026 / Marsio Saastamoinen Foundation Stage /
+            sdlcai.org
+          </p>
+          <p>
+            Organized by: Toska Osuuskunta /
+            <a class="font-bold uppercase hover:underline" href="/contact/"
+              >Contact</a
+            >
+            /
+            <a
+              class="font-bold uppercase hover:underline"
+              href="/privacy-policy/"
+              >Privacy policy</a
+            >
+          </p>
+        </div>
       </footer>
     </div>
     <noop &foreach="scripts as script">
