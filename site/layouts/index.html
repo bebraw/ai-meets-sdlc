@@ -327,12 +327,18 @@
                 data-expired-callback="onInterestTurnstileExpired"
                 data-error-callback="onInterestTurnstileExpired"
               ></div>
+              <noscript>
+                <p class="border border-ink bg-paper p-4 text-sm leading-6">
+                  JavaScript is required for the spam check. You can still
+                  request registration updates by emailing
+                  info@futurefrontend.com.
+                </p>
+              </noscript>
               <div class="flex flex-col gap-3 md:flex-row md:items-center">
                 <button
                   class="border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink disabled:cursor-not-allowed disabled:border-muted disabled:bg-muted disabled:text-paper disabled:hover:bg-muted disabled:hover:text-paper"
                   data-interest-submit
                   type="submit"
-                  disabled
                 >
                   Notify me
                 </button>
