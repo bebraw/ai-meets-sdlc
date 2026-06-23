@@ -274,7 +274,7 @@ function validateOptionalObject({
 async function validateSpeakerLinks(speaker, speakerPath) {
   if (!isObject(speaker)) return;
 
-  for (const field of ["website", "scholar"]) {
+  for (const field of ["website", "scholar", "x"]) {
     if (typeof speaker[field] === "undefined") continue;
 
     try {
@@ -342,7 +342,15 @@ async function validateTalks(talks, talksPath, sessionStart, sessionEnd) {
       validateOptionalObject({
         value: talk.speaker,
         path: `${talkPath}.speaker`,
-        allowedFields: ["name", "role", "photo", "website", "scholar", "bio"],
+        allowedFields: [
+          "name",
+          "role",
+          "photo",
+          "website",
+          "scholar",
+          "x",
+          "bio",
+        ],
         requiredFields: ["name", "role", "bio"],
       });
 

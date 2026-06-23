@@ -9,7 +9,22 @@
     {
       "time": "08:50-09:00",
       "title": "Opening",
-      "body": "Welcome and framing for the day."
+      "body": "Welcome and framing for the day.",
+      "talks": [
+        {
+          "time": "08:50-09:00",
+          "title": "Opening session",
+          "abstract": "Mo Khazali opens the seminar. The exact topic of his talk is still to be decided.",
+          "speaker": {
+            "name": "Mo Khazali",
+            "role": "Group Associate Partner at Theodo",
+            "photo": "/assets/speakers/mo-khazali.webp",
+            "website": "https://www.linkedin.com/in/mohammadkhazali/",
+            "x": "https://x.com/mo__javad",
+            "bio": "Mo Khazali is Group Associate Partner at Theodo. Over the last three years, he has led teams as Head of Mobile and Solutions Architect, helping deliver high-impact products while scaling engineering practices across clients and developer communities. He has spoken at dozens of international conferences, hosted React Native London, and now focuses on how organisations can use AI to migrate between technology stacks in ways that are verifiable, safe, and efficient."
+          }
+        }
+      ]
     },
     {
       "time": "09:00-10:30",
