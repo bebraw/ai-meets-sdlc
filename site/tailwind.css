@@ -82,6 +82,263 @@
   }
 }
 
+@layer components {
+  [data-tito-ticket-widget] {
+    --tito-widget-bg: var(--color-paper);
+    --tito-widget-fg: var(--color-ink);
+    --tito-widget-muted: var(--color-muted);
+
+    background: var(--tito-widget-bg);
+    color: var(--tito-widget-fg);
+    padding: 1rem;
+  }
+
+  [data-tito-ticket-widget] tito-widget {
+    display: block;
+  }
+
+  [data-tito-ticket-widget] .tito-widget {
+    margin: 0;
+    color: var(--tito-widget-fg) !important;
+    font-family: "Finlandica Text", Georgia, serif;
+  }
+
+  [data-tito-ticket-widget] .tito-widget a,
+  [data-tito-ticket-widget] .tito-widget a:active,
+  [data-tito-ticket-widget] .tito-widget a:focus,
+  [data-tito-ticket-widget] .tito-widget a:hover,
+  [data-tito-ticket-widget] .tito-widget a:visited {
+    color: var(--tito-widget-fg) !important;
+  }
+
+  [data-tito-ticket-widget] .tito-widget svg,
+  [data-tito-ticket-widget] .tito-widget svg path {
+    fill: currentColor;
+    stroke: currentColor;
+  }
+
+  [data-tito-ticket-widget] .tito-widget .tito-widget-loading,
+  [data-tito-ticket-widget] .tito-widget .tito-widget-registration-unavailable {
+    border: 1px solid var(--tito-widget-fg);
+    background: var(--tito-widget-bg) !important;
+    padding: 1rem;
+    color: var(--tito-widget-muted);
+    font-weight: 700;
+    text-align: left;
+    text-transform: uppercase;
+  }
+
+  [data-tito-ticket-widget] .tito-widget .tito-widget-form {
+    max-width: none;
+    border: 0;
+    border-radius: 0;
+    background: transparent !important;
+    padding: 0;
+  }
+
+  [data-tito-ticket-widget] .tito-widget .tito-widget-form .tito-release {
+    min-height: 0;
+    margin: 0;
+    border-color: var(--tito-widget-fg) !important;
+    background: var(--tito-widget-bg) !important;
+    color: var(--tito-widget-fg) !important;
+    padding: 1rem 0;
+  }
+
+  [data-tito-ticket-widget] .tito-widget .tito-release *,
+  [data-tito-ticket-widget] .tito-widget .tito-form-actions * {
+    border-color: color-mix(in oklab, var(--tito-widget-fg) 72%, transparent);
+  }
+
+  [data-tito-ticket-widget]
+    .tito-widget
+    .tito-widget-form
+    .tito-release:first-child {
+    padding-top: 0;
+  }
+
+  [data-tito-ticket-widget] .tito-widget .tito-release-description {
+    gap: 0.35rem;
+    padding: 0.25rem 1rem 0.25rem 0;
+  }
+
+  [data-tito-ticket-widget] .tito-widget .tito-release .tito-release--title {
+    color: var(--tito-widget-fg) !important;
+    font-family: "Finlandica Headline", Impact, sans-serif;
+    font-size: clamp(1.75rem, 5vw, 3.25rem);
+    font-weight: 900;
+    line-height: 0.88;
+    text-transform: uppercase;
+  }
+
+  [data-tito-ticket-widget]
+    .tito-widget
+    .tito-release
+    .tito-release-description
+    .tito-release-description--description
+    p,
+  [data-tito-ticket-widget]
+    .tito-widget
+    .tito-release
+    .tito-release-description
+    .tito-release-description--combos {
+    max-width: 42rem;
+    color: var(--tito-widget-muted) !important;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  [data-tito-ticket-widget] .tito-widget .tito-price,
+  [data-tito-ticket-widget] .tito-widget .tito-release--tax {
+    color: var(--tito-widget-fg) !important;
+    font-weight: 700;
+  }
+
+  [data-tito-ticket-widget] .tito-widget .tito-release .tito-release--status {
+    border-color: var(--tito-widget-fg) !important;
+    background: var(--tito-widget-bg) !important;
+    color: var(--tito-widget-fg) !important;
+  }
+
+  [data-tito-ticket-widget] .tito-widget .tito-quantity {
+    gap: 0.25rem;
+  }
+
+  [data-tito-ticket-widget] .tito-widget input[type="number"],
+  [data-tito-ticket-widget] .tito-widget input[type="text"] {
+    min-height: 2.5rem;
+    border: 1px solid var(--tito-widget-fg) !important;
+    border-radius: 0;
+    background: var(--tito-widget-bg) !important;
+    box-shadow: none;
+    color: var(--tito-widget-fg) !important;
+    font-family: "Finlandica Text", Georgia, serif;
+    font-weight: 700;
+  }
+
+  [data-tito-ticket-widget]
+    .tito-widget
+    .tito-quantity
+    .tito-release--decrement-quantity
+    > a,
+  [data-tito-ticket-widget]
+    .tito-widget
+    .tito-quantity
+    .tito-release--increment-quantity
+    > a {
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid var(--tito-widget-fg) !important;
+    background: var(--tito-widget-bg) !important;
+    color: var(--tito-widget-fg) !important;
+    transition:
+      background-color 150ms ease,
+      color 150ms ease;
+  }
+
+  [data-tito-ticket-widget]
+    .tito-widget
+    .tito-quantity
+    .tito-release--decrement-quantity
+    > a:hover,
+  [data-tito-ticket-widget]
+    .tito-widget
+    .tito-quantity
+    .tito-release--decrement-quantity
+    > a:focus,
+  [data-tito-ticket-widget]
+    .tito-widget
+    .tito-quantity
+    .tito-release--decrement-quantity
+    > a:active,
+  [data-tito-ticket-widget]
+    .tito-widget
+    .tito-quantity
+    .tito-release--increment-quantity
+    > a:hover,
+  [data-tito-ticket-widget]
+    .tito-widget
+    .tito-quantity
+    .tito-release--increment-quantity
+    > a:focus,
+  [data-tito-ticket-widget]
+    .tito-widget
+    .tito-quantity
+    .tito-release--increment-quantity
+    > a:active {
+    background: var(--tito-widget-fg) !important;
+    color: var(--tito-widget-bg) !important;
+  }
+
+  [data-tito-ticket-widget] .tito-widget .tito-form-actions {
+    padding: 1rem 0 0;
+  }
+
+  [data-tito-ticket-widget] .tito-widget .tito-form-actions .tito-submit,
+  [data-tito-ticket-widget]
+    .tito-widget
+    .tito-form-actions
+    .tito-submit.tito-submit--discount-code,
+  [data-tito-ticket-widget]
+    .tito-widget
+    .tito-release
+    .tito-quantity
+    .tito-choose-waiting-list-button {
+    min-height: 2.75rem;
+    border: 1px solid var(--tito-widget-fg) !important;
+    border-radius: 0;
+    background: var(--tito-widget-bg) !important;
+    color: var(--tito-widget-fg) !important;
+    font-family: "Finlandica Text", Georgia, serif;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    transition:
+      background-color 150ms ease,
+      color 150ms ease;
+  }
+
+  [data-tito-ticket-widget] .tito-widget .tito-form-actions .tito-submit:hover,
+  [data-tito-ticket-widget] .tito-widget .tito-form-actions .tito-submit:focus,
+  [data-tito-ticket-widget] .tito-widget .tito-form-actions .tito-submit:active,
+  [data-tito-ticket-widget]
+    .tito-widget
+    .tito-form-actions
+    .tito-submit.tito-submit--discount-code:hover,
+  [data-tito-ticket-widget]
+    .tito-widget
+    .tito-form-actions
+    .tito-submit.tito-submit--discount-code:focus,
+  [data-tito-ticket-widget]
+    .tito-widget
+    .tito-form-actions
+    .tito-submit.tito-submit--discount-code:active,
+  [data-tito-ticket-widget]
+    .tito-widget
+    .tito-release
+    .tito-quantity
+    .tito-choose-waiting-list-button:hover,
+  [data-tito-ticket-widget]
+    .tito-widget
+    .tito-release
+    .tito-quantity
+    .tito-choose-waiting-list-button:focus {
+    border-color: var(--tito-widget-fg) !important;
+    background: var(--tito-widget-fg) !important;
+    color: var(--tito-widget-bg) !important;
+  }
+
+  [data-tito-ticket-widget]
+    .tito-widget
+    .tito-form-actions
+    .tito-submit[disabled] {
+    border-color: var(--tito-widget-muted);
+    background: var(--tito-widget-muted);
+    color: var(--tito-widget-bg);
+  }
+}
+
 @layer utilities {
   .halftone {
     background-image: radial-gradient(
