@@ -12,6 +12,7 @@ declare namespace Cloudflare {
     ADMIN_PASSWORD: string;
     ADMIN_USERNAME: string;
     EMAIL_ENCRYPTION_KEY: string;
+    SHOW_INTEREST_FORM: string;
     TURNSTILE_SECRET_KEY: string;
     TURNSTILE_SITE_KEY: string;
   }
@@ -29,6 +30,7 @@ declare namespace NodeJS {
       | "ADMIN_PASSWORD"
       | "ADMIN_USERNAME"
       | "EMAIL_ENCRYPTION_KEY"
+      | "SHOW_INTEREST_FORM"
       | "TURNSTILE_SECRET_KEY"
       | "TURNSTILE_SITE_KEY"
     >

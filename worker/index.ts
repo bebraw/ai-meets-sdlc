@@ -518,9 +518,17 @@ async function injectRuntimeConfig(
   status = response.status,
 ): Promise<Response> {
   const html = await response.text();
+  const showInterestForm = env.SHOW_INTEREST_FORM === "true";
 
   return new Response(
-    html.replaceAll("__TURNSTILE_SITE_KEY__", env.TURNSTILE_SITE_KEY ?? ""),
+    html
+      .replaceAll("__TURNSTILE_SITE_KEY__", env.TURNSTILE_SITE_KEY ?? "")
+      .replaceAll(
+        "data-interest-section hidden",
+        showInterestForm
+          ? "data-interest-section"
+          : "data-interest-section hidden",
+      ),
     {
       headers: response.headers,
       status,
@@ -632,7 +640,7 @@ function getTurnstileToken(formData: FormData): string {
 function hasConfiguredTurnstileSiteKey(env: Env): boolean {
   return Boolean(
     env.TURNSTILE_SITE_KEY?.trim() &&
-      env.TURNSTILE_SITE_KEY !== "__TURNSTILE_SITE_KEY__",
+    env.TURNSTILE_SITE_KEY !== "__TURNSTILE_SITE_KEY__",
   );
 }
 

@@ -24,6 +24,8 @@
   "vars": {
     // Public Turnstile site key. Replace this after creating the widget.
     "TURNSTILE_SITE_KEY": "0x4AAAAAADGyYOoRrI5BgaNQ",
+    // Set to "true" only if the legacy registration interest form is needed.
+    "SHOW_INTEREST_FORM": "",
   },
   "d1_databases": [
     {

@@ -83,13 +83,25 @@ function initTurnstileWidget() {
   const turnstileWidget = document.querySelector<HTMLElement>(
     "[data-turnstile-widget]",
   );
+  const interestSection = document.querySelector<HTMLElement>(
+    "[data-interest-section]",
+  );
 
   if (
     turnstileWidget &&
-    (!turnstileWidget.dataset.sitekey ||
+    (interestSection?.hidden ||
+      !turnstileWidget.dataset.sitekey ||
       turnstileWidget.dataset.sitekey === "__TURNSTILE_SITE_KEY__")
   ) {
     turnstileWidget.hidden = true;
+  }
+
+  if (turnstileWidget && !turnstileWidget.hidden) {
+    const script = document.createElement("script");
+    script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
   }
 
   return turnstileWidget;
@@ -259,10 +271,48 @@ function initAdminInterests() {
   void loadInterests();
 }
 
+function initTitoWidget() {
+  const widget = document.querySelector("[data-tito-ticket-widget]");
+
+  if (!widget) return;
+
+  let hasLoaded = false;
+
+  function loadTitoScript() {
+    if (hasLoaded) return;
+    hasLoaded = true;
+
+    const script = document.createElement("script");
+    script.src = "https://js.tito.io/v2/with/inline,hits";
+    script.async = true;
+    document.body.appendChild(script);
+  }
+
+  if (typeof IntersectionObserver === "function") {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+
+        observer.disconnect();
+        loadTitoScript();
+      },
+      { rootMargin: "400px" },
+    );
+
+    observer.observe(widget);
+  } else {
+    window.addEventListener("load", loadTitoScript, { once: true });
+  }
+
+  window.addEventListener("pointerdown", loadTitoScript, { once: true });
+  window.addEventListener("keydown", loadTitoScript, { once: true });
+}
+
 renderCountdown();
 setInterval(renderCountdown, 1000);
 initThemeToggle();
 initInterestForm();
 initAdminInterests();
+initTitoWidget();
 
 export {};
