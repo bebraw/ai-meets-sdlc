@@ -1,8 +1,10 @@
 import schedule from "./data/schedule.json" with { type: "json" };
 import seminarData from "./data/seminar.json" with { type: "json" };
+import speakersData from "./data/speakers.json" with { type: "json" };
 
 function init() {
-  const scheduleItems = getScheduleItems();
+  const speakersById = getSpeakersById();
+  const scheduleItems = getScheduleItems(speakersById);
   const seminar = getSeminar();
 
   return {
@@ -44,16 +46,22 @@ function getSeminar() {
   };
 }
 
-function getScheduleItems() {
+function getScheduleItems(speakersById) {
   return schedule.items.map((item) => {
     const anchor = getSessionAnchor(item);
     const talks = item.talks?.map((talk) => {
-      const speakerAnchor = getSpeakerAnchor(talk.speaker.name);
+      const speaker = speakersById.get(talk.speaker);
+
+      if (!speaker) {
+        throw new Error(`Unknown speaker id: ${talk.speaker}`);
+      }
+
+      const speakerAnchor = getSpeakerAnchor(speaker.name);
 
       return {
         ...talk,
         speaker: {
-          ...talk.speaker,
+          ...speaker,
           anchor: speakerAnchor,
           speakerHref: `/speakers/#${speakerAnchor}`,
         },
@@ -68,6 +76,10 @@ function getScheduleItems() {
       scheduleHref: `/schedule/#${anchor}`,
     };
   });
+}
+
+function getSpeakersById() {
+  return new Map(speakersData.items.map((speaker) => [speaker.id, speaker]));
 }
 
 function getSessionAnchor(item) {

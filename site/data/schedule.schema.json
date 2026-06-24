@@ -50,39 +50,8 @@
                   "minLength": 1
                 },
                 "speaker": {
-                  "type": "object",
-                  "required": ["name", "role", "bio"],
-                  "additionalProperties": false,
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                      "minLength": 1
-                    },
-                    "role": {
-                      "type": "string",
-                      "minLength": 1
-                    },
-                    "photo": {
-                      "type": "string",
-                      "pattern": "^/assets/.+\\.(webp|png|jpg|jpeg)$"
-                    },
-                    "website": {
-                      "type": "string",
-                      "format": "uri"
-                    },
-                    "scholar": {
-                      "type": "string",
-                      "format": "uri"
-                    },
-                    "x": {
-                      "type": "string",
-                      "format": "uri"
-                    },
-                    "bio": {
-                      "type": "string",
-                      "minLength": 1
-                    }
-                  }
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
                 }
               }
             }

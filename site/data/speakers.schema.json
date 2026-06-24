@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sdlcai.org/schemas/speakers.schema.json",
+  "title": "SDLCAI speakers",
+  "type": "object",
+  "required": ["items"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "role", "bio"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "role": {
+            "type": "string",
+            "minLength": 1
+          },
+          "photo": {
+            "type": "string",
+            "pattern": "^/assets/.+\\.(webp|png|jpg|jpeg)$"
+          },
+          "website": {
+            "type": "string",
+            "format": "uri"
+          },
+          "scholar": {
+            "type": "string",
+            "format": "uri"
+          },
+          "x": {
+            "type": "string",
+            "format": "uri"
+          },
+          "bio": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

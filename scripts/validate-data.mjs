@@ -6,23 +6,37 @@ const schedulePath = path.resolve("site/data/schedule.json");
 const scheduleSchemaPath = path.resolve("site/data/schedule.schema.json");
 const seminarPath = path.resolve("site/data/seminar.json");
 const seminarSchemaPath = path.resolve("site/data/seminar.schema.json");
+const speakersPath = path.resolve("site/data/speakers.json");
+const speakersSchemaPath = path.resolve("site/data/speakers.schema.json");
 const timeRangePattern =
   /^([01][0-9]|2[0-3]):[0-5][0-9]-([01][0-9]|2[0-3]):[0-5][0-9]$/;
 const isoDatePattern = /^\d{4}-\d{2}-\d{2}$/;
+const speakerIdPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 const errors = [];
 
-const [schedule, scheduleSchema, seminar, seminarSchema] = await Promise.all([
+const [
+  schedule,
+  scheduleSchema,
+  seminar,
+  seminarSchema,
+  speakers,
+  speakersSchema,
+] = await Promise.all([
   readJson(schedulePath),
   readJson(scheduleSchemaPath),
   readJson(seminarPath),
   readJson(seminarSchemaPath),
+  readJson(speakersPath),
+  readJson(speakersSchemaPath),
 ]);
 
 validateScheduleSchema(scheduleSchema);
-await validateSchedule(schedule);
 validateSeminarSchema(seminarSchema);
 validateSeminar(seminar);
+validateSpeakersSchema(speakersSchema);
+const speakerIds = await validateSpeakers(speakers);
+validateSchedule(schedule, speakerIds);
 
 if (errors.length) {
   console.error("Data validation failed:");
@@ -93,6 +107,27 @@ function validateSeminarSchema(schema) {
   }
 }
 
+function validateSpeakersSchema(schema) {
+  if (!isObject(schema)) return;
+
+  if (schema.title !== "SDLCAI speakers") {
+    errors.push("site/data/speakers.schema.json has an unexpected title.");
+  }
+
+  const itemProperties = schema.properties?.items?.items?.properties;
+  const required = schema.properties?.items?.items?.required;
+
+  for (const field of ["id", "name", "role", "bio"]) {
+    if (!itemProperties?.[field]) {
+      errors.push(`site/data/speakers.schema.json is missing ${field}.`);
+    }
+
+    if (!required?.includes(field)) {
+      errors.push(`site/data/speakers.schema.json must require ${field}.`);
+    }
+  }
+}
+
 function validateSeminar(seminar) {
   if (!isObject(seminar)) {
     errors.push("site/data/seminar.json must be an object.");
@@ -159,7 +194,7 @@ function validateSeminar(seminar) {
   });
 }
 
-async function validateSchedule(schedule) {
+function validateSchedule(schedule, speakerIds) {
   if (!isObject(schedule)) {
     errors.push("site/data/schedule.json must be an object.");
     return;
@@ -225,8 +260,73 @@ async function validateSchedule(schedule) {
       errors.push(`${itemPath}.time must use HH:MM-HH:MM in 24-hour time.`);
     }
 
-    await validateTalks(item.talks, `${itemPath}.talks`, start, end);
+    validateTalks(item.talks, `${itemPath}.talks`, start, end, speakerIds);
   }
+}
+
+async function validateSpeakers(speakers) {
+  const speakerIds = new Set();
+
+  if (!isObject(speakers)) {
+    errors.push("site/data/speakers.json must be an object.");
+    return speakerIds;
+  }
+
+  const allowedRootKeys = new Set(["$schema", "items"]);
+
+  for (const key of Object.keys(speakers)) {
+    if (!allowedRootKeys.has(key)) {
+      errors.push(`site/data/speakers.json has unknown root field "${key}".`);
+    }
+  }
+
+  if (!Array.isArray(speakers.items)) {
+    errors.push("site/data/speakers.json items must be an array.");
+    return speakerIds;
+  }
+
+  if (speakers.items.length === 0) {
+    errors.push("site/data/speakers.json items must not be empty.");
+  }
+
+  for (const [index, speaker] of speakers.items.entries()) {
+    const speakerPath = `site/data/speakers.json items[${index}]`;
+
+    if (!isObject(speaker)) {
+      errors.push(`${speakerPath} must be an object.`);
+      continue;
+    }
+
+    validateOptionalObject({
+      value: speaker,
+      path: speakerPath,
+      allowedFields: [
+        "id",
+        "name",
+        "role",
+        "photo",
+        "website",
+        "scholar",
+        "x",
+        "bio",
+      ],
+      requiredFields: ["id", "name", "role", "bio"],
+    });
+
+    if (isNonEmptyString(speaker.id)) {
+      if (!speakerIdPattern.test(speaker.id)) {
+        errors.push(`${speakerPath}.id must be a lowercase slug.`);
+      } else if (speakerIds.has(speaker.id)) {
+        errors.push(`${speakerPath}.id duplicates another speaker.`);
+      } else {
+        speakerIds.add(speaker.id);
+      }
+    }
+
+    await validateSpeakerLinks(speaker, speakerPath);
+  }
+
+  return speakerIds;
 }
 
 function isObject(value) {
@@ -300,7 +400,7 @@ async function validateSpeakerLinks(speaker, speakerPath) {
   }
 }
 
-async function validateTalks(talks, talksPath, sessionStart, sessionEnd) {
+function validateTalks(talks, talksPath, sessionStart, sessionEnd, speakerIds) {
   if (typeof talks === "undefined") return;
 
   if (!Array.isArray(talks)) {
@@ -336,25 +436,16 @@ async function validateTalks(talks, talksPath, sessionStart, sessionEnd) {
       }
     }
 
-    if (!isObject(talk.speaker)) {
-      errors.push(`${talkPath}.speaker must be an object.`);
+    if (!isNonEmptyString(talk.speaker)) {
+      errors.push(`${talkPath}.speaker must be a non-empty string.`);
     } else {
-      validateOptionalObject({
-        value: talk.speaker,
-        path: `${talkPath}.speaker`,
-        allowedFields: [
-          "name",
-          "role",
-          "photo",
-          "website",
-          "scholar",
-          "x",
-          "bio",
-        ],
-        requiredFields: ["name", "role", "bio"],
-      });
+      if (!speakerIdPattern.test(talk.speaker)) {
+        errors.push(`${talkPath}.speaker must be a lowercase slug.`);
+      }
 
-      await validateSpeakerLinks(talk.speaker, `${talkPath}.speaker`);
+      if (!speakerIds.has(talk.speaker)) {
+        errors.push(`${talkPath}.speaker must reference a speaker id.`);
+      }
     }
 
     if (!isNonEmptyString(talk.time)) continue;

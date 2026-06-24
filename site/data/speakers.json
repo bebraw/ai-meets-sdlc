@@ -1,0 +1,23 @@
+{
+  "$schema": "./speakers.schema.json",
+  "items": [
+    {
+      "id": "mo-khazali",
+      "name": "Mo Khazali",
+      "role": "Group Associate Partner at Theodo",
+      "photo": "/assets/speakers/mo-khazali.webp",
+      "website": "https://www.linkedin.com/in/mohammadkhazali/",
+      "x": "https://x.com/mo__javad",
+      "bio": "Mo Khazali is Group Associate Partner at Theodo. Over the last three years, he has led teams as Head of Mobile and Solutions Architect, helping deliver high-impact products while scaling engineering practices across clients and developer communities. He has spoken at dozens of international conferences, hosted React Native London, and now focuses on how organisations can use AI to migrate between technology stacks in ways that are verifiable, safe, and efficient."
+    },
+    {
+      "id": "muhammad-waseem",
+      "name": "Dr Muhammad Waseem",
+      "role": "Vice Head of GPT Lab, Tampere University",
+      "photo": "/assets/speakers/muhammad-waseem.webp",
+      "website": "https://drmwaseem.com/",
+      "scholar": "https://scholar.google.com/citations?user=ufGtcBUAAAAJ&hl=en",
+      "bio": "Dr Muhammad Waseem is the Vice Head of GPT Lab at Tampere University. His research focuses on software engineering, generative AI, software architecture, and AI-assisted software development. He is currently supervising PhD and master’s students and has authored more than 90 research papers published in leading software engineering venues, including JSS, IST, ICSE, ECSA, and others."
+    }
+  ]
+}
