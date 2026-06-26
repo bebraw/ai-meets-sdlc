@@ -394,10 +394,123 @@ async function validateSpeakerLinks(speaker, speakerPath) {
   }
 
   try {
-    await access(path.resolve(speaker.photo.slice(1)));
+    const photoPath = path.resolve(speaker.photo.slice(1));
+
+    await access(photoPath);
+    await validateSquareImage(photoPath, `${speakerPath}.photo`);
   } catch {
     errors.push(`${speakerPath}.photo points to a missing file.`);
   }
+}
+
+async function validateSquareImage(filePath, imagePath) {
+  const image = await readFile(filePath);
+  const dimensions = getImageDimensions(image);
+
+  if (!dimensions) {
+    errors.push(`${imagePath} must point to a readable web image.`);
+    return;
+  }
+
+  if (dimensions.width !== dimensions.height) {
+    errors.push(
+      `${imagePath} must be square, got ${dimensions.width}x${dimensions.height}.`,
+    );
+  }
+}
+
+function getImageDimensions(image) {
+  return (
+    getPngDimensions(image) ??
+    getJpegDimensions(image) ??
+    getWebpDimensions(image)
+  );
+}
+
+function getPngDimensions(image) {
+  if (
+    image.length < 24 ||
+    image[0] !== 0x89 ||
+    image.toString("ascii", 1, 4) !== "PNG"
+  ) {
+    return undefined;
+  }
+
+  return {
+    width: image.readUInt32BE(16),
+    height: image.readUInt32BE(20),
+  };
+}
+
+function getJpegDimensions(image) {
+  if (image.length < 4 || image[0] !== 0xff || image[1] !== 0xd8) {
+    return undefined;
+  }
+
+  let offset = 2;
+
+  while (offset + 9 < image.length) {
+    if (image[offset] !== 0xff) return undefined;
+
+    const marker = image[offset + 1];
+    const segmentLength = image.readUInt16BE(offset + 2);
+
+    if (
+      (marker >= 0xc0 && marker <= 0xc3) ||
+      (marker >= 0xc5 && marker <= 0xc7) ||
+      (marker >= 0xc9 && marker <= 0xcb) ||
+      (marker >= 0xcd && marker <= 0xcf)
+    ) {
+      return {
+        width: image.readUInt16BE(offset + 7),
+        height: image.readUInt16BE(offset + 5),
+      };
+    }
+
+    offset += 2 + segmentLength;
+  }
+
+  return undefined;
+}
+
+function getWebpDimensions(image) {
+  if (
+    image.length < 30 ||
+    image.toString("ascii", 0, 4) !== "RIFF" ||
+    image.toString("ascii", 8, 12) !== "WEBP"
+  ) {
+    return undefined;
+  }
+
+  const chunkType = image.toString("ascii", 12, 16);
+
+  if (chunkType === "VP8 ") {
+    return {
+      width: image.readUInt16LE(26) & 0x3fff,
+      height: image.readUInt16LE(28) & 0x3fff,
+    };
+  }
+
+  if (chunkType === "VP8L") {
+    const byte1 = image[21];
+    const byte2 = image[22];
+    const byte3 = image[23];
+    const byte4 = image[24];
+
+    return {
+      width: 1 + byte1 + ((byte2 & 0x3f) << 8),
+      height: 1 + ((byte2 & 0xc0) >> 6) + (byte3 << 2) + ((byte4 & 0x0f) << 10),
+    };
+  }
+
+  if (chunkType === "VP8X") {
+    return {
+      width: 1 + image.readUIntLE(24, 3),
+      height: 1 + image.readUIntLE(27, 3),
+    };
+  }
+
+  return undefined;
 }
 
 function validateTalks(talks, talksPath, sessionStart, sessionEnd, speakerIds) {

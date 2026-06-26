@@ -60,7 +60,15 @@
     {
       "time": "15:30-17:00",
       "title": "Academia",
-      "body": "Deeper academic sessions on current research and open questions."
+      "body": "Deeper academic sessions on current research and open questions.",
+      "talks": [
+        {
+          "time": "15:30-16:00",
+          "title": "Agentic Discovery",
+          "abstract": "Abstract forthcoming.",
+          "speaker": "tapio-pitkaranta"
+        }
+      ]
     },
     {
       "time": "17:00-17:15",
