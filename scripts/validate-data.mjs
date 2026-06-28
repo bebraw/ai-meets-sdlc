@@ -306,6 +306,7 @@ async function validateSpeakers(speakers) {
         "role",
         "photo",
         "website",
+        "linkedin",
         "scholar",
         "github",
         "x",
@@ -375,7 +376,7 @@ function validateOptionalObject({
 async function validateSpeakerLinks(speaker, speakerPath) {
   if (!isObject(speaker)) return;
 
-  for (const field of ["website", "scholar", "github", "x"]) {
+  for (const field of ["website", "linkedin", "scholar", "github", "x"]) {
     if (typeof speaker[field] === "undefined") continue;
 
     try {

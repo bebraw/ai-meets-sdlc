@@ -56,7 +56,15 @@
     {
       "time": "13:30-15:00",
       "title": "Views from industry",
-      "body": "Short field reports from teams applying AI across the SDLC."
+      "body": "Short field reports from teams applying AI across the SDLC.",
+      "talks": [
+        {
+          "time": "13:30-15:00",
+          "title": "Driving AI adoption above targets in highly regulated environment",
+          "abstract": "How Elisa drove AI adoption across the SDLC beyond expectations through leadership, tooling, communities, and shared practices. The talk also covers how governance continues to evolve to manage costs in the new era of token-based development, while operating critical infrastructure under high levels of regulation.",
+          "speakers": ["jussi-hacklin"]
+        }
+      ]
     },
     {
       "time": "15:00-15:30",

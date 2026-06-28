@@ -6,7 +6,7 @@
       "name": "Mo Khazali",
       "role": "Group Associate Partner at Theodo",
       "photo": "/assets/speakers/mo-khazali.webp",
-      "website": "https://www.linkedin.com/in/mohammadkhazali/",
+      "linkedin": "https://www.linkedin.com/in/mohammadkhazali/",
       "x": "https://x.com/mo__javad",
       "bio": "Mo Khazali is Group Associate Partner at Theodo. Over the last three years, he has led teams as Head of Mobile and Solutions Architect, helping deliver high-impact products while scaling engineering practices across clients and developer communities. He has spoken at dozens of international conferences, hosted React Native London, and now focuses on how organisations can use AI to migrate between technology stacks in ways that are verifiable, safe, and efficient."
     },
@@ -15,9 +15,17 @@
       "name": "Ohans Emmanuel",
       "role": "Co-founder & CEO at Stealth AI Startup",
       "photo": "/assets/speakers/ohans-emmanuel.webp",
-      "website": "https://www.linkedin.com/in/ohans-emmanuel/",
+      "linkedin": "https://www.linkedin.com/in/ohans-emmanuel/",
       "github": "https://github.com/ohansemmanuel",
       "bio": "Ohans Emmanuel is a co-founder and technical author with more than five published books. Since 2017, he has written extensively about software and product development, with his work reaching more than five million readers. He specialises in turning complex problems into simple, reliable systems and building delightful user interfaces that hold up in the real world."
+    },
+    {
+      "id": "jussi-hacklin",
+      "name": "Jussi Hacklin",
+      "role": "Chief of Software Engineering at Elisa",
+      "photo": "/assets/speakers/jussi-hacklin.webp",
+      "linkedin": "https://www.linkedin.com/in/jussihacklin/",
+      "bio": "Jussi Hacklin has more than 20 years of experience leading technology and business organisations, creating digital services and products in-house and for clients across multiple industries. His background spans technology business creation, sales, product management, product development, agile transformation, piloting, and software development. He is a co-founder of Mideum, advises selected companies on technology and leadership, and was the first Finnish graduate of the University of Cambridge Judge CTO Programme."
     },
     {
       "id": "muhammad-waseem",
@@ -33,7 +41,7 @@
       "name": "Tapio Pitkäranta",
       "role": "Head of AI Development at Siili Solutions",
       "photo": "/assets/speakers/tapio-pitkaranta.webp",
-      "website": "https://www.linkedin.com/in/tapio-pitkaranta/",
+      "linkedin": "https://www.linkedin.com/in/tapio-pitkaranta/",
       "bio": "Tapio Pitkäranta is Head of AI Development at Siili Solutions and a PhD candidate at Aalto University researching Software Agents and Generative AI. He has over 20 years of AI experience, spanning early semantic-web agent research, healthcare analytics entrepreneurship, and senior technology leadership across retail, healthcare, tax, and HR. He has served as CTO four times, including at RELEX Solutions during its unicorn-scale growth, and now focuses on applying agentic AI, multi-agent systems, and coding agents to real software delivery."
     }
   ]

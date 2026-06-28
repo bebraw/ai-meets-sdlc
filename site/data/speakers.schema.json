@@ -37,6 +37,10 @@
             "type": "string",
             "format": "uri"
           },
+          "linkedin": {
+            "type": "string",
+            "format": "uri"
+          },
           "scholar": {
             "type": "string",
             "format": "uri"
