@@ -260,7 +260,7 @@ function validateSchedule(schedule, speakerIds) {
       errors.push(`${itemPath}.time must use HH:MM-HH:MM in 24-hour time.`);
     }
 
-    validateTalks(item.talks, `${itemPath}.talks`, start, end, speakerIds);
+    validateTalks(item.talks, `${itemPath}.talks`, speakerIds);
   }
 }
 
@@ -515,7 +515,7 @@ function getWebpDimensions(image) {
   return undefined;
 }
 
-function validateTalks(talks, talksPath, sessionStart, sessionEnd, speakerIds) {
+function validateTalks(talks, talksPath, speakerIds) {
   if (typeof talks === "undefined") return;
 
   if (!Array.isArray(talks)) {
@@ -527,8 +527,6 @@ function validateTalks(talks, talksPath, sessionStart, sessionEnd, speakerIds) {
     errors.push(`${talksPath} must not be empty.`);
   }
 
-  let previousTalkEnd = -1;
-
   for (const [index, talk] of talks.entries()) {
     const talkPath = `${talksPath}[${index}]`;
 
@@ -537,12 +535,7 @@ function validateTalks(talks, talksPath, sessionStart, sessionEnd, speakerIds) {
       continue;
     }
 
-    const allowedTalkKeys = new Set([
-      "time",
-      "title",
-      "abstract",
-      "speakers",
-    ]);
+    const allowedTalkKeys = new Set(["title", "abstract", "speakers"]);
 
     for (const key of Object.keys(talk)) {
       if (!allowedTalkKeys.has(key)) {
@@ -550,7 +543,7 @@ function validateTalks(talks, talksPath, sessionStart, sessionEnd, speakerIds) {
       }
     }
 
-    for (const field of ["time", "title", "abstract"]) {
+    for (const field of ["title", "abstract"]) {
       if (!isNonEmptyString(talk[field])) {
         errors.push(`${talkPath}.${field} must be a non-empty string.`);
       }
@@ -575,33 +568,6 @@ function validateTalks(talks, talksPath, sessionStart, sessionEnd, speakerIds) {
         seenSpeakerIds.add(speakerId);
       }
     }
-
-    if (!isNonEmptyString(talk.time)) continue;
-
-    if (!timeRangePattern.test(talk.time)) {
-      errors.push(`${talkPath}.time must use HH:MM-HH:MM in 24-hour time.`);
-      continue;
-    }
-
-    const [talkStart, talkEnd] = talk.time.split("-").map(timeToMinutes);
-
-    if (talkEnd <= talkStart) {
-      errors.push(`${talkPath}.time must end after it starts.`);
-    }
-
-    if (
-      typeof sessionStart === "number" &&
-      typeof sessionEnd === "number" &&
-      (talkStart < sessionStart || talkEnd > sessionEnd)
-    ) {
-      errors.push(`${talkPath}.time must fit within the parent session.`);
-    }
-
-    if (talkStart < previousTalkEnd) {
-      errors.push(`${talkPath}.time overlaps the previous talk.`);
-    }
-
-    previousTalkEnd = talkEnd;
   }
 }
 

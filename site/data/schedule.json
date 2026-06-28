@@ -17,13 +17,11 @@
       "body": "Talks or a joint session on applied AI in software development, ending with a brief panel.",
       "talks": [
         {
-          "time": "09:00-09:45",
           "title": "Mystery talk",
           "abstract": "Mo Khazali shares an industry perspective on applied AI in software development. The exact topic of his talk is still to be decided.",
           "speakers": ["mo-khazali"]
         },
         {
-          "time": "09:45-10:30",
           "title": "Mystery talk",
           "abstract": "Ohans Emmanuel shares an industry perspective on applied AI in software development. The exact topic of his talk is still to be decided.",
           "speakers": ["ohans-emmanuel"]
@@ -41,10 +39,14 @@
       "body": "Short research-driven talks on AI and software development.",
       "talks": [
         {
-          "time": "11:00-11:20",
           "title": "GenAI in Software Engineering: What Works, What Fails, What’s Next",
           "abstract": "This talk examines the current role of Generative AI in software engineering, moving beyond the hype around coding assistants. It discusses where GenAI is already useful, such as implementation, testing, documentation, and refactoring, and where progress remains limited, such as requirements, architecture, and long-term maintenance. The talk also highlights key open questions around measurement, verification, security, developer expertise, and the future shape of software engineering work.",
           "speakers": ["muhammad-waseem"]
+        },
+        {
+          "title": "Agentic Discovery",
+          "abstract": "Abstract forthcoming.",
+          "speakers": ["tapio-pitkaranta"]
         }
       ]
     },
@@ -59,7 +61,6 @@
       "body": "Short field reports from teams applying AI across the SDLC.",
       "talks": [
         {
-          "time": "13:30-15:00",
           "title": "Driving AI adoption above targets in highly regulated environment",
           "abstract": "How Elisa drove AI adoption across the SDLC beyond expectations through leadership, tooling, communities, and shared practices. The talk also covers how governance continues to evolve to manage costs in the new era of token-based development, while operating critical infrastructure under high levels of regulation.",
           "speakers": ["jussi-hacklin"]
@@ -74,15 +75,7 @@
     {
       "time": "15:30-17:00",
       "title": "Academia",
-      "body": "Deeper academic sessions on current research and open questions.",
-      "talks": [
-        {
-          "time": "15:30-16:00",
-          "title": "Agentic Discovery",
-          "abstract": "Abstract forthcoming.",
-          "speakers": ["tapio-pitkaranta"]
-        }
-      ]
+      "body": "Deeper academic sessions on current research and open questions."
     },
     {
       "time": "17:00-17:15",

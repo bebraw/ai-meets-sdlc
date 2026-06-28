@@ -32,16 +32,10 @@
             </noop>
           </div>
           <div class="grid gap-4">
-            <div>
-              <p
-                class="font-headline text-sm font-black uppercase text-muted"
-                &children="talkItem.time"
-              ></p>
-              <h4
-                class="mt-2 font-headline text-3xl font-black uppercase leading-none"
-                &children="talkItem.title"
-              ></h4>
-            </div>
+            <h4
+              class="font-headline text-3xl font-black uppercase leading-none"
+              &children="talkItem.title"
+            ></h4>
             <p class="leading-7 text-muted" &children="talkItem.abstract"></p>
             <noop &foreach="talkItem.speakers as speakerItem">
               <div class="border-t border-ink pt-4">

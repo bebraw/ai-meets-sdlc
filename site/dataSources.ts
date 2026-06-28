@@ -23,7 +23,6 @@ function init() {
               speakerHref: `/speakers/#${speakerAnchor}`,
               sessionAnchor: item.anchor,
               scheduleHref: item.scheduleHref,
-              time: talk.time,
               sessionTitle: item.title,
               talk: {
                 title: talk.title,
