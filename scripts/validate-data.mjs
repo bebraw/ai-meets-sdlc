@@ -307,6 +307,7 @@ async function validateSpeakers(speakers) {
         "photo",
         "website",
         "scholar",
+        "github",
         "x",
         "bio",
       ],
@@ -374,7 +375,7 @@ function validateOptionalObject({
 async function validateSpeakerLinks(speaker, speakerPath) {
   if (!isObject(speaker)) return;
 
-  for (const field of ["website", "scholar", "x"]) {
+  for (const field of ["website", "scholar", "github", "x"]) {
     if (typeof speaker[field] === "undefined") continue;
 
     try {
@@ -535,7 +536,12 @@ function validateTalks(talks, talksPath, sessionStart, sessionEnd, speakerIds) {
       continue;
     }
 
-    const allowedTalkKeys = new Set(["time", "title", "abstract", "speaker"]);
+    const allowedTalkKeys = new Set([
+      "time",
+      "title",
+      "abstract",
+      "speakers",
+    ]);
 
     for (const key of Object.keys(talk)) {
       if (!allowedTalkKeys.has(key)) {
@@ -549,15 +555,23 @@ function validateTalks(talks, talksPath, sessionStart, sessionEnd, speakerIds) {
       }
     }
 
-    if (!isNonEmptyString(talk.speaker)) {
-      errors.push(`${talkPath}.speaker must be a non-empty string.`);
+    if (!Array.isArray(talk.speakers)) {
+      errors.push(`${talkPath}.speakers must be an array.`);
+    } else if (talk.speakers.length === 0) {
+      errors.push(`${talkPath}.speakers must not be empty.`);
     } else {
-      if (!speakerIdPattern.test(talk.speaker)) {
-        errors.push(`${talkPath}.speaker must be a lowercase slug.`);
-      }
+      const seenSpeakerIds = new Set();
 
-      if (!speakerIds.has(talk.speaker)) {
-        errors.push(`${talkPath}.speaker must reference a speaker id.`);
+      for (const [speakerIndex, speakerId] of talk.speakers.entries()) {
+        const speakerPath = `${talkPath}.speakers[${speakerIndex}]`;
+
+        validateTalkSpeaker(speakerId, speakerPath, speakerIds);
+
+        if (seenSpeakerIds.has(speakerId)) {
+          errors.push(`${speakerPath} duplicates another talk speaker.`);
+        }
+
+        seenSpeakerIds.add(speakerId);
       }
     }
 
@@ -587,6 +601,21 @@ function validateTalks(talks, talksPath, sessionStart, sessionEnd, speakerIds) {
     }
 
     previousTalkEnd = talkEnd;
+  }
+}
+
+function validateTalkSpeaker(speakerId, speakerPath, speakerIds) {
+  if (!isNonEmptyString(speakerId)) {
+    errors.push(`${speakerPath} must be a non-empty string.`);
+    return;
+  }
+
+  if (!speakerIdPattern.test(speakerId)) {
+    errors.push(`${speakerPath} must be a lowercase slug.`);
+  }
+
+  if (!speakerIds.has(speakerId)) {
+    errors.push(`${speakerPath} must reference a speaker id.`);
   }
 }
 

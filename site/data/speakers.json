@@ -11,6 +11,15 @@
       "bio": "Mo Khazali is Group Associate Partner at Theodo. Over the last three years, he has led teams as Head of Mobile and Solutions Architect, helping deliver high-impact products while scaling engineering practices across clients and developer communities. He has spoken at dozens of international conferences, hosted React Native London, and now focuses on how organisations can use AI to migrate between technology stacks in ways that are verifiable, safe, and efficient."
     },
     {
+      "id": "ohans-emmanuel",
+      "name": "Ohans Emmanuel",
+      "role": "Co-founder & CEO at Stealth AI Startup",
+      "photo": "/assets/speakers/ohans-emmanuel.webp",
+      "website": "https://www.linkedin.com/in/ohans-emmanuel/",
+      "github": "https://github.com/ohansemmanuel",
+      "bio": "Ohans Emmanuel is a co-founder and technical author with more than five published books. Since 2017, he has written extensively about software and product development, with his work reaching more than five million readers. He specialises in turning complex problems into simple, reliable systems and building delightful user interfaces that hold up in the real world."
+    },
+    {
       "id": "muhammad-waseem",
       "name": "Dr Muhammad Waseem",
       "role": "Vice Head of GPT Lab, Tampere University",

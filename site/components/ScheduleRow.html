@@ -20,13 +20,17 @@
     <div class="mt-5 grid gap-5 border-t border-ink pt-5" &visibleIf="talks">
       <noop &foreach="talks as talkItem">
         <article class="grid gap-5 min-[720px]:grid-cols-[8rem_1fr]">
-          <img
-            &visibleIf="talkItem.speaker.photo"
-            &src="talkItem.speaker.photo"
-            &alt="talkItem.speaker.name"
-            class="aspect-square w-32 border border-ink object-cover grayscale min-[720px]:w-full"
-            loading="lazy"
-          />
+          <div class="grid w-32 gap-2 min-[720px]:w-full">
+            <noop &foreach="talkItem.speakers as speakerItem">
+              <img
+                &visibleIf="speakerItem.photo"
+                &src="speakerItem.photo"
+                &alt="speakerItem.name"
+                class="aspect-square w-full border border-ink object-cover grayscale"
+                loading="lazy"
+              />
+            </noop>
+          </div>
           <div class="grid gap-4">
             <div>
               <p
@@ -39,41 +43,49 @@
               ></h4>
             </div>
             <p class="leading-7 text-muted" &children="talkItem.abstract"></p>
-            <div class="border-t border-ink pt-4">
-              <a
-                &href="talkItem.speaker.speakerHref"
-                class="font-headline text-2xl font-black uppercase hover:underline"
-                &children="talkItem.speaker.name"
-              ></a>
-              <p
-                class="mt-1 font-bold leading-6 text-muted"
-                &children="talkItem.speaker.role"
-              ></p>
-              <p
-                class="mt-3 leading-7 text-muted"
-                &children="talkItem.speaker.bio"
-              ></p>
-              <div class="mt-4 flex flex-wrap gap-3">
+            <noop &foreach="talkItem.speakers as speakerItem">
+              <div class="border-t border-ink pt-4">
                 <a
-                  &visibleIf="talkItem.speaker.website"
-                  &href="talkItem.speaker.website"
-                  class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-                  >Website</a
-                >
-                <a
-                  &visibleIf="talkItem.speaker.scholar"
-                  &href="talkItem.speaker.scholar"
-                  class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-                  >Scholar</a
-                >
-                <a
-                  &visibleIf="talkItem.speaker.x"
-                  &href="talkItem.speaker.x"
-                  class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-                  >X</a
-                >
+                  &href="speakerItem.speakerHref"
+                  class="font-headline text-2xl font-black uppercase hover:underline"
+                  &children="speakerItem.name"
+                ></a>
+                <p
+                  class="mt-1 font-bold leading-6 text-muted"
+                  &children="speakerItem.role"
+                ></p>
+                <p
+                  class="mt-3 leading-7 text-muted"
+                  &children="speakerItem.bio"
+                ></p>
+                <div class="mt-4 flex flex-wrap gap-3">
+                  <a
+                    &visibleIf="speakerItem.website"
+                    &href="speakerItem.website"
+                    class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+                    >Website</a
+                  >
+                  <a
+                    &visibleIf="speakerItem.scholar"
+                    &href="speakerItem.scholar"
+                    class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+                    >Scholar</a
+                  >
+                  <a
+                    &visibleIf="speakerItem.github"
+                    &href="speakerItem.github"
+                    class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+                    >GitHub</a
+                  >
+                  <a
+                    &visibleIf="speakerItem.x"
+                    &href="speakerItem.x"
+                    class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+                    >X</a
+                  >
+                </div>
               </div>
-            </div>
+            </noop>
           </div>
         </article>
       </noop>

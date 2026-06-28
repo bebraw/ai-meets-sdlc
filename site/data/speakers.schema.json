@@ -41,6 +41,10 @@
             "type": "string",
             "format": "uri"
           },
+          "github": {
+            "type": "string",
+            "format": "uri"
+          },
           "x": {
             "type": "string",
             "format": "uri"

@@ -12,24 +12,26 @@ function init() {
     scheduleItems: () => scheduleItems,
     speakerItems: () =>
       scheduleItems.flatMap((item) =>
-        (item.talks ?? []).map((talk) => {
-          const speakerAnchor = getSpeakerAnchor(talk.speaker.name);
+        (item.talks ?? []).flatMap((talk) =>
+          talk.speakers.map((speaker) => {
+            const speakerAnchor = getSpeakerAnchor(speaker.name);
 
-          return {
-            ...talk.speaker,
-            anchor: speakerAnchor,
-            anchorHref: `#${speakerAnchor}`,
-            speakerHref: `/speakers/#${speakerAnchor}`,
-            sessionAnchor: item.anchor,
-            scheduleHref: item.scheduleHref,
-            time: talk.time,
-            sessionTitle: item.title,
-            talk: {
-              title: talk.title,
-              abstract: talk.abstract,
-            },
-          };
-        }),
+            return {
+              ...speaker,
+              anchor: speakerAnchor,
+              anchorHref: `#${speakerAnchor}`,
+              speakerHref: `/speakers/#${speakerAnchor}`,
+              sessionAnchor: item.anchor,
+              scheduleHref: item.scheduleHref,
+              time: talk.time,
+              sessionTitle: item.title,
+              talk: {
+                title: talk.title,
+                abstract: talk.abstract,
+              },
+            };
+          }),
+        ),
       ),
   };
 }
@@ -50,21 +52,25 @@ function getScheduleItems(speakersById) {
   return schedule.items.map((item) => {
     const anchor = getSessionAnchor(item);
     const talks = item.talks?.map((talk) => {
-      const speaker = speakersById.get(talk.speaker);
+      const talkSpeakers = talk.speakers.map((speakerId) => {
+        const speaker = speakersById.get(speakerId);
 
-      if (!speaker) {
-        throw new Error(`Unknown speaker id: ${talk.speaker}`);
-      }
+        if (!speaker) {
+          throw new Error(`Unknown speaker id: ${speakerId}`);
+        }
 
-      const speakerAnchor = getSpeakerAnchor(speaker.name);
+        const speakerAnchor = getSpeakerAnchor(speaker.name);
 
-      return {
-        ...talk,
-        speaker: {
+        return {
           ...speaker,
           anchor: speakerAnchor,
           speakerHref: `/speakers/#${speakerAnchor}`,
-        },
+        };
+      });
+
+      return {
+        ...talk,
+        speakers: talkSpeakers,
       };
     });
 
