@@ -95,7 +95,7 @@ export default {
       return injectRuntimeConfig(response, env);
     }
 
-    return response;
+    return withStaticAssetCache(response, url);
   },
 
   async scheduled(
@@ -108,6 +108,27 @@ export default {
     ctx.waitUntil(backupInterests(env));
   },
 } satisfies ExportedHandler<Env>;
+
+const immutableAssetCacheControl = "public, max-age=31536000, immutable";
+
+function withStaticAssetCache(response: Response, url: URL): Response {
+  if (response.status !== 200 || !isImmutableAssetPath(url.pathname)) {
+    return response;
+  }
+
+  const headers = new Headers(response.headers);
+  headers.set("cache-control", immutableAssetCacheControl);
+
+  return new Response(response.body, {
+    headers,
+    status: response.status,
+    statusText: response.statusText,
+  });
+}
+
+function isImmutableAssetPath(pathname: string): boolean {
+  return /^\/tailwind-[a-z0-9]+\.css$/.test(pathname);
+}
 
 async function handleInterest(request: Request, env: Env): Promise<Response> {
   if (!env.INTERESTS) {
