@@ -13,6 +13,7 @@ try {
 }
 
 const htmlFiles = await getHtmlFiles(buildDir);
+const cssFiles = await getFilesByExtension(buildDir, ".css");
 const failures = [];
 
 for (const filePath of htmlFiles) {
@@ -43,6 +44,29 @@ for (const filePath of htmlFiles) {
   }
 }
 
+for (const filePath of cssFiles) {
+  const css = await readFile(filePath, "utf8");
+  const fontUrls = [...css.matchAll(/url\("?(\/assets\/fonts\/[^")]+)"?\)/g)]
+    .map((match) => match[1])
+    .sort();
+
+  for (const fontUrl of fontUrls) {
+    if (!fontUrl.endsWith(".woff2")) {
+      failures.push(`${filePath}: font is not WOFF2: ${fontUrl}`);
+    }
+  }
+
+  const uniqueFontUrls = new Set(fontUrls);
+
+  if (uniqueFontUrls.size > 3) {
+    failures.push(
+      `${filePath}: expected at most 3 font files, found ${uniqueFontUrls.size}: ${[
+        ...uniqueFontUrls,
+      ].join(", ")}`,
+    );
+  }
+}
+
 if (failures.length > 0) {
   console.error(failures.join("\n"));
   process.exit(1);
@@ -59,6 +83,10 @@ function isPositiveInteger(value) {
 }
 
 async function getHtmlFiles(directory) {
+  return getFilesByExtension(directory, ".html");
+}
+
+async function getFilesByExtension(directory, extension) {
   const entries = await readdir(directory);
   const files = [];
 
@@ -67,8 +95,8 @@ async function getHtmlFiles(directory) {
     const entryStat = await stat(entryPath);
 
     if (entryStat.isDirectory()) {
-      files.push(...(await getHtmlFiles(entryPath)));
-    } else if (entryPath.endsWith(".html")) {
+      files.push(...(await getFilesByExtension(entryPath, extension)));
+    } else if (entryPath.endsWith(extension)) {
       files.push(entryPath);
     }
   }
