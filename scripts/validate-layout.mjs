@@ -11,7 +11,6 @@ const routes = [
   "/404/",
   "/admin/",
   "/contact/",
-  "/design-system/",
   "/for-sponsors/",
   "/privacy-policy/",
 ];

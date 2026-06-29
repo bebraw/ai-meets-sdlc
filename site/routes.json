@@ -19,23 +19,6 @@
       }
     }
   },
-  "design-system": {
-    "layout": "design-system",
-    "scripts": [{ "name": "index" }],
-    "dataSources": {
-      "seminar": {
-        "operation": "seminar"
-      }
-    },
-    "context": {
-      "meta": {
-        "title": "SDLCAI Design System",
-        "description": "Reusable SDLCAI htmlisp components, typography, colors, and layout primitives.",
-        "ogEyebrow": "Design system",
-        "ogDescription": "Reusable SDLCAI htmlisp components and visual primitives."
-      }
-    }
-  },
   "for-sponsors": {
     "layout": "for-sponsors",
     "scripts": [{ "name": "index" }],

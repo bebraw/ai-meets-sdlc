@@ -60,11 +60,13 @@ npm run format
 npm run format:check
 npm run validate
 npm run layout:check
+npm run a11y:check
 ```
 
 `layout:check` runs browser-based responsive layout checks, including a focused
 accessibility guard for non-inline touch targets smaller than 24 by 24 CSS
-pixels. `quality:gate` includes this check.
+pixels. `a11y:check` runs axe-core against every generated route at mobile and
+desktop widths. `quality:gate` includes both checks.
 
 ## Worker Development
 

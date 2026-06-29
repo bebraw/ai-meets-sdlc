@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "gustwind --build --output ./build --no-incremental",
+    "a11y:check": "node scripts/validate-a11y.mjs",
     "data:validate": "node scripts/validate-data.mjs",
     "db:migrate:local": "wrangler d1 migrations apply ai-meets-sdlc-interests --local",
     "db:migrate:remote": "wrangler d1 migrations apply ai-meets-sdlc-interests --remote",
@@ -14,7 +15,7 @@
     "interests:export": "node scripts/export-interest-contacts.mjs",
     "layout:check": "node scripts/validate-layout.mjs",
     "layout:install-browsers": "playwright install webkit",
-    "quality:gate": "npm run worker:build && npm run validate && npm run layout:check",
+    "quality:gate": "npm run worker:build && npm run validate && npm run layout:check && npm run a11y:check",
     "start": "gustwind --develop --port 3000",
     "serve": "gustwind --serve --port 3000 --input ./build",
     "types:check": "tsc --noEmit",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@types/node": "25.6.0",
+    "axe-core": "4.12.1",
     "dotenv": "17.4.2",
     "playwright": "1.61.0",
     "prettier": "3.8.3",
