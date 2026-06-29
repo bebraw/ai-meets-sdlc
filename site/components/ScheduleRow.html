@@ -22,13 +22,14 @@
         <article class="grid gap-5 min-[720px]:grid-cols-[8rem_1fr]">
           <div class="grid w-32 gap-2 min-[720px]:w-full">
             <noop &foreach="talkItem.speakers as speakerItem">
-              <img
+              <LazyImage
                 &visibleIf="speakerItem.photo"
                 &src="speakerItem.photo"
                 &alt="speakerItem.name"
-                class="aspect-square w-full border border-ink object-cover grayscale"
-                loading="lazy"
-              />
+                &className="(id 'aspect-square w-full border border-ink object-cover grayscale')"
+                &width="(id '400')"
+                &height="(id '400')"
+              ></LazyImage>
             </noop>
           </div>
           <div class="grid gap-4">

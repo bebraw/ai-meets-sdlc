@@ -1,9 +1,11 @@
 <figure class="group bg-ink">
-  <img
+  <LazyImage
     &src="src"
     &alt="name"
-    class="aspect-square w-full object-cover grayscale transition duration-300 group-hover:grayscale-0"
-  />
+    &className="(id 'aspect-square w-full object-cover grayscale transition duration-300 group-hover:grayscale-0')"
+    &width="(id '500')"
+    &height="(id '500')"
+  ></LazyImage>
   <figcaption
     class="border-t border-paper px-3 py-2 text-sm font-bold uppercase"
     &children="name"

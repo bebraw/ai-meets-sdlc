@@ -51,12 +51,13 @@
             class="grid overflow-hidden border border-ink bg-paper lg:grid-cols-[18rem_1fr] lg:items-start"
           >
             <figure class="border-b border-ink lg:border-b-0 lg:border-r">
-              <img
+              <LazyImage
                 &src="speakerItem.photo"
                 &alt="speakerItem.name"
-                class="aspect-[4/5] w-full object-cover grayscale"
-                loading="lazy"
-              />
+                &className="(id 'aspect-[4/5] w-full object-cover grayscale')"
+                &width="(id '400')"
+                &height="(id '500')"
+              ></LazyImage>
               <figcaption class="border-t border-ink p-4">
                 <div class="flex items-start gap-3">
                   <p

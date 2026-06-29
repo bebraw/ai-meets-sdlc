@@ -6,11 +6,13 @@
     class="relative mx-auto flex max-w-7xl items-center justify-between px-5 py-5 md:px-8"
   >
     <a href="/" class="inline-flex items-center" aria-label="SDLCAI">
-      <img
-        src="/assets/logo.svg"
-        alt="SDLCAI"
-        class="h-10 w-auto dark:invert"
-      />
+      <LazyImage
+        &src="(id '/assets/logo.svg')"
+        &alt="(id 'SDLCAI')"
+        &className="(id 'h-10 w-auto dark:invert')"
+        &width="(id '160')"
+        &height="(id '160')"
+      ></LazyImage>
     </a>
     <MainNavigation
       &className="(id 'hidden items-center gap-8 text-sm font-bold uppercase md:flex')"
