@@ -59,6 +59,14 @@
 }
 
 @layer components {
+  [data-a11y-target] {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    min-height: 1.5rem;
+    min-width: 1.5rem;
+  }
+
   [data-tito-ticket-widget] {
     --tito-widget-bg: var(--color-paper);
     --tito-widget-fg: var(--color-ink);

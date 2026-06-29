@@ -291,6 +291,21 @@ async function evaluateLayout(session) {
         return false;
       };
 
+      const isInlineTextTarget = (element) => {
+        if (element.tagName.toLowerCase() !== "a") {
+          return false;
+        }
+
+        const style = getComputedStyle(element);
+        const parentText = element.parentElement?.textContent.trim() ?? "";
+        const linkText = element.textContent.trim();
+
+        return (
+          style.display === "inline" &&
+          parentText.length > linkText.length
+        );
+      };
+
       const describe = (element) => {
         const label = element.textContent.trim().replace(/\s+/g, " ").slice(0, 80);
         const id = element.id ? "#" + element.id : "";
@@ -330,6 +345,17 @@ async function evaluateLayout(session) {
         });
 
       const failures = [];
+      const targetSizeSelector = [
+        "a[href]",
+        "button",
+        "input:not([type='hidden'])",
+        "select",
+        "textarea",
+        "summary",
+        "[role='button']",
+        "[role='link']",
+      ].join(",");
+      const minTouchTargetSize = 24;
 
       for (const item of elements) {
         if (!item.allowsHorizontalOverflow) {
@@ -346,6 +372,33 @@ async function evaluateLayout(session) {
               break;
             }
           }
+        }
+      }
+
+      for (const element of [...document.querySelectorAll(targetSizeSelector)].filter(isVisible)) {
+        if (isInlineTextTarget(element)) {
+          continue;
+        }
+
+        const rect = element.getBoundingClientRect();
+
+        if (
+          rect.width < minTouchTargetSize ||
+          rect.height < minTouchTargetSize
+        ) {
+          failures.push({
+            type: "touch-target-too-small",
+            element: describe(element),
+            rect: {
+              left: Math.round(rect.left),
+              top: Math.round(rect.top),
+              right: Math.round(rect.right),
+              bottom: Math.round(rect.bottom),
+              width: Number(rect.width.toFixed(1)),
+              height: Number(rect.height.toFixed(1)),
+            },
+            minSize: minTouchTargetSize,
+          });
         }
       }
 
