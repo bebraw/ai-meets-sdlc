@@ -6,6 +6,8 @@ const fontBudgetBytes = 70 * 1024;
 const fontSubsetCharactersPath = "assets/fonts/subset-characters.txt";
 const speakerImageBudgetBytes = 50 * 1024;
 const speakerImagesDir = "assets/speakers";
+const venueImageBudgetBytes = 80 * 1024;
+const venueImagePath = "assets/marsio-saastamoinen-stage.webp";
 
 try {
   await access(path.join(buildDir, "index.html"));
@@ -109,6 +111,16 @@ for (const filePath of speakerImageFiles) {
       )}, above the ${formatBytes(speakerImageBudgetBytes)} budget`,
     );
   }
+}
+
+const venueImageBytes = (await stat(venueImagePath)).size;
+
+if (venueImageBytes > venueImageBudgetBytes) {
+  failures.push(
+    `${venueImagePath}: venue image is ${formatBytes(
+      venueImageBytes,
+    )}, above the ${formatBytes(venueImageBudgetBytes)} budget`,
+  );
 }
 
 if (failures.length > 0) {
