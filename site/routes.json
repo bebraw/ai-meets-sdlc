@@ -53,6 +53,23 @@
       }
     }
   },
+  "checkout": {
+    "layout": "checkout",
+    "scripts": [{ "name": "index" }],
+    "dataSources": {
+      "seminar": {
+        "operation": "seminar"
+      }
+    },
+    "context": {
+      "meta": {
+        "title": "SDLCAI Checkout",
+        "description": "Checkout for SDLCAI, a one-day seminar on AI across the software development lifecycle.",
+        "ogEyebrow": "Checkout",
+        "ogDescription": "Reserve a seat for SDLCAI 2026 at Aalto University."
+      }
+    }
+  },
   "schedule": {
     "layout": "schedule",
     "scripts": [{ "name": "index" }],

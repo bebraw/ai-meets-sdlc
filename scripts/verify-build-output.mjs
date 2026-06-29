@@ -4,6 +4,8 @@ import path from "node:path";
 const buildDir = "build";
 const fontBudgetBytes = 70 * 1024;
 const fontSubsetCharactersPath = "assets/fonts/subset-characters.txt";
+const speakerImageBudgetBytes = 50 * 1024;
+const speakerImagesDir = "assets/speakers";
 
 try {
   await access(path.join(buildDir, "index.html"));
@@ -16,6 +18,7 @@ try {
 
 const htmlFiles = await getHtmlFiles(buildDir);
 const cssFiles = await getFilesByExtension(buildDir, ".css");
+const speakerImageFiles = await getFilesByExtension(speakerImagesDir, ".webp");
 const failures = [];
 const fontSubsetCharacters = new Set(
   [...(await readFile(fontSubsetCharactersPath, "utf8"))].filter(
@@ -92,6 +95,18 @@ for (const filePath of cssFiles) {
       `${filePath}: referenced fonts are ${formatBytes(
         fontBytes,
       )}, above the ${formatBytes(fontBudgetBytes)} budget`,
+    );
+  }
+}
+
+for (const filePath of speakerImageFiles) {
+  const imageBytes = (await stat(filePath)).size;
+
+  if (imageBytes > speakerImageBudgetBytes) {
+    failures.push(
+      `${filePath}: speaker image is ${formatBytes(
+        imageBytes,
+      )}, above the ${formatBytes(speakerImageBudgetBytes)} budget`,
     );
   }
 }

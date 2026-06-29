@@ -1,0 +1,47 @@
+<BaseLayout
+  &title="(id 'SDLCAI Checkout')"
+  &description="(id 'Checkout for SDLCAI, a one-day seminar on AI across the software development lifecycle.')"
+  &ogDescription="(id 'Reserve a seat for SDLCAI 2026 at Aalto University.')"
+  &url="(id 'https://sdlcai.org/checkout/')"
+>
+  <section id="tito-checkout" class="border-b border-ink">
+    <div class="mx-auto max-w-5xl px-5 py-10 md:px-8 md:py-14">
+      <div
+        class="min-w-0 border border-ink bg-paper p-4 shadow-[12px_12px_0_var(--color-ink)]"
+      >
+        <div
+          class="mb-4 grid gap-4 border-b border-ink pb-4 md:grid-cols-[1fr_auto] md:items-start"
+        >
+          <div class="min-w-0">
+            <p
+              class="font-headline text-sm font-black uppercase text-muted"
+              &children="seminar.display.dateShortVenueLocation"
+            ></p>
+            <h1
+              class="mt-2 font-headline text-4xl font-black uppercase leading-none md:text-5xl"
+            >
+              Checkout
+            </h1>
+          </div>
+          <div class="flex flex-wrap gap-3 md:justify-end">
+            <a
+              class="border border-ink px-3 py-2 text-xs font-bold uppercase transition hover:bg-ink hover:text-paper"
+              href="/#tickets"
+              >Ticket details</a
+            >
+            <a
+              class="border border-ink px-3 py-2 text-xs font-bold uppercase transition hover:bg-ink hover:text-paper"
+              href="https://ti.to/sdlcai/2026/with/day-ticket"
+              rel="noopener"
+              target="_blank"
+              >Tito checkout</a
+            >
+          </div>
+        </div>
+        <div class="min-h-[20rem]" data-tito-ticket-widget>
+          <tito-widget event="sdlcai/2026" releases="day-ticket"></tito-widget>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
