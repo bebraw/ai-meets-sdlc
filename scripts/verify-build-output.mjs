@@ -3,6 +3,7 @@ import path from "node:path";
 
 const buildDir = "build";
 const fontBudgetBytes = 70 * 1024;
+const fontSubsetCharactersPath = "assets/fonts/subset-characters.txt";
 
 try {
   await access(path.join(buildDir, "index.html"));
@@ -16,10 +17,27 @@ try {
 const htmlFiles = await getHtmlFiles(buildDir);
 const cssFiles = await getFilesByExtension(buildDir, ".css");
 const failures = [];
+const fontSubsetCharacters = new Set(
+  [...(await readFile(fontSubsetCharactersPath, "utf8"))].filter(
+    (character) => !/\s/u.test(character),
+  ),
+);
 
 for (const filePath of htmlFiles) {
   const html = await readFile(filePath, "utf8");
   const imageTags = html.match(/<img\b[^>]*>/g) ?? [];
+  const unsupportedCharacters = getUnsupportedTextCharacters(
+    html,
+    fontSubsetCharacters,
+  );
+
+  if (unsupportedCharacters.length > 0) {
+    failures.push(
+      `${filePath}: text includes characters outside ${fontSubsetCharactersPath}: ${unsupportedCharacters
+        .map(formatCharacter)
+        .join(", ")}`,
+    );
+  }
 
   for (const tag of imageTags) {
     const loading = getAttribute(tag, "loading");
@@ -111,6 +129,57 @@ async function getFontBytes(fontUrls) {
 
 function formatBytes(value) {
   return `${Math.round(value / 1024)} KB`;
+}
+
+function getUnsupportedTextCharacters(html, supportedCharacters) {
+  const text = decodeHtmlEntities(
+    html
+      .replace(/<script[\s\S]*?<\/script>/g, " ")
+      .replace(/<style[\s\S]*?<\/style>/g, " ")
+      .replace(/<[^>]+>/g, " "),
+  );
+  const unsupportedCharacters = new Set();
+
+  for (const character of text) {
+    if (!/\s/u.test(character) && !supportedCharacters.has(character)) {
+      unsupportedCharacters.add(character);
+    }
+  }
+
+  return [...unsupportedCharacters].sort(
+    (a, b) => a.codePointAt(0) - b.codePointAt(0),
+  );
+}
+
+function decodeHtmlEntities(value) {
+  const namedEntities = new Map([
+    ["amp", "&"],
+    ["apos", "'"],
+    ["gt", ">"],
+    ["lt", "<"],
+    ["nbsp", " "],
+    ["quot", '"'],
+  ]);
+
+  return value.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (match, entity) => {
+    if (entity.startsWith("#x")) {
+      return String.fromCodePoint(Number.parseInt(entity.slice(2), 16));
+    }
+
+    if (entity.startsWith("#")) {
+      return String.fromCodePoint(Number.parseInt(entity.slice(1), 10));
+    }
+
+    return namedEntities.get(entity.toLowerCase()) ?? match;
+  });
+}
+
+function formatCharacter(character) {
+  return `${character} U+${character
+    .codePointAt(0)
+    .toString(16)
+    .toUpperCase()
+    .padStart(4, "0")}`;
 }
 
 async function getHtmlFiles(directory) {
