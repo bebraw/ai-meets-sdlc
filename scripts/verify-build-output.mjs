@@ -2,6 +2,7 @@ import { access, readdir, readFile, stat } from "node:fs/promises";
 import path from "node:path";
 
 const buildDir = "build";
+const fontBudgetBytes = 70 * 1024;
 
 try {
   await access(path.join(buildDir, "index.html"));
@@ -65,6 +66,16 @@ for (const filePath of cssFiles) {
       ].join(", ")}`,
     );
   }
+
+  const fontBytes = await getFontBytes(uniqueFontUrls);
+
+  if (fontBytes > fontBudgetBytes) {
+    failures.push(
+      `${filePath}: referenced fonts are ${formatBytes(
+        fontBytes,
+      )}, above the ${formatBytes(fontBudgetBytes)} budget`,
+    );
+  }
 }
 
 if (failures.length > 0) {
@@ -80,6 +91,26 @@ function getAttribute(tag, name) {
 
 function isPositiveInteger(value) {
   return /^\d+$/.test(value ?? "") && Number(value) > 0;
+}
+
+async function getFontBytes(fontUrls) {
+  let total = 0;
+
+  for (const fontUrl of fontUrls) {
+    const fontPath = path.join(buildDir, fontUrl.slice(1));
+
+    try {
+      total += (await stat(fontPath)).size;
+    } catch {
+      failures.push(`Missing font asset: ${fontUrl}`);
+    }
+  }
+
+  return total;
+}
+
+function formatBytes(value) {
+  return `${Math.round(value / 1024)} KB`;
 }
 
 async function getHtmlFiles(directory) {
