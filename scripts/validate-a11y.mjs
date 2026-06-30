@@ -6,9 +6,9 @@ import { chromium } from "playwright";
 
 const buildDir = path.resolve("build");
 const routesConfig = JSON.parse(await readFile("site/routes.json", "utf8"));
-const routes = Object.keys(routesConfig).map((route) =>
-  route === "/" ? "/" : `/${route}/`,
-);
+const routes = Object.keys(routesConfig)
+  .filter((route) => !route.endsWith(".xml"))
+  .map((route) => (route === "/" ? "/" : `/${route}/`));
 const viewports = [
   { name: "mobile", width: 390, height: 844 },
   { name: "desktop", width: 1440, height: 900 },

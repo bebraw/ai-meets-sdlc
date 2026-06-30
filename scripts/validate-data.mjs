@@ -1,7 +1,8 @@
-import { access, readFile } from "node:fs/promises";
+import { access, readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
+const announcementsDirectory = path.resolve("site/announcements");
 const schedulePath = path.resolve("site/data/schedule.json");
 const scheduleSchemaPath = path.resolve("site/data/schedule.schema.json");
 const seminarPath = path.resolve("site/data/seminar.json");
@@ -11,6 +12,7 @@ const speakersSchemaPath = path.resolve("site/data/speakers.schema.json");
 const timeRangePattern =
   /^([01][0-9]|2[0-3]):[0-5][0-9]-([01][0-9]|2[0-3]):[0-5][0-9]$/;
 const isoDatePattern = /^\d{4}-\d{2}-\d{2}$/;
+const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const speakerIdPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 const errors = [];
@@ -31,6 +33,7 @@ const [
   readJson(speakersSchemaPath),
 ]);
 
+await validateAnnouncements(announcementsDirectory);
 validateScheduleSchema(scheduleSchema);
 validateSeminarSchema(seminarSchema);
 validateSeminar(seminar);
@@ -262,6 +265,143 @@ function validateSchedule(schedule, speakerIds) {
 
     validateTalks(item.talks, `${itemPath}.talks`, speakerIds);
   }
+}
+
+async function validateAnnouncements(directory) {
+  let fileNames = [];
+
+  try {
+    fileNames = (await readdir(directory)).filter((fileName) =>
+      fileName.endsWith(".md"),
+    );
+  } catch {
+    errors.push("site/announcements must be a readable directory.");
+    return;
+  }
+
+  if (fileNames.length === 0) {
+    errors.push("site/announcements must contain at least one Markdown post.");
+  }
+
+  const slugs = new Set();
+
+  for (const fileName of fileNames) {
+    const postPath = `site/announcements/${fileName}`;
+    const slug = path.basename(fileName, ".md");
+
+    if (!slugPattern.test(slug)) {
+      errors.push(`${postPath} filename must be a lowercase slug.`);
+      continue;
+    }
+
+    if (slugs.has(slug)) {
+      errors.push(`${postPath} duplicates another announcement slug.`);
+      continue;
+    }
+
+    slugs.add(slug);
+
+    const source = await readFile(path.join(directory, fileName), "utf8");
+    const parsed = parseMarkdownPost(source, postPath);
+
+    if (!parsed) continue;
+
+    const { frontMatter, markdown } = parsed;
+    const allowedFields = new Set([
+      "title",
+      "subtitle",
+      "summary",
+      "date",
+      "updated",
+      "author",
+      "eyebrow",
+    ]);
+
+    for (const key of Object.keys(frontMatter)) {
+      if (!allowedFields.has(key)) {
+        errors.push(`${postPath} front matter has unknown field "${key}".`);
+      }
+    }
+
+    for (const field of ["title", "summary", "date", "eyebrow"]) {
+      if (!isNonEmptyString(frontMatter[field])) {
+        errors.push(`${postPath} front matter ${field} is required.`);
+      }
+    }
+
+    if (
+      typeof frontMatter.subtitle !== "undefined" &&
+      !isNonEmptyString(frontMatter.subtitle)
+    ) {
+      errors.push(`${postPath} front matter subtitle must not be empty.`);
+    }
+
+    if (
+      typeof frontMatter.author !== "undefined" &&
+      !isNonEmptyString(frontMatter.author)
+    ) {
+      errors.push(`${postPath} front matter author must not be empty.`);
+    }
+
+    validateAnnouncementDate(frontMatter.date, `${postPath} front matter date`);
+
+    if (typeof frontMatter.updated !== "undefined") {
+      validateAnnouncementDate(
+        frontMatter.updated,
+        `${postPath} front matter updated`,
+      );
+    }
+
+    if (!isNonEmptyString(markdown)) {
+      errors.push(`${postPath} body must not be empty.`);
+    }
+  }
+}
+
+function validateAnnouncementDate(date, datePath) {
+  if (isNonEmptyString(date)) {
+    if (!isoDatePattern.test(date)) {
+      errors.push(`${datePath} must use YYYY-MM-DD.`);
+    } else if (Number.isNaN(Date.parse(`${date}T00:00:00Z`))) {
+      errors.push(`${datePath} must be a valid date.`);
+    }
+  }
+}
+
+function parseMarkdownPost(source, postPath) {
+  const match = source.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+
+  if (!match) {
+    errors.push(`${postPath} is missing front matter.`);
+    return undefined;
+  }
+
+  return {
+    frontMatter: parseFrontMatter(match[1], postPath),
+    markdown: match[2].trim(),
+  };
+}
+
+function parseFrontMatter(source, postPath) {
+  const frontMatter = {};
+
+  for (const line of source.split("\n")) {
+    if (!line.trim()) continue;
+
+    const separatorIndex = line.indexOf(":");
+
+    if (separatorIndex === -1) {
+      errors.push(`${postPath} has invalid front matter line: ${line}`);
+      continue;
+    }
+
+    const key = line.slice(0, separatorIndex).trim();
+    const value = line.slice(separatorIndex + 1).trim();
+
+    frontMatter[key] = value;
+  }
+
+  return frontMatter;
 }
 
 async function validateSpeakers(speakers) {

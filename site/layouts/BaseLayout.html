@@ -6,14 +6,38 @@
     <title &children="title"></title>
     <meta name="description" &content="description" />
     <meta name="robots" &content="robots" &visibleIf="robots" />
+    <link rel="canonical" &href="url" &visibleIf="url" />
+    <link
+      rel="alternate"
+      type="application/atom+xml"
+      title="SDLCAI Announcements"
+      href="https://sdlcai.org/atom.xml"
+    />
     <meta property="og:title" &content="title" />
     <meta property="og:description" &content="ogDescription" />
     <meta property="og:url" &content="url" />
     <meta property="og:image" content="https://sdlcai.org/og.png?v=20260618" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" &content="ogType" />
+    <meta
+      property="article:published_time"
+      &content="articlePublishedTime"
+      &visibleIf="articlePublishedTime"
+    />
+    <meta
+      property="article:modified_time"
+      &content="articleModifiedTime"
+      &visibleIf="articleModifiedTime"
+    />
+    <meta
+      property="article:author"
+      &content="articleAuthor"
+      &visibleIf="articleAuthor"
+    />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" &content="title" />
+    <meta name="twitter:description" &content="ogDescription" />
     <meta name="twitter:image" content="https://sdlcai.org/og.png?v=20260618" />
     <script type="application/ld+json" &visibleIf="eventSchema">
       {
@@ -43,6 +67,11 @@
         }
       }
     </script>
+    <script
+      type="application/ld+json"
+      &visibleIf="structuredData"
+      &children="structuredData"
+    ></script>
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
     <script
       src="https://challenges.cloudflare.com/turnstile/v0/api.js"

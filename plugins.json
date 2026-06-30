@@ -50,7 +50,7 @@
       }
     },
     {
-      "path": "./node_modules/gustwind/plugins/sitemap/mod.js"
+      "path": "./site/plugins/sitemap/mod.js"
     },
     {
       "path": "./node_modules/gustwind/plugins/stats/mod.js"

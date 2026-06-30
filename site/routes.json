@@ -93,6 +93,59 @@
       }
     }
   },
+  "announcements": {
+    "layout": "announcements",
+    "scripts": [{ "name": "index" }],
+    "dataSources": {
+      "seminar": {
+        "operation": "seminar"
+      },
+      "announcementItems": {
+        "operation": "announcementItems"
+      }
+    },
+    "context": {
+      "meta": {
+        "title": "SDLCAI Announcements",
+        "description": "Announcements and updates for SDLCAI, a one-day seminar on AI across the software development lifecycle.",
+        "ogEyebrow": "News",
+        "ogDescription": "Official SDLCAI announcements and event updates."
+      }
+    },
+    "expand": {
+      "matchBy": {
+        "indexer": {
+          "operation": "announcementItems"
+        },
+        "slug": "slug",
+        "name": "announcementItems"
+      },
+      "layout": "announcement",
+      "scripts": [{ "name": "index" }],
+      "dataSources": {
+        "seminar": {
+          "operation": "seminar"
+        },
+        "announcementItem": {
+          "operation": "announcementItem"
+        }
+      }
+    }
+  },
+  "atom.xml": {
+    "layout": "atom",
+    "dataSources": {
+      "announcementFeed": {
+        "operation": "announcementFeed"
+      }
+    },
+    "context": {
+      "meta": {
+        "title": "SDLCAI Announcements",
+        "description": "Official SDLCAI announcements and event updates."
+      }
+    }
+  },
   "admin": {
     "layout": "admin",
     "scripts": [{ "name": "index" }],
