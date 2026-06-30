@@ -5,26 +5,34 @@
   aria-labelledby="title desc"
 >
   <title id="title">SDLCAI</title>
-  <desc id="desc">Square SDLCAI AI frame mark.</desc>
+  <desc id="desc">Square SDLCAI typographic mark.</desc>
   <rect width="160" height="160" fill="#f6f4ef" />
-  <rect x="14" y="14" width="132" height="132" fill="#0b0b0b" />
-  <rect
-    x="26"
-    y="26"
-    width="108"
-    height="108"
-    fill="none"
-    stroke="#f6f4ef"
-    stroke-width="8"
-  />
-  <g fill="none" stroke="#f6f4ef" stroke-linecap="square" stroke-width="8">
-    <path d="M48 108 80 50l33 58" stroke-linejoin="miter" />
-    <path d="M63 86h35M118 50v58" />
-  </g>
-  <g fill="#f6f4ef">
-    <circle cx="40" cy="40" r="7" />
-    <circle cx="120" cy="40" r="7" />
-    <circle cx="40" cy="120" r="7" />
-    <circle cx="120" cy="120" r="7" />
-  </g>
+  <rect x="8" y="8" width="144" height="68" fill="#0b0b0b" />
+  <rect x="8" y="88" width="144" height="64" fill="#0b0b0b" />
+  <text
+    x="80"
+    y="41"
+    fill="#f6f4ef"
+    font-family="'Arial Black', Impact, sans-serif"
+    font-size="44"
+    font-weight="900"
+    dominant-baseline="central"
+    lengthAdjust="spacingAndGlyphs"
+    text-anchor="middle"
+    textLength="126"
+  >
+    SDLC
+  </text>
+  <text
+    x="83"
+    y="118"
+    fill="#f6f4ef"
+    font-family="'Arial Black', Impact, sans-serif"
+    font-size="58"
+    font-weight="900"
+    dominant-baseline="central"
+    text-anchor="middle"
+  >
+    AI
+  </text>
 </svg>
