@@ -14,6 +14,7 @@ const viewports = [
   { name: "desktop", width: 1440, height: 900 },
 ];
 const pageTimeoutMs = 10000;
+const validationConcurrency = Number(process.env.A11Y_CONCURRENCY ?? 2);
 const axeSource = await readFile("node_modules/axe-core/axe.min.js", "utf8");
 const debug = (...args) => {
   if (process.env.A11Y_DEBUG) {
@@ -148,6 +149,21 @@ async function withTimeout(promise, timeoutMs, message) {
   }
 }
 
+async function runWithConcurrency(items, concurrency, worker) {
+  let nextIndex = 0;
+
+  await Promise.all(
+    Array.from({ length: Math.min(concurrency, items.length) }, async () => {
+      while (nextIndex < items.length) {
+        const item = items[nextIndex];
+        nextIndex += 1;
+
+        await worker(item);
+      }
+    }),
+  );
+}
+
 async function main() {
   debug("finding browser");
   const browserPath = await findBrowser();
@@ -163,50 +179,54 @@ async function main() {
   let validationCount = 0;
 
   try {
-    for (const viewport of viewports) {
-      const context = await browser.newContext({ viewport });
-      const page = await context.newPage();
+    await runWithConcurrency(
+      viewports,
+      validationConcurrency,
+      async (viewport) => {
+        const context = await browser.newContext({ viewport });
+        const page = await context.newPage();
 
-      try {
-        page.setDefaultTimeout(pageTimeoutMs);
+        try {
+          page.setDefaultTimeout(pageTimeoutMs);
 
-        for (const route of routes) {
-          debug("checking", route, viewport.name);
-          const started = Date.now();
+          for (const route of routes) {
+            debug("checking", route, viewport.name);
+            const started = Date.now();
 
-          await page.goto(`http://127.0.0.1:${port}${route}`, {
-            waitUntil: "domcontentloaded",
-            timeout: pageTimeoutMs,
-          });
-          debug("loaded", route, viewport.name, `${Date.now() - started}ms`);
-          await page.addScriptTag({ content: axeSource });
-          debug(
-            "injected axe",
-            route,
-            viewport.name,
-            `${Date.now() - started}ms`,
-          );
+            await page.goto(`http://127.0.0.1:${port}${route}`, {
+              waitUntil: "domcontentloaded",
+              timeout: pageTimeoutMs,
+            });
+            debug("loaded", route, viewport.name, `${Date.now() - started}ms`);
+            await page.addScriptTag({ content: axeSource });
+            debug(
+              "injected axe",
+              route,
+              viewport.name,
+              `${Date.now() - started}ms`,
+            );
 
-          const results = await withTimeout(
-            page.evaluate((options) => {
-              return window.axe.run(document, options);
-            }, axeRunOptions),
-            pageTimeoutMs,
-            `Timed out running axe for ${route} at ${viewport.name}`,
-          );
-          debug("ran axe", route, viewport.name, `${Date.now() - started}ms`);
+            const results = await withTimeout(
+              page.evaluate((options) => {
+                return window.axe.run(document, options);
+              }, axeRunOptions),
+              pageTimeoutMs,
+              `Timed out running axe for ${route} at ${viewport.name}`,
+            );
+            debug("ran axe", route, viewport.name, `${Date.now() - started}ms`);
 
-          validationCount += 1;
+            validationCount += 1;
 
-          for (const violation of results.violations) {
-            failures.push(summarizeViolation({ route, viewport, violation }));
+            for (const violation of results.violations) {
+              failures.push(summarizeViolation({ route, viewport, violation }));
+            }
           }
+        } finally {
+          await context.close();
+          debug("closed context", viewport.name);
         }
-      } finally {
-        await context.close();
-        debug("closed context", viewport.name);
-      }
-    }
+      },
+    );
   } finally {
     await browser.close();
     await new Promise((resolve) => server.close(resolve));

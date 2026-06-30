@@ -36,6 +36,7 @@ const mobileSafariViewports = [
   { name: "iphone-15-plus", width: 430, height: 932 },
   { name: "iphone-15-landscape", width: 852, height: 393 },
 ];
+const validationConcurrency = Number(process.env.LAYOUT_CONCURRENCY ?? 4);
 
 const browserCandidates = [
   process.env.LAYOUT_BROWSER_PATH,
@@ -142,6 +143,21 @@ function getFreePort() {
       server.close(() => resolve(port));
     });
   });
+}
+
+async function runWithConcurrency(items, concurrency, worker) {
+  let nextIndex = 0;
+
+  await Promise.all(
+    Array.from({ length: Math.min(concurrency, items.length) }, async () => {
+      while (nextIndex < items.length) {
+        const item = items[nextIndex];
+        nextIndex += 1;
+
+        await worker(item);
+      }
+    }),
+  );
 }
 
 class CdpSession {
@@ -671,10 +687,15 @@ async function validateMobileSafari(serverPort, failures) {
   const browser = await webkit.launch();
   const baseDevice = devices["iPhone 15"];
   let validationCount = 0;
+  const jobs = routes.flatMap((route) =>
+    mobileSafariViewports.map((viewport) => ({ route, viewport })),
+  );
 
   try {
-    for (const route of routes) {
-      for (const viewport of mobileSafariViewports) {
+    await runWithConcurrency(
+      jobs,
+      validationConcurrency,
+      async ({ route, viewport }) => {
         const context = await browser.newContext({
           ...baseDevice,
           viewport: {
@@ -709,8 +730,8 @@ async function validateMobileSafari(serverPort, failures) {
         } finally {
           await context.close();
         }
-      }
-    }
+      },
+    );
   } finally {
     await browser.close();
   }
@@ -757,6 +778,9 @@ async function main() {
 
   const failures = [];
   let validationCount = 0;
+  const chromiumJobs = routes.flatMap((route) =>
+    getRouteViewports(route).map((viewport) => ({ route, viewport })),
+  );
 
   try {
     await Promise.race([
@@ -764,8 +788,10 @@ async function main() {
       browserExit,
     ]);
 
-    for (const route of routes) {
-      for (const viewport of getRouteViewports(route)) {
+    await runWithConcurrency(
+      chromiumJobs,
+      validationConcurrency,
+      async ({ route, viewport }) => {
         const session = await createPage(browserPort);
         const url = `http://127.0.0.1:${serverPort}${route}`;
 
@@ -789,8 +815,8 @@ async function main() {
         } finally {
           session.close();
         }
-      }
-    }
+      },
+    );
 
     validationCount += await validateMobileSafari(serverPort, failures);
   } finally {
