@@ -1,0 +1,161 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="3000"
+  height="1000"
+  viewBox="0 0 3000 1000"
+  role="img"
+  aria-labelledby="title desc"
+>
+  <title id="title">SDLCAI Bluesky header</title>
+  <desc id="desc">SDLCAI seminar social header following the site brand.</desc>
+  <defs>
+    <pattern id="halftone" width="34" height="34" patternUnits="userSpaceOnUse">
+      <circle cx="5" cy="5" r="3.6" fill="#0b0b0b" opacity="0.18" />
+    </pattern>
+    <pattern
+      id="fine-halftone"
+      width="20"
+      height="20"
+      patternUnits="userSpaceOnUse"
+    >
+      <circle cx="3" cy="3" r="2.2" fill="#f6f4ef" opacity="0.22" />
+    </pattern>
+    <style>
+      @font-face {
+        font-family: "Finlandica Headline";
+        src: url("../fonts/FinlandicaHeadline-Black.woff2") format("woff2");
+        font-weight: 900;
+      }
+
+      @font-face {
+        font-family: "Finlandica Text";
+        src: url("../fonts/FinlandicaText-Bold.woff2") format("woff2");
+        font-weight: 700;
+      }
+
+      .headline {
+        font-family: "Finlandica Headline", "Arial Black", Impact, sans-serif;
+        font-weight: 900;
+      }
+
+      .text {
+        font-family: "Finlandica Text", Arial, sans-serif;
+        font-weight: 700;
+      }
+    </style>
+  </defs>
+
+  <rect width="3000" height="1000" fill="#f6f4ef" />
+  <rect width="3000" height="1000" fill="url(#halftone)" />
+
+  <rect x="140" y="100" width="2720" height="800" fill="#f6f4ef" />
+  <rect
+    x="140"
+    y="100"
+    width="2720"
+    height="800"
+    fill="none"
+    stroke="#0b0b0b"
+    stroke-width="10"
+  />
+
+  <rect x="2160" y="100" width="700" height="800" fill="#0b0b0b" />
+  <rect x="2160" y="100" width="700" height="800" fill="url(#fine-halftone)" />
+  <rect x="140" y="748" width="2720" height="152" fill="#0b0b0b" />
+
+  <rect
+    x="240"
+    y="164"
+    width="770"
+    height="74"
+    fill="none"
+    stroke="#0b0b0b"
+    stroke-width="5"
+  />
+  <text x="278" y="215" class="text" fill="#0b0b0b" font-size="38">
+    13 OCTOBER 2026 / ESPOO
+  </text>
+
+  <text
+    x="228"
+    y="555"
+    class="headline"
+    fill="#0b0b0b"
+    font-size="345"
+    letter-spacing="0"
+  >
+    SDLCAI
+  </text>
+  <rect x="242" y="612" width="1640" height="10" fill="#0b0b0b" />
+
+  <text
+    x="248"
+    y="710"
+    class="headline"
+    fill="#0b0b0b"
+    font-size="96"
+    letter-spacing="0"
+  >
+    AI MEETS SDLC
+  </text>
+
+  <g transform="translate(2320 190) scale(2)">
+    <rect width="160" height="160" fill="#f6f4ef" />
+    <rect x="8" y="8" width="144" height="68" fill="#0b0b0b" />
+    <rect x="8" y="88" width="144" height="64" fill="#0b0b0b" />
+    <text
+      x="80"
+      y="41"
+      fill="#f6f4ef"
+      font-family="'Arial Black', Impact, sans-serif"
+      font-size="44"
+      font-weight="900"
+      dominant-baseline="central"
+      lengthAdjust="spacingAndGlyphs"
+      text-anchor="middle"
+      textLength="126"
+    >
+      SDLC
+    </text>
+    <text
+      x="83"
+      y="118"
+      fill="#f6f4ef"
+      font-family="'Arial Black', Impact, sans-serif"
+      font-size="58"
+      font-weight="900"
+      dominant-baseline="central"
+      text-anchor="middle"
+    >
+      AI
+    </text>
+  </g>
+
+  <rect
+    x="2318"
+    y="562"
+    width="324"
+    height="110"
+    fill="none"
+    stroke="#f6f4ef"
+    stroke-width="7"
+  />
+  <text x="2350" y="637" class="headline" fill="#f6f4ef" font-size="70">
+    13 OCT
+  </text>
+  <rect x="2318" y="672" width="324" height="7" fill="#f6f4ef" />
+
+  <text x="250" y="844" class="text" fill="#f6f4ef" font-size="50">
+    Marsio / Aalto University
+  </text>
+  <text
+    x="2700"
+    y="844"
+    class="text"
+    fill="#f6f4ef"
+    font-size="42"
+    text-anchor="end"
+  >
+    sdlcai.org
+  </text>
+</svg>
