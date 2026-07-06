@@ -64,6 +64,11 @@
           "title": "Driving AI adoption above targets in highly regulated environment",
           "abstract": "How Elisa drove AI adoption across the SDLC beyond expectations through leadership, tooling, communities, and shared practices. The talk also covers how governance continues to evolve to manage costs in the new era of token-based development, while operating critical infrastructure under high levels of regulation.",
           "speakers": ["jussi-hacklin"]
+        },
+        {
+          "title": "I Let Non-Engineers Vibe-Code Our Production Codebase",
+          "abstract": "In February, Viljami handed AI coding agents to every PM, designer, and support rep at epilot, then opened the whole codebase to them. He expected a few translation fixes. Instead, they shipped thousands of PRs: hundreds from people who had never written code, with dozens still contributing every week. Engineers review and merge, features go to customers, designers ship real UI, PMs ship features they had waited months for, and customer success builds its own tools. This talk shares what they learned, the guardrails they put in place, the parts that broke, and the day someone pushed unreviewed code to production.",
+          "speakers": ["viljami-kuosmanen"]
         }
       ]
     },

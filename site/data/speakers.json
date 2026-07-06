@@ -28,6 +28,15 @@
       "bio": "Jussi Hacklin has more than 20 years of experience leading technology and business organisations, creating digital services and products in-house and for clients across multiple industries. His background spans technology business creation, sales, product management, product development, agile transformation, piloting, and software development. He is a co-founder of Mideum, advises selected companies on technology and leadership, and was the first Finnish graduate of the University of Cambridge Judge CTO Programme."
     },
     {
+      "id": "viljami-kuosmanen",
+      "name": "Viljami Kuosmanen",
+      "role": "Distinguished Engineer at ePilot GmbH",
+      "photo": "/assets/speakers/viljami-kuosmanen.webp",
+      "website": "https://viljami.io/",
+      "linkedin": "https://www.linkedin.com/in/anttiviljami/",
+      "bio": "Viljami Kuosmanen is a distinguished engineer and product engineer with more than 15 years of experience. Previously Head of Engineering at epilot, he scaled SaaS teams from early stage to more than 45 engineers while sustaining over 50% year-on-year MRR growth. His work spans SaaS, cloud, and AI, and his open-source libraries have been adopted by companies including AWS, GitHub, SAP, IBM, and Intel. He is the author of the [Product Engineer Manifesto](https://productengineer.org/), which encourages engineers to move beyond code into end-to-end product ownership."
+    },
+    {
       "id": "muhammad-waseem",
       "name": "Dr Muhammad Waseem",
       "role": "Vice Head of GPT Lab, Tampere University",

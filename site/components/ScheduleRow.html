@@ -38,7 +38,10 @@
               class="font-headline text-3xl font-black uppercase leading-none"
               &children="talkItem.title"
             ></h4>
-            <p class="leading-7 text-muted" &children="talkItem.abstract"></p>
+            <div
+              class="leading-7 text-muted [&_a]:font-bold [&_a]:text-ink [&_a]:underline [&_a]:underline-offset-4 [&_li]:mb-2 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mb-4 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-6"
+              &children="talkItem.abstractHtml"
+            ></div>
             <noop &foreach="talkItem.speakers as speakerItem">
               <div class="border-t border-ink pt-4">
                 <a
@@ -50,10 +53,10 @@
                   class="mt-1 font-bold leading-6 text-muted"
                   &children="speakerItem.role"
                 ></p>
-                <p
-                  class="mt-3 leading-7 text-muted"
-                  &children="speakerItem.bio"
-                ></p>
+                <div
+                  class="mt-3 leading-7 text-muted [&_a]:font-bold [&_a]:text-ink [&_a]:underline [&_a]:underline-offset-4 [&_li]:mb-2 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mb-4 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-6"
+                  &children="speakerItem.bioHtml"
+                ></div>
                 <div class="mt-4 flex flex-wrap gap-3">
                   <a
                     &visibleIf="speakerItem.website"

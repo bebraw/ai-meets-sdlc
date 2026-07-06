@@ -44,6 +44,7 @@ function init() {
               talk: {
                 title: talk.title,
                 abstract: talk.abstract,
+                abstractHtml: talk.abstractHtml,
               },
             };
           }),
@@ -212,6 +213,13 @@ function renderMarkdown(markdown) {
   });
 }
 
+function renderDescriptionMarkdown(markdown) {
+  return marked.parse(markdown, {
+    async: false,
+    gfm: true,
+  });
+}
+
 function escapeHtml(value) {
   return String(value)
     .replace(/&/g, "&amp;")
@@ -268,6 +276,7 @@ function getScheduleItems(speakersById) {
 
       return {
         ...talk,
+        abstractHtml: raw(renderDescriptionMarkdown(talk.abstract)),
         speakers: talkSpeakers,
       };
     });
@@ -283,7 +292,15 @@ function getScheduleItems(speakersById) {
 }
 
 function getSpeakersById() {
-  return new Map(speakersData.items.map((speaker) => [speaker.id, speaker]));
+  return new Map(
+    speakersData.items.map((speaker) => [
+      speaker.id,
+      {
+        ...speaker,
+        bioHtml: raw(renderDescriptionMarkdown(speaker.bio)),
+      },
+    ]),
+  );
 }
 
 function getSessionAnchor(item) {
