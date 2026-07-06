@@ -449,6 +449,7 @@ async function validateSpeakers(speakers) {
         "linkedin",
         "scholar",
         "github",
+        "devto",
         "x",
         "bio",
       ],
