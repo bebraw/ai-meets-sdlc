@@ -74,6 +74,11 @@
           "title": "Mystery talk",
           "abstract": "Zak Allal shares an industry perspective on applied AI in software development. The exact topic of his talk is still to be decided.",
           "speakers": ["zak-allal"]
+        },
+        {
+          "title": "AI factories",
+          "abstract": "Sini Tistelgrén shares an industry perspective on applied AI in software development. The exact topic of her talk is still to be decided but it will be related to AI factories.",
+          "speakers": ["sini-tistelgren"]
         }
       ]
     },

@@ -49,6 +49,14 @@
       "bio": "Zak Allal is a physician and AI engineer working at the intersection of medicine, advanced technology, strategic intelligence, and the arts. His technical work spans secure AI architectures, full-stack systems engineering, cybersecurity, and applied AI. He is also a pianist and composer who has performed at Carnegie Hall."
     },
     {
+      "id": "sini-tistelgren",
+      "name": "Sini Tistelgrén",
+      "role": "Co-Founder, COO & Tech Lead at Aimbition",
+      "photo": "/assets/speakers/sini-tistelgren.webp",
+      "linkedin": "https://www.linkedin.com/in/stistelgren/",
+      "bio": "Sini Tistelgrén is Co-Founder, COO & Tech Lead at Aimbition. She has nearly 15 years of experience in IT, leading teams, shaping strategy, driving AI initiatives, and managing complex multi-vendor projects. Her work focuses on making AI adoption in software engineering practical and human-centred by aligning people, technology, and processes."
+    },
+    {
       "id": "muhammad-waseem",
       "name": "Dr Muhammad Waseem",
       "role": "Vice Head of GPT Lab, Tampere University",
