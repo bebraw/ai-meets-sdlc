@@ -560,13 +560,6 @@ function initAdminPosterProposals() {
     list.appendChild(group);
   }
 
-  function posterSizeLabel(size: PosterProposal["poster_size"]) {
-    if (size === "a0") return "A0 portrait";
-    if (size === "a1") return "A1 portrait";
-
-    return "A0 or A1 portrait";
-  }
-
   function renderProposals(proposals: PosterProposal[]) {
     root.replaceChildren();
 
@@ -709,15 +702,21 @@ function initAdminPosterProposals() {
       addProposalField(details, "Designated presenter", proposal.name);
       addProposalField(details, "Contact email", proposal.email);
       addProposalField(details, "Organization", proposal.organization);
-      addProposalField(
-        details,
-        "Poster size",
-        posterSizeLabel(proposal.poster_size),
-      );
-      addProposalField(details, "Authors / presenters", proposal.authors, true);
+      if (proposal.authors) {
+        addProposalField(
+          details,
+          "Authors / presenters",
+          proposal.authors,
+          true,
+        );
+      }
       addProposalField(details, "Abstract", proposal.abstract, true);
-      addSupportingUrl(details, proposal.supporting_url);
-      addProposalField(details, "Setup notes", proposal.setup_notes, true);
+      if (proposal.supporting_url) {
+        addSupportingUrl(details, proposal.supporting_url);
+      }
+      if (proposal.setup_notes) {
+        addProposalField(details, "Setup notes", proposal.setup_notes, true);
+      }
       addProposalField(details, "Presenter terms", proposal.terms_text, true);
       addProposalField(details, "Privacy consent", proposal.consent_text, true);
       addProposalField(details, "Submitted", proposal.created_at);

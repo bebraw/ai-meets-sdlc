@@ -263,7 +263,7 @@
           >
             Contact
           </legend>
-          <div class="grid min-w-0 gap-4 md:grid-cols-2">
+          <div class="grid min-w-0 items-start gap-4 md:grid-cols-2">
             <label class="grid min-w-0 gap-2">
               <span class="text-sm font-bold uppercase text-muted"
                 >Designated presenter *</span
@@ -318,23 +318,6 @@
           </legend>
           <label class="grid min-w-0 gap-2">
             <span class="text-sm font-bold uppercase text-muted"
-              >Authors and presenters *</span
-            >
-            <input
-              class="min-w-0 border border-ink bg-paper px-4 py-3 text-lg outline-none focus:ring-2 focus:ring-ink"
-              name="authors"
-              type="text"
-              autocomplete="off"
-              maxlength="500"
-              aria-describedby="authors-help"
-              required
-            />
-            <span id="authors-help" class="text-sm leading-6 text-muted">
-              List names in the order they should appear in the program.
-            </span>
-          </label>
-          <label class="grid min-w-0 gap-2">
-            <span class="text-sm font-bold uppercase text-muted"
               >Poster title *</span
             >
             <input
@@ -362,73 +345,6 @@
               learn.
             </span>
           </label>
-          <fieldset class="grid min-w-0 gap-2">
-            <legend class="text-sm font-bold uppercase text-muted">
-              Preferred poster size *
-            </legend>
-            <div class="grid gap-px border border-ink bg-ink sm:grid-cols-3">
-              <label
-                class="flex cursor-pointer items-start gap-3 bg-paper p-4 text-lg font-bold"
-              >
-                <input
-                  class="mt-1 h-4 w-4 shrink-0 accent-ink"
-                  name="poster_size"
-                  type="radio"
-                  value="a0"
-                  required
-                />
-                <span>A0 portrait</span>
-              </label>
-              <label
-                class="flex cursor-pointer items-start gap-3 bg-paper p-4 text-lg font-bold"
-              >
-                <input
-                  class="mt-1 h-4 w-4 shrink-0 accent-ink"
-                  name="poster_size"
-                  type="radio"
-                  value="a1"
-                  required
-                />
-                <span>A1 portrait</span>
-              </label>
-              <label
-                class="flex cursor-pointer items-start gap-3 bg-paper p-4 text-lg font-bold"
-              >
-                <input
-                  class="mt-1 h-4 w-4 shrink-0 accent-ink"
-                  name="poster_size"
-                  type="radio"
-                  value="either"
-                  required
-                />
-                <span>Either size</span>
-              </label>
-            </div>
-          </fieldset>
-          <label class="grid min-w-0 gap-2">
-            <span class="text-sm font-bold uppercase text-muted"
-              >Supporting URL <span class="font-normal">(optional)</span></span
-            >
-            <input
-              class="min-w-0 border border-ink bg-paper px-4 py-3 text-lg outline-none focus:ring-2 focus:ring-ink"
-              name="supporting_url"
-              type="url"
-              inputmode="url"
-              placeholder="https://"
-              maxlength="2048"
-            />
-          </label>
-          <label class="grid min-w-0 gap-2">
-            <span class="text-sm font-bold uppercase text-muted"
-              >Setup or accessibility notes
-              <span class="font-normal">(optional)</span></span
-            >
-            <textarea
-              class="min-h-32 min-w-0 resize-y border border-ink bg-paper px-4 py-3 text-lg outline-none focus:ring-2 focus:ring-ink"
-              name="setup_notes"
-              maxlength="1000"
-            ></textarea>
-          </label>
         </fieldset>
 
         <div class="grid gap-4 border-t border-ink pt-6">
@@ -443,11 +359,8 @@
             <span>
               I understand that, if accepted, the designated presenter must
               attend the poster session and bring, install, and remove an A0 or
-              A1 portrait poster. I agree that the poster title, authors, and
-              abstract may be published in the event program. I confirm that I
-              am authorized to submit the listed authors' and presenters' names
-              and publication details, and that I have shared the privacy notice
-              with them. *
+              A1 portrait poster. I agree that the poster title and abstract may
+              be published in the event program. *
             </span>
           </label>
           <label class="flex items-start gap-3 text-sm leading-6 text-muted">

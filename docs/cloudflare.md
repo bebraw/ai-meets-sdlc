@@ -109,9 +109,7 @@ The public `POST /api/poster-proposals` endpoint accepts browser form data as
 with these fields:
 
 - `name` (the designated presenter), `email`, `organization`
-- `authors`, `title`, `abstract`
-- `poster_size` (`a0`, `a1`, or `either`)
-- `supporting_url`, `setup_notes`
+- `title`, `abstract`
 - `terms=yes`, `consent=yes`
 - `cf-turnstile-response` when Turnstile is configured
 
@@ -153,19 +151,26 @@ Migration `0001_create_interests.sql` creates `interests` with:
 
 Migration `0002_create_poster_proposals.sql` creates `poster_proposals` with:
 
-- encrypted name, email, organization, authors, title, abstract, supporting
-  URL, and setup notes plus AES-GCM IV values
+- encrypted name, email, organization, title, and abstract plus AES-GCM IV
+  values
+- legacy encrypted authors columns retained for backward compatibility; new
+  submissions store an encrypted empty value and do not collect extra names
+- legacy optional encrypted supporting URL and setup-notes column pairs
+  retained for backward compatibility; new submissions store `NULL`
 - a unique keyed fingerprint derived from normalized email and title for
   duplicate handling
-- plaintext poster size, submitted terms and consent text, workflow status,
-  and created, updated, and reviewed timestamps
-- checks for the poster size and status enums and paired optional
+- a legacy plaintext poster-size column retained for backward compatibility;
+  new submissions store `either` without collecting a size preference
+- submitted terms and consent text, workflow status, and created, updated, and
+  reviewed timestamps
+- checks for the legacy poster-size and status enums and paired optional
   ciphertext/IV values
 - indexes on `created_at` and `status`
 
-Plaintext contact details, author details, abstracts, URLs, and setup notes are
-not stored in D1 or R2. They are decrypted only for authenticated admin JSON and
-CSV responses.
+Plaintext contact details and abstracts are not stored in D1 or R2. Legacy
+author details, URLs, and setup or accessibility notes from earlier submissions
+remain encrypted and readable to authenticated administrators until the
+scheduled retention review.
 
 ## Backups
 
@@ -242,8 +247,8 @@ from D1 and delete or replace historical `poster-proposals/` backup objects that
 still contain those rows. A fresh accepted-only encrypted backup does not make
 older objects safe to retain. For accepted proposals, remove contact details
 and operational notes when they are no longer needed for event administration
-or legal obligations; published title, author, and abstract information may
-remain as part of the event record.
+or legal obligations; published title and abstract information may remain as
+part of the event record.
 
 Treat the retention cleanup as a reviewed production operation: record
 non-personal aggregate counts if needed, confirm the exact affected statuses,

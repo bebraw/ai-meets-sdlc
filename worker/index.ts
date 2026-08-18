@@ -84,9 +84,10 @@ interface BackupManifest {
 }
 
 const posterProposalTermsText =
-  "I understand that, if accepted, the designated presenter must attend the poster session and bring, install, and remove an A0 or A1 portrait poster. I agree that the poster title, authors, and abstract may be published in the event program. I confirm that I am authorized to submit the listed authors' and presenters' names and publication details, and that I have shared the privacy notice with them.";
+  "I understand that, if accepted, the designated presenter must attend the poster session and bring, install, and remove an A0 or A1 portrait poster. I agree that the poster title and abstract may be published in the event program.";
 const posterProposalConsentText =
   "I consent to Toska Osuuskunta processing this proposal and contacting me about it as described in the privacy policy.";
+const posterSizeCompatibilityValue: PosterSize = "either";
 const turnstileAction = "turnstile-spin-v2";
 const turnstileTimeoutMilliseconds = 10_000;
 const maxInterestBodyBytes = 16 * 1024;
@@ -405,12 +406,8 @@ async function handlePosterProposal(
   const name = normalizeFormText(formData.get("name"));
   const email = normalizeEmail(formData.get("email"));
   const organization = normalizeFormText(formData.get("organization"));
-  const authors = normalizeFormText(formData.get("authors"));
   const title = normalizeFormText(formData.get("title"));
   const abstract = normalizeFormText(formData.get("abstract"));
-  const posterSizeValue = normalizeFormText(formData.get("poster_size"));
-  const supportingUrl = normalizeFormText(formData.get("supporting_url"));
-  const setupNotes = normalizeFormText(formData.get("setup_notes"));
   const termsAccepted = formData.get("terms") === "yes";
   const consentGiven = formData.get("consent") === "yes";
   const turnstileToken = getTurnstileToken(formData);
@@ -443,13 +440,6 @@ async function handlePosterProposal(
     );
   }
 
-  if (!authors || authors.length > 500) {
-    return jsonResponse(
-      { error: "Enter the authors using 500 characters or fewer." },
-      400,
-    );
-  }
-
   if (!title || title.length > 200) {
     return jsonResponse(
       { error: "Enter a title using 200 characters or fewer." },
@@ -464,27 +454,9 @@ async function handlePosterProposal(
     );
   }
 
-  if (!isPosterSize(posterSizeValue)) {
-    return jsonResponse({ error: "Choose A0, A1, or either size." }, 400);
-  }
-
-  if (supportingUrl.length > 2048 || !isOptionalHttpUrl(supportingUrl)) {
-    return jsonResponse(
-      { error: "Enter a valid http:// or https:// supporting URL." },
-      400,
-    );
-  }
-
-  if (setupNotes.length > 1000) {
-    return jsonResponse(
-      { error: "Keep setup notes to 1,000 characters or fewer." },
-      400,
-    );
-  }
-
   if (!termsAccepted) {
     return jsonResponse(
-      { error: "Confirm the presenter, publication, and author terms." },
+      { error: "Confirm the presenter and publication terms." },
       400,
     );
   }
@@ -527,26 +499,20 @@ async function handlePosterProposal(
     encryptedName,
     encryptedEmail,
     encryptedOrganization,
-    encryptedAuthors,
+    encryptedLegacyAuthors,
     encryptedTitle,
     encryptedAbstract,
-    encryptedSupportingUrl,
-    encryptedSetupNotes,
   ] = await Promise.all([
     encryptTextWithKey(name, encryptionKey),
     encryptTextWithKey(email, encryptionKey),
     organization
       ? encryptTextWithKey(organization, encryptionKey)
       : Promise.resolve(null),
-    encryptTextWithKey(authors, encryptionKey),
+    // The deployed schema requires this pair, but new submissions do not
+    // collect additional author or presenter names.
+    encryptTextWithKey("", encryptionKey),
     encryptTextWithKey(title, encryptionKey),
     encryptTextWithKey(abstract, encryptionKey),
-    supportingUrl
-      ? encryptTextWithKey(supportingUrl, encryptionKey)
-      : Promise.resolve(null),
-    setupNotes
-      ? encryptTextWithKey(setupNotes, encryptionKey)
-      : Promise.resolve(null),
   ]);
   const createdAt = new Date().toISOString();
 
@@ -586,17 +552,21 @@ async function handlePosterProposal(
         encryptedEmail.iv,
         encryptedOrganization?.ciphertext ?? null,
         encryptedOrganization?.iv ?? null,
-        encryptedAuthors.ciphertext,
-        encryptedAuthors.iv,
+        encryptedLegacyAuthors.ciphertext,
+        encryptedLegacyAuthors.iv,
         encryptedTitle.ciphertext,
         encryptedTitle.iv,
         encryptedAbstract.ciphertext,
         encryptedAbstract.iv,
-        posterSizeValue,
-        encryptedSupportingUrl?.ciphertext ?? null,
-        encryptedSupportingUrl?.iv ?? null,
-        encryptedSetupNotes?.ciphertext ?? null,
-        encryptedSetupNotes?.iv ?? null,
+        // Keep the deployed NOT NULL column populated without collecting a
+        // preference that is not used in review or event planning.
+        posterSizeCompatibilityValue,
+        // These optional pairs remain in the deployed schema for legacy rows.
+        // New submissions do not collect or persist either value.
+        null,
+        null,
+        null,
+        null,
         posterProposalTermsText,
         posterProposalConsentText,
         "submitted",
@@ -1599,24 +1569,8 @@ function parsePosterProposalDeadline(value: string | undefined): number | null {
   return Number.isFinite(timestamp) ? timestamp : null;
 }
 
-function isPosterSize(value: string): value is PosterSize {
-  return value === "a0" || value === "a1" || value === "either";
-}
-
 function isPosterProposalStatus(value: string): value is PosterProposalStatus {
   return posterProposalStatuses.some((status) => status === value);
-}
-
-function isOptionalHttpUrl(value: string): boolean {
-  if (!value) return true;
-
-  try {
-    const url = new URL(value);
-
-    return url.protocol === "http:" || url.protocol === "https:";
-  } catch {
-    return false;
-  }
 }
 
 function isLikelyEmail(value: string): boolean {

@@ -14,7 +14,7 @@ const adminAuthorization = `Basic ${Buffer.from(
 ).toString("base64")}`;
 const origin = "https://sdlcai.org";
 const presenterTerms =
-  "I understand that, if accepted, the designated presenter must attend the poster session and bring, install, and remove an A0 or A1 portrait poster. I agree that the poster title, authors, and abstract may be published in the event program. I confirm that I am authorized to submit the listed authors' and presenters' names and publication details, and that I have shared the privacy notice with them.";
+  "I understand that, if accepted, the designated presenter must attend the poster session and bring, install, and remove an A0 or A1 portrait poster. I agree that the poster title and abstract may be published in the event program.";
 const privacyConsent =
   "I consent to Toska Osuuskunta processing this proposal and contacting me about it as described in the privacy policy.";
 
@@ -123,21 +123,26 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   const proposalFields = {
     abstract:
       "A grounded field report on using AI-assisted review throughout delivery, including failures, controls, and lessons that other teams can apply.",
-    authors: "Ada Example and Linus Example",
     consent: "yes",
     email: "ada@example.com",
     name: "Ada Example",
     organization: "Example Cooperative",
-    poster_size: "a1",
-    setup_notes: "No special setup required.",
-    supporting_url: "https://example.com/research",
     terms: "yes",
     title: "AI-assisted review beyond code completion",
+  };
+  const ignoredLegacyFields = {
+    setup_notes: "No special setup required.",
+    supporting_url: "https://example.com/research",
   };
   const createProposalBody = () => {
     const body = new FormData();
 
     for (const [name, value] of Object.entries(proposalFields)) {
+      body.append(name, value);
+    }
+
+    // Old cached clients may still send these names. They must not be stored.
+    for (const [name, value] of Object.entries(ignoredLegacyFields)) {
       body.append(name, value);
     }
 
@@ -197,16 +202,20 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
       email: adminPayload.proposals[0].email,
       name: adminPayload.proposals[0].name,
       poster_size: adminPayload.proposals[0].poster_size,
+      setup_notes: adminPayload.proposals[0].setup_notes,
       status: adminPayload.proposals[0].status,
+      supporting_url: adminPayload.proposals[0].supporting_url,
       title: adminPayload.proposals[0].title,
     },
     {
       abstract: proposalFields.abstract,
-      authors: proposalFields.authors,
+      authors: "",
       email: "ada@example.com",
       name: "Ada Example",
-      poster_size: "a1",
+      poster_size: "either",
+      setup_notes: "",
       status: "submitted",
+      supporting_url: "",
       title: "AI-assisted review beyond code completion",
     },
   );
@@ -327,11 +336,9 @@ test("poster proposal validation and Turnstile fail closed", async (t) => {
       body: new URLSearchParams({
         abstract:
           "A sufficiently detailed account of an AI-assisted delivery experiment and the concrete lessons that attendees can apply in their own teams.",
-        authors: "Ada Example",
         consent: "yes",
         email: "ada@example.com",
         name: "Ada Example",
-        poster_size: "a0",
         terms: "yes",
         title: "An evidence-based poster proposal",
       }),
