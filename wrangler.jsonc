@@ -22,8 +22,12 @@
     "run_worker_first": true,
   },
   "vars": {
+    // Poster proposals close at 23:59 EEST on 27 September 2026.
+    "POSTER_PROPOSAL_DEADLINE": "2026-09-27T20:59:59Z",
     // Public Turnstile site key. Replace this after creating the widget.
     "TURNSTILE_SITE_KEY": "0x4AAAAAADGyYOoRrI5BgaNQ",
+    // Hostnames accepted from Turnstile's server-side validation response.
+    "TURNSTILE_HOSTNAMES": "sdlcai.org,www.sdlcai.org",
     // Set to "true" only if the legacy registration interest form is needed.
     "SHOW_INTEREST_FORM": "",
   },

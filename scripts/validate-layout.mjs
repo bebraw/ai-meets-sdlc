@@ -12,6 +12,7 @@ const routes = [
   "/admin/",
   "/contact/",
   "/for-sponsors/",
+  "/posters/",
   "/privacy-policy/",
 ];
 const viewports = [

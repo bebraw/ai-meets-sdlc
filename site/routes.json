@@ -73,6 +73,23 @@
       }
     }
   },
+  "posters": {
+    "layout": "posters",
+    "scripts": [{ "name": "index" }],
+    "dataSources": {
+      "seminar": {
+        "operation": "seminar"
+      }
+    },
+    "context": {
+      "meta": {
+        "title": "SDLCAI Call for Posters",
+        "description": "Submit an A0 or A1 portrait poster about AI across the software development lifecycle for SDLCAI 2026.",
+        "ogEyebrow": "Call for posters",
+        "ogDescription": "Bring applied or academic work on AI across the software development lifecycle to SDLCAI 2026."
+      }
+    }
+  },
   "speakers": {
     "layout": "speakers",
     "scripts": [{ "name": "index" }],
@@ -157,9 +174,9 @@
     "context": {
       "meta": {
         "title": "SDLCAI Admin",
-        "description": "Admin tools for SDLCAI interest list management.",
+        "description": "Admin tools for SDLCAI poster proposals and interest list management.",
         "ogEyebrow": "Admin",
-        "ogDescription": "Admin tools for SDLCAI interest list management."
+        "ogDescription": "Admin tools for SDLCAI poster proposals and interest list management."
       }
     }
   },
