@@ -23,7 +23,7 @@ Product and commercial experience can be relevant, but the poster must teach or 
 
 Posters must be A0 or A1 in portrait orientation. Accepted presenters are responsible for printing and bringing their own poster, installing it at the venue, and removing it after the event.
 
-The poster session runs from 12:30 to 13:30 on 13 October at Marsio. A designated presenter should attend the session to discuss the work with seminar participants.
+The poster session runs from 12:30 to 13:30 on 13 October at Marsio. A designated presenter should attend the session to discuss the work with seminar participants. Note that the posters can be available for the whole day and you will have good chances to interact with the attendees even during the breaks.
 
 Each accepted poster includes one SDLCAI event ticket for its designated presenter.
 
