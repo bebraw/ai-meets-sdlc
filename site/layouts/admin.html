@@ -1,7 +1,7 @@
 <BaseLayout
   &title="(id 'SDLCAI Admin')"
-  &description="(id 'Admin tools for SDLCAI interest list management.')"
-  &ogDescription="(id 'Admin tools for SDLCAI interest list management.')"
+  &description="(id 'Admin tools for SDLCAI poster proposals and interest list management.')"
+  &ogDescription="(id 'Admin tools for SDLCAI poster proposals and interest list management.')"
   &url="(id 'https://sdlcai.org/admin/')"
   &ogType="(id 'website')"
   &robots="(id 'noindex,nofollow')"
@@ -17,13 +17,82 @@
         <h1
           class="mt-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl"
         >
-          Interest list
+          Admin desk
         </h1>
       </div>
       <div class="grid content-end gap-5">
         <p class="max-w-3xl text-xl leading-8 text-muted">
-          People who asked to be notified when SDLCAI registration opens.
+          Review poster proposals, update selection status, and manage the
+          seminar interest list.
         </p>
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="border-b border-ink px-5 py-10 md:px-8 md:py-14"
+    aria-labelledby="poster-proposals-heading"
+  >
+    <div class="mx-auto grid max-w-7xl gap-6">
+      <div class="grid gap-5 md:grid-cols-[1fr_auto] md:items-end">
+        <div>
+          <p class="font-headline text-sm font-black uppercase text-muted">
+            Rolling review
+          </p>
+          <h2
+            class="mt-2 font-headline text-4xl font-black uppercase leading-none md:text-6xl"
+            id="poster-proposals-heading"
+          >
+            Poster proposals
+          </h2>
+        </div>
+        <div class="flex flex-wrap items-center gap-3">
+          <a
+            class="inline-flex border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
+            href="/api/admin/poster-proposals.csv"
+            >Export CSV</a
+          >
+          <button
+            class="inline-flex border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper disabled:cursor-wait disabled:opacity-60"
+            data-admin-poster-refresh
+            type="button"
+          >
+            Refresh
+          </button>
+          <p
+            class="min-h-6 text-sm font-bold uppercase text-muted"
+            data-admin-poster-status
+            aria-live="polite"
+          >
+            Loading
+          </p>
+        </div>
+      </div>
+      <div class="grid gap-5" data-admin-poster-proposals>
+        <p class="border border-ink p-5 text-muted">
+          Loading poster proposals.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="px-5 py-10 md:px-8 md:py-14"
+    aria-labelledby="interest-list-heading"
+  >
+    <div class="mx-auto grid max-w-7xl gap-6">
+      <div class="grid gap-5 md:grid-cols-[1fr_auto] md:items-end">
+        <div>
+          <p class="font-headline text-sm font-black uppercase text-muted">
+            Registration updates
+          </p>
+          <h2
+            class="mt-2 font-headline text-4xl font-black uppercase leading-none md:text-6xl"
+            id="interest-list-heading"
+          >
+            Interest list
+          </h2>
+        </div>
         <div class="flex flex-wrap items-center gap-3">
           <a
             class="inline-flex border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
@@ -39,11 +108,6 @@
           </p>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="px-5 py-8 md:px-8">
-    <div class="mx-auto max-w-7xl">
       <div
         class="overflow-x-auto border border-ink"
         tabindex="0"

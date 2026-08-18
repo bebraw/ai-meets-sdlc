@@ -268,13 +268,15 @@
           </span>
         </label>
         <div
+          id="interest-turnstile"
           class="cf-turnstile"
           data-turnstile-widget
           data-sitekey="__TURNSTILE_SITE_KEY__"
+          data-action="turnstile-spin-v2"
           data-theme="light"
           data-callback="onInterestTurnstileSuccess"
           data-expired-callback="onInterestTurnstileExpired"
-          data-error-callback="onInterestTurnstileExpired"
+          data-error-callback="onInterestTurnstileError"
         ></div>
         <noscript>
           <p class="border border-ink bg-paper p-4 text-sm leading-6">
