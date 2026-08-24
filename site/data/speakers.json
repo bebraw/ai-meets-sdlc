@@ -21,6 +21,14 @@
       "bio": "Ohans Emmanuel is the co-founder and CEO of Coldtea.ai and a technical author with more than five published books. Since 2017, he has written extensively about software and product development, with his work reaching more than five million readers. He specialises in turning complex problems into simple, reliable systems and building delightful user interfaces that hold up in the real world."
     },
     {
+      "id": "jenni-kylmakoski",
+      "name": "Jenni Kylmäkoski",
+      "role": "R&D Leader at Nokia",
+      "photo": "/assets/speakers/jenni-kylmakoski.webp",
+      "linkedin": "https://www.linkedin.com/in/jennikylmakoski/",
+      "bio": "Jenni Kylmäkoski is an R&D leader at Nokia with experience in agile coaching, training, and product development leadership. Her work focuses on building motivated, high-performing teams and improving large R&D organisations through agile methods, DevOps, coaching leadership, continuous improvement, and collaboration across organisational boundaries."
+    },
+    {
       "id": "jussi-hacklin",
       "name": "Jussi Hacklin",
       "role": "Chief of Software Engineering at Elisa",

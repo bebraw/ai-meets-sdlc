@@ -25,6 +25,11 @@
           "title": "Mystery talk",
           "abstract": "Ohans Emmanuel shares an industry perspective on applied AI in software development. The exact topic of his talk is still to be decided.",
           "speakers": ["ohans-emmanuel"]
+        },
+        {
+          "title": "Mystery talk",
+          "abstract": "Jenni Kylmäkoski shares an industry perspective on applied AI in software development. The exact topic of her talk is still to be decided.",
+          "speakers": ["jenni-kylmakoski"]
         }
       ]
     },
