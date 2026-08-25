@@ -22,7 +22,7 @@
       </div>
       <div class="grid content-end gap-5">
         <p class="max-w-3xl text-xl leading-8 text-muted">
-          Review poster proposals, update selection status, and manage the
+          Coordinate the speaker dinner, review poster proposals, and manage the
           seminar interest list and protected screen assets.
         </p>
         <a
@@ -30,6 +30,116 @@
           href="/admin/slides/"
           >Screen assets</a
         >
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="border-b border-ink px-5 py-10 md:px-8 md:py-14"
+    aria-labelledby="speaker-dinner-heading"
+  >
+    <div class="mx-auto grid max-w-7xl gap-6">
+      <div class="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-end">
+        <div>
+          <p class="font-headline text-sm font-black uppercase text-muted">
+            12 October / private
+          </p>
+          <h2
+            class="mt-2 font-headline text-4xl font-black uppercase leading-none md:text-6xl"
+            id="speaker-dinner-heading"
+          >
+            Speaker dinner
+          </h2>
+          <p class="mt-4 max-w-3xl leading-7 text-muted">
+            Create a one-time personal invitation link for each speaker. Food
+            details are encrypted and omitted from automated backups. Export
+            only the attending speakers’ kitchen requirements for the caterer.
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center gap-3">
+          <a
+            class="inline-flex border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
+            href="/api/admin/speaker-dinner.csv"
+            >Caterer CSV</a
+          >
+          <button
+            class="inline-flex border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper disabled:cursor-wait disabled:opacity-60"
+            data-admin-dinner-refresh
+            type="button"
+          >
+            Refresh
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="grid gap-px bg-ink sm:grid-cols-2 lg:grid-cols-4"
+        data-admin-dinner-summary
+      >
+        <div class="bg-paper p-4">
+          <span class="text-sm font-bold uppercase text-muted">Invited</span
+          ><strong
+            class="mt-2 block font-headline text-4xl"
+            data-admin-dinner-count="invited"
+            >0</strong
+          >
+        </div>
+        <div class="bg-paper p-4">
+          <span class="text-sm font-bold uppercase text-muted">Attending</span
+          ><strong
+            class="mt-2 block font-headline text-4xl"
+            data-admin-dinner-count="attending"
+            >0</strong
+          >
+        </div>
+        <div class="bg-paper p-4">
+          <span class="text-sm font-bold uppercase text-muted">Declined</span
+          ><strong
+            class="mt-2 block font-headline text-4xl"
+            data-admin-dinner-count="not_attending"
+            >0</strong
+          >
+        </div>
+        <div class="bg-paper p-4">
+          <span class="text-sm font-bold uppercase text-muted"
+            >Awaiting reply</span
+          ><strong
+            class="mt-2 block font-headline text-4xl"
+            data-admin-dinner-count="pending"
+            >0</strong
+          >
+        </div>
+      </div>
+
+      <p
+        class="min-h-6 text-sm font-bold uppercase text-muted"
+        data-admin-dinner-status
+        aria-live="polite"
+      >
+        Loading
+      </p>
+      <div class="grid gap-4" data-admin-dinner-speakers>
+        <p class="border border-ink p-5 text-muted">Loading speakers.</p>
+      </div>
+
+      <div
+        class="grid gap-4 border border-ink p-5 md:grid-cols-[1fr_auto] md:items-center"
+      >
+        <div>
+          <h3 class="font-headline text-2xl font-black uppercase">Retention</h3>
+          <p class="mt-2 max-w-3xl text-sm leading-6 text-muted">
+            All invitation tokens and responses are automatically deleted after
+            26 October 2026. Use this only when catering is complete and the
+            information is no longer needed.
+          </p>
+        </div>
+        <button
+          class="border border-red-700 px-5 py-3 font-bold uppercase text-red-700 transition hover:bg-red-700 hover:text-white disabled:cursor-wait disabled:opacity-60"
+          data-admin-dinner-purge
+          type="button"
+        >
+          Delete dinner data
+        </button>
       </div>
     </div>
   </section>

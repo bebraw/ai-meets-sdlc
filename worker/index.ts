@@ -3,6 +3,7 @@ import {
   validateTurnstileOutcome,
   type TurnstileOutcome,
 } from "./turnstile";
+import speakersData from "../site/data/speakers.json" with { type: "json" };
 
 type JsonObject = Record<string, unknown>;
 
@@ -83,15 +84,60 @@ interface BackupManifest {
   rows_hash?: string;
 }
 
+type SpeakerDinnerAttendance = "attending" | "not_attending";
+type SpeakerDinnerMealPreference =
+  | ""
+  | "omnivore"
+  | "vegetarian"
+  | "vegan"
+  | "other";
+type SpeakerDinnerCrossContamination = "" | "yes" | "no" | "unsure";
+
+interface SpeakerDinnerResponseData {
+  attendance: SpeakerDinnerAttendance;
+  cross_contamination: SpeakerDinnerCrossContamination;
+  food_requirements: string;
+  meal_preference: SpeakerDinnerMealPreference;
+}
+
+interface SpeakerDinnerRow {
+  consent_text: string | null;
+  created_at: string;
+  expires_at: string;
+  responded_at: string | null;
+  response_ciphertext: string | null;
+  response_iv: string | null;
+  speaker_id: string;
+  token_hash: string;
+  updated_at: string;
+}
+
+interface SpeakerDinnerAdminItem {
+  expires_at: string | null;
+  invited: boolean;
+  name: string;
+  responded_at: string | null;
+  response: SpeakerDinnerResponseData | null;
+  speaker_id: string;
+  updated_at: string | null;
+}
+
 const posterProposalTermsText =
   "I understand that, if accepted, the designated presenter must attend the poster session and bring, install, and remove an A0 or A1 portrait poster. I agree that the poster title and abstract may be published in the event program.";
 const posterProposalConsentText =
   "I consent to Toska Osuuskunta processing this proposal and contacting me about it as described in the privacy policy.";
+const speakerDinnerConsentText =
+  "I consent to Toska Osuuskunta processing this response and, if I attend, sharing only the necessary food information with the dinner caterer. I can withdraw by contacting info@futurefrontend.com.";
 const posterSizeCompatibilityValue: PosterSize = "either";
 const turnstileAction = "turnstile-spin-v2";
 const turnstileTimeoutMilliseconds = 10_000;
 const maxInterestBodyBytes = 16 * 1024;
 const maxPosterProposalBodyBytes = 32 * 1024;
+const maxSpeakerDinnerBodyBytes = 16 * 1024;
+const speakerDinnerSpeakers = speakersData.items.map(({ id, name }) => ({
+  id,
+  name,
+}));
 const posterProposalStatuses = [
   "submitted",
   "shortlisted",
@@ -105,6 +151,7 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     const isAdminProtected = isAdminPath(url.pathname);
+    const isSpeakerDinnerPrivate = isSpeakerDinnerPath(url.pathname);
 
     if (isInternalAdminSlidesPath(url.pathname)) {
       return new Response("Not found.", {
@@ -207,6 +254,70 @@ export default {
       return handlePosterProposalStatus(request, env);
     }
 
+    if (url.pathname === "/api/admin/speaker-dinner") {
+      if (request.method !== "GET") {
+        return jsonResponse({ error: "Method not allowed" }, 405);
+      }
+
+      const speakers = await readSpeakerDinnerAdminItems(env);
+
+      return withAdminSecurityHeaders(
+        jsonResponse({ speakers, count: speakers.length }),
+      );
+    }
+
+    if (url.pathname === "/api/admin/speaker-dinner.csv") {
+      if (request.method !== "GET") {
+        return jsonResponse({ error: "Method not allowed" }, 405);
+      }
+
+      const speakers = await readSpeakerDinnerAdminItems(env);
+
+      return withAdminSecurityHeaders(
+        new Response(formatSpeakerDinnerCsv(speakers), {
+          headers: {
+            "content-disposition":
+              'attachment; filename="sdlcai-speaker-dinner-caterer.csv"',
+            "content-type": "text/csv; charset=utf-8",
+          },
+        }),
+      );
+    }
+
+    if (url.pathname === "/api/admin/speaker-dinner/invite") {
+      if (request.method !== "POST") {
+        return jsonResponse({ error: "Method not allowed" }, 405);
+      }
+
+      const forbiddenResponse = requireAdminAction(
+        request,
+        "rotate-speaker-dinner-invite",
+      );
+
+      if (forbiddenResponse) return forbiddenResponse;
+
+      return withAdminSecurityHeaders(
+        await handleSpeakerDinnerInvite(request, env),
+      );
+    }
+
+    if (url.pathname === "/api/admin/speaker-dinner/purge") {
+      if (request.method !== "POST") {
+        return jsonResponse({ error: "Method not allowed" }, 405);
+      }
+
+      const forbiddenResponse = requireAdminAction(
+        request,
+        "purge-speaker-dinner-data",
+      );
+
+      if (forbiddenResponse) return forbiddenResponse;
+
+      return withAdminSecurityHeaders(
+        await handleSpeakerDinnerPurge(request, env),
+      );
+    }
+
     if (url.pathname === "/api/interest") {
       if (request.method !== "POST") {
         return jsonResponse({ error: "Method not allowed" }, 405);
@@ -221,6 +332,24 @@ export default {
       }
 
       return handlePosterProposal(request, env);
+    }
+
+    if (url.pathname === "/api/speaker-dinner") {
+      if (request.method === "GET") {
+        return withSpeakerDinnerSecurityHeaders(
+          await handleSpeakerDinnerStatus(request, env),
+        );
+      }
+
+      if (request.method === "POST") {
+        return withSpeakerDinnerSecurityHeaders(
+          await handleSpeakerDinnerResponse(request, env),
+        );
+      }
+
+      return withSpeakerDinnerSecurityHeaders(
+        jsonResponse({ error: "Method not allowed" }, 405),
+      );
     }
 
     if (url.pathname === "/calendar.ics") {
@@ -242,6 +371,10 @@ export default {
 
     if (isAdminProtected) return withAdminSecurityHeaders(response);
 
+    if (isSpeakerDinnerPrivate) {
+      return withSpeakerDinnerSecurityHeaders(response);
+    }
+
     return withStaticAssetCache(response, url);
   },
 
@@ -250,10 +383,14 @@ export default {
     env: Env,
     ctx: ExecutionContext,
   ): Promise<void> {
-    if (!env.INTEREST_BACKUPS) return;
+    if (env.INTEREST_BACKUPS) {
+      ctx.waitUntil(backupInterests(env));
+      ctx.waitUntil(backupPosterProposals(env));
+    }
 
-    ctx.waitUntil(backupInterests(env));
-    ctx.waitUntil(backupPosterProposals(env));
+    if (shouldPurgeSpeakerDinnerData(env)) {
+      ctx.waitUntil(purgeSpeakerDinnerData(env));
+    }
   },
 } satisfies ExportedHandler<Env>;
 
@@ -298,6 +435,20 @@ function withAdminSecurityHeaders(response: Response): Response {
   if (!variesByAuthorization) {
     headers.append("vary", "Authorization");
   }
+
+  return new Response(response.body, {
+    headers,
+    status: response.status,
+    statusText: response.statusText,
+  });
+}
+
+function withSpeakerDinnerSecurityHeaders(response: Response): Response {
+  const headers = new Headers(response.headers);
+
+  headers.set("cache-control", "no-store");
+  headers.set("referrer-policy", "no-referrer");
+  headers.set("x-robots-tag", "noindex, nofollow, noarchive");
 
   return new Response(response.body, {
     headers,
@@ -675,6 +826,468 @@ async function handlePosterProposal(
   );
 }
 
+async function handleSpeakerDinnerInvite(
+  request: Request,
+  env: Env,
+): Promise<Response> {
+  const configurationError = getSpeakerDinnerConfigurationError(env);
+
+  if (configurationError) return configurationError;
+
+  const configuration = getSpeakerDinnerConfiguration(env)!;
+
+  if (Date.now() > configuration.deadline) {
+    return jsonResponse(
+      { error: "The speaker dinner response deadline has passed." },
+      410,
+    );
+  }
+
+  const formDataResult = await readFormDataWithinLimit(
+    request,
+    maxSpeakerDinnerBodyBytes,
+  );
+
+  if (formDataResult instanceof Response) return formDataResult;
+
+  const speakerId = normalizeFormText(formDataResult.get("speaker_id"));
+  const speaker = findSpeakerDinnerSpeaker(speakerId);
+
+  if (!speaker) {
+    return jsonResponse({ error: "Choose a current SDLCAI speaker." }, 400);
+  }
+
+  const token = generateSpeakerDinnerToken();
+  const tokenHash = await hashSpeakerDinnerToken(
+    token,
+    env.EMAIL_ENCRYPTION_KEY,
+  );
+  const now = new Date().toISOString();
+  const expiresAt = new Date(configuration.retention).toISOString();
+
+  await env.INTERESTS.prepare(
+    `INSERT INTO speaker_dinner_responses (
+      speaker_id,
+      token_hash,
+      created_at,
+      expires_at,
+      updated_at
+    ) VALUES (?, ?, ?, ?, ?)
+    ON CONFLICT(speaker_id) DO UPDATE SET
+      token_hash = excluded.token_hash,
+      expires_at = excluded.expires_at,
+      updated_at = excluded.updated_at`,
+  )
+    .bind(speaker.id, tokenHash, now, expiresAt, now)
+    .run();
+
+  const inviteUrl = new URL("/speaker-dinner/", request.url);
+  inviteUrl.hash = token;
+
+  return jsonResponse(
+    {
+      invite_url: inviteUrl.toString(),
+      message: `A new private link was created for ${speaker.name}. Any earlier link is now invalid.`,
+      ok: true,
+      speaker_id: speaker.id,
+    },
+    201,
+  );
+}
+
+async function handleSpeakerDinnerStatus(
+  request: Request,
+  env: Env,
+): Promise<Response> {
+  const configurationError = getSpeakerDinnerConfigurationError(env);
+
+  if (configurationError) return configurationError;
+
+  const invitation = await readSpeakerDinnerInvitation(request, env);
+
+  if (!invitation) return speakerDinnerInvitationError();
+
+  const speaker = findSpeakerDinnerSpeaker(invitation.speaker_id);
+
+  if (!speaker) return speakerDinnerInvitationError();
+
+  const configuration = getSpeakerDinnerConfiguration(env)!;
+  const response = await decryptSpeakerDinnerResponse(invitation, env);
+
+  return jsonResponse({
+    closed: Date.now() > configuration.deadline,
+    deadline: new Date(configuration.deadline).toISOString(),
+    name: speaker.name,
+    response,
+    responded_at: invitation.responded_at,
+  });
+}
+
+async function handleSpeakerDinnerResponse(
+  request: Request,
+  env: Env,
+): Promise<Response> {
+  const configurationError = getSpeakerDinnerConfigurationError(env);
+
+  if (configurationError) return configurationError;
+
+  const configuration = getSpeakerDinnerConfiguration(env)!;
+
+  if (Date.now() > configuration.deadline) {
+    return jsonResponse(
+      { error: "The speaker dinner response deadline has passed." },
+      410,
+    );
+  }
+
+  const invitation = await readSpeakerDinnerInvitation(request, env);
+
+  if (!invitation) return speakerDinnerInvitationError();
+
+  const formDataResult = await readFormDataWithinLimit(
+    request,
+    maxSpeakerDinnerBodyBytes,
+  );
+
+  if (formDataResult instanceof Response) return formDataResult;
+
+  const consentGiven = formDataResult.get("consent") === "yes";
+  const attendance = normalizeFormText(formDataResult.get("attendance"));
+
+  if (!consentGiven) {
+    return jsonResponse({ error: "Consent is required." }, 400);
+  }
+
+  if (attendance !== "attending" && attendance !== "not_attending") {
+    return jsonResponse({ error: "Tell us whether you can attend." }, 400);
+  }
+
+  let mealPreference: SpeakerDinnerMealPreference = "";
+  let foodRequirements = "";
+  let crossContamination: SpeakerDinnerCrossContamination = "";
+
+  if (attendance === "attending") {
+    const mealPreferenceValue = normalizeFormText(
+      formDataResult.get("meal_preference"),
+    );
+    const crossContaminationValue = normalizeFormText(
+      formDataResult.get("cross_contamination"),
+    );
+    foodRequirements = normalizeFormText(
+      formDataResult.get("food_requirements"),
+    );
+
+    if (!isSpeakerDinnerMealPreference(mealPreferenceValue)) {
+      return jsonResponse({ error: "Choose a meal preference." }, 400);
+    }
+
+    if (!isSpeakerDinnerCrossContamination(crossContaminationValue)) {
+      return jsonResponse(
+        { error: "Tell us whether cross-contamination is a concern." },
+        400,
+      );
+    }
+
+    if (foodRequirements.length > 800) {
+      return jsonResponse(
+        { error: "Keep food requirements to 800 characters or fewer." },
+        400,
+      );
+    }
+
+    mealPreference = mealPreferenceValue;
+    crossContamination = crossContaminationValue;
+  }
+
+  const responseData: SpeakerDinnerResponseData = {
+    attendance,
+    cross_contamination: crossContamination,
+    food_requirements: foodRequirements,
+    meal_preference: mealPreference,
+  };
+  const encryptedResponse = await encryptText(
+    JSON.stringify(responseData),
+    env.EMAIL_ENCRYPTION_KEY,
+  );
+  const respondedAt = new Date().toISOString();
+  const result = await env.INTERESTS.prepare(
+    `UPDATE speaker_dinner_responses
+    SET response_ciphertext = ?,
+        response_iv = ?,
+        consent_text = ?,
+        responded_at = ?,
+        updated_at = ?
+    WHERE speaker_id = ? AND token_hash = ?`,
+  )
+    .bind(
+      encryptedResponse.ciphertext,
+      encryptedResponse.iv,
+      speakerDinnerConsentText,
+      respondedAt,
+      respondedAt,
+      invitation.speaker_id,
+      invitation.token_hash,
+    )
+    .run();
+
+  if (result.meta.changes === 0) return speakerDinnerInvitationError();
+
+  return jsonResponse({
+    message:
+      "Your dinner response has been saved. You can use this link to update it before the deadline.",
+    ok: true,
+    responded_at: respondedAt,
+    response: responseData,
+  });
+}
+
+async function handleSpeakerDinnerPurge(
+  request: Request,
+  env: Env,
+): Promise<Response> {
+  if (!env.INTERESTS) {
+    return jsonResponse({ error: "Dinner storage is not configured." }, 503);
+  }
+
+  const formDataResult = await readFormDataWithinLimit(
+    request,
+    maxSpeakerDinnerBodyBytes,
+  );
+
+  if (formDataResult instanceof Response) return formDataResult;
+
+  if (normalizeFormText(formDataResult.get("confirmation")) !== "DELETE") {
+    return jsonResponse(
+      { error: "Type DELETE to confirm removal of all dinner data." },
+      400,
+    );
+  }
+
+  const result = await env.INTERESTS.prepare(
+    "DELETE FROM speaker_dinner_responses",
+  ).run();
+
+  return jsonResponse({ deleted: result.meta.changes, ok: true });
+}
+
+async function readSpeakerDinnerInvitation(
+  request: Request,
+  env: Env,
+): Promise<SpeakerDinnerRow | null> {
+  const token = parseSpeakerDinnerBearerToken(
+    request.headers.get("authorization"),
+  );
+
+  if (!token) return null;
+
+  const tokenHash = await hashSpeakerDinnerToken(
+    token,
+    env.EMAIL_ENCRYPTION_KEY,
+  );
+  const now = new Date().toISOString();
+
+  return env.INTERESTS.prepare(
+    `SELECT
+      speaker_id,
+      token_hash,
+      response_ciphertext,
+      response_iv,
+      consent_text,
+      created_at,
+      expires_at,
+      responded_at,
+      updated_at
+    FROM speaker_dinner_responses
+    WHERE token_hash = ? AND expires_at > ?`,
+  )
+    .bind(tokenHash, now)
+    .first<SpeakerDinnerRow>();
+}
+
+async function readSpeakerDinnerAdminItems(
+  env: Env,
+): Promise<SpeakerDinnerAdminItem[]> {
+  const configurationError = getSpeakerDinnerConfigurationError(env);
+
+  if (configurationError) {
+    throw new Error("Speaker dinner storage is not configured");
+  }
+
+  const { results } = await env.INTERESTS.prepare(
+    `SELECT
+      speaker_id,
+      token_hash,
+      response_ciphertext,
+      response_iv,
+      consent_text,
+      created_at,
+      expires_at,
+      responded_at,
+      updated_at
+    FROM speaker_dinner_responses
+    ORDER BY speaker_id ASC`,
+  ).all<SpeakerDinnerRow>();
+  const rowBySpeakerId = new Map(results.map((row) => [row.speaker_id, row]));
+
+  return Promise.all(
+    speakerDinnerSpeakers.map(async (speaker) => {
+      const row = rowBySpeakerId.get(speaker.id);
+
+      return {
+        expires_at: row?.expires_at ?? null,
+        invited: Boolean(row),
+        name: speaker.name,
+        responded_at: row?.responded_at ?? null,
+        response: row ? await decryptSpeakerDinnerResponse(row, env) : null,
+        speaker_id: speaker.id,
+        updated_at: row?.updated_at ?? null,
+      };
+    }),
+  );
+}
+
+async function decryptSpeakerDinnerResponse(
+  row: SpeakerDinnerRow,
+  env: Env,
+): Promise<SpeakerDinnerResponseData | null> {
+  if (row.response_ciphertext === null && row.response_iv === null) return null;
+
+  if (row.response_ciphertext === null || row.response_iv === null) {
+    throw new Error("Encrypted speaker dinner response is incomplete");
+  }
+
+  const plaintext = await decryptText(
+    row.response_ciphertext,
+    row.response_iv,
+    env.EMAIL_ENCRYPTION_KEY,
+  );
+  const candidate: unknown = JSON.parse(plaintext);
+
+  if (!isSpeakerDinnerResponseData(candidate)) {
+    throw new Error("Encrypted speaker dinner response is invalid");
+  }
+
+  return candidate;
+}
+
+function isSpeakerDinnerResponseData(
+  candidate: unknown,
+): candidate is SpeakerDinnerResponseData {
+  if (typeof candidate !== "object" || candidate === null) return false;
+
+  const response = candidate as Record<string, unknown>;
+  const attendance = response.attendance;
+  const mealPreference = response.meal_preference;
+  const foodRequirements = response.food_requirements;
+  const crossContamination = response.cross_contamination;
+
+  return (
+    (attendance === "attending" || attendance === "not_attending") &&
+    typeof foodRequirements === "string" &&
+    foodRequirements.length <= 800 &&
+    typeof mealPreference === "string" &&
+    (mealPreference === "" || isSpeakerDinnerMealPreference(mealPreference)) &&
+    typeof crossContamination === "string" &&
+    (crossContamination === "" ||
+      isSpeakerDinnerCrossContamination(crossContamination))
+  );
+}
+
+function isSpeakerDinnerMealPreference(
+  value: string,
+): value is Exclude<SpeakerDinnerMealPreference, ""> {
+  return ["omnivore", "vegetarian", "vegan", "other"].includes(value);
+}
+
+function isSpeakerDinnerCrossContamination(
+  value: string,
+): value is Exclude<SpeakerDinnerCrossContamination, ""> {
+  return ["yes", "no", "unsure"].includes(value);
+}
+
+function findSpeakerDinnerSpeaker(speakerId: string) {
+  return speakerDinnerSpeakers.find((speaker) => speaker.id === speakerId);
+}
+
+function parseSpeakerDinnerBearerToken(
+  authorization: string | null,
+): string | null {
+  const match = authorization?.match(/^Bearer ([A-Za-z0-9_-]{43})$/u);
+
+  return match?.[1] ?? null;
+}
+
+function generateSpeakerDinnerToken(): string {
+  const bytes = crypto.getRandomValues(new Uint8Array(32));
+
+  return base64Encode(bytes)
+    .replaceAll("+", "-")
+    .replaceAll("/", "_")
+    .replace(/=+$/u, "");
+}
+
+async function hashSpeakerDinnerToken(
+  token: string,
+  keyMaterial: string,
+): Promise<string> {
+  return hashText(token, keyMaterial, "speaker-dinner-invite-token");
+}
+
+function getSpeakerDinnerConfiguration(
+  env: Env,
+): { deadline: number; retention: number } | null {
+  const deadline = Date.parse(env.SPEAKER_DINNER_RESPONSE_DEADLINE ?? "");
+  const retention = Date.parse(env.SPEAKER_DINNER_RETENTION_UNTIL ?? "");
+
+  if (
+    !Number.isFinite(deadline) ||
+    !Number.isFinite(retention) ||
+    retention <= deadline
+  ) {
+    return null;
+  }
+
+  return { deadline, retention };
+}
+
+function getSpeakerDinnerConfigurationError(env: Env): Response | null {
+  if (!env.INTERESTS) {
+    return jsonResponse({ error: "Dinner storage is not configured." }, 503);
+  }
+
+  if (!env.EMAIL_ENCRYPTION_KEY) {
+    return jsonResponse({ error: "Encryption is not configured." }, 503);
+  }
+
+  if (!getSpeakerDinnerConfiguration(env)) {
+    return jsonResponse(
+      { error: "The speaker dinner response period is not configured." },
+      503,
+    );
+  }
+
+  return null;
+}
+
+function speakerDinnerInvitationError(): Response {
+  return jsonResponse(
+    { error: "This invitation link is invalid or has expired." },
+    404,
+  );
+}
+
+function shouldPurgeSpeakerDinnerData(env: Env): boolean {
+  const configuration = getSpeakerDinnerConfiguration(env);
+
+  return Boolean(
+    env.INTERESTS && configuration && Date.now() > configuration.retention,
+  );
+}
+
+async function purgeSpeakerDinnerData(env: Env): Promise<void> {
+  await env.INTERESTS.prepare("DELETE FROM speaker_dinner_responses").run();
+}
+
 function isAdminPath(pathname: string): boolean {
   return (
     pathname === "/admin/" ||
@@ -682,6 +1295,14 @@ function isAdminPath(pathname: string): boolean {
     pathname.startsWith("/api/admin/") ||
     pathname === "/assets/slides" ||
     pathname.startsWith("/assets/slides/")
+  );
+}
+
+function isSpeakerDinnerPath(pathname: string): boolean {
+  return (
+    pathname === "/speaker-dinner" ||
+    pathname.startsWith("/speaker-dinner/") ||
+    pathname === "/api/speaker-dinner"
   );
 }
 
@@ -1129,6 +1750,27 @@ function formatPosterProposalsCsv(proposals: PosterProposal[]): string {
       proposal.updated_at,
       proposal.reviewed_at ?? "",
     ]),
+  ];
+
+  return `${rows.map((row) => row.map(formatCsvValue).join(",")).join("\n")}\n`;
+}
+
+function formatSpeakerDinnerCsv(speakers: SpeakerDinnerAdminItem[]): string {
+  const rows = [
+    [
+      "speaker",
+      "meal_preference",
+      "food_requirements",
+      "cross_contamination_concern",
+    ],
+    ...speakers
+      .filter((speaker) => speaker.response?.attendance === "attending")
+      .map((speaker) => [
+        speaker.name,
+        speaker.response?.meal_preference ?? "",
+        speaker.response?.food_requirements ?? "",
+        speaker.response?.cross_contamination ?? "",
+      ]),
   ];
 
   return `${rows.map((row) => row.map(formatCsvValue).join(",")).join("\n")}\n`;

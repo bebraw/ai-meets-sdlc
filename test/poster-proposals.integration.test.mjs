@@ -111,6 +111,8 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
       ADMIN_USERNAME: "poster-admin",
       EMAIL_ENCRYPTION_KEY: "local-test-encryption-key",
       POSTER_PROPOSAL_DEADLINE: "2099-09-27T20:59:59Z",
+      SPEAKER_DINNER_RESPONSE_DEADLINE: "2099-10-05T20:59:59Z",
+      SPEAKER_DINNER_RETENTION_UNTIL: "2099-10-26T21:59:59Z",
       SHOW_INTEREST_FORM: "",
       TURNSTILE_SITE_KEY: "",
     },
@@ -373,6 +375,155 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
     "noindex, nofollow, noarchive",
   );
 
+  const dinnerPageResponse = await worker.fetch(`${origin}/speaker-dinner/`, {
+    headers: { accept: "text/html" },
+  });
+  const dinnerPageHtml = await dinnerPageResponse.text();
+
+  assert.equal(dinnerPageResponse.status, 200);
+  assert.equal(dinnerPageResponse.headers.get("cache-control"), "no-store");
+  assert.equal(
+    dinnerPageResponse.headers.get("referrer-policy"),
+    "no-referrer",
+  );
+  assert.equal(
+    dinnerPageResponse.headers.get("x-robots-tag"),
+    "noindex, nofollow, noarchive",
+  );
+  assert.match(
+    dinnerPageHtml,
+    /<meta name="robots" content="noindex,nofollow,noarchive">/,
+  );
+  assert.doesNotMatch(dinnerPageHtml, /Mo Khazali/);
+
+  const unauthorizedDinnerAdminResponse = await worker.fetch(
+    `${origin}/api/admin/speaker-dinner`,
+  );
+  assert.equal(unauthorizedDinnerAdminResponse.status, 401);
+
+  const initialDinnerAdminResponse = await worker.fetch(
+    `${origin}/api/admin/speaker-dinner`,
+    { headers: { authorization: adminAuthorization } },
+  );
+  const initialDinnerAdmin = await initialDinnerAdminResponse.json();
+
+  assert.equal(initialDinnerAdminResponse.status, 200);
+  assert.equal(initialDinnerAdmin.speakers.length, 9);
+  assert.equal(
+    initialDinnerAdmin.speakers.every((speaker) => !speaker.invited),
+    true,
+  );
+
+  const forbiddenInviteResponse = await worker.fetch(
+    `${origin}/api/admin/speaker-dinner/invite`,
+    {
+      method: "POST",
+      body: new URLSearchParams({ speaker_id: "mo-khazali" }),
+      headers: { authorization: adminAuthorization },
+    },
+  );
+  assert.equal(forbiddenInviteResponse.status, 403);
+
+  const createDinnerInvite = () =>
+    worker.fetch(`${origin}/api/admin/speaker-dinner/invite`, {
+      method: "POST",
+      body: new URLSearchParams({ speaker_id: "mo-khazali" }),
+      headers: {
+        authorization: adminAuthorization,
+        origin,
+        "x-admin-action": "rotate-speaker-dinner-invite",
+      },
+    });
+  const inviteResponse = await createDinnerInvite();
+  const invite = await inviteResponse.json();
+  const inviteToken = new URL(invite.invite_url).hash.slice(1);
+
+  assert.equal(inviteResponse.status, 201);
+  assert.match(inviteToken, /^[A-Za-z0-9_-]{43}$/);
+  assert.doesNotMatch(inviteResponse.headers.get("location") ?? "", /./);
+
+  const invitationStatusResponse = await worker.fetch(
+    `${origin}/api/speaker-dinner`,
+    { headers: { authorization: `Bearer ${inviteToken}` } },
+  );
+  const invitationStatus = await invitationStatusResponse.json();
+
+  assert.equal(invitationStatusResponse.status, 200);
+  assert.equal(
+    invitationStatusResponse.headers.get("cache-control"),
+    "no-store",
+  );
+  assert.equal(
+    invitationStatusResponse.headers.get("x-robots-tag"),
+    "noindex, nofollow, noarchive",
+  );
+  assert.equal(invitationStatus.name, "Mo Khazali");
+  assert.equal(invitationStatus.response, null);
+
+  const dinnerSubmissionResponse = await worker.fetch(
+    `${origin}/api/speaker-dinner`,
+    {
+      method: "POST",
+      body: new URLSearchParams({
+        attendance: "attending",
+        consent: "yes",
+        cross_contamination: "yes",
+        food_requirements: "Severe hazelnut allergy",
+        meal_preference: "vegan",
+      }),
+      headers: { authorization: `Bearer ${inviteToken}` },
+    },
+  );
+  const dinnerSubmission = await dinnerSubmissionResponse.json();
+
+  assert.equal(dinnerSubmissionResponse.status, 200);
+  assert.equal(dinnerSubmission.ok, true);
+
+  const dinnerAdminResponse = await worker.fetch(
+    `${origin}/api/admin/speaker-dinner`,
+    { headers: { authorization: adminAuthorization } },
+  );
+  const dinnerAdmin = await dinnerAdminResponse.json();
+  const moDinner = dinnerAdmin.speakers.find(
+    (speaker) => speaker.speaker_id === "mo-khazali",
+  );
+
+  assert.equal(moDinner.invited, true);
+  assert.deepEqual(moDinner.response, {
+    attendance: "attending",
+    cross_contamination: "yes",
+    food_requirements: "Severe hazelnut allergy",
+    meal_preference: "vegan",
+  });
+
+  const dinnerCsvResponse = await worker.fetch(
+    `${origin}/api/admin/speaker-dinner.csv`,
+    { headers: { authorization: adminAuthorization } },
+  );
+  const dinnerCsv = await dinnerCsvResponse.text();
+
+  assert.equal(dinnerCsvResponse.status, 200);
+  assert.match(dinnerCsv, /Mo Khazali/);
+  assert.match(dinnerCsv, /Severe hazelnut allergy/);
+  assert.doesNotMatch(dinnerCsv, /consent|token|responded_at/i);
+
+  const replacementInviteResponse = await createDinnerInvite();
+  const replacementInvite = await replacementInviteResponse.json();
+  const replacementToken = new URL(replacementInvite.invite_url).hash.slice(1);
+  const invalidatedInviteResponse = await worker.fetch(
+    `${origin}/api/speaker-dinner`,
+    { headers: { authorization: `Bearer ${inviteToken}` } },
+  );
+  const replacementStatusResponse = await worker.fetch(
+    `${origin}/api/speaker-dinner`,
+    { headers: { authorization: `Bearer ${replacementToken}` } },
+  );
+  const replacementStatus = await replacementStatusResponse.json();
+
+  assert.equal(invalidatedInviteResponse.status, 404);
+  assert.equal(replacementStatusResponse.status, 200);
+  assert.equal(replacementStatus.response.meal_preference, "vegan");
+
   const adminResponse = await worker.fetch(
     `${origin}/api/admin/poster-proposals`,
     { headers: { authorization: adminAuthorization } },
@@ -452,6 +603,29 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   assert.match(csvResponse.headers.get("content-type") ?? "", /^text\/csv/);
   assert.match(csv, /AI-assisted review beyond code completion/);
   assert.match(csv, /accepted/);
+
+  const purgeResponse = await worker.fetch(
+    `${origin}/api/admin/speaker-dinner/purge`,
+    {
+      method: "POST",
+      body: new URLSearchParams({ confirmation: "DELETE" }),
+      headers: {
+        authorization: adminAuthorization,
+        origin,
+        "x-admin-action": "purge-speaker-dinner-data",
+      },
+    },
+  );
+  const purge = await purgeResponse.json();
+
+  assert.equal(purgeResponse.status, 200);
+  assert.equal(purge.deleted, 1);
+
+  const purgedInviteResponse = await worker.fetch(
+    `${origin}/api/speaker-dinner`,
+    { headers: { authorization: `Bearer ${replacementToken}` } },
+  );
+  assert.equal(purgedInviteResponse.status, 404);
 });
 
 test("poster proposal validation and Turnstile fail closed", async (t) => {

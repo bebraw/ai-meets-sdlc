@@ -1,0 +1,253 @@
+<BaseLayout
+  &title="(id 'SDLCAI Speaker Dinner RSVP')"
+  &description="(id 'Private RSVP for the SDLCAI speaker dinner on 12 October 2026.')"
+  &ogDescription="(id 'Private RSVP for the SDLCAI speaker dinner.')"
+  &ogType="(id 'website')"
+  &robots="(id 'noindex,nofollow,noarchive')"
+>
+  <section class="relative min-h-[calc(100vh-10rem)] border-b border-ink">
+    <div
+      class="pointer-events-none absolute -right-32 top-20 h-96 w-96 rounded-full border border-ink/20 text-ink/15 halftone"
+    ></div>
+    <div
+      class="relative mx-auto grid max-w-7xl gap-10 px-5 py-12 md:px-8 md:py-20 lg:grid-cols-[minmax(0,0.8fr)_minmax(24rem,1fr)]"
+    >
+      <header class="grid content-start gap-6">
+        <div>
+          <p class="font-headline text-sm font-black uppercase text-muted">
+            Private invitation / 12.10.2026
+          </p>
+          <h1
+            class="mt-3 max-w-4xl font-headline text-[clamp(4rem,12vw,9rem)] font-black uppercase leading-[0.78]"
+          >
+            Dinner RSVP
+          </h1>
+        </div>
+        <div
+          class="grid max-w-xl gap-4 border-y border-ink py-5 text-lg leading-7"
+        >
+          <p>
+            Tell us whether you can join the SDLCAI speakers’ dinner and what
+            the kitchen should know.
+          </p>
+          <p class="text-muted">
+            Your personal link opens this form. Dinner timing and venue details
+            will be shared separately.
+          </p>
+        </div>
+      </header>
+
+      <div class="border border-ink bg-paper p-5 md:p-8">
+        <div class="grid min-h-52 content-center gap-3" data-dinner-loading>
+          <p class="font-headline text-sm font-black uppercase text-muted">
+            Checking invitation
+          </p>
+          <p class="font-headline text-3xl font-black uppercase">One moment.</p>
+        </div>
+
+        <div
+          class="grid min-h-52 content-center gap-4"
+          data-dinner-error
+          hidden
+        >
+          <p class="font-headline text-sm font-black uppercase text-muted">
+            Private response form
+          </p>
+          <h2 class="font-headline text-3xl font-black uppercase leading-none">
+            Open your personal invitation link
+          </h2>
+          <p class="max-w-xl leading-7 text-muted" data-dinner-error-message>
+            This page needs the unique link sent to you by the SDLCAI team.
+          </p>
+          <a
+            class="w-fit font-bold underline"
+            href="mailto:info@futurefrontend.com?subject=SDLCAI%20speaker%20dinner%20invitation"
+            >Ask us for a new link</a
+          >
+        </div>
+
+        <form class="grid gap-8" data-dinner-form hidden novalidate>
+          <div class="border-b border-ink pb-5">
+            <p class="text-sm font-bold uppercase text-muted">Invitation for</p>
+            <h2
+              class="mt-2 font-headline text-4xl font-black uppercase leading-none md:text-5xl"
+              data-dinner-speaker-name
+            ></h2>
+            <p class="mt-3 text-sm font-bold uppercase text-muted">
+              Respond by <span data-dinner-deadline>5 October 2026</span>
+            </p>
+          </div>
+
+          <fieldset class="grid gap-3">
+            <legend class="font-headline text-2xl font-black uppercase">
+              Can you join us?
+            </legend>
+            <label
+              class="grid cursor-pointer grid-cols-[auto_1fr] items-start gap-3 border border-ink p-4 transition has-[:checked]:bg-ink has-[:checked]:text-paper"
+            >
+              <input
+                class="mt-1 h-5 w-5 accent-current"
+                name="attendance"
+                type="radio"
+                value="attending"
+                required
+              />
+              <span>
+                <strong class="block uppercase">Yes, I’ll attend</strong>
+                <span class="block text-sm opacity-70"
+                  >Continue with meal details below.</span
+                >
+              </span>
+            </label>
+            <label
+              class="grid cursor-pointer grid-cols-[auto_1fr] items-start gap-3 border border-ink p-4 transition has-[:checked]:bg-ink has-[:checked]:text-paper"
+            >
+              <input
+                class="mt-1 h-5 w-5 accent-current"
+                name="attendance"
+                type="radio"
+                value="not_attending"
+                required
+              />
+              <span>
+                <strong class="block uppercase">No, I can’t attend</strong>
+                <span class="block text-sm opacity-70"
+                  >We will not ask for meal information.</span
+                >
+              </span>
+            </label>
+          </fieldset>
+
+          <div
+            class="grid gap-7 border-t border-ink pt-7"
+            data-dinner-meal-fields
+            hidden
+          >
+            <fieldset class="grid gap-3">
+              <legend class="font-headline text-2xl font-black uppercase">
+                Meal preference
+              </legend>
+              <div class="grid gap-px bg-ink sm:grid-cols-2">
+                <label
+                  class="flex cursor-pointer items-center gap-3 bg-paper p-4 has-[:checked]:bg-ink has-[:checked]:text-paper"
+                >
+                  <input name="meal_preference" type="radio" value="omnivore" />
+                  <span class="font-bold uppercase">Omnivore</span>
+                </label>
+                <label
+                  class="flex cursor-pointer items-center gap-3 bg-paper p-4 has-[:checked]:bg-ink has-[:checked]:text-paper"
+                >
+                  <input
+                    name="meal_preference"
+                    type="radio"
+                    value="vegetarian"
+                  />
+                  <span class="font-bold uppercase">Vegetarian</span>
+                </label>
+                <label
+                  class="flex cursor-pointer items-center gap-3 bg-paper p-4 has-[:checked]:bg-ink has-[:checked]:text-paper"
+                >
+                  <input name="meal_preference" type="radio" value="vegan" />
+                  <span class="font-bold uppercase">Vegan</span>
+                </label>
+                <label
+                  class="flex cursor-pointer items-center gap-3 bg-paper p-4 has-[:checked]:bg-ink has-[:checked]:text-paper"
+                >
+                  <input name="meal_preference" type="radio" value="other" />
+                  <span class="font-bold uppercase">Other</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <label class="grid gap-2">
+              <span class="font-headline text-2xl font-black uppercase"
+                >Food requirements</span
+              >
+              <span class="text-sm leading-6 text-muted">
+                Allergies, intolerances, religious or other requirements. Write
+                “None” if the kitchen needs no additional information.
+              </span>
+              <textarea
+                class="min-h-36 w-full resize-y border border-ink bg-paper px-4 py-3 text-ink outline-none focus:ring-2 focus:ring-ink"
+                maxlength="800"
+                name="food_requirements"
+              ></textarea>
+            </label>
+
+            <fieldset class="grid gap-3">
+              <legend class="font-headline text-2xl font-black uppercase">
+                Cross-contamination concern?
+              </legend>
+              <p class="text-sm leading-6 text-muted">
+                This helps us distinguish a preference from a requirement that
+                needs stricter kitchen handling.
+              </p>
+              <div class="flex flex-wrap gap-4">
+                <label class="flex items-center gap-2 font-bold uppercase">
+                  <input name="cross_contamination" type="radio" value="yes" />
+                  Yes
+                </label>
+                <label class="flex items-center gap-2 font-bold uppercase">
+                  <input name="cross_contamination" type="radio" value="no" />
+                  No
+                </label>
+                <label class="flex items-center gap-2 font-bold uppercase">
+                  <input
+                    name="cross_contamination"
+                    type="radio"
+                    value="unsure"
+                  />
+                  Not sure
+                </label>
+              </div>
+            </fieldset>
+          </div>
+
+          <label
+            class="grid grid-cols-[auto_1fr] items-start gap-3 border-t border-ink pt-6 leading-6"
+          >
+            <input
+              class="mt-1 h-5 w-5"
+              name="consent"
+              type="checkbox"
+              value="yes"
+              required
+            />
+            <span>
+              I consent to Toska Osuuskunta processing this response and, if I
+              attend, sharing only the necessary food information with the
+              dinner caterer. I can withdraw by contacting
+              <a
+                class="font-bold underline"
+                href="mailto:info@futurefrontend.com"
+                >info@futurefrontend.com</a
+              >. See the
+              <a
+                class="font-bold underline"
+                href="/privacy-policy/#speaker-dinner"
+                >privacy policy</a
+              >.
+            </span>
+          </label>
+
+          <div
+            class="grid gap-3 border-t border-ink pt-6 sm:grid-cols-[auto_1fr] sm:items-center"
+          >
+            <button
+              class="border border-ink bg-ink px-6 py-4 font-bold uppercase text-paper transition hover:bg-paper hover:text-ink disabled:cursor-wait disabled:opacity-60"
+              data-dinner-submit
+              type="submit"
+            >
+              Save response
+            </button>
+            <p
+              class="min-h-6 font-bold"
+              data-dinner-status
+              aria-live="polite"
+            ></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

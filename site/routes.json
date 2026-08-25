@@ -315,6 +315,23 @@
       }
     }
   },
+  "speaker-dinner": {
+    "layout": "speaker-dinner",
+    "scripts": [{ "name": "index" }],
+    "dataSources": {
+      "seminar": {
+        "operation": "seminar"
+      }
+    },
+    "context": {
+      "meta": {
+        "title": "SDLCAI Speaker Dinner RSVP",
+        "description": "Private RSVP for the SDLCAI speaker dinner on 12 October 2026.",
+        "ogEyebrow": "Private invitation",
+        "ogDescription": "Private RSVP for the SDLCAI speaker dinner."
+      }
+    }
+  },
   "contact": {
     "layout": "contact",
     "scripts": [{ "name": "index" }],

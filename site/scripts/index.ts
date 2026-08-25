@@ -56,6 +56,31 @@ type PosterProposal = {
   updated_at: string;
 };
 
+type SpeakerDinnerResponse = {
+  attendance: "attending" | "not_attending";
+  cross_contamination: "" | "yes" | "no" | "unsure";
+  food_requirements: string;
+  meal_preference: "" | "omnivore" | "vegetarian" | "vegan" | "other";
+};
+
+type SpeakerDinnerAdminItem = {
+  expires_at: string | null;
+  invited: boolean;
+  name: string;
+  responded_at: string | null;
+  response: SpeakerDinnerResponse | null;
+  speaker_id: string;
+  updated_at: string | null;
+};
+
+type SpeakerDinnerStatus = {
+  closed: boolean;
+  deadline: string;
+  name: string;
+  responded_at: string | null;
+  response: SpeakerDinnerResponse | null;
+};
+
 const units: [string, number][] = [
   ["days", 24 * 60 * 60 * 1000],
   ["hours", 60 * 60 * 1000],
@@ -824,6 +849,520 @@ function initAdminPosterProposals() {
   void loadProposals();
 }
 
+function initSpeakerDinnerForm() {
+  const form = document.querySelector<HTMLFormElement>("[data-dinner-form]");
+
+  if (!form) return;
+  const dinnerForm = form;
+
+  const loading = document.querySelector<HTMLElement>("[data-dinner-loading]");
+  const errorRoot = document.querySelector<HTMLElement>("[data-dinner-error]");
+  const errorMessage = document.querySelector<HTMLElement>(
+    "[data-dinner-error-message]",
+  );
+  const speakerName = dinnerForm.querySelector<HTMLElement>(
+    "[data-dinner-speaker-name]",
+  );
+  const deadline = dinnerForm.querySelector<HTMLElement>(
+    "[data-dinner-deadline]",
+  );
+  const mealFields = dinnerForm.querySelector<HTMLElement>(
+    "[data-dinner-meal-fields]",
+  );
+  const submitButton = dinnerForm.querySelector<HTMLButtonElement>(
+    "[data-dinner-submit]",
+  );
+  const status = dinnerForm.querySelector<HTMLElement>("[data-dinner-status]");
+  const tokenStorageKey = "sdlcai-speaker-dinner-token";
+  let token = window.location.hash.slice(1);
+  let isClosed = false;
+
+  if (/^[A-Za-z0-9_-]{43}$/u.test(token)) {
+    try {
+      sessionStorage.setItem(tokenStorageKey, token);
+      history.replaceState(null, "", `${location.pathname}${location.search}`);
+    } catch {
+      // The token remains available in memory if storage is blocked.
+    }
+  } else {
+    token = "";
+
+    try {
+      token = sessionStorage.getItem(tokenStorageKey) ?? "";
+    } catch {
+      // A tokenless page shows the invitation help state below.
+    }
+  }
+
+  function setStatus(message: string) {
+    if (status) status.textContent = message;
+  }
+
+  function setRadioValue(name: string, value: string) {
+    for (const input of dinnerForm.querySelectorAll<HTMLInputElement>(
+      `input[name="${name}"]`,
+    )) {
+      input.checked = input.value === value;
+    }
+  }
+
+  function updateMealFields() {
+    const attending =
+      dinnerForm.querySelector<HTMLInputElement>(
+        'input[name="attendance"]:checked',
+      )?.value === "attending";
+
+    if (mealFields) mealFields.hidden = !attending;
+
+    for (const input of dinnerForm.querySelectorAll<HTMLInputElement>(
+      'input[name="meal_preference"], input[name="cross_contamination"]',
+    )) {
+      input.required = attending;
+    }
+  }
+
+  function showError(message: string) {
+    if (loading) loading.hidden = true;
+    dinnerForm.hidden = true;
+    if (errorMessage) errorMessage.textContent = message;
+    if (errorRoot) errorRoot.hidden = false;
+  }
+
+  function renderResponse(payload: SpeakerDinnerStatus) {
+    if (loading) loading.hidden = true;
+    if (errorRoot) errorRoot.hidden = true;
+    dinnerForm.hidden = false;
+    if (speakerName) speakerName.textContent = payload.name;
+    if (deadline) {
+      deadline.textContent = new Intl.DateTimeFormat("en-GB", {
+        dateStyle: "long",
+        timeZone: "Europe/Helsinki",
+      }).format(new Date(payload.deadline));
+    }
+
+    if (payload.response) {
+      setRadioValue("attendance", payload.response.attendance);
+      setRadioValue("meal_preference", payload.response.meal_preference);
+      setRadioValue(
+        "cross_contamination",
+        payload.response.cross_contamination,
+      );
+      const requirements = dinnerForm.elements.namedItem("food_requirements");
+
+      if (requirements instanceof HTMLTextAreaElement) {
+        requirements.value = payload.response.food_requirements;
+      }
+    }
+
+    updateMealFields();
+    isClosed = payload.closed;
+
+    if (isClosed) {
+      for (const control of dinnerForm.elements) {
+        if (
+          control instanceof HTMLInputElement ||
+          control instanceof HTMLTextAreaElement ||
+          control instanceof HTMLButtonElement
+        ) {
+          control.disabled = true;
+        }
+      }
+      setStatus(
+        "The response deadline has passed. Your saved response is shown above.",
+      );
+    } else if (payload.responded_at) {
+      setStatus("Your saved response is ready to update.");
+    }
+  }
+
+  dinnerForm.addEventListener("change", updateMealFields);
+
+  dinnerForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (isClosed || !submitButton) return;
+
+    if (!dinnerForm.checkValidity()) {
+      dinnerForm.reportValidity();
+      setStatus("Complete the required fields before saving.");
+      return;
+    }
+
+    submitButton.disabled = true;
+    setStatus("Saving your response...");
+
+    try {
+      const response = await fetch("/api/speaker-dinner", {
+        method: "POST",
+        headers: {
+          accept: "application/json",
+          authorization: `Bearer ${token}`,
+        },
+        body: new FormData(dinnerForm),
+      });
+      const result = (await response.json()) as FormResponse;
+
+      if (!response.ok || result.error) {
+        throw new Error(result.error || "Could not save your response.");
+      }
+
+      setStatus(result.message || "Your dinner response has been saved.");
+    } catch (error) {
+      setStatus(
+        error instanceof Error
+          ? error.message
+          : "Could not save your response.",
+      );
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+
+  async function loadInvitation() {
+    if (!/^[A-Za-z0-9_-]{43}$/u.test(token)) {
+      showError(
+        "This page needs the unique link sent to you by the SDLCAI team.",
+      );
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/speaker-dinner", {
+        headers: {
+          accept: "application/json",
+          authorization: `Bearer ${token}`,
+        },
+      });
+      const payload = (await response.json()) as SpeakerDinnerStatus &
+        FormResponse;
+
+      if (!response.ok || payload.error) {
+        throw new Error(
+          payload.error || "This invitation link could not be opened.",
+        );
+      }
+
+      renderResponse(payload);
+    } catch (error) {
+      showError(
+        error instanceof Error
+          ? error.message
+          : "This invitation link could not be opened.",
+      );
+    }
+  }
+
+  void loadInvitation();
+}
+
+function initAdminSpeakerDinner() {
+  const speakersRoot = document.querySelector<HTMLElement>(
+    "[data-admin-dinner-speakers]",
+  );
+
+  if (!speakersRoot) return;
+
+  const root = speakersRoot;
+  const status = document.querySelector<HTMLElement>(
+    "[data-admin-dinner-status]",
+  );
+  const refreshButton = document.querySelector<HTMLButtonElement>(
+    "[data-admin-dinner-refresh]",
+  );
+  const purgeButton = document.querySelector<HTMLButtonElement>(
+    "[data-admin-dinner-purge]",
+  );
+
+  function setStatus(message: string) {
+    if (status) status.textContent = message;
+  }
+
+  function createElement<K extends keyof HTMLElementTagNameMap>(
+    tagName: K,
+    className?: string,
+    textContent?: string,
+  ) {
+    const element = document.createElement(tagName);
+    if (className) element.className = className;
+    if (textContent !== undefined) element.textContent = textContent;
+    return element;
+  }
+
+  function updateSummary(speakers: SpeakerDinnerAdminItem[]) {
+    const counts = {
+      invited: speakers.filter((speaker) => speaker.invited).length,
+      attending: speakers.filter(
+        (speaker) => speaker.response?.attendance === "attending",
+      ).length,
+      not_attending: speakers.filter(
+        (speaker) => speaker.response?.attendance === "not_attending",
+      ).length,
+      pending: speakers.filter((speaker) => !speaker.response).length,
+    };
+
+    for (const [name, count] of Object.entries(counts)) {
+      const element = document.querySelector(
+        `[data-admin-dinner-count="${name}"]`,
+      );
+      if (element) element.textContent = String(count);
+    }
+  }
+
+  function addDinnerField(list: HTMLElement, label: string, value: string) {
+    const group = createElement("div", "grid min-w-0 gap-1");
+    group.appendChild(
+      createElement(
+        "dt",
+        "text-xs font-bold uppercase tracking-wide text-muted",
+        label,
+      ),
+    );
+    group.appendChild(
+      createElement(
+        "dd",
+        "whitespace-pre-wrap break-words leading-6",
+        value || "-",
+      ),
+    );
+    list.appendChild(group);
+  }
+
+  async function copyInviteLink(
+    input: HTMLInputElement,
+    button: HTMLButtonElement,
+  ) {
+    try {
+      await navigator.clipboard.writeText(input.value);
+      button.textContent = "Copied";
+    } catch {
+      input.select();
+      document.execCommand("copy");
+      button.textContent = "Copied";
+    }
+  }
+
+  function renderSpeakers(speakers: SpeakerDinnerAdminItem[]) {
+    root.replaceChildren();
+    updateSummary(speakers);
+
+    for (const speaker of speakers) {
+      const article = createElement(
+        "article",
+        "grid border border-ink bg-paper lg:grid-cols-[minmax(16rem,0.6fr)_minmax(0,1fr)]",
+      );
+      const header = createElement(
+        "header",
+        "grid content-between gap-5 bg-ink p-5 text-paper",
+      );
+      const titleGroup = createElement("div");
+      const state = speaker.response
+        ? speaker.response.attendance === "attending"
+          ? "Attending"
+          : "Not attending"
+        : speaker.invited
+          ? "Awaiting reply"
+          : "No link created";
+      titleGroup.appendChild(
+        createElement("p", "text-xs font-bold uppercase text-paper/60", state),
+      );
+      titleGroup.appendChild(
+        createElement(
+          "h3",
+          "mt-2 font-headline text-3xl font-black uppercase leading-none",
+          speaker.name,
+        ),
+      );
+
+      const inviteGroup = createElement("div", "grid gap-2");
+      const inviteButton = createElement(
+        "button",
+        "border border-paper bg-paper px-4 py-3 text-sm font-bold uppercase text-ink transition hover:bg-ink hover:text-paper disabled:cursor-wait disabled:opacity-60",
+        speaker.invited ? "Replace private link" : "Create private link",
+      );
+      inviteButton.type = "button";
+      const inviteStatus = createElement(
+        "p",
+        "min-h-5 text-xs font-bold uppercase text-paper/70",
+      );
+      inviteStatus.setAttribute("aria-live", "polite");
+      inviteGroup.appendChild(inviteButton);
+      inviteGroup.appendChild(inviteStatus);
+
+      inviteButton.addEventListener("click", async () => {
+        inviteButton.disabled = true;
+        inviteStatus.textContent = "Creating link...";
+
+        try {
+          const body = new FormData();
+          body.append("speaker_id", speaker.speaker_id);
+          const response = await fetch("/api/admin/speaker-dinner/invite", {
+            method: "POST",
+            headers: {
+              accept: "application/json",
+              "x-admin-action": "rotate-speaker-dinner-invite",
+            },
+            body,
+          });
+          const result = (await response.json()) as FormResponse & {
+            invite_url?: string;
+          };
+
+          if (!response.ok || result.error || !result.invite_url) {
+            throw new Error(
+              result.error || "Could not create invitation link.",
+            );
+          }
+
+          inviteGroup.querySelector("[data-dinner-created-link]")?.remove();
+          const linkGroup = createElement(
+            "div",
+            "grid gap-2 border border-paper/50 p-2",
+          );
+          linkGroup.dataset.dinnerCreatedLink = "";
+          const linkInput = createElement(
+            "input",
+            "min-w-0 border border-paper bg-ink px-3 py-2 text-xs text-paper",
+          );
+          linkInput.readOnly = true;
+          linkInput.value = result.invite_url;
+          linkInput.setAttribute(
+            "aria-label",
+            `Private link for ${speaker.name}`,
+          );
+          const copyButton = createElement(
+            "button",
+            "border border-paper px-3 py-2 text-xs font-bold uppercase",
+            "Copy link",
+          );
+          copyButton.type = "button";
+          copyButton.addEventListener("click", () => {
+            void copyInviteLink(linkInput, copyButton);
+          });
+          linkGroup.appendChild(linkInput);
+          linkGroup.appendChild(copyButton);
+          inviteGroup.appendChild(linkGroup);
+          speaker.invited = true;
+          inviteButton.textContent = "Replace private link";
+          inviteStatus.textContent =
+            "New link ready. Earlier links no longer work.";
+          updateSummary(speakers);
+          setStatus(
+            result.message || `Invitation link created for ${speaker.name}.`,
+          );
+        } catch (error) {
+          inviteStatus.textContent =
+            error instanceof Error ? error.message : "Could not create link.";
+        } finally {
+          inviteButton.disabled = false;
+        }
+      });
+
+      header.appendChild(titleGroup);
+      header.appendChild(inviteGroup);
+
+      const details = createElement(
+        "dl",
+        "grid content-start gap-x-8 gap-y-5 p-5 text-sm sm:grid-cols-2",
+      );
+      addDinnerField(
+        details,
+        "Attendance",
+        speaker.response?.attendance.replace("_", " ") ?? "Pending",
+      );
+      addDinnerField(details, "Meal", speaker.response?.meal_preference ?? "");
+      addDinnerField(
+        details,
+        "Food requirements",
+        speaker.response?.food_requirements ?? "",
+      );
+      addDinnerField(
+        details,
+        "Cross-contamination",
+        speaker.response?.cross_contamination ?? "",
+      );
+      addDinnerField(details, "Responded", speaker.responded_at ?? "");
+      addDinnerField(details, "Invitation updated", speaker.updated_at ?? "");
+
+      article.appendChild(header);
+      article.appendChild(details);
+      root.appendChild(article);
+    }
+  }
+
+  async function loadSpeakers(successMessage?: string) {
+    refreshButton?.setAttribute("disabled", "true");
+    if (!successMessage) setStatus("Loading dinner responses...");
+
+    try {
+      const response = await fetch("/api/admin/speaker-dinner", {
+        headers: { accept: "application/json" },
+      });
+      const payload = (await response.json()) as FormResponse & {
+        speakers?: SpeakerDinnerAdminItem[];
+      };
+
+      if (!response.ok || payload.error) {
+        throw new Error(payload.error || "Could not load dinner responses.");
+      }
+
+      const speakers = Array.isArray(payload.speakers) ? payload.speakers : [];
+      renderSpeakers(speakers);
+      setStatus(successMessage || `${speakers.length} speakers`);
+    } catch (error) {
+      root.replaceChildren(
+        createElement(
+          "p",
+          "border border-ink p-5 text-muted",
+          error instanceof Error ? error.message : "Could not load responses.",
+        ),
+      );
+      setStatus("Failed to load");
+    } finally {
+      refreshButton?.removeAttribute("disabled");
+    }
+  }
+
+  refreshButton?.addEventListener("click", () => void loadSpeakers());
+  purgeButton?.addEventListener("click", async () => {
+    const confirmation = window.prompt(
+      "Type DELETE to remove every speaker dinner invitation and response.",
+    );
+
+    if (confirmation !== "DELETE") return;
+
+    purgeButton.disabled = true;
+    setStatus("Deleting dinner data...");
+
+    try {
+      const response = await fetch("/api/admin/speaker-dinner/purge", {
+        method: "POST",
+        headers: {
+          accept: "application/json",
+          "x-admin-action": "purge-speaker-dinner-data",
+        },
+        body: new URLSearchParams({ confirmation }),
+      });
+      const result = (await response.json()) as FormResponse;
+
+      if (!response.ok || result.error) {
+        throw new Error(result.error || "Could not delete dinner data.");
+      }
+
+      await loadSpeakers("Dinner invitations and responses deleted.");
+    } catch (error) {
+      setStatus(
+        error instanceof Error
+          ? error.message
+          : "Could not delete dinner data.",
+      );
+    } finally {
+      purgeButton.disabled = false;
+    }
+  });
+
+  void loadSpeakers();
+}
+
 function initTitoWidget() {
   const widget = document.querySelector("[data-tito-ticket-widget]");
 
@@ -869,6 +1408,8 @@ initInterestForm();
 initPosterForm();
 initAdminInterests();
 initAdminPosterProposals();
+initSpeakerDinnerForm();
+initAdminSpeakerDinner();
 initTitoWidget();
 
 export {};
