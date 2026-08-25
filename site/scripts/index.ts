@@ -73,6 +73,13 @@ type SpeakerDinnerAdminItem = {
   updated_at: string | null;
 };
 
+type SpeakerDinnerSharedAdminItem = {
+  name: string;
+  responded_at: string;
+  response: SpeakerDinnerResponse;
+  updated_at: string;
+};
+
 type SpeakerDinnerStatus = {
   closed: boolean;
   deadline: string;
@@ -873,9 +880,51 @@ function initSpeakerDinnerForm() {
     "[data-dinner-submit]",
   );
   const status = dinnerForm.querySelector<HTMLElement>("[data-dinner-status]");
-  const tokenStorageKey = "sdlcai-speaker-dinner-token";
+  const nameField = dinnerForm.querySelector<HTMLElement>(
+    "[data-dinner-name-field]",
+  );
+  const nameInput = dinnerForm.elements.namedItem("name");
+  const inviteEyebrow = document.querySelector<HTMLElement>(
+    "[data-dinner-invite-eyebrow]",
+  );
+  const linkCopy = document.querySelector<HTMLElement>(
+    "[data-dinner-link-copy]",
+  );
+  const isSharedInvitation = location.pathname === "/speaker-dinner/shared/";
+  const apiEndpoint = isSharedInvitation
+    ? "/api/speaker-dinner/shared"
+    : "/api/speaker-dinner";
+  const tokenStorageKey = isSharedInvitation
+    ? "sdlcai-speaker-dinner-shared-token"
+    : "sdlcai-speaker-dinner-token";
+  const responseIdStorageKey = "sdlcai-speaker-dinner-shared-response-id";
   let token = window.location.hash.slice(1);
+  let responseId = "";
   let isClosed = false;
+
+  if (isSharedInvitation) {
+    if (inviteEyebrow) {
+      inviteEyebrow.textContent = "Shared invitation / 12.10.2026";
+    }
+    if (linkCopy) {
+      linkCopy.textContent =
+        "This shared link is for speakers and organizers. Dinner timing and venue details will be shared separately.";
+    }
+    if (speakerName) speakerName.textContent = "Speakers + organizers";
+    if (nameField) nameField.hidden = false;
+    if (nameInput instanceof HTMLInputElement) nameInput.required = true;
+
+    try {
+      responseId = sessionStorage.getItem(responseIdStorageKey) ?? "";
+
+      if (!responseId) {
+        responseId = crypto.randomUUID();
+        sessionStorage.setItem(responseIdStorageKey, responseId);
+      }
+    } catch {
+      responseId = crypto.randomUUID();
+    }
+  }
 
   if (/^[A-Za-z0-9_-]{43}$/u.test(token)) {
     try {
@@ -896,6 +945,19 @@ function initSpeakerDinnerForm() {
 
   function setStatus(message: string) {
     if (status) status.textContent = message;
+  }
+
+  function getDinnerRequestHeaders() {
+    const headers: Record<string, string> = {
+      accept: "application/json",
+      authorization: `Bearer ${token}`,
+    };
+
+    if (isSharedInvitation) {
+      headers["x-dinner-response-id"] = responseId;
+    }
+
+    return headers;
   }
 
   function setRadioValue(name: string, value: string) {
@@ -932,7 +994,9 @@ function initSpeakerDinnerForm() {
     if (loading) loading.hidden = true;
     if (errorRoot) errorRoot.hidden = true;
     dinnerForm.hidden = false;
-    if (speakerName) speakerName.textContent = payload.name;
+    if (speakerName && !isSharedInvitation) {
+      speakerName.textContent = payload.name;
+    }
     if (deadline) {
       deadline.textContent = new Intl.DateTimeFormat("en-GB", {
         dateStyle: "long",
@@ -952,6 +1016,14 @@ function initSpeakerDinnerForm() {
       if (requirements instanceof HTMLTextAreaElement) {
         requirements.value = payload.response.food_requirements;
       }
+    }
+
+    if (
+      isSharedInvitation &&
+      nameInput instanceof HTMLInputElement &&
+      payload.name
+    ) {
+      nameInput.value = payload.name;
     }
 
     updateMealFields();
@@ -992,12 +1064,9 @@ function initSpeakerDinnerForm() {
     setStatus("Saving your response...");
 
     try {
-      const response = await fetch("/api/speaker-dinner", {
+      const response = await fetch(apiEndpoint, {
         method: "POST",
-        headers: {
-          accept: "application/json",
-          authorization: `Bearer ${token}`,
-        },
+        headers: getDinnerRequestHeaders(),
         body: new FormData(dinnerForm),
       });
       const result = (await response.json()) as FormResponse;
@@ -1021,17 +1090,16 @@ function initSpeakerDinnerForm() {
   async function loadInvitation() {
     if (!/^[A-Za-z0-9_-]{43}$/u.test(token)) {
       showError(
-        "This page needs the unique link sent to you by the SDLCAI team.",
+        isSharedInvitation
+          ? "This page needs the shared invitation link sent by the SDLCAI team."
+          : "This page needs the unique link sent to you by the SDLCAI team.",
       );
       return;
     }
 
     try {
-      const response = await fetch("/api/speaker-dinner", {
-        headers: {
-          accept: "application/json",
-          authorization: `Bearer ${token}`,
-        },
+      const response = await fetch(apiEndpoint, {
+        headers: getDinnerRequestHeaders(),
       });
       const payload = (await response.json()) as SpeakerDinnerStatus &
         FormResponse;
@@ -1063,6 +1131,9 @@ function initAdminSpeakerDinner() {
   if (!speakersRoot) return;
 
   const root = speakersRoot;
+  const sharedResponsesRoot = document.querySelector<HTMLElement>(
+    "[data-admin-dinner-shared-responses]",
+  );
   const status = document.querySelector<HTMLElement>(
     "[data-admin-dinner-status]",
   );
@@ -1071,6 +1142,15 @@ function initAdminSpeakerDinner() {
   );
   const purgeButton = document.querySelector<HTMLButtonElement>(
     "[data-admin-dinner-purge]",
+  );
+  const sharedInviteButton = document.querySelector<HTMLButtonElement>(
+    "[data-admin-dinner-shared-invite]",
+  );
+  const sharedInviteStatus = document.querySelector<HTMLElement>(
+    "[data-admin-dinner-shared-invite-status]",
+  );
+  const sharedLinkRoot = document.querySelector<HTMLElement>(
+    "[data-admin-dinner-shared-link]",
   );
 
   function setStatus(message: string) {
@@ -1088,16 +1168,24 @@ function initAdminSpeakerDinner() {
     return element;
   }
 
-  function updateSummary(speakers: SpeakerDinnerAdminItem[]) {
+  function updateSummary(
+    speakers: SpeakerDinnerAdminItem[],
+    sharedResponses: SpeakerDinnerSharedAdminItem[],
+  ) {
+    const allResponses = [
+      ...speakers.map((speaker) => speaker.response).filter(Boolean),
+      ...sharedResponses.map((item) => item.response),
+    ];
     const counts = {
       invited: speakers.filter((speaker) => speaker.invited).length,
-      attending: speakers.filter(
-        (speaker) => speaker.response?.attendance === "attending",
+      attending: allResponses.filter(
+        (response) => response?.attendance === "attending",
       ).length,
-      not_attending: speakers.filter(
-        (speaker) => speaker.response?.attendance === "not_attending",
+      not_attending: allResponses.filter(
+        (response) => response?.attendance === "not_attending",
       ).length,
       pending: speakers.filter((speaker) => !speaker.response).length,
+      shared: sharedResponses.length,
     };
 
     for (const [name, count] of Object.entries(counts)) {
@@ -1141,9 +1229,115 @@ function initAdminSpeakerDinner() {
     }
   }
 
-  function renderSpeakers(speakers: SpeakerDinnerAdminItem[]) {
+  function renderCreatedLink(
+    container: HTMLElement,
+    inviteUrl: string,
+    label: string,
+  ) {
+    container.replaceChildren();
+    const linkGroup = createElement(
+      "div",
+      "grid gap-2 border border-paper/50 p-2 sm:grid-cols-[minmax(0,1fr)_auto]",
+    );
+    const linkInput = createElement(
+      "input",
+      "min-w-0 border border-paper bg-ink px-3 py-2 text-xs text-paper",
+    );
+    linkInput.readOnly = true;
+    linkInput.value = inviteUrl;
+    linkInput.setAttribute("aria-label", label);
+    const copyButton = createElement(
+      "button",
+      "border border-paper px-3 py-2 text-xs font-bold uppercase",
+      "Copy link",
+    );
+    copyButton.type = "button";
+    copyButton.addEventListener("click", () => {
+      void copyInviteLink(linkInput, copyButton);
+    });
+    linkGroup.appendChild(linkInput);
+    linkGroup.appendChild(copyButton);
+    container.appendChild(linkGroup);
+  }
+
+  function renderSharedResponses(items: SpeakerDinnerSharedAdminItem[]) {
+    if (!sharedResponsesRoot) return;
+
+    sharedResponsesRoot.replaceChildren();
+
+    if (!items.length) {
+      sharedResponsesRoot.appendChild(
+        createElement(
+          "p",
+          "border border-ink p-5 text-muted",
+          "No shared-link responses yet.",
+        ),
+      );
+      return;
+    }
+
+    for (const item of items) {
+      const article = createElement(
+        "article",
+        "grid border border-ink bg-paper lg:grid-cols-[minmax(16rem,0.6fr)_minmax(0,1fr)]",
+      );
+      const header = createElement(
+        "header",
+        "grid content-start gap-3 bg-ink p-5 text-paper",
+      );
+      header.appendChild(
+        createElement(
+          "p",
+          "text-xs font-bold uppercase text-paper/60",
+          item.response.attendance === "attending"
+            ? "Shared link / attending"
+            : "Shared link / not attending",
+        ),
+      );
+      header.appendChild(
+        createElement(
+          "h4",
+          "font-headline text-3xl font-black uppercase leading-none",
+          item.name,
+        ),
+      );
+
+      const details = createElement(
+        "dl",
+        "grid content-start gap-x-8 gap-y-5 p-5 text-sm sm:grid-cols-2",
+      );
+      addDinnerField(
+        details,
+        "Attendance",
+        item.response.attendance.replace("_", " "),
+      );
+      addDinnerField(details, "Meal", item.response.meal_preference);
+      addDinnerField(
+        details,
+        "Food requirements",
+        item.response.food_requirements,
+      );
+      addDinnerField(
+        details,
+        "Cross-contamination",
+        item.response.cross_contamination,
+      );
+      addDinnerField(details, "Responded", item.responded_at);
+      addDinnerField(details, "Last updated", item.updated_at);
+
+      article.appendChild(header);
+      article.appendChild(details);
+      sharedResponsesRoot.appendChild(article);
+    }
+  }
+
+  function renderSpeakers(
+    speakers: SpeakerDinnerAdminItem[],
+    sharedResponses: SpeakerDinnerSharedAdminItem[],
+  ) {
     root.replaceChildren();
-    updateSummary(speakers);
+    renderSharedResponses(sharedResponses);
+    updateSummary(speakers, sharedResponses);
 
     for (const speaker of speakers) {
       const article = createElement(
@@ -1245,7 +1439,7 @@ function initAdminSpeakerDinner() {
           inviteButton.textContent = "Replace private link";
           inviteStatus.textContent =
             "New link ready. Earlier links no longer work.";
-          updateSummary(speakers);
+          updateSummary(speakers, sharedResponses);
           setStatus(
             result.message || `Invitation link created for ${speaker.name}.`,
           );
@@ -1298,6 +1492,8 @@ function initAdminSpeakerDinner() {
         headers: { accept: "application/json" },
       });
       const payload = (await response.json()) as FormResponse & {
+        shared_invite_active?: boolean;
+        shared_responses?: SpeakerDinnerSharedAdminItem[];
         speakers?: SpeakerDinnerAdminItem[];
       };
 
@@ -1306,8 +1502,19 @@ function initAdminSpeakerDinner() {
       }
 
       const speakers = Array.isArray(payload.speakers) ? payload.speakers : [];
-      renderSpeakers(speakers);
-      setStatus(successMessage || `${speakers.length} speakers`);
+      const sharedResponses = Array.isArray(payload.shared_responses)
+        ? payload.shared_responses
+        : [];
+      renderSpeakers(speakers, sharedResponses);
+      if (sharedInviteButton) {
+        sharedInviteButton.textContent = payload.shared_invite_active
+          ? "Replace shared link"
+          : "Create shared link";
+      }
+      setStatus(
+        successMessage ||
+          `${speakers.length} speakers / ${sharedResponses.length} shared replies`,
+      );
     } catch (error) {
       root.replaceChildren(
         createElement(
@@ -1321,6 +1528,53 @@ function initAdminSpeakerDinner() {
       refreshButton?.removeAttribute("disabled");
     }
   }
+
+  sharedInviteButton?.addEventListener("click", async () => {
+    sharedInviteButton.disabled = true;
+    if (sharedInviteStatus) {
+      sharedInviteStatus.textContent = "Creating shared link...";
+    }
+
+    try {
+      const response = await fetch("/api/admin/speaker-dinner/shared-invite", {
+        method: "POST",
+        headers: {
+          accept: "application/json",
+          "x-admin-action": "rotate-speaker-dinner-shared-invite",
+        },
+      });
+      const result = (await response.json()) as FormResponse & {
+        invite_url?: string;
+      };
+
+      if (!response.ok || result.error || !result.invite_url) {
+        throw new Error(result.error || "Could not create shared link.");
+      }
+
+      if (sharedLinkRoot) {
+        renderCreatedLink(
+          sharedLinkRoot,
+          result.invite_url,
+          "Shared dinner invitation link",
+        );
+      }
+      sharedInviteButton.textContent = "Replace shared link";
+      if (sharedInviteStatus) {
+        sharedInviteStatus.textContent =
+          "New link ready. Earlier shared links no longer work.";
+      }
+      setStatus(result.message || "Shared invitation link created.");
+    } catch (error) {
+      if (sharedInviteStatus) {
+        sharedInviteStatus.textContent =
+          error instanceof Error
+            ? error.message
+            : "Could not create shared link.";
+      }
+    } finally {
+      sharedInviteButton.disabled = false;
+    }
+  });
 
   refreshButton?.addEventListener("click", () => void loadSpeakers());
   purgeButton?.addEventListener("click", async () => {

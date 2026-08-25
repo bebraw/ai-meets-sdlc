@@ -396,6 +396,20 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   );
   assert.doesNotMatch(dinnerPageHtml, /Mo Khazali/);
 
+  const sharedDinnerPageResponse = await worker.fetch(
+    `${origin}/speaker-dinner/shared/`,
+    { headers: { accept: "text/html" } },
+  );
+  const sharedDinnerPageHtml = await sharedDinnerPageResponse.text();
+
+  assert.equal(sharedDinnerPageResponse.status, 200);
+  assert.equal(
+    sharedDinnerPageResponse.headers.get("x-robots-tag"),
+    "noindex, nofollow, noarchive",
+  );
+  assert.match(sharedDinnerPageHtml, /data-dinner-name-field/);
+  assert.doesNotMatch(sharedDinnerPageHtml, /Mo Khazali/);
+
   const unauthorizedDinnerAdminResponse = await worker.fetch(
     `${origin}/api/admin/speaker-dinner`,
   );
@@ -409,6 +423,8 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
 
   assert.equal(initialDinnerAdminResponse.status, 200);
   assert.equal(initialDinnerAdmin.speakers.length, 9);
+  assert.deepEqual(initialDinnerAdmin.shared_responses, []);
+  assert.equal(initialDinnerAdmin.shared_invite_active, false);
   assert.equal(
     initialDinnerAdmin.speakers.every((speaker) => !speaker.invited),
     true,
@@ -423,6 +439,72 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
     },
   );
   assert.equal(forbiddenInviteResponse.status, 403);
+
+  const forbiddenSharedInviteResponse = await worker.fetch(
+    `${origin}/api/admin/speaker-dinner/shared-invite`,
+    {
+      method: "POST",
+      headers: { authorization: adminAuthorization },
+    },
+  );
+  assert.equal(forbiddenSharedInviteResponse.status, 403);
+
+  const createSharedDinnerInvite = () =>
+    worker.fetch(`${origin}/api/admin/speaker-dinner/shared-invite`, {
+      method: "POST",
+      headers: {
+        authorization: adminAuthorization,
+        origin,
+        "x-admin-action": "rotate-speaker-dinner-shared-invite",
+      },
+    });
+  const sharedInviteResponse = await createSharedDinnerInvite();
+  const sharedInvite = await sharedInviteResponse.json();
+  const sharedInviteToken = new URL(sharedInvite.invite_url).hash.slice(1);
+
+  assert.equal(sharedInviteResponse.status, 201);
+  assert.match(sharedInviteToken, /^[A-Za-z0-9_-]{43}$/);
+  assert.match(sharedInvite.invite_url, /\/speaker-dinner\/shared\/#/);
+
+  const sharedResponseId = crypto.randomUUID();
+  const emptySharedStatusResponse = await worker.fetch(
+    `${origin}/api/speaker-dinner/shared`,
+    {
+      headers: {
+        authorization: `Bearer ${sharedInviteToken}`,
+        "x-dinner-response-id": sharedResponseId,
+      },
+    },
+  );
+  const emptySharedStatus = await emptySharedStatusResponse.json();
+
+  assert.equal(emptySharedStatusResponse.status, 200);
+  assert.equal(emptySharedStatus.name, "");
+  assert.equal(emptySharedStatus.response, null);
+
+  const sharedSubmissionResponse = await worker.fetch(
+    `${origin}/api/speaker-dinner/shared`,
+    {
+      method: "POST",
+      body: new URLSearchParams({
+        attendance: "attending",
+        consent: "yes",
+        cross_contamination: "no",
+        food_requirements: "Gluten-free",
+        meal_preference: "vegetarian",
+        name: "Organizer Example",
+      }),
+      headers: {
+        authorization: `Bearer ${sharedInviteToken}`,
+        "x-dinner-response-id": sharedResponseId,
+      },
+    },
+  );
+  const sharedSubmission = await sharedSubmissionResponse.json();
+
+  assert.equal(sharedSubmissionResponse.status, 200);
+  assert.equal(sharedSubmission.ok, true);
+  assert.equal(sharedSubmission.name, "Organizer Example");
 
   const createDinnerInvite = () =>
     worker.fetch(`${origin}/api/admin/speaker-dinner/invite`, {
@@ -495,6 +577,20 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
     food_requirements: "Severe hazelnut allergy",
     meal_preference: "vegan",
   });
+  assert.equal(dinnerAdmin.shared_invite_active, true);
+  assert.deepEqual(dinnerAdmin.shared_responses, [
+    {
+      name: "Organizer Example",
+      responded_at: dinnerAdmin.shared_responses[0].responded_at,
+      response: {
+        attendance: "attending",
+        cross_contamination: "no",
+        food_requirements: "Gluten-free",
+        meal_preference: "vegetarian",
+      },
+      updated_at: dinnerAdmin.shared_responses[0].updated_at,
+    },
+  ]);
 
   const dinnerCsvResponse = await worker.fetch(
     `${origin}/api/admin/speaker-dinner.csv`,
@@ -505,6 +601,9 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   assert.equal(dinnerCsvResponse.status, 200);
   assert.match(dinnerCsv, /Mo Khazali/);
   assert.match(dinnerCsv, /Severe hazelnut allergy/);
+  assert.match(dinnerCsv, /Organizer Example/);
+  assert.match(dinnerCsv, /Gluten-free/);
+  assert.match(dinnerCsv, /shared link/);
   assert.doesNotMatch(dinnerCsv, /consent|token|responded_at/i);
 
   const replacementInviteResponse = await createDinnerInvite();
@@ -523,6 +622,30 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   assert.equal(invalidatedInviteResponse.status, 404);
   assert.equal(replacementStatusResponse.status, 200);
   assert.equal(replacementStatus.response.meal_preference, "vegan");
+
+  const replacementSharedInviteResponse = await createSharedDinnerInvite();
+  const replacementSharedInvite = await replacementSharedInviteResponse.json();
+  const replacementSharedToken = new URL(
+    replacementSharedInvite.invite_url,
+  ).hash.slice(1);
+  const invalidatedSharedInviteResponse = await worker.fetch(
+    `${origin}/api/speaker-dinner/shared`,
+    { headers: { authorization: `Bearer ${sharedInviteToken}` } },
+  );
+  const replacementSharedStatusResponse = await worker.fetch(
+    `${origin}/api/speaker-dinner/shared`,
+    {
+      headers: {
+        authorization: `Bearer ${replacementSharedToken}`,
+        "x-dinner-response-id": sharedResponseId,
+      },
+    },
+  );
+  const replacementSharedStatus = await replacementSharedStatusResponse.json();
+
+  assert.equal(invalidatedSharedInviteResponse.status, 404);
+  assert.equal(replacementSharedStatusResponse.status, 200);
+  assert.equal(replacementSharedStatus.name, "Organizer Example");
 
   const adminResponse = await worker.fetch(
     `${origin}/api/admin/poster-proposals`,
@@ -619,13 +742,19 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   const purge = await purgeResponse.json();
 
   assert.equal(purgeResponse.status, 200);
-  assert.equal(purge.deleted, 1);
+  assert.equal(purge.deleted, 3);
 
   const purgedInviteResponse = await worker.fetch(
     `${origin}/api/speaker-dinner`,
     { headers: { authorization: `Bearer ${replacementToken}` } },
   );
   assert.equal(purgedInviteResponse.status, 404);
+
+  const purgedSharedInviteResponse = await worker.fetch(
+    `${origin}/api/speaker-dinner/shared`,
+    { headers: { authorization: `Bearer ${replacementSharedToken}` } },
+  );
+  assert.equal(purgedSharedInviteResponse.status, 404);
 });
 
 test("poster proposal validation and Turnstile fail closed", async (t) => {

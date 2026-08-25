@@ -330,6 +330,25 @@
         "ogEyebrow": "Private invitation",
         "ogDescription": "Private RSVP for the SDLCAI speaker dinner."
       }
+    },
+    "routes": {
+      "shared": {
+        "layout": "speaker-dinner",
+        "scripts": [{ "name": "index" }],
+        "dataSources": {
+          "seminar": {
+            "operation": "seminar"
+          }
+        },
+        "context": {
+          "meta": {
+            "title": "SDLCAI Shared Dinner RSVP",
+            "description": "Unlisted shared RSVP for the SDLCAI dinner on 12 October 2026.",
+            "ogEyebrow": "Shared invitation",
+            "ogDescription": "Unlisted shared RSVP for the SDLCAI dinner."
+          }
+        }
+      }
     }
   },
   "contact": {

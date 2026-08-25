@@ -14,7 +14,10 @@
     >
       <header class="grid content-start gap-6">
         <div>
-          <p class="font-headline text-sm font-black uppercase text-muted">
+          <p
+            class="font-headline text-sm font-black uppercase text-muted"
+            data-dinner-invite-eyebrow
+          >
             Private invitation / 12.10.2026
           </p>
           <h1
@@ -30,7 +33,7 @@
             Tell us whether you can join the SDLCAI speakers’ dinner and what
             the kitchen should know.
           </p>
-          <p class="text-muted">
+          <p class="text-muted" data-dinner-link-copy>
             Your personal link opens this form. Dinner timing and venue details
             will be shared separately.
           </p>
@@ -77,6 +80,26 @@
               Respond by <span data-dinner-deadline>5 October 2026</span>
             </p>
           </div>
+
+          <label
+            class="grid gap-2 border-b border-ink pb-7"
+            data-dinner-name-field
+            hidden
+          >
+            <span class="font-headline text-2xl font-black uppercase"
+              >Your name</span
+            >
+            <span class="text-sm leading-6 text-muted">
+              So the organizers can match this response to you.
+            </span>
+            <input
+              class="w-full border border-ink bg-paper px-4 py-3 text-ink outline-none focus:ring-2 focus:ring-ink"
+              maxlength="120"
+              name="name"
+              autocomplete="name"
+              type="text"
+            />
+          </label>
 
           <fieldset class="grid gap-3">
             <legend class="font-headline text-2xl font-black uppercase">
