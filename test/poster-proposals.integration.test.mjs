@@ -185,6 +185,67 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   );
   assert.equal(unauthorizedResponse.status, 401);
 
+  const publicSlidesResponse = await worker.fetch(`${origin}/slides/`, {
+    headers: { accept: "text/html" },
+  });
+  assert.equal(publicSlidesResponse.status, 404);
+
+  const internalSlidesResponse = await worker.fetch(`${origin}/admin-slides/`, {
+    headers: { authorization: adminAuthorization },
+  });
+  assert.equal(internalSlidesResponse.status, 404);
+
+  const unauthorizedSlidesResponse = await worker.fetch(
+    `${origin}/admin/slides/`,
+    { headers: { accept: "text/html" } },
+  );
+  assert.equal(unauthorizedSlidesResponse.status, 401);
+  assert.equal(
+    unauthorizedSlidesResponse.headers.get("x-robots-tag"),
+    "noindex, nofollow, noarchive",
+  );
+
+  const slidesResponse = await worker.fetch(`${origin}/admin/slides/`, {
+    headers: {
+      accept: "text/html",
+      authorization: adminAuthorization,
+    },
+  });
+  const slidesHtml = await slidesResponse.text();
+
+  assert.equal(slidesResponse.status, 200);
+  assert.equal(slidesResponse.headers.get("cache-control"), "no-store");
+  assert.equal(
+    slidesResponse.headers.get("x-robots-tag"),
+    "noindex, nofollow, noarchive",
+  );
+  assert.match(slidesResponse.headers.get("vary") ?? "", /authorization/i);
+  assert.match(
+    slidesHtml,
+    /<meta name="robots" content="noindex,nofollow,noarchive">/,
+  );
+
+  const unauthorizedSlidesPdfResponse = await worker.fetch(
+    `${origin}/assets/slides/sdlcai-2026-screen-ad.pdf`,
+  );
+  assert.equal(unauthorizedSlidesPdfResponse.status, 401);
+
+  const slidesPdfResponse = await worker.fetch(
+    `${origin}/assets/slides/sdlcai-2026-screen-ad.pdf`,
+    { headers: { authorization: adminAuthorization } },
+  );
+
+  assert.equal(slidesPdfResponse.status, 200);
+  assert.match(
+    slidesPdfResponse.headers.get("content-type") ?? "",
+    /^application\/pdf/,
+  );
+  assert.equal(slidesPdfResponse.headers.get("cache-control"), "no-store");
+  assert.equal(
+    slidesPdfResponse.headers.get("x-robots-tag"),
+    "noindex, nofollow, noarchive",
+  );
+
   const adminResponse = await worker.fetch(
     `${origin}/api/admin/poster-proposals`,
     { headers: { authorization: adminAuthorization } },

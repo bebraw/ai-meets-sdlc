@@ -123,9 +123,11 @@ EMAIL_ENCRYPTION_KEY=... npm run --silent interests:export -- --input backup.jso
 EMAIL_ENCRYPTION_KEY=... npm run --silent interests:export -- --remote --format json
 ```
 
-The deployed Worker also serves `/admin/` behind HTTP Basic auth. Set
-`ADMIN_USERNAME` and `ADMIN_PASSWORD` as Worker secrets to enable it. The page
-lists interested people and links to `/api/admin/interests.csv` for CSV export.
+The deployed Worker also serves `/admin/` and `/admin/slides/` behind HTTP Basic
+auth. Set `ADMIN_USERNAME` and `ADMIN_PASSWORD` as Worker secrets to enable
+them. Slide downloads under `/assets/slides/` use the same protection. The admin
+desk lists interested people and links to `/api/admin/interests.csv` for CSV
+export.
 
 ## Deployment
 

@@ -90,7 +90,7 @@
       }
     }
   },
-  "slides": {
+  "admin-slides": {
     "layout": "slides",
     "scripts": [{ "name": "index" }],
     "dataSources": {
@@ -100,10 +100,10 @@
     },
     "context": {
       "meta": {
-        "title": "SDLCAI Slides",
-        "description": "Download presentation and screen assets for SDLCAI 2026.",
-        "ogEyebrow": "Slides",
-        "ogDescription": "Presentation and screen assets for SDLCAI 2026."
+        "title": "SDLCAI Admin Slides",
+        "description": "Protected presentation and screen assets for SDLCAI 2026.",
+        "ogEyebrow": "Admin slides",
+        "ogDescription": "Protected presentation and screen assets for SDLCAI 2026."
       }
     }
   },

@@ -119,9 +119,10 @@ after `POSTER_PROPOSAL_DEADLINE`; oversized submissions return `413`. Turnstile
 tokens are always verified by the Worker when the secret is configured;
 client-side gating is only a user experience safeguard.
 
-The admin page is available at `/admin/`. It and every `/api/admin/` route are
-protected with HTTP Basic auth. Admin responses containing personal data use
-`Cache-Control: no-store`.
+The admin pages are available at `/admin/` and `/admin/slides/`. They, every
+`/api/admin/` route, and all `/assets/slides/` downloads are protected with HTTP
+Basic auth. Protected pages and downloads use `Cache-Control: no-store` and
+`X-Robots-Tag: noindex, nofollow, noarchive`.
 
 | Method | Endpoint                             | Purpose                                      |
 | ------ | ------------------------------------ | -------------------------------------------- |
