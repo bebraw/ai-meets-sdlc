@@ -56,7 +56,6 @@ type PosterProposal = {
   updated_at: string;
 };
 
-const target = new Date("2026-10-13T09:00:00+03:00");
 const units: [string, number][] = [
   ["days", 24 * 60 * 60 * 1000],
   ["hours", 60 * 60 * 1000],
@@ -64,12 +63,17 @@ const units: [string, number][] = [
   ["seconds", 1000],
 ];
 
-function renderCountdown() {
-  const root = document.querySelector("[data-countdown]");
+function renderCountdown(): boolean {
+  const root = document.querySelector<HTMLElement>("[data-countdown]");
+  const expiresAt = Date.parse(
+    root?.closest<HTMLElement>("[data-expires-at]")?.dataset.expiresAt ?? "",
+  );
 
-  if (!root) return;
+  if (!root || !Number.isFinite(expiresAt)) return false;
 
-  let remaining = Math.max(0, target.getTime() - Date.now());
+  let remaining = expiresAt - Date.now();
+
+  if (remaining <= 0) return false;
 
   for (const [name, size] of units) {
     const value = Math.floor(remaining / size);
@@ -80,6 +84,40 @@ function renderCountdown() {
     if (node) {
       node.textContent = String(value).padStart(name === "days" ? 3 : 2, "0");
     }
+  }
+
+  return true;
+}
+
+function initCountdown() {
+  if (!renderCountdown()) return;
+
+  const intervalId = window.setInterval(() => {
+    if (!renderCountdown()) {
+      window.clearInterval(intervalId);
+    }
+  }, 1000);
+}
+
+function initExpiringElements() {
+  const elements = document.querySelectorAll<HTMLElement>("[data-expires-at]");
+
+  for (const element of elements) {
+    const expiresAt = Date.parse(element.dataset.expiresAt ?? "");
+
+    if (!Number.isFinite(expiresAt)) continue;
+
+    function updateVisibility() {
+      const remaining = expiresAt - Date.now();
+
+      element.hidden = remaining <= 0;
+
+      if (remaining > 0) {
+        window.setTimeout(updateVisibility, Math.min(remaining, 2_147_000_000));
+      }
+    }
+
+    updateVisibility();
   }
 }
 
@@ -823,8 +861,8 @@ function initTitoWidget() {
   window.addEventListener("keydown", loadTitoScript, { once: true });
 }
 
-renderCountdown();
-setInterval(renderCountdown, 1000);
+initExpiringElements();
+initCountdown();
 initThemeToggle();
 initTurnstileWidgets();
 initInterestForm();
