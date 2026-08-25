@@ -52,7 +52,13 @@
     {
       "path": "./node_modules/gustwind/plugins/sitemap/mod.js",
       "options": {
-        "exclude": ["/404/", "/admin/"],
+        "exclude": [
+          "/404/",
+          "/admin/",
+          "/admin-slides/",
+          "/admin-slide-deck/",
+          "/admin-slide-schedule/"
+        ],
         "excludeNoindex": true
       }
     },

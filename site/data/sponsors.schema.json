@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sdlcai.org/schemas/sponsors.schema.json",
+  "title": "SDLCAI sponsors",
+  "type": "object",
+  "required": ["items"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "url",
+          "logo",
+          "logoWidth",
+          "logoHeight",
+          "tier",
+          "logoSurface",
+          "betweenTalks"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "logo": {
+            "type": "string",
+            "pattern": "^/assets/sponsors/.+\\.(svg|webp|png|jpg|jpeg)$"
+          },
+          "logoWidth": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "logoHeight": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "tier": {
+            "enum": ["epic", "tech", "brand", "location"]
+          },
+          "logoSurface": {
+            "enum": ["light", "dark"]
+          },
+          "betweenTalks": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

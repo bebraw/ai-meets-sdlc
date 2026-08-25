@@ -346,3 +346,786 @@
     text-wrap: balance;
   }
 }
+
+@layer components {
+  .presentation-page {
+    min-width: 20rem;
+    min-height: 100dvh;
+    overflow: hidden;
+    background: #050505;
+    color: #f6f4ef;
+  }
+
+  .presentation-deck {
+    width: 100dvw;
+    height: 100dvh;
+    overflow: hidden;
+    background: #050505;
+  }
+
+  .presentation-slide {
+    position: relative;
+    isolation: isolate;
+    display: none;
+    width: 100dvw;
+    height: 100dvh;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: clamp(0.8rem, 2.1vh, 1.7rem);
+    overflow: hidden;
+    padding: clamp(1.25rem, min(4vw, 5vh), 4.5rem);
+    background:
+      radial-gradient(
+          circle at 82% 18%,
+          rgb(246 244 239 / 0.08) 0 0.18rem,
+          transparent 0.2rem
+        )
+        0 0 / clamp(0.75rem, 1.4vw, 1.5rem) clamp(0.75rem, 1.4vw, 1.5rem),
+      #050505;
+    color: #f6f4ef;
+  }
+
+  .presentation-slide.is-active {
+    display: grid;
+    animation: presentation-slide-in 260ms ease-out both;
+  }
+
+  .supports-view-transitions .presentation-slide.is-active {
+    animation: none;
+    view-transition-name: presentation-slide;
+  }
+
+  .presentation-grid,
+  .presentation-schedule-grid {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    opacity: 0.28;
+    background-image:
+      linear-gradient(rgb(246 244 239 / 0.09) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(246 244 239 / 0.09) 1px, transparent 1px);
+    background-size: clamp(3rem, 7vw, 8rem) clamp(3rem, 7vw, 8rem);
+    mask-image: linear-gradient(135deg, #000 0%, transparent 64%);
+  }
+
+  .presentation-header,
+  .presentation-footer {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(1rem, 2vw, 2rem);
+  }
+
+  .presentation-brand {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: clamp(0.7rem, 1.4vw, 1.25rem);
+  }
+
+  .presentation-brand img {
+    width: clamp(3.6rem, 5.2vw, 5.8rem);
+    height: clamp(3.6rem, 5.2vw, 5.8rem);
+    flex: none;
+  }
+
+  .presentation-brand div {
+    display: grid;
+    gap: 0.15rem;
+  }
+
+  .presentation-brand strong {
+    font-family: "Finlandica Headline", Georgia, serif;
+    font-size: clamp(1.35rem, 2vw, 2.3rem);
+    font-weight: 900;
+    line-height: 0.82;
+    text-transform: uppercase;
+  }
+
+  .presentation-brand span,
+  .presentation-meta,
+  .presentation-kicker,
+  .presentation-progress,
+  .presentation-schedule-header p,
+  .presentation-schedule-footer > p {
+    color: rgb(246 244 239 / 0.66);
+    font-size: clamp(0.72rem, 1.05vw, 1.1rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .presentation-meta {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: clamp(0.75rem, 1.7vw, 1.6rem);
+    text-align: right;
+  }
+
+  .presentation-meta span + span {
+    border-left: 1px solid rgb(246 244 239 / 0.42);
+    padding-left: clamp(0.75rem, 1.7vw, 1.6rem);
+  }
+
+  .presentation-title-content,
+  .presentation-session-content,
+  .presentation-talk-content {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .presentation-title-content {
+    display: grid;
+    align-self: center;
+    gap: clamp(0.8rem, 2vh, 1.5rem);
+  }
+
+  .presentation-title-content h1 {
+    max-width: 11ch;
+    font-family: "Finlandica Headline", Georgia, serif;
+    font-size: clamp(4.6rem, 13.4vw, 15rem);
+    font-weight: 900;
+    line-height: 0.72;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+
+  .presentation-title-meta {
+    width: fit-content;
+    border: 1px solid rgb(246 244 239 / 0.72);
+    padding: clamp(0.7rem, 1.2vw, 1.1rem) clamp(0.9rem, 1.7vw, 1.6rem);
+    font-size: clamp(1rem, 1.65vw, 1.8rem);
+    font-weight: 700;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .presentation-session-content {
+    display: grid;
+    align-content: center;
+    gap: clamp(1rem, 2.5vh, 2rem);
+  }
+
+  .presentation-session-heading {
+    display: grid;
+    gap: clamp(0.65rem, 1.3vh, 1rem);
+  }
+
+  .presentation-session-title-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: clamp(1.5rem, 4vw, 5rem);
+    align-items: end;
+  }
+
+  .presentation-session-title-row h1 {
+    max-width: 13ch;
+    font-family: "Finlandica Headline", Georgia, serif;
+    font-size: clamp(3.8rem, 8vw, 9.2rem);
+    font-weight: 900;
+    line-height: 0.78;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+
+  .presentation-session-title-row time {
+    border: 1px solid rgb(246 244 239 / 0.72);
+    padding: clamp(0.65rem, 1vw, 1rem) clamp(0.8rem, 1.4vw, 1.35rem);
+    font-family: "Finlandica Headline", Georgia, serif;
+    font-size: clamp(1.3rem, 2.4vw, 2.8rem);
+    font-weight: 900;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .presentation-session-body {
+    max-width: 58rem;
+    color: rgb(246 244 239 / 0.68);
+    font-size: clamp(1rem, 1.45vw, 1.55rem);
+    line-height: 1.25;
+  }
+
+  .presentation-talk-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
+    gap: clamp(0.65rem, 1.4vw, 1.25rem);
+  }
+
+  .presentation-talk-card {
+    display: grid;
+    min-width: 0;
+    align-content: space-between;
+    gap: clamp(0.7rem, 1.4vh, 1rem);
+    border-top: 1px solid rgb(246 244 239 / 0.5);
+    padding-top: clamp(0.7rem, 1.2vh, 1rem);
+  }
+
+  .presentation-talk-card h2 {
+    font-family: "Finlandica Headline", Georgia, serif;
+    font-size: clamp(1.25rem, 1.75vw, 2rem);
+    font-weight: 900;
+    line-height: 0.96;
+    text-wrap: balance;
+  }
+
+  .presentation-speaker-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .presentation-speaker-chip {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  .presentation-speaker-chip img {
+    width: clamp(2.35rem, 3.6vw, 4rem);
+    height: clamp(2.35rem, 3.6vw, 4rem);
+    flex: none;
+    border: 1px solid rgb(246 244 239 / 0.52);
+    border-radius: 999px;
+    object-fit: cover;
+    filter: grayscale(1);
+  }
+
+  .presentation-speaker-chip figcaption {
+    color: rgb(246 244 239 / 0.72);
+    font-size: clamp(0.85rem, 1.2vw, 1.25rem);
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .presentation-talk-content {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(18rem, 0.6fr);
+    gap: clamp(2rem, 5vw, 6rem);
+    align-items: center;
+  }
+
+  .presentation-talk-copy {
+    display: grid;
+    min-width: 0;
+    gap: clamp(0.8rem, 2vh, 1.5rem);
+  }
+
+  .presentation-talk-title {
+    max-width: 19ch;
+    overflow-wrap: break-word;
+    font-family: "Finlandica Headline", Georgia, serif;
+    font-weight: 900;
+    line-height: 0.84;
+    text-wrap: balance;
+  }
+
+  .presentation-talk-title.is-short {
+    font-size: clamp(4.8rem, 8.2vw, 9.5rem);
+  }
+
+  .presentation-talk-title.is-medium {
+    font-size: clamp(3.9rem, 6.3vw, 7.2rem);
+  }
+
+  .presentation-talk-title.is-long {
+    max-width: 23ch;
+    font-size: clamp(3rem, 4.65vw, 5.4rem);
+    line-height: 0.9;
+  }
+
+  .presentation-talk-title.is-dense {
+    max-width: 28ch;
+    font-size: clamp(2.25rem, 3.55vw, 4.2rem);
+    line-height: 0.94;
+  }
+
+  .presentation-talk-speakers {
+    display: grid;
+    min-width: 0;
+    gap: clamp(0.85rem, 1.7vh, 1.3rem);
+  }
+
+  .presentation-talk-speaker {
+    display: grid;
+    grid-template-columns: clamp(6rem, 9.5vw, 10rem) minmax(0, 1fr);
+    gap: clamp(0.85rem, 1.5vw, 1.35rem);
+    align-items: center;
+    border-top: 1px solid rgb(246 244 239 / 0.5);
+    padding-top: clamp(0.75rem, 1.4vh, 1rem);
+  }
+
+  .presentation-talk-speaker img {
+    width: clamp(6rem, 9.5vw, 10rem);
+    height: clamp(6rem, 9.5vw, 10rem);
+    border: 1px solid rgb(246 244 239 / 0.52);
+    border-radius: 999px;
+    object-fit: cover;
+    filter: grayscale(1);
+  }
+
+  .presentation-talk-speaker figcaption {
+    display: grid;
+    min-width: 0;
+    gap: 0.45rem;
+  }
+
+  .presentation-talk-speaker strong {
+    font-family: "Finlandica Headline", Georgia, serif;
+    font-size: clamp(1.7rem, 2.7vw, 3.2rem);
+    font-weight: 900;
+    line-height: 0.88;
+  }
+
+  .presentation-talk-speaker span {
+    color: rgb(246 244 239 / 0.64);
+    font-size: clamp(0.85rem, 1.15vw, 1.2rem);
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  .presentation-footer {
+    border-top: 1px solid rgb(246 244 239 / 0.48);
+    padding-top: clamp(0.6rem, 1.4vh, 1.1rem);
+  }
+
+  .presentation-sponsor-strip {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: clamp(0.55rem, 1.25vw, 1.1rem);
+  }
+
+  .presentation-sponsor,
+  .presentation-schedule-sponsor {
+    --presentation-sponsor-padding: clamp(0.3rem, 0.6vw, 0.55rem);
+
+    display: grid;
+    place-items: center;
+    flex: none;
+    overflow: hidden;
+    border: 1px solid rgb(246 244 239 / 0.28);
+    padding: var(--presentation-sponsor-padding);
+  }
+
+  .presentation-sponsor img,
+  .presentation-schedule-sponsor img {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: calc(
+      100% - var(--presentation-sponsor-padding) -
+        var(--presentation-sponsor-padding)
+    );
+    object-fit: contain;
+  }
+
+  .presentation-sponsor-surface-light {
+    background: #f6f4ef;
+  }
+
+  .presentation-sponsor-surface-dark {
+    background: #05061c;
+  }
+
+  .presentation-sponsor-epic {
+    width: clamp(5rem, 6vw, 7rem);
+    height: clamp(5rem, 6vw, 7rem);
+  }
+
+  .presentation-sponsor-tech {
+    width: clamp(5.4rem, 8.2vw, 9rem);
+    height: clamp(2.25rem, 3.55vw, 4rem);
+  }
+
+  .presentation-sponsor-wonna {
+    width: clamp(4.8rem, 7vw, 7.7rem);
+  }
+
+  .presentation-progress {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: clamp(0.75rem, 1.5vw, 1.35rem);
+    color: rgb(246 244 239 / 0.72);
+  }
+
+  .presentation-progress span + span {
+    min-width: 4.5ch;
+    border-left: 1px solid rgb(246 244 239 / 0.42);
+    padding-left: clamp(0.75rem, 1.5vw, 1.35rem);
+    text-align: right;
+  }
+
+  .presentation-schedule-page {
+    min-width: 20rem;
+    min-height: 100vh;
+    background: #282724;
+    color: #f6f4ef;
+  }
+
+  .presentation-schedule-shell {
+    display: grid;
+    min-height: 100vh;
+    place-items: start center;
+    padding: clamp(1rem, 4vw, 4rem);
+  }
+
+  .presentation-schedule-sheet {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    width: min(100%, 70rem);
+    min-height: min(148.5vw, 99rem);
+    grid-template-rows: auto 1fr auto;
+    overflow: hidden;
+    border: 1px solid rgb(246 244 239 / 0.35);
+    background: #080808;
+    box-shadow: 0 2rem 5rem rgb(0 0 0 / 0.42);
+    padding: clamp(1.2rem, 4.2vw, 4rem);
+  }
+
+  .presentation-schedule-header {
+    display: grid;
+    grid-template-columns: minmax(10rem, 0.36fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 4rem);
+    align-items: end;
+    border-bottom: 2px solid #f6f4ef;
+    padding-bottom: clamp(1rem, 2.5vw, 2rem);
+  }
+
+  .presentation-schedule-header > div:last-child {
+    min-width: 0;
+  }
+
+  .presentation-schedule-header h1 {
+    margin-top: 0.35rem;
+    font-family: "Finlandica Headline", Georgia, serif;
+    font-size: clamp(2.7rem, 6.7vw, 6.5rem);
+    font-weight: 900;
+    line-height: 0.78;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+
+  .presentation-schedule-header h1 + p {
+    margin-top: 0.8rem;
+  }
+
+  .presentation-schedule-list {
+    display: grid;
+    align-content: start;
+    list-style: none;
+  }
+
+  .presentation-schedule-item {
+    display: grid;
+    grid-template-columns: minmax(7.5rem, 0.25fr) minmax(0, 1fr);
+    gap: clamp(1rem, 2.6vw, 2.4rem);
+    border-bottom: 1px solid rgb(246 244 239 / 0.25);
+    padding: clamp(0.5rem, 1.15vw, 0.9rem) 0;
+  }
+
+  .presentation-schedule-item > time {
+    color: rgb(246 244 239 / 0.58);
+    font-size: clamp(0.85rem, 1.5vw, 1.25rem);
+    font-weight: 700;
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
+  .presentation-schedule-main {
+    display: grid;
+    min-width: 0;
+    gap: clamp(0.3rem, 0.8vw, 0.65rem);
+  }
+
+  .presentation-schedule-main > h2 {
+    font-family: "Finlandica Headline", Georgia, serif;
+    font-size: clamp(1.35rem, 2.45vw, 2.4rem);
+    font-weight: 900;
+    line-height: 0.92;
+    text-transform: uppercase;
+  }
+
+  .presentation-schedule-talks {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.45rem, 0.9vw, 0.8rem) clamp(1rem, 2vw, 1.8rem);
+    list-style: none;
+  }
+
+  .presentation-schedule-talks > li {
+    display: grid;
+    min-width: 0;
+    align-content: start;
+    gap: 0.35rem;
+    border-top: 1px solid rgb(246 244 239 / 0.18);
+    padding-top: 0.35rem;
+  }
+
+  .presentation-schedule-talks h3 {
+    font-size: clamp(0.82rem, 1.25vw, 1.08rem);
+    font-weight: 700;
+    line-height: 1.05;
+  }
+
+  .presentation-schedule-speakers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.7rem;
+  }
+
+  .presentation-schedule-speakers figure {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .presentation-schedule-speakers img {
+    width: clamp(1.4rem, 2.2vw, 2rem);
+    height: clamp(1.4rem, 2.2vw, 2rem);
+    flex: none;
+    border-radius: 999px;
+    object-fit: cover;
+    filter: grayscale(1);
+  }
+
+  .presentation-schedule-speakers figcaption {
+    color: rgb(246 244 239 / 0.62);
+    font-size: clamp(0.7rem, 1vw, 0.9rem);
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .presentation-schedule-footer {
+    display: grid;
+    gap: 0.65rem;
+    border-top: 2px solid #f6f4ef;
+    padding-top: clamp(0.8rem, 1.8vw, 1.4rem);
+  }
+
+  .presentation-schedule-footer > div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: clamp(0.4rem, 0.8vw, 0.75rem);
+  }
+
+  .presentation-schedule-sponsor {
+    --presentation-sponsor-padding: clamp(0.25rem, 0.45vw, 0.4rem);
+  }
+
+  .presentation-schedule-sponsor-epic {
+    width: clamp(4rem, 6vw, 5.5rem);
+    height: clamp(4rem, 6vw, 5.5rem);
+  }
+
+  .presentation-schedule-sponsor-tech {
+    width: clamp(5rem, 7.7vw, 7rem);
+    height: clamp(2.1rem, 3.2vw, 3rem);
+  }
+
+  .presentation-schedule-sponsor-wonna {
+    width: clamp(4.2rem, 6.2vw, 5.8rem);
+  }
+
+  .presentation-schedule-sponsor-brand,
+  .presentation-schedule-sponsor-location {
+    width: clamp(4rem, 6vw, 5.5rem);
+    height: clamp(1.8rem, 2.8vw, 2.6rem);
+  }
+
+  .presentation-schedule-sponsor-location {
+    width: clamp(2.8rem, 4.4vw, 4rem);
+    height: clamp(2.8rem, 4.4vw, 4rem);
+  }
+
+  @media (max-width: 720px) {
+    .presentation-header {
+      align-items: flex-start;
+    }
+
+    .presentation-meta {
+      display: grid;
+      gap: 0.3rem;
+    }
+
+    .presentation-meta span + span {
+      border-left: 0;
+      padding-left: 0;
+    }
+
+    .presentation-brand div {
+      display: none;
+    }
+
+    .presentation-title-content h1 {
+      font-size: clamp(4.2rem, 24vw, 8rem);
+    }
+
+    .presentation-session-title-row,
+    .presentation-talk-content {
+      grid-template-columns: 1fr;
+    }
+
+    .presentation-session-title-row {
+      align-items: start;
+    }
+
+    .presentation-session-title-row time {
+      width: fit-content;
+    }
+
+    .presentation-talk-speakers {
+      display: none;
+    }
+
+    .presentation-sponsor-tech:nth-of-type(n + 3) {
+      display: none;
+    }
+
+    .presentation-progress span:first-child {
+      display: none;
+    }
+
+    .presentation-schedule-header {
+      grid-template-columns: 1fr;
+    }
+
+    .presentation-schedule-header .presentation-brand {
+      display: none;
+    }
+
+    .presentation-schedule-item {
+      grid-template-columns: 1fr;
+      gap: 0.3rem;
+    }
+
+    .presentation-schedule-talks {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .presentation-slide.is-active {
+      animation: none;
+    }
+
+    ::view-transition-group(*),
+    ::view-transition-old(*),
+    ::view-transition-new(*) {
+      animation-duration: 0.01ms;
+    }
+  }
+
+  @media print {
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+
+    .presentation-schedule-page,
+    .presentation-schedule-shell {
+      background: #080808;
+    }
+
+    .presentation-schedule-shell {
+      display: block;
+      min-height: 0;
+      padding: 0;
+    }
+
+    .presentation-schedule-sheet {
+      width: 210mm;
+      min-height: 297mm;
+      border: 0;
+      box-shadow: none;
+      padding: 12mm;
+      break-after: page;
+      print-color-adjust: exact;
+      -webkit-print-color-adjust: exact;
+    }
+  }
+
+  @keyframes presentation-slide-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.75rem);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+
+  ::view-transition-group(presentation-slide) {
+    animation-duration: 420ms;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  html[data-slide-direction="forward"]::view-transition-old(
+      presentation-slide
+    ) {
+    animation: presentation-slide-out-forward 420ms
+      cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  html[data-slide-direction="forward"]::view-transition-new(
+      presentation-slide
+    ) {
+    animation: presentation-slide-in-forward 420ms
+      cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  html[data-slide-direction="backward"]::view-transition-old(
+      presentation-slide
+    ) {
+    animation: presentation-slide-out-backward 420ms
+      cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  html[data-slide-direction="backward"]::view-transition-new(
+      presentation-slide
+    ) {
+    animation: presentation-slide-in-backward 420ms
+      cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes presentation-slide-out-forward {
+    to {
+      transform: translateX(-100%);
+    }
+  }
+
+  @keyframes presentation-slide-in-forward {
+    from {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes presentation-slide-out-backward {
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes presentation-slide-in-backward {
+    from {
+      transform: translateX(-100%);
+    }
+  }
+}

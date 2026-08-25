@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SDLCAI Daily Schedule</title>
+    <meta
+      name="description"
+      content="Public screen and print schedule for SDLCAI 2026."
+    />
+    <link rel="canonical" href="https://sdlcai.org/slides/schedule/" />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <noop &foreach="styles as style">
+      <link &href="style.href" &rel="style.rel" />
+    </noop>
+  </head>
+  <body class="presentation-schedule-page">
+    <main
+      class="presentation-schedule-shell"
+      aria-label="SDLCAI daily schedule"
+    >
+      <article class="presentation-schedule-sheet">
+        <div class="presentation-schedule-grid" aria-hidden="true"></div>
+        <header class="presentation-schedule-header">
+          <div class="presentation-brand">
+            <img
+              src="/assets/logo.svg"
+              alt="SDLCAI"
+              width="160"
+              height="160"
+              loading="lazy"
+              decoding="async"
+            />
+            <div>
+              <strong>SDLCAI</strong>
+              <span>AI meets SDLC</span>
+            </div>
+          </div>
+          <div>
+            <p>Daily schedule</p>
+            <h1 &children="seminar.slide.day"></h1>
+            <p &children="seminar.display.dateUniversityLocation"></p>
+          </div>
+        </header>
+
+        <ol class="presentation-schedule-list">
+          <noop &foreach="scheduleItems as scheduleItem">
+            <li class="presentation-schedule-item">
+              <time &children="scheduleItem.time"></time>
+              <div class="presentation-schedule-main">
+                <h2 &children="scheduleItem.title"></h2>
+                <ul
+                  class="presentation-schedule-talks"
+                  &visibleIf="scheduleItem.talks"
+                >
+                  <noop &foreach="scheduleItem.talks as talkItem">
+                    <li>
+                      <h3 &children="talkItem.title"></h3>
+                      <div class="presentation-schedule-speakers">
+                        <noop &foreach="talkItem.speakers as speakerItem">
+                          <figure>
+                            <img
+                              &src="speakerItem.photo"
+                              &alt="speakerItem.name"
+                              width="400"
+                              height="400"
+                              loading="lazy"
+                              decoding="async"
+                            />
+                            <figcaption
+                              &children="speakerItem.name"
+                            ></figcaption>
+                          </figure>
+                        </noop>
+                      </div>
+                    </li>
+                  </noop>
+                </ul>
+              </div>
+            </li>
+          </noop>
+        </ol>
+
+        <footer
+          class="presentation-schedule-footer"
+          aria-label="Sponsors and location partner"
+        >
+          <p>With support from</p>
+          <div>
+            <noop &foreach="sponsorItems as sponsorItem">
+              <figure &class="sponsorItem.scheduleClassName">
+                <img
+                  &src="sponsorItem.logo"
+                  &alt="sponsorItem.name"
+                  &width="sponsorItem.logoWidth"
+                  &height="sponsorItem.logoHeight"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
+            </noop>
+          </div>
+        </footer>
+      </article>
+    </main>
+  </body>
+</html>

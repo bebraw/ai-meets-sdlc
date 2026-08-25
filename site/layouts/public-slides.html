@@ -1,0 +1,145 @@
+<BaseLayout
+  &title="(id 'SDLCAI Slide Library')"
+  &description="(id 'Public presentation slides and social media exports for SDLCAI 2026.')"
+  &ogDescription="(id 'Explore the SDLCAI 2026 schedule deck and download presentation slides for social media.')"
+  &url="(id 'https://sdlcai.org/slides/')"
+  &ogType="(id 'website')"
+>
+  <section
+    class="relative border-b border-[#f6f4ef]/40 bg-[#080808] text-[#f6f4ef]"
+  >
+    <div
+      class="absolute inset-y-0 right-0 w-[48vw] text-[#f6f4ef]/10 halftone-xl"
+      aria-hidden="true"
+    ></div>
+    <div
+      class="relative mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-[0.8fr_1fr] md:px-8 md:py-24"
+    >
+      <div>
+        <p class="font-headline text-sm font-black uppercase text-[#f6f4ef]/60">
+          SDLCAI 2026 / public assets
+        </p>
+        <h1
+          class="mt-3 font-headline text-[clamp(4.3rem,14vw,12rem)] font-black uppercase leading-[0.75]"
+        >
+          Slide library
+        </h1>
+      </div>
+      <div class="grid content-end gap-6 border-y border-[#f6f4ef]/50 py-6">
+        <p class="max-w-3xl text-xl leading-8 text-[#f6f4ef]/70">
+          Present the data-driven event deck or download any slide as a
+          platform-ready image. Schedule, speakers, and sponsor visibility stay
+          synchronized with the site data.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a
+            class="inline-flex border border-[#f6f4ef] bg-[#f6f4ef] px-5 py-3 text-base font-bold uppercase text-[#080808] transition hover:bg-[#080808] hover:text-[#f6f4ef]"
+            href="/slides/deck/"
+            >Present deck</a
+          >
+          <a
+            class="inline-flex border border-[#f6f4ef] px-5 py-3 text-base font-bold uppercase transition hover:bg-[#f6f4ef] hover:text-[#080808]"
+            href="/slides/schedule/"
+            >Screen schedule</a
+          >
+          <a
+            class="inline-flex border border-[#f6f4ef] px-5 py-3 text-base font-bold uppercase transition hover:bg-[#f6f4ef] hover:text-[#080808]"
+            href="/schedule/"
+            >Web schedule</a
+          >
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-[#f6f4ef]/40 bg-[#080808] text-[#f6f4ef]">
+    <div class="mx-auto max-w-7xl px-5 py-10 md:px-8 md:py-14">
+      <div
+        class="grid gap-px border border-[#f6f4ef]/40 bg-[#f6f4ef]/40 md:grid-cols-3"
+      >
+        <noop &foreach="socialExportPresets as presetItem">
+          <div class="grid gap-2 bg-[#080808] p-5">
+            <strong
+              class="font-headline text-2xl font-black uppercase"
+              &children="presetItem.label"
+            ></strong>
+            <span
+              class="text-sm font-bold uppercase text-[#f6f4ef]/60"
+              &children="presetItem.dimensions"
+            ></span>
+            <span
+              class="text-sm text-[#f6f4ef]/60"
+              &children="presetItem.note"
+            ></span>
+          </div>
+        </noop>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-[#080808] text-[#f6f4ef]">
+    <div class="mx-auto max-w-7xl px-5 py-12 md:px-8 md:py-20">
+      <div class="grid gap-8 lg:grid-cols-2">
+        <noop &foreach="slideDeckItems as slideItem">
+          <article
+            class="group grid content-start overflow-hidden border border-[#f6f4ef]/35 bg-[#0a0a0a]"
+          >
+            <a
+              class="relative block overflow-hidden border-b border-[#f6f4ef]/35"
+              &href="slideItem.publicHref"
+              &aria-label="slideItem.thumbnailAlt"
+            >
+              <img
+                class="aspect-[1200/627] h-auto w-full object-cover transition duration-300 group-hover:scale-[1.015]"
+                &src="slideItem.thumbnailSrc"
+                &alt="slideItem.thumbnailAlt"
+                width="1200"
+                height="627"
+                loading="lazy"
+                decoding="async"
+              />
+            </a>
+            <div class="grid gap-5 p-5 md:p-6">
+              <div class="grid gap-2">
+                <p class="text-xs font-bold uppercase text-[#f6f4ef]/55">
+                  <span>Slide </span
+                  ><span &children="slideItem.paddedNumber"></span>
+                  <span> / </span><span &children="slideItem.kindLabel"></span>
+                </p>
+                <h2
+                  class="font-headline text-3xl font-black uppercase leading-[0.9] md:text-4xl"
+                  &children="slideItem.title"
+                ></h2>
+                <p
+                  class="text-sm font-bold uppercase text-[#f6f4ef]/55"
+                  &visibleIf="slideItem.time"
+                  &children="slideItem.time"
+                ></p>
+              </div>
+              <div class="grid gap-px bg-[#f6f4ef]/35 sm:grid-cols-3">
+                <noop &foreach="slideItem.socialExports as exportItem">
+                  <a
+                    class="grid gap-1 bg-[#080808] px-4 py-3 text-sm font-bold uppercase transition hover:bg-[#f6f4ef] hover:text-[#080808]"
+                    &href="exportItem.href"
+                    &aria-label="exportItem.ariaLabel"
+                    download
+                  >
+                    <span &children="exportItem.label"></span>
+                    <span
+                      class="text-[0.68rem] text-[#f6f4ef]/55 group-hover:text-inherit"
+                      &children="exportItem.dimensions"
+                    ></span>
+                  </a>
+                </noop>
+              </div>
+              <p class="text-sm leading-6 text-[#f6f4ef]/55">
+                Suggested alt text:
+                <span &children="slideItem.thumbnailAlt"></span>
+              </p>
+            </div>
+          </article>
+        </noop>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

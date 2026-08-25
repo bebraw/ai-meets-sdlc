@@ -9,6 +9,8 @@ const seminarPath = path.resolve("site/data/seminar.json");
 const seminarSchemaPath = path.resolve("site/data/seminar.schema.json");
 const speakersPath = path.resolve("site/data/speakers.json");
 const speakersSchemaPath = path.resolve("site/data/speakers.schema.json");
+const sponsorsPath = path.resolve("site/data/sponsors.json");
+const sponsorsSchemaPath = path.resolve("site/data/sponsors.schema.json");
 const timeRangePattern =
   /^([01][0-9]|2[0-3]):[0-5][0-9]-([01][0-9]|2[0-3]):[0-5][0-9]$/;
 const isoDatePattern = /^\d{4}-\d{2}-\d{2}$/;
@@ -24,6 +26,8 @@ const [
   seminarSchema,
   speakers,
   speakersSchema,
+  sponsors,
+  sponsorsSchema,
 ] = await Promise.all([
   readJson(schedulePath),
   readJson(scheduleSchemaPath),
@@ -31,6 +35,8 @@ const [
   readJson(seminarSchemaPath),
   readJson(speakersPath),
   readJson(speakersSchemaPath),
+  readJson(sponsorsPath),
+  readJson(sponsorsSchemaPath),
 ]);
 
 await validateAnnouncements(announcementsDirectory);
@@ -38,8 +44,10 @@ validateScheduleSchema(scheduleSchema);
 validateSeminarSchema(seminarSchema);
 validateSeminar(seminar);
 validateSpeakersSchema(speakersSchema);
+validateSponsorsSchema(sponsorsSchema);
 const speakerIds = await validateSpeakers(speakers);
 validateSchedule(schedule, speakerIds);
+await validateSponsors(sponsors);
 
 if (errors.length) {
   console.error("Data validation failed:");
@@ -127,6 +135,37 @@ function validateSpeakersSchema(schema) {
 
     if (!required?.includes(field)) {
       errors.push(`site/data/speakers.schema.json must require ${field}.`);
+    }
+  }
+}
+
+function validateSponsorsSchema(schema) {
+  if (!isObject(schema)) return;
+
+  if (schema.title !== "SDLCAI sponsors") {
+    errors.push("site/data/sponsors.schema.json has an unexpected title.");
+  }
+
+  const itemProperties = schema.properties?.items?.items?.properties;
+  const required = schema.properties?.items?.items?.required;
+
+  for (const field of [
+    "id",
+    "name",
+    "url",
+    "logo",
+    "logoWidth",
+    "logoHeight",
+    "tier",
+    "logoSurface",
+    "betweenTalks",
+  ]) {
+    if (!itemProperties?.[field]) {
+      errors.push(`site/data/sponsors.schema.json is missing ${field}.`);
+    }
+
+    if (!required?.includes(field)) {
+      errors.push(`site/data/sponsors.schema.json must require ${field}.`);
     }
   }
 }
@@ -470,6 +509,123 @@ async function validateSpeakers(speakers) {
   }
 
   return speakerIds;
+}
+
+async function validateSponsors(sponsors) {
+  if (!isObject(sponsors)) {
+    errors.push("site/data/sponsors.json must be an object.");
+    return;
+  }
+
+  const allowedRootKeys = new Set(["$schema", "items"]);
+
+  for (const key of Object.keys(sponsors)) {
+    if (!allowedRootKeys.has(key)) {
+      errors.push(`site/data/sponsors.json has unknown root field "${key}".`);
+    }
+  }
+
+  if (!Array.isArray(sponsors.items) || sponsors.items.length === 0) {
+    errors.push("site/data/sponsors.json items must be a non-empty array.");
+    return;
+  }
+
+  const sponsorIds = new Set();
+  const allowedTiers = new Set(["epic", "tech", "brand", "location"]);
+  const allowedLogoSurfaces = new Set(["light", "dark"]);
+
+  for (const [index, sponsor] of sponsors.items.entries()) {
+    const sponsorPath = `site/data/sponsors.json items[${index}]`;
+
+    if (!isObject(sponsor)) {
+      errors.push(`${sponsorPath} must be an object.`);
+      continue;
+    }
+
+    const allowedFields = new Set([
+      "id",
+      "name",
+      "url",
+      "logo",
+      "logoWidth",
+      "logoHeight",
+      "tier",
+      "logoSurface",
+      "betweenTalks",
+    ]);
+
+    for (const key of Object.keys(sponsor)) {
+      if (!allowedFields.has(key)) {
+        errors.push(`${sponsorPath} has unknown field "${key}".`);
+      }
+    }
+
+    for (const field of ["id", "name", "url", "logo", "tier", "logoSurface"]) {
+      if (!isNonEmptyString(sponsor[field])) {
+        errors.push(`${sponsorPath}.${field} must be a non-empty string.`);
+      }
+    }
+
+    if (isNonEmptyString(sponsor.id)) {
+      if (!slugPattern.test(sponsor.id)) {
+        errors.push(`${sponsorPath}.id must be a lowercase slug.`);
+      } else if (sponsorIds.has(sponsor.id)) {
+        errors.push(`${sponsorPath}.id duplicates another sponsor.`);
+      } else {
+        sponsorIds.add(sponsor.id);
+      }
+    }
+
+    if (!allowedTiers.has(sponsor.tier)) {
+      errors.push(
+        `${sponsorPath}.tier must be epic, tech, brand, or location.`,
+      );
+    }
+
+    if (!allowedLogoSurfaces.has(sponsor.logoSurface)) {
+      errors.push(`${sponsorPath}.logoSurface must be light or dark.`);
+    }
+
+    for (const field of ["logoWidth", "logoHeight"]) {
+      if (!Number.isInteger(sponsor[field]) || sponsor[field] <= 0) {
+        errors.push(`${sponsorPath}.${field} must be a positive integer.`);
+      }
+    }
+
+    if (typeof sponsor.betweenTalks !== "boolean") {
+      errors.push(`${sponsorPath}.betweenTalks must be a boolean.`);
+    }
+
+    const isBetweenTalkTier =
+      sponsor.tier === "epic" || sponsor.tier === "tech";
+
+    if (sponsor.betweenTalks !== isBetweenTalkTier) {
+      errors.push(
+        `${sponsorPath}.betweenTalks must match the Epic/Tech sponsor package commitment.`,
+      );
+    }
+
+    try {
+      new URL(sponsor.url);
+    } catch {
+      errors.push(`${sponsorPath}.url must be a valid URL.`);
+    }
+
+    if (
+      !/^\/assets\/sponsors\/.+\.(svg|webp|png|jpg|jpeg)$/.test(sponsor.logo)
+    ) {
+      errors.push(
+        `${sponsorPath}.logo must point to an image under /assets/sponsors/.`,
+      );
+      continue;
+    }
+
+    try {
+      await access(path.resolve(sponsor.logo.slice(1)));
+    } catch {
+      errors.push(`${sponsorPath}.logo points to a missing file.`);
+    }
+  }
 }
 
 function isObject(value) {

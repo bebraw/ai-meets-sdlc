@@ -127,9 +127,11 @@ export default {
       if (unauthorizedResponse) return unauthorizedResponse;
     }
 
-    if (url.pathname === "/admin/slides") {
+    const adminSlideRedirect = getAdminSlideRedirect(url);
+
+    if (adminSlideRedirect) {
       return withAdminSecurityHeaders(
-        Response.redirect(`${url.origin}/admin/slides/`, 308),
+        Response.redirect(adminSlideRedirect, 308),
       );
     }
 
@@ -256,6 +258,16 @@ export default {
 } satisfies ExportedHandler<Env>;
 
 const immutableAssetCacheControl = "public, max-age=31536000, immutable";
+const adminSlideAssetPaths = new Map([
+  ["/admin/slides/", "/admin-slides/"],
+  ["/admin/slides/deck/", "/admin-slide-deck/"],
+  ["/admin/slides/schedule/", "/admin-slide-schedule/"],
+]);
+const internalAdminSlidePrefixes = [
+  "/admin-slides",
+  "/admin-slide-deck",
+  "/admin-slide-schedule",
+];
 
 function withStaticAssetCache(response: Response, url: URL): Response {
   if (response.status !== 200 || !isImmutableAssetPath(url.pathname)) {
@@ -299,16 +311,28 @@ function isImmutableAssetPath(pathname: string): boolean {
 }
 
 function getAssetRequest(request: Request, url: URL): Request {
-  if (url.pathname !== "/admin/slides/") return request;
+  const assetPath = adminSlideAssetPaths.get(url.pathname);
+
+  if (!assetPath) return request;
 
   const assetUrl = new URL(url);
-  assetUrl.pathname = "/admin-slides/";
+  assetUrl.pathname = assetPath;
 
   return new Request(assetUrl, request);
 }
 
 function isInternalAdminSlidesPath(pathname: string): boolean {
-  return pathname === "/admin-slides" || pathname.startsWith("/admin-slides/");
+  return internalAdminSlidePrefixes.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+  );
+}
+
+function getAdminSlideRedirect(url: URL): string | null {
+  const canonicalPath = adminSlideAssetPaths.has(`${url.pathname}/`)
+    ? `${url.pathname}/`
+    : null;
+
+  return canonicalPath ? `${url.origin}${canonicalPath}${url.search}` : null;
 }
 
 async function handleInterest(request: Request, env: Env): Promise<Response> {

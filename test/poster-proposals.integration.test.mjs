@@ -188,12 +188,75 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   const publicSlidesResponse = await worker.fetch(`${origin}/slides/`, {
     headers: { accept: "text/html" },
   });
-  assert.equal(publicSlidesResponse.status, 404);
+  const publicSlidesHtml = await publicSlidesResponse.text();
 
-  const internalSlidesResponse = await worker.fetch(`${origin}/admin-slides/`, {
-    headers: { authorization: adminAuthorization },
+  assert.equal(publicSlidesResponse.status, 200);
+  assert.equal(publicSlidesResponse.headers.get("x-robots-tag"), null);
+  assert.match(publicSlidesHtml, /Slide library/i);
+  assert.match(
+    publicSlidesHtml,
+    /\/assets\/social\/linkedin\/sdlcai-2026-slide-01-linkedin-1200x627\.jpg/,
+  );
+
+  const publicDeckResponse = await worker.fetch(`${origin}/slides/deck/`, {
+    headers: { accept: "text/html" },
   });
-  assert.equal(internalSlidesResponse.status, 404);
+  const publicDeckHtml = await publicDeckResponse.text();
+
+  assert.equal(publicDeckResponse.status, 200);
+  assert.equal(publicDeckResponse.headers.get("x-robots-tag"), null);
+  assert.equal(
+    (publicDeckHtml.match(/data-presentation-slide/g) ?? []).length,
+    23,
+  );
+  assert.match(publicDeckHtml, /alt="Wunderdog"/);
+  assert.doesNotMatch(publicDeckHtml, /bit\.ly\/4wRkjCa/);
+
+  const publicScheduleSlidesResponse = await worker.fetch(
+    `${origin}/slides/schedule/`,
+    { headers: { accept: "text/html" } },
+  );
+  const publicScheduleSlidesHtml = await publicScheduleSlidesResponse.text();
+
+  assert.equal(publicScheduleSlidesResponse.status, 200);
+  assert.equal(publicScheduleSlidesResponse.headers.get("x-robots-tag"), null);
+  assert.equal(
+    (
+      publicScheduleSlidesHtml.match(/class="presentation-schedule-item"/g) ??
+      []
+    ).length,
+    13,
+  );
+  assert.match(publicScheduleSlidesHtml, /alt="Aalto University"/);
+
+  for (const socialExportPath of [
+    "/assets/social/linkedin/sdlcai-2026-slide-01-linkedin-1200x627.jpg",
+    "/assets/social/x/sdlcai-2026-slide-01-x-1600x900.jpg",
+    "/assets/social/bluesky/sdlcai-2026-slide-01-bluesky-1600x900.jpg",
+  ]) {
+    const socialExportResponse = await worker.fetch(
+      `${origin}${socialExportPath}`,
+    );
+
+    assert.equal(socialExportResponse.status, 200);
+    assert.match(
+      socialExportResponse.headers.get("content-type") ?? "",
+      /^image\/jpeg/,
+    );
+    assert.equal(socialExportResponse.headers.get("x-robots-tag"), null);
+  }
+
+  for (const internalPath of [
+    "/admin-slides/",
+    "/admin-slide-deck/",
+    "/admin-slide-schedule/",
+  ]) {
+    const internalSlidesResponse = await worker.fetch(
+      `${origin}${internalPath}`,
+      { headers: { authorization: adminAuthorization } },
+    );
+    assert.equal(internalSlidesResponse.status, 404);
+  }
 
   const unauthorizedSlidesResponse = await worker.fetch(
     `${origin}/admin/slides/`,
@@ -224,6 +287,70 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
     slidesHtml,
     /<meta name="robots" content="noindex,nofollow,noarchive">/,
   );
+
+  const unauthorizedDeckResponse = await worker.fetch(
+    `${origin}/admin/slides/deck/`,
+    { headers: { accept: "text/html" } },
+  );
+  assert.equal(unauthorizedDeckResponse.status, 401);
+
+  const deckRedirectResponse = await worker.fetch(
+    `${origin}/admin/slides/deck?slide=4`,
+    {
+      headers: { authorization: adminAuthorization },
+      redirect: "manual",
+    },
+  );
+  assert.equal(deckRedirectResponse.status, 308);
+  assert.equal(
+    deckRedirectResponse.headers.get("location"),
+    `${origin}/admin/slides/deck/?slide=4`,
+  );
+
+  const deckResponse = await worker.fetch(`${origin}/admin/slides/deck/`, {
+    headers: {
+      accept: "text/html",
+      authorization: adminAuthorization,
+    },
+  });
+  const deckHtml = await deckResponse.text();
+
+  assert.equal(deckResponse.status, 200);
+  assert.equal(deckResponse.headers.get("cache-control"), "no-store");
+  assert.equal(
+    deckResponse.headers.get("x-robots-tag"),
+    "noindex, nofollow, noarchive",
+  );
+  assert.equal((deckHtml.match(/data-presentation-slide/g) ?? []).length, 23);
+  assert.match(deckHtml, /alt="Wunderdog"/);
+  assert.match(deckHtml, /alt="Reaktor"/);
+  assert.doesNotMatch(deckHtml, /alt="AIMBITION"/);
+  assert.doesNotMatch(deckHtml, /alt="Aalto University"/);
+
+  const scheduleSlidesResponse = await worker.fetch(
+    `${origin}/admin/slides/schedule/`,
+    {
+      headers: {
+        accept: "text/html",
+        authorization: adminAuthorization,
+      },
+    },
+  );
+  const scheduleSlidesHtml = await scheduleSlidesResponse.text();
+
+  assert.equal(scheduleSlidesResponse.status, 200);
+  assert.equal(
+    scheduleSlidesResponse.headers.get("x-robots-tag"),
+    "noindex, nofollow, noarchive",
+  );
+  assert.equal(
+    (scheduleSlidesHtml.match(/class="presentation-schedule-item"/g) ?? [])
+      .length,
+    13,
+  );
+  assert.match(scheduleSlidesHtml, /alt="Wunderdog"/);
+  assert.match(scheduleSlidesHtml, /alt="AIMBITION"/);
+  assert.match(scheduleSlidesHtml, /alt="Aalto University"/);
 
   const unauthorizedSlidesPdfResponse = await worker.fetch(
     `${origin}/assets/slides/sdlcai-2026-screen-ad.pdf`,

@@ -8,6 +8,12 @@ const speakerImageBudgetBytes = 50 * 1024;
 const speakerImagesDir = "assets/speakers";
 const venueImageBudgetBytes = 80 * 1024;
 const venueImagePath = "assets/marsio-saastamoinen-stage.webp";
+const socialSlideCount = 23;
+const socialExportPresets = [
+  { id: "linkedin", dimensions: "1200x627", maxBytes: 5 * 1024 * 1024 },
+  { id: "x", dimensions: "1600x900", maxBytes: 5 * 1024 * 1024 },
+  { id: "bluesky", dimensions: "1600x900", maxBytes: 1_000_000 },
+];
 
 try {
   await access(path.join(buildDir, "index.html"));
@@ -22,11 +28,29 @@ const htmlFiles = await getHtmlFiles(buildDir);
 const cssFiles = await getFilesByExtension(buildDir, ".css");
 const speakerImageFiles = await getFilesByExtension(speakerImagesDir, ".webp");
 const failures = [];
+const sitemap = await readFile(path.join(buildDir, "sitemap.xml"), "utf8");
 const fontSubsetCharacters = new Set(
   [...(await readFile(fontSubsetCharactersPath, "utf8"))].filter(
     (character) => !/\s/u.test(character),
   ),
 );
+
+for (const pathname of ["/slides/", "/slides/deck/", "/slides/schedule/"]) {
+  if (!sitemap.includes(`<loc>https://sdlcai.org${pathname}</loc>`)) {
+    failures.push(`sitemap.xml: missing public slide route ${pathname}`);
+  }
+}
+
+for (const pathname of [
+  "/admin/",
+  "/admin-slides/",
+  "/admin-slide-deck/",
+  "/admin-slide-schedule/",
+]) {
+  if (sitemap.includes(`<loc>https://sdlcai.org${pathname}</loc>`)) {
+    failures.push(`sitemap.xml: includes private/internal route ${pathname}`);
+  }
+}
 
 for (const filePath of htmlFiles) {
   const html = await readFile(filePath, "utf8");
@@ -121,6 +145,32 @@ if (venueImageBytes > venueImageBudgetBytes) {
       venueImageBytes,
     )}, above the ${formatBytes(venueImageBudgetBytes)} budget`,
   );
+}
+
+for (const preset of socialExportPresets) {
+  for (let index = 1; index <= socialSlideCount; index += 1) {
+    const paddedNumber = String(index).padStart(2, "0");
+    const filePath = path.join(
+      buildDir,
+      "assets/social",
+      preset.id,
+      `sdlcai-2026-slide-${paddedNumber}-${preset.id}-${preset.dimensions}.jpg`,
+    );
+
+    try {
+      const imageBytes = (await stat(filePath)).size;
+
+      if (imageBytes > preset.maxBytes) {
+        failures.push(
+          `${filePath}: social export is ${formatBytes(
+            imageBytes,
+          )}, above the ${formatBytes(preset.maxBytes)} ${preset.id} limit`,
+        );
+      }
+    } catch {
+      failures.push(`Missing social slide export: ${filePath}`);
+    }
+  }
 }
 
 if (failures.length > 0) {

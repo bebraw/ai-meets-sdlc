@@ -40,6 +40,11 @@
             href="/speakers/"
             >Speakers</a
           >
+          <a
+            class="inline-flex border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper"
+            href="/slides/schedule/"
+            >Screen schedule</a
+          >
         </div>
       </div>
     </div>
@@ -65,6 +70,39 @@
         &id="(id 'day-flow')"
         &className="(id 'grid border border-ink')"
       ></SeminarSchedule>
+    </div>
+  </section>
+
+  <section class="border-b border-ink bg-ink text-paper">
+    <div
+      class="mx-auto grid max-w-7xl gap-6 px-5 py-12 md:grid-cols-[1fr_auto] md:items-end md:px-8 md:py-16"
+    >
+      <div>
+        <p class="font-headline text-sm font-black uppercase text-paper/60">
+          Presentation assets
+        </p>
+        <h2
+          class="mt-3 max-w-4xl font-headline text-4xl font-black uppercase leading-none md:text-6xl"
+        >
+          Take the schedule with you
+        </h2>
+        <p class="mt-4 max-w-2xl text-lg leading-7 text-paper/65">
+          Open the full-screen daily schedule or browse downloadable session and
+          talk slides for LinkedIn, X, and Bluesky.
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-3 md:justify-end">
+        <a
+          class="inline-flex border border-paper bg-paper px-5 py-3 text-base font-bold uppercase text-ink transition hover:bg-ink hover:text-paper"
+          href="/slides/schedule/"
+          >Screen schedule</a
+        >
+        <a
+          class="inline-flex border border-paper px-5 py-3 text-base font-bold uppercase transition hover:bg-paper hover:text-ink"
+          href="/slides/"
+          >Slide library</a
+        >
+      </div>
     </div>
   </section>
 </BaseLayout>

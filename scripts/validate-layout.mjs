@@ -16,6 +16,7 @@ const routes = [
   "/privacy-policy/",
   // Internal static build path served as /admin/slides/ by the Worker.
   "/admin-slides/",
+  "/slides/",
 ];
 const viewports = [
   { name: "small-mobile", width: 320, height: 740 },

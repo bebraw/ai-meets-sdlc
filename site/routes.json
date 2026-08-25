@@ -8,6 +8,9 @@
       },
       "scheduleItems": {
         "operation": "scheduleItems"
+      },
+      "sponsorItems": {
+        "operation": "sponsorItems"
       }
     },
     "context": {
@@ -73,6 +76,76 @@
       }
     }
   },
+  "slides": {
+    "layout": "public-slides",
+    "scripts": [{ "name": "index" }],
+    "dataSources": {
+      "seminar": {
+        "operation": "seminar"
+      },
+      "slideDeckItems": {
+        "operation": "slideDeckItems"
+      },
+      "socialExportPresets": {
+        "operation": "socialExportPresets"
+      }
+    },
+    "context": {
+      "meta": {
+        "title": "SDLCAI Slide Library",
+        "description": "Public presentation slides and social media exports for SDLCAI 2026.",
+        "ogEyebrow": "Slide library",
+        "ogDescription": "Explore the SDLCAI 2026 schedule deck and download presentation slides for social media."
+      }
+    },
+    "routes": {
+      "deck": {
+        "layout": "slide-deck",
+        "scripts": [{ "name": "slides" }],
+        "dataSources": {
+          "seminar": {
+            "operation": "seminar"
+          },
+          "slideDeckItems": {
+            "operation": "slideDeckItems"
+          },
+          "betweenTalkSponsorItems": {
+            "operation": "betweenTalkSponsorItems"
+          }
+        },
+        "context": {
+          "meta": {
+            "title": "SDLCAI Session Slides",
+            "description": "Public session and talk slides for SDLCAI 2026.",
+            "ogEyebrow": "Session slides",
+            "ogDescription": "Browse the SDLCAI 2026 session and talk title slides."
+          }
+        }
+      },
+      "schedule": {
+        "layout": "slide-schedule",
+        "dataSources": {
+          "seminar": {
+            "operation": "seminar"
+          },
+          "scheduleItems": {
+            "operation": "scheduleItems"
+          },
+          "sponsorItems": {
+            "operation": "sponsorItems"
+          }
+        },
+        "context": {
+          "meta": {
+            "title": "SDLCAI Daily Schedule Slide",
+            "description": "Public screen and print schedule for SDLCAI 2026.",
+            "ogEyebrow": "Schedule slide",
+            "ogDescription": "View the screen-ready SDLCAI 2026 daily schedule."
+          }
+        }
+      }
+    }
+  },
   "posters": {
     "layout": "posters",
     "scripts": [{ "name": "index" }],
@@ -104,6 +177,51 @@
         "description": "Protected presentation and screen assets for SDLCAI 2026.",
         "ogEyebrow": "Admin slides",
         "ogDescription": "Protected presentation and screen assets for SDLCAI 2026."
+      }
+    }
+  },
+  "admin-slide-deck": {
+    "layout": "slide-deck",
+    "scripts": [{ "name": "slides" }],
+    "dataSources": {
+      "seminar": {
+        "operation": "seminar"
+      },
+      "slideDeckItems": {
+        "operation": "slideDeckItems"
+      },
+      "betweenTalkSponsorItems": {
+        "operation": "betweenTalkSponsorItems"
+      }
+    },
+    "context": {
+      "meta": {
+        "title": "SDLCAI Session Slides",
+        "description": "Protected session and between-talk slides for SDLCAI 2026.",
+        "ogEyebrow": "Admin slides",
+        "ogDescription": "Protected session and between-talk slides for SDLCAI 2026."
+      }
+    }
+  },
+  "admin-slide-schedule": {
+    "layout": "slide-schedule",
+    "dataSources": {
+      "seminar": {
+        "operation": "seminar"
+      },
+      "scheduleItems": {
+        "operation": "scheduleItems"
+      },
+      "sponsorItems": {
+        "operation": "sponsorItems"
+      }
+    },
+    "context": {
+      "meta": {
+        "title": "SDLCAI Daily Schedule",
+        "description": "Protected screen and print schedule for SDLCAI 2026.",
+        "ogEyebrow": "Admin slides",
+        "ogDescription": "Protected screen and print schedule for SDLCAI 2026."
       }
     }
   },

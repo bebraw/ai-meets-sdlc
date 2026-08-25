@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SDLCAI Session Slides</title>
+    <meta
+      name="description"
+      content="Public session and talk slides for SDLCAI 2026."
+    />
+    <link rel="canonical" href="https://sdlcai.org/slides/deck/" />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <noop &foreach="styles as style">
+      <link &href="style.href" &rel="style.rel" />
+    </noop>
+  </head>
+  <body class="presentation-page">
+    <main
+      class="presentation-deck"
+      aria-label="SDLCAI 2026 session slides"
+      data-presentation-deck
+    >
+      <noop &foreach="slideDeckItems as slideItem">
+        <section
+          &class="slideItem.className"
+          &aria-hidden="slideItem.ariaHidden"
+          &data-slide-number="slideItem.number"
+          data-presentation-slide
+        >
+          <div class="presentation-grid" aria-hidden="true"></div>
+          <header class="presentation-header">
+            <div class="presentation-brand">
+              <img
+                src="/assets/logo.svg"
+                alt="SDLCAI"
+                width="160"
+                height="160"
+                loading="lazy"
+                decoding="async"
+              />
+              <div>
+                <strong>SDLCAI</strong>
+                <span>AI meets SDLC</span>
+              </div>
+            </div>
+            <div class="presentation-meta">
+              <span &children="seminar.slide.day"></span>
+              <span
+                &visibleIf="slideItem.time"
+                &children="slideItem.time"
+              ></span>
+            </div>
+          </header>
+
+          <div
+            class="presentation-title-content"
+            &visibleIf="slideItem.showTitle"
+          >
+            <p class="presentation-kicker" &children="slideItem.eyebrow"></p>
+            <h1 &children="slideItem.title"></h1>
+            <p
+              class="presentation-title-meta"
+              &children="slideItem.subtitle"
+            ></p>
+          </div>
+
+          <div
+            class="presentation-session-content"
+            &visibleIf="slideItem.showSession"
+          >
+            <div class="presentation-session-heading">
+              <p class="presentation-kicker" &children="slideItem.eyebrow"></p>
+              <div class="presentation-session-title-row">
+                <h1 &children="slideItem.title"></h1>
+                <time &children="slideItem.time"></time>
+              </div>
+              <p
+                class="presentation-session-body"
+                &children="slideItem.body"
+              ></p>
+            </div>
+            <div class="presentation-talk-grid" &visibleIf="slideItem.hasTalks">
+              <noop &foreach="slideItem.talks as talkItem">
+                <article class="presentation-talk-card">
+                  <h2 &children="talkItem.title"></h2>
+                  <div class="presentation-speaker-list">
+                    <noop &foreach="talkItem.speakers as speakerItem">
+                      <figure class="presentation-speaker-chip">
+                        <img
+                          &src="speakerItem.photo"
+                          &alt="speakerItem.name"
+                          width="400"
+                          height="400"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                        <figcaption &children="speakerItem.name"></figcaption>
+                      </figure>
+                    </noop>
+                  </div>
+                </article>
+              </noop>
+            </div>
+          </div>
+
+          <div
+            class="presentation-talk-content"
+            &visibleIf="slideItem.showTalk"
+          >
+            <div class="presentation-talk-copy">
+              <p class="presentation-kicker" &children="slideItem.eyebrow"></p>
+              <h1
+                &class="slideItem.titleClassName"
+                &children="slideItem.title"
+              ></h1>
+            </div>
+            <div class="presentation-talk-speakers">
+              <noop &foreach="slideItem.speakers as speakerItem">
+                <figure class="presentation-talk-speaker">
+                  <img
+                    &src="speakerItem.photo"
+                    &alt="speakerItem.name"
+                    width="400"
+                    height="400"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <figcaption>
+                    <strong &children="speakerItem.name"></strong>
+                    <span &children="speakerItem.role"></span>
+                  </figcaption>
+                </figure>
+              </noop>
+            </div>
+          </div>
+
+          <footer class="presentation-footer">
+            <div class="presentation-sponsor-strip" aria-label="Sponsors">
+              <noop &foreach="betweenTalkSponsorItems as sponsorItem">
+                <figure &class="sponsorItem.presentationClassName">
+                  <img
+                    &src="sponsorItem.logo"
+                    &alt="sponsorItem.name"
+                    &width="sponsorItem.logoWidth"
+                    &height="sponsorItem.logoHeight"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </figure>
+              </noop>
+            </div>
+            <div class="presentation-progress">
+              <span>sdlcai.org</span>
+              <span data-slide-progress aria-live="polite">1</span>
+            </div>
+          </footer>
+        </section>
+      </noop>
+    </main>
+    <noop &foreach="scripts as script">
+      <script &src="script.src" &type="script.type"></script>
+    </noop>
+  </body>
+</html>

@@ -18,6 +18,8 @@ deployed as a Cloudflare Worker with static assets. The production domain is
 
 - `site/layouts/index.html`: main page markup and client-side behavior.
 - `site/tailwind.css`: font faces, Tailwind theme variables, and global styles.
+- `site/data/`: shared seminar, schedule, speaker, and sponsor data used by the
+  public site, public presentation slides, and protected event materials.
 - `assets/`: logo, favicon, fonts, and referenced media.
 - `worker/index.ts`: Cloudflare Worker, interest form endpoint, and scheduled
   backups.
@@ -46,6 +48,10 @@ Build the static site:
 ```bash
 npm run build
 ```
+
+The build also renders every deck slide as ready-to-download LinkedIn, X, and
+Bluesky JPEGs. To regenerate only those images after a site build, run
+`npm run slides:export:social`.
 
 Serve the generated build locally:
 
@@ -123,11 +129,20 @@ EMAIL_ENCRYPTION_KEY=... npm run --silent interests:export -- --input backup.jso
 EMAIL_ENCRYPTION_KEY=... npm run --silent interests:export -- --remote --format json
 ```
 
+The public slide library is available at `/slides/`, with a keyboard/swipe deck
+at `/slides/deck/` and a screen schedule at `/slides/schedule/`. It includes
+per-slide LinkedIn, X, and Bluesky downloads generated from the same event data.
+
 The deployed Worker also serves `/admin/` and `/admin/slides/` behind HTTP Basic
-auth. Set `ADMIN_USERNAME` and `ADMIN_PASSWORD` as Worker secrets to enable
-them. Slide downloads under `/assets/slides/` use the same protection. The admin
-desk lists interested people and links to `/api/admin/interests.csv` for CSV
-export.
+auth. Event materials under `/assets/slides/`, including the Aalto-exclusive
+registration ad, use the same protection. The admin desk lists interested
+people and links to `/api/admin/interests.csv` for CSV export.
+
+The schedule and session deck derive from `site/data/seminar.json`,
+`site/data/schedule.json`, `site/data/speakers.json`, and
+`site/data/sponsors.json`. Sponsor data records the package tier and whether the
+contract includes between-talk placement; validation requires Epic and Tech
+sponsors to receive that placement and excludes Brand and Location sponsors.
 
 ## Deployment
 

@@ -1,0 +1,71 @@
+{
+  "$schema": "./sponsors.schema.json",
+  "items": [
+    {
+      "id": "wunderdog",
+      "name": "Wunderdog",
+      "url": "https://www.wunderdog.io/",
+      "logo": "/assets/sponsors/wunderdog.svg",
+      "logoWidth": 223,
+      "logoHeight": 212,
+      "tier": "epic",
+      "logoSurface": "light",
+      "betweenTalks": true
+    },
+    {
+      "id": "reaktor",
+      "name": "Reaktor",
+      "url": "https://www.reaktor.com/",
+      "logo": "/assets/sponsors/reaktor.svg",
+      "logoWidth": 747,
+      "logoHeight": 155,
+      "tier": "tech",
+      "logoSurface": "light",
+      "betweenTalks": true
+    },
+    {
+      "id": "swarmia",
+      "name": "Swarmia",
+      "url": "https://www.swarmia.com/",
+      "logo": "/assets/sponsors/swarmia.svg",
+      "logoWidth": 152,
+      "logoHeight": 31,
+      "tier": "tech",
+      "logoSurface": "dark",
+      "betweenTalks": true
+    },
+    {
+      "id": "wonna",
+      "name": "Wonna",
+      "url": "https://wonna.fi/",
+      "logo": "/assets/sponsors/wonna.webp",
+      "logoWidth": 750,
+      "logoHeight": 390,
+      "tier": "tech",
+      "logoSurface": "light",
+      "betweenTalks": true
+    },
+    {
+      "id": "aimbition",
+      "name": "AIMBITION",
+      "url": "https://www.aimbition.com/",
+      "logo": "/assets/sponsors/aimbition.webp",
+      "logoWidth": 800,
+      "logoHeight": 122,
+      "tier": "brand",
+      "logoSurface": "dark",
+      "betweenTalks": false
+    },
+    {
+      "id": "aalto-university",
+      "name": "Aalto University",
+      "url": "https://www.aalto.fi/",
+      "logo": "/assets/sponsors/aalto-university.svg",
+      "logoWidth": 240,
+      "logoHeight": 200,
+      "tier": "location",
+      "logoSurface": "light",
+      "betweenTalks": false
+    }
+  ]
+}
