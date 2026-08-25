@@ -90,6 +90,23 @@
       }
     }
   },
+  "slides": {
+    "layout": "slides",
+    "scripts": [{ "name": "index" }],
+    "dataSources": {
+      "seminar": {
+        "operation": "seminar"
+      }
+    },
+    "context": {
+      "meta": {
+        "title": "SDLCAI Slides",
+        "description": "Download presentation and screen assets for SDLCAI 2026.",
+        "ogEyebrow": "Slides",
+        "ogDescription": "Presentation and screen assets for SDLCAI 2026."
+      }
+    }
+  },
   "speakers": {
     "layout": "speakers",
     "scripts": [{ "name": "index" }],

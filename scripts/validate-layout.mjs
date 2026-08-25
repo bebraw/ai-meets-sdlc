@@ -14,6 +14,7 @@ const routes = [
   "/for-sponsors/",
   "/posters/",
   "/privacy-policy/",
+  "/slides/",
 ];
 const viewports = [
   { name: "small-mobile", width: 320, height: 740 },

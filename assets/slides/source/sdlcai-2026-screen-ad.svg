@@ -1,0 +1,245 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="1920"
+  height="1080"
+  viewBox="0 0 1920 1080"
+  role="img"
+  aria-labelledby="title description"
+>
+  <title id="title">SDLCAI 2026 seminar screen advertisement</title>
+  <desc id="description">
+    Dark 16 by 9 advertisement for SDLCAI, AI meets SDLC, on 13 October 2026 at
+    Marsio, Aalto University, with a registration QR code, short link, and the
+    sdlcai.org website address.
+  </desc>
+  <defs>
+    <style>
+      @font-face {
+        font-family: "Finlandica Headline";
+        src: url("../fonts/FinlandicaHeadline-Black.woff2") format("woff2");
+        font-weight: 900;
+      }
+
+      @font-face {
+        font-family: "Finlandica Text";
+        src: url("../fonts/FinlandicaText-Regular.woff2") format("woff2");
+        font-weight: 400;
+      }
+
+      @font-face {
+        font-family: "Finlandica Text";
+        src: url("../fonts/FinlandicaText-Bold.woff2") format("woff2");
+        font-weight: 700;
+      }
+
+      .headline {
+        font-family: "Finlandica Headline", "Arial Black", Impact, sans-serif;
+        font-weight: 900;
+      }
+
+      .text {
+        font-family: "Finlandica Text", Georgia, serif;
+      }
+    </style>
+    <pattern id="halftone" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="3" r="1.7" fill="#f6f4ef" opacity="0.11" />
+    </pattern>
+    <pattern id="fine-halftone" width="11" height="11" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.15" fill="#101010" opacity="0.15" />
+    </pattern>
+  </defs>
+
+  <rect width="1920" height="1080" fill="#101010" />
+  <rect width="1920" height="1080" fill="url(#halftone)" />
+
+  <rect x="40" y="40" width="1840" height="1000" fill="#101010" />
+
+  <g id="event-information">
+    <rect
+      x="82"
+      y="82"
+      width="680"
+      height="62"
+      fill="none"
+      stroke="#f6f4ef"
+      stroke-width="3"
+    />
+    <text
+      x="108"
+      y="123"
+      class="text"
+      fill="#f6f4ef"
+      font-size="27"
+      font-weight="700"
+      letter-spacing="2.5"
+    >
+      ONE-DAY SEMINAR / AALTO UNIVERSITY
+    </text>
+
+    <text
+      x="76"
+      y="468"
+      class="headline"
+      fill="#f6f4ef"
+      font-size="306"
+      letter-spacing="-5"
+    >
+      SDLCAI
+    </text>
+    <rect x="82" y="517" width="1276" height="7" fill="#f6f4ef" />
+
+    <text
+      x="82"
+      y="654"
+      class="headline"
+      fill="#f6f4ef"
+      font-size="108"
+      letter-spacing="-1"
+    >
+      AI MEETS SDLC
+    </text>
+    <text x="86" y="724" class="text" fill="#b7b0a4" font-size="39">
+      AI across the full software development lifecycle.
+    </text>
+    <text
+      x="86"
+      y="806"
+      class="text"
+      fill="#f6f4ef"
+      font-size="27"
+      font-weight="700"
+      letter-spacing="2.2"
+    >
+      TALKS / POSTERS / PANEL / AFTERPARTY
+    </text>
+
+    <rect x="44" y="888" width="1366" height="148" fill="#f6f4ef" />
+    <rect x="44" y="888" width="1366" height="148" fill="url(#fine-halftone)" />
+
+    <text
+      x="84"
+      y="951"
+      class="headline"
+      fill="#101010"
+      font-size="48"
+      letter-spacing="0.5"
+    >
+      MARSIO STAGE
+    </text>
+    <text
+      x="86"
+      y="993"
+      class="text"
+      fill="#101010"
+      font-size="26"
+      font-weight="700"
+    >
+      AALTO UNIVERSITY / ESPOO
+    </text>
+
+    <rect x="525" y="914" width="3" height="99" fill="#101010" />
+    <text
+      x="572"
+      y="951"
+      class="headline"
+      fill="#101010"
+      font-size="48"
+      letter-spacing="0.5"
+    >
+      08:00-20:00
+    </text>
+    <text
+      x="574"
+      y="993"
+      class="text"
+      fill="#101010"
+      font-size="26"
+      font-weight="700"
+    >
+      13 OCTOBER 2026
+    </text>
+
+    <rect x="1000" y="914" width="3" height="99" fill="#101010" />
+    <image
+      x="1040"
+      y="910"
+      width="326"
+      height="116"
+      href="aalto-school-of-science.png"
+      xlink:href="aalto-school-of-science.png"
+      preserveAspectRatio="xMidYMid meet"
+    />
+  </g>
+
+  <g id="registration">
+    <rect x="1418" y="44" width="458" height="306" fill="#101010" />
+    <text x="1460" y="245" class="headline" fill="#f6f4ef" font-size="214">
+      13
+    </text>
+    <text x="1697" y="185" class="headline" fill="#f6f4ef" font-size="80">
+      OCT
+    </text>
+    <rect x="1698" y="211" width="132" height="5" fill="#f6f4ef" />
+    <text x="1698" y="286" class="headline" fill="#f6f4ef" font-size="65">
+      2026
+    </text>
+
+    <rect x="1448" y="365" width="400" height="400" fill="#f6f4ef" />
+    <image
+      x="1462"
+      y="379"
+      width="372"
+      height="372"
+      href="registration-qr.png"
+      xlink:href="registration-qr.png"
+      preserveAspectRatio="xMidYMid meet"
+    />
+
+    <text
+      x="1458"
+      y="828"
+      class="text"
+      fill="#b7b0a4"
+      font-size="24"
+      font-weight="700"
+      letter-spacing="2.2"
+    >
+      SCAN OR VISIT
+    </text>
+    <text x="1455" y="896" class="headline" fill="#f6f4ef" font-size="60">
+      REGISTER
+    </text>
+    <a href="https://bit.ly/4wRkjCa" xlink:href="https://bit.ly/4wRkjCa">
+      <text
+        x="1458"
+        y="951"
+        class="text"
+        fill="#f6f4ef"
+        font-size="33"
+        font-weight="700"
+      >
+        bit.ly/4wRkjCa
+      </text>
+    </a>
+    <rect x="1458" y="968" width="374" height="3" fill="#f6f4ef" />
+    <a href="https://sdlcai.org" xlink:href="https://sdlcai.org">
+      <text
+        x="1458"
+        y="1008"
+        class="text"
+        fill="#f6f4ef"
+        font-size="29"
+        font-weight="700"
+        letter-spacing="1.2"
+      >
+        sdlcai.org
+      </text>
+    </a>
+  </g>
+
+  <g id="frame" fill="none" stroke="#f6f4ef">
+    <path d="M1414 44V1036" stroke-width="8" />
+    <rect x="40" y="40" width="1840" height="1000" stroke-width="8" />
+  </g>
+</svg>
