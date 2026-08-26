@@ -34,10 +34,10 @@ events, application logs, or routine delivery-history rows. An email change is
 not active until the new address has been verified.
 
 Use a Worker `send_email` binding for one separately addressed message per
-speaker. Restrict the binding to the selected `sdlcai.org` sender address. Every
-message has both text and HTML bodies, a recognizable sender, and a reply-to
-address. Use Email Routing to forward replies from the domain address to an
-organizer-controlled, verified destination.
+speaker. Send as `SDLCAI <info@sdlcai.org>`, use `info@sdlcai.org` as the
+reply-to address, and restrict the binding to that sender address. Every message
+has both text and HTML bodies. Use Email Routing to forward `info@sdlcai.org`
+to an organizer-controlled, verified destination.
 
 Provide organizer workflows for:
 

@@ -91,6 +91,21 @@ wrangler r2 bucket create ai-meets-sdlc-social-exports
 The Browser Rendering binding is declared in `wrangler.jsonc`; no browser
 binary or browser path is installed in the Workers Builds environment.
 
+Cloudflare Email Sending is onboarded for `sdlcai.org`. Cloudflare manages the
+outbound bounce MX, SPF, DKIM, and DMARC records separately from the root-domain
+MX records used by Email Routing. Application email will use
+`SDLCAI <info@sdlcai.org>` with `info@sdlcai.org` as the reply-to address. When
+the speaker email workflow is implemented, add a `send_email` binding restricted
+with `allowed_sender_addresses: ["info@sdlcai.org"]`; do not add the unused
+binding before then.
+
+Email Routing is active for the domain, but `info@sdlcai.org` must have a custom
+routing rule to an organizer-controlled, verified destination before outbound
+speaker email is enabled. Keep the catch-all disabled. Test the route from an
+address other than the forwarding destination so replies cannot silently drop.
+Cloudflare Email Sending is limited to transactional and event-relationship
+messages; newsletters and broader marketing remain outside this application.
+
 Persisted Workers Logs are enabled for structured application messages, while
 automatic invocation logs are disabled so full request URLs—including private
 speaker links—are not retained. Social rendering logs contain only the asset
