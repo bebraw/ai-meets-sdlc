@@ -42,6 +42,28 @@ interface AdminSpeakersResponse {
   speakers: AdminSpeakerItem[];
 }
 
+interface AnnouncementPreviewResponse {
+  error?: string;
+  excluded: Array<{ reason: string; speaker_id: string }>;
+  html_body: string;
+  recipient_count: number;
+  recipients: Array<{ name: string; speaker_id: string }>;
+  subject: string;
+  text_body: string;
+}
+
+interface AnnouncementCampaign {
+  campaign_id: string;
+  category: "operational" | "promotion";
+  completed_at: string | null;
+  created_at: string;
+  failed_count: number;
+  recipient_count: number;
+  sent_count: number;
+  status: "failed" | "partial" | "sending" | "sent";
+  subject: string;
+}
+
 const container = document.querySelector<HTMLElement>("[data-admin-speakers]");
 const refreshButton = document.querySelector<HTMLButtonElement>(
   "[data-admin-speakers-refresh]",
@@ -49,6 +71,25 @@ const refreshButton = document.querySelector<HTMLButtonElement>(
 const status = document.querySelector<HTMLElement>(
   "[data-admin-speakers-status]",
 );
+const announcementForm = document.querySelector<HTMLFormElement>(
+  "[data-admin-announcement-form]",
+);
+const announcementSpeakers = document.querySelector<HTMLElement>(
+  "[data-admin-announcement-speakers]",
+);
+const announcementStatus = document.querySelector<HTMLElement>(
+  "[data-admin-announcement-status]",
+);
+const announcementPreviewPanel = document.querySelector<HTMLElement>(
+  "[data-admin-announcement-preview-panel]",
+);
+const announcementConfirm = document.querySelector<HTMLInputElement>(
+  "[data-admin-announcement-confirm]",
+);
+const announcementSend = document.querySelector<HTMLButtonElement>(
+  "[data-admin-announcement-send]",
+);
+let previewedRecipientCount: number | null = null;
 
 if (container) void loadSpeakers();
 
@@ -73,10 +114,315 @@ async function loadSpeakers(): Promise<void> {
   }
 
   renderSummary(response.data.speakers);
+  renderAnnouncementSpeakers(response.data.speakers);
   container?.replaceChildren(
     ...response.data.speakers.map((speaker) => renderSpeaker(speaker)),
   );
   setStatus(`Loaded ${response.data.speakers.length} speakers.`);
+  void loadAnnouncementHistory();
+}
+
+document
+  .querySelector<HTMLButtonElement>("[data-admin-announcement-select-all]")
+  ?.addEventListener("click", () => setAnnouncementSelection(true));
+document
+  .querySelector<HTMLButtonElement>("[data-admin-announcement-select-none]")
+  ?.addEventListener("click", () => setAnnouncementSelection(false));
+document
+  .querySelector<HTMLButtonElement>("[data-admin-announcement-preview]")
+  ?.addEventListener("click", () => void previewAnnouncement());
+document
+  .querySelector<HTMLButtonElement>("[data-admin-announcement-test]")
+  ?.addEventListener("click", () => void testAnnouncement());
+announcementSend?.addEventListener("click", () => void sendAnnouncement());
+announcementConfirm?.addEventListener("change", () => {
+  if (announcementSend)
+    announcementSend.disabled = !announcementConfirm.checked;
+});
+announcementForm?.addEventListener("input", (event) => {
+  if (event.target === announcementConfirm) return;
+  invalidateAnnouncementPreview();
+});
+
+function renderAnnouncementSpeakers(speakers: AdminSpeakerItem[]): void {
+  if (!announcementSpeakers) return;
+
+  announcementSpeakers.replaceChildren(
+    ...speakers.map((speaker) => {
+      const label = node(
+        "label",
+        "grid cursor-pointer grid-cols-[auto_1fr] gap-3 bg-ink p-3",
+      );
+      const checkbox = document.createElement("input");
+      checkbox.className = "mt-1 h-5 w-5";
+      checkbox.type = "checkbox";
+      checkbox.name = "speaker_id";
+      checkbox.value = speaker.speaker_id;
+      checkbox.checked = true;
+      const copy = node("span", "grid gap-1");
+      copy.appendChild(node("strong", "uppercase", speaker.name));
+      copy.appendChild(
+        node(
+          "span",
+          "text-xs text-paper/60",
+          speaker.contact?.email_confirmed_at
+            ? "Confirmed operational contact"
+            : speaker.contact?.email
+              ? "Address not confirmed"
+              : "No address",
+        ),
+      );
+      label.appendChild(checkbox);
+      label.appendChild(copy);
+      return label;
+    }),
+  );
+}
+
+function setAnnouncementSelection(selected: boolean): void {
+  for (const checkbox of announcementSpeakers?.querySelectorAll<HTMLInputElement>(
+    'input[name="speaker_id"]',
+  ) ?? []) {
+    checkbox.checked = selected;
+  }
+  invalidateAnnouncementPreview();
+}
+
+async function previewAnnouncement(): Promise<void> {
+  const payload = readAnnouncementPayload();
+  setAnnouncementStatus("Checking recipient eligibility…");
+
+  const response = await requestJson<AnnouncementPreviewResponse>(
+    "/api/admin/speakers/announcements/preview",
+    {
+      body: JSON.stringify(payload),
+      headers: {
+        "content-type": "application/json",
+        "x-admin-action": "preview-speaker-announcement",
+      },
+      method: "POST",
+    },
+  );
+
+  if (!response.ok) {
+    setAnnouncementStatus(
+      response.data.error ?? "Announcement preview failed.",
+      true,
+    );
+    return;
+  }
+
+  previewedRecipientCount = response.data.recipient_count;
+  setAnnouncementPreview(response.data);
+  setAnnouncementStatus(
+    response.data.recipient_count > 0
+      ? "Preview ready. Confirm the exact recipient count before sending."
+      : "No selected speakers are currently eligible for this category.",
+    response.data.recipient_count === 0,
+  );
+}
+
+async function testAnnouncement(): Promise<void> {
+  const payload = readAnnouncementPayload();
+  const testEmail = announcementForm?.elements.namedItem("test_email");
+  setAnnouncementStatus("Sending test message…");
+
+  const response = await requestJson<{ error?: string; message?: string }>(
+    "/api/admin/speakers/announcements/test",
+    {
+      body: JSON.stringify({
+        ...payload,
+        test_email:
+          testEmail instanceof HTMLInputElement ? testEmail.value : "",
+      }),
+      headers: {
+        "content-type": "application/json",
+        "x-admin-action": "test-speaker-announcement",
+      },
+      method: "POST",
+    },
+  );
+  setAnnouncementStatus(
+    response.data.message ?? response.data.error ?? "Test delivery failed.",
+    !response.ok,
+  );
+}
+
+async function sendAnnouncement(): Promise<void> {
+  if (previewedRecipientCount === null || !announcementConfirm?.checked) return;
+
+  const payload = readAnnouncementPayload();
+  if (announcementSend) announcementSend.disabled = true;
+  setAnnouncementStatus(
+    "Sending one separately addressed message per speaker…",
+  );
+
+  const response = await requestJson<{
+    error?: string;
+    failed_count?: number;
+    message?: string;
+  }>("/api/admin/speakers/announcements/send", {
+    body: JSON.stringify({
+      ...payload,
+      confirm_recipient_count: previewedRecipientCount,
+    }),
+    headers: {
+      "content-type": "application/json",
+      "x-admin-action": "send-speaker-announcement",
+    },
+    method: "POST",
+  });
+  setAnnouncementStatus(
+    response.data.message ?? response.data.error ?? "Announcement send failed.",
+    !response.ok || Boolean(response.data.failed_count),
+  );
+
+  if (response.ok) {
+    invalidateAnnouncementPreview();
+    void loadAnnouncementHistory();
+  } else if (announcementSend) {
+    announcementSend.disabled = false;
+  }
+}
+
+function readAnnouncementPayload(): {
+  category: string;
+  speaker_ids: string[];
+  subject: string;
+  text_body: string;
+} {
+  const formData = new FormData(announcementForm!);
+  return {
+    category: String(formData.get("category") ?? ""),
+    speaker_ids: formData.getAll("speaker_id").map(String),
+    subject: String(formData.get("subject") ?? ""),
+    text_body: String(formData.get("text_body") ?? ""),
+  };
+}
+
+function setAnnouncementPreview(preview: AnnouncementPreviewResponse): void {
+  announcementPreviewPanel?.removeAttribute("hidden");
+  setTextContent("[data-admin-announcement-text-preview]", preview.text_body);
+  setTextContent(
+    "[data-admin-announcement-recipient-count]",
+    String(preview.recipient_count),
+  );
+  const recipientNames = preview.recipients.map(({ name }) => name).join(", ");
+  const excluded = preview.excluded.length
+    ? ` Excluded: ${preview.excluded.map(({ speaker_id, reason }) => `${speaker_id} (${reason})`).join(", ")}.`
+    : "";
+  setTextContent(
+    "[data-admin-announcement-recipient-list]",
+    `${recipientNames || "None"}.${excluded}`,
+  );
+  const frame = document.querySelector<HTMLIFrameElement>(
+    "[data-admin-announcement-html-preview]",
+  );
+  if (frame) frame.srcdoc = preview.html_body;
+  if (announcementConfirm) announcementConfirm.checked = false;
+  if (announcementSend) announcementSend.disabled = true;
+}
+
+function invalidateAnnouncementPreview(): void {
+  previewedRecipientCount = null;
+  announcementPreviewPanel?.setAttribute("hidden", "");
+  if (announcementConfirm) announcementConfirm.checked = false;
+  if (announcementSend) announcementSend.disabled = true;
+}
+
+async function loadAnnouncementHistory(): Promise<void> {
+  const history = document.querySelector<HTMLElement>(
+    "[data-admin-announcement-history]",
+  );
+  if (!history) return;
+
+  const response = await requestJson<{
+    campaigns: AnnouncementCampaign[];
+    error?: string;
+  }>("/api/admin/speakers/announcements");
+
+  if (!response.ok || !Array.isArray(response.data.campaigns)) {
+    history.textContent =
+      response.data.error ?? "Announcement history unavailable.";
+    return;
+  }
+
+  if (response.data.campaigns.length === 0) {
+    history.textContent = "No speaker announcements have been sent.";
+    return;
+  }
+
+  history.replaceChildren(
+    ...response.data.campaigns.map((campaign) => renderCampaign(campaign)),
+  );
+}
+
+function renderCampaign(campaign: AnnouncementCampaign): HTMLElement {
+  const row = node(
+    "div",
+    "grid gap-3 border border-paper/40 p-4 md:grid-cols-[1fr_auto] md:items-center",
+  );
+  const copy = node("div", "grid gap-1");
+  copy.appendChild(node("strong", "uppercase", campaign.subject));
+  copy.appendChild(
+    node(
+      "span",
+      "text-xs text-paper/60",
+      `${formatDate(campaign.created_at)} / ${campaign.category} / ${campaign.sent_count} sent / ${campaign.failed_count} failed`,
+    ),
+  );
+  row.appendChild(copy);
+
+  if (campaign.failed_count > 0) {
+    const retry = node(
+      "button",
+      "border border-paper px-3 py-2 text-xs font-bold uppercase",
+      "Retry failures",
+    ) as HTMLButtonElement;
+    retry.type = "button";
+    retry.addEventListener("click", async () => {
+      retry.disabled = true;
+      const response = await requestJson<{ error?: string; message?: string }>(
+        "/api/admin/speakers/announcements/retry",
+        {
+          body: JSON.stringify({ campaign_id: campaign.campaign_id }),
+          headers: {
+            "content-type": "application/json",
+            "x-admin-action": "retry-speaker-announcement",
+          },
+          method: "POST",
+        },
+      );
+      setAnnouncementStatus(
+        response.data.message ?? response.data.error ?? "Retry failed.",
+        !response.ok,
+      );
+      retry.disabled = false;
+      if (response.ok) void loadAnnouncementHistory();
+    });
+    row.appendChild(retry);
+  } else {
+    row.appendChild(
+      node(
+        "span",
+        "text-xs font-bold uppercase text-paper/60",
+        campaign.status,
+      ),
+    );
+  }
+
+  return row;
+}
+
+function setAnnouncementStatus(message: string, isError = false): void {
+  if (!announcementStatus) return;
+  announcementStatus.textContent = message;
+  announcementStatus.classList.toggle("text-red-300", isError);
+}
+
+function setTextContent(selector: string, value: string): void {
+  const target = document.querySelector<HTMLElement>(selector);
+  if (target) target.textContent = value;
 }
 
 function renderSummary(speakers: AdminSpeakerItem[]): void {

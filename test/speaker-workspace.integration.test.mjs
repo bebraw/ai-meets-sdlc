@@ -166,6 +166,38 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
     ["profile.name", "talks.mo-khazali-industry-perspective.title"],
   );
 
+  const announcementPreviewResponse = await worker.fetch(
+    `${origin}/api/admin/speakers/announcements/preview`,
+    {
+      body: JSON.stringify({
+        category: "operational",
+        speaker_ids: ["mo-khazali", "ohans-emmanuel"],
+        subject: "SDLCAI programme deadline",
+        text_body:
+          "Please review your speaker profile and submit any final programme changes this week.",
+      }),
+      headers: {
+        authorization: adminAuthorization,
+        "content-type": "application/json",
+        origin,
+        "x-admin-action": "preview-speaker-announcement",
+      },
+      method: "POST",
+    },
+  );
+  const announcementPreview = await announcementPreviewResponse.json();
+  assert.equal(announcementPreviewResponse.status, 200);
+  assert.equal(announcementPreview.recipient_count, 1);
+  assert.equal(announcementPreview.recipients[0].speaker_id, "mo-khazali");
+  assert.deepEqual(announcementPreview.excluded, [
+    { reason: "no-contact", speaker_id: "ohans-emmanuel" },
+  ]);
+  assert.match(announcementPreview.text_body, /Hello \{\{speaker name\}\}/u);
+  assert.doesNotMatch(
+    JSON.stringify(announcementPreview),
+    /speaker@example\.com/u,
+  );
+
   const rejectedResponse = await review(worker, {
     decision: "reject",
     review_note: "Please use the name shown on your conference badge.",
@@ -260,13 +292,9 @@ async function encrypt(value) {
     "SHA-256",
     new TextEncoder().encode(`email-encryption:${encryptionKey}`),
   );
-  const key = await crypto.subtle.importKey(
-    "raw",
-    derived,
-    "AES-GCM",
-    false,
-    ["encrypt"],
-  );
+  const key = await crypto.subtle.importKey("raw", derived, "AES-GCM", false, [
+    "encrypt",
+  ]);
   const iv = new Uint8Array(12).fill(9);
   const ciphertext = await crypto.subtle.encrypt(
     { iv, name: "AES-GCM" },
