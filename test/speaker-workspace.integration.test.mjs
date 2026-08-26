@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
@@ -10,6 +10,7 @@ import { unstable_dev } from "wrangler";
 const execFileAsync = promisify(execFile);
 const origin = "https://sdlcai.org";
 const encryptionKey = "speaker-workspace-local-test-key";
+const streamWebhookSecret = "speaker-workspace-stream-webhook-secret";
 const adminAuthorization = `Basic ${Buffer.from(
   "speaker-admin:local-test-password",
 ).toString("base64")}`;
@@ -56,6 +57,25 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
     ) VALUES (
       'mo-khazali', '${invitationHash}', 1, '2026-08-26T00:00:00Z',
       '2099-10-31T21:59:59Z', '2026-08-26T00:00:00Z', '2026-08-26T00:00:00Z'
+    );
+    INSERT INTO speaker_video_submissions (
+      submission_id, speaker_id, talk_id, stream_uid, state,
+      may_caption, may_crop, may_excerpt, may_edit, may_publish,
+      permission_text, permission_recorded_at, upload_expires_at,
+      retention_until, created_at, updated_at
+    ) VALUES (
+      '11111111-1111-4111-8111-111111111111',
+      'mo-khazali',
+      'mo-khazali-industry-perspective',
+      '0123456789abcdef0123456789abcdef',
+      'upload_pending',
+      1, 1, 1, 0, 1,
+      'Test permission evidence.',
+      '2026-08-26T00:00:00Z',
+      '2099-10-31T21:59:59Z',
+      '2099-01-31T21:59:59Z',
+      '2026-08-26T00:00:00Z',
+      '2026-08-26T00:00:00Z'
     );`;
   await execFileAsync(
     wranglerPath,
@@ -91,7 +111,9 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
       SPEAKER_DINNER_RESPONSE_DEADLINE: "2099-10-05T20:59:59Z",
       SPEAKER_DINNER_RETENTION_UNTIL: "2099-10-26T21:59:59Z",
       SPEAKER_WORKSPACE_ACCESS_UNTIL: "2099-10-31T21:59:59Z",
+      SPEAKER_VIDEO_RETENTION_UNTIL: "2099-01-31T21:59:59Z",
       SHOW_INTEREST_FORM: "",
+      STREAM_WEBHOOK_SECRET: streamWebhookSecret,
       TURNSTILE_SITE_KEY: "",
     },
   });
@@ -117,6 +139,34 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
     "mo-khazali-industry-perspective",
   ]);
   assert.equal(workspace.revision, null);
+
+  const sourcePhoto = await readFile("assets/speakers/mo-khazali.webp");
+  const photoUploadResponse = await worker.fetch(
+    `${origin}/api/speaker/photo`,
+    {
+      body: sourcePhoto,
+      headers: {
+        "content-type": "application/octet-stream",
+        cookie,
+        origin,
+      },
+      method: "POST",
+    },
+  );
+  const photoUpload = await photoUploadResponse.json();
+  assert.equal(photoUploadResponse.status, 201);
+  assert.equal(photoUpload.photo.state, "submitted");
+  assert.equal(photoUpload.photo.width, 400);
+  assert.equal(photoUpload.photo.height, 400);
+  assert.ok(photoUpload.photo.byte_size < 250 * 1024);
+
+  const stagedPhotoResponse = await worker.fetch(
+    `${origin}/api/speaker/photo/image`,
+    { headers: { cookie } },
+  );
+  assert.equal(stagedPhotoResponse.status, 200);
+  assert.equal(stagedPhotoResponse.headers.get("content-type"), "image/webp");
+  assert.ok((await stagedPhotoResponse.arrayBuffer()).byteLength > 0);
 
   const proposed = structuredClone(workspace.content);
   proposed.profile.name = "Mo Javad Khazali";
@@ -150,6 +200,32 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   });
   assert.equal(blockedResponse.status, 409);
 
+  const webhookBody = JSON.stringify({
+    creator: "mo-khazali",
+    duration: 91.4,
+    meta: {
+      submission_id: "11111111-1111-4111-8111-111111111111",
+      talk_id: "mo-khazali-industry-perspective",
+    },
+    readyToStream: true,
+    status: { state: "ready" },
+    uid: "0123456789abcdef0123456789abcdef",
+  });
+  const webhookTimestamp = Math.floor(Date.now() / 1000);
+  const webhookSignature = await signStreamWebhook(
+    webhookTimestamp,
+    webhookBody,
+  );
+  const webhookResponse = await worker.fetch(`${origin}/api/stream/webhook`, {
+    body: webhookBody,
+    headers: {
+      "content-type": "application/json",
+      "webhook-signature": `time=${webhookTimestamp},sig1=${webhookSignature}`,
+    },
+    method: "POST",
+  });
+  assert.equal(webhookResponse.status, 204);
+
   const adminResponse = await worker.fetch(`${origin}/api/admin/speakers`, {
     headers: { authorization: adminAuthorization },
   });
@@ -161,6 +237,9 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   assert.equal(speaker.contact.email, "speaker@example.com");
   assert.ok(speaker.contact.email_confirmed_at);
   assert.equal(speaker.revision.state, "submitted");
+  assert.equal(speaker.photo.state, "submitted");
+  assert.equal(speaker.videos[0].state, "ready");
+  assert.equal(speaker.videos[0].duration_seconds, 91.4);
   assert.deepEqual(
     speaker.revision.changed_fields.map(({ field }) => field),
     ["profile.name", "talks.mo-khazali-industry-perspective.title"],
@@ -197,6 +276,44 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
     JSON.stringify(announcementPreview),
     /speaker@example\.com/u,
   );
+
+  const approvedPhotoResponse = await worker.fetch(
+    `${origin}/api/admin/speakers/photos/review`,
+    {
+      body: JSON.stringify({
+        decision: "approve",
+        photo_revision_id: speaker.photo.photo_revision_id,
+        review_note: "Ready for the public profile.",
+      }),
+      headers: {
+        authorization: adminAuthorization,
+        "content-type": "application/json",
+        origin,
+        "x-admin-action": "review-speaker-photo",
+      },
+      method: "POST",
+    },
+  );
+  assert.equal(approvedPhotoResponse.status, 200);
+
+  const approvedVideoResponse = await worker.fetch(
+    `${origin}/api/admin/speakers/videos/review`,
+    {
+      body: JSON.stringify({
+        decision: "approve",
+        review_note: "Approved within the recorded permissions.",
+        submission_id: speaker.videos[0].submission_id,
+      }),
+      headers: {
+        authorization: adminAuthorization,
+        "content-type": "application/json",
+        origin,
+        "x-admin-action": "review-speaker-video",
+      },
+      method: "POST",
+    },
+  );
+  assert.equal(approvedVideoResponse.status, 200);
 
   const rejectedResponse = await review(worker, {
     decision: "reject",
@@ -305,4 +422,22 @@ async function encrypt(value) {
     ciphertext: Buffer.from(ciphertext).toString("base64"),
     iv: Buffer.from(iv).toString("base64"),
   };
+}
+
+async function signStreamWebhook(timestamp, body) {
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(streamWebhookSecret),
+    { hash: "SHA-256", name: "HMAC" },
+    false,
+    ["sign"],
+  );
+  const signature = await crypto.subtle.sign(
+    "HMAC",
+    key,
+    new TextEncoder().encode(`${timestamp}.${body}`),
+  );
+  return [...new Uint8Array(signature)]
+    .map((value) => value.toString(16).padStart(2, "0"))
+    .join("");
 }

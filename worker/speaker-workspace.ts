@@ -1,5 +1,16 @@
 import scheduleData from "../site/data/schedule.json" with { type: "json" };
 import speakersData from "../site/data/speakers.json" with { type: "json" };
+import {
+  handleAdminSpeakerPhotoRequest,
+  handleSpeakerPhotoRequest,
+  readAdminSpeakerPhotos,
+} from "./speaker-photos.ts";
+import {
+  handleAdminSpeakerVideoRequest,
+  handleSpeakerVideoRequest,
+  handleStreamWebhookRequest,
+  readAdminSpeakerVideos,
+} from "./speaker-videos.ts";
 
 type SocialField =
   | "website"
@@ -190,6 +201,30 @@ export async function handleSpeakerWorkspaceRequest(
 ): Promise<Response | null> {
   const url = new URL(request.url);
 
+  if (url.pathname === "/api/stream/webhook") {
+    return handleStreamWebhookRequest(request, env);
+  }
+
+  if (url.pathname.startsWith("/api/admin/speakers/videos/")) {
+    if (url.pathname === "/api/admin/speakers/videos/review") {
+      const forbidden = requireAdminMutation(request, "review-speaker-video");
+
+      if (forbidden) return adminSecure(forbidden);
+    }
+
+    return adminSecure(await handleAdminSpeakerVideoRequest(request, env));
+  }
+
+  if (url.pathname.startsWith("/api/admin/speakers/photos/")) {
+    if (url.pathname === "/api/admin/speakers/photos/review") {
+      const forbidden = requireAdminMutation(request, "review-speaker-photo");
+
+      if (forbidden) return adminSecure(forbidden);
+    }
+
+    return adminSecure(await handleAdminSpeakerPhotoRequest(request, env));
+  }
+
   if (url.pathname === "/api/admin/speakers") {
     if (request.method !== "GET") {
       return adminSecure(json({ error: "Method not allowed" }, 405));
@@ -302,6 +337,52 @@ export async function handleSpeakerWorkspaceRequest(
     return secure(json({ error: "Method not allowed" }, 405));
   }
 
+  if (
+    url.pathname === "/api/speaker/photo" ||
+    url.pathname === "/api/speaker/photo/image"
+  ) {
+    if (request.method === "POST" && !isSameOriginMutation(request)) {
+      return secure(json({ error: "Request origin was not accepted." }, 403));
+    }
+
+    const session = await authenticateSpeaker(request, env);
+
+    if (session instanceof Response) return secure(session);
+
+    return secure(
+      await handleSpeakerPhotoRequest(request, env, session.speaker_id),
+    );
+  }
+
+  if (
+    url.pathname === "/api/speaker/videos" ||
+    url.pathname === "/api/speaker/videos/upload" ||
+    /^\/api\/speaker\/videos\/[0-9a-f-]{36}\/preview$/iu.test(url.pathname)
+  ) {
+    if (request.method === "POST" && !isSameOriginMutation(request)) {
+      return secure(json({ error: "Request origin was not accepted." }, 403));
+    }
+
+    const session = await authenticateSpeaker(request, env);
+
+    if (session instanceof Response) return secure(session);
+
+    const canonical = getCanonicalContent(session.speaker_id);
+
+    if (!canonical) {
+      return secure(json({ error: "Speaker profile was not found." }, 404));
+    }
+
+    return secure(
+      await handleSpeakerVideoRequest(
+        request,
+        env,
+        session.speaker_id,
+        canonical.talks.map(({ id }) => id),
+      ),
+    );
+  }
+
   if (url.pathname === "/api/speaker/workspace") {
     if (request.method === "GET") {
       return secure(await getSpeakerWorkspace(request, env));
@@ -322,10 +403,11 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
 
   if (configurationError) return configurationError;
 
-  const [contactResult, accessResult, revisionResult] = await Promise.all([
-    env
-      .INTERESTS!.prepare(
-        `SELECT
+  const [contactResult, accessResult, revisionResult, photos, videos] =
+    await Promise.all([
+      env
+        .INTERESTS!.prepare(
+          `SELECT
          speaker_id,
          email_ciphertext,
          email_iv,
@@ -336,17 +418,17 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
          delivery_status,
          updated_at
        FROM speaker_contacts`,
-      )
-      .all<SpeakerContactRow>(),
-    env
-      .INTERESTS!.prepare(
-        `SELECT speaker_id, invite_expires_at, last_sent_at, revoked_at
+        )
+        .all<SpeakerContactRow>(),
+      env
+        .INTERESTS!.prepare(
+          `SELECT speaker_id, invite_expires_at, last_sent_at, revoked_at
          FROM speaker_workspace_access`,
-      )
-      .all<SpeakerAdminAccessRow>(),
-    env
-      .INTERESTS!.prepare(
-        `SELECT
+        )
+        .all<SpeakerAdminAccessRow>(),
+      env
+        .INTERESTS!.prepare(
+          `SELECT
          revision_id,
          speaker_id,
          base_content_hash,
@@ -365,9 +447,11 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
           ELSE 3
         END,
         updated_at DESC`,
-      )
-      .all<SpeakerAdminRevisionRow>(),
-  ]);
+        )
+        .all<SpeakerAdminRevisionRow>(),
+      readAdminSpeakerPhotos(env),
+      readAdminSpeakerVideos(env),
+    ]);
   const contacts = new Map(
     contactResult.results.map((contact) => [contact.speaker_id, contact]),
   );
@@ -428,8 +512,10 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
             }
           : null,
         name: speaker.name,
+        photo: photos.get(speaker.id) ?? null,
         revision: revision ? serializeAdminRevision(revision, canonical) : null,
         speaker_id: speaker.id,
+        videos: videos.get(speaker.id) ?? [],
       };
     }),
   );

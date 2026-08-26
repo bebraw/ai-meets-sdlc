@@ -1,9 +1,12 @@
 # Cloudflare Setup
 
 This site is deployed as a Cloudflare Worker with static assets, D1 for the
-interest list and poster proposals, R2 for encrypted backups and generated
-social graphics, Browser Rendering for on-demand rasterization, Turnstile for
-bot protection, and a scheduled Worker trigger for daily backup export.
+interest list, proposals, and private speaker workflows; R2 for encrypted
+backups, generated social graphics, and reviewed portrait derivatives; Browser
+Rendering for on-demand rasterization; Images for bounded portrait processing;
+Stream for private topic-video intake; Email Sending for separately addressed
+speaker messages; Turnstile for bot protection; and a scheduled Worker trigger
+for daily backup export.
 
 ## Bindings
 
@@ -12,16 +15,21 @@ bot protection, and a scheduled Worker trigger for daily backup export.
 | Binding                    | Type           | Purpose                                                    |
 | -------------------------- | -------------- | ---------------------------------------------------------- |
 | `ASSETS`                   | Workers Assets | Serves the Gustwind build output from `build/`.            |
-| `INTERESTS`                | D1             | Stores encrypted interest and poster proposal records.     |
+| `INTERESTS`                | D1             | Stores encrypted public-form and speaker workflow records. |
 | `INTEREST_BACKUPS`         | R2             | Stores daily encrypted JSON backups for both record types. |
 | `SOCIAL_EXPORTS`           | R2             | Stores immutable, content-addressed social JPEGs.          |
 | `SOCIAL_BROWSER`           | Browser        | Renders a social JPEG when its R2 object does not exist.   |
+| `SPEAKER_UPLOADS`          | R2             | Stores private reviewed 400x400 speaker WebP derivatives.  |
+| `IMAGES`                   | Images         | Decodes, crops, strips metadata, and re-encodes portraits. |
+| `STREAM`                   | Stream         | Creates private one-time topic-video uploads and previews. |
+| `EMAIL`                    | Email Sending  | Sends one separately addressed speaker message at a time.  |
 | `ADMIN_USERNAME`           | Secret         | Username for HTTP Basic auth protecting `/admin/`.         |
 | `ADMIN_PASSWORD`           | Secret         | Password for HTTP Basic auth protecting `/admin/`.         |
 | `TURNSTILE_SITE_KEY`       | Worker var     | Public Turnstile widget site key injected into HTML.       |
 | `TURNSTILE_HOSTNAMES`      | Worker var     | Comma-separated hostnames accepted from Siteverify.        |
 | `TURNSTILE_SECRET_KEY`     | Secret         | Server-side Turnstile verification key.                    |
 | `EMAIL_ENCRYPTION_KEY`     | Secret         | Key material for encryption and keyed fingerprints.        |
+| `STREAM_WEBHOOK_SECRET`    | Secret         | Verifies the exact bytes of Stream processing webhooks.    |
 | `POSTER_PROPOSAL_DEADLINE` | Worker var     | ISO timestamp after which public proposals return `410`.   |
 
 The production poster deadline is `2026-09-27T20:59:59Z`, which is 23:59 EEST
@@ -81,11 +89,12 @@ Create the D1 database and copy the returned `database_id` into
 wrangler d1 create ai-meets-sdlc-interests
 ```
 
-Create both R2 buckets:
+Create all R2 buckets:
 
 ```bash
 wrangler r2 bucket create ai-meets-sdlc-interest-backups
 wrangler r2 bucket create ai-meets-sdlc-social-exports
+wrangler r2 bucket create ai-meets-sdlc-speaker-uploads
 ```
 
 The Browser Rendering binding is declared in `wrangler.jsonc`; no browser
@@ -94,10 +103,9 @@ binary or browser path is installed in the Workers Builds environment.
 Cloudflare Email Sending is onboarded for `sdlcai.org`. Cloudflare manages the
 outbound bounce MX, SPF, and DKIM records separately from the root-domain email
 records used by Google Workspace. Application email will use
-`SDLCAI <info@sdlcai.org>` with `info@sdlcai.org` as the reply-to address. When
-the speaker email workflow is implemented, add a `send_email` binding restricted
-with `allowed_sender_addresses: ["info@sdlcai.org"]`; do not add the unused
-binding before then.
+`SDLCAI <info@sdlcai.org>` with `info@sdlcai.org` as the reply-to address. The
+`EMAIL` binding is restricted with
+`allowed_sender_addresses: ["info@sdlcai.org"]`.
 
 Google Workspace hosts the real `info@sdlcai.org` mailbox and owns inbound mail
 delivery for the domain. Cloudflare Email Routing is disabled and must not be
@@ -122,11 +130,33 @@ Set production secrets:
 wrangler secret put ADMIN_USERNAME
 wrangler secret put ADMIN_PASSWORD
 wrangler secret put EMAIL_ENCRYPTION_KEY
+wrangler secret put STREAM_WEBHOOK_SECRET
 wrangler secret put TURNSTILE_SECRET_KEY
 ```
 
 Use a strong `EMAIL_ENCRYPTION_KEY` and keep it outside version control. Losing
 it means existing encrypted submissions and backups cannot be decrypted.
+
+Cloudflare Stream must be enabled on the account before the `STREAM` binding
+can create topic-video uploads. After the Worker containing
+`POST /api/stream/webhook` is deployed, create or replace the account's one
+Stream webhook subscription and save the returned signing secret:
+
+```bash
+curl -X PUT \
+  -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/stream/webhook" \
+  --data '{"notificationUrl":"https://sdlcai.org/api/stream/webhook"}'
+
+wrangler secret put STREAM_WEBHOOK_SECRET
+```
+
+The token used for webhook registration needs Stream edit permission. Do not
+store it in the repository or as a Worker secret. Stream permits only one
+on-demand-video webhook per account, so confirm that replacing an existing
+subscription is intended. The returned `secret`, not the API token, is stored
+as `STREAM_WEBHOOK_SECRET`.
 
 ## API and Admin Surface
 
@@ -233,10 +263,22 @@ Migration `0002_create_poster_proposals.sql` creates `poster_proposals` with:
   ciphertext/IV values
 - indexes on `created_at` and `status`
 
-Plaintext contact details and abstracts are not stored in D1 or R2. Legacy
-author details, URLs, and setup or accessibility notes from earlier submissions
-remain encrypted and readable to authenticated administrators until the
-scheduled retention review.
+Migrations `0005` through `0008` add the private speaker workspace:
+
+- encrypted contacts, revocable invitation generations, and hashed sessions;
+- versioned draft, submitted, approved, and rejected profile/talk revisions;
+- email campaigns and outcome-only per-speaker delivery records;
+- private 400x400 WebP portrait revisions backed by `SPEAKER_UPLOADS`; and
+- Stream video submissions with stable speaker/talk ownership, explicit editing
+  and publication permission, verified processing state, moderation state, and
+  independent retention timestamps.
+
+Plaintext speaker contact details are not stored in D1 or R2. Proposed public
+profile and talk copy is stored as versioned JSON in D1 so organizers can
+review it before applying an approved revision to Git. Legacy author details,
+URLs, and setup or accessibility notes from earlier submissions remain
+encrypted and readable to authenticated administrators until the scheduled
+retention review.
 
 ## Backups
 
@@ -278,8 +320,8 @@ page; there is no separate proposal-backup decryption CLI.
 
 ## Migration and Rollout
 
-The poster table is additive, so apply the D1 migration before deploying the
-Worker and public form:
+The migrations are additive, so apply D1 migrations before deploying the
+Worker and new routes:
 
 ```bash
 npm run db:migrate:remote
@@ -288,11 +330,13 @@ npm run deploy
 
 For production rollout:
 
-1. Confirm the D1, Browser Rendering, and both R2 bindings, deadline, Turnstile
-   site key, accepted hostnames, and all four secrets are configured. The Turnstile widget's
-   dashboard allowlist must include both `sdlcai.org` and `www.sdlcai.org`.
-2. Apply `0002_create_poster_proposals.sql` remotely and verify Wrangler reports
-   the migration as applied.
+1. Confirm the D1, Browser Rendering, Images, Stream, Email Sending, and all
+   three R2 bindings; deadlines and retention dates; Turnstile site key and
+   accepted hostnames; and Worker secrets are configured. The Turnstile
+   widget's dashboard allowlist must include both `sdlcai.org` and
+   `www.sdlcai.org`.
+2. Apply all migrations through `0008_create_speaker_video_submissions.sql`
+   remotely and verify Wrangler reports each migration as applied.
 3. Deploy the Worker and static build.
 4. Open `/posters/`, verify the deadline and A0/A1 portrait terms, and submit a
    controlled test proposal.
@@ -304,6 +348,14 @@ For production rollout:
 7. Request one stable path from `/slides/`, follow its version redirect, verify
    the response is a JPEG, and confirm the corresponding `social/v1/` object
    exists in `ai-meets-sdlc-social-exports`.
+8. Send one controlled speaker invitation from `/admin/`, redeem it, save and
+   submit a profile draft, preview a promotion graphic, and exercise organizer
+   approval without applying the test revision to Git.
+9. Upload a controlled portrait and confirm only the 400x400 WebP derivative
+   appears in `ai-meets-sdlc-speaker-uploads`.
+10. Register the Stream webhook, upload a short private test video, confirm the
+    signed webhook moves it to `ready`, open both private previews, and delete
+    or supersede the test submission when verification is complete.
 
 If application rollback is needed, deploy the preceding Worker version. Leave
 the additive table in place; removing it would destroy submitted proposals.

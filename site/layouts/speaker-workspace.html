@@ -126,9 +126,45 @@
                 decoding="async"
               />
               <p class="mt-3 text-sm leading-6 text-muted">
-                Your current public portrait. Photo replacement is reviewed
-                separately from text changes.
+                Your current public portrait. A replacement is cropped to a
+                private 400 x 400 WebP derivative for organizer review.
               </p>
+              <p
+                class="mt-3 text-xs font-bold uppercase text-muted"
+                data-speaker-photo-state
+              >
+                Published photo
+              </p>
+              <form
+                class="mt-4 grid gap-3 border-t border-ink pt-4"
+                data-speaker-photo-form
+              >
+                <label class="grid gap-2">
+                  <span class="font-bold uppercase">Replace portrait</span>
+                  <span class="text-xs leading-5 text-muted">
+                    JPEG, PNG, or WebP; 400 x 400 pixels or larger; up to 5 MB.
+                  </span>
+                  <input
+                    class="w-full text-sm file:mr-3 file:border file:border-ink file:bg-paper file:px-3 file:py-2 file:font-bold file:uppercase"
+                    data-speaker-photo-input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    required
+                  />
+                </label>
+                <button
+                  class="border border-ink px-4 py-3 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper disabled:cursor-wait disabled:opacity-50"
+                  data-speaker-photo-submit
+                  type="submit"
+                >
+                  Process and submit
+                </button>
+                <p
+                  class="min-h-5 text-xs font-bold"
+                  data-speaker-photo-status
+                  aria-live="polite"
+                ></p>
+              </form>
             </div>
             <nav
               class="border-y border-ink py-4"
@@ -392,24 +428,176 @@
                   Give us the hook
                 </h2>
               </div>
-              <div
-                class="mt-7 grid gap-6 border border-ink p-6 md:grid-cols-[1fr_auto] md:items-center md:p-8"
-              >
+              <div class="mt-7 grid gap-7 border border-ink p-6 md:p-8">
                 <div>
                   <p class="font-headline text-2xl font-black uppercase">
                     Record a 1–2 minute introduction
                   </p>
-                  <p class="mt-3 max-w-2xl leading-7 text-muted">
+                  <p class="mt-3 max-w-3xl leading-7 text-muted">
                     Tell attendees what problem your talk tackles and why it
-                    matters. A direct upload will become available here once the
-                    organizer enables video intake.
+                    matters. The video is optional, uploads directly to
+                    Cloudflare Stream, and remains private until organizer
+                    review.
                   </p>
                 </div>
-                <span
-                  class="border border-ink px-5 py-3 text-center font-bold uppercase text-muted"
+                <div class="grid gap-4" data-speaker-videos></div>
+                <form
+                  class="grid gap-5 border-t border-ink pt-6"
+                  data-speaker-video-form
                 >
-                  Upload setup pending
-                </span>
+                  <div class="grid gap-5 sm:grid-cols-2">
+                    <label class="grid gap-2">
+                      <span class="font-bold uppercase">Talk</span>
+                      <select
+                        class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                        data-speaker-video-talk
+                        required
+                      ></select>
+                    </label>
+                    <label class="grid gap-2">
+                      <span class="font-bold uppercase">Video file</span>
+                      <span class="text-sm text-muted">
+                        MP4, MOV, or WebM; up to 200 MB. Stream rejects videos
+                        longer than 120 seconds.
+                      </span>
+                      <input
+                        class="w-full text-sm file:mr-3 file:border file:border-ink file:bg-paper file:px-3 file:py-2 file:font-bold file:uppercase"
+                        data-speaker-video-input
+                        type="file"
+                        accept="video/mp4,video/quicktime,video/webm"
+                        required
+                      />
+                    </label>
+                  </div>
+                  <fieldset class="grid gap-3 border-t border-ink pt-5">
+                    <legend
+                      class="pr-3 font-headline text-2xl font-black uppercase"
+                    >
+                      Permission choices
+                    </legend>
+                    <p
+                      class="text-sm leading-6 text-muted"
+                      data-speaker-video-permission-text
+                    >
+                      I confirm that I created or control this video and grant
+                      Toska Osuuskunta permission to use it for SDLCAI promotion
+                      according to the options selected here. I understand that
+                      the upload remains private until organizer review and that
+                      I can contact info@sdlcai.org to withdraw permission for
+                      future use.
+                    </p>
+                    <div class="grid gap-px bg-ink sm:grid-cols-2">
+                      <label
+                        class="grid cursor-pointer grid-cols-[auto_1fr] gap-3 bg-paper p-4"
+                      >
+                        <input
+                          class="mt-1 h-5 w-5"
+                          data-video-permission="may_publish"
+                          type="checkbox"
+                          required
+                        />
+                        <span
+                          ><strong class="block uppercase"
+                            >Publish after review</strong
+                          ><span class="text-sm text-muted"
+                            >Required for a promotional submission.</span
+                          ></span
+                        >
+                      </label>
+                      <label
+                        class="grid cursor-pointer grid-cols-[auto_1fr] gap-3 bg-paper p-4"
+                      >
+                        <input
+                          class="mt-1 h-5 w-5"
+                          data-video-permission="may_caption"
+                          type="checkbox"
+                        />
+                        <span
+                          ><strong class="block uppercase">Add captions</strong
+                          ><span class="text-sm text-muted"
+                            >Improve accessibility and silent playback.</span
+                          ></span
+                        >
+                      </label>
+                      <label
+                        class="grid cursor-pointer grid-cols-[auto_1fr] gap-3 bg-paper p-4"
+                      >
+                        <input
+                          class="mt-1 h-5 w-5"
+                          data-video-permission="may_crop"
+                          type="checkbox"
+                        />
+                        <span
+                          ><strong class="block uppercase"
+                            >Crop / reframe</strong
+                          ><span class="text-sm text-muted"
+                            >Adapt the frame for social formats.</span
+                          ></span
+                        >
+                      </label>
+                      <label
+                        class="grid cursor-pointer grid-cols-[auto_1fr] gap-3 bg-paper p-4"
+                      >
+                        <input
+                          class="mt-1 h-5 w-5"
+                          data-video-permission="may_excerpt"
+                          type="checkbox"
+                        />
+                        <span
+                          ><strong class="block uppercase">Use excerpts</strong
+                          ><span class="text-sm text-muted"
+                            >Share shorter selections from the video.</span
+                          ></span
+                        >
+                      </label>
+                      <label
+                        class="grid cursor-pointer grid-cols-[auto_1fr] gap-3 bg-paper p-4 sm:col-span-2"
+                      >
+                        <input
+                          class="mt-1 h-5 w-5"
+                          data-video-permission="may_edit"
+                          type="checkbox"
+                        />
+                        <span
+                          ><strong class="block uppercase"
+                            >Edit for clarity</strong
+                          ><span class="text-sm text-muted"
+                            >Allow trims, titles, music, or similar editorial
+                            changes.</span
+                          ></span
+                        >
+                      </label>
+                    </div>
+                  </fieldset>
+                  <div
+                    class="grid gap-3 sm:grid-cols-[auto_1fr] sm:items-center"
+                  >
+                    <button
+                      class="border border-ink bg-ink px-6 py-4 font-bold uppercase text-paper disabled:cursor-wait disabled:opacity-50"
+                      data-speaker-video-submit
+                      type="submit"
+                    >
+                      Create private upload
+                    </button>
+                    <div>
+                      <p
+                        class="min-h-6 font-bold"
+                        data-speaker-video-status
+                        aria-live="polite"
+                      ></p>
+                      <div
+                        class="mt-2 h-2 overflow-hidden bg-ink/15"
+                        data-speaker-video-progress
+                        hidden
+                      >
+                        <div
+                          class="h-full w-0 bg-ink"
+                          data-speaker-video-progress-bar
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
               </div>
             </section>
           </div>

@@ -32,8 +32,43 @@ interface AdminSpeakerItem {
     last_sent_at: string | null;
   } | null;
   name: string;
+  photo: {
+    byte_size: number;
+    image_url: string;
+    photo_revision_id: string;
+    review_note: string | null;
+    state: "approved" | "rejected" | "submitted";
+    updated_at: string;
+  } | null;
   revision: AdminSpeakerRevision | null;
   speaker_id: string;
+  videos: AdminSpeakerVideo[];
+}
+
+interface AdminSpeakerVideo {
+  duration_seconds: number | null;
+  error_code: string | null;
+  permissions: {
+    may_caption: boolean;
+    may_crop: boolean;
+    may_edit: boolean;
+    may_excerpt: boolean;
+    may_publish: boolean;
+    permission_recorded_at: string;
+    permission_text: string;
+  };
+  preview_endpoint: string | null;
+  review_note: string | null;
+  state:
+    | "approved"
+    | "changes_requested"
+    | "error"
+    | "processing"
+    | "ready"
+    | "upload_pending";
+  submission_id: string;
+  talk_id: string;
+  updated_at: string;
 }
 
 interface AdminSpeakersResponse {
@@ -469,11 +504,269 @@ function renderSpeaker(speaker: AdminSpeakerItem): HTMLElement {
   article.appendChild(headingRow);
   article.appendChild(renderInvitation(speaker));
 
+  if (speaker.photo) {
+    article.appendChild(renderPhoto(speaker));
+  }
+
+  if (speaker.videos.length > 0) {
+    article.appendChild(renderVideos(speaker));
+  }
+
   if (speaker.revision) {
     article.appendChild(renderRevision(speaker));
   }
 
   return article;
+}
+
+function renderVideos(speaker: AdminSpeakerItem): HTMLElement {
+  const section = node("section", "grid gap-4 border-t border-paper/40 pt-5");
+  section.appendChild(
+    node("h4", "font-headline text-2xl font-black uppercase", "Topic videos"),
+  );
+  for (const video of speaker.videos) {
+    const card = node("article", "grid gap-3 border border-paper/40 p-4");
+    const title = speaker.canonical.talks.find(
+      ({ id }) => id === video.talk_id,
+    )?.title;
+    card.appendChild(
+      node("strong", "uppercase", `${title ?? video.talk_id} / ${video.state}`),
+    );
+    card.appendChild(
+      node(
+        "p",
+        "text-xs text-paper/60",
+        `${video.duration_seconds ? `${Math.round(video.duration_seconds)} seconds / ` : ""}${formatDate(video.updated_at)}`,
+      ),
+    );
+    const allowed = Object.entries(video.permissions)
+      .filter(([key, value]) => key.startsWith("may_") && value === true)
+      .map(([key]) => key.replace("may_", "").replace("_", " "));
+    card.appendChild(
+      node(
+        "p",
+        "text-sm text-paper/70",
+        `Recorded permission: ${allowed.join(", ") || "none"}.`,
+      ),
+    );
+
+    if (video.review_note || video.error_code) {
+      card.appendChild(
+        node(
+          "p",
+          "border-l border-paper/60 pl-4 text-sm",
+          video.review_note ?? video.error_code ?? "",
+        ),
+      );
+    }
+
+    const actions = node("div", "flex flex-wrap gap-3");
+    if (video.preview_endpoint) {
+      const preview = reviewButton("Private preview", false);
+      preview.addEventListener(
+        "click",
+        () => void openAdminVideoPreview(video, preview),
+      );
+      actions.appendChild(preview);
+    }
+
+    if (video.state === "ready") {
+      const approve = reviewButton("Approve video", true);
+      const changes = reviewButton("Request changes", false);
+      const note = document.createElement("textarea");
+      note.className =
+        "min-h-20 w-full resize-y border border-paper bg-ink px-3 py-2 text-paper";
+      note.maxLength = 1000;
+      note.placeholder = "Review note (required when requesting changes)";
+      approve.addEventListener(
+        "click",
+        () =>
+          void submitVideoReview(
+            video,
+            "approve",
+            note.value,
+            approve,
+            changes,
+          ),
+      );
+      changes.addEventListener(
+        "click",
+        () =>
+          void submitVideoReview(
+            video,
+            "request_changes",
+            note.value,
+            approve,
+            changes,
+          ),
+      );
+      card.appendChild(note);
+      actions.appendChild(approve);
+      actions.appendChild(changes);
+    }
+
+    card.appendChild(actions);
+    section.appendChild(card);
+  }
+  return section;
+}
+
+async function openAdminVideoPreview(
+  video: AdminSpeakerVideo,
+  button: HTMLButtonElement,
+): Promise<void> {
+  if (!video.preview_endpoint) return;
+  const previewWindow = window.open("about:blank", "_blank");
+  if (previewWindow) previewWindow.opener = null;
+  button.disabled = true;
+  const response = await requestJson<{ error?: string; preview_url?: string }>(
+    video.preview_endpoint,
+  );
+  button.disabled = false;
+  if (!response.ok || !response.data.preview_url) {
+    previewWindow?.close();
+    setStatus(response.data.error ?? "Private preview is unavailable.", true);
+    return;
+  }
+  if (previewWindow) previewWindow.location.href = response.data.preview_url;
+}
+
+async function submitVideoReview(
+  video: AdminSpeakerVideo,
+  decision: "approve" | "request_changes",
+  reviewNote: string,
+  ...buttons: HTMLButtonElement[]
+): Promise<void> {
+  for (const button of buttons) button.disabled = true;
+  setStatus(
+    decision === "approve" ? "Approving video…" : "Requesting video changes…",
+  );
+  const response = await requestJson<{ error?: string; message?: string }>(
+    "/api/admin/speakers/videos/review",
+    {
+      body: JSON.stringify({
+        decision,
+        review_note: reviewNote,
+        submission_id: video.submission_id,
+      }),
+      headers: {
+        "content-type": "application/json",
+        "x-admin-action": "review-speaker-video",
+      },
+      method: "POST",
+    },
+  );
+  for (const button of buttons) button.disabled = false;
+  setStatus(
+    response.data.message ?? response.data.error ?? "Video review failed.",
+    !response.ok,
+  );
+  if (response.ok) void loadSpeakers();
+}
+
+function renderPhoto(speaker: AdminSpeakerItem): HTMLElement {
+  const photo = speaker.photo!;
+  const section = node(
+    "section",
+    "grid gap-4 border-t border-paper/40 pt-5 md:grid-cols-[10rem_1fr]",
+  );
+  const image = document.createElement("img");
+  image.className = "aspect-square w-full border border-paper/50 object-cover";
+  image.src = photo.image_url;
+  image.alt = `Proposed portrait for ${speaker.name}`;
+  image.width = 400;
+  image.height = 400;
+  image.loading = "lazy";
+  image.decoding = "async";
+  const copy = node("div", "grid content-start gap-3");
+  copy.appendChild(
+    node(
+      "h4",
+      "font-headline text-2xl font-black uppercase",
+      `Portrait / ${photo.state}`,
+    ),
+  );
+  copy.appendChild(
+    node(
+      "p",
+      "text-sm text-paper/60",
+      `400 × 400 WebP / ${Math.ceil(photo.byte_size / 1024)} KB / ${formatDate(photo.updated_at)}`,
+    ),
+  );
+  const download = document.createElement("a");
+  download.className =
+    "w-fit border border-paper px-3 py-2 text-sm font-bold uppercase";
+  download.href = `${photo.image_url}${photo.image_url.includes("?") ? "&" : "?"}download=1`;
+  download.textContent = "Download derivative";
+  copy.appendChild(download);
+
+  if (photo.state === "submitted") {
+    const note = document.createElement("textarea");
+    note.className =
+      "min-h-20 w-full resize-y border border-paper bg-ink px-3 py-2 text-paper";
+    note.maxLength = 1000;
+    note.placeholder = "Review note (required when requesting another photo)";
+    const actions = node("div", "flex flex-wrap gap-3");
+    const approve = reviewButton("Approve portrait", true);
+    const reject = reviewButton("Request another", false);
+    approve.addEventListener(
+      "click",
+      () =>
+        void submitPhotoReview(speaker, "approve", note.value, approve, reject),
+    );
+    reject.addEventListener(
+      "click",
+      () =>
+        void submitPhotoReview(speaker, "reject", note.value, approve, reject),
+    );
+    actions.appendChild(approve);
+    actions.appendChild(reject);
+    copy.appendChild(note);
+    copy.appendChild(actions);
+  } else if (photo.review_note) {
+    copy.appendChild(
+      node("p", "border-l border-paper/60 pl-4 text-sm", photo.review_note),
+    );
+  }
+
+  section.appendChild(image);
+  section.appendChild(copy);
+  return section;
+}
+
+async function submitPhotoReview(
+  speaker: AdminSpeakerItem,
+  decision: "approve" | "reject",
+  reviewNote: string,
+  ...buttons: HTMLButtonElement[]
+): Promise<void> {
+  for (const button of buttons) button.disabled = true;
+  setStatus(
+    decision === "approve"
+      ? "Approving portrait…"
+      : "Requesting another portrait…",
+  );
+  const response = await requestJson<{ error?: string; message?: string }>(
+    "/api/admin/speakers/photos/review",
+    {
+      body: JSON.stringify({
+        decision,
+        photo_revision_id: speaker.photo?.photo_revision_id,
+        review_note: reviewNote,
+      }),
+      headers: {
+        "content-type": "application/json",
+        "x-admin-action": "review-speaker-photo",
+      },
+      method: "POST",
+    },
+  );
+  for (const button of buttons) button.disabled = false;
+  setStatus(
+    response.data.message ?? response.data.error ?? "Photo review failed.",
+    !response.ok,
+  );
+  if (response.ok) void loadSpeakers();
 }
 
 function renderInvitation(speaker: AdminSpeakerItem): HTMLElement {
