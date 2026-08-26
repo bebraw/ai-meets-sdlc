@@ -59,6 +59,14 @@
 }
 
 @layer components {
+  [hidden] {
+    display: none !important;
+  }
+
+  details:not([open]) > :not(summary) {
+    display: none !important;
+  }
+
   [data-a11y-target] {
     align-items: center;
     display: inline-flex;
