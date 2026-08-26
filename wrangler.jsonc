@@ -24,6 +24,16 @@
   "browser": {
     "binding": "SOCIAL_BROWSER",
   },
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      // Keep structured application logs without retaining token-bearing URLs.
+      "invocation_logs": false,
+      "persist": true,
+    },
+  },
   "vars": {
     // Poster proposals close at 23:59 EEST on 27 September 2026.
     "POSTER_PROPOSAL_DEADLINE": "2026-09-27T20:59:59Z",

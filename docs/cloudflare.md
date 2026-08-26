@@ -91,6 +91,11 @@ wrangler r2 bucket create ai-meets-sdlc-social-exports
 The Browser Rendering binding is declared in `wrangler.jsonc`; no browser
 binary or browser path is installed in the Workers Builds environment.
 
+Persisted Workers Logs are enabled for structured application messages, while
+automatic invocation logs are disabled so full request URLs—including private
+speaker links—are not retained. Social rendering logs contain only the asset
+ID, content version, byte size, and sanitized error messages.
+
 Create a Turnstile widget in the Cloudflare dashboard, then set:
 
 - `TURNSTILE_SITE_KEY` in `wrangler.jsonc`
