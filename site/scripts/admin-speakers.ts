@@ -788,9 +788,9 @@ async function submitPhotoReview(
 function renderInvitation(speaker: AdminSpeakerItem): HTMLElement {
   const region = node(
     "form",
-    "grid gap-3 border-t border-paper/40 pt-5 md:grid-cols-[minmax(0,1fr)_auto] md:items-end",
+    "grid gap-x-3 gap-y-2 border-t border-paper/40 pt-5 md:grid-cols-[minmax(0,1fr)_auto]",
   ) as HTMLFormElement;
-  const label = node("label", "grid gap-2");
+  const label = node("label", "grid gap-2 md:col-start-1 md:row-start-1");
   const labelText = node("span", "font-bold uppercase", "Speaker email");
   const input = document.createElement("input");
   input.className =
@@ -800,17 +800,21 @@ function renderInvitation(speaker: AdminSpeakerItem): HTMLElement {
   input.autocomplete = "email";
   input.required = true;
   input.value = speaker.contact?.email ?? "";
-  const help = node("span", "text-xs text-paper/60", invitationHelp(speaker));
+  const help = node(
+    "span",
+    "text-xs text-paper/60 md:col-start-1 md:row-start-2",
+    invitationHelp(speaker),
+  );
   const button = node(
     "button",
-    "border border-paper bg-paper px-5 py-3 font-bold uppercase text-ink transition hover:bg-ink hover:text-paper disabled:cursor-wait disabled:opacity-60",
+    "border border-paper bg-paper px-5 py-3 font-bold uppercase text-ink transition hover:bg-ink hover:text-paper disabled:cursor-wait disabled:opacity-60 md:col-start-2 md:row-start-1 md:self-end",
     "Save email",
   ) as HTMLButtonElement;
   button.type = "submit";
   label.appendChild(labelText);
   label.appendChild(input);
-  label.appendChild(help);
   region.appendChild(label);
+  region.appendChild(help);
   region.appendChild(button);
 
   region.addEventListener("submit", async (event) => {
