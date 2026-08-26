@@ -27,7 +27,7 @@
     "types:check": "tsc --noEmit",
     "types:generate": "wrangler types worker-configuration.d.ts",
     "validate": "npm run data:validate && gustwind --validate --input ./build",
-    "worker:build": "npm run types:check && npm run build && node scripts/verify-build-output.mjs",
+    "worker:build": "npm run data:validate && npm run types:check && npm run build && node scripts/verify-build-output.mjs",
     "worker:dev": "npm run dev:env && npm run worker:build && wrangler dev",
     "deploy": "npm run worker:build && wrangler deploy"
   },

@@ -16,6 +16,13 @@ const timeRangePattern =
 const isoDatePattern = /^\d{4}-\d{2}-\d{2}$/;
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const speakerIdPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const speakerSocialHosts = {
+  devto: new Set(["dev.to", "www.dev.to"]),
+  github: new Set(["github.com", "www.github.com"]),
+  linkedin: new Set(["linkedin.com", "www.linkedin.com"]),
+  scholar: new Set(["scholar.google.com"]),
+  x: new Set(["twitter.com", "www.twitter.com", "x.com", "www.x.com"]),
+};
 
 const errors = [];
 
@@ -532,6 +539,10 @@ async function validateSpeakers(speakers) {
       }
     }
 
+    if (isNonEmptyString(speaker.bio)) {
+      validateSafeMarkdown(speaker.bio, `${speakerPath}.bio`);
+    }
+
     await validateSpeakerLinks(speaker, speakerPath);
   }
 
@@ -700,13 +711,28 @@ function validateOptionalObject({
 async function validateSpeakerLinks(speaker, speakerPath) {
   if (!isObject(speaker)) return;
 
-  for (const field of ["website", "linkedin", "scholar", "github", "x"]) {
+  for (const field of [
+    "website",
+    "linkedin",
+    "scholar",
+    "github",
+    "devto",
+    "x",
+  ]) {
     if (typeof speaker[field] === "undefined") continue;
 
-    try {
-      new URL(speaker[field]);
-    } catch {
-      errors.push(`${speakerPath}.${field} must be a valid URL.`);
+    const url = parseSafeHttpsUrl(speaker[field]);
+
+    if (!url) {
+      errors.push(`${speakerPath}.${field} must be a complete HTTPS URL.`);
+      continue;
+    }
+
+    if (
+      field !== "website" &&
+      !speakerSocialHosts[field].has(url.hostname.toLowerCase())
+    ) {
+      errors.push(`${speakerPath}.${field} must use the expected service.`);
     }
   }
 
@@ -873,6 +899,10 @@ function validateTalks(talks, talksPath, speakerIds, talkIds) {
       }
     }
 
+    if (isNonEmptyString(talk.abstract)) {
+      validateSafeMarkdown(talk.abstract, `${talkPath}.abstract`);
+    }
+
     if (isNonEmptyString(talk.id)) {
       if (!slugPattern.test(talk.id)) {
         errors.push(`${talkPath}.id must be a lowercase slug.`);
@@ -917,6 +947,38 @@ function validateTalkSpeaker(speakerId, speakerPath, speakerIds) {
 
   if (!speakerIds.has(speakerId)) {
     errors.push(`${speakerPath} must reference a speaker id.`);
+  }
+}
+
+function validateSafeMarkdown(value, valuePath) {
+  if (/<[A-Za-z!/][^>]*>/u.test(value) || /!\[[^\]]*\]\s*\(/u.test(value)) {
+    errors.push(`${valuePath} must not contain HTML or embedded images.`);
+    return;
+  }
+
+  const markdownLinkPattern =
+    /\[[^\]]+\]\s*\(([^)\s]+)(?:\s+["'][^"']*["'])?\)/gu;
+
+  for (const match of value.matchAll(markdownLinkPattern)) {
+    if (!parseSafeHttpsUrl(match[1])) {
+      errors.push(`${valuePath} Markdown links must use complete HTTPS URLs.`);
+    }
+  }
+}
+
+function parseSafeHttpsUrl(value) {
+  if (!isNonEmptyString(value)) return undefined;
+
+  try {
+    const url = new URL(value);
+
+    if (url.protocol !== "https:" || url.username || url.password) {
+      return undefined;
+    }
+
+    return url;
+  } catch {
+    return undefined;
   }
 }
 
