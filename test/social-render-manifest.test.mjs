@@ -16,6 +16,45 @@ const deck = (firstTitle = "First talk") => `<!doctype html>
 <section data-slide-id="talk-second" data-slide-number="2" data-presentation-slide><h1>Second talk</h1><img src="/assets/second.svg"></section>
 </body></html>`;
 
+const promotionData = {
+  schedule: {
+    items: [
+      {
+        talks: [
+          {
+            id: "first",
+            speakers: ["first-speaker"],
+            title: "First talk",
+          },
+          {
+            id: "second",
+            speakers: ["second-speaker"],
+            title: "Second talk",
+          },
+        ],
+      },
+    ],
+  },
+  speakers: {
+    items: [
+      {
+        id: "first-speaker",
+        name: "First Speaker",
+        photo: "/assets/speakers/first.webp",
+      },
+      {
+        id: "second-speaker",
+        name: "Second Speaker",
+        photo: "/assets/speakers/second.webp",
+      },
+    ],
+  },
+};
+
+function buildFixtureManifest(buildDir) {
+  return buildSocialRenderManifest({ buildDir, promotionData });
+}
+
 async function createFixture() {
   const buildDir = await mkdtemp(path.join(tmpdir(), "social-manifest-test-"));
   await mkdir(path.join(buildDir, "slides/deck"), { recursive: true });
@@ -43,7 +82,7 @@ test("social render versions only invalidate affected slides", async (t) => {
   const buildDir = await createFixture();
   t.after(() => rm(buildDir, { force: true, recursive: true }));
 
-  const initial = await buildSocialRenderManifest({ buildDir });
+  const initial = await buildFixtureManifest(buildDir);
   assert.equal(initial.assets.length, 6);
   const parsedManifest = parseSocialRenderManifest(initial);
   const firstAsset = initial.assets[0];
@@ -71,7 +110,7 @@ test("social render versions only invalidate affected slides", async (t) => {
     path.join(buildDir, "slides/deck/index.html"),
     deck("Updated talk"),
   );
-  const afterCopyChange = await buildSocialRenderManifest({ buildDir });
+  const afterCopyChange = await buildFixtureManifest(buildDir);
   const initialVersions = versionsBySlide(initial);
   const copyVersions = versionsBySlide(afterCopyChange);
 
@@ -88,7 +127,7 @@ test("social render versions only invalidate affected slides", async (t) => {
     path.join(buildDir, "assets/first.svg"),
     "<svg>updated</svg>",
   );
-  const afterImageChange = await buildSocialRenderManifest({ buildDir });
+  const afterImageChange = await buildFixtureManifest(buildDir);
   const imageVersions = versionsBySlide(afterImageChange);
 
   assert.notEqual(
@@ -104,7 +143,7 @@ test("social render versions only invalidate affected slides", async (t) => {
     path.join(buildDir, "tailwind-test.css"),
     "@font-face{src:url('/assets/font.woff2')} body{color:#000}",
   );
-  const afterGlobalChange = await buildSocialRenderManifest({ buildDir });
+  const afterGlobalChange = await buildFixtureManifest(buildDir);
   const globalVersions = versionsBySlide(afterGlobalChange);
 
   assert.notEqual(
@@ -120,4 +159,16 @@ test("social render versions only invalidate affected slides", async (t) => {
     await readFile(path.join(buildDir, "assets/social/manifest.json"), "utf8"),
   );
   assert.equal(savedManifest.version, afterGlobalChange.version);
+
+  const savedSpeakerManifest = JSON.parse(
+    await readFile(path.join(buildDir, "assets/social/speakers.json"), "utf8"),
+  );
+  assert.equal(savedSpeakerManifest.schemaVersion, 1);
+  assert.equal(savedSpeakerManifest.speakers[0].id, "first-speaker");
+  assert.deepEqual(
+    savedSpeakerManifest.speakers[0].talks[0].assets.map(
+      ({ presetId }) => presetId,
+    ),
+    ["bluesky", "linkedin", "x"],
+  );
 });

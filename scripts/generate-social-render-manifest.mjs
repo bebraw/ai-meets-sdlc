@@ -6,6 +6,7 @@ import {
   socialRenderContract,
   socialRenderManifestPath,
   socialRenderPresets,
+  speakerPromotionManifestPath,
 } from "./social-render-presets.mjs";
 
 const deckPath = "slides/deck/index.html";
@@ -112,7 +113,10 @@ async function hashDependencies(buildDir, initialReferences) {
   return inputs;
 }
 
-export async function buildSocialRenderManifest({ buildDir = "build" } = {}) {
+export async function buildSocialRenderManifest({
+  buildDir = "build",
+  promotionData,
+} = {}) {
   const resolvedBuildDir = path.resolve(buildDir);
   const html = await readFile(path.join(resolvedBuildDir, deckPath), "utf8");
   const sections = [...html.matchAll(slidePattern)].map((match) => match[0]);
@@ -231,6 +235,17 @@ export async function buildSocialRenderManifest({ buildDir = "build" } = {}) {
     assets,
   };
   const outputPath = path.join(resolvedBuildDir, socialRenderManifestPath);
+  const resolvedPromotionData =
+    promotionData ?? (await readDefaultPromotionData());
+  const speakerPromotionManifest = buildSpeakerPromotionManifest({
+    assets,
+    schedule: resolvedPromotionData.schedule,
+    speakers: resolvedPromotionData.speakers,
+  });
+  const speakerPromotionOutputPath = path.join(
+    resolvedBuildDir,
+    speakerPromotionManifestPath,
+  );
 
   for (const preset of socialRenderPresets) {
     await rm(path.join(resolvedBuildDir, "assets/social", preset.id), {
@@ -241,8 +256,105 @@ export async function buildSocialRenderManifest({ buildDir = "build" } = {}) {
 
   await mkdir(path.dirname(outputPath), { recursive: true });
   await writeFile(outputPath, `${JSON.stringify(manifest, null, 2)}\n`);
+  await writeFile(
+    speakerPromotionOutputPath,
+    `${JSON.stringify(speakerPromotionManifest, null, 2)}\n`,
+  );
 
-  return manifest;
+  return { ...manifest, speakerPromotionManifest };
+}
+
+export function buildSpeakerPromotionManifest({ assets, schedule, speakers }) {
+  const talkAssets = new Map();
+
+  for (const asset of assets) {
+    const existing = talkAssets.get(asset.slideId) ?? [];
+    existing.push({
+      height: asset.height,
+      path: asset.path,
+      presetId: asset.presetId,
+      version: asset.version,
+      width: asset.width,
+    });
+    talkAssets.set(asset.slideId, existing);
+  }
+
+  const talksBySpeaker = new Map();
+
+  for (const item of schedule.items ?? []) {
+    for (const talk of item.talks ?? []) {
+      const slideId = `talk-${talk.id}`;
+      const promotionAssets = talkAssets.get(slideId);
+
+      if (!promotionAssets || promotionAssets.length === 0) {
+        throw new Error(
+          `Talk ${talk.id} does not have a matching social slide (${slideId}).`,
+        );
+      }
+
+      for (const speakerId of talk.speakers ?? []) {
+        const assigned = talksBySpeaker.get(speakerId) ?? [];
+        assigned.push({
+          assets: promotionAssets,
+          id: talk.id,
+          slideId,
+          title: talk.title,
+        });
+        talksBySpeaker.set(speakerId, assigned);
+      }
+    }
+  }
+
+  const speakerItems = (speakers.items ?? []).map((speaker) => {
+    const talks = talksBySpeaker.get(speaker.id) ?? [];
+
+    if (talks.length === 0) {
+      throw new Error(`Speaker ${speaker.id} has no promotional talk assets.`);
+    }
+
+    return {
+      id: speaker.id,
+      name: speaker.name,
+      photo: speaker.photo,
+      talks,
+    };
+  });
+
+  return {
+    schemaVersion: 1,
+    version: digest(
+      JSON.stringify(
+        speakerItems.map(({ id, talks }) => ({
+          id,
+          talks: talks.map(({ assets: talkAssetItems, id: talkId }) => ({
+            assets: talkAssetItems.map(({ path: assetPath, version }) => ({
+              path: assetPath,
+              version,
+            })),
+            id: talkId,
+          })),
+        })),
+      ),
+    ),
+    speakers: speakerItems,
+  };
+}
+
+async function readDefaultPromotionData() {
+  const repositoryRoot = path.resolve(
+    path.dirname(fileURLToPath(import.meta.url)),
+    "..",
+  );
+  const [schedule, speakers] = await Promise.all([
+    readJson(path.join(repositoryRoot, "site/data/schedule.json")),
+    readJson(path.join(repositoryRoot, "site/data/speakers.json")),
+  ]);
+
+  return { schedule, speakers };
+}
+
+async function readJson(filePath) {
+  return JSON.parse(await readFile(filePath, "utf8"));
 }
 
 async function main() {

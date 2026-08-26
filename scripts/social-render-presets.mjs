@@ -1,5 +1,6 @@
 export const socialRenderContract = "browser-run-v1";
 export const socialRenderManifestPath = "assets/social/manifest.json";
+export const speakerPromotionManifestPath = "assets/social/speakers.json";
 
 export const socialRenderPresets = [
   {

@@ -4,6 +4,7 @@ import {
   socialRenderContract,
   socialRenderManifestPath,
   socialRenderPresets,
+  speakerPromotionManifestPath,
 } from "./social-render-presets.mjs";
 
 const buildDir = "build";
@@ -38,6 +39,9 @@ const slideLibraryHtml = await readFile(
 );
 const socialRenderManifest = JSON.parse(
   await readFile(path.join(buildDir, socialRenderManifestPath), "utf8"),
+);
+const speakerPromotionManifest = JSON.parse(
+  await readFile(path.join(buildDir, speakerPromotionManifestPath), "utf8"),
 );
 const fontSubsetCharacters = new Set(
   [...(await readFile(fontSubsetCharactersPath, "utf8"))].filter(
@@ -163,6 +167,11 @@ verifySocialRenderManifest(
   slideLibraryHtml,
   failures,
 );
+verifySpeakerPromotionManifest(
+  speakerPromotionManifest,
+  socialRenderManifest,
+  failures,
+);
 
 if (failures.length > 0) {
   console.error(failures.join("\n"));
@@ -267,6 +276,58 @@ function verifySocialRenderManifest(manifest, deckHtml, libraryHtml, errors) {
 
     if (!libraryHtml.includes(asset.path)) {
       errors.push(`Slide library does not link to ${asset.path}.`);
+    }
+  }
+}
+
+function verifySpeakerPromotionManifest(manifest, socialManifest, errors) {
+  if (manifest.schemaVersion !== 1) {
+    errors.push(
+      "Speaker promotion manifest has an unsupported schema version.",
+    );
+  }
+
+  if (!/^[a-f0-9]{64}$/u.test(manifest.version ?? "")) {
+    errors.push("Speaker promotion manifest version is not a SHA-256 digest.");
+  }
+
+  if (!Array.isArray(manifest.speakers) || manifest.speakers.length === 0) {
+    errors.push("Speaker promotion manifest does not contain speakers.");
+    return;
+  }
+
+  const socialAssets = new Map(
+    socialManifest.assets.map((asset) => [asset.path, asset]),
+  );
+  const speakerIds = new Set();
+
+  for (const speaker of manifest.speakers) {
+    if (!speaker.id || speakerIds.has(speaker.id)) {
+      errors.push(`Invalid or duplicate promotion speaker id: ${speaker.id}`);
+    }
+
+    speakerIds.add(speaker.id);
+
+    if (!Array.isArray(speaker.talks) || speaker.talks.length === 0) {
+      errors.push(`Speaker ${speaker.id} has no promotion talks.`);
+      continue;
+    }
+
+    for (const talk of speaker.talks) {
+      if (!Array.isArray(talk.assets) || talk.assets.length === 0) {
+        errors.push(`Promotion talk ${talk.id} has no social assets.`);
+        continue;
+      }
+
+      for (const asset of talk.assets) {
+        const socialAsset = socialAssets.get(asset.path);
+
+        if (!socialAsset || socialAsset.version !== asset.version) {
+          errors.push(
+            `Promotion asset ${asset.path} does not match the render manifest.`,
+          );
+        }
+      }
     }
   }
 }
