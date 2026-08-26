@@ -1,5 +1,6 @@
 import scheduleData from "../site/data/schedule.json" with { type: "json" };
 import speakersData from "../site/data/speakers.json" with { type: "json" };
+import { normalizeHostname, verifyTurnstile } from "./turnstile.ts";
 import {
   handleAdminSpeakerPhotoRequest,
   handleSpeakerPhotoRequest,
@@ -79,6 +80,44 @@ interface SpeakerSessionRow extends SpeakerAccessRow {
   token_hash: string;
 }
 
+interface SpeakerMagicLinkRow {
+  access_generation: number;
+  speaker_id: string;
+}
+
+type SpeakerDinnerAttendance = "attending" | "not_attending";
+type SpeakerDinnerMealPreference =
+  | ""
+  | "omnivore"
+  | "vegetarian"
+  | "vegan"
+  | "other";
+type SpeakerDinnerCrossContamination = "" | "yes" | "no" | "unsure";
+
+interface SpeakerDinnerResponseData {
+  attendance: SpeakerDinnerAttendance;
+  cross_contamination: SpeakerDinnerCrossContamination;
+  food_requirements: string;
+  meal_preference: SpeakerDinnerMealPreference;
+}
+
+interface SpeakerDinnerRow {
+  consent_text: string | null;
+  expires_at: string;
+  responded_at: string | null;
+  response_ciphertext: string | null;
+  response_iv: string | null;
+  speaker_id: string;
+  updated_at: string;
+}
+
+interface SpeakerLoginContactRow extends SpeakerAccessRow {
+  delivery_status: "active" | "suppressed";
+  email_ciphertext: string;
+  email_iv: string;
+  retention_until: string;
+}
+
 interface SpeakerRevisionRow {
   base_content_hash: string;
   content_json: string;
@@ -149,7 +188,20 @@ interface ValidationResult {
 
 const speakerSessionCookie = "__Host-sdlcai-speaker-session";
 const maxWorkspaceBodyBytes = 24 * 1024;
+const maxLoginBodyBytes = 8 * 1024;
+const maxDinnerBodyBytes = 8 * 1024;
 const sessionLifetimeMilliseconds = 14 * 24 * 60 * 60 * 1000;
+const magicLinkLifetimeMilliseconds = 15 * 60 * 1000;
+const loginRequestRetentionMilliseconds = 24 * 60 * 60 * 1000;
+const loginRateWindowMilliseconds = 60 * 60 * 1000;
+const loginCooldownMilliseconds = 2 * 60 * 1000;
+const maxLoginRequestsPerEmail = 5;
+const maxLoginRequestsPerIp = 20;
+const speakerLoginTurnstileAction = "speaker-login-v1";
+const speakerDinnerConsentText =
+  "I consent to Toska Osuuskunta processing this response and, if I attend, sharing only the necessary food information with the dinner caterer. I can withdraw by contacting info@sdlcai.org.";
+const genericLoginMessage =
+  "If that address is assigned to an SDLCAI speaker, a sign-in link is on its way. Check your inbox and spam folder.";
 const tokenPattern = /^[A-Za-z0-9_-]{43}$/u;
 const socialFields = [
   "website",
@@ -198,6 +250,7 @@ export function withSpeakerWorkspaceSecurityHeaders(
 export async function handleSpeakerWorkspaceRequest(
   request: Request,
   env: Env,
+  ctx: ExecutionContext,
 ): Promise<Response | null> {
   const url = new URL(request.url);
 
@@ -243,6 +296,18 @@ export async function handleSpeakerWorkspaceRequest(
     if (forbidden) return adminSecure(forbidden);
 
     return adminSecure(await sendSpeakerInvitation(request, env));
+  }
+
+  if (url.pathname === "/api/admin/speakers/contact") {
+    if (request.method !== "POST") {
+      return adminSecure(json({ error: "Method not allowed" }, 405));
+    }
+
+    const forbidden = requireAdminMutation(request, "save-speaker-contact");
+
+    if (forbidden) return adminSecure(forbidden);
+
+    return adminSecure(await saveSpeakerContact(request, env));
   }
 
   if (url.pathname === "/api/admin/speakers/review") {
@@ -325,6 +390,14 @@ export async function handleSpeakerWorkspaceRequest(
     return adminSecure(await retrySpeakerAnnouncement(request, env));
   }
 
+  if (url.pathname === "/api/speaker/login") {
+    if (request.method !== "POST") {
+      return secure(json({ error: "Method not allowed" }, 405));
+    }
+
+    return secure(await requestSpeakerLogin(request, env, ctx));
+  }
+
   if (url.pathname === "/api/speaker/session") {
     if (request.method === "POST") {
       return secure(await redeemSpeakerInvitation(request, env));
@@ -332,6 +405,28 @@ export async function handleSpeakerWorkspaceRequest(
 
     if (request.method === "DELETE") {
       return secure(await endSpeakerSession(request, env));
+    }
+
+    return secure(json({ error: "Method not allowed" }, 405));
+  }
+
+  if (url.pathname === "/api/speaker/dinner") {
+    if (request.method === "POST" && !isSameOriginMutation(request)) {
+      return secure(json({ error: "Request origin was not accepted." }, 403));
+    }
+
+    const session = await authenticateSpeaker(request, env);
+
+    if (session instanceof Response) return secure(session);
+
+    if (request.method === "GET") {
+      return secure(await getSpeakerDinner(session.speaker_id, env));
+    }
+
+    if (request.method === "POST") {
+      return secure(
+        await updateSpeakerDinner(request, session.speaker_id, env),
+      );
     }
 
     return secure(json({ error: "Method not allowed" }, 405));
@@ -403,11 +498,17 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
 
   if (configurationError) return configurationError;
 
-  const [contactResult, accessResult, revisionResult, photos, videos] =
-    await Promise.all([
-      env
-        .INTERESTS!.prepare(
-          `SELECT
+  const [
+    contactResult,
+    accessResult,
+    revisionResult,
+    dinnerResult,
+    photos,
+    videos,
+  ] = await Promise.all([
+    env
+      .INTERESTS!.prepare(
+        `SELECT
          speaker_id,
          email_ciphertext,
          email_iv,
@@ -418,17 +519,17 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
          delivery_status,
          updated_at
        FROM speaker_contacts`,
-        )
-        .all<SpeakerContactRow>(),
-      env
-        .INTERESTS!.prepare(
-          `SELECT speaker_id, invite_expires_at, last_sent_at, revoked_at
+      )
+      .all<SpeakerContactRow>(),
+    env
+      .INTERESTS!.prepare(
+        `SELECT speaker_id, invite_expires_at, last_sent_at, revoked_at
          FROM speaker_workspace_access`,
-        )
-        .all<SpeakerAdminAccessRow>(),
-      env
-        .INTERESTS!.prepare(
-          `SELECT
+      )
+      .all<SpeakerAdminAccessRow>(),
+    env
+      .INTERESTS!.prepare(
+        `SELECT
          revision_id,
          speaker_id,
          base_content_hash,
@@ -447,11 +548,24 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
           ELSE 3
         END,
         updated_at DESC`,
-        )
-        .all<SpeakerAdminRevisionRow>(),
-      readAdminSpeakerPhotos(env),
-      readAdminSpeakerVideos(env),
-    ]);
+      )
+      .all<SpeakerAdminRevisionRow>(),
+    env
+      .INTERESTS!.prepare(
+        `SELECT
+         speaker_id,
+         response_ciphertext,
+         response_iv,
+         consent_text,
+         expires_at,
+         responded_at,
+         updated_at
+       FROM speaker_dinner_responses`,
+      )
+      .all<SpeakerDinnerRow>(),
+    readAdminSpeakerPhotos(env),
+    readAdminSpeakerVideos(env),
+  ]);
   const contacts = new Map(
     contactResult.results.map((contact) => [contact.speaker_id, contact]),
   );
@@ -459,6 +573,9 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
     accessResult.results.map((item) => [item.speaker_id, item]),
   );
   const revisions = new Map<string, SpeakerAdminRevisionRow>();
+  const dinners = new Map(
+    dinnerResult.results.map((item) => [item.speaker_id, item]),
+  );
 
   for (const revision of revisionResult.results) {
     if (!revisions.has(revision.speaker_id)) {
@@ -471,8 +588,10 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
       const contact = contacts.get(speaker.id);
       const invitation = access.get(speaker.id);
       const revision = revisions.get(speaker.id);
+      const dinnerRow = dinners.get(speaker.id);
       const canonical = getCanonicalContent(speaker.id)!;
       let email: string | null = null;
+      let dinner: SpeakerDinnerResponseData | null = null;
 
       if (contact) {
         try {
@@ -488,6 +607,19 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
         }
       }
 
+      if (dinnerRow) {
+        try {
+          dinner = await decryptSpeakerDinnerResponse(dinnerRow, env);
+        } catch {
+          console.error(
+            JSON.stringify({
+              message: "Unable to decrypt speaker dinner response",
+              speakerId: speaker.id,
+            }),
+          );
+        }
+      }
+
       return {
         canonical,
         contact: contact
@@ -500,6 +632,14 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
               promotion_email_enabled: contact.promotion_email_enabled === 1,
               retention_until: contact.retention_until,
               updated_at: contact.updated_at,
+            }
+          : null,
+        dinner: dinnerRow
+          ? {
+              expires_at: dinnerRow.expires_at,
+              responded_at: dinnerRow.responded_at,
+              response: dinner,
+              updated_at: dinnerRow.updated_at,
             }
           : null,
         invitation: invitation
@@ -521,6 +661,192 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
   );
 
   return json({ count: speakers.length, speakers });
+}
+
+async function saveSpeakerContact(
+  request: Request,
+  env: Env,
+): Promise<Response> {
+  const configurationError = getConfigurationError(env);
+
+  if (configurationError) return configurationError;
+
+  const accessUntil = parseFutureConfigurationDate(
+    env.SPEAKER_WORKSPACE_ACCESS_UNTIL,
+  );
+  const retentionUntil = parseFutureConfigurationDate(
+    env.SPEAKER_CONTACT_RETENTION_UNTIL,
+  );
+
+  if (!accessUntil || !retentionUntil) {
+    return json({ error: "Speaker workspace dates are not configured." }, 503);
+  }
+
+  const body = await readJsonWithinLimit(request, 8 * 1024);
+
+  if (body instanceof Response) return body;
+
+  if (!isRecord(body)) {
+    return json({ error: "Choose a speaker and enter their email." }, 400);
+  }
+
+  const speakerId = typeof body.speaker_id === "string" ? body.speaker_id : "";
+  const speaker = findCanonicalSpeaker(speakerId);
+  const email = normalizeEmail(body.email);
+
+  if (!speaker) return json({ error: "Choose a valid speaker." }, 400);
+
+  if (!isLikelyEmail(email)) {
+    return json({ error: "Enter a valid speaker email address." }, 400);
+  }
+
+  const emailFingerprint = await hashPrivateText(
+    email,
+    env.EMAIL_ENCRYPTION_KEY!,
+    "email-hash",
+  );
+  const [duplicate, existingContact, existingAccess] = await Promise.all([
+    env
+      .INTERESTS!.prepare(
+        `SELECT speaker_id
+         FROM speaker_contacts
+        WHERE email_fingerprint = ?1 AND speaker_id <> ?2
+        LIMIT 1`,
+      )
+      .bind(emailFingerprint, speakerId)
+      .first<{ speaker_id: string }>(),
+    env
+      .INTERESTS!.prepare(
+        `SELECT email_fingerprint
+         FROM speaker_contacts
+        WHERE speaker_id = ?1
+        LIMIT 1`,
+      )
+      .bind(speakerId)
+      .first<{ email_fingerprint: string }>(),
+    env
+      .INTERESTS!.prepare(
+        `SELECT invite_expires_at, revoked_at
+         FROM speaker_workspace_access
+        WHERE speaker_id = ?1
+        LIMIT 1`,
+      )
+      .bind(speakerId)
+      .first<{ invite_expires_at: string; revoked_at: string | null }>(),
+  ]);
+
+  if (duplicate) {
+    return json(
+      { error: "That email address is already assigned to another speaker." },
+      409,
+    );
+  }
+
+  const encryptedEmail = await encryptPrivateText(
+    email,
+    env.EMAIL_ENCRYPTION_KEY!,
+  );
+  const now = new Date().toISOString();
+  const emailChanged = Boolean(
+    existingContact && existingContact.email_fingerprint !== emailFingerprint,
+  );
+  const accessNeedsRotation = Boolean(
+    existingAccess &&
+    (emailChanged ||
+      existingAccess.revoked_at !== null ||
+      Date.parse(existingAccess.invite_expires_at) <= Date.now()),
+  );
+  const hiddenInviteTokenHash = await hashToken(
+    createToken(),
+    env.EMAIL_ENCRYPTION_KEY!,
+    "speaker-workspace-invite-token",
+  );
+  const statements: D1PreparedStatement[] = [
+    env
+      .INTERESTS!.prepare(
+        `INSERT INTO speaker_contacts (
+         speaker_id,
+         email_ciphertext,
+         email_iv,
+         email_fingerprint,
+         email_confirmed_at,
+         retention_until,
+         created_at,
+         updated_at
+       ) VALUES (?1, ?2, ?3, ?4, NULL, ?5, ?6, ?6)
+       ON CONFLICT (speaker_id) DO UPDATE SET
+         email_ciphertext = excluded.email_ciphertext,
+         email_iv = excluded.email_iv,
+         email_confirmed_at = CASE
+           WHEN speaker_contacts.email_fingerprint = excluded.email_fingerprint
+             THEN speaker_contacts.email_confirmed_at
+           ELSE NULL
+         END,
+         email_fingerprint = excluded.email_fingerprint,
+         retention_until = excluded.retention_until,
+         delivery_status = 'active',
+         updated_at = excluded.updated_at`,
+      )
+      .bind(
+        speakerId,
+        encryptedEmail.ciphertext,
+        encryptedEmail.iv,
+        emailFingerprint,
+        retentionUntil.toISOString(),
+        now,
+      ),
+  ];
+
+  if (!existingAccess || accessNeedsRotation) {
+    statements.push(
+      env
+        .INTERESTS!.prepare(
+          `INSERT INTO speaker_workspace_access (
+           speaker_id,
+           invite_token_hash,
+           access_generation,
+           invite_created_at,
+           invite_expires_at,
+           last_sent_at,
+           revoked_at,
+           created_at,
+           updated_at
+         ) VALUES (?1, ?2, 1, ?3, ?4, NULL, NULL, ?3, ?3)
+         ON CONFLICT (speaker_id) DO UPDATE SET
+           invite_token_hash = excluded.invite_token_hash,
+           access_generation = speaker_workspace_access.access_generation + 1,
+           invite_created_at = excluded.invite_created_at,
+           invite_expires_at = excluded.invite_expires_at,
+           last_sent_at = NULL,
+           revoked_at = NULL,
+           updated_at = excluded.updated_at`,
+        )
+        .bind(speakerId, hiddenInviteTokenHash, now, accessUntil.toISOString()),
+    );
+  }
+
+  if (emailChanged || accessNeedsRotation) {
+    statements.push(
+      env
+        .INTERESTS!.prepare(
+          "DELETE FROM speaker_workspace_sessions WHERE speaker_id = ?1",
+        )
+        .bind(speakerId),
+      env
+        .INTERESTS!.prepare(
+          "DELETE FROM speaker_magic_links WHERE speaker_id = ?1",
+        )
+        .bind(speakerId),
+    );
+  }
+
+  await env.INTERESTS!.batch(statements);
+
+  return json({
+    login_url: `${parsePublicOrigin(env.PUBLIC_SITE_ORIGIN) ?? new URL(request.url).origin}/speaker/`,
+    message: `Email saved for ${speaker.name}. They can now request a sign-in link.`,
+    speaker_id: speakerId,
+  });
 }
 
 async function sendSpeakerInvitation(
@@ -1488,6 +1814,353 @@ function renderAnnouncementHtml(speakerName: string, textBody: string): string {
 </html>`;
 }
 
+async function requestSpeakerLogin(
+  request: Request,
+  env: Env,
+  ctx: ExecutionContext,
+): Promise<Response> {
+  if (!isSameOriginMutation(request)) {
+    return json({ error: "Request origin was not accepted." }, 403);
+  }
+
+  const configurationError = getConfigurationError(env);
+
+  if (configurationError) return configurationError;
+
+  if (!env.EMAIL) {
+    return json({ error: "Speaker sign-in email is not configured." }, 503);
+  }
+
+  const publicOrigin = parsePublicOrigin(env.PUBLIC_SITE_ORIGIN);
+
+  if (!publicOrigin) {
+    return json({ error: "Speaker sign-in is not configured." }, 503);
+  }
+
+  const turnstileConfigurationError =
+    getSpeakerTurnstileConfigurationError(env);
+
+  if (turnstileConfigurationError) return turnstileConfigurationError;
+
+  const body = await readJsonWithinLimit(request, maxLoginBodyBytes);
+
+  if (body instanceof Response) return body;
+
+  if (!isRecord(body)) {
+    return json({ error: "Enter your speaker email address." }, 400);
+  }
+
+  const email = normalizeEmail(body.email);
+
+  if (!isLikelyEmail(email)) {
+    return json({ error: "Enter a valid email address." }, 400);
+  }
+
+  if (env.TURNSTILE_SECRET_KEY) {
+    const token =
+      typeof body.turnstile_token === "string"
+        ? body.turnstile_token.trim()
+        : "";
+    const outcome = await verifyTurnstile({
+      expectedAction: speakerLoginTurnstileAction,
+      expectedHostnames: getSpeakerTurnstileHostnames(env),
+      request,
+      secret: env.TURNSTILE_SECRET_KEY,
+      token,
+    });
+
+    if (!outcome.success) {
+      console.warn(
+        JSON.stringify({
+          errors: outcome["error-codes"] ?? [],
+          hasToken: Boolean(token),
+          hostname: outcome.hostname,
+          message: "Speaker login Turnstile verification failed",
+        }),
+      );
+      return json({ error: "Verification failed. Please try again." }, 400);
+    }
+  }
+
+  const now = new Date();
+  const nowIso = now.toISOString();
+  const rateWindowStart = new Date(
+    now.getTime() - loginRateWindowMilliseconds,
+  ).toISOString();
+  const cooldownStart = new Date(
+    now.getTime() - loginCooldownMilliseconds,
+  ).toISOString();
+  const retentionStart = new Date(
+    now.getTime() - loginRequestRetentionMilliseconds,
+  ).toISOString();
+  const emailFingerprint = await hashPrivateText(
+    email,
+    env.EMAIL_ENCRYPTION_KEY!,
+    "email-hash",
+  );
+  const ipFingerprint = await hashPrivateText(
+    request.headers.get("CF-Connecting-IP")?.trim() || "unknown",
+    env.EMAIL_ENCRYPTION_KEY!,
+    "speaker-login-ip",
+  );
+
+  await env.INTERESTS!.batch([
+    env
+      .INTERESTS!.prepare(
+        "DELETE FROM speaker_login_requests WHERE created_at < ?1",
+      )
+      .bind(retentionStart),
+    env
+      .INTERESTS!.prepare(
+        `DELETE FROM speaker_magic_links
+          WHERE expires_at <= ?1
+             OR (consumed_at IS NOT NULL AND consumed_at < ?2)`,
+      )
+      .bind(nowIso, retentionStart),
+  ]);
+
+  const [contact, emailRate, ipRate, recentDelivery] = await Promise.all([
+    env
+      .INTERESTS!.prepare(
+        `SELECT
+         contacts.email_ciphertext,
+         contacts.email_iv,
+         contacts.retention_until,
+         contacts.delivery_status,
+         access.speaker_id,
+         access.access_generation,
+         access.invite_expires_at
+       FROM speaker_contacts AS contacts
+       JOIN speaker_workspace_access AS access
+         ON access.speaker_id = contacts.speaker_id
+      WHERE contacts.email_fingerprint = ?1
+        AND contacts.delivery_status = 'active'
+        AND contacts.retention_until > ?2
+        AND access.revoked_at IS NULL
+        AND access.invite_expires_at > ?2
+      LIMIT 1`,
+      )
+      .bind(emailFingerprint, nowIso)
+      .first<SpeakerLoginContactRow>(),
+    env
+      .INTERESTS!.prepare(
+        `SELECT COUNT(*) AS count
+         FROM speaker_login_requests
+        WHERE email_fingerprint = ?1 AND created_at >= ?2`,
+      )
+      .bind(emailFingerprint, rateWindowStart)
+      .first<{ count: number }>(),
+    env
+      .INTERESTS!.prepare(
+        `SELECT COUNT(*) AS count
+         FROM speaker_login_requests
+        WHERE ip_fingerprint = ?1 AND created_at >= ?2`,
+      )
+      .bind(ipFingerprint, rateWindowStart)
+      .first<{ count: number }>(),
+    env
+      .INTERESTS!.prepare(
+        `SELECT request_id
+         FROM speaker_login_requests
+        WHERE email_fingerprint = ?1
+          AND outcome IN ('pending', 'sent')
+          AND created_at >= ?2
+        LIMIT 1`,
+      )
+      .bind(emailFingerprint, cooldownStart)
+      .first<{ request_id: string }>(),
+  ]);
+  const throttled =
+    (emailRate?.count ?? 0) >= maxLoginRequestsPerEmail ||
+    (ipRate?.count ?? 0) >= maxLoginRequestsPerIp ||
+    Boolean(recentDelivery);
+  const requestId = crypto.randomUUID();
+
+  if (!contact || throttled || !findCanonicalSpeaker(contact.speaker_id)) {
+    await env
+      .INTERESTS!.prepare(
+        `INSERT INTO speaker_login_requests (
+         request_id,
+         email_fingerprint,
+         ip_fingerprint,
+         outcome,
+         created_at,
+         updated_at
+       ) VALUES (?1, ?2, ?3, 'suppressed', ?4, ?4)`,
+      )
+      .bind(requestId, emailFingerprint, ipFingerprint, nowIso)
+      .run();
+
+    return json({ accepted: true, message: genericLoginMessage }, 202);
+  }
+
+  const expiresAt = new Date(
+    Math.min(
+      now.getTime() + magicLinkLifetimeMilliseconds,
+      Date.parse(contact.invite_expires_at),
+    ),
+  );
+
+  if (!Number.isFinite(expiresAt.getTime()) || expiresAt <= now) {
+    await env
+      .INTERESTS!.prepare(
+        `INSERT INTO speaker_login_requests (
+         request_id,
+         email_fingerprint,
+         ip_fingerprint,
+         outcome,
+         created_at,
+         updated_at
+       ) VALUES (?1, ?2, ?3, 'suppressed', ?4, ?4)`,
+      )
+      .bind(requestId, emailFingerprint, ipFingerprint, nowIso)
+      .run();
+    return json({ accepted: true, message: genericLoginMessage }, 202);
+  }
+
+  const token = createToken();
+  const tokenHash = await hashToken(
+    token,
+    env.EMAIL_ENCRYPTION_KEY!,
+    "speaker-magic-link-token",
+  );
+
+  await env.INTERESTS!.batch([
+    env
+      .INTERESTS!.prepare(
+        `INSERT INTO speaker_login_requests (
+         request_id,
+         email_fingerprint,
+         ip_fingerprint,
+         outcome,
+         created_at,
+         updated_at
+       ) VALUES (?1, ?2, ?3, 'pending', ?4, ?4)`,
+      )
+      .bind(requestId, emailFingerprint, ipFingerprint, nowIso),
+    env
+      .INTERESTS!.prepare(
+        `DELETE FROM speaker_magic_links
+          WHERE speaker_id = ?1 AND consumed_at IS NULL`,
+      )
+      .bind(contact.speaker_id),
+    env
+      .INTERESTS!.prepare(
+        `INSERT INTO speaker_magic_links (
+         token_hash,
+         request_id,
+         speaker_id,
+         access_generation,
+         created_at,
+         expires_at,
+         consumed_at
+       ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, NULL)`,
+      )
+      .bind(
+        tokenHash,
+        requestId,
+        contact.speaker_id,
+        contact.access_generation,
+        nowIso,
+        expiresAt.toISOString(),
+      ),
+  ]);
+
+  ctx.waitUntil(
+    deliverSpeakerMagicLink({
+      contact,
+      env,
+      expiresAt,
+      publicOrigin,
+      requestId,
+      token,
+      tokenHash,
+    }),
+  );
+
+  return json({ accepted: true, message: genericLoginMessage }, 202);
+}
+
+async function deliverSpeakerMagicLink({
+  contact,
+  env,
+  expiresAt,
+  publicOrigin,
+  requestId,
+  token,
+  tokenHash,
+}: {
+  contact: SpeakerLoginContactRow;
+  env: Env;
+  expiresAt: Date;
+  publicOrigin: string;
+  requestId: string;
+  token: string;
+  tokenHash: string;
+}): Promise<void> {
+  const speaker = findCanonicalSpeaker(contact.speaker_id);
+
+  if (!speaker) return;
+
+  try {
+    const email = await decryptPrivateText(
+      contact.email_ciphertext,
+      contact.email_iv,
+      env.EMAIL_ENCRYPTION_KEY!,
+    );
+    const magicLinkUrl = `${publicOrigin}/speaker/#${token}`;
+
+    await env.EMAIL!.send({
+      from: { email: "info@sdlcai.org", name: "SDLCAI" },
+      html: speakerMagicLinkHtml({
+        expiresAt,
+        magicLinkUrl,
+        speakerName: speaker.name,
+      }),
+      replyTo: "info@sdlcai.org",
+      subject: "Sign in to your SDLCAI speaker workspace",
+      text: speakerMagicLinkText({
+        expiresAt,
+        magicLinkUrl,
+        speakerName: speaker.name,
+      }),
+      to: email,
+    });
+
+    await env
+      .INTERESTS!.prepare(
+        `UPDATE speaker_login_requests
+          SET outcome = 'sent', updated_at = ?2
+        WHERE request_id = ?1 AND outcome = 'pending'`,
+      )
+      .bind(requestId, new Date().toISOString())
+      .run();
+  } catch (error) {
+    console.error(
+      JSON.stringify({
+        error: error instanceof Error ? error.message : "Unknown email error",
+        message: "Speaker magic-link delivery failed",
+        speakerId: contact.speaker_id,
+      }),
+    );
+    const failedAt = new Date().toISOString();
+    await env.INTERESTS!.batch([
+      env
+        .INTERESTS!.prepare(
+          `UPDATE speaker_login_requests
+            SET outcome = 'failed', updated_at = ?2
+          WHERE request_id = ?1`,
+        )
+        .bind(requestId, failedAt),
+      env
+        .INTERESTS!.prepare(
+          "DELETE FROM speaker_magic_links WHERE token_hash = ?1",
+        )
+        .bind(tokenHash),
+    ]);
+  }
+}
+
 async function redeemSpeakerInvitation(
   request: Request,
   env: Env,
@@ -1499,30 +2172,64 @@ async function redeemSpeakerInvitation(
   const token = readBearerToken(request);
 
   if (!token) {
-    return json({ error: "This speaker invitation is invalid." }, 401);
+    return json({ error: "This speaker sign-in link is invalid." }, 401);
   }
 
   const now = new Date();
   const nowIso = now.toISOString();
-  const tokenHash = await hashToken(
+  const magicTokenHash = await hashToken(
     token,
     env.EMAIL_ENCRYPTION_KEY!,
-    "speaker-workspace-invite-token",
+    "speaker-magic-link-token",
   );
-  const access = await env
+  const magicLink = await env
     .INTERESTS!.prepare(
-      `SELECT speaker_id, access_generation, invite_expires_at
-       FROM speaker_workspace_access
-      WHERE invite_token_hash = ?1
-        AND revoked_at IS NULL
-        AND invite_expires_at > ?2`,
+      `UPDATE speaker_magic_links
+          SET consumed_at = ?2
+        WHERE token_hash = ?1
+          AND consumed_at IS NULL
+          AND expires_at > ?2
+      RETURNING speaker_id, access_generation`,
     )
-    .bind(tokenHash, nowIso)
-    .first<SpeakerAccessRow>();
+    .bind(magicTokenHash, nowIso)
+    .first<SpeakerMagicLinkRow>();
+  let access: SpeakerAccessRow | null = null;
+
+  if (magicLink) {
+    access = await env
+      .INTERESTS!.prepare(
+        `SELECT speaker_id, access_generation, invite_expires_at
+         FROM speaker_workspace_access
+        WHERE speaker_id = ?1
+          AND access_generation = ?2
+          AND revoked_at IS NULL
+          AND invite_expires_at > ?3`,
+      )
+      .bind(magicLink.speaker_id, magicLink.access_generation, nowIso)
+      .first<SpeakerAccessRow>();
+  }
+
+  if (!access) {
+    const invitationTokenHash = await hashToken(
+      token,
+      env.EMAIL_ENCRYPTION_KEY!,
+      "speaker-workspace-invite-token",
+    );
+    access = await env
+      .INTERESTS!.prepare(
+        `SELECT speaker_id, access_generation, invite_expires_at
+         FROM speaker_workspace_access
+        WHERE invite_token_hash = ?1
+          AND revoked_at IS NULL
+          AND invite_expires_at > ?2`,
+      )
+      .bind(invitationTokenHash, nowIso)
+      .first<SpeakerAccessRow>();
+  }
 
   if (!access || !findCanonicalSpeaker(access.speaker_id)) {
     return json(
-      { error: "This speaker invitation is invalid or expired." },
+      { error: "This speaker sign-in link is invalid or expired." },
       401,
     );
   }
@@ -1539,7 +2246,7 @@ async function redeemSpeakerInvitation(
   );
 
   if (!Number.isFinite(expiresAt.getTime()) || expiresAt <= now) {
-    return json({ error: "This speaker invitation has expired." }, 401);
+    return json({ error: "This speaker sign-in link has expired." }, 401);
   }
 
   await env.INTERESTS!.batch([
@@ -1804,6 +2511,248 @@ async function updateSpeakerWorkspace(
         ? "Changes submitted for organizer review."
         : "Draft saved.",
   });
+}
+
+async function getSpeakerDinner(
+  speakerId: string,
+  env: Env,
+): Promise<Response> {
+  const configurationError = getSpeakerDinnerConfigurationError(env);
+
+  if (configurationError) return configurationError;
+
+  const configuration = getSpeakerDinnerConfiguration(env)!;
+  const row = await env
+    .INTERESTS!.prepare(
+      `SELECT
+       speaker_id,
+       response_ciphertext,
+       response_iv,
+       consent_text,
+       expires_at,
+       responded_at,
+       updated_at
+     FROM speaker_dinner_responses
+    WHERE speaker_id = ?1
+    LIMIT 1`,
+    )
+    .bind(speakerId)
+    .first<SpeakerDinnerRow>();
+  let response: SpeakerDinnerResponseData | null = null;
+
+  if (row) {
+    try {
+      response = await decryptSpeakerDinnerResponse(row, env);
+    } catch {
+      console.error(
+        JSON.stringify({
+          message: "Unable to decrypt speaker dinner response",
+          speakerId,
+        }),
+      );
+      return json({ error: "Your dinner response could not be loaded." }, 500);
+    }
+  }
+
+  return json({
+    closed: Date.now() > configuration.deadline,
+    consent_text: speakerDinnerConsentText,
+    deadline: new Date(configuration.deadline).toISOString(),
+    responded_at: row?.responded_at ?? null,
+    response,
+  });
+}
+
+async function updateSpeakerDinner(
+  request: Request,
+  speakerId: string,
+  env: Env,
+): Promise<Response> {
+  const configurationError = getSpeakerDinnerConfigurationError(env);
+
+  if (configurationError) return configurationError;
+
+  const configuration = getSpeakerDinnerConfiguration(env)!;
+
+  if (Date.now() > configuration.deadline) {
+    return json(
+      { error: "The speaker dinner response deadline has passed." },
+      410,
+    );
+  }
+
+  const body = await readJsonWithinLimit(request, maxDinnerBodyBytes);
+
+  if (body instanceof Response) return body;
+
+  const response = validateSpeakerDinnerResponse(body);
+
+  if (response instanceof Response) return response;
+
+  const encryptedResponse = await encryptPrivateText(
+    JSON.stringify(response),
+    env.EMAIL_ENCRYPTION_KEY!,
+  );
+  const hiddenDinnerTokenHash = await hashToken(
+    createToken(),
+    env.EMAIL_ENCRYPTION_KEY!,
+    "speaker-dinner-invite-token",
+  );
+  const respondedAt = new Date().toISOString();
+
+  await env
+    .INTERESTS!.prepare(
+      `INSERT INTO speaker_dinner_responses (
+       speaker_id,
+       token_hash,
+       response_ciphertext,
+       response_iv,
+       consent_text,
+       created_at,
+       expires_at,
+       responded_at,
+       updated_at
+     ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?6, ?6)
+     ON CONFLICT (speaker_id) DO UPDATE SET
+       response_ciphertext = excluded.response_ciphertext,
+       response_iv = excluded.response_iv,
+       consent_text = excluded.consent_text,
+       expires_at = excluded.expires_at,
+       responded_at = excluded.responded_at,
+       updated_at = excluded.updated_at`,
+    )
+    .bind(
+      speakerId,
+      hiddenDinnerTokenHash,
+      encryptedResponse.ciphertext,
+      encryptedResponse.iv,
+      speakerDinnerConsentText,
+      respondedAt,
+      new Date(configuration.retention).toISOString(),
+    )
+    .run();
+
+  return json({
+    closed: false,
+    consent_text: speakerDinnerConsentText,
+    deadline: new Date(configuration.deadline).toISOString(),
+    message: "Your dinner details have been saved.",
+    responded_at: respondedAt,
+    response,
+  });
+}
+
+function validateSpeakerDinnerResponse(
+  value: unknown,
+): SpeakerDinnerResponseData | Response {
+  if (!isRecord(value) || value.consent !== true) {
+    return json({ error: "Consent is required to save dinner details." }, 400);
+  }
+
+  if (
+    value.attendance !== "attending" &&
+    value.attendance !== "not_attending"
+  ) {
+    return json({ error: "Tell us whether you can attend." }, 400);
+  }
+
+  if (value.attendance === "not_attending") {
+    return {
+      attendance: "not_attending",
+      cross_contamination: "",
+      food_requirements: "",
+      meal_preference: "",
+    };
+  }
+
+  const mealPreference = value.meal_preference;
+  const crossContamination = value.cross_contamination;
+  const foodRequirements =
+    typeof value.food_requirements === "string"
+      ? value.food_requirements.trim()
+      : "";
+
+  if (
+    mealPreference !== "omnivore" &&
+    mealPreference !== "vegetarian" &&
+    mealPreference !== "vegan" &&
+    mealPreference !== "other"
+  ) {
+    return json({ error: "Choose a meal preference." }, 400);
+  }
+
+  if (
+    crossContamination !== "yes" &&
+    crossContamination !== "no" &&
+    crossContamination !== "unsure"
+  ) {
+    return json(
+      { error: "Tell us whether cross-contamination is a concern." },
+      400,
+    );
+  }
+
+  if (foodRequirements.length > 800) {
+    return json(
+      { error: "Keep food requirements to 800 characters or fewer." },
+      400,
+    );
+  }
+
+  return {
+    attendance: "attending",
+    cross_contamination: crossContamination,
+    food_requirements: foodRequirements,
+    meal_preference: mealPreference,
+  };
+}
+
+async function decryptSpeakerDinnerResponse(
+  row: SpeakerDinnerRow,
+  env: Env,
+): Promise<SpeakerDinnerResponseData | null> {
+  if (row.response_ciphertext === null && row.response_iv === null) return null;
+
+  if (row.response_ciphertext === null || row.response_iv === null) {
+    throw new Error("Encrypted speaker dinner response is incomplete");
+  }
+
+  const plaintext = await decryptPrivateText(
+    row.response_ciphertext,
+    row.response_iv,
+    env.EMAIL_ENCRYPTION_KEY!,
+  );
+  const candidate: unknown = JSON.parse(plaintext);
+
+  if (!isSpeakerDinnerResponseData(candidate)) {
+    throw new Error("Encrypted speaker dinner response is invalid");
+  }
+
+  return candidate;
+}
+
+function isSpeakerDinnerResponseData(
+  candidate: unknown,
+): candidate is SpeakerDinnerResponseData {
+  if (!isRecord(candidate)) return false;
+
+  const attendance = candidate.attendance;
+  const mealPreference = candidate.meal_preference;
+  const crossContamination = candidate.cross_contamination;
+
+  return (
+    (attendance === "attending" || attendance === "not_attending") &&
+    (mealPreference === "" ||
+      mealPreference === "omnivore" ||
+      mealPreference === "vegetarian" ||
+      mealPreference === "vegan" ||
+      mealPreference === "other") &&
+    (crossContamination === "" ||
+      crossContamination === "yes" ||
+      crossContamination === "no" ||
+      crossContamination === "unsure") &&
+    typeof candidate.food_requirements === "string"
+  );
 }
 
 async function authenticateSpeaker(
@@ -2296,6 +3245,65 @@ function normalizeEmail(value: unknown): string {
   return typeof value === "string" ? value.trim().toLowerCase() : "";
 }
 
+function getSpeakerDinnerConfiguration(
+  env: Env,
+): { deadline: number; retention: number } | null {
+  const deadline = Date.parse(env.SPEAKER_DINNER_RESPONSE_DEADLINE ?? "");
+  const retention = Date.parse(env.SPEAKER_DINNER_RETENTION_UNTIL ?? "");
+
+  if (
+    !Number.isFinite(deadline) ||
+    !Number.isFinite(retention) ||
+    retention <= deadline
+  ) {
+    return null;
+  }
+
+  return { deadline, retention };
+}
+
+function getSpeakerDinnerConfigurationError(env: Env): Response | null {
+  const workspaceError = getConfigurationError(env);
+
+  if (workspaceError) return workspaceError;
+
+  if (!getSpeakerDinnerConfiguration(env)) {
+    return json(
+      { error: "The speaker dinner response period is not configured." },
+      503,
+    );
+  }
+
+  return null;
+}
+
+function getSpeakerTurnstileHostnames(env: Env): Set<string> {
+  return new Set(
+    (env.TURNSTILE_HOSTNAMES ?? "")
+      .split(",")
+      .map(normalizeHostname)
+      .filter(Boolean),
+  );
+}
+
+function getSpeakerTurnstileConfigurationError(env: Env): Response | null {
+  const hasSiteKey = Boolean(
+    env.TURNSTILE_SITE_KEY?.trim() &&
+    env.TURNSTILE_SITE_KEY !== "__TURNSTILE_SITE_KEY__",
+  );
+  const hasSecretKey = Boolean(env.TURNSTILE_SECRET_KEY?.trim());
+
+  if (hasSiteKey !== hasSecretKey) {
+    return json({ error: "Verification is not configured." }, 503);
+  }
+
+  if (hasSecretKey && getSpeakerTurnstileHostnames(env).size === 0) {
+    return json({ error: "Verification is not configured." }, 503);
+  }
+
+  return null;
+}
+
 function isLikelyEmail(value: string): boolean {
   return (
     value.length <= 254 &&
@@ -2328,6 +3336,62 @@ function speakerInvitationText({
     "",
     "SDLCAI",
   ].join("\n");
+}
+
+function speakerMagicLinkText({
+  expiresAt,
+  magicLinkUrl,
+  speakerName,
+}: {
+  expiresAt: Date;
+  magicLinkUrl: string;
+  speakerName: string;
+}): string {
+  return [
+    `Hello ${speakerName},`,
+    "",
+    "Use this one-time link to sign in to your private SDLCAI speaker workspace:",
+    "",
+    magicLinkUrl,
+    "",
+    `The link expires at ${formatEmailDateTime(expiresAt)}. If you did not request it, you can ignore this message.`,
+    "",
+    "In the workspace you can update your profile, talk details, dinner response, promotion graphics, portrait, and topic video.",
+    "",
+    "Questions? Reply to this message or contact info@sdlcai.org.",
+    "",
+    "SDLCAI",
+  ].join("\n");
+}
+
+function speakerMagicLinkHtml({
+  expiresAt,
+  magicLinkUrl,
+  speakerName,
+}: {
+  expiresAt: Date;
+  magicLinkUrl: string;
+  speakerName: string;
+}): string {
+  const safeName = escapeHtml(speakerName);
+  const safeUrl = escapeHtml(magicLinkUrl);
+
+  return `<!doctype html>
+<html lang="en">
+  <body style="margin:0;background:#f3efe7;color:#151515;font-family:Arial,sans-serif">
+    <div style="max-width:640px;margin:0 auto;padding:32px 20px">
+      <p style="margin:0 0 24px;font-size:13px;font-weight:700;text-transform:uppercase">SDLCAI / Speaker sign-in</p>
+      <div style="border:1px solid #151515;background:#fff;padding:28px">
+        <h1 style="margin:0 0 20px;font-size:32px;line-height:1;text-transform:uppercase">Your sign-in link</h1>
+        <p style="font-size:17px;line-height:1.6">Hello ${safeName},</p>
+        <p style="font-size:17px;line-height:1.6">Open your private workspace to update your profile, talk, dinner response, and promotion material.</p>
+        <p style="margin:28px 0"><a href="${safeUrl}" style="display:inline-block;background:#151515;color:#fff;padding:14px 20px;font-weight:700;text-decoration:none;text-transform:uppercase">Sign in to speaker workspace</a></p>
+        <p style="font-size:14px;line-height:1.6;color:#5d5d5d">This one-time link expires at ${escapeHtml(formatEmailDateTime(expiresAt))}. If you did not request it, you can ignore this message.</p>
+      </div>
+      <p style="font-size:14px;line-height:1.6">Questions? Reply to this message or contact <a href="mailto:info@sdlcai.org" style="color:#151515">info@sdlcai.org</a>.</p>
+    </div>
+  </body>
+</html>`;
 }
 
 function speakerInvitationHtml({
@@ -2364,6 +3428,14 @@ function speakerInvitationHtml({
 function formatEmailDate(value: Date): string {
   return new Intl.DateTimeFormat("en-GB", {
     dateStyle: "long",
+    timeZone: "Europe/Helsinki",
+  }).format(value);
+}
+
+function formatEmailDateTime(value: Date): string {
+  return new Intl.DateTimeFormat("en-GB", {
+    dateStyle: "long",
+    timeStyle: "short",
     timeZone: "Europe/Helsinki",
   }).format(value);
 }
@@ -2428,6 +3500,32 @@ function hashPrivateText(
   purpose: string,
 ): Promise<string> {
   return hashToken(value, keyMaterial, purpose);
+}
+
+export async function purgeExpiredSpeakerWorkspaceData(
+  env: Env,
+): Promise<void> {
+  if (!env.INTERESTS) return;
+
+  const now = new Date();
+  const nowIso = now.toISOString();
+  const retentionStart = new Date(
+    now.getTime() - loginRequestRetentionMilliseconds,
+  ).toISOString();
+
+  await env.INTERESTS.batch([
+    env.INTERESTS.prepare(
+      "DELETE FROM speaker_workspace_sessions WHERE expires_at <= ?1",
+    ).bind(nowIso),
+    env.INTERESTS.prepare(
+      `DELETE FROM speaker_magic_links
+          WHERE expires_at <= ?1
+             OR (consumed_at IS NOT NULL AND consumed_at < ?2)`,
+    ).bind(nowIso, retentionStart),
+    env.INTERESTS.prepare(
+      "DELETE FROM speaker_login_requests WHERE created_at < ?1",
+    ).bind(retentionStart),
+  ]);
 }
 
 function getConfigurationError(env: Env): Response | null {

@@ -37,10 +37,12 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   );
 
   const invitationToken = Buffer.alloc(32, 7).toString("base64url");
+  const magicLinkToken = Buffer.alloc(32, 8).toString("base64url");
   const invitationHash = await hmac(
     invitationToken,
     "speaker-workspace-invite-token",
   );
+  const magicLinkHash = await hmac(magicLinkToken, "speaker-magic-link-token");
   const email = await encrypt("speaker@example.com");
   const emailFingerprint = await hmac("speaker@example.com", "email-hash");
   const seedSql = `
@@ -57,6 +59,13 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
     ) VALUES (
       'mo-khazali', '${invitationHash}', 1, '2026-08-26T00:00:00Z',
       '2099-10-31T21:59:59Z', '2026-08-26T00:00:00Z', '2026-08-26T00:00:00Z'
+    );
+    INSERT INTO speaker_magic_links (
+      token_hash, request_id, speaker_id, access_generation,
+      created_at, expires_at
+    ) VALUES (
+      '${magicLinkHash}', '22222222-2222-4222-8222-222222222222',
+      'mo-khazali', 1, '2026-08-26T00:00:00Z', '2099-10-31T21:59:59Z'
     );
     INSERT INTO speaker_video_submissions (
       submission_id, speaker_id, talk_id, stream_uid, state,
@@ -123,6 +132,34 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   assert.equal(unauthorized.status, 401);
   assert.equal(unauthorized.headers.get("cache-control"), "no-store");
 
+  const unknownLoginResponse = await worker.fetch(
+    `${origin}/api/speaker/login`,
+    {
+      body: JSON.stringify({ email: "unknown@example.com" }),
+      headers: { "content-type": "application/json", origin },
+      method: "POST",
+    },
+  );
+  const unknownLogin = await unknownLoginResponse.json();
+  assert.equal(unknownLoginResponse.status, 202);
+  assert.equal(unknownLogin.accepted, true);
+  assert.doesNotMatch(JSON.stringify(unknownLogin), /unknown@example\.com/u);
+
+  const magicRedemption = await worker.fetch(`${origin}/api/speaker/session`, {
+    headers: { authorization: `Bearer ${magicLinkToken}` },
+    method: "POST",
+  });
+  assert.equal(magicRedemption.status, 200);
+  assert.match(
+    magicRedemption.headers.get("set-cookie") ?? "",
+    /^__Host-sdlcai-speaker-session=/u,
+  );
+  const magicReplay = await worker.fetch(`${origin}/api/speaker/session`, {
+    headers: { authorization: `Bearer ${magicLinkToken}` },
+    method: "POST",
+  });
+  assert.equal(magicReplay.status, 401);
+
   const redemption = await worker.fetch(`${origin}/api/speaker/session`, {
     headers: { authorization: `Bearer ${invitationToken}` },
     method: "POST",
@@ -139,6 +176,49 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
     "mo-khazali-industry-perspective",
   ]);
   assert.equal(workspace.revision, null);
+
+  const emptyDinnerResponse = await worker.fetch(
+    `${origin}/api/speaker/dinner`,
+    { headers: { cookie } },
+  );
+  const emptyDinner = await emptyDinnerResponse.json();
+  assert.equal(emptyDinnerResponse.status, 200);
+  assert.equal(emptyDinner.response, null);
+
+  const rejectedDinnerOrigin = await worker.fetch(
+    `${origin}/api/speaker/dinner`,
+    {
+      body: JSON.stringify({
+        attendance: "not_attending",
+        consent: true,
+      }),
+      headers: {
+        "content-type": "application/json",
+        cookie,
+        origin: "https://attacker.example",
+      },
+      method: "POST",
+    },
+  );
+  assert.equal(rejectedDinnerOrigin.status, 403);
+
+  const dinnerSaveResponse = await worker.fetch(
+    `${origin}/api/speaker/dinner`,
+    {
+      body: JSON.stringify({
+        attendance: "attending",
+        consent: true,
+        cross_contamination: "yes",
+        food_requirements: "Severe hazelnut allergy",
+        meal_preference: "vegetarian",
+      }),
+      headers: { "content-type": "application/json", cookie, origin },
+      method: "POST",
+    },
+  );
+  const dinnerSave = await dinnerSaveResponse.json();
+  assert.equal(dinnerSaveResponse.status, 200);
+  assert.equal(dinnerSave.response.meal_preference, "vegetarian");
 
   const sourcePhoto = await readFile("assets/speakers/mo-khazali.webp");
   const photoUploadResponse = await worker.fetch(
@@ -226,6 +306,26 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   });
   assert.equal(webhookResponse.status, 204);
 
+  const contactSaveResponse = await worker.fetch(
+    `${origin}/api/admin/speakers/contact`,
+    {
+      body: JSON.stringify({
+        email: "ohans@example.com",
+        speaker_id: "ohans-emmanuel",
+      }),
+      headers: {
+        authorization: adminAuthorization,
+        "content-type": "application/json",
+        origin,
+        "x-admin-action": "save-speaker-contact",
+      },
+      method: "POST",
+    },
+  );
+  const contactSave = await contactSaveResponse.json();
+  assert.equal(contactSaveResponse.status, 200);
+  assert.match(contactSave.message, /Email saved/u);
+
   const adminResponse = await worker.fetch(`${origin}/api/admin/speakers`, {
     headers: { authorization: adminAuthorization },
   });
@@ -240,6 +340,16 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   assert.equal(speaker.photo.state, "submitted");
   assert.equal(speaker.videos[0].state, "ready");
   assert.equal(speaker.videos[0].duration_seconds, 91.4);
+  assert.equal(speaker.dinner.response.attendance, "attending");
+  assert.equal(
+    speaker.dinner.response.food_requirements,
+    "Severe hazelnut allergy",
+  );
+  const mappedSpeaker = admin.speakers.find(
+    ({ speaker_id }) => speaker_id === "ohans-emmanuel",
+  );
+  assert.equal(mappedSpeaker.contact.email, "ohans@example.com");
+  assert.equal(mappedSpeaker.invitation.last_sent_at, null);
   assert.deepEqual(
     speaker.revision.changed_fields.map(({ field }) => field),
     ["profile.name", "talks.mo-khazali-industry-perspective.title"],
@@ -269,7 +379,7 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   assert.equal(announcementPreview.recipient_count, 1);
   assert.equal(announcementPreview.recipients[0].speaker_id, "mo-khazali");
   assert.deepEqual(announcementPreview.excluded, [
-    { reason: "no-contact", speaker_id: "ohans-emmanuel" },
+    { reason: "unconfirmed", speaker_id: "ohans-emmanuel" },
   ]);
   assert.match(announcementPreview.text_body, /Hello \{\{speaker name\}\}/u);
   assert.doesNotMatch(

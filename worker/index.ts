@@ -1,13 +1,10 @@
-import {
-  normalizeHostname,
-  validateTurnstileOutcome,
-  type TurnstileOutcome,
-} from "./turnstile";
+import { normalizeHostname, verifyTurnstile } from "./turnstile";
 import speakersData from "../site/data/speakers.json" with { type: "json" };
 import { handleSocialRenderRequest } from "./social-renderer";
 import {
   handleSpeakerWorkspaceRequest,
   isSpeakerWorkspacePath,
+  purgeExpiredSpeakerWorkspaceData,
   withSpeakerWorkspaceSecurityHeaders,
 } from "./speaker-workspace";
 
@@ -163,7 +160,6 @@ const speakerDinnerConsentText =
   "I consent to Toska Osuuskunta processing this response and, if I attend, sharing only the necessary food information with the dinner caterer. I can withdraw by contacting info@futurefrontend.com.";
 const posterSizeCompatibilityValue: PosterSize = "either";
 const turnstileAction = "turnstile-spin-v2";
-const turnstileTimeoutMilliseconds = 10_000;
 const maxInterestBodyBytes = 16 * 1024;
 const maxPosterProposalBodyBytes = 32 * 1024;
 const maxSpeakerDinnerBodyBytes = 16 * 1024;
@@ -229,6 +225,7 @@ export default {
     const speakerWorkspaceResponse = await handleSpeakerWorkspaceRequest(
       request,
       env,
+      ctx,
     );
 
     if (speakerWorkspaceResponse) return speakerWorkspaceResponse;
@@ -503,6 +500,8 @@ export default {
     if (shouldPurgeSpeakerDinnerData(env)) {
       ctx.waitUntil(purgeSpeakerDinnerData(env));
     }
+
+    ctx.waitUntil(purgeExpiredSpeakerWorkspaceData(env));
   },
 } satisfies ExportedHandler<Env>;
 
@@ -2255,63 +2254,6 @@ function formatCsvValue(value: string): string {
     : value;
 
   return `"${spreadsheetSafeValue.replaceAll('"', '""')}"`;
-}
-
-async function verifyTurnstile({
-  expectedAction,
-  expectedHostnames,
-  request,
-  secret,
-  token,
-}: {
-  expectedAction: string;
-  expectedHostnames: ReadonlySet<string>;
-  request: Request;
-  secret: string;
-  token: string;
-}): Promise<TurnstileOutcome> {
-  if (!token) {
-    return { success: false, "error-codes": ["missing-input-response"] };
-  }
-
-  if (token.length > 2048) {
-    return { success: false, "error-codes": ["invalid-input-response"] };
-  }
-
-  const payload = new FormData();
-  payload.append("secret", secret);
-  payload.append("response", token);
-
-  const ip = request.headers.get("CF-Connecting-IP");
-
-  if (ip) {
-    payload.append("remoteip", ip);
-  }
-
-  try {
-    const response = await fetch(
-      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
-      {
-        method: "POST",
-        body: payload,
-        signal: AbortSignal.timeout(turnstileTimeoutMilliseconds),
-      },
-    );
-
-    if (!response.ok) {
-      return { success: false, "error-codes": ["siteverify-unavailable"] };
-    }
-
-    const candidate: unknown = await response.json();
-
-    return validateTurnstileOutcome(
-      candidate,
-      expectedAction,
-      expectedHostnames,
-    );
-  } catch {
-    return { success: false, "error-codes": ["siteverify-unavailable"] };
-  }
 }
 
 async function backupInterests(env: Env): Promise<void> {
