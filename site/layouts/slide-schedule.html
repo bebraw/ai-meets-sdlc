@@ -55,13 +55,19 @@
                 >
                   <noop &foreach="scheduleItem.talks as talkItem">
                     <li>
-                      <h3 &children="talkItem.title"></h3>
+                      <h3
+                        &children="talkItem.title"
+                        &data-canonical-talk-id="talkItem.id"
+                        data-canonical-talk-title
+                      ></h3>
                       <div class="presentation-schedule-speakers">
                         <noop &foreach="talkItem.speakers as speakerItem">
                           <figure>
                             <img
                               &src="speakerItem.photo"
                               &alt="speakerItem.name"
+                              &data-canonical-speaker-id="speakerItem.id"
+                              data-canonical-speaker-photo
                               width="400"
                               height="400"
                               loading="lazy"
@@ -69,6 +75,8 @@
                             />
                             <figcaption
                               &children="speakerItem.name"
+                              &data-canonical-speaker-id="speakerItem.id"
+                              data-canonical-speaker-name
                             ></figcaption>
                           </figure>
                         </noop>

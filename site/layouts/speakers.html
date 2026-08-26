@@ -52,18 +52,24 @@
             class="grid overflow-hidden border border-ink bg-paper lg:grid-cols-[18rem_1fr] lg:items-start"
           >
             <figure class="border-b border-ink lg:border-b-0 lg:border-r">
-              <LazyImage
+              <img
                 &src="speakerItem.photo"
                 &alt="speakerItem.name"
-                &className="(id 'aspect-[4/5] w-full object-cover grayscale')"
-                &width="(id '400')"
-                &height="(id '500')"
-              ></LazyImage>
+                &data-canonical-speaker-id="speakerItem.id"
+                data-canonical-speaker-photo
+                class="aspect-[4/5] w-full object-cover grayscale"
+                width="400"
+                height="500"
+                loading="lazy"
+                decoding="async"
+              />
               <figcaption class="border-t border-ink p-4">
                 <div class="flex items-start gap-3">
                   <h2
                     class="min-w-0 font-headline text-3xl font-black uppercase leading-none"
                     &children="speakerItem.name"
+                    &data-canonical-speaker-id="speakerItem.id"
+                    data-canonical-speaker-name
                   ></h2>
                   <a
                     &href="speakerItem.anchorHref"
@@ -76,6 +82,8 @@
                 <p
                   class="mt-3 text-sm font-bold uppercase leading-5 text-muted"
                   &children="speakerItem.role"
+                  &data-canonical-speaker-id="speakerItem.id"
+                  data-canonical-speaker-role
                 ></p>
               </figcaption>
             </figure>
@@ -93,53 +101,65 @@
                 <h3
                   class="mt-2 font-headline text-3xl font-black uppercase leading-none"
                   &children="speakerItem.talk.title"
+                  &data-canonical-talk-id="speakerItem.talk.id"
+                  data-canonical-talk-title
                 ></h3>
                 <div
                   class="mt-3 leading-7 text-muted [&_a]:font-bold [&_a]:text-ink [&_a]:underline [&_a]:underline-offset-4 [&_li]:mb-2 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mb-4 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-6"
                   &children="speakerItem.talk.abstractHtml"
+                  &data-canonical-talk-id="speakerItem.talk.id"
+                  data-canonical-talk-abstract
                 ></div>
               </div>
               <div
                 class="leading-7 text-muted [&_a]:font-bold [&_a]:text-ink [&_a]:underline [&_a]:underline-offset-4 [&_li]:mb-2 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mb-4 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-6"
                 &children="speakerItem.bioHtml"
+                &data-canonical-speaker-id="speakerItem.id"
+                data-canonical-speaker-bio
               ></div>
               <div class="flex flex-wrap gap-3">
-                <a
-                  &visibleIf="speakerItem.website"
-                  &href="speakerItem.website"
-                  class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-                  >Website</a
+                <span
+                  class="contents"
+                  &data-canonical-speaker-id="speakerItem.id"
+                  data-canonical-speaker-socials
                 >
-                <a
-                  &visibleIf="speakerItem.linkedin"
-                  &href="speakerItem.linkedin"
-                  class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-                  >LinkedIn</a
-                >
-                <a
-                  &visibleIf="speakerItem.scholar"
-                  &href="speakerItem.scholar"
-                  class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-                  >Scholar</a
-                >
-                <a
-                  &visibleIf="speakerItem.github"
-                  &href="speakerItem.github"
-                  class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-                  >GitHub</a
-                >
-                <a
-                  &visibleIf="speakerItem.devto"
-                  &href="speakerItem.devto"
-                  class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-                  >DEV</a
-                >
-                <a
-                  &visibleIf="speakerItem.x"
-                  &href="speakerItem.x"
-                  class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-                  >X</a
-                >
+                  <a
+                    &visibleIf="speakerItem.website"
+                    &href="speakerItem.website"
+                    class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+                    >Website</a
+                  >
+                  <a
+                    &visibleIf="speakerItem.linkedin"
+                    &href="speakerItem.linkedin"
+                    class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+                    >LinkedIn</a
+                  >
+                  <a
+                    &visibleIf="speakerItem.scholar"
+                    &href="speakerItem.scholar"
+                    class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+                    >Scholar</a
+                  >
+                  <a
+                    &visibleIf="speakerItem.github"
+                    &href="speakerItem.github"
+                    class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+                    >GitHub</a
+                  >
+                  <a
+                    &visibleIf="speakerItem.devto"
+                    &href="speakerItem.devto"
+                    class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+                    >DEV</a
+                  >
+                  <a
+                    &visibleIf="speakerItem.x"
+                    &href="speakerItem.x"
+                    class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+                    >X</a
+                  >
+                </span>
                 <a
                   &href="speakerItem.scheduleHref"
                   class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"

@@ -36,6 +36,7 @@ No accepted-only ADRs are currently pending implementation.
 | [ADR-005](./implemented/ADR-005-keep-google-workspace-for-inbound-email.md)                   | Implemented | Keep Google Workspace for replies while Cloudflare sends transactional application messages. |
 | [ADR-006](./implemented/ADR-006-use-speaker-initiated-magic-link-access.md)                   | Implemented | Let mapped speakers request short-lived, single-use magic links.                             |
 | [ADR-007](./implemented/ADR-007-allow-organizer-authored-speaker-revisions.md)                | Implemented | Let organizers prefill or approve speaker content through the shared revision workflow.      |
+| [ADR-008](./implemented/ADR-008-use-d1-as-the-canonical-store-for-mutable-speaker-content.md) | Implemented | Publish mutable speaker content from versioned D1 records while Git retains event structure. |
 
 ## Creating a New ADR
 

@@ -9,13 +9,171 @@ import {
   type SocialRenderAsset,
   type SocialRenderManifest,
 } from "./social-render-contract";
+import {
+  combineCanonicalVersion,
+  getCanonicalPhotoUrl,
+  getCanonicalTalks,
+  readCanonicalSpeakers,
+  type CanonicalSpeakerRecord,
+} from "./canonical-content";
+import {
+  applyCanonicalContentToResponse,
+  serveCanonicalSpeakerPhoto,
+} from "./public-content";
 
 const manifestPath = "/assets/social/manifest.json";
+const speakerPromotionManifestPath = "/assets/social/speakers.json";
 const renderOrigin = "https://social-render.invalid";
 const immutableCacheControl = "public, max-age=31536000, immutable";
 const pageTimeoutMilliseconds = 20_000;
 const socialCache = (caches as CacheStorage & { readonly default: Cache })
   .default;
+
+interface PromotionManifestSource {
+  schemaVersion: number;
+  speakers: Array<{
+    id: string;
+    name: string;
+    photo: string;
+    talks: Array<{
+      assets: Array<{
+        height: number;
+        path: string;
+        presetId: string;
+        version: string;
+        width: number;
+      }>;
+      id: string;
+      slideId: string;
+      title: string;
+    }>;
+  }>;
+  version: string;
+}
+
+export async function handleSpeakerPromotionManifestRequest(
+  request: Request,
+  env: Env,
+): Promise<Response | null> {
+  const url = new URL(request.url);
+
+  if (url.pathname !== speakerPromotionManifestPath) return null;
+
+  if (request.method !== "GET" && request.method !== "HEAD") {
+    return new Response("Method not allowed.", {
+      status: 405,
+      headers: { allow: "GET, HEAD", "cache-control": "no-store" },
+    });
+  }
+
+  try {
+    const [manifest, records, sourceResponse] = await Promise.all([
+      readManifest(env),
+      readCanonicalSpeakers(env),
+      env.ASSETS.fetch(
+        new Request(`${renderOrigin}${speakerPromotionManifestPath}`),
+      ),
+    ]);
+
+    if (!sourceResponse.ok) {
+      throw new Error(`Promotion manifest returned ${sourceResponse.status}.`);
+    }
+
+    const source = (await sourceResponse.json()) as PromotionManifestSource;
+
+    if (source.schemaVersion !== 1 || !Array.isArray(source.speakers)) {
+      throw new Error("Promotion manifest has an invalid contract.");
+    }
+
+    const bySpeaker = new Map(
+      records.map((record) => [record.speakerId, record]),
+    );
+    const talks = getCanonicalTalks(records);
+    const assets = new Map(manifest.assets.map((asset) => [asset.path, asset]));
+    const speakers = await Promise.all(
+      source.speakers.map(async (speaker) => {
+        const canonical = bySpeaker.get(speaker.id);
+
+        if (!canonical) {
+          throw new Error(`Unknown promotion speaker: ${speaker.id}`);
+        }
+
+        return {
+          ...speaker,
+          name: canonical.content.profile.name,
+          photo: getCanonicalPhotoUrl(canonical),
+          talks: await Promise.all(
+            speaker.talks.map(async (talk) => {
+              const canonicalTalk = talks.get(talk.id);
+
+              if (!canonicalTalk) {
+                throw new Error(`Unknown promotion talk: ${talk.id}`);
+              }
+
+              return {
+                ...talk,
+                title: canonicalTalk.title,
+                assets: await Promise.all(
+                  talk.assets.map(async (promotionAsset) => {
+                    const asset = assets.get(promotionAsset.path);
+
+                    if (!asset) {
+                      throw new Error(
+                        `Unknown promotion asset: ${promotionAsset.path}`,
+                      );
+                    }
+
+                    return {
+                      ...promotionAsset,
+                      version: await combineCanonicalVersion(
+                        asset.version,
+                        asset.speakerIds,
+                        records,
+                      ),
+                    };
+                  }),
+                ),
+              };
+            }),
+          ),
+        };
+      }),
+    );
+    const version = await combineCanonicalVersion(
+      source.version,
+      records.map(({ speakerId }) => speakerId),
+      records,
+    );
+    const body = JSON.stringify({ ...source, speakers, version });
+
+    return new Response(request.method === "HEAD" ? null : body, {
+      headers: {
+        "cache-control": "public, max-age=60, s-maxage=300",
+        "content-length": String(new TextEncoder().encode(body).byteLength),
+        "content-type": "application/json; charset=utf-8",
+        "x-sdlcai-content-source": "d1",
+        "x-sdlcai-content-version": version,
+      },
+    });
+  } catch (error) {
+    console.error("speaker_promotion_manifest_error", {
+      error: getErrorMessage(error),
+    });
+    return new Response(
+      JSON.stringify({
+        error: "Promotion graphics are temporarily unavailable.",
+      }),
+      {
+        status: 503,
+        headers: {
+          "cache-control": "no-store",
+          "content-type": "application/json; charset=utf-8",
+          "retry-after": "60",
+        },
+      },
+    );
+  }
+}
 
 export async function handleSocialRenderRequest(
   request: Request,
@@ -60,13 +218,30 @@ export async function handleSocialRenderRequest(
   }
 
   const { asset } = match;
+  let canonicalRecords: CanonicalSpeakerRecord[];
+
+  try {
+    canonicalRecords = await readCanonicalSpeakers(env);
+  } catch (error) {
+    console.error("social_render_canonical_content_error", {
+      assetId: asset.id,
+      error: getErrorMessage(error),
+    });
+    return unavailableResponse();
+  }
+
+  const effectiveVersion = await combineCanonicalVersion(
+    asset.version,
+    asset.speakerIds,
+    canonicalRecords,
+  );
 
   if (
     match.isLegacy ||
     !isSocialRenderVersion(match.requestedVersion) ||
     (!match.isLegacy && match.requestedVersion === null)
   ) {
-    return versionRedirect(request, asset);
+    return versionRedirect(request, asset, effectiveVersion);
   }
 
   const requestedVersion = match.requestedVersion;
@@ -82,6 +257,12 @@ export async function handleSocialRenderRequest(
 
   try {
     storedObject = await env.SOCIAL_EXPORTS.get(objectKey);
+
+    if (!storedObject && requestedVersion !== effectiveVersion) {
+      storedObject = await env.SOCIAL_EXPORTS.get(
+        getLegacyObjectKey(asset, requestedVersion),
+      );
+    }
   } catch (error) {
     console.error("social_render_r2_read_error", {
       assetId: asset.id,
@@ -99,17 +280,22 @@ export async function handleSocialRenderRequest(
     return responseForMethod(response, request.method);
   }
 
-  if (requestedVersion !== asset.version) {
-    return versionRedirect(request, asset);
+  if (requestedVersion !== effectiveVersion) {
+    return versionRedirect(request, asset, effectiveVersion);
   }
 
   try {
-    const image = await renderSocialAsset(env, asset, manifest);
+    const image = await renderSocialAsset(
+      env,
+      asset,
+      manifest,
+      canonicalRecords,
+    );
     const stored = await env.SOCIAL_EXPORTS.put(objectKey, image, {
       customMetadata: {
         assetId: asset.id,
         renderer: manifest.renderer,
-        version: asset.version,
+        version: effectiveVersion,
       },
       httpMetadata: {
         cacheControl: immutableCacheControl,
@@ -122,7 +308,7 @@ export async function handleSocialRenderRequest(
     console.log("social_render_generated", {
       assetId: asset.id,
       bytes: image.byteLength,
-      version: asset.version,
+      version: effectiveVersion,
     });
 
     return responseForMethod(response, request.method);
@@ -130,7 +316,7 @@ export async function handleSocialRenderRequest(
     console.error("social_render_failed", {
       assetId: asset.id,
       error: getErrorMessage(error),
-      version: asset.version,
+      version: effectiveVersion,
     });
 
     return unavailableResponse();
@@ -180,10 +366,14 @@ async function readManifest(env: Env): Promise<SocialRenderManifest> {
   return parseSocialRenderManifest(await response.json());
 }
 
-function versionRedirect(request: Request, asset: SocialRenderAsset): Response {
+function versionRedirect(
+  request: Request,
+  asset: SocialRenderAsset,
+  version: string,
+): Response {
   const url = new URL(asset.path, request.url);
   url.search = "";
-  url.searchParams.set("v", asset.version);
+  url.searchParams.set("v", version);
 
   return Response.redirect(url, 307);
 }
@@ -201,6 +391,10 @@ function getCacheKey(
 }
 
 function getObjectKey(asset: SocialRenderAsset, version: string): string {
+  return `social/v2/${version}/${asset.slideId}-${asset.presetId}.jpg`;
+}
+
+function getLegacyObjectKey(asset: SocialRenderAsset, version: string): string {
   return `social/v1/${version}/${asset.slideId}-${asset.presetId}.jpg`;
 }
 
@@ -239,6 +433,7 @@ async function renderSocialAsset(
   env: Env,
   asset: SocialRenderAsset,
   manifest: SocialRenderManifest,
+  canonicalRecords: readonly CanonicalSpeakerRecord[],
 ): Promise<Uint8Array<ArrayBuffer>> {
   let browser: Browser | undefined;
 
@@ -249,7 +444,7 @@ async function renderSocialAsset(
     await page.setViewport({ width: asset.width, height: asset.height });
     await page.setRequestInterception(true);
     page.on("request", (interceptedRequest) => {
-      void respondWithStaticAsset(interceptedRequest, env);
+      void respondWithRenderAsset(interceptedRequest, env, canonicalRecords);
     });
 
     const deckUrl = new URL(manifest.deckPath, renderOrigin);
@@ -310,15 +505,17 @@ async function renderSocialAsset(
   }
 }
 
-async function respondWithStaticAsset(
+async function respondWithRenderAsset(
   interceptedRequest: HTTPRequest,
   env: Env,
+  canonicalRecords: readonly CanonicalSpeakerRecord[],
 ): Promise<void> {
   const url = new URL(interceptedRequest.url());
   const isAllowed =
     url.origin === renderOrigin &&
     (url.pathname === "/slides/deck/" ||
       url.pathname.startsWith("/assets/") ||
+      url.pathname.startsWith("/media/speakers/") ||
       /^\/tailwind-[a-z0-9]+\.css$/u.test(url.pathname));
 
   if (!isAllowed) {
@@ -327,9 +524,20 @@ async function respondWithStaticAsset(
   }
 
   try {
-    const assetResponse = await env.ASSETS.fetch(
-      new Request(`${renderOrigin}${url.pathname}${url.search}`),
+    const renderRequest = new Request(
+      `${renderOrigin}${url.pathname}${url.search}`,
     );
+    const photoResponse = await serveCanonicalSpeakerPhoto(renderRequest, env);
+    let assetResponse =
+      photoResponse ?? (await env.ASSETS.fetch(renderRequest));
+
+    if (url.pathname === "/slides/deck/" && assetResponse.ok) {
+      assetResponse = await applyCanonicalContentToResponse(
+        assetResponse,
+        canonicalRecords,
+        { private: true },
+      );
+    }
     const body = new Uint8Array(await assetResponse.arrayBuffer());
     const headers: Record<string, string> = {};
 

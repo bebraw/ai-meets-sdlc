@@ -4,6 +4,8 @@
 
 **Date:** 2026-08-26
 
+**Amended by:** [ADR-008](./ADR-008-use-d1-as-the-canonical-store-for-mutable-speaker-content.md)
+
 ## Context
 
 [ADR-001](./ADR-001-use-a-moderated-self-service-workspace-for-speakers.md)
@@ -42,6 +44,9 @@ Images pipeline used by speakers. Organizer uploads are decoded, cropped,
 re-encoded as a 400 by 400 WebP, stored privately in R2, and marked approved.
 The derivative must still replace the canonical Git asset before it becomes
 public.
+
+ADR-008 replaces these copy-to-Git publication steps. Approved organizer
+content and portraits now publish atomically to the canonical D1 record.
 
 ## Trigger
 

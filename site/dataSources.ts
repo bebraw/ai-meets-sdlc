@@ -56,6 +56,7 @@ function init() {
               scheduleHref: item.scheduleHref,
               sessionTitle: item.title,
               talk: {
+                id: talk.id,
                 title: talk.title,
                 abstract: talk.abstract,
                 abstractHtml: talk.abstractHtml,
@@ -375,6 +376,7 @@ function getSlideDeckItems(scheduleItems, seminar, socialExportPresets) {
     for (const talk of scheduleItem.talks ?? []) {
       deckItems.push({
         id: `talk-${talk.id}`,
+        talkId: talk.id,
         showTalk: true,
         eyebrow: scheduleItem.title,
         time: scheduleItem.time,

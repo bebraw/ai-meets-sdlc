@@ -23,24 +23,32 @@
         <article class="grid gap-5 min-[720px]:grid-cols-[8rem_1fr]">
           <div class="grid w-32 gap-2 min-[720px]:w-full">
             <noop &foreach="talkItem.speakers as speakerItem">
-              <LazyImage
+              <img
                 &visibleIf="speakerItem.photo"
                 &src="speakerItem.photo"
                 &alt="speakerItem.name"
-                &className="(id 'aspect-square w-full border border-ink object-cover grayscale')"
-                &width="(id '400')"
-                &height="(id '400')"
-              ></LazyImage>
+                &data-canonical-speaker-id="speakerItem.id"
+                data-canonical-speaker-photo
+                class="aspect-square w-full border border-ink object-cover grayscale"
+                width="400"
+                height="400"
+                loading="lazy"
+                decoding="async"
+              />
             </noop>
           </div>
           <div class="grid gap-4">
             <h4
               class="font-headline text-3xl font-black uppercase leading-none"
               &children="talkItem.title"
+              &data-canonical-talk-id="talkItem.id"
+              data-canonical-talk-title
             ></h4>
             <div
               class="leading-7 text-muted [&_a]:font-bold [&_a]:text-ink [&_a]:underline [&_a]:underline-offset-4 [&_li]:mb-2 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mb-4 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-6"
               &children="talkItem.abstractHtml"
+              &data-canonical-talk-id="talkItem.id"
+              data-canonical-talk-abstract
             ></div>
             <noop &foreach="talkItem.speakers as speakerItem">
               <div class="border-t border-ink pt-4">
@@ -48,16 +56,26 @@
                   &href="speakerItem.speakerHref"
                   class="font-headline text-2xl font-black uppercase hover:underline"
                   &children="speakerItem.name"
+                  &data-canonical-speaker-id="speakerItem.id"
+                  data-canonical-speaker-name
                 ></a>
                 <p
                   class="mt-1 font-bold leading-6 text-muted"
                   &children="speakerItem.role"
+                  &data-canonical-speaker-id="speakerItem.id"
+                  data-canonical-speaker-role
                 ></p>
                 <div
                   class="mt-3 leading-7 text-muted [&_a]:font-bold [&_a]:text-ink [&_a]:underline [&_a]:underline-offset-4 [&_li]:mb-2 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mb-4 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-6"
                   &children="speakerItem.bioHtml"
+                  &data-canonical-speaker-id="speakerItem.id"
+                  data-canonical-speaker-bio
                 ></div>
-                <div class="mt-4 flex flex-wrap gap-3">
+                <div
+                  class="mt-4 flex flex-wrap gap-3"
+                  &data-canonical-speaker-id="speakerItem.id"
+                  data-canonical-speaker-socials
+                >
                   <a
                     &visibleIf="speakerItem.website"
                     &href="speakerItem.website"

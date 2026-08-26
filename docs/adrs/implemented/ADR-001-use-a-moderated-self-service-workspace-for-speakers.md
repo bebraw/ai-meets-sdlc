@@ -4,6 +4,8 @@
 
 **Date:** 2026-08-26
 
+**Amended by:** [ADR-008](./ADR-008-use-d1-as-the-canonical-store-for-mutable-speaker-content.md)
+
 ## Context
 
 The site already gives a speaker a private capability link for submitting and
@@ -46,6 +48,10 @@ the public event program. The organizer reviews a field-level diff, and an
 approved revision is applied to the version-controlled speaker and schedule
 data before the normal build and deployment. Git remains the canonical source
 for published event content and generated artifacts.
+
+ADR-008 replaces this publication boundary: D1 is now canonical for mutable
+speaker content, while Git retains immutable event structure and fallback seed
+data.
 
 The first version may bootstrap access from the existing private speaker link.
 Redeeming the capability should establish a secure session so the secret does

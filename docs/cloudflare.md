@@ -1,7 +1,8 @@
 # Cloudflare Setup
 
 This site is deployed as a Cloudflare Worker with static assets, D1 for the
-interest list, proposals, and private speaker workflows; R2 for encrypted
+interest list, proposals, private speaker workflows, and canonical mutable
+speaker content; R2 for encrypted
 backups, generated social graphics, and reviewed portrait derivatives; Browser
 Rendering for on-demand rasterization; Images for bounded portrait processing;
 Stream for private topic-video intake; Email Sending for separately addressed
@@ -12,25 +13,25 @@ for daily backup export.
 
 `wrangler.jsonc` expects these bindings:
 
-| Binding                    | Type           | Purpose                                                    |
-| -------------------------- | -------------- | ---------------------------------------------------------- |
-| `ASSETS`                   | Workers Assets | Serves the Gustwind build output from `build/`.            |
-| `INTERESTS`                | D1             | Stores encrypted public-form and speaker workflow records. |
-| `INTEREST_BACKUPS`         | R2             | Stores daily encrypted JSON backups for both record types. |
-| `SOCIAL_EXPORTS`           | R2             | Stores immutable, content-addressed social JPEGs.          |
-| `SOCIAL_BROWSER`           | Browser        | Renders a social JPEG when its R2 object does not exist.   |
-| `SPEAKER_UPLOADS`          | R2             | Stores private reviewed 400x400 speaker WebP derivatives.  |
-| `IMAGES`                   | Images         | Decodes, crops, strips metadata, and re-encodes portraits. |
-| `STREAM`                   | Stream         | Creates private one-time topic-video uploads and previews. |
-| `EMAIL`                    | Email Sending  | Sends one separately addressed speaker message at a time.  |
-| `ADMIN_USERNAME`           | Secret         | Username for HTTP Basic auth protecting `/admin/`.         |
-| `ADMIN_PASSWORD`           | Secret         | Password for HTTP Basic auth protecting `/admin/`.         |
-| `TURNSTILE_SITE_KEY`       | Worker var     | Public Turnstile widget site key injected into HTML.       |
-| `TURNSTILE_HOSTNAMES`      | Worker var     | Comma-separated hostnames accepted from Siteverify.        |
-| `TURNSTILE_SECRET_KEY`     | Secret         | Server-side Turnstile verification key.                    |
-| `EMAIL_ENCRYPTION_KEY`     | Secret         | Key material for encryption and keyed fingerprints.        |
-| `STREAM_WEBHOOK_SECRET`    | Secret         | Verifies the exact bytes of Stream processing webhooks.    |
-| `POSTER_PROPOSAL_DEADLINE` | Worker var     | ISO timestamp after which public proposals return `410`.   |
+| Binding                    | Type           | Purpose                                                                           |
+| -------------------------- | -------------- | --------------------------------------------------------------------------------- |
+| `ASSETS`                   | Workers Assets | Serves the Gustwind build output from `build/`.                                   |
+| `INTERESTS`                | D1             | Stores encrypted forms, speaker workflows, and canonical mutable speaker content. |
+| `INTEREST_BACKUPS`         | R2             | Stores change-aware JSON backups for forms and canonical speaker content.         |
+| `SOCIAL_EXPORTS`           | R2             | Stores immutable, content-addressed social JPEGs.                                 |
+| `SOCIAL_BROWSER`           | Browser        | Renders a social JPEG when its R2 object does not exist.                          |
+| `SPEAKER_UPLOADS`          | R2             | Stores private reviewed 400x400 speaker WebP derivatives.                         |
+| `IMAGES`                   | Images         | Decodes, crops, strips metadata, and re-encodes portraits.                        |
+| `STREAM`                   | Stream         | Creates private one-time topic-video uploads and previews.                        |
+| `EMAIL`                    | Email Sending  | Sends one separately addressed speaker message at a time.                         |
+| `ADMIN_USERNAME`           | Secret         | Username for HTTP Basic auth protecting `/admin/`.                                |
+| `ADMIN_PASSWORD`           | Secret         | Password for HTTP Basic auth protecting `/admin/`.                                |
+| `TURNSTILE_SITE_KEY`       | Worker var     | Public Turnstile widget site key injected into HTML.                              |
+| `TURNSTILE_HOSTNAMES`      | Worker var     | Comma-separated hostnames accepted from Siteverify.                               |
+| `TURNSTILE_SECRET_KEY`     | Secret         | Server-side Turnstile verification key.                                           |
+| `EMAIL_ENCRYPTION_KEY`     | Secret         | Key material for encryption and keyed fingerprints.                               |
+| `STREAM_WEBHOOK_SECRET`    | Secret         | Verifies the exact bytes of Stream processing webhooks.                           |
+| `POSTER_PROPOSAL_DEADLINE` | Worker var     | ISO timestamp after which public proposals return `410`.                          |
 
 The production poster deadline is `2026-09-27T20:59:59Z`, which is 23:59 EEST
 on 27 September 2026. Acceptance is rolling; the deadline only controls when
@@ -190,7 +191,8 @@ an approved revision, and `POST /api/admin/speakers/photos/upload` to process
 and approve a replacement portrait. These mutations require a same-origin
 request plus `x-admin-action: save-speaker-content` or
 `x-admin-action: upload-speaker-photo`, respectively. Approved content and
-portrait derivatives remain private until applied to Git and deployed.
+portrait derivatives publish atomically to the speaker's versioned canonical
+D1 record. Stable IDs, assignments, and schedule placement remain in Git.
 
 The data-driven slide library, session deck, and screen schedule are public at
 `/slides/`, `/slides/deck/`, and `/slides/schedule/`. Generated social exports
@@ -204,14 +206,17 @@ a version derived from:
 
 - the exact slide HTML and the bytes of images referenced by that slide;
 - shared deck HTML, CSS, JavaScript, fonts, and other shared assets; and
-- the renderer contract and output preset.
+- the renderer contract and output preset; and
+- the content and portrait versions of only the speakers shown on that slide.
 
 A request to a stable path receives a `307` redirect to the same path with a
 `v=<sha256>` query. The versioned request checks the Cache API first, then the
 `SOCIAL_EXPORTS` R2 bucket. Only a miss for the current manifest version starts
 Browser Rendering. The Worker serves the deck and an allowlisted set of static
 paths to the isolated browser through the `ASSETS` binding and blocks all other
-browser network requests.
+browser network requests. The intercepted deck and approved portrait requests
+are resolved from the same canonical D1 snapshot used to calculate the render
+version.
 
 Versioned responses use `Cache-Control: public, max-age=31536000, immutable`.
 The Cache API avoids repeated reads within a Cloudflare location; R2 prevents a
@@ -294,12 +299,21 @@ Migrations `0005` through `0009` add the private speaker workspace:
 - short-lived, single-use speaker magic links plus keyed, 24-hour login-request
   records for per-address and per-client throttling.
 
+Migration `0010_create_canonical_speaker_content.sql` adds one versioned
+canonical row per configured speaker and seeds it from the bundled speaker and
+schedule data. It also records the base content version on new revisions.
+During the upgrade it adopts each speaker's latest existing approved content
+and portrait revision, so an approval that was waiting for the old copy-to-Git
+step is not lost. Future approved profile, talk, and portrait revisions update
+the row directly; the bundled JSON remains the immutable assignment source,
+build scaffold, and explicit public fallback.
+
 Plaintext speaker contact details are not stored in D1 or R2. Proposed public
 profile and talk copy is stored as versioned JSON in D1 so organizers can
-review it before applying an approved revision to Git. Legacy author details,
-URLs, and setup or accessibility notes from earlier submissions remain
-encrypted and readable to authenticated administrators until the scheduled
-retention review.
+review it before publishing an approved revision to the canonical row. Legacy
+author details, URLs, and setup or accessibility notes from earlier submissions
+remain encrypted and readable to authenticated administrators until the
+scheduled retention review.
 
 ## Backups
 
@@ -309,23 +323,26 @@ The Worker has a daily scheduled trigger:
 "crons": ["17 2 * * *"]
 ```
 
-The scheduled handler backs up both tables independently:
+The scheduled handler backs up the three datasets independently:
 
 ```text
 interests/YYYY-MM-DD.json
 interests/latest.json
 poster-proposals/YYYY-MM-DD.json
 poster-proposals/latest.json
+speaker-content/YYYY-MM-DD.json
+speaker-content/latest.json
 ```
 
-For each table, the Worker hashes the encrypted row export and compares it with
+For each dataset, the Worker hashes the row export and compares it with
 the relevant `latest.json` manifest. If the hash is unchanged, it skips that
 dated backup. When rows change, it writes a dated JSON export and updates the
 manifest with the latest key, export time, row count, and row hash.
 
-Backups intentionally contain ciphertext, IV values, keyed hashes or
-fingerprints, workflow metadata, and the fixed consent/terms text—not decrypted
-proposal or contact fields.
+Private-data backups intentionally contain ciphertext, IV values, keyed hashes
+or fingerprints, workflow metadata, and the fixed consent/terms text—not
+decrypted proposal or contact fields. Canonical speaker-content backups contain
+only public profile, talk, portrait-reference, and version metadata.
 
 ### Decrypting an interest backup
 
@@ -356,9 +373,18 @@ For production rollout:
    accepted hostnames; and Worker secrets are configured. The Turnstile
    widget's dashboard allowlist must include both `sdlcai.org` and
    `www.sdlcai.org`.
-2. Apply all migrations through `0009_create_speaker_magic_links.sql`
-   remotely and verify Wrangler reports each migration as applied.
-3. Deploy the Worker and static build.
+2. Apply all migrations through
+   `0010_create_canonical_speaker_content.sql` remotely and verify Wrangler
+   reports each migration as applied. Before deploying, confirm D1 contains one
+   valid canonical row for every bundled speaker:
+
+   ```bash
+   wrangler d1 execute ai-meets-sdlc-interests --remote --command "SELECT COUNT(*) AS speakers, SUM(json_valid(content_json)) AS valid_json FROM canonical_speaker_content"
+   ```
+
+   Both values should currently be `9`.
+
+3. Deploy the Worker and static build only after that verification succeeds.
 4. Open `/posters/`, verify the deadline and A0/A1 portrait terms, and submit a
    controlled test proposal.
 5. Open `/admin/posters/` with Basic auth, confirm the proposal decrypts, and
@@ -368,21 +394,24 @@ For production rollout:
    `poster-proposals/latest.json` manifest and its referenced dated object exist
    in R2.
 7. Request one stable path from `/slides/`, follow its version redirect, verify
-   the response is a JPEG, and confirm the corresponding `social/v1/` object
+   the response is a JPEG, and confirm the corresponding `social/v2/` object
    exists in `ai-meets-sdlc-social-exports`.
 8. Assign one controlled speaker email in `/admin/speakers/`, request a sign-in
    link from `/speaker/`, redeem it once, confirm replay fails, save dinner
    details and a profile draft, preview a promotion graphic, and exercise
-   organizer approval without applying the test revision to Git. Then create a
-   separate organizer-authored draft and confirm it prefills the same editor.
+   organizer approval and confirm the public speaker page changes immediately.
+   Then create a separate organizer-authored draft and confirm it prefills the
+   same editor.
 9. Upload controlled speaker and organizer portraits and confirm only bounded
    400x400 WebP derivatives appear in `ai-meets-sdlc-speaker-uploads`.
 10. Register the Stream webhook, upload a short private test video, confirm the
     signed webhook moves it to `ready`, open both private previews, and delete
     or supersede the test submission when verification is complete.
 
-If application rollback is needed, deploy the preceding Worker version. Leave
-the additive table in place; removing it would destroy submitted proposals.
+If application rollback is needed, deploy the preceding Worker version and
+pause speaker approvals while it is active because that version reads bundled
+content rather than the new canonical rows. Leave the additive table in place;
+removing it would destroy canonical content and revision history.
 
 ## Retention Follow-up
 

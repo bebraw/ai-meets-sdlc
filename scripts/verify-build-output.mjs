@@ -221,7 +221,7 @@ function verifySocialRenderManifest(manifest, deckHtml, libraryHtml, errors) {
   const assetIds = new Set();
   const assetPaths = new Set();
 
-  if (manifest.schemaVersion !== 1) {
+  if (manifest.schemaVersion !== 2) {
     errors.push("Social render manifest has an unsupported schema version.");
   }
 
@@ -281,6 +281,17 @@ function verifySocialRenderManifest(manifest, deckHtml, libraryHtml, errors) {
 
     if (!libraryHtml.includes(asset.path)) {
       errors.push(`Slide library does not link to ${asset.path}.`);
+    }
+
+    if (
+      !Array.isArray(asset.speakerIds) ||
+      asset.speakerIds.some(
+        (speakerId) =>
+          typeof speakerId !== "string" ||
+          !/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(speakerId),
+      )
+    ) {
+      errors.push(`Social asset ${asset.id} has invalid speaker dependencies.`);
     }
   }
 }

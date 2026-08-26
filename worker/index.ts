@@ -1,6 +1,17 @@
 import { normalizeHostname, verifyTurnstile } from "./turnstile";
-import speakersData from "../site/data/speakers.json" with { type: "json" };
-import { handleSocialRenderRequest } from "./social-renderer";
+import {
+  handleSocialRenderRequest,
+  handleSpeakerPromotionManifestRequest,
+} from "./social-renderer";
+import {
+  readCanonicalSpeaker,
+  readCanonicalSpeakers,
+} from "./canonical-content";
+import {
+  applyCanonicalContentToResponse,
+  isCanonicalPublicHtmlPath,
+  serveCanonicalSpeakerPhoto,
+} from "./public-content";
 import {
   handleSpeakerWorkspaceRequest,
   isSpeakerWorkspacePath,
@@ -163,10 +174,6 @@ const turnstileAction = "turnstile-spin-v2";
 const maxInterestBodyBytes = 16 * 1024;
 const maxPosterProposalBodyBytes = 32 * 1024;
 const maxSpeakerDinnerBodyBytes = 16 * 1024;
-const speakerDinnerSpeakers = speakersData.items.map(({ id, name }) => ({
-  id,
-  name,
-}));
 const posterProposalStatuses = [
   "submitted",
   "shortlisted",
@@ -187,6 +194,24 @@ export default {
     const isSpeakerDinnerPrivate = isSpeakerDinnerPath(url.pathname);
     const isSpeakerWorkspacePrivate = isSpeakerWorkspacePath(url.pathname);
 
+    try {
+      const canonicalPhotoResponse = await serveCanonicalSpeakerPhoto(
+        request,
+        env,
+      );
+
+      if (canonicalPhotoResponse) return canonicalPhotoResponse;
+    } catch (error) {
+      console.error("canonical_speaker_photo_error", {
+        error: error instanceof Error ? error.message : String(error),
+        pathname: url.pathname,
+      });
+      return new Response("Speaker photo temporarily unavailable.", {
+        status: 503,
+        headers: { "cache-control": "no-store", "retry-after": "60" },
+      });
+    }
+
     const socialRenderResponse = await handleSocialRenderRequest(
       request,
       env,
@@ -194,6 +219,11 @@ export default {
     );
 
     if (socialRenderResponse) return socialRenderResponse;
+
+    const promotionManifestResponse =
+      await handleSpeakerPromotionManifestRequest(request, env);
+
+    if (promotionManifestResponse) return promotionManifestResponse;
 
     if (isInternalAdminSlidesPath(url.pathname)) {
       return new Response("Not found.", {
@@ -474,6 +504,33 @@ export default {
       response = await injectRuntimeConfig(response, env);
     }
 
+    if (
+      response.ok &&
+      request.method !== "HEAD" &&
+      isCanonicalPublicHtmlPath(url.pathname)
+    ) {
+      try {
+        response = await applyCanonicalContentToResponse(
+          response,
+          await readCanonicalSpeakers(env),
+          { private: isAdminProtected },
+        );
+      } catch (error) {
+        console.error("canonical_public_content_fallback", {
+          error: error instanceof Error ? error.message : String(error),
+          pathname: url.pathname,
+        });
+        const headers = new Headers(response.headers);
+        headers.set("cache-control", "no-store");
+        headers.set("x-sdlcai-content-source", "bundled-fallback");
+        response = new Response(response.body, {
+          headers,
+          status: response.status,
+          statusText: response.statusText,
+        });
+      }
+    }
+
     if (isAdminProtected) return withAdminSecurityHeaders(response);
 
     if (isSpeakerDinnerPrivate) {
@@ -495,6 +552,7 @@ export default {
     if (env.INTEREST_BACKUPS) {
       ctx.waitUntil(backupInterests(env));
       ctx.waitUntil(backupPosterProposals(env));
+      ctx.waitUntil(backupCanonicalSpeakerContent(env));
     }
 
     if (shouldPurgeSpeakerDinnerData(env)) {
@@ -962,7 +1020,7 @@ async function handleSpeakerDinnerInvite(
   if (formDataResult instanceof Response) return formDataResult;
 
   const speakerId = normalizeFormText(formDataResult.get("speaker_id"));
-  const speaker = findSpeakerDinnerSpeaker(speakerId);
+  const speaker = await readCanonicalSpeaker(env, speakerId);
 
   if (!speaker) {
     return jsonResponse({ error: "Choose a current SDLCAI speaker." }, 400);
@@ -989,7 +1047,7 @@ async function handleSpeakerDinnerInvite(
       expires_at = excluded.expires_at,
       updated_at = excluded.updated_at`,
   )
-    .bind(speaker.id, tokenHash, now, expiresAt, now)
+    .bind(speaker.speakerId, tokenHash, now, expiresAt, now)
     .run();
 
   const inviteUrl = new URL("/speaker-dinner/", request.url);
@@ -998,9 +1056,9 @@ async function handleSpeakerDinnerInvite(
   return jsonResponse(
     {
       invite_url: inviteUrl.toString(),
-      message: `A new private link was created for ${speaker.name}. Any earlier link is now invalid.`,
+      message: `A new private link was created for ${speaker.content.profile.name}. Any earlier link is now invalid.`,
       ok: true,
-      speaker_id: speaker.id,
+      speaker_id: speaker.speakerId,
     },
     201,
   );
@@ -1018,7 +1076,7 @@ async function handleSpeakerDinnerStatus(
 
   if (!invitation) return speakerDinnerInvitationError();
 
-  const speaker = findSpeakerDinnerSpeaker(invitation.speaker_id);
+  const speaker = await readCanonicalSpeaker(env, invitation.speaker_id);
 
   if (!speaker) return speakerDinnerInvitationError();
 
@@ -1028,7 +1086,7 @@ async function handleSpeakerDinnerStatus(
   return jsonResponse({
     closed: Date.now() > configuration.deadline,
     deadline: new Date(configuration.deadline).toISOString(),
-    name: speaker.name,
+    name: speaker.content.profile.name,
     response,
     responded_at: invitation.responded_at,
   });
@@ -1475,18 +1533,19 @@ async function readSpeakerDinnerAdminItems(
     ORDER BY speaker_id ASC`,
   ).all<SpeakerDinnerRow>();
   const rowBySpeakerId = new Map(results.map((row) => [row.speaker_id, row]));
+  const canonicalRecords = await readCanonicalSpeakers(env);
 
   return Promise.all(
-    speakerDinnerSpeakers.map(async (speaker) => {
-      const row = rowBySpeakerId.get(speaker.id);
+    canonicalRecords.map(async (speaker) => {
+      const row = rowBySpeakerId.get(speaker.speakerId);
 
       return {
         expires_at: row?.expires_at ?? null,
         invited: Boolean(row),
-        name: speaker.name,
+        name: speaker.content.profile.name,
         responded_at: row?.responded_at ?? null,
         response: row ? await decryptSpeakerDinnerResponse(row, env) : null,
-        speaker_id: speaker.id,
+        speaker_id: speaker.speakerId,
         updated_at: row?.updated_at ?? null,
       };
     }),
@@ -1632,10 +1691,6 @@ function isSpeakerDinnerCrossContamination(
   value: string,
 ): value is Exclude<SpeakerDinnerCrossContamination, ""> {
   return ["yes", "no", "unsure"].includes(value);
-}
-
-function findSpeakerDinnerSpeaker(speakerId: string) {
-  return speakerDinnerSpeakers.find((speaker) => speaker.id === speakerId);
 }
 
 function parseSpeakerDinnerBearerToken(
@@ -2346,6 +2401,45 @@ async function backupPosterProposals(env: Env): Promise<void> {
   );
 }
 
+async function backupCanonicalSpeakerContent(env: Env): Promise<void> {
+  const { results } = await env.INTERESTS.prepare(
+    `SELECT * FROM canonical_speaker_content
+      ORDER BY sort_order ASC, speaker_id ASC`,
+  ).all();
+  const rows = results ?? [];
+  const rowsHash = await sha256Hex(JSON.stringify(rows));
+  const latestBackup = await getLatestCanonicalSpeakerBackupManifest(env);
+
+  if (latestBackup?.rows_hash === rowsHash) return;
+
+  const exportedAt = new Date().toISOString();
+  const body = JSON.stringify({ exported_at: exportedAt, rows }, null, 2);
+  const key = `speaker-content/${exportedAt.slice(0, 10)}.json`;
+
+  await env.INTEREST_BACKUPS.put(key, body, {
+    httpMetadata: { contentType: "application/json" },
+    customMetadata: { rows_hash: rowsHash },
+  });
+
+  await env.INTEREST_BACKUPS.put(
+    "speaker-content/latest.json",
+    JSON.stringify(
+      {
+        key,
+        exported_at: exportedAt,
+        row_count: rows.length,
+        rows_hash: rowsHash,
+      },
+      null,
+      2,
+    ),
+    {
+      httpMetadata: { contentType: "application/json" },
+      customMetadata: { rows_hash: rowsHash },
+    },
+  );
+}
+
 async function getLatestBackupManifest(
   env: Env,
 ): Promise<BackupManifest | null> {
@@ -2371,6 +2465,28 @@ async function getLatestPosterProposalBackupManifest(
 ): Promise<BackupManifest | null> {
   const latestBackup = await env.INTEREST_BACKUPS.get(
     "poster-proposals/latest.json",
+  );
+
+  if (!latestBackup) return null;
+
+  if (latestBackup.customMetadata?.rows_hash) {
+    return { rows_hash: latestBackup.customMetadata.rows_hash };
+  }
+
+  try {
+    const manifest = await latestBackup.json();
+
+    return isBackupManifest(manifest) ? manifest : null;
+  } catch {
+    return null;
+  }
+}
+
+async function getLatestCanonicalSpeakerBackupManifest(
+  env: Env,
+): Promise<BackupManifest | null> {
+  const latestBackup = await env.INTEREST_BACKUPS.get(
+    "speaker-content/latest.json",
   );
 
   if (!latestBackup) return null;

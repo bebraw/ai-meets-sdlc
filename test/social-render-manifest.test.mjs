@@ -12,8 +12,8 @@ import {
 const deck = (firstTitle = "First talk") => `<!doctype html>
 <html><head><link rel="stylesheet" href="/tailwind-test.css"><script src="/assets/slides.js"></script></head>
 <body>
-<section data-slide-id="talk-first" data-slide-number="1" data-presentation-slide><h1>${firstTitle}</h1><img src="/assets/first.svg"></section>
-<section data-slide-id="talk-second" data-slide-number="2" data-presentation-slide><h1>Second talk</h1><img src="/assets/second.svg"></section>
+<section data-slide-id="talk-first" data-slide-number="1" data-presentation-slide><h1>${firstTitle}</h1><img src="/assets/first.svg" data-canonical-speaker-id="first-speaker"></section>
+<section data-slide-id="talk-second" data-slide-number="2" data-presentation-slide><h1>Second talk</h1><img src="/assets/second.svg" data-canonical-speaker-id="second-speaker"></section>
 </body></html>`;
 
 const promotionData = {
@@ -84,6 +84,8 @@ test("social render versions only invalidate affected slides", async (t) => {
 
   const initial = await buildFixtureManifest(buildDir);
   assert.equal(initial.assets.length, 6);
+  assert.equal(initial.schemaVersion, 2);
+  assert.deepEqual(initial.assets[0].speakerIds, ["first-speaker"]);
   const parsedManifest = parseSocialRenderManifest(initial);
   const firstAsset = initial.assets[0];
   const matchedAsset = matchSocialRenderAsset(

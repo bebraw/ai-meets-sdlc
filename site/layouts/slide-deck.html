@@ -83,19 +83,29 @@
             <div class="presentation-talk-grid" &visibleIf="slideItem.hasTalks">
               <noop &foreach="slideItem.talks as talkItem">
                 <article class="presentation-talk-card">
-                  <h2 &children="talkItem.title"></h2>
+                  <h2
+                    &children="talkItem.title"
+                    &data-canonical-talk-id="talkItem.id"
+                    data-canonical-talk-title
+                  ></h2>
                   <div class="presentation-speaker-list">
                     <noop &foreach="talkItem.speakers as speakerItem">
                       <figure class="presentation-speaker-chip">
                         <img
                           &src="speakerItem.photo"
                           &alt="speakerItem.name"
+                          &data-canonical-speaker-id="speakerItem.id"
+                          data-canonical-speaker-photo
                           width="400"
                           height="400"
                           loading="lazy"
                           decoding="async"
                         />
-                        <figcaption &children="speakerItem.name"></figcaption>
+                        <figcaption
+                          &children="speakerItem.name"
+                          &data-canonical-speaker-id="speakerItem.id"
+                          data-canonical-speaker-name
+                        ></figcaption>
                       </figure>
                     </noop>
                   </div>
@@ -113,6 +123,8 @@
               <h1
                 &class="slideItem.titleClassName"
                 &children="slideItem.title"
+                &data-canonical-talk-id="slideItem.talkId"
+                data-canonical-talk-title
               ></h1>
             </div>
             <div class="presentation-talk-speakers">
@@ -121,14 +133,24 @@
                   <img
                     &src="speakerItem.photo"
                     &alt="speakerItem.name"
+                    &data-canonical-speaker-id="speakerItem.id"
+                    data-canonical-speaker-photo
                     width="400"
                     height="400"
                     loading="lazy"
                     decoding="async"
                   />
                   <figcaption>
-                    <strong &children="speakerItem.name"></strong>
-                    <span &children="speakerItem.role"></span>
+                    <strong
+                      &children="speakerItem.name"
+                      &data-canonical-speaker-id="speakerItem.id"
+                      data-canonical-speaker-name
+                    ></strong>
+                    <span
+                      &children="speakerItem.role"
+                      &data-canonical-speaker-id="speakerItem.id"
+                      data-canonical-speaker-role
+                    ></span>
                   </figcaption>
                 </figure>
               </noop>

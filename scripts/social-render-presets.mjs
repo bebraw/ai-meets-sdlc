@@ -1,4 +1,4 @@
-export const socialRenderContract = "browser-run-v1";
+export const socialRenderContract = "browser-run-v2";
 export const socialRenderManifestPath = "assets/social/manifest.json";
 export const speakerPromotionManifestPath = "assets/social/speakers.json";
 

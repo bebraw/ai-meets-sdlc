@@ -25,6 +25,7 @@ interface WorkspaceContent {
 
 interface WorkspaceResponse {
   authenticated: boolean;
+  canonical_version: number;
   content: WorkspaceContent;
   error?: string;
   field_errors?: Record<string, string>;
@@ -428,7 +429,11 @@ form?.addEventListener("submit", async (event) => {
     {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ action, content }),
+      body: JSON.stringify({
+        action,
+        base_content_version: currentWorkspace.canonical_version,
+        content,
+      }),
     },
   );
 
@@ -672,7 +677,7 @@ async function loadPhotoStatus(): Promise<void> {
   if (state) {
     state.textContent =
       response.data.photo.state === "approved"
-        ? "Approved / awaiting publication"
+        ? "Approved and published"
         : "Replacement / awaiting review";
   }
   if (response.data.photo.review_note) {
@@ -1025,7 +1030,7 @@ function setLockedState(
   if (revisionState === "submitted") {
     setStatus("Submitted changes are awaiting organizer review.");
   } else if (revisionState === "approved") {
-    setStatus("Your approved changes are awaiting publication.");
+    setStatus("Your approved changes are published.");
   }
 }
 

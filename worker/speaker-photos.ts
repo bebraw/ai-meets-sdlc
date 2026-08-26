@@ -280,51 +280,103 @@ async function uploadSpeakerPhoto(
   });
 
   try {
-    const state = source === "admin" ? "approved" : "submitted";
-    const supersededNote =
-      source === "admin"
-        ? "Superseded by an organizer upload."
-        : "Replaced by a newer upload.";
-    await env.INTERESTS.batch([
-      env.INTERESTS.prepare(
-        `UPDATE speaker_photo_revisions
-            SET state = 'rejected',
-                reviewed_at = ?2,
-                reviewed_by = ?3,
-                review_note = ?4,
-                updated_at = ?2
-          WHERE speaker_id = ?1
-            AND state ${source === "admin" ? "IN ('submitted', 'approved')" : "= 'submitted'"}`,
-      ).bind(speakerId, now, source, supersededNote),
-      env.INTERESTS.prepare(
-        `INSERT INTO speaker_photo_revisions (
-           photo_revision_id,
-           speaker_id,
-           r2_key,
-           content_hash,
-           byte_size,
-           width,
-           height,
-           state,
-           reviewed_at,
-           reviewed_by,
-           review_note,
-           created_at,
-           updated_at
-         ) VALUES (?1, ?2, ?3, ?4, ?5, 400, 400, ?6, ?7, ?8, ?9, ?10, ?10)`,
-      ).bind(
-        photoRevisionId,
-        speakerId,
-        r2Key,
-        contentHash,
-        outputBytes.byteLength,
-        state,
-        source === "admin" ? now : null,
-        source === "admin" ? "admin" : null,
-        source === "admin" ? "Uploaded by the organizer." : null,
-        now,
-      ),
-    ]);
+    if (source === "admin") {
+      const results = await env.INTERESTS.batch([
+        env.INTERESTS.prepare(
+          `UPDATE speaker_photo_revisions
+              SET state = 'rejected',
+                  reviewed_at = ?2,
+                  reviewed_by = 'admin',
+                  review_note = 'Superseded by an organizer upload.',
+                  updated_at = ?2
+            WHERE speaker_id = ?1
+              AND state IN ('submitted', 'approved')
+              AND EXISTS (
+                SELECT 1 FROM canonical_speaker_content
+                 WHERE speaker_id = ?1
+              )`,
+        ).bind(speakerId, now),
+        env.INTERESTS.prepare(
+          `INSERT INTO speaker_photo_revisions (
+             photo_revision_id,
+             speaker_id,
+             r2_key,
+             content_hash,
+             byte_size,
+             width,
+             height,
+             state,
+             reviewed_at,
+             reviewed_by,
+             review_note,
+             created_at,
+             updated_at
+           )
+           SELECT ?1, ?2, ?3, ?4, ?5, 400, 400, 'approved', ?6, 'admin',
+                  'Uploaded by the organizer.', ?6, ?6
+             FROM canonical_speaker_content
+            WHERE speaker_id = ?2`,
+        ).bind(
+          photoRevisionId,
+          speakerId,
+          r2Key,
+          contentHash,
+          outputBytes.byteLength,
+          now,
+        ),
+        env.INTERESTS.prepare(
+          `UPDATE canonical_speaker_content
+              SET photo_r2_key = ?3,
+                  photo_content_hash = ?4,
+                  photo_version = photo_version + 1,
+                  last_photo_revision_id = ?2,
+                  updated_at = ?5,
+                  updated_by = 'admin'
+            WHERE speaker_id = ?1
+              AND EXISTS (
+                SELECT 1 FROM speaker_photo_revisions
+                 WHERE photo_revision_id = ?2 AND state = 'approved'
+              )`,
+        ).bind(speakerId, photoRevisionId, r2Key, contentHash, now),
+      ]);
+
+      if (results[1]?.meta.changes !== 1 || results[2]?.meta.changes !== 1) {
+        throw new Error("Canonical speaker photo could not be published.");
+      }
+    } else {
+      await env.INTERESTS.batch([
+        env.INTERESTS.prepare(
+          `UPDATE speaker_photo_revisions
+              SET state = 'rejected',
+                  reviewed_at = ?2,
+                  reviewed_by = 'speaker',
+                  review_note = 'Replaced by a newer upload.',
+                  updated_at = ?2
+            WHERE speaker_id = ?1 AND state = 'submitted'`,
+        ).bind(speakerId, now),
+        env.INTERESTS.prepare(
+          `INSERT INTO speaker_photo_revisions (
+             photo_revision_id,
+             speaker_id,
+             r2_key,
+             content_hash,
+             byte_size,
+             width,
+             height,
+             state,
+             created_at,
+             updated_at
+           ) VALUES (?1, ?2, ?3, ?4, ?5, 400, 400, 'submitted', ?6, ?6)`,
+        ).bind(
+          photoRevisionId,
+          speakerId,
+          r2Key,
+          contentHash,
+          outputBytes.byteLength,
+          now,
+        ),
+      ]);
+    }
   } catch (error) {
     await env.SPEAKER_UPLOADS.delete(r2Key);
     throw error;
@@ -338,7 +390,7 @@ async function uploadSpeakerPhoto(
     {
       message:
         source === "admin"
-          ? "Photo processed and approved. Download the derivative and replace the canonical WebP in Git."
+          ? "Photo processed, approved, and published."
           : "Photo processed and submitted for organizer review.",
       photo: serializePhoto(
         {
@@ -433,7 +485,7 @@ async function reviewSpeakerPhoto(
   const now = new Date().toISOString();
 
   if (decision === "approve") {
-    await env.INTERESTS.batch([
+    const results = await env.INTERESTS.batch([
       env.INTERESTS.prepare(
         `UPDATE speaker_photo_revisions
             SET state = 'rejected',
@@ -441,7 +493,12 @@ async function reviewSpeakerPhoto(
                 reviewed_by = 'admin',
                 review_note = 'Superseded by a newer approved portrait.',
                 updated_at = ?2
-          WHERE speaker_id = ?1 AND state = 'approved'`,
+          WHERE speaker_id = ?1
+            AND state = 'approved'
+            AND EXISTS (
+              SELECT 1 FROM canonical_speaker_content
+               WHERE speaker_id = ?1
+            )`,
       ).bind(photo.speaker_id, now),
       env.INTERESTS.prepare(
         `UPDATE speaker_photo_revisions
@@ -450,9 +507,41 @@ async function reviewSpeakerPhoto(
                 reviewed_by = 'admin',
                 review_note = ?3,
                 updated_at = ?2
-          WHERE photo_revision_id = ?1 AND state = 'submitted'`,
-      ).bind(photoRevisionId, now, reviewNote || null),
+          WHERE photo_revision_id = ?1
+            AND state = 'submitted'
+            AND EXISTS (
+              SELECT 1 FROM canonical_speaker_content
+               WHERE speaker_id = ?4
+            )`,
+      ).bind(photoRevisionId, now, reviewNote || null, photo.speaker_id),
+      env.INTERESTS.prepare(
+        `UPDATE canonical_speaker_content
+            SET photo_r2_key = ?3,
+                photo_content_hash = ?4,
+                photo_version = photo_version + 1,
+                last_photo_revision_id = ?2,
+                updated_at = ?5,
+                updated_by = 'admin'
+          WHERE speaker_id = ?1
+            AND EXISTS (
+              SELECT 1 FROM speaker_photo_revisions
+               WHERE photo_revision_id = ?2 AND state = 'approved'
+            )`,
+      ).bind(
+        photo.speaker_id,
+        photoRevisionId,
+        photo.r2_key,
+        photo.content_hash,
+        now,
+      ),
     ]);
+
+    if (results[1]?.meta.changes !== 1 || results[2]?.meta.changes !== 1) {
+      return photoJson(
+        { error: "The canonical portrait changed. Reload and try again." },
+        409,
+      );
+    }
   } else {
     await env.INTERESTS.prepare(
       `UPDATE speaker_photo_revisions
@@ -471,7 +560,7 @@ async function reviewSpeakerPhoto(
     decision,
     message:
       decision === "approve"
-        ? "Photo approved. Download the derivative and replace the canonical WebP in Git."
+        ? "Photo approved and published."
         : "Photo rejected. The speaker can upload a replacement.",
     photo_revision_id: photoRevisionId,
     speaker_id: photo.speaker_id,

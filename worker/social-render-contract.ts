@@ -8,6 +8,7 @@ export interface SocialRenderAsset {
   quality: number;
   slideId: string;
   slideNumber: number;
+  speakerIds: string[];
   version: string;
   width: number;
 }
@@ -28,6 +29,7 @@ export interface SocialRenderMatch {
 
 const digestPattern = /^[a-f0-9]{64}$/u;
 const slideIdPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
+const speakerIdPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
 const presetContracts = {
   bluesky: { height: 900, maxBytes: 1_000_000, quality: 86, width: 1600 },
   linkedin: {
@@ -63,6 +65,7 @@ function isSocialRenderAsset(value: unknown): value is SocialRenderAsset {
   const expectedLegacyPath = preset
     ? `/assets/social/${asset.presetId}/sdlcai-2026-slide-${String(asset.slideNumber).padStart(2, "0")}-${asset.presetId}-${dimensions}.jpg`
     : "";
+  const speakerIds = Array.isArray(asset.speakerIds) ? asset.speakerIds : null;
 
   return (
     Boolean(preset) &&
@@ -77,7 +80,16 @@ function isSocialRenderAsset(value: unknown): value is SocialRenderAsset {
     asset.width === preset?.width &&
     asset.height === preset?.height &&
     asset.maxBytes === preset?.maxBytes &&
-    asset.quality === preset?.quality
+    asset.quality === preset?.quality &&
+    speakerIds !== null &&
+    speakerIds.every(
+      (speakerId) =>
+        typeof speakerId === "string" && speakerIdPattern.test(speakerId),
+    ) &&
+    speakerIds.every(
+      (speakerId, index) =>
+        index === 0 || speakerId > String(speakerIds[index - 1]),
+    )
   );
 }
 
@@ -91,8 +103,8 @@ export function parseSocialRenderManifest(
   const manifest = value as Record<string, unknown>;
 
   if (
-    manifest.schemaVersion !== 1 ||
-    manifest.renderer !== "browser-run-v1" ||
+    manifest.schemaVersion !== 2 ||
+    manifest.renderer !== "browser-run-v2" ||
     manifest.deckPath !== "/slides/deck/" ||
     typeof manifest.version !== "string" ||
     !digestPattern.test(manifest.version) ||

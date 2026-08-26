@@ -16,6 +16,8 @@ const rootReferencePattern = /(?:src|href)="(\/[^"?#]+)(?:[?#][^"]*)?"/gu;
 const cssReferencePattern = /url\(\s*["']?([^"')]+)["']?\s*\)/gu;
 const importReferencePattern =
   /(?:from\s*|import\s*\(|import\s*)["']([^"']+)["']/gu;
+const canonicalSpeakerPattern =
+  /\bdata-canonical-speaker-id="([a-z0-9]+(?:-[a-z0-9]+)*)"/gu;
 
 function digest(value) {
   return createHash("sha256").update(value).digest("hex");
@@ -178,8 +180,13 @@ export async function buildSocialRenderManifest({
     const slideVersion = digest(
       JSON.stringify({ globalVersion, section, slideInputs }),
     );
+    const speakerIds = [
+      ...new Set(
+        [...section.matchAll(canonicalSpeakerPattern)].map((match) => match[1]),
+      ),
+    ].sort();
 
-    slides.push({ id, number, version: slideVersion });
+    slides.push({ id, number, speakerIds, version: slideVersion });
 
     for (const preset of socialRenderPresets) {
       const dimensions = `${preset.width}x${preset.height}`;
@@ -202,6 +209,7 @@ export async function buildSocialRenderManifest({
         height: preset.height,
         quality: preset.quality,
         maxBytes: preset.maxBytes,
+        speakerIds,
         path: pathname,
         legacyPath,
         version,
@@ -224,7 +232,7 @@ export async function buildSocialRenderManifest({
   }
 
   const manifest = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     renderer: socialRenderContract,
     deckPath: "/slides/deck/",
     version: digest(

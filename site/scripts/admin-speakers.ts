@@ -29,6 +29,7 @@ interface AdminSpeakerItem {
   canonical: AdminSpeakerContent;
   canonical_hash: string;
   canonical_photo: string;
+  canonical_version: number;
   contact: {
     delivery_status: "active" | "suppressed";
     email: string | null;
@@ -582,7 +583,7 @@ function renderContentEditor(speaker: AdminSpeakerItem): HTMLElement {
     node(
       "p",
       "max-w-4xl text-sm leading-6 text-paper/70",
-      "Start from the latest valid revision or the published profile. Save a draft to prefill the speaker workspace, or approve the edit and copy its JSON into Git for publication.",
+      "Start from the latest valid revision or the published profile. Save a draft to prefill the speaker workspace, or approve and publish the edit immediately.",
     ),
   );
   body.appendChild(introduction);
@@ -726,7 +727,7 @@ function renderContentEditor(speaker: AdminSpeakerItem): HTMLElement {
   );
   editorStatus.setAttribute("aria-live", "polite");
   const saveDraft = reviewButton("Save as speaker draft", false);
-  const approve = reviewButton("Approve & prepare JSON", true);
+  const approve = reviewButton("Approve & publish", true);
   actions.appendChild(editorStatus);
   actions.appendChild(saveDraft);
   actions.appendChild(approve);
@@ -832,6 +833,7 @@ async function submitAdminContent(
     {
       body: JSON.stringify({
         base_content_hash: speaker.canonical_hash,
+        base_content_version: speaker.canonical_version,
         content: readEditorContent(speaker, fields),
         mode,
         speaker_id: speaker.speaker_id,
@@ -1416,7 +1418,13 @@ function renderRevision(speaker: AdminSpeakerItem): HTMLElement {
   if (revision.state === "submitted") {
     section.appendChild(renderReviewActions(speaker));
   } else if (revision.state === "approved" && revision.content) {
-    section.appendChild(renderCopyAction(revision.content));
+    section.appendChild(
+      node(
+        "p",
+        "border-l border-paper/60 pl-4 text-sm",
+        "Published from D1. This revision remains available as an audit record.",
+      ),
+    );
   } else if (revision.review_note) {
     section.appendChild(
       node("p", "border-l border-paper/60 pl-4 text-sm", revision.review_note),
@@ -1468,16 +1476,14 @@ function renderReviewActions(speaker: AdminSpeakerItem): HTMLElement {
     "min-h-24 w-full resize-y border border-paper bg-ink px-4 py-3 text-paper outline-none focus:ring-2 focus:ring-paper";
   textarea.maxLength = 1000;
   const actions = node("div", "flex flex-wrap gap-3");
-  const approve = reviewButton("Approve", true);
+  const approve = reviewButton("Approve & publish", true);
   const reject = reviewButton("Request changes", false);
-  const copy = renderCopyAction(speaker.revision!.content);
   label.appendChild(labelText);
   label.appendChild(textarea);
   actions.appendChild(approve);
   actions.appendChild(reject);
   region.appendChild(label);
   region.appendChild(actions);
-  region.appendChild(copy);
 
   approve.addEventListener(
     "click",
@@ -1541,30 +1547,6 @@ async function submitReview(
   if (response.ok) void loadSpeakers();
 }
 
-function renderCopyAction(content: AdminSpeakerContent | null): HTMLElement {
-  const wrapper = node("div", "flex items-center gap-3");
-  const button = node(
-    "button",
-    "border border-paper px-3 py-2 text-sm font-bold uppercase",
-    "Copy revision JSON",
-  ) as HTMLButtonElement;
-  const result = node("span", "text-xs text-paper/60");
-  button.type = "button";
-  button.disabled = !content;
-  button.addEventListener("click", async () => {
-    if (!content) return;
-    try {
-      await navigator.clipboard.writeText(JSON.stringify(content, null, 2));
-      result.textContent = "Copied";
-    } catch {
-      result.textContent = "Copy failed";
-    }
-  });
-  wrapper.appendChild(button);
-  wrapper.appendChild(result);
-  return wrapper;
-}
-
 function invitationHelp(speaker: AdminSpeakerItem): string {
   if (!speaker.contact?.email)
     return "Add an email so this speaker can request a sign-in link.";
@@ -1577,7 +1559,7 @@ function invitationHelp(speaker: AdminSpeakerItem): string {
 function revisionLabel(revision: AdminSpeakerRevision | null): string {
   if (!revision) return "No revision";
   return {
-    approved: "Approved / apply to Git",
+    approved: "Published from D1",
     draft: "Speaker draft",
     rejected: "Changes requested",
     submitted: "Awaiting review",

@@ -1,6 +1,14 @@
-import scheduleData from "../site/data/schedule.json" with { type: "json" };
-import speakersData from "../site/data/speakers.json" with { type: "json" };
 import { normalizeHostname, verifyTurnstile } from "./turnstile.ts";
+import {
+  canonicalSpeakerIds,
+  getCanonicalPhotoUrl,
+  hashCanonicalContent,
+  readCanonicalSpeaker,
+  readCanonicalSpeakers,
+  type SpeakerProfileContent,
+  type SpeakerTalkContent,
+  type SpeakerWorkspaceContent,
+} from "./canonical-content.ts";
 import {
   handleAdminSpeakerPhotoRequest,
   handleSpeakerPhotoRequest,
@@ -20,54 +28,6 @@ type SocialField =
   | "github"
   | "devto"
   | "scholar";
-
-interface CanonicalSpeaker {
-  bio: string;
-  devto?: string;
-  github?: string;
-  id: string;
-  linkedin?: string;
-  name: string;
-  photo: string;
-  role: string;
-  scholar?: string;
-  website?: string;
-  x?: string;
-}
-
-interface CanonicalTalk {
-  abstract: string;
-  id: string;
-  speakers: string[];
-  title: string;
-}
-
-interface ScheduleItem {
-  talks?: CanonicalTalk[];
-}
-
-interface SpeakerProfileContent {
-  bio: string;
-  devto: string;
-  github: string;
-  linkedin: string;
-  name: string;
-  role: string;
-  scholar: string;
-  website: string;
-  x: string;
-}
-
-interface SpeakerTalkContent {
-  abstract: string;
-  id: string;
-  title: string;
-}
-
-export interface SpeakerWorkspaceContent {
-  profile: SpeakerProfileContent;
-  talks: SpeakerTalkContent[];
-}
 
 interface SpeakerAccessRow {
   access_generation: number;
@@ -120,6 +80,7 @@ interface SpeakerLoginContactRow extends SpeakerAccessRow {
 
 interface SpeakerRevisionRow {
   base_content_hash: string;
+  base_content_version: number;
   content_json: string;
   revision_id: string;
   state: "approved" | "draft" | "rejected" | "submitted";
@@ -218,12 +179,6 @@ const socialHosts: Record<Exclude<SocialField, "website">, Set<string>> = {
   scholar: new Set(["scholar.google.com"]),
   x: new Set(["twitter.com", "www.twitter.com", "x.com", "www.x.com"]),
 };
-const canonicalSpeakers = speakersData.items as CanonicalSpeaker[];
-const canonicalSpeakerIds = new Set(canonicalSpeakers.map(({ id }) => id));
-const canonicalTalks = (scheduleData.items as ScheduleItem[]).flatMap(
-  ({ talks = [] }) => talks,
-);
-
 export function isSpeakerWorkspacePath(pathname: string): boolean {
   return (
     pathname === "/speaker" ||
@@ -484,9 +439,9 @@ export async function handleSpeakerWorkspaceRequest(
 
     if (session instanceof Response) return secure(session);
 
-    const canonical = getCanonicalContent(session.speaker_id);
+    const canonicalRecord = await readCanonicalSpeaker(env, session.speaker_id);
 
-    if (!canonical) {
+    if (!canonicalRecord) {
       return secure(json({ error: "Speaker profile was not found." }, 404));
     }
 
@@ -495,7 +450,7 @@ export async function handleSpeakerWorkspaceRequest(
         request,
         env,
         session.speaker_id,
-        canonical.talks.map(({ id }) => id),
+        canonicalRecord.content.talks.map(({ id }) => id),
       ),
     );
   }
@@ -520,6 +475,7 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
 
   if (configurationError) return configurationError;
 
+  const canonicalRecords = await readCanonicalSpeakers(env);
   const [
     contactResult,
     accessResult,
@@ -555,6 +511,7 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
          revision_id,
          speaker_id,
          base_content_hash,
+         base_content_version,
          content_json,
          state,
          submitted_at,
@@ -565,8 +522,8 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
       ORDER BY
         CASE state
           WHEN 'submitted' THEN 0
-          WHEN 'approved' THEN 1
-          WHEN 'draft' THEN 2
+          WHEN 'draft' THEN 1
+          WHEN 'approved' THEN 2
           ELSE 3
         END,
         updated_at DESC`,
@@ -606,12 +563,12 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
   }
 
   const speakers = await Promise.all(
-    canonicalSpeakers.map(async (speaker) => {
-      const contact = contacts.get(speaker.id);
-      const invitation = access.get(speaker.id);
-      const revision = revisions.get(speaker.id);
-      const dinnerRow = dinners.get(speaker.id);
-      const canonical = getCanonicalContent(speaker.id)!;
+    canonicalRecords.map(async (record) => {
+      const contact = contacts.get(record.speakerId);
+      const invitation = access.get(record.speakerId);
+      const revision = revisions.get(record.speakerId);
+      const dinnerRow = dinners.get(record.speakerId);
+      const canonical = record.content;
       let email: string | null = null;
       let dinner: SpeakerDinnerResponseData | null = null;
 
@@ -624,7 +581,7 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
           );
         } catch {
           console.error("Unable to decrypt speaker contact", {
-            speakerId: speaker.id,
+            speakerId: record.speakerId,
           });
         }
       }
@@ -636,7 +593,7 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
           console.error(
             JSON.stringify({
               message: "Unable to decrypt speaker dinner response",
-              speakerId: speaker.id,
+              speakerId: record.speakerId,
             }),
           );
         }
@@ -645,7 +602,8 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
       return {
         canonical,
         canonical_hash: await hashCanonicalContent(canonical),
-        canonical_photo: speaker.photo,
+        canonical_photo: getCanonicalPhotoUrl(record),
+        canonical_version: record.contentVersion,
         contact: contact
           ? {
               delivery_status: contact.delivery_status,
@@ -675,11 +633,11 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
               last_sent_at: invitation.last_sent_at,
             }
           : null,
-        name: speaker.name,
-        photo: photos.get(speaker.id) ?? null,
+        name: canonical.profile.name,
+        photo: photos.get(record.speakerId) ?? null,
         revision: revision ? serializeAdminRevision(revision, canonical) : null,
-        speaker_id: speaker.id,
-        videos: videos.get(speaker.id) ?? [],
+        speaker_id: record.speakerId,
+        videos: videos.get(record.speakerId) ?? [],
       };
     }),
   );
@@ -706,17 +664,27 @@ async function saveAdminSpeakerContent(
   const speakerId =
     typeof body.speaker_id === "string" ? body.speaker_id.trim() : "";
   const mode = body.mode;
-  const canonical = getCanonicalContent(speakerId);
+  const canonicalRecord = await readCanonicalSpeaker(env, speakerId);
 
-  if (!canonical) return json({ error: "Choose a valid speaker." }, 400);
+  if (!canonicalRecord) {
+    return json({ error: "Choose a valid speaker." }, 400);
+  }
 
   if (mode !== "draft" && mode !== "approve") {
     return json({ error: "Choose whether to save or approve the edit." }, 400);
   }
 
+  const canonical = canonicalRecord.content;
   const canonicalHash = await hashCanonicalContent(canonical);
+  const baseContentVersion =
+    typeof body.base_content_version === "number"
+      ? body.base_content_version
+      : Number.NaN;
 
-  if (body.base_content_hash !== canonicalHash) {
+  if (
+    body.base_content_hash !== canonicalHash ||
+    baseContentVersion !== canonicalRecord.contentVersion
+  ) {
     return json(
       {
         error:
@@ -753,60 +721,133 @@ async function saveAdminSpeakerContent(
       ? "Edited and approved by the organizer."
       : "Replaced by an organizer draft.";
 
-  await env.INTERESTS!.batch([
-    env
-      .INTERESTS!.prepare(
-        `UPDATE speaker_content_revisions
-            SET state = 'rejected',
-                reviewed_at = ?2,
-                reviewed_by = 'admin',
-                review_note = ?3,
-                updated_at = ?2
-          WHERE speaker_id = ?1
-            AND state IN ('draft', 'submitted', 'approved')`,
-      )
-      .bind(speakerId, now, reviewNote),
-    env
-      .INTERESTS!.prepare(
-        `INSERT INTO speaker_content_revisions (
-         revision_id,
-         speaker_id,
-         base_content_hash,
-         content_json,
-         state,
-         submitted_at,
-         reviewed_at,
-         reviewed_by,
-         review_note,
-         created_at,
-         updated_at
-       ) VALUES (
-         ?1, ?2, ?3, ?4, ?5,
-         CASE WHEN ?5 = 'approved' THEN ?6 ELSE NULL END,
-         CASE WHEN ?5 = 'approved' THEN ?6 ELSE NULL END,
-         CASE WHEN ?5 = 'approved' THEN 'admin' ELSE NULL END,
-         CASE WHEN ?5 = 'approved' THEN ?7 ELSE NULL END,
-         ?6, ?6
-       )`,
-      )
-      .bind(
-        revisionId,
-        speakerId,
-        canonicalHash,
-        JSON.stringify(validation.content),
-        state,
-        now,
-        reviewNote,
-      ),
-  ]);
+  const contentJson = JSON.stringify(validation.content);
+  let publicationVersion = canonicalRecord.contentVersion;
+
+  if (mode === "approve") {
+    const results = await env.INTERESTS!.batch([
+      env
+        .INTERESTS!.prepare(
+          `UPDATE canonical_speaker_content
+              SET content_json = ?3,
+                  content_version = content_version + 1,
+                  last_content_revision_id = ?4,
+                  updated_at = ?5,
+                  updated_by = 'admin'
+            WHERE speaker_id = ?1 AND content_version = ?2`,
+        )
+        .bind(speakerId, baseContentVersion, contentJson, revisionId, now),
+      env
+        .INTERESTS!.prepare(
+          `UPDATE speaker_content_revisions
+              SET state = 'rejected',
+                  reviewed_at = ?3,
+                  reviewed_by = 'admin',
+                  review_note = ?4,
+                  updated_at = ?3
+            WHERE speaker_id = ?1
+              AND state IN ('draft', 'submitted')
+              AND EXISTS (
+                SELECT 1 FROM canonical_speaker_content
+                 WHERE speaker_id = ?1
+                   AND content_version = ?2 + 1
+                   AND last_content_revision_id = ?5
+              )`,
+        )
+        .bind(speakerId, baseContentVersion, now, reviewNote, revisionId),
+      env
+        .INTERESTS!.prepare(
+          `INSERT INTO speaker_content_revisions (
+             revision_id,
+             speaker_id,
+             base_content_hash,
+             base_content_version,
+             content_json,
+             state,
+             submitted_at,
+             reviewed_at,
+             reviewed_by,
+             review_note,
+             created_at,
+             updated_at
+           )
+           SELECT ?1, ?2, ?3, ?4, ?5, 'approved', ?6, ?6, 'admin', ?7, ?6, ?6
+             FROM canonical_speaker_content
+            WHERE speaker_id = ?2
+              AND content_version = ?4 + 1
+              AND last_content_revision_id = ?1`,
+        )
+        .bind(
+          revisionId,
+          speakerId,
+          canonicalHash,
+          baseContentVersion,
+          contentJson,
+          now,
+          reviewNote,
+        ),
+    ]);
+
+    if (results[0]?.meta.changes !== 1 || results[2]?.meta.changes !== 1) {
+      return staleCanonicalResponse();
+    }
+
+    publicationVersion += 1;
+  } else {
+    const results = await env.INTERESTS!.batch([
+      env
+        .INTERESTS!.prepare(
+          `UPDATE speaker_content_revisions
+              SET state = 'rejected',
+                  reviewed_at = ?3,
+                  reviewed_by = 'admin',
+                  review_note = ?4,
+                  updated_at = ?3
+            WHERE speaker_id = ?1
+              AND state IN ('draft', 'submitted')
+              AND EXISTS (
+                SELECT 1 FROM canonical_speaker_content
+                 WHERE speaker_id = ?1 AND content_version = ?2
+              )`,
+        )
+        .bind(speakerId, baseContentVersion, now, reviewNote),
+      env
+        .INTERESTS!.prepare(
+          `INSERT INTO speaker_content_revisions (
+             revision_id,
+             speaker_id,
+             base_content_hash,
+             base_content_version,
+             content_json,
+             state,
+             created_at,
+             updated_at
+           )
+           SELECT ?1, ?2, ?3, ?4, ?5, 'draft', ?6, ?6
+             FROM canonical_speaker_content
+            WHERE speaker_id = ?2 AND content_version = ?4`,
+        )
+        .bind(
+          revisionId,
+          speakerId,
+          canonicalHash,
+          baseContentVersion,
+          contentJson,
+          now,
+        ),
+    ]);
+
+    if (results[1]?.meta.changes !== 1) return staleCanonicalResponse();
+  }
 
   return json({
     changed_fields: getChangedFields(canonical, validation.content),
     content: validation.content,
     message:
       mode === "approve"
-        ? "Organizer edit approved. Copy the revision JSON into Git to publish it."
+        ? "Organizer edit approved and published."
         : "Organizer draft saved. It will be prefilled when the speaker signs in.",
+    canonical_version: publicationVersion,
     revision_id: revisionId,
     speaker_id: speakerId,
     state,
@@ -841,7 +882,7 @@ async function saveSpeakerContact(
   }
 
   const speakerId = typeof body.speaker_id === "string" ? body.speaker_id : "";
-  const speaker = findCanonicalSpeaker(speakerId);
+  const speaker = await readCanonicalSpeaker(env, speakerId);
   const email = normalizeEmail(body.email);
 
   if (!speaker) return json({ error: "Choose a valid speaker." }, 400);
@@ -994,7 +1035,7 @@ async function saveSpeakerContact(
 
   return json({
     login_url: `${parsePublicOrigin(env.PUBLIC_SITE_ORIGIN) ?? new URL(request.url).origin}/speaker/`,
-    message: `Email saved for ${speaker.name}. They can now request a sign-in link.`,
+    message: `Email saved for ${speaker.content.profile.name}. They can now request a sign-in link.`,
     speaker_id: speakerId,
   });
 }
@@ -1032,7 +1073,7 @@ async function sendSpeakerInvitation(
   }
 
   const speakerId = typeof body.speaker_id === "string" ? body.speaker_id : "";
-  const speaker = findCanonicalSpeaker(speakerId);
+  const speaker = await readCanonicalSpeaker(env, speakerId);
   const email = normalizeEmail(body.email);
 
   if (!speaker) {
@@ -1149,14 +1190,14 @@ async function sendSpeakerInvitation(
       html: speakerInvitationHtml({
         expiresAt: accessUntil,
         invitationUrl,
-        speakerName: speaker.name,
+        speakerName: speaker.content.profile.name,
       }),
       replyTo: "info@sdlcai.org",
       subject: "Your SDLCAI speaker workspace",
       text: speakerInvitationText({
         expiresAt: accessUntil,
         invitationUrl,
-        speakerName: speaker.name,
+        speakerName: speaker.content.profile.name,
       }),
       to: email,
     });
@@ -1194,7 +1235,7 @@ async function sendSpeakerInvitation(
     .run();
 
   return json({
-    message: `Invitation sent to ${speaker.name}.`,
+    message: `Invitation sent to ${speaker.content.profile.name}.`,
     sent_at: sentAt,
     speaker_id: speakerId,
   });
@@ -1247,6 +1288,7 @@ async function reviewSpeakerRevision(
        revision_id,
        speaker_id,
        base_content_hash,
+       base_content_version,
        content_json,
        state,
        submitted_at,
@@ -1262,13 +1304,18 @@ async function reviewSpeakerRevision(
     return json({ error: "That revision is no longer awaiting review." }, 409);
   }
 
-  const canonical = getCanonicalContent(revision.speaker_id);
+  const canonicalRecord = await readCanonicalSpeaker(env, revision.speaker_id);
 
-  if (!canonical) {
+  if (!canonicalRecord) {
     return json({ error: "The speaker profile no longer exists." }, 409);
   }
 
-  if ((await hashCanonicalContent(canonical)) !== revision.base_content_hash) {
+  const canonical = canonicalRecord.content;
+
+  if (
+    canonicalRecord.contentVersion !== revision.base_content_version ||
+    (await hashCanonicalContent(canonical)) !== revision.base_content_hash
+  ) {
     return json(
       {
         error:
@@ -1278,23 +1325,82 @@ async function reviewSpeakerRevision(
     );
   }
 
+  let proposed: SpeakerWorkspaceContent;
+
+  try {
+    const validation = validateSpeakerWorkspaceContent(
+      JSON.parse(revision.content_json) as unknown,
+      canonical.talks.map(({ id }) => id),
+    );
+
+    if (!validation.content) throw new Error("Invalid revision content");
+    proposed = validation.content;
+  } catch {
+    return json(
+      { error: "That revision is invalid and cannot be published." },
+      409,
+    );
+  }
+
   const now = new Date().toISOString();
 
   if (decision === "approve") {
-    await env
-      .INTERESTS!.prepare(
-        `UPDATE speaker_content_revisions
-          SET state = 'approved',
-              reviewed_at = ?2,
-              reviewed_by = 'admin',
-              review_note = ?3,
-              updated_at = ?2
-        WHERE revision_id = ?1 AND state = 'submitted'`,
-      )
-      .bind(revisionId, now, reviewNote || null)
-      .run();
+    const results = await env.INTERESTS!.batch([
+      env
+        .INTERESTS!.prepare(
+          `UPDATE canonical_speaker_content
+              SET content_json = ?4,
+                  content_version = content_version + 1,
+                  last_content_revision_id = ?1,
+                  updated_at = ?5,
+                  updated_by = 'admin'
+            WHERE speaker_id = ?2
+              AND content_version = ?3
+              AND EXISTS (
+                SELECT 1 FROM speaker_content_revisions
+                 WHERE revision_id = ?1 AND state = 'submitted'
+              )`,
+        )
+        .bind(
+          revisionId,
+          revision.speaker_id,
+          revision.base_content_version,
+          JSON.stringify(proposed),
+          now,
+        ),
+      env
+        .INTERESTS!.prepare(
+          `UPDATE speaker_content_revisions
+              SET state = 'approved',
+                  reviewed_at = ?4,
+                  reviewed_by = 'admin',
+                  review_note = ?5,
+                  updated_at = ?4
+            WHERE revision_id = ?1
+              AND speaker_id = ?2
+              AND state = 'submitted'
+              AND EXISTS (
+                SELECT 1 FROM canonical_speaker_content
+                 WHERE speaker_id = ?2
+                   AND content_version = ?3 + 1
+                   AND last_content_revision_id = ?1
+              )`,
+        )
+        .bind(
+          revisionId,
+          revision.speaker_id,
+          revision.base_content_version,
+          now,
+          reviewNote || null,
+        ),
+    ]);
+
+    if (results[0]?.meta.changes !== 1 || results[1]?.meta.changes !== 1) {
+      return staleCanonicalResponse();
+    }
   } else {
-    await env.INTERESTS!.batch([
+    const draftRevisionId = crypto.randomUUID();
+    const results = await env.INTERESTS!.batch([
       env
         .INTERESTS!.prepare(
           `UPDATE speaker_content_revisions
@@ -1303,36 +1409,56 @@ async function reviewSpeakerRevision(
                 reviewed_by = 'admin',
                 review_note = ?3,
                 updated_at = ?2
-          WHERE revision_id = ?1 AND state = 'submitted'`,
+          WHERE revision_id = ?1
+            AND state = 'submitted'
+            AND EXISTS (
+              SELECT 1 FROM canonical_speaker_content
+               WHERE speaker_id = ?4 AND content_version = ?5
+            )`,
         )
-        .bind(revisionId, now, reviewNote),
+        .bind(
+          revisionId,
+          now,
+          reviewNote,
+          revision.speaker_id,
+          revision.base_content_version,
+        ),
       env
         .INTERESTS!.prepare(
           `INSERT INTO speaker_content_revisions (
            revision_id,
            speaker_id,
            base_content_hash,
+           base_content_version,
            content_json,
            state,
            created_at,
            updated_at
-         ) VALUES (?1, ?2, ?3, ?4, 'draft', ?5, ?5)`,
+         )
+         SELECT ?1, ?2, ?3, ?4, ?5, 'draft', ?6, ?6
+           FROM canonical_speaker_content
+          WHERE speaker_id = ?2 AND content_version = ?4`,
         )
         .bind(
-          crypto.randomUUID(),
+          draftRevisionId,
           revision.speaker_id,
           revision.base_content_hash,
+          revision.base_content_version,
           revision.content_json,
           now,
         ),
     ]);
+
+    if (results[0]?.meta.changes !== 1 || results[1]?.meta.changes !== 1) {
+      return staleCanonicalResponse();
+    }
   }
 
   return json({
     decision,
     message:
       decision === "approve"
-        ? "Revision approved. Apply the approved JSON to Git before publishing."
+        ? "Revision approved and published."
         : "Changes requested. The speaker can edit the returned draft.",
     revision_id: revisionId,
     speaker_id: revision.speaker_id,
@@ -1716,12 +1842,11 @@ function parseSpeakerAnnouncementInput(
   }
 
   const uniqueSpeakerIds = [...new Set(speakerIds)];
-  const knownSpeakerIds = new Set(canonicalSpeakers.map(({ id }) => id));
 
   if (
     uniqueSpeakerIds.length === 0 ||
-    uniqueSpeakerIds.length > canonicalSpeakers.length ||
-    uniqueSpeakerIds.some((speakerId) => !knownSpeakerIds.has(speakerId))
+    uniqueSpeakerIds.length > canonicalSpeakerIds.size ||
+    uniqueSpeakerIds.some((speakerId) => !canonicalSpeakerIds.has(speakerId))
   ) {
     return { error: "Select at least one valid speaker." };
   }
@@ -1760,15 +1885,22 @@ async function getAnnouncementRecipients(
   const contacts = new Map(
     result.results.map((contact) => [contact.speaker_id, contact]),
   );
+  const canonicalRecords = new Map(
+    (await readCanonicalSpeakers(env)).map((record) => [
+      record.speakerId,
+      record,
+    ]),
+  );
   const recipients: SpeakerAnnouncementRecipient[] = [];
   const excluded: Array<{ reason: string; speaker_id: string }> = [];
 
   for (const speakerId of speakerIds) {
-    const speaker = findCanonicalSpeaker(speakerId)!;
+    const speaker = canonicalRecords.get(speakerId);
     const contact = contacts.get(speakerId);
     let reason = "";
 
-    if (!contact) reason = "no-contact";
+    if (!speaker) reason = "unknown-speaker";
+    else if (!contact) reason = "no-contact";
     else if (!contact.email_confirmed_at) reason = "unconfirmed";
     else if (contact.delivery_status !== "active") reason = "suppressed";
     else if (
@@ -1783,7 +1915,7 @@ async function getAnnouncementRecipients(
       reason = "promotion-disabled";
     }
 
-    if (reason || !contact) {
+    if (reason || !contact || !speaker) {
       excluded.push({ reason, speaker_id: speakerId });
       continue;
     }
@@ -1795,7 +1927,7 @@ async function getAnnouncementRecipients(
           contact.email_iv,
           env.EMAIL_ENCRYPTION_KEY!,
         ),
-        name: speaker.name,
+        name: speaker.content.profile.name,
         speakerId,
       });
     } catch {
@@ -2126,7 +2258,7 @@ async function requestSpeakerLogin(
     Boolean(recentDelivery);
   const requestId = crypto.randomUUID();
 
-  if (!contact || throttled || !findCanonicalSpeaker(contact.speaker_id)) {
+  if (!contact || throttled || !canonicalSpeakerIds.has(contact.speaker_id)) {
     await env
       .INTERESTS!.prepare(
         `INSERT INTO speaker_login_requests (
@@ -2248,7 +2380,7 @@ async function deliverSpeakerMagicLink({
   token: string;
   tokenHash: string;
 }): Promise<void> {
-  const speaker = findCanonicalSpeaker(contact.speaker_id);
+  const speaker = await readCanonicalSpeaker(env, contact.speaker_id);
 
   if (!speaker) return;
 
@@ -2265,14 +2397,14 @@ async function deliverSpeakerMagicLink({
       html: speakerMagicLinkHtml({
         expiresAt,
         magicLinkUrl,
-        speakerName: speaker.name,
+        speakerName: speaker.content.profile.name,
       }),
       replyTo: "info@sdlcai.org",
       subject: "Sign in to your SDLCAI speaker workspace",
       text: speakerMagicLinkText({
         expiresAt,
         magicLinkUrl,
-        speakerName: speaker.name,
+        speakerName: speaker.content.profile.name,
       }),
       to: email,
     });
@@ -2377,7 +2509,7 @@ async function redeemSpeakerInvitation(
       .first<SpeakerAccessRow>();
   }
 
-  if (!access || !findCanonicalSpeaker(access.speaker_id)) {
+  if (!access || !canonicalSpeakerIds.has(access.speaker_id)) {
     return json(
       { error: "This speaker sign-in link is invalid or expired." },
       401,
@@ -2521,10 +2653,20 @@ async function updateSpeakerWorkspace(
     );
   }
 
-  const canonical = getCanonicalContent(session.speaker_id);
+  const canonicalRecord = await readCanonicalSpeaker(env, session.speaker_id);
 
-  if (!canonical) {
+  if (!canonicalRecord) {
     return json({ error: "Speaker profile was not found." }, 404);
+  }
+
+  const canonical = canonicalRecord.content;
+  const baseContentVersion =
+    typeof body.base_content_version === "number"
+      ? body.base_content_version
+      : Number.NaN;
+
+  if (baseContentVersion !== canonicalRecord.contentVersion) {
+    return staleCanonicalResponse();
   }
 
   const validation = validateSpeakerWorkspaceContent(
@@ -2546,43 +2688,22 @@ async function updateSpeakerWorkspace(
   const now = new Date().toISOString();
   const pending = await env
     .INTERESTS!.prepare(
-      `SELECT revision_id, content_json, state
+      `SELECT revision_id, state
        FROM speaker_content_revisions
-      WHERE speaker_id = ?1 AND state IN ('submitted', 'approved')
-      ORDER BY CASE state WHEN 'submitted' THEN 0 ELSE 1 END
+      WHERE speaker_id = ?1 AND state = 'submitted'
       LIMIT 1`,
     )
     .bind(session.speaker_id)
     .first<{
-      content_json: string;
       revision_id: string;
-      state: "approved" | "submitted";
+      state: "submitted";
     }>();
-  let pendingBlocksEditing = Boolean(pending);
 
-  if (pending?.state === "approved") {
-    try {
-      const approvedValidation = validateSpeakerWorkspaceContent(
-        JSON.parse(pending.content_json) as unknown,
-        canonical.talks.map(({ id }) => id),
-      );
-
-      pendingBlocksEditing =
-        !approvedValidation.content ||
-        (await hashCanonicalContent(approvedValidation.content)) !==
-          canonicalHash;
-    } catch {
-      pendingBlocksEditing = true;
-    }
-  }
-
-  if (pendingBlocksEditing) {
+  if (pending) {
     return json(
       {
         error:
-          pending?.state === "approved"
-            ? "Your changes are approved and awaiting publication. You can edit again after the updated profile is live."
-            : "Your submitted changes are awaiting organizer review. You can edit again after that review.",
+          "Your submitted changes are awaiting organizer review. You can edit again after that review.",
       },
       409,
     );
@@ -2590,15 +2711,23 @@ async function updateSpeakerWorkspace(
 
   const draft = await env
     .INTERESTS!.prepare(
-      `SELECT revision_id, base_content_hash
+      `SELECT revision_id, base_content_hash, base_content_version
        FROM speaker_content_revisions
       WHERE speaker_id = ?1 AND state = 'draft'
       LIMIT 1`,
     )
     .bind(session.speaker_id)
-    .first<{ base_content_hash: string; revision_id: string }>();
+    .first<{
+      base_content_hash: string;
+      base_content_version: number;
+      revision_id: string;
+    }>();
 
-  if (draft && draft.base_content_hash !== canonicalHash) {
+  if (
+    draft &&
+    (draft.base_content_hash !== canonicalHash ||
+      draft.base_content_version !== canonicalRecord.contentVersion)
+  ) {
     return json(
       {
         error:
@@ -2612,46 +2741,63 @@ async function updateSpeakerWorkspace(
   const contentJson = JSON.stringify(validation.content);
 
   if (draft) {
-    await env
+    const result = await env
       .INTERESTS!.prepare(
         `UPDATE speaker_content_revisions
           SET content_json = ?2,
               state = ?3,
               submitted_at = CASE WHEN ?3 = 'submitted' THEN ?4 ELSE NULL END,
               updated_at = ?4
-        WHERE revision_id = ?1 AND state = 'draft'`,
+        WHERE revision_id = ?1
+          AND state = 'draft'
+          AND base_content_version = ?5
+          AND EXISTS (
+            SELECT 1 FROM canonical_speaker_content
+             WHERE speaker_id = ?6 AND content_version = ?5
+          )`,
       )
       .bind(
         revisionId,
         contentJson,
         action === "submit" ? "submitted" : "draft",
         now,
+        baseContentVersion,
+        session.speaker_id,
       )
       .run();
+
+    if (result.meta.changes !== 1) return staleCanonicalResponse();
   } else {
-    await env
+    const result = await env
       .INTERESTS!.prepare(
         `INSERT INTO speaker_content_revisions (
          revision_id,
          speaker_id,
          base_content_hash,
+         base_content_version,
          content_json,
          state,
          submitted_at,
          created_at,
          updated_at
-       ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?7)`,
+       )
+       SELECT ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?8
+         FROM canonical_speaker_content
+        WHERE speaker_id = ?2 AND content_version = ?4`,
       )
       .bind(
         revisionId,
         session.speaker_id,
         canonicalHash,
+        baseContentVersion,
         contentJson,
         action === "submit" ? "submitted" : "draft",
         action === "submit" ? now : null,
         now,
       )
       .run();
+
+    if (result.meta.changes !== 1) return staleCanonicalResponse();
   }
 
   return json({
@@ -2945,7 +3091,7 @@ async function authenticateSpeaker(
     .bind(tokenHash, now)
     .first<SpeakerSessionRow>();
 
-  if (!session || !findCanonicalSpeaker(session.speaker_id)) {
+  if (!session || !canonicalSpeakerIds.has(session.speaker_id)) {
     const response = json({ error: "Your speaker session has expired." }, 401);
     response.headers.append("set-cookie", clearSessionCookie());
 
@@ -2968,28 +3114,31 @@ async function buildWorkspacePayload(
   speakerId: string,
   env: Env,
 ): Promise<Record<string, unknown>> {
-  const speaker = findCanonicalSpeaker(speakerId)!;
-  const canonical = getCanonicalContent(speakerId)!;
+  const canonicalRecord = await readCanonicalSpeaker(env, speakerId);
+
+  if (!canonicalRecord) {
+    throw new Error(`Canonical speaker content is missing for ${speakerId}.`);
+  }
+
+  const canonical = canonicalRecord.content;
   const revision = await env
     .INTERESTS!.prepare(
       `SELECT
        revision_id,
        base_content_hash,
+       base_content_version,
        content_json,
        state,
        submitted_at,
        updated_at
      FROM speaker_content_revisions
-    WHERE speaker_id = ?1 AND state IN ('draft', 'submitted', 'approved')
-    ORDER BY
-      CASE state WHEN 'submitted' THEN 0 WHEN 'approved' THEN 1 ELSE 2 END,
-      updated_at DESC
+    WHERE speaker_id = ?1 AND state IN ('draft', 'submitted')
+    ORDER BY CASE state WHEN 'submitted' THEN 0 ELSE 1 END, updated_at DESC
     LIMIT 1`,
     )
     .bind(speakerId)
     .first<SpeakerRevisionRow>();
   let content = canonical;
-  let activeRevision = revision;
 
   if (revision) {
     try {
@@ -3000,15 +3149,7 @@ async function buildWorkspacePayload(
       );
 
       if (validated.content) {
-        if (
-          revision.state === "approved" &&
-          (await hashCanonicalContent(validated.content)) ===
-            (await hashCanonicalContent(canonical))
-        ) {
-          activeRevision = null;
-        } else {
-          content = validated.content;
-        }
+        content = validated.content;
       }
     } catch {
       console.error("Invalid stored speaker revision", {
@@ -3021,18 +3162,19 @@ async function buildWorkspacePayload(
   return {
     authenticated: true,
     canonical,
+    canonical_version: canonicalRecord.contentVersion,
     content,
     immutable: {
-      photo: speaker.photo,
+      photo: getCanonicalPhotoUrl(canonicalRecord),
       speaker_id: speakerId,
       talk_ids: canonical.talks.map(({ id }) => id),
     },
-    revision: activeRevision
+    revision: revision
       ? {
-          revision_id: activeRevision.revision_id,
-          state: activeRevision.state,
-          submitted_at: activeRevision.submitted_at,
-          updated_at: activeRevision.updated_at,
+          revision_id: revision.revision_id,
+          state: revision.state,
+          submitted_at: revision.submitted_at,
+          updated_at: revision.updated_at,
         }
       : null,
   };
@@ -3056,6 +3198,7 @@ function serializeAdminRevision(
 
   return {
     base_content_hash: revision.base_content_hash,
+    base_content_version: revision.base_content_version,
     changed_fields: proposed ? getChangedFields(canonical, proposed) : [],
     content: proposed,
     review_note: revision.review_note,
@@ -3304,46 +3447,6 @@ function parseHttpsUrl(value: string | undefined): URL | null {
   }
 }
 
-function getCanonicalContent(
-  speakerId: string,
-): SpeakerWorkspaceContent | null {
-  const speaker = findCanonicalSpeaker(speakerId);
-
-  if (!speaker) return null;
-
-  return {
-    profile: {
-      bio: speaker.bio,
-      devto: speaker.devto ?? "",
-      github: speaker.github ?? "",
-      linkedin: speaker.linkedin ?? "",
-      name: speaker.name,
-      role: speaker.role,
-      scholar: speaker.scholar ?? "",
-      website: speaker.website ?? "",
-      x: speaker.x ?? "",
-    },
-    talks: canonicalTalks
-      .filter(({ speakers }) => speakers.includes(speakerId))
-      .map(({ abstract, id, title }) => ({ abstract, id, title })),
-  };
-}
-
-function findCanonicalSpeaker(speakerId: string): CanonicalSpeaker | undefined {
-  return canonicalSpeakers.find(({ id }) => id === speakerId);
-}
-
-async function hashCanonicalContent(
-  content: SpeakerWorkspaceContent,
-): Promise<string> {
-  const digest = await crypto.subtle.digest(
-    "SHA-256",
-    new TextEncoder().encode(JSON.stringify(content)),
-  );
-
-  return base64UrlEncode(new Uint8Array(digest));
-}
-
 function requireAdminMutation(
   request: Request,
   expectedAction: string,
@@ -3356,6 +3459,16 @@ function requireAdminMutation(
   }
 
   return json({ error: "Admin action could not be verified." }, 403);
+}
+
+function staleCanonicalResponse(): Response {
+  return json(
+    {
+      error:
+        "The published profile changed while this editor was open. Reload and review the latest details.",
+    },
+    409,
+  );
 }
 
 function parseFutureConfigurationDate(value: string | undefined): Date | null {

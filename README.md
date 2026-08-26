@@ -146,14 +146,16 @@ workspaces at `/admin/speakers/`, `/admin/dinner/`, `/admin/posters/`,
 `/admin/interests/`, and `/admin/slides/`. All use HTTP Basic auth. Event
 materials under `/assets/slides/`, including the Aalto-exclusive registration
 ad, use the same protection. Organizers can prefill or approve speaker profile,
-talk, social, and portrait revisions from the speakers workspace; Git remains
-the publication source of truth.
+talk, social, and portrait revisions from the speakers workspace. Approved
+changes publish to versioned D1 records; Git retains stable IDs, assignments,
+schedule placement, and the seed/fallback copy.
 
-The schedule and session deck derive from `site/data/seminar.json`,
-`site/data/schedule.json`, `site/data/speakers.json`, and
-`site/data/sponsors.json`. Sponsor data records the package tier and whether the
-contract includes between-talk placement; validation requires Epic and Tech
-sponsors to receive that placement and excludes Brand and Location sponsors.
+The schedule structure and session deck scaffold derive from
+`site/data/seminar.json`, `site/data/schedule.json`, `site/data/speakers.json`,
+and `site/data/sponsors.json`; the Worker resolves mutable speaker and talk copy
+from D1. Sponsor data records the package tier and whether the contract includes
+between-talk placement; validation requires Epic and Tech sponsors to receive
+that placement and excludes Brand and Location sponsors.
 
 ## Deployment
 

@@ -181,6 +181,7 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   assert.equal(workspaceResponse.status, 200);
   const workspace = await workspaceResponse.json();
   assert.equal(workspace.immutable.speaker_id, "mo-khazali");
+  assert.equal(workspace.canonical_version, 1);
   assert.deepEqual(workspace.immutable.talk_ids, [
     "mo-khazali-industry-perspective",
   ]);
@@ -468,9 +469,28 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   const organizerContent = structuredClone(mappedSpeaker.canonical);
   organizerContent.profile.role = "Co-founder and CEO at Coldtea.ai";
   organizerContent.talks[0].title = "AI product engineering in practice";
+  const promotionPath =
+    "/assets/social/linkedin/sdlcai-2026-talk-ohans-emmanuel-industry-perspective-linkedin-1200x627.jpg";
+  const unrelatedPromotionPath =
+    "/assets/social/linkedin/sdlcai-2026-talk-mo-khazali-industry-perspective-linkedin-1200x627.jpg";
+  const beforePromotionResponse = await worker.fetch(
+    `${origin}${promotionPath}`,
+    { redirect: "manual" },
+  );
+  const beforePromotionLocation =
+    beforePromotionResponse.headers.get("location");
+  assert.equal(beforePromotionResponse.status, 307);
+  const unrelatedBeforeResponse = await worker.fetch(
+    `${origin}${unrelatedPromotionPath}`,
+    { redirect: "manual" },
+  );
+  const unrelatedBeforeLocation =
+    unrelatedBeforeResponse.headers.get("location");
+  assert.equal(unrelatedBeforeResponse.status, 307);
 
   const rejectedOrganizerOrigin = await saveAdminContent(worker, {
     base_content_hash: mappedSpeaker.canonical_hash,
+    base_content_version: mappedSpeaker.canonical_version,
     content: organizerContent,
     mode: "draft",
     requestOrigin: "https://attacker.example",
@@ -480,6 +500,7 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
 
   const organizerDraftResponse = await saveAdminContent(worker, {
     base_content_hash: mappedSpeaker.canonical_hash,
+    base_content_version: mappedSpeaker.canonical_version,
     content: organizerContent,
     mode: "draft",
     speaker_id: mappedSpeaker.speaker_id,
@@ -505,6 +526,7 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
 
   const organizerApprovalResponse = await saveAdminContent(worker, {
     base_content_hash: mappedSpeaker.canonical_hash,
+    base_content_version: mappedSpeaker.canonical_version,
     content: organizerContent,
     mode: "approve",
     speaker_id: mappedSpeaker.speaker_id,
@@ -512,15 +534,79 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   const organizerApproval = await organizerApprovalResponse.json();
   assert.equal(organizerApprovalResponse.status, 200);
   assert.equal(organizerApproval.state, "approved");
-  assert.match(organizerApproval.message, /Copy the revision JSON/u);
+  assert.match(organizerApproval.message, /published/u);
+
+  const publishedAdminResponse = await worker.fetch(
+    `${origin}/api/admin/speakers`,
+    { headers: { authorization: adminAuthorization } },
+  );
+  const publishedAdmin = await publishedAdminResponse.json();
+  const publishedSpeaker = publishedAdmin.speakers.find(
+    ({ speaker_id }) => speaker_id === mappedSpeaker.speaker_id,
+  );
+  assert.equal(publishedSpeaker.canonical_version, 2);
+  assert.equal(
+    publishedSpeaker.canonical.profile.role,
+    "Co-founder and CEO at Coldtea.ai",
+  );
+
+  const publicSpeakersResponse = await worker.fetch(`${origin}/speakers/`);
+  const publicSpeakers = await publicSpeakersResponse.text();
+  assert.equal(publicSpeakersResponse.status, 200);
+  assert.equal(
+    publicSpeakersResponse.headers.get("x-sdlcai-content-source"),
+    "d1",
+  );
+  assert.match(publicSpeakers, /Co-founder and CEO at Coldtea\.ai/u);
+  assert.match(publicSpeakers, /AI product engineering in practice/u);
+
+  const afterPromotionResponse = await worker.fetch(
+    `${origin}${promotionPath}`,
+    { redirect: "manual" },
+  );
+  assert.equal(afterPromotionResponse.status, 307);
+  assert.notEqual(
+    afterPromotionResponse.headers.get("location"),
+    beforePromotionLocation,
+  );
+  const unrelatedAfterResponse = await worker.fetch(
+    `${origin}${unrelatedPromotionPath}`,
+    { redirect: "manual" },
+  );
+  assert.equal(
+    unrelatedAfterResponse.headers.get("location"),
+    unrelatedBeforeLocation,
+  );
+
+  const promotionManifestResponse = await worker.fetch(
+    `${origin}/assets/social/speakers.json`,
+  );
+  const promotionManifest = await promotionManifestResponse.json();
+  const promotionSpeaker = promotionManifest.speakers.find(
+    ({ id }) => id === mappedSpeaker.speaker_id,
+  );
+  assert.equal(
+    promotionSpeaker.talks[0].title,
+    "AI product engineering in practice",
+  );
 
   const staleOrganizerEditResponse = await saveAdminContent(worker, {
     base_content_hash: "stale-content-hash",
+    base_content_version: mappedSpeaker.canonical_version,
     content: organizerContent,
     mode: "draft",
     speaker_id: mappedSpeaker.speaker_id,
   });
   assert.equal(staleOrganizerEditResponse.status, 409);
+
+  const staleOrganizerVersionResponse = await saveAdminContent(worker, {
+    base_content_hash: publishedSpeaker.canonical_hash,
+    base_content_version: mappedSpeaker.canonical_version,
+    content: publishedSpeaker.canonical,
+    mode: "draft",
+    speaker_id: mappedSpeaker.speaker_id,
+  });
+  assert.equal(staleOrganizerVersionResponse.status, 409);
 
   const rejectedAdminPhotoResponse = await worker.fetch(
     `${origin}/api/admin/speakers/photos/upload?speaker_id=mo-khazali`,
@@ -553,7 +639,17 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   const adminPhoto = await adminPhotoResponse.json();
   assert.equal(adminPhotoResponse.status, 201);
   assert.equal(adminPhoto.photo.state, "approved");
-  assert.match(adminPhoto.message, /replace the canonical WebP in Git/u);
+  assert.match(adminPhoto.message, /published/u);
+
+  const publicPhotoResponse = await worker.fetch(
+    `${origin}/media/speakers/mo-khazali/${adminPhoto.photo.content_hash}.webp`,
+  );
+  assert.equal(publicPhotoResponse.status, 200);
+  assert.equal(publicPhotoResponse.headers.get("content-type"), "image/webp");
+  assert.match(
+    publicPhotoResponse.headers.get("cache-control") ?? "",
+    /immutable/u,
+  );
 
   const adminPhotoImageResponse = await worker.fetch(
     `${origin}${adminPhoto.photo.image_url}`,
@@ -583,6 +679,7 @@ async function speakerFetch(worker, cookie, update) {
     init.headers.origin = update.requestOrigin ?? origin;
     init.body = JSON.stringify({
       action: update.action,
+      base_content_version: update.base_content_version ?? 1,
       content: update.content,
     });
   }
