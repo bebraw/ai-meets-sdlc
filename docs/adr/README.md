@@ -10,3 +10,4 @@ decision changes.
 - [ADR 0003: Keep speaker contacts private and use transactional email](0003-private-speaker-contacts-and-email.md)
 - [ADR 0004: Render social graphics on demand at the edge](0004-render-social-graphics-on-demand-at-the-edge.md)
 - [ADR 0005: Keep Google Workspace for inbound email](0005-keep-google-workspace-for-inbound-email.md)
+- [ADR 0006: Speaker-initiated magic-link access](0006-speaker-initiated-magic-link-access.md)

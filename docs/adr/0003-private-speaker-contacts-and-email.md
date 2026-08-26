@@ -2,6 +2,8 @@
 
 - Status: Accepted
 - Date: 2026-08-26
+- Note: ADR 0006 supersedes organizer-sent invitations as the primary access
+  flow. Existing invitation links remain supported temporarily.
 
 ## Context
 
