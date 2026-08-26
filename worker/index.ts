@@ -5,6 +5,11 @@ import {
 } from "./turnstile";
 import speakersData from "../site/data/speakers.json" with { type: "json" };
 import { handleSocialRenderRequest } from "./social-renderer";
+import {
+  handleSpeakerWorkspaceRequest,
+  isSpeakerWorkspacePath,
+  withSpeakerWorkspaceSecurityHeaders,
+} from "./speaker-workspace";
 
 type JsonObject = Record<string, unknown>;
 
@@ -184,6 +189,7 @@ export default {
     const url = new URL(request.url);
     const isAdminProtected = isAdminPath(url.pathname);
     const isSpeakerDinnerPrivate = isSpeakerDinnerPath(url.pathname);
+    const isSpeakerWorkspacePrivate = isSpeakerWorkspacePath(url.pathname);
 
     const socialRenderResponse = await handleSocialRenderRequest(
       request,
@@ -208,11 +214,24 @@ export default {
       return Response.redirect(`${url.origin}/admin/`, 308);
     }
 
+    if (url.pathname === "/speaker") {
+      return withSpeakerWorkspaceSecurityHeaders(
+        Response.redirect(`${url.origin}/speaker/`, 308),
+      );
+    }
+
     if (isAdminProtected) {
       const unauthorizedResponse = await requireAdmin(request, env);
 
       if (unauthorizedResponse) return unauthorizedResponse;
     }
+
+    const speakerWorkspaceResponse = await handleSpeakerWorkspaceRequest(
+      request,
+      env,
+    );
+
+    if (speakerWorkspaceResponse) return speakerWorkspaceResponse;
 
     const adminSlideRedirect = getAdminSlideRedirect(url);
 
@@ -462,6 +481,10 @@ export default {
 
     if (isSpeakerDinnerPrivate) {
       return withSpeakerDinnerSecurityHeaders(response);
+    }
+
+    if (isSpeakerWorkspacePrivate) {
+      return withSpeakerWorkspaceSecurityHeaders(response);
     }
 
     return withStaticAssetCache(response, url);
