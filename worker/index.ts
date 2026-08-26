@@ -157,7 +157,7 @@ const posterProposalTermsText =
 const posterProposalConsentText =
   "I consent to Toska Osuuskunta processing this proposal and contacting me about it as described in the privacy policy.";
 const speakerDinnerConsentText =
-  "I consent to Toska Osuuskunta processing this response and, if I attend, sharing only the necessary food information with the dinner caterer. I can withdraw by contacting info@futurefrontend.com.";
+  "I consent to Toska Osuuskunta processing this response and, if I attend, sharing only the necessary food information with the dinner caterer. I can withdraw by contacting info@sdlcai.org.";
 const posterSizeCompatibilityValue: PosterSize = "either";
 const turnstileAction = "turnstile-spin-v2";
 const maxInterestBodyBytes = 16 * 1024;
