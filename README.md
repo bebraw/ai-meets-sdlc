@@ -49,9 +49,12 @@ Build the static site:
 npm run build
 ```
 
-The build also renders every deck slide as ready-to-download LinkedIn, X, and
-Bluesky JPEGs. To regenerate only those images after a site build, run
-`npm run slides:export:social`.
+The build creates a content-addressed manifest for every LinkedIn, X, and
+Bluesky graphic. In production, the Worker renders a JPEG on its first request
+and reuses it from the Cloudflare cache or R2 thereafter; the build itself does
+not require Chromium. To materialize all JPEGs into `build/` for local static
+previewing, run `npm run slides:export:social` after a build. That optional
+command requires a local Chromium-compatible browser.
 
 Serve the generated build locally:
 
@@ -96,8 +99,10 @@ Run the Worker locally:
 npm run worker:dev
 ```
 
-`worker:dev` builds the site, verifies that `build/index.html` exists, and then
-starts Wrangler.
+`worker:dev` builds the site, verifies the generated output and social render
+manifest, and then starts Wrangler. Local development can exercise stable URL
+redirects and cached R2 objects. Use the explicit local export command above
+for browser-rendered previews; Browser Rendering itself runs on Cloudflare.
 
 ## Interest List
 
@@ -132,6 +137,9 @@ EMAIL_ENCRYPTION_KEY=... npm run --silent interests:export -- --remote --format 
 The public slide library is available at `/slides/`, with a keyboard/swipe deck
 at `/slides/deck/` and a screen schedule at `/slides/schedule/`. It includes
 per-slide LinkedIn, X, and Bluesky downloads generated from the same event data.
+Stable filenames are based on slide IDs rather than schedule order. Each stable
+URL redirects to a SHA-256-versioned URL, so unchanged inputs reuse the same
+image across deployments.
 
 The deployed Worker also serves `/admin/` and `/admin/slides/` behind HTTP Basic
 auth. Event materials under `/assets/slides/`, including the Aalto-exclusive

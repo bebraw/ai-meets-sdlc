@@ -85,7 +85,7 @@ function validateScheduleSchema(schema) {
   const itemProperties = schema.properties?.items?.items?.properties;
   const required = schema.properties?.items?.items?.required;
 
-  for (const field of ["time", "title", "body"]) {
+  for (const field of ["id", "time", "title", "body"]) {
     if (!itemProperties?.[field]) {
       errors.push(`site/data/schedule.schema.json is missing ${field}.`);
     }
@@ -97,6 +97,21 @@ function validateScheduleSchema(schema) {
 
   if (!itemProperties?.talks) {
     errors.push("site/data/schedule.schema.json is missing talks.");
+  }
+
+  const talkProperties = itemProperties?.talks?.items?.properties;
+  const requiredTalkFields = itemProperties?.talks?.items?.required;
+
+  for (const field of ["id", "title", "abstract", "speakers"]) {
+    if (!talkProperties?.[field]) {
+      errors.push(`site/data/schedule.schema.json talks are missing ${field}.`);
+    }
+
+    if (!requiredTalkFields?.includes(field)) {
+      errors.push(
+        `site/data/schedule.schema.json talks must require ${field}.`,
+      );
+    }
   }
 }
 
@@ -260,6 +275,8 @@ function validateSchedule(schedule, speakerIds) {
   }
 
   let previousEnd = -1;
+  const scheduleItemIds = new Set();
+  const talkIds = new Set();
 
   for (const [index, item] of schedule.items.entries()) {
     const itemPath = `site/data/schedule.json items[${index}]`;
@@ -269,7 +286,7 @@ function validateSchedule(schedule, speakerIds) {
       continue;
     }
 
-    const allowedItemKeys = new Set(["time", "title", "body", "talks"]);
+    const allowedItemKeys = new Set(["id", "time", "title", "body", "talks"]);
 
     for (const key of Object.keys(item)) {
       if (!allowedItemKeys.has(key)) {
@@ -277,9 +294,19 @@ function validateSchedule(schedule, speakerIds) {
       }
     }
 
-    for (const field of ["time", "title", "body"]) {
+    for (const field of ["id", "time", "title", "body"]) {
       if (!isNonEmptyString(item[field])) {
         errors.push(`${itemPath}.${field} must be a non-empty string.`);
+      }
+    }
+
+    if (isNonEmptyString(item.id)) {
+      if (!slugPattern.test(item.id)) {
+        errors.push(`${itemPath}.id must be a lowercase slug.`);
+      } else if (scheduleItemIds.has(item.id)) {
+        errors.push(`${itemPath}.id duplicates another schedule item.`);
+      } else {
+        scheduleItemIds.add(item.id);
       }
     }
 
@@ -302,7 +329,7 @@ function validateSchedule(schedule, speakerIds) {
       errors.push(`${itemPath}.time must use HH:MM-HH:MM in 24-hour time.`);
     }
 
-    validateTalks(item.talks, `${itemPath}.talks`, speakerIds);
+    validateTalks(item.talks, `${itemPath}.talks`, speakerIds, talkIds);
   }
 }
 
@@ -812,7 +839,7 @@ function getWebpDimensions(image) {
   return undefined;
 }
 
-function validateTalks(talks, talksPath, speakerIds) {
+function validateTalks(talks, talksPath, speakerIds, talkIds) {
   if (typeof talks === "undefined") return;
 
   if (!Array.isArray(talks)) {
@@ -832,7 +859,7 @@ function validateTalks(talks, talksPath, speakerIds) {
       continue;
     }
 
-    const allowedTalkKeys = new Set(["title", "abstract", "speakers"]);
+    const allowedTalkKeys = new Set(["id", "title", "abstract", "speakers"]);
 
     for (const key of Object.keys(talk)) {
       if (!allowedTalkKeys.has(key)) {
@@ -840,9 +867,19 @@ function validateTalks(talks, talksPath, speakerIds) {
       }
     }
 
-    for (const field of ["title", "abstract"]) {
+    for (const field of ["id", "title", "abstract"]) {
       if (!isNonEmptyString(talk[field])) {
         errors.push(`${talkPath}.${field} must be a non-empty string.`);
+      }
+    }
+
+    if (isNonEmptyString(talk.id)) {
+      if (!slugPattern.test(talk.id)) {
+        errors.push(`${talkPath}.id must be a lowercase slug.`);
+      } else if (talkIds.has(talk.id)) {
+        errors.push(`${talkPath}.id duplicates another talk.`);
+      } else {
+        talkIds.add(talk.id);
       }
     }
 

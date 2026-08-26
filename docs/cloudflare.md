@@ -1,8 +1,9 @@
 # Cloudflare Setup
 
 This site is deployed as a Cloudflare Worker with static assets, D1 for the
-interest list and poster proposals, R2 for encrypted backups, Turnstile for bot
-protection, and a scheduled Worker trigger for daily backup export.
+interest list and poster proposals, R2 for encrypted backups and generated
+social graphics, Browser Rendering for on-demand rasterization, Turnstile for
+bot protection, and a scheduled Worker trigger for daily backup export.
 
 ## Bindings
 
@@ -13,6 +14,8 @@ protection, and a scheduled Worker trigger for daily backup export.
 | `ASSETS`                   | Workers Assets | Serves the Gustwind build output from `build/`.            |
 | `INTERESTS`                | D1             | Stores encrypted interest and poster proposal records.     |
 | `INTEREST_BACKUPS`         | R2             | Stores daily encrypted JSON backups for both record types. |
+| `SOCIAL_EXPORTS`           | R2             | Stores immutable, content-addressed social JPEGs.          |
+| `SOCIAL_BROWSER`           | Browser        | Renders a social JPEG when its R2 object does not exist.   |
 | `ADMIN_USERNAME`           | Secret         | Username for HTTP Basic auth protecting `/admin/`.         |
 | `ADMIN_PASSWORD`           | Secret         | Password for HTTP Basic auth protecting `/admin/`.         |
 | `TURNSTILE_SITE_KEY`       | Worker var     | Public Turnstile widget site key injected into HTML.       |
@@ -78,11 +81,15 @@ Create the D1 database and copy the returned `database_id` into
 wrangler d1 create ai-meets-sdlc-interests
 ```
 
-Create the R2 backup bucket:
+Create both R2 buckets:
 
 ```bash
 wrangler r2 bucket create ai-meets-sdlc-interest-backups
+wrangler r2 bucket create ai-meets-sdlc-social-exports
 ```
+
+The Browser Rendering binding is declared in `wrangler.jsonc`; no browser
+binary or browser path is installed in the Workers Builds environment.
 
 Create a Turnstile widget in the Cloudflare dashboard, then set:
 
@@ -122,6 +129,40 @@ client-side gating is only a user experience safeguard.
 The data-driven slide library, session deck, and screen schedule are public at
 `/slides/`, `/slides/deck/`, and `/slides/schedule/`. Generated social exports
 under `/assets/social/` are public as well.
+
+### Social render cache
+
+`npm run build` emits `/assets/social/manifest.json`, but it deliberately does
+not rasterize the deck. Each manifest entry has a stable slide-ID-based path and
+a version derived from:
+
+- the exact slide HTML and the bytes of images referenced by that slide;
+- shared deck HTML, CSS, JavaScript, fonts, and other shared assets; and
+- the renderer contract and output preset.
+
+A request to a stable path receives a `307` redirect to the same path with a
+`v=<sha256>` query. The versioned request checks the Cache API first, then the
+`SOCIAL_EXPORTS` R2 bucket. Only a miss for the current manifest version starts
+Browser Rendering. The Worker serves the deck and an allowlisted set of static
+paths to the isolated browser through the `ASSETS` binding and blocks all other
+browser network requests.
+
+Versioned responses use `Cache-Control: public, max-age=31536000, immutable`.
+The Cache API avoids repeated reads within a Cloudflare location; R2 prevents a
+new browser render after a cold request in another location. A change limited
+to one talk or speaker image invalidates only slides that contain that input,
+while a shared style or font change invalidates every affected preset. Old R2
+objects remain readable by their already-shared versioned URLs until an
+explicit lifecycle policy removes them.
+
+For a fully local visual check after `npm run build`, use:
+
+```bash
+npm run slides:export:social
+```
+
+This local-only convenience command writes the stable filenames from the same
+manifest and enforces each platform's byte limit.
 
 The admin pages are available at `/admin/` and `/admin/slides/`. Every
 `/api/admin/` route and all `/assets/slides/` downloads are protected with HTTP
@@ -228,8 +269,8 @@ npm run deploy
 
 For production rollout:
 
-1. Confirm the D1 and R2 bindings, deadline, Turnstile site key, accepted
-   hostnames, and all four secrets are configured. The Turnstile widget's
+1. Confirm the D1, Browser Rendering, and both R2 bindings, deadline, Turnstile
+   site key, accepted hostnames, and all four secrets are configured. The Turnstile widget's
    dashboard allowlist must include both `sdlcai.org` and `www.sdlcai.org`.
 2. Apply `0002_create_poster_proposals.sql` remotely and verify Wrangler reports
    the migration as applied.
@@ -241,6 +282,9 @@ For production rollout:
 6. After the next scheduled trigger, confirm the
    `poster-proposals/latest.json` manifest and its referenced dated object exist
    in R2.
+7. Request one stable path from `/slides/`, follow its version redirect, verify
+   the response is a JPEG, and confirm the corresponding `social/v1/` object
+   exists in `ai-meets-sdlc-social-exports`.
 
 If application rollback is needed, deploy the preceding Worker version. Leave
 the additive table in place; removing it would destroy submitted proposals.

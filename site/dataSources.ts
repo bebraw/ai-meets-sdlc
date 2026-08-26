@@ -6,6 +6,7 @@ import schedule from "./data/schedule.json" with { type: "json" };
 import seminarData from "./data/seminar.json" with { type: "json" };
 import speakersData from "./data/speakers.json" with { type: "json" };
 import sponsorsData from "./data/sponsors.json" with { type: "json" };
+import { socialRenderPresets } from "../scripts/social-render-presets.mjs";
 
 function init() {
   const announcementItems = getAnnouncementItems();
@@ -340,31 +341,18 @@ function getSponsorItems() {
 }
 
 function getSocialExportPresets() {
-  return [
-    {
-      id: "linkedin",
-      label: "LinkedIn",
-      dimensions: "1200 x 627",
-      note: "1.91:1 landscape",
-    },
-    {
-      id: "x",
-      label: "X",
-      dimensions: "1600 x 900",
-      note: "16:9 landscape",
-    },
-    {
-      id: "bluesky",
-      label: "Bluesky",
-      dimensions: "1600 x 900",
-      note: "16:9 / under 1 MB",
-    },
-  ];
+  return socialRenderPresets.map((preset) => ({
+    id: preset.id,
+    label: preset.label,
+    dimensions: `${preset.width} x ${preset.height}`,
+    note: preset.note,
+  }));
 }
 
 function getSlideDeckItems(scheduleItems, seminar, socialExportPresets) {
   const deckItems = [
     {
+      id: "event",
       showTitle: true,
       eyebrow: "One day / one track / AI across the SDLC",
       title: "AI meets SDLC",
@@ -374,6 +362,7 @@ function getSlideDeckItems(scheduleItems, seminar, socialExportPresets) {
 
   for (const scheduleItem of scheduleItems) {
     deckItems.push({
+      id: `session-${scheduleItem.id}`,
       showSession: true,
       eyebrow: scheduleItem.talks?.length ? "Next session" : "Program",
       time: scheduleItem.time,
@@ -385,6 +374,7 @@ function getSlideDeckItems(scheduleItems, seminar, socialExportPresets) {
 
     for (const talk of scheduleItem.talks ?? []) {
       deckItems.push({
+        id: `talk-${talk.id}`,
         showTalk: true,
         eyebrow: scheduleItem.title,
         time: scheduleItem.time,
@@ -411,14 +401,14 @@ function getSlideDeckItems(scheduleItems, seminar, socialExportPresets) {
       paddedNumber,
       kindLabel,
       thumbnailAlt,
-      thumbnailSrc: `/assets/social/linkedin/sdlcai-2026-slide-${paddedNumber}-linkedin-1200x627.jpg`,
+      thumbnailSrc: `/assets/social/linkedin/sdlcai-2026-${item.id}-linkedin-1200x627.jpg`,
       publicHref: `/slides/deck/?slide=${number}`,
       socialExports: socialExportPresets.map((preset) => {
         const dimensions = preset.dimensions.replaceAll(" ", "");
 
         return {
           ...preset,
-          href: `/assets/social/${preset.id}/sdlcai-2026-slide-${paddedNumber}-${preset.id}-${dimensions}.jpg`,
+          href: `/assets/social/${preset.id}/sdlcai-2026-${item.id}-${preset.id}-${dimensions}.jpg`,
           ariaLabel: `Download slide ${number} for ${preset.label} at ${preset.dimensions}`,
         };
       }),

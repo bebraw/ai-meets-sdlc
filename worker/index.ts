@@ -4,6 +4,7 @@ import {
   type TurnstileOutcome,
 } from "./turnstile";
 import speakersData from "../site/data/speakers.json" with { type: "json" };
+import { handleSocialRenderRequest } from "./social-renderer";
 
 type JsonObject = Record<string, unknown>;
 
@@ -175,10 +176,22 @@ const posterProposalStatuses = [
 ] as const satisfies readonly PosterProposalStatus[];
 
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
+  async fetch(
+    request: Request,
+    env: Env,
+    ctx: ExecutionContext,
+  ): Promise<Response> {
     const url = new URL(request.url);
     const isAdminProtected = isAdminPath(url.pathname);
     const isSpeakerDinnerPrivate = isSpeakerDinnerPath(url.pathname);
+
+    const socialRenderResponse = await handleSocialRenderRequest(
+      request,
+      env,
+      ctx,
+    );
+
+    if (socialRenderResponse) return socialRenderResponse;
 
     if (isInternalAdminSlidesPath(url.pathname)) {
       return new Response("Not found.", {

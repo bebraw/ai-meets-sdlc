@@ -197,7 +197,7 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   assert.match(publicSlidesHtml, /Slide library/i);
   assert.match(
     publicSlidesHtml,
-    /\/assets\/social\/linkedin\/sdlcai-2026-slide-01-linkedin-1200x627\.jpg/,
+    /\/assets\/social\/linkedin\/sdlcai-2026-event-linkedin-1200x627\.jpg/,
   );
 
   const publicDeckResponse = await worker.fetch(`${origin}/slides/deck/`, {
@@ -232,21 +232,33 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   assert.match(publicScheduleSlidesHtml, /alt="Aalto University"/);
 
   for (const socialExportPath of [
-    "/assets/social/linkedin/sdlcai-2026-slide-01-linkedin-1200x627.jpg",
-    "/assets/social/x/sdlcai-2026-slide-01-x-1600x900.jpg",
-    "/assets/social/bluesky/sdlcai-2026-slide-01-bluesky-1600x900.jpg",
+    "/assets/social/linkedin/sdlcai-2026-event-linkedin-1200x627.jpg",
+    "/assets/social/x/sdlcai-2026-event-x-1600x900.jpg",
+    "/assets/social/bluesky/sdlcai-2026-event-bluesky-1600x900.jpg",
   ]) {
     const socialExportResponse = await worker.fetch(
       `${origin}${socialExportPath}`,
+      { redirect: "manual" },
     );
 
-    assert.equal(socialExportResponse.status, 200);
+    assert.equal(socialExportResponse.status, 307);
     assert.match(
-      socialExportResponse.headers.get("content-type") ?? "",
-      /^image\/jpeg/,
+      socialExportResponse.headers.get("location") ?? "",
+      new RegExp(
+        `${socialExportPath.replaceAll("/", "\\/")}\\?v=[a-f0-9]{64}$`,
+      ),
     );
-    assert.equal(socialExportResponse.headers.get("x-robots-tag"), null);
   }
+
+  const legacySocialResponse = await worker.fetch(
+    `${origin}/assets/social/linkedin/sdlcai-2026-slide-01-linkedin-1200x627.jpg`,
+    { redirect: "manual" },
+  );
+  assert.equal(legacySocialResponse.status, 307);
+  assert.match(
+    legacySocialResponse.headers.get("location") ?? "",
+    /\/assets\/social\/linkedin\/sdlcai-2026-event-linkedin-1200x627\.jpg\?v=[a-f0-9]{64}$/u,
+  );
 
   for (const internalPath of [
     "/admin-slides/",

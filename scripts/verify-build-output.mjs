@@ -1,5 +1,10 @@
 import { access, readdir, readFile, stat } from "node:fs/promises";
 import path from "node:path";
+import {
+  socialRenderContract,
+  socialRenderManifestPath,
+  socialRenderPresets,
+} from "./social-render-presets.mjs";
 
 const buildDir = "build";
 const fontBudgetBytes = 70 * 1024;
@@ -8,12 +13,6 @@ const speakerImageBudgetBytes = 50 * 1024;
 const speakerImagesDir = "assets/speakers";
 const venueImageBudgetBytes = 80 * 1024;
 const venueImagePath = "assets/marsio-saastamoinen-stage.webp";
-const socialSlideCount = 23;
-const socialExportPresets = [
-  { id: "linkedin", dimensions: "1200x627", maxBytes: 5 * 1024 * 1024 },
-  { id: "x", dimensions: "1600x900", maxBytes: 5 * 1024 * 1024 },
-  { id: "bluesky", dimensions: "1600x900", maxBytes: 1_000_000 },
-];
 
 try {
   await access(path.join(buildDir, "index.html"));
@@ -29,6 +28,17 @@ const cssFiles = await getFilesByExtension(buildDir, ".css");
 const speakerImageFiles = await getFilesByExtension(speakerImagesDir, ".webp");
 const failures = [];
 const sitemap = await readFile(path.join(buildDir, "sitemap.xml"), "utf8");
+const slideDeckHtml = await readFile(
+  path.join(buildDir, "slides/deck/index.html"),
+  "utf8",
+);
+const slideLibraryHtml = await readFile(
+  path.join(buildDir, "slides/index.html"),
+  "utf8",
+);
+const socialRenderManifest = JSON.parse(
+  await readFile(path.join(buildDir, socialRenderManifestPath), "utf8"),
+);
 const fontSubsetCharacters = new Set(
   [...(await readFile(fontSubsetCharactersPath, "utf8"))].filter(
     (character) => !/\s/u.test(character),
@@ -147,31 +157,12 @@ if (venueImageBytes > venueImageBudgetBytes) {
   );
 }
 
-for (const preset of socialExportPresets) {
-  for (let index = 1; index <= socialSlideCount; index += 1) {
-    const paddedNumber = String(index).padStart(2, "0");
-    const filePath = path.join(
-      buildDir,
-      "assets/social",
-      preset.id,
-      `sdlcai-2026-slide-${paddedNumber}-${preset.id}-${preset.dimensions}.jpg`,
-    );
-
-    try {
-      const imageBytes = (await stat(filePath)).size;
-
-      if (imageBytes > preset.maxBytes) {
-        failures.push(
-          `${filePath}: social export is ${formatBytes(
-            imageBytes,
-          )}, above the ${formatBytes(preset.maxBytes)} ${preset.id} limit`,
-        );
-      }
-    } catch {
-      failures.push(`Missing social slide export: ${filePath}`);
-    }
-  }
-}
+verifySocialRenderManifest(
+  socialRenderManifest,
+  slideDeckHtml,
+  slideLibraryHtml,
+  failures,
+);
 
 if (failures.length > 0) {
   console.error(failures.join("\n"));
@@ -206,6 +197,78 @@ async function getFontBytes(fontUrls) {
 
 function formatBytes(value) {
   return `${Math.round(value / 1024)} KB`;
+}
+
+function verifySocialRenderManifest(manifest, deckHtml, libraryHtml, errors) {
+  const slideCount = (deckHtml.match(/data-presentation-slide/gu) ?? []).length;
+  const expectedPresetIds = new Set(
+    socialRenderPresets.map((preset) => preset.id),
+  );
+  const assetIds = new Set();
+  const assetPaths = new Set();
+
+  if (manifest.schemaVersion !== 1) {
+    errors.push("Social render manifest has an unsupported schema version.");
+  }
+
+  if (manifest.renderer !== socialRenderContract) {
+    errors.push("Social render manifest has an unexpected renderer contract.");
+  }
+
+  if (!/^[a-f0-9]{64}$/u.test(manifest.version ?? "")) {
+    errors.push("Social render manifest version is not a SHA-256 digest.");
+  }
+
+  if (
+    !Array.isArray(manifest.slides) ||
+    manifest.slides.length !== slideCount
+  ) {
+    errors.push(
+      `Social render manifest describes ${manifest.slides?.length ?? 0} slides; deck contains ${slideCount}.`,
+    );
+  }
+
+  if (
+    !Array.isArray(manifest.assets) ||
+    manifest.assets.length !== slideCount * socialRenderPresets.length
+  ) {
+    errors.push(
+      `Social render manifest must contain ${slideCount * socialRenderPresets.length} assets.`,
+    );
+    return;
+  }
+
+  for (const asset of manifest.assets) {
+    const expectedDimensions = `${asset.width}x${asset.height}`;
+
+    if (assetIds.has(asset.id))
+      errors.push(`Duplicate social asset id: ${asset.id}`);
+    if (assetPaths.has(asset.path)) {
+      errors.push(`Duplicate social asset path: ${asset.path}`);
+    }
+
+    assetIds.add(asset.id);
+    assetPaths.add(asset.path);
+
+    if (!expectedPresetIds.has(asset.presetId)) {
+      errors.push(`Unknown social render preset: ${asset.presetId}`);
+    }
+
+    if (!/^[a-f0-9]{64}$/u.test(asset.version ?? "")) {
+      errors.push(`Social asset ${asset.id} has an invalid version.`);
+    }
+
+    if (
+      asset.path !==
+      `/assets/social/${asset.presetId}/sdlcai-2026-${asset.slideId}-${asset.presetId}-${expectedDimensions}.jpg`
+    ) {
+      errors.push(`Social asset ${asset.id} has an unexpected stable path.`);
+    }
+
+    if (!libraryHtml.includes(asset.path)) {
+      errors.push(`Slide library does not link to ${asset.path}.`);
+    }
+  }
 }
 
 function getUnsupportedTextCharacters(html, supportedCharacters) {

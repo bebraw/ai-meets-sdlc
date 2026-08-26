@@ -1,36 +1,17 @@
 import { createReadStream } from "node:fs";
-import { mkdir, rm, stat } from "node:fs/promises";
+import { mkdir, readFile, rm, stat } from "node:fs/promises";
 import { createServer } from "node:http";
 import path from "node:path";
 import { chromium } from "playwright";
+import {
+  socialRenderManifestPath,
+  socialRenderPresets,
+} from "./social-render-presets.mjs";
 
 const buildDir = path.resolve("build");
 const outputDir = path.join(buildDir, "assets/social");
 const deckRoute = "/slides/deck/";
 const pageTimeoutMs = 15_000;
-const presets = [
-  {
-    id: "linkedin",
-    width: 1200,
-    height: 627,
-    quality: 92,
-    maxBytes: 5 * 1024 * 1024,
-  },
-  {
-    id: "x",
-    width: 1600,
-    height: 900,
-    quality: 92,
-    maxBytes: 5 * 1024 * 1024,
-  },
-  {
-    id: "bluesky",
-    width: 1600,
-    height: 900,
-    quality: 86,
-    maxBytes: 1_000_000,
-  },
-];
 const browserCandidates = [
   process.env.LAYOUT_BROWSER_PATH,
   "/Applications/Chromium.app/Contents/MacOS/Chromium",
@@ -121,8 +102,9 @@ async function waitForActiveAssets(page) {
   });
 }
 
-async function exportPreset(browser, origin, preset) {
+async function exportPreset(browser, origin, preset, manifest) {
   const presetDir = path.join(outputDir, preset.id);
+  await rm(presetDir, { recursive: true, force: true });
   await mkdir(presetDir, { recursive: true });
 
   const context = await browser.newContext({
@@ -144,8 +126,8 @@ async function exportPreset(browser, origin, preset) {
 
     for (let index = 0; index < slideCount; index += 1) {
       const number = String(index + 1);
-      const paddedNumber = number.padStart(2, "0");
       const slide = page.locator("[data-presentation-slide].is-active");
+      const slideId = await slide.getAttribute("data-slide-id");
       const bounds = await slide.boundingBox();
 
       if (
@@ -158,10 +140,17 @@ async function exportPreset(browser, origin, preset) {
         );
       }
 
-      const outputPath = path.join(
-        presetDir,
-        `sdlcai-2026-slide-${paddedNumber}-${preset.id}-${preset.width}x${preset.height}.jpg`,
+      const asset = manifest.assets.find(
+        (candidate) =>
+          candidate.slideId === slideId && candidate.presetId === preset.id,
       );
+
+      if (!asset) {
+        throw new Error(`Manifest entry missing for ${slideId}:${preset.id}.`);
+      }
+
+      const outputPath = path.join(buildDir, asset.path.replace(/^\//u, ""));
+      await mkdir(path.dirname(outputPath), { recursive: true });
 
       await slide.screenshot({
         path: outputPath,
@@ -200,7 +189,9 @@ async function exportPreset(browser, origin, preset) {
 }
 
 async function main() {
-  await rm(outputDir, { recursive: true, force: true });
+  const manifest = JSON.parse(
+    await readFile(path.join(buildDir, socialRenderManifestPath), "utf8"),
+  );
 
   const browserPath = await findBrowser();
   const { server, port } = await startServer();
@@ -213,7 +204,9 @@ async function main() {
 
   try {
     const results = await Promise.all(
-      presets.map((preset) => exportPreset(browser, origin, preset)),
+      socialRenderPresets.map((preset) =>
+        exportPreset(browser, origin, preset, manifest),
+      ),
     );
     const fileCount = results.reduce(
       (total, result) => total + result.slideCount,

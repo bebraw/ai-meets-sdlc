@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "npm run build:site && npm run slides:export:social",
+    "build": "npm run build:site && npm run social:manifest",
     "build:site": "gustwind --build --output ./build --no-incremental",
     "a11y:check": "node scripts/validate-a11y.mjs",
     "data:validate": "node scripts/validate-data.mjs",
@@ -18,6 +18,7 @@
     "layout:install-browsers": "playwright install webkit",
     "slides:export": "node scripts/export-slide-assets.mjs",
     "slides:export:social": "node scripts/export-social-slides.mjs",
+    "social:manifest": "node scripts/generate-social-render-manifest.mjs",
     "slides:check": "node scripts/validate-slide-layout.mjs",
     "quality:gate": "npm test && npm run validate && npm run layout:check && npm run slides:check && npm run a11y:check",
     "start": "gustwind --develop --port 3000",
@@ -34,6 +35,7 @@
     "node": "24.x"
   },
   "dependencies": {
+    "@cloudflare/puppeteer": "1.4.0",
     "@tailwindcss/typography": "0.5.19",
     "gustwind": "0.131.0",
     "marked": "18.0.2"
@@ -46,5 +48,11 @@
     "prettier": "3.8.3",
     "typescript": "6.0.3",
     "wrangler": "4.86.0"
+  },
+  "overrides": {
+    "@cloudflare/puppeteer@1.4.0": {
+      "@puppeteer/browsers": "3.0.6"
+    },
+    "ws": "8.21.3"
   }
 }
