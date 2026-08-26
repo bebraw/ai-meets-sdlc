@@ -22,9 +22,8 @@
       </div>
       <div class="grid content-end gap-5">
         <p class="max-w-3xl text-xl leading-8 text-muted">
-          Coordinate speaker profiles and invitations, the speaker dinner,
-          poster proposals, the seminar interest list, and protected screen
-          assets.
+          Coordinate speaker access, profiles, talks, dinner details, poster
+          proposals, the seminar interest list, and protected screen assets.
         </p>
         <a
           class="w-fit inline-flex border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
@@ -52,20 +51,28 @@
             Speaker workspace
           </h2>
           <p class="mt-4 max-w-3xl leading-7 text-paper/70">
-            Store each address privately, send or rotate a workspace invitation,
-            and review field-level changes before applying approved JSON to Git.
+            Assign each speaker’s email, monitor their private dinner response,
+            and review field-level public changes before applying approved JSON
+            to Git. Speakers request their own one-time sign-in links.
           </p>
         </div>
-        <button
-          class="border border-paper px-5 py-3 font-bold uppercase transition hover:bg-paper hover:text-ink disabled:cursor-wait disabled:opacity-60"
-          data-admin-speakers-refresh
-          type="button"
-        >
-          Refresh
-        </button>
+        <div class="flex flex-wrap gap-3">
+          <a
+            class="border border-paper px-5 py-3 font-bold uppercase transition hover:bg-paper hover:text-ink"
+            href="/api/admin/speaker-dinner.csv"
+            >Caterer CSV</a
+          >
+          <button
+            class="border border-paper px-5 py-3 font-bold uppercase transition hover:bg-paper hover:text-ink disabled:cursor-wait disabled:opacity-60"
+            data-admin-speakers-refresh
+            type="button"
+          >
+            Refresh
+          </button>
+        </div>
       </div>
 
-      <div class="grid gap-px bg-paper/40 sm:grid-cols-3">
+      <div class="grid gap-px bg-paper/40 sm:grid-cols-2 lg:grid-cols-4">
         <div class="bg-ink p-4">
           <span class="text-sm font-bold uppercase text-paper/60"
             >Contacts</span
@@ -78,11 +85,21 @@
         </div>
         <div class="bg-ink p-4">
           <span class="text-sm font-bold uppercase text-paper/60"
-            >Confirmed</span
+            >Signed in</span
           >
           <strong
             class="mt-2 block font-headline text-4xl"
             data-admin-speaker-count="confirmed"
+            >0</strong
+          >
+        </div>
+        <div class="bg-ink p-4">
+          <span class="text-sm font-bold uppercase text-paper/60"
+            >Dinner replies</span
+          >
+          <strong
+            class="mt-2 block font-headline text-4xl"
+            data-admin-speaker-count="dinner"
             >0</strong
           >
         </div>
@@ -284,164 +301,176 @@
     class="border-b border-ink px-5 py-10 md:px-8 md:py-14"
     aria-labelledby="speaker-dinner-heading"
   >
-    <div class="mx-auto grid max-w-7xl gap-6">
-      <div class="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-end">
-        <div>
-          <p class="font-headline text-sm font-black uppercase text-muted">
-            12 October / private
-          </p>
-          <h2
-            class="mt-2 font-headline text-4xl font-black uppercase leading-none md:text-6xl"
-            id="speaker-dinner-heading"
-          >
-            Speaker dinner
-          </h2>
-          <p class="mt-4 max-w-3xl leading-7 text-muted">
-            Share one unlisted link with speakers and organizers, or create a
-            personal link for a speaker who needs one. Names and food details
-            are encrypted and omitted from automated backups.
-          </p>
+    <details class="mx-auto max-w-7xl border border-ink p-5 md:p-7">
+      <summary
+        class="cursor-pointer font-headline text-2xl font-black uppercase"
+      >
+        Legacy dinner links and shared responses
+      </summary>
+      <div class="mt-8 grid gap-6">
+        <div class="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-end">
+          <div>
+            <p class="font-headline text-sm font-black uppercase text-muted">
+              12 October / private
+            </p>
+            <h2
+              class="mt-2 font-headline text-4xl font-black uppercase leading-none md:text-6xl"
+              id="speaker-dinner-heading"
+            >
+              Legacy dinner links
+            </h2>
+            <p class="mt-4 max-w-3xl leading-7 text-muted">
+              Current speakers now answer inside their authenticated workspace.
+              Keep these older personal and shared links only for responses
+              already collected before that change. Names and food details
+              remain encrypted and omitted from automated backups.
+            </p>
+          </div>
+          <div class="flex flex-wrap items-center gap-3">
+            <a
+              class="inline-flex border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
+              href="/api/admin/speaker-dinner.csv"
+              >Caterer CSV</a
+            >
+            <button
+              class="inline-flex border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper disabled:cursor-wait disabled:opacity-60"
+              data-admin-dinner-refresh
+              type="button"
+            >
+              Refresh
+            </button>
+          </div>
         </div>
-        <div class="flex flex-wrap items-center gap-3">
-          <a
-            class="inline-flex border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
-            href="/api/admin/speaker-dinner.csv"
-            >Caterer CSV</a
-          >
+
+        <div
+          class="grid gap-5 border border-ink bg-ink p-5 text-paper md:grid-cols-[1fr_auto] md:items-center"
+        >
+          <div>
+            <p class="text-xs font-bold uppercase text-paper/60">
+              Legacy fallback
+            </p>
+            <h3 class="mt-2 font-headline text-3xl font-black uppercase">
+              Shared link
+            </h3>
+            <p class="mt-3 max-w-3xl text-sm leading-6 text-paper/70">
+              One link for speakers and organizers. Respondents enter their own
+              name. Replacing the link blocks the previous URL but keeps
+              responses.
+            </p>
+            <p
+              class="mt-3 min-h-5 text-xs font-bold uppercase text-paper/70"
+              data-admin-dinner-shared-invite-status
+              aria-live="polite"
+            ></p>
+            <div class="mt-3" data-admin-dinner-shared-link></div>
+          </div>
           <button
-            class="inline-flex border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper disabled:cursor-wait disabled:opacity-60"
-            data-admin-dinner-refresh
+            class="border border-paper bg-paper px-5 py-3 font-bold uppercase text-ink transition hover:bg-ink hover:text-paper disabled:cursor-wait disabled:opacity-60"
+            data-admin-dinner-shared-invite
             type="button"
           >
-            Refresh
+            Create shared link
+          </button>
+        </div>
+
+        <div
+          class="grid gap-px bg-ink sm:grid-cols-2 lg:grid-cols-5"
+          data-admin-dinner-summary
+        >
+          <div class="bg-paper p-4">
+            <span class="text-sm font-bold uppercase text-muted">Invited</span
+            ><strong
+              class="mt-2 block font-headline text-4xl"
+              data-admin-dinner-count="invited"
+              >0</strong
+            >
+          </div>
+          <div class="bg-paper p-4">
+            <span class="text-sm font-bold uppercase text-muted">Attending</span
+            ><strong
+              class="mt-2 block font-headline text-4xl"
+              data-admin-dinner-count="attending"
+              >0</strong
+            >
+          </div>
+          <div class="bg-paper p-4">
+            <span class="text-sm font-bold uppercase text-muted">Declined</span
+            ><strong
+              class="mt-2 block font-headline text-4xl"
+              data-admin-dinner-count="not_attending"
+              >0</strong
+            >
+          </div>
+          <div class="bg-paper p-4">
+            <span class="text-sm font-bold uppercase text-muted"
+              >Awaiting reply</span
+            ><strong
+              class="mt-2 block font-headline text-4xl"
+              data-admin-dinner-count="pending"
+              >0</strong
+            >
+          </div>
+          <div class="bg-paper p-4">
+            <span class="text-sm font-bold uppercase text-muted"
+              >Shared replies</span
+            ><strong
+              class="mt-2 block font-headline text-4xl"
+              data-admin-dinner-count="shared"
+              >0</strong
+            >
+          </div>
+        </div>
+
+        <p
+          class="min-h-6 text-sm font-bold uppercase text-muted"
+          data-admin-dinner-status
+          aria-live="polite"
+        >
+          Loading
+        </p>
+        <div class="grid gap-4">
+          <h3 class="font-headline text-3xl font-black uppercase">
+            Shared-link responses
+          </h3>
+          <div class="grid gap-4" data-admin-dinner-shared-responses>
+            <p class="border border-ink p-5 text-muted">
+              Loading shared-link responses.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid gap-4">
+          <h3 class="font-headline text-3xl font-black uppercase">
+            Legacy personalized links
+          </h3>
+          <div class="grid gap-4" data-admin-dinner-speakers>
+            <p class="border border-ink p-5 text-muted">Loading speakers.</p>
+          </div>
+        </div>
+
+        <div
+          class="grid gap-4 border border-ink p-5 md:grid-cols-[1fr_auto] md:items-center"
+        >
+          <div>
+            <h3 class="font-headline text-2xl font-black uppercase">
+              Retention
+            </h3>
+            <p class="mt-2 max-w-3xl text-sm leading-6 text-muted">
+              All invitation tokens and responses are automatically deleted
+              after 26 October 2026. Use this only when catering is complete and
+              the information is no longer needed.
+            </p>
+          </div>
+          <button
+            class="border border-red-700 px-5 py-3 font-bold uppercase text-red-700 transition hover:bg-red-700 hover:text-white disabled:cursor-wait disabled:opacity-60"
+            data-admin-dinner-purge
+            type="button"
+          >
+            Delete dinner data
           </button>
         </div>
       </div>
-
-      <div
-        class="grid gap-5 border border-ink bg-ink p-5 text-paper md:grid-cols-[1fr_auto] md:items-center"
-      >
-        <div>
-          <p class="text-xs font-bold uppercase text-paper/60">Recommended</p>
-          <h3 class="mt-2 font-headline text-3xl font-black uppercase">
-            Shared invitation
-          </h3>
-          <p class="mt-3 max-w-3xl text-sm leading-6 text-paper/70">
-            One link for speakers and organizers. Respondents enter their own
-            name. Replacing the link blocks the previous URL but keeps
-            responses.
-          </p>
-          <p
-            class="mt-3 min-h-5 text-xs font-bold uppercase text-paper/70"
-            data-admin-dinner-shared-invite-status
-            aria-live="polite"
-          ></p>
-          <div class="mt-3" data-admin-dinner-shared-link></div>
-        </div>
-        <button
-          class="border border-paper bg-paper px-5 py-3 font-bold uppercase text-ink transition hover:bg-ink hover:text-paper disabled:cursor-wait disabled:opacity-60"
-          data-admin-dinner-shared-invite
-          type="button"
-        >
-          Create shared link
-        </button>
-      </div>
-
-      <div
-        class="grid gap-px bg-ink sm:grid-cols-2 lg:grid-cols-5"
-        data-admin-dinner-summary
-      >
-        <div class="bg-paper p-4">
-          <span class="text-sm font-bold uppercase text-muted">Invited</span
-          ><strong
-            class="mt-2 block font-headline text-4xl"
-            data-admin-dinner-count="invited"
-            >0</strong
-          >
-        </div>
-        <div class="bg-paper p-4">
-          <span class="text-sm font-bold uppercase text-muted">Attending</span
-          ><strong
-            class="mt-2 block font-headline text-4xl"
-            data-admin-dinner-count="attending"
-            >0</strong
-          >
-        </div>
-        <div class="bg-paper p-4">
-          <span class="text-sm font-bold uppercase text-muted">Declined</span
-          ><strong
-            class="mt-2 block font-headline text-4xl"
-            data-admin-dinner-count="not_attending"
-            >0</strong
-          >
-        </div>
-        <div class="bg-paper p-4">
-          <span class="text-sm font-bold uppercase text-muted"
-            >Awaiting reply</span
-          ><strong
-            class="mt-2 block font-headline text-4xl"
-            data-admin-dinner-count="pending"
-            >0</strong
-          >
-        </div>
-        <div class="bg-paper p-4">
-          <span class="text-sm font-bold uppercase text-muted"
-            >Shared replies</span
-          ><strong
-            class="mt-2 block font-headline text-4xl"
-            data-admin-dinner-count="shared"
-            >0</strong
-          >
-        </div>
-      </div>
-
-      <p
-        class="min-h-6 text-sm font-bold uppercase text-muted"
-        data-admin-dinner-status
-        aria-live="polite"
-      >
-        Loading
-      </p>
-      <div class="grid gap-4">
-        <h3 class="font-headline text-3xl font-black uppercase">
-          Shared-link responses
-        </h3>
-        <div class="grid gap-4" data-admin-dinner-shared-responses>
-          <p class="border border-ink p-5 text-muted">
-            Loading shared-link responses.
-          </p>
-        </div>
-      </div>
-
-      <div class="grid gap-4">
-        <h3 class="font-headline text-3xl font-black uppercase">
-          Personalized speaker links
-        </h3>
-        <div class="grid gap-4" data-admin-dinner-speakers>
-          <p class="border border-ink p-5 text-muted">Loading speakers.</p>
-        </div>
-      </div>
-
-      <div
-        class="grid gap-4 border border-ink p-5 md:grid-cols-[1fr_auto] md:items-center"
-      >
-        <div>
-          <h3 class="font-headline text-2xl font-black uppercase">Retention</h3>
-          <p class="mt-2 max-w-3xl text-sm leading-6 text-muted">
-            All invitation tokens and responses are automatically deleted after
-            26 October 2026. Use this only when catering is complete and the
-            information is no longer needed.
-          </p>
-        </div>
-        <button
-          class="border border-red-700 px-5 py-3 font-bold uppercase text-red-700 transition hover:bg-red-700 hover:text-white disabled:cursor-wait disabled:opacity-60"
-          data-admin-dinner-purge
-          type="button"
-        >
-          Delete dinner data
-        </button>
-      </div>
-    </div>
+    </details>
   </section>
 
   <section

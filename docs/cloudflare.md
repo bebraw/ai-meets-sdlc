@@ -56,9 +56,10 @@ configured, both are required and submissions fail closed unless
 `TURNSTILE_HOSTNAMES` is also configured. The local default is
 `localhost,127.0.0.1`; the production value is
 `sdlcai.org,www.sdlcai.org`. The Worker requires both an allowed hostname and
-the `turnstile-spin-v2` action in successful Siteverify responses. The client
-loads at most one Turnstile script even when a page contains more than one
-widget.
+the page-specific action in successful Siteverify responses:
+`turnstile-spin-v2` for interest and poster forms, and `speaker-login-v1` for
+speaker sign-in. The client loads at most one Turnstile script even when a page
+contains more than one widget.
 
 `ADMIN_USERNAME` and `ADMIN_PASSWORD` are required locally to open `/admin/`.
 Prepare Wrangler's local `.dev.vars`, apply all local D1 migrations, and start
@@ -175,6 +176,16 @@ after `POSTER_PROPOSAL_DEADLINE`; oversized submissions return `413`. Turnstile
 tokens are always verified by the Worker when the secret is configured;
 client-side gating is only a user experience safeguard.
 
+The public `POST /api/speaker/login` endpoint accepts JSON with `email` and,
+when configured, `turnstile_token`. Valid requests return the same `202`
+response whether or not the address is mapped to a speaker. Known,
+non-throttled addresses receive a 15-minute, single-use link. The link fragment
+is exchanged at `POST /api/speaker/session` for the existing HTTP-only session
+cookie, so the token does not enter HTTP request logs. Authenticated speakers
+read and save private dinner data at `GET` and `POST /api/speaker/dinner`.
+Organizer email assignment uses `POST /api/admin/speakers/contact`; it stores
+the encrypted mapping without sending mail.
+
 The data-driven slide library, session deck, and screen schedule are public at
 `/slides/`, `/slides/deck/`, and `/slides/schedule/`. Generated social exports
 under `/assets/social/` are public as well.
@@ -263,7 +274,7 @@ Migration `0002_create_poster_proposals.sql` creates `poster_proposals` with:
   ciphertext/IV values
 - indexes on `created_at` and `status`
 
-Migrations `0005` through `0008` add the private speaker workspace:
+Migrations `0005` through `0009` add the private speaker workspace:
 
 - encrypted contacts, revocable invitation generations, and hashed sessions;
 - versioned draft, submitted, approved, and rejected profile/talk revisions;
@@ -271,7 +282,9 @@ Migrations `0005` through `0008` add the private speaker workspace:
 - private 400x400 WebP portrait revisions backed by `SPEAKER_UPLOADS`; and
 - Stream video submissions with stable speaker/talk ownership, explicit editing
   and publication permission, verified processing state, moderation state, and
-  independent retention timestamps.
+  independent retention timestamps; and
+- short-lived, single-use speaker magic links plus keyed, 24-hour login-request
+  records for per-address and per-client throttling.
 
 Plaintext speaker contact details are not stored in D1 or R2. Proposed public
 profile and talk copy is stored as versioned JSON in D1 so organizers can
@@ -335,7 +348,7 @@ For production rollout:
    accepted hostnames; and Worker secrets are configured. The Turnstile
    widget's dashboard allowlist must include both `sdlcai.org` and
    `www.sdlcai.org`.
-2. Apply all migrations through `0008_create_speaker_video_submissions.sql`
+2. Apply all migrations through `0009_create_speaker_magic_links.sql`
    remotely and verify Wrangler reports each migration as applied.
 3. Deploy the Worker and static build.
 4. Open `/posters/`, verify the deadline and A0/A1 portrait terms, and submit a
@@ -348,9 +361,10 @@ For production rollout:
 7. Request one stable path from `/slides/`, follow its version redirect, verify
    the response is a JPEG, and confirm the corresponding `social/v1/` object
    exists in `ai-meets-sdlc-social-exports`.
-8. Send one controlled speaker invitation from `/admin/`, redeem it, save and
-   submit a profile draft, preview a promotion graphic, and exercise organizer
-   approval without applying the test revision to Git.
+8. Assign one controlled speaker email in `/admin/`, request a sign-in link from
+   `/speaker/`, redeem it once, confirm replay fails, save dinner details and a
+   profile draft, preview a promotion graphic, and exercise organizer approval
+   without applying the test revision to Git.
 9. Upload a controlled portrait and confirm only the 400x400 WebP derivative
    appears in `ai-meets-sdlc-speaker-uploads`.
 10. Register the Stream webhook, upload a short private test video, confirm the

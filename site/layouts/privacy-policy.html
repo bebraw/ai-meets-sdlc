@@ -142,12 +142,20 @@
             Speaker Workspace and Contact
           </h2>
           <p class="mt-6 text-muted">
-            For confirmed speakers, we store the email address needed to send a
-            private workspace invitation and operational event announcements.
+            For confirmed speakers, the organizer assigns an email address used
+            for private workspace access and operational event announcements.
             The address is encrypted at rest and linked to the speaker’s stable
-            internal identifier. We store only hashes of invitation and session
-            secrets. Redeeming an invitation confirms that its address reaches
-            the speaker.
+            internal identifier. A speaker can request a short-lived, single-use
+            sign-in link from the public speaker login page. The page does not
+            reveal whether an address is assigned. We store only keyed hashes of
+            sign-in and session secrets.
+          </p>
+          <p class="mt-4 text-muted">
+            To prevent sign-in email abuse, we use Cloudflare Turnstile and
+            short-lived keyed fingerprints of the normalized email address and
+            connecting IP address for rate limiting. We do not store the raw IP
+            address in the speaker login-request table. Login request records
+            are automatically removed after 24 hours.
           </p>
           <p class="mt-4 text-muted">
             The workspace lets a speaker propose changes to their public name,
@@ -180,12 +188,12 @@
             retained as needed to document any approved promotional use.
           </p>
           <p class="mt-4 text-muted">
-            Access links and sessions expire after 31 October 2026. We will
-            review and delete private speaker contact details by 30 November
-            2026 unless they are still required for event follow-up or a legal
-            obligation. A speaker can ask us to correct their address, suppress
-            further email, or delete contact details earlier by emailing
-            info@sdlcai.org.
+            A sign-in link expires after 15 minutes and works once. Speaker
+            access and sessions expire after 31 October 2026. We will review and
+            delete private speaker contact details by 30 November 2026 unless
+            they are still required for event follow-up or a legal obligation. A
+            speaker can ask us to correct their address, suppress further email,
+            or delete contact details earlier by emailing info@sdlcai.org.
           </p>
         </section>
 
@@ -196,13 +204,14 @@
             Speaker Dinner Responses
           </h2>
           <p class="mt-6 text-muted">
-            Invited speakers and organizers can use a shared unlisted link, or a
-            speaker can use a personal link, to tell us whether they will attend
-            the dinner on 12 October 2026. The shared form also collects the
-            respondent’s name. If someone attends, we collect a meal preference,
-            food requirements, and whether cross-contamination is a concern. We
-            process this information with the respondent’s express consent to
-            plan the dinner safely.
+            Speakers use their authenticated workspace to tell us whether they
+            will attend the dinner on 12 October 2026. If someone attends, we
+            collect a meal preference, food requirements, and whether
+            cross-contamination is a concern. We process this information with
+            the respondent’s express consent to plan the dinner safely. Older
+            personal and shared unlisted forms remain temporarily available for
+            responses created before the workspace flow; the shared form also
+            collects the respondent’s name.
           </p>
           <p class="mt-4 text-muted">
             Responses are encrypted at rest. Access is limited to authorized

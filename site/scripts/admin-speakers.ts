@@ -26,6 +26,17 @@ interface AdminSpeakerItem {
     retention_until: string;
     updated_at: string;
   } | null;
+  dinner: {
+    expires_at: string;
+    responded_at: string | null;
+    response: {
+      attendance: "attending" | "not_attending";
+      cross_contamination: "" | "yes" | "no" | "unsure";
+      food_requirements: string;
+      meal_preference: "" | "omnivore" | "vegetarian" | "vegan" | "other";
+    } | null;
+    updated_at: string;
+  } | null;
   invitation: {
     active: boolean;
     expires_at: string;
@@ -201,10 +212,10 @@ function renderAnnouncementSpeakers(speakers: AdminSpeakerItem[]): void {
           "span",
           "text-xs text-paper/60",
           speaker.contact?.email_confirmed_at
-            ? "Confirmed operational contact"
+            ? "Signed-in operational contact"
             : speaker.contact?.email
-              ? "Address not confirmed"
-              : "No address",
+              ? "Mapped / not signed in"
+              : "No mapped email",
         ),
       );
       label.appendChild(checkbox);
@@ -470,6 +481,10 @@ function renderSummary(speakers: AdminSpeakerItem[]): void {
     "submitted",
     speakers.filter(({ revision }) => revision?.state === "submitted").length,
   );
+  setCount(
+    "dinner",
+    speakers.filter(({ dinner }) => dinner?.responded_at).length,
+  );
 }
 
 function renderSpeaker(speaker: AdminSpeakerItem): HTMLElement {
@@ -503,6 +518,7 @@ function renderSpeaker(speaker: AdminSpeakerItem): HTMLElement {
   headingRow.appendChild(badge);
   article.appendChild(headingRow);
   article.appendChild(renderInvitation(speaker));
+  article.appendChild(renderDinner(speaker));
 
   if (speaker.photo) {
     article.appendChild(renderPhoto(speaker));
@@ -788,7 +804,7 @@ function renderInvitation(speaker: AdminSpeakerItem): HTMLElement {
   const button = node(
     "button",
     "border border-paper bg-paper px-5 py-3 font-bold uppercase text-ink transition hover:bg-ink hover:text-paper disabled:cursor-wait disabled:opacity-60",
-    speaker.invitation?.last_sent_at ? "Rotate and resend" : "Send invitation",
+    "Save email",
   ) as HTMLButtonElement;
   button.type = "submit";
   label.appendChild(labelText);
@@ -800,10 +816,10 @@ function renderInvitation(speaker: AdminSpeakerItem): HTMLElement {
   region.addEventListener("submit", async (event) => {
     event.preventDefault();
     button.disabled = true;
-    help.textContent = "Sending…";
+    help.textContent = "Saving encrypted contact…";
 
     const response = await requestJson<{ error?: string; message?: string }>(
-      "/api/admin/speakers/invite",
+      "/api/admin/speakers/contact",
       {
         body: JSON.stringify({
           email: input.value,
@@ -811,7 +827,7 @@ function renderInvitation(speaker: AdminSpeakerItem): HTMLElement {
         }),
         headers: {
           "content-type": "application/json",
-          "x-admin-action": "send-speaker-invite",
+          "x-admin-action": "save-speaker-contact",
         },
         method: "POST",
       },
@@ -819,13 +835,95 @@ function renderInvitation(speaker: AdminSpeakerItem): HTMLElement {
 
     button.disabled = false;
     help.textContent = response.ok
-      ? (response.data.message ?? "Invitation sent.")
-      : (response.data.error ?? "Invitation could not be sent.");
+      ? (response.data.message ?? "Email saved.")
+      : (response.data.error ?? "Email could not be saved.");
 
     if (response.ok) void loadSpeakers();
   });
 
   return region;
+}
+
+function renderDinner(speaker: AdminSpeakerItem): HTMLElement {
+  const section = node("section", "grid gap-3 border-t border-paper/40 pt-5");
+  const heading = node(
+    "div",
+    "grid gap-1 sm:grid-cols-[1fr_auto] sm:items-start",
+  );
+  const copy = node("div", "grid gap-1");
+  copy.appendChild(
+    node("h4", "font-headline text-2xl font-black uppercase", "Dinner"),
+  );
+  copy.appendChild(
+    node(
+      "p",
+      "text-xs font-bold uppercase text-paper/60",
+      "Private logistics / not published",
+    ),
+  );
+  heading.appendChild(copy);
+
+  if (speaker.dinner?.responded_at) {
+    heading.appendChild(
+      node(
+        "span",
+        "w-fit border border-paper/50 px-3 py-2 text-xs font-bold uppercase",
+        formatDate(speaker.dinner.responded_at),
+      ),
+    );
+  }
+
+  section.appendChild(heading);
+
+  const response = speaker.dinner?.response;
+
+  if (!response) {
+    section.appendChild(
+      node(
+        "p",
+        "text-sm text-paper/60",
+        "No dinner response has been saved yet.",
+      ),
+    );
+    return section;
+  }
+
+  if (response.attendance === "not_attending") {
+    section.appendChild(
+      node("p", "font-bold uppercase", "Not attending the speakers’ dinner"),
+    );
+    return section;
+  }
+
+  const details = node("dl", "grid gap-px bg-paper/30 sm:grid-cols-3");
+  details.appendChild(
+    dinnerDetail("Meal", dinnerValueLabel(response.meal_preference)),
+  );
+  details.appendChild(
+    dinnerDetail(
+      "Cross-contamination",
+      dinnerValueLabel(response.cross_contamination),
+    ),
+  );
+  details.appendChild(
+    dinnerDetail("Requirements", response.food_requirements || "None stated"),
+  );
+  section.appendChild(details);
+  return section;
+}
+
+function dinnerDetail(label: string, value: string): HTMLElement {
+  const item = node("div", "grid gap-1 bg-ink p-3");
+  item.appendChild(
+    node("dt", "text-xs font-bold uppercase text-paper/50", label),
+  );
+  item.appendChild(node("dd", "whitespace-pre-wrap text-sm", value));
+  return item;
+}
+
+function dinnerValueLabel(value: string): string {
+  if (!value) return "Not stated";
+  return `${value.charAt(0).toUpperCase()}${value.slice(1).replaceAll("_", " ")}`;
 }
 
 function renderRevision(speaker: AdminSpeakerItem): HTMLElement {
@@ -1010,13 +1108,11 @@ function renderCopyAction(content: AdminSpeakerContent | null): HTMLElement {
 
 function invitationHelp(speaker: AdminSpeakerItem): string {
   if (!speaker.contact?.email)
-    return "Stored encrypted; never added to public JSON.";
-  if (!speaker.invitation?.last_sent_at)
-    return "Address saved; invitation not sent.";
-  const state = speaker.contact.email_confirmed_at
-    ? "Confirmed"
-    : "Unconfirmed";
-  return `${state} / Last sent ${formatDate(speaker.invitation.last_sent_at)}`;
+    return "Add an email so this speaker can request a sign-in link.";
+  if (!speaker.contact.email_confirmed_at) {
+    return "Mapped / speaker has not signed in yet.";
+  }
+  return `Signed in / ${formatDate(speaker.contact.email_confirmed_at)}`;
 }
 
 function revisionLabel(revision: AdminSpeakerRevision | null): string {

@@ -128,6 +128,15 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   });
   t.after(() => worker.stop());
 
+  const speakerPageResponse = await worker.fetch(`${origin}/speaker/`);
+  const speakerPage = await speakerPageResponse.text();
+  assert.equal(speakerPageResponse.status, 200);
+  assert.equal(speakerPageResponse.headers.get("cache-control"), "no-store");
+  assert.match(speakerPage, /data-speaker-login-form/u);
+  assert.match(speakerPage, /data-action="speaker-login-v1"/u);
+  assert.match(speakerPage, /data-speaker-dinner-form/u);
+  assert.doesNotMatch(speakerPage, /__TURNSTILE_SITE_KEY__/u);
+
   const unauthorized = await worker.fetch(`${origin}/api/speaker/workspace`);
   assert.equal(unauthorized.status, 401);
   assert.equal(unauthorized.headers.get("cache-control"), "no-store");

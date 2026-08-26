@@ -42,6 +42,23 @@ interface WorkspaceResponse {
   } | null;
 }
 
+interface SpeakerDinnerResponseData {
+  attendance: "attending" | "not_attending";
+  cross_contamination: "" | "yes" | "no" | "unsure";
+  food_requirements: string;
+  meal_preference: "" | "omnivore" | "vegetarian" | "vegan" | "other";
+}
+
+interface SpeakerDinnerResponse {
+  closed: boolean;
+  consent_text: string;
+  deadline: string;
+  error?: string;
+  message?: string;
+  responded_at: string | null;
+  response: SpeakerDinnerResponseData | null;
+}
+
 interface PromotionAsset {
   height: number;
   path: string;
@@ -101,9 +118,16 @@ const videoPermissionText =
   "I confirm that I created or control this video and grant Toska Osuuskunta permission to use it for SDLCAI promotion according to the options selected here. I understand that the upload remains private until organizer review and that I can contact info@sdlcai.org to withdraw permission for future use.";
 
 const loading = document.querySelector<HTMLElement>("[data-speaker-loading]");
-const errorPanel = document.querySelector<HTMLElement>("[data-speaker-error]");
-const errorMessage = document.querySelector<HTMLElement>(
-  "[data-speaker-error-message]",
+const loginPanel = document.querySelector<HTMLElement>("[data-speaker-login]");
+const loginMessage = document.querySelector<HTMLElement>(
+  "[data-speaker-login-message]",
+);
+const defaultLoginMessage = loginMessage?.textContent?.trim() ?? "";
+const loginForm = document.querySelector<HTMLFormElement>(
+  "[data-speaker-login-form]",
+);
+const loginStatus = document.querySelector<HTMLElement>(
+  "[data-speaker-login-status]",
 );
 const workspace = document.querySelector<HTMLElement>(
   "[data-speaker-workspace]",
@@ -122,14 +146,20 @@ const talkTemplate = document.querySelector<HTMLTemplateElement>(
 const promotionContainer = document.querySelector<HTMLElement>(
   "[data-speaker-promotions]",
 );
+const dinnerForm = document.querySelector<HTMLFormElement>(
+  "[data-speaker-dinner-form]",
+);
+const dinnerStatus = document.querySelector<HTMLElement>(
+  "[data-speaker-dinner-status]",
+);
 let currentWorkspace: WorkspaceResponse | null = null;
 
 void initialize();
 
 async function initialize(): Promise<void> {
-  const invitationToken = readInvitationToken();
+  const signInToken = readSignInToken();
 
-  if (invitationToken) {
+  if (signInToken) {
     history.replaceState(null, "", `${location.pathname}${location.search}`);
 
     const redemption = await requestJson<{
@@ -137,12 +167,13 @@ async function initialize(): Promise<void> {
       error?: string;
     }>("/api/speaker/session", {
       method: "POST",
-      headers: { authorization: `Bearer ${invitationToken}` },
+      headers: { authorization: `Bearer ${signInToken}` },
     });
 
     if (!redemption.ok) {
-      showError(
-        redemption.data.error ?? "This invitation is invalid or expired.",
+      showLogin(
+        redemption.data.error ??
+          "That sign-in link is invalid or expired. Request a fresh one below.",
       );
       return;
     }
@@ -157,7 +188,11 @@ async function loadWorkspace(): Promise<void> {
   );
 
   if (!response.ok) {
-    showError(response.data.error ?? "Open the invitation link sent to you.");
+    showLogin(
+      response.status === 401
+        ? undefined
+        : (response.data.error ?? "The workspace could not be loaded."),
+    );
     return;
   }
 
@@ -167,12 +202,13 @@ async function loadWorkspace(): Promise<void> {
     loadPromotions(response.data.immutable.speaker_id),
     loadPhotoStatus(),
     loadVideos(),
+    loadDinner(),
   ]);
 }
 
 function renderWorkspace(data: WorkspaceResponse): void {
   loading?.setAttribute("hidden", "");
-  errorPanel?.setAttribute("hidden", "");
+  loginPanel?.setAttribute("hidden", "");
   workspace?.removeAttribute("hidden");
   logoutButton?.removeAttribute("hidden");
 
@@ -210,6 +246,57 @@ function renderWorkspace(data: WorkspaceResponse): void {
   renderVideoTalkOptions(data.content.talks);
   setLockedState(data.revision?.state ?? null);
 }
+
+loginForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  if (!loginForm.reportValidity()) return;
+
+  const formData = new FormData(loginForm);
+  const turnstileToken = String(
+    formData.get("cf-turnstile-response") ?? "",
+  ).trim();
+  const turnstileWidget = loginForm.querySelector<HTMLElement>(
+    "[data-speaker-login-turnstile]",
+  );
+  const turnstileConfigured = Boolean(
+    turnstileWidget?.dataset.sitekey &&
+    turnstileWidget.dataset.sitekey !== "__TURNSTILE_SITE_KEY__",
+  );
+
+  if (turnstileConfigured && !turnstileToken) {
+    setLoginStatus("Complete the verification first.", true);
+    return;
+  }
+
+  const submit = loginForm.querySelector<HTMLButtonElement>(
+    "[data-speaker-login-submit]",
+  );
+  if (submit) submit.disabled = true;
+  setLoginStatus("Requesting a private sign-in link…");
+
+  const response = await requestJson<{
+    accepted?: boolean;
+    error?: string;
+    message?: string;
+  }>("/api/speaker/login", {
+    body: JSON.stringify({
+      email: formData.get("email"),
+      turnstile_token: turnstileToken,
+    }),
+    headers: { "content-type": "application/json" },
+    method: "POST",
+  });
+
+  if (submit) submit.disabled = false;
+  window.turnstile?.reset("#speaker-login-turnstile");
+  setLoginStatus(
+    response.data.message ??
+      response.data.error ??
+      "The sign-in link could not be requested.",
+    !response.ok,
+  );
+});
 
 function renderTalks(talks: WorkspaceTalk[]): void {
   if (!talkContainer || !talkTemplate) return;
@@ -363,6 +450,165 @@ logoutButton?.addEventListener("click", async () => {
   await requestJson("/api/speaker/session", { method: "DELETE" });
   location.reload();
 });
+
+for (const attendance of dinnerForm?.querySelectorAll<HTMLInputElement>(
+  '[name="attendance"]',
+) ?? []) {
+  attendance.addEventListener("change", updateDinnerMealVisibility);
+}
+
+dinnerForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  if (!dinnerForm.reportValidity()) return;
+
+  const formData = new FormData(dinnerForm);
+  const attendance = String(formData.get("attendance") ?? "");
+  const submit = dinnerForm.querySelector<HTMLButtonElement>(
+    "[data-speaker-dinner-submit]",
+  );
+
+  if (submit) submit.disabled = true;
+  setDinnerStatus("Saving private dinner details…");
+
+  const response = await requestJson<SpeakerDinnerResponse>(
+    "/api/speaker/dinner",
+    {
+      body: JSON.stringify({
+        attendance,
+        consent: formData.get("consent") === "yes",
+        cross_contamination:
+          attendance === "attending" ? formData.get("cross_contamination") : "",
+        food_requirements:
+          attendance === "attending" ? formData.get("food_requirements") : "",
+        meal_preference:
+          attendance === "attending" ? formData.get("meal_preference") : "",
+      }),
+      headers: { "content-type": "application/json" },
+      method: "POST",
+    },
+  );
+
+  if (submit) submit.disabled = false;
+
+  if (!response.ok) {
+    setDinnerStatus(
+      response.data.error ?? "Dinner details could not be saved.",
+      true,
+    );
+    return;
+  }
+
+  renderDinner(response.data);
+  setDinnerStatus(response.data.message ?? "Dinner details saved.");
+});
+
+async function loadDinner(): Promise<void> {
+  if (!dinnerForm) return;
+
+  const response = await requestJson<SpeakerDinnerResponse>(
+    "/api/speaker/dinner",
+  );
+
+  if (!response.ok) {
+    setDinnerStatus(
+      response.data.error ?? "Dinner details could not be loaded.",
+      true,
+    );
+    return;
+  }
+
+  renderDinner(response.data);
+}
+
+function renderDinner(data: SpeakerDinnerResponse): void {
+  if (!dinnerForm) return;
+
+  const response = data.response;
+
+  for (const attendance of dinnerForm.querySelectorAll<HTMLInputElement>(
+    '[name="attendance"]',
+  )) {
+    attendance.checked = attendance.value === response?.attendance;
+  }
+
+  const mealPreference = dinnerForm.elements.namedItem("meal_preference");
+  const crossContamination = dinnerForm.elements.namedItem(
+    "cross_contamination",
+  );
+  const foodRequirements = dinnerForm.elements.namedItem("food_requirements");
+  const consent = dinnerForm.elements.namedItem("consent");
+
+  if (mealPreference instanceof HTMLSelectElement) {
+    mealPreference.value = response?.meal_preference ?? "";
+  }
+  if (crossContamination instanceof HTMLSelectElement) {
+    crossContamination.value = response?.cross_contamination ?? "";
+  }
+  if (foodRequirements instanceof HTMLTextAreaElement) {
+    foodRequirements.value = response?.food_requirements ?? "";
+  }
+  if (consent instanceof HTMLInputElement) consent.checked = false;
+
+  const consentCopy = dinnerForm.querySelector<HTMLElement>(
+    "[data-speaker-dinner-consent]",
+  );
+  if (consentCopy && data.consent_text) {
+    consentCopy.textContent = data.consent_text;
+  }
+
+  updateDinnerMealVisibility();
+
+  if (data.closed) {
+    for (const control of dinnerForm.elements) {
+      if (
+        control instanceof HTMLInputElement ||
+        control instanceof HTMLTextAreaElement ||
+        control instanceof HTMLSelectElement ||
+        control instanceof HTMLButtonElement
+      ) {
+        control.disabled = true;
+      }
+    }
+    setDinnerStatus(
+      `Dinner responses closed on ${formatWorkspaceDate(data.deadline)}.`,
+    );
+  } else if (data.responded_at) {
+    setDinnerStatus(`Last saved ${formatWorkspaceDate(data.responded_at)}.`);
+  } else {
+    setDinnerStatus(`Please respond by ${formatWorkspaceDate(data.deadline)}.`);
+  }
+}
+
+function updateDinnerMealVisibility(): void {
+  if (!dinnerForm) return;
+
+  const selected = dinnerForm.querySelector<HTMLInputElement>(
+    '[name="attendance"]:checked',
+  );
+  const mealFields = dinnerForm.querySelector<HTMLElement>(
+    "[data-speaker-dinner-meal]",
+  );
+  const attending = selected?.value === "attending";
+
+  mealFields?.toggleAttribute("hidden", !attending);
+
+  for (const control of mealFields?.querySelectorAll("select, textarea") ??
+    []) {
+    if (
+      control instanceof HTMLSelectElement ||
+      control instanceof HTMLTextAreaElement
+    ) {
+      control.disabled = !attending;
+    }
+  }
+}
+
+function setDinnerStatus(message: string, isError = false): void {
+  if (!dinnerStatus) return;
+  dinnerStatus.textContent = message;
+  dinnerStatus.classList.toggle("text-signal", isError);
+}
 
 document
   .querySelector<HTMLFormElement>("[data-speaker-photo-form]")
@@ -796,16 +1042,30 @@ function setStatus(message: string, isError = false): void {
   status.classList.toggle("text-signal", isError);
 }
 
-function showError(message: string): void {
+function showLogin(message?: string): void {
   loading?.setAttribute("hidden", "");
   workspace?.setAttribute("hidden", "");
-  errorPanel?.removeAttribute("hidden");
-  if (errorMessage) errorMessage.textContent = message;
+  logoutButton?.setAttribute("hidden", "");
+  loginPanel?.removeAttribute("hidden");
+  if (loginMessage) loginMessage.textContent = message ?? defaultLoginMessage;
 }
 
-function readInvitationToken(): string {
+function setLoginStatus(message: string, isError = false): void {
+  if (!loginStatus) return;
+  loginStatus.textContent = message;
+  loginStatus.classList.toggle("text-signal", isError);
+}
+
+function readSignInToken(): string {
   const token = location.hash.slice(1);
   return /^[A-Za-z0-9_-]{43}$/u.test(token) ? token : "";
+}
+
+function formatWorkspaceDate(value: string): string {
+  return new Intl.DateTimeFormat("en-GB", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(new Date(value));
 }
 
 function promotionLabel(presetId: string): string {
