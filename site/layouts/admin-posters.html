@@ -1,0 +1,62 @@
+<BaseLayout
+  &title="(id 'SDLCAI Admin Posters')"
+  &description="(id 'Review and export SDLCAI 2026 poster proposals.')"
+  &ogDescription="(id 'Review and export SDLCAI 2026 poster proposals.')"
+  &url="(id 'https://sdlcai.org/admin/posters/')"
+  &ogType="(id 'website')"
+  &robots="(id 'noindex,nofollow,noarchive')"
+>
+  <AdminNavigation></AdminNavigation>
+  <AdminPageHeader
+    &eyebrow="(id 'Admin / Rolling review')"
+    &title="(id 'Posters')"
+    &description="(id 'Review and export SDLCAI 2026 poster proposals.')"
+  ></AdminPageHeader>
+
+  <section
+    class="border-b border-ink px-5 py-10 md:px-8 md:py-14"
+    aria-labelledby="poster-proposals-heading"
+  >
+    <div class="mx-auto grid max-w-7xl gap-6">
+      <div class="grid gap-5 md:grid-cols-[1fr_auto] md:items-end">
+        <div>
+          <p class="font-headline text-sm font-black uppercase text-muted">
+            Rolling review
+          </p>
+          <h2
+            class="mt-2 font-headline text-4xl font-black uppercase leading-none md:text-6xl"
+            id="poster-proposals-heading"
+          >
+            Poster proposals
+          </h2>
+        </div>
+        <div class="flex flex-wrap items-center gap-3">
+          <a
+            class="inline-flex border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
+            href="/api/admin/poster-proposals.csv"
+            >Export CSV</a
+          >
+          <button
+            class="inline-flex border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper disabled:cursor-wait disabled:opacity-60"
+            data-admin-poster-refresh
+            type="button"
+          >
+            Refresh
+          </button>
+          <p
+            class="min-h-6 text-sm font-bold uppercase text-muted"
+            data-admin-poster-status
+            aria-live="polite"
+          >
+            Loading
+          </p>
+        </div>
+      </div>
+      <div class="grid gap-5" data-admin-poster-proposals>
+        <p class="border border-ink p-5 text-muted">
+          Loading poster proposals.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

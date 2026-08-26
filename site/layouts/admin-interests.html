@@ -1,0 +1,75 @@
+<BaseLayout
+  &title="(id 'SDLCAI Admin Interest List')"
+  &description="(id 'Inspect and export the SDLCAI 2026 registration interest list.')"
+  &ogDescription="(id 'Inspect and export the SDLCAI 2026 registration interest list.')"
+  &url="(id 'https://sdlcai.org/admin/interests/')"
+  &ogType="(id 'website')"
+  &robots="(id 'noindex,nofollow,noarchive')"
+>
+  <AdminNavigation></AdminNavigation>
+  <AdminPageHeader
+    &eyebrow="(id 'Admin / Registration contacts')"
+    &title="(id 'Interest list')"
+    &description="(id 'Inspect and export the SDLCAI 2026 registration interest list.')"
+  ></AdminPageHeader>
+
+  <section
+    class="px-5 py-10 md:px-8 md:py-14"
+    aria-labelledby="interest-list-heading"
+  >
+    <div class="mx-auto grid max-w-7xl gap-6">
+      <div class="grid gap-5 md:grid-cols-[1fr_auto] md:items-end">
+        <div>
+          <p class="font-headline text-sm font-black uppercase text-muted">
+            Registration updates
+          </p>
+          <h2
+            class="mt-2 font-headline text-4xl font-black uppercase leading-none md:text-6xl"
+            id="interest-list-heading"
+          >
+            Interest list
+          </h2>
+        </div>
+        <div class="flex flex-wrap items-center gap-3">
+          <a
+            class="inline-flex border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
+            href="/api/admin/interests.csv"
+            >Export CSV</a
+          >
+          <p
+            class="min-h-6 text-sm font-bold uppercase text-muted"
+            data-admin-status
+            aria-live="polite"
+          >
+            Loading
+          </p>
+        </div>
+      </div>
+      <div
+        class="overflow-x-auto border border-ink"
+        tabindex="0"
+        aria-label="Interest list table"
+      >
+        <table class="w-full min-w-[52rem] border-collapse text-left">
+          <thead class="bg-ink text-paper">
+            <tr>
+              <th class="px-4 py-3 text-sm font-bold uppercase">Email</th>
+              <th class="px-4 py-3 text-sm font-bold uppercase">Name</th>
+              <th class="px-4 py-3 text-sm font-bold uppercase">
+                Organization
+              </th>
+              <th class="px-4 py-3 text-sm font-bold uppercase">Created</th>
+            </tr>
+          </thead>
+          <tbody data-admin-interests>
+            <tr>
+              <td class="px-4 py-4 text-muted" colspan="4">
+                Loading interested people.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

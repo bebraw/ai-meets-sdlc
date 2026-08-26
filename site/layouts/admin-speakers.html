@@ -1,0 +1,278 @@
+<BaseLayout
+  &title="(id 'SDLCAI Admin Speakers')"
+  &description="(id 'Coordinate speaker access, profiles, talks, dinner details, promotion assets, and announcements.')"
+  &ogDescription="(id 'Coordinate speaker access, profiles, talks, dinner details, promotion assets, and announcements.')"
+  &url="(id 'https://sdlcai.org/admin/speakers/')"
+  &ogType="(id 'website')"
+  &robots="(id 'noindex,nofollow,noarchive')"
+>
+  <AdminNavigation></AdminNavigation>
+  <AdminPageHeader
+    &eyebrow="(id 'Admin / People and program')"
+    &title="(id 'Speakers')"
+    &description="(id 'Coordinate speaker access, profiles, talks, dinner details, promotion assets, and announcements.')"
+  ></AdminPageHeader>
+
+  <section
+    class="border-b border-ink bg-ink px-5 py-10 text-paper md:px-8 md:py-14"
+    aria-labelledby="speaker-workspace-heading"
+  >
+    <div class="mx-auto grid max-w-7xl gap-7">
+      <div class="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-end">
+        <div>
+          <p class="font-headline text-sm font-black uppercase text-paper/60">
+            Profiles / talks / promotion
+          </p>
+          <h2
+            class="mt-2 font-headline text-4xl font-black uppercase leading-none md:text-6xl"
+            id="speaker-workspace-heading"
+          >
+            Speaker workspace
+          </h2>
+          <p class="mt-4 max-w-3xl leading-7 text-paper/70">
+            Assign each speaker’s email, monitor their private dinner response,
+            and review field-level public changes before applying approved JSON
+            to Git. Speakers request their own one-time sign-in links.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a
+            class="border border-paper px-5 py-3 font-bold uppercase transition hover:bg-paper hover:text-ink"
+            href="/api/admin/speaker-dinner.csv"
+            >Caterer CSV</a
+          >
+          <button
+            class="border border-paper px-5 py-3 font-bold uppercase transition hover:bg-paper hover:text-ink disabled:cursor-wait disabled:opacity-60"
+            data-admin-speakers-refresh
+            type="button"
+          >
+            Refresh
+          </button>
+        </div>
+      </div>
+
+      <div class="grid gap-px bg-paper/40 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="bg-ink p-4">
+          <span class="text-sm font-bold uppercase text-paper/60"
+            >Contacts</span
+          >
+          <strong
+            class="mt-2 block font-headline text-4xl"
+            data-admin-speaker-count="contacts"
+            >0</strong
+          >
+        </div>
+        <div class="bg-ink p-4">
+          <span class="text-sm font-bold uppercase text-paper/60"
+            >Signed in</span
+          >
+          <strong
+            class="mt-2 block font-headline text-4xl"
+            data-admin-speaker-count="confirmed"
+            >0</strong
+          >
+        </div>
+        <div class="bg-ink p-4">
+          <span class="text-sm font-bold uppercase text-paper/60"
+            >Dinner replies</span
+          >
+          <strong
+            class="mt-2 block font-headline text-4xl"
+            data-admin-speaker-count="dinner"
+            >0</strong
+          >
+        </div>
+        <div class="bg-ink p-4">
+          <span class="text-sm font-bold uppercase text-paper/60"
+            >Awaiting review</span
+          >
+          <strong
+            class="mt-2 block font-headline text-4xl"
+            data-admin-speaker-count="submitted"
+            >0</strong
+          >
+        </div>
+      </div>
+
+      <details
+        class="border border-paper/50 p-5 md:p-7"
+        data-admin-announcement-panel
+      >
+        <summary
+          class="cursor-pointer font-headline text-2xl font-black uppercase"
+        >
+          Send speaker announcement
+        </summary>
+        <form class="mt-7 grid gap-6" data-admin-announcement-form novalidate>
+          <div class="grid gap-5 md:grid-cols-2">
+            <label class="grid gap-2">
+              <span class="font-bold uppercase">Category</span>
+              <select
+                class="border border-paper bg-ink px-4 py-3 text-paper outline-none focus:ring-2 focus:ring-paper"
+                name="category"
+              >
+                <option value="operational">Operational event update</option>
+                <option value="promotion">Optional promotion</option>
+              </select>
+            </label>
+            <label class="grid gap-2">
+              <span class="font-bold uppercase">Subject</span>
+              <input
+                class="border border-paper bg-ink px-4 py-3 text-paper outline-none focus:ring-2 focus:ring-paper"
+                name="subject"
+                maxlength="160"
+                required
+              />
+            </label>
+          </div>
+          <fieldset class="grid gap-3 border-t border-paper/40 pt-5">
+            <legend class="pr-3 font-bold uppercase">Speakers</legend>
+            <div class="flex flex-wrap gap-3">
+              <button
+                class="border border-paper px-3 py-2 text-xs font-bold uppercase"
+                data-admin-announcement-select-all
+                type="button"
+              >
+                Select all
+              </button>
+              <button
+                class="border border-paper px-3 py-2 text-xs font-bold uppercase"
+                data-admin-announcement-select-none
+                type="button"
+              >
+                Select none
+              </button>
+            </div>
+            <div
+              class="grid gap-px bg-paper/40 sm:grid-cols-2 lg:grid-cols-3"
+              data-admin-announcement-speakers
+            ></div>
+          </fieldset>
+          <label class="grid gap-2">
+            <span class="font-bold uppercase">Message</span>
+            <span class="text-sm leading-6 text-paper/60">
+              Each speaker receives a separate message with their name and the
+              SDLCAI reply address.
+            </span>
+            <textarea
+              class="min-h-52 resize-y border border-paper bg-ink px-4 py-3 leading-7 text-paper outline-none focus:ring-2 focus:ring-paper"
+              name="text_body"
+              maxlength="10000"
+              required
+            ></textarea>
+          </label>
+          <div
+            class="grid gap-4 border-t border-paper/40 pt-5 md:grid-cols-[minmax(0,1fr)_auto_auto] md:items-end"
+          >
+            <label class="grid gap-2">
+              <span class="font-bold uppercase">Test recipient</span>
+              <input
+                class="border border-paper bg-ink px-4 py-3 text-paper outline-none focus:ring-2 focus:ring-paper"
+                name="test_email"
+                type="email"
+                autocomplete="email"
+                placeholder="info@sdlcai.org"
+              />
+            </label>
+            <button
+              class="border border-paper px-5 py-3 font-bold uppercase"
+              data-admin-announcement-test
+              type="button"
+            >
+              Send test
+            </button>
+            <button
+              class="border border-paper bg-paper px-5 py-3 font-bold uppercase text-ink"
+              data-admin-announcement-preview
+              type="button"
+            >
+              Preview recipients
+            </button>
+          </div>
+          <p
+            class="min-h-6 text-sm font-bold uppercase text-paper/70"
+            data-admin-announcement-status
+            aria-live="polite"
+          ></p>
+
+          <section
+            class="grid gap-5 border-t border-paper/40 pt-6"
+            data-admin-announcement-preview-panel
+            hidden
+          >
+            <div class="grid gap-4 lg:grid-cols-2">
+              <div class="border border-paper/40 p-4">
+                <p class="text-xs font-bold uppercase text-paper/50">
+                  Exact text body
+                </p>
+                <pre
+                  class="mt-3 whitespace-pre-wrap font-sans text-sm leading-6"
+                  data-admin-announcement-text-preview
+                ></pre>
+              </div>
+              <div class="border border-paper/40 p-4">
+                <p class="text-xs font-bold uppercase text-paper/50">
+                  HTML body
+                </p>
+                <iframe
+                  class="mt-3 h-80 w-full bg-paper"
+                  data-admin-announcement-html-preview
+                  title="Announcement HTML preview"
+                ></iframe>
+              </div>
+            </div>
+            <div
+              class="grid gap-4 border border-paper/40 p-4 md:grid-cols-[1fr_auto] md:items-center"
+            >
+              <div>
+                <p class="font-headline text-2xl font-black uppercase">
+                  <span data-admin-announcement-recipient-count>0</span>
+                  eligible recipients
+                </p>
+                <p
+                  class="mt-2 text-sm text-paper/60"
+                  data-admin-announcement-recipient-list
+                ></p>
+              </div>
+              <label
+                class="grid grid-cols-[auto_1fr] items-start gap-3 font-bold uppercase"
+              >
+                <input
+                  class="mt-1 h-5 w-5"
+                  data-admin-announcement-confirm
+                  type="checkbox"
+                />
+                <span>I confirm this recipient count</span>
+              </label>
+            </div>
+            <button
+              class="w-fit border border-paper bg-paper px-6 py-4 font-bold uppercase text-ink disabled:cursor-not-allowed disabled:opacity-50"
+              data-admin-announcement-send
+              type="button"
+              disabled
+            >
+              Send separately to speakers
+            </button>
+          </section>
+        </form>
+        <div
+          class="mt-8 grid gap-3 border-t border-paper/40 pt-6"
+          data-admin-announcement-history
+        ></div>
+      </details>
+
+      <p
+        class="min-h-6 text-sm font-bold uppercase text-paper/70"
+        data-admin-speakers-status
+        aria-live="polite"
+      >
+        Loading
+      </p>
+      <div class="grid gap-5" data-admin-speakers>
+        <p class="border border-paper/50 p-5 text-paper/70">
+          Loading speakers.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

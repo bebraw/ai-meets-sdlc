@@ -1,581 +1,143 @@
 <BaseLayout
   &title="(id 'SDLCAI Admin')"
-  &description="(id 'Admin tools for SDLCAI poster proposals and interest list management.')"
-  &ogDescription="(id 'Admin tools for SDLCAI poster proposals and interest list management.')"
+  &description="(id 'Protected organizer tools for SDLCAI 2026.')"
+  &ogDescription="(id 'Protected organizer tools for SDLCAI 2026.')"
   &url="(id 'https://sdlcai.org/admin/')"
   &ogType="(id 'website')"
-  &robots="(id 'noindex,nofollow')"
+  &robots="(id 'noindex,nofollow,noarchive')"
 >
-  <section class="border-b border-ink">
-    <div
-      class="mx-auto grid max-w-7xl gap-8 px-5 py-12 md:grid-cols-[22rem_1fr] md:px-8 md:py-16"
-    >
-      <div>
-        <p class="font-headline text-sm font-black uppercase text-muted">
-          Admin
-        </p>
-        <h1
-          class="mt-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl"
-        >
-          Admin desk
-        </h1>
-      </div>
-      <div class="grid content-end gap-5">
-        <p class="max-w-3xl text-xl leading-8 text-muted">
-          Coordinate speaker access, profiles, talks, dinner details, poster
-          proposals, the seminar interest list, and protected screen assets.
-        </p>
-        <a
-          class="w-fit inline-flex border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
-          href="/admin/slides/"
-          >Screen assets</a
-        >
-      </div>
-    </div>
-  </section>
+  <AdminNavigation></AdminNavigation>
+  <AdminPageHeader
+    &eyebrow="(id 'Admin / Control room')"
+    &title="(id 'Admin desk')"
+    &description="(id 'Choose one focused workspace for speaker coordination, event submissions, contact exports, or protected presentation assets.')"
+  ></AdminPageHeader>
 
   <section
-    class="border-b border-ink bg-ink px-5 py-10 text-paper md:px-8 md:py-14"
-    aria-labelledby="speaker-workspace-heading"
+    class="border-b border-ink bg-ink px-5 py-10 text-paper md:px-8 md:py-16"
+    aria-labelledby="admin-workspaces-heading"
   >
     <div class="mx-auto grid max-w-7xl gap-7">
-      <div class="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-end">
+      <div class="grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
         <div>
           <p class="font-headline text-sm font-black uppercase text-paper/60">
-            Profiles / talks / promotion
+            Operations / 2026
           </p>
           <h2
             class="mt-2 font-headline text-4xl font-black uppercase leading-none md:text-6xl"
-            id="speaker-workspace-heading"
+            id="admin-workspaces-heading"
           >
-            Speaker workspace
-          </h2>
-          <p class="mt-4 max-w-3xl leading-7 text-paper/70">
-            Assign each speaker’s email, monitor their private dinner response,
-            and review field-level public changes before applying approved JSON
-            to Git. Speakers request their own one-time sign-in links.
-          </p>
-        </div>
-        <div class="flex flex-wrap gap-3">
-          <a
-            class="border border-paper px-5 py-3 font-bold uppercase transition hover:bg-paper hover:text-ink"
-            href="/api/admin/speaker-dinner.csv"
-            >Caterer CSV</a
-          >
-          <button
-            class="border border-paper px-5 py-3 font-bold uppercase transition hover:bg-paper hover:text-ink disabled:cursor-wait disabled:opacity-60"
-            data-admin-speakers-refresh
-            type="button"
-          >
-            Refresh
-          </button>
-        </div>
-      </div>
-
-      <div class="grid gap-px bg-paper/40 sm:grid-cols-2 lg:grid-cols-4">
-        <div class="bg-ink p-4">
-          <span class="text-sm font-bold uppercase text-paper/60"
-            >Contacts</span
-          >
-          <strong
-            class="mt-2 block font-headline text-4xl"
-            data-admin-speaker-count="contacts"
-            >0</strong
-          >
-        </div>
-        <div class="bg-ink p-4">
-          <span class="text-sm font-bold uppercase text-paper/60"
-            >Signed in</span
-          >
-          <strong
-            class="mt-2 block font-headline text-4xl"
-            data-admin-speaker-count="confirmed"
-            >0</strong
-          >
-        </div>
-        <div class="bg-ink p-4">
-          <span class="text-sm font-bold uppercase text-paper/60"
-            >Dinner replies</span
-          >
-          <strong
-            class="mt-2 block font-headline text-4xl"
-            data-admin-speaker-count="dinner"
-            >0</strong
-          >
-        </div>
-        <div class="bg-ink p-4">
-          <span class="text-sm font-bold uppercase text-paper/60"
-            >Awaiting review</span
-          >
-          <strong
-            class="mt-2 block font-headline text-4xl"
-            data-admin-speaker-count="submitted"
-            >0</strong
-          >
-        </div>
-      </div>
-
-      <details
-        class="border border-paper/50 p-5 md:p-7"
-        data-admin-announcement-panel
-      >
-        <summary
-          class="cursor-pointer font-headline text-2xl font-black uppercase"
-        >
-          Send speaker announcement
-        </summary>
-        <form class="mt-7 grid gap-6" data-admin-announcement-form novalidate>
-          <div class="grid gap-5 md:grid-cols-2">
-            <label class="grid gap-2">
-              <span class="font-bold uppercase">Category</span>
-              <select
-                class="border border-paper bg-ink px-4 py-3 text-paper outline-none focus:ring-2 focus:ring-paper"
-                name="category"
-              >
-                <option value="operational">Operational event update</option>
-                <option value="promotion">Optional promotion</option>
-              </select>
-            </label>
-            <label class="grid gap-2">
-              <span class="font-bold uppercase">Subject</span>
-              <input
-                class="border border-paper bg-ink px-4 py-3 text-paper outline-none focus:ring-2 focus:ring-paper"
-                name="subject"
-                maxlength="160"
-                required
-              />
-            </label>
-          </div>
-          <fieldset class="grid gap-3 border-t border-paper/40 pt-5">
-            <legend class="pr-3 font-bold uppercase">Speakers</legend>
-            <div class="flex flex-wrap gap-3">
-              <button
-                class="border border-paper px-3 py-2 text-xs font-bold uppercase"
-                data-admin-announcement-select-all
-                type="button"
-              >
-                Select all
-              </button>
-              <button
-                class="border border-paper px-3 py-2 text-xs font-bold uppercase"
-                data-admin-announcement-select-none
-                type="button"
-              >
-                Select none
-              </button>
-            </div>
-            <div
-              class="grid gap-px bg-paper/40 sm:grid-cols-2 lg:grid-cols-3"
-              data-admin-announcement-speakers
-            ></div>
-          </fieldset>
-          <label class="grid gap-2">
-            <span class="font-bold uppercase">Message</span>
-            <span class="text-sm leading-6 text-paper/60">
-              Each speaker receives a separate message with their name and the
-              SDLCAI reply address.
-            </span>
-            <textarea
-              class="min-h-52 resize-y border border-paper bg-ink px-4 py-3 leading-7 text-paper outline-none focus:ring-2 focus:ring-paper"
-              name="text_body"
-              maxlength="10000"
-              required
-            ></textarea>
-          </label>
-          <div
-            class="grid gap-4 border-t border-paper/40 pt-5 md:grid-cols-[minmax(0,1fr)_auto_auto] md:items-end"
-          >
-            <label class="grid gap-2">
-              <span class="font-bold uppercase">Test recipient</span>
-              <input
-                class="border border-paper bg-ink px-4 py-3 text-paper outline-none focus:ring-2 focus:ring-paper"
-                name="test_email"
-                type="email"
-                autocomplete="email"
-                placeholder="info@sdlcai.org"
-              />
-            </label>
-            <button
-              class="border border-paper px-5 py-3 font-bold uppercase"
-              data-admin-announcement-test
-              type="button"
-            >
-              Send test
-            </button>
-            <button
-              class="border border-paper bg-paper px-5 py-3 font-bold uppercase text-ink"
-              data-admin-announcement-preview
-              type="button"
-            >
-              Preview recipients
-            </button>
-          </div>
-          <p
-            class="min-h-6 text-sm font-bold uppercase text-paper/70"
-            data-admin-announcement-status
-            aria-live="polite"
-          ></p>
-
-          <section
-            class="grid gap-5 border-t border-paper/40 pt-6"
-            data-admin-announcement-preview-panel
-            hidden
-          >
-            <div class="grid gap-4 lg:grid-cols-2">
-              <div class="border border-paper/40 p-4">
-                <p class="text-xs font-bold uppercase text-paper/50">
-                  Exact text body
-                </p>
-                <pre
-                  class="mt-3 whitespace-pre-wrap font-sans text-sm leading-6"
-                  data-admin-announcement-text-preview
-                ></pre>
-              </div>
-              <div class="border border-paper/40 p-4">
-                <p class="text-xs font-bold uppercase text-paper/50">
-                  HTML body
-                </p>
-                <iframe
-                  class="mt-3 h-80 w-full bg-paper"
-                  data-admin-announcement-html-preview
-                  title="Announcement HTML preview"
-                ></iframe>
-              </div>
-            </div>
-            <div
-              class="grid gap-4 border border-paper/40 p-4 md:grid-cols-[1fr_auto] md:items-center"
-            >
-              <div>
-                <p class="font-headline text-2xl font-black uppercase">
-                  <span data-admin-announcement-recipient-count>0</span>
-                  eligible recipients
-                </p>
-                <p
-                  class="mt-2 text-sm text-paper/60"
-                  data-admin-announcement-recipient-list
-                ></p>
-              </div>
-              <label
-                class="grid grid-cols-[auto_1fr] items-start gap-3 font-bold uppercase"
-              >
-                <input
-                  class="mt-1 h-5 w-5"
-                  data-admin-announcement-confirm
-                  type="checkbox"
-                />
-                <span>I confirm this recipient count</span>
-              </label>
-            </div>
-            <button
-              class="w-fit border border-paper bg-paper px-6 py-4 font-bold uppercase text-ink disabled:cursor-not-allowed disabled:opacity-50"
-              data-admin-announcement-send
-              type="button"
-              disabled
-            >
-              Send separately to speakers
-            </button>
-          </section>
-        </form>
-        <div
-          class="mt-8 grid gap-3 border-t border-paper/40 pt-6"
-          data-admin-announcement-history
-        ></div>
-      </details>
-
-      <p
-        class="min-h-6 text-sm font-bold uppercase text-paper/70"
-        data-admin-speakers-status
-        aria-live="polite"
-      >
-        Loading
-      </p>
-      <div class="grid gap-5" data-admin-speakers>
-        <p class="border border-paper/50 p-5 text-paper/70">
-          Loading speakers.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section
-    class="border-b border-ink px-5 py-10 md:px-8 md:py-14"
-    aria-labelledby="speaker-dinner-heading"
-  >
-    <details class="mx-auto max-w-7xl border border-ink p-5 md:p-7">
-      <summary
-        class="cursor-pointer font-headline text-2xl font-black uppercase"
-      >
-        Legacy dinner links and shared responses
-      </summary>
-      <div class="mt-8 grid gap-6">
-        <div class="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-end">
-          <div>
-            <p class="font-headline text-sm font-black uppercase text-muted">
-              12 October / private
-            </p>
-            <h2
-              class="mt-2 font-headline text-4xl font-black uppercase leading-none md:text-6xl"
-              id="speaker-dinner-heading"
-            >
-              Legacy dinner links
-            </h2>
-            <p class="mt-4 max-w-3xl leading-7 text-muted">
-              Current speakers now answer inside their authenticated workspace.
-              Keep these older personal and shared links only for responses
-              already collected before that change. Names and food details
-              remain encrypted and omitted from automated backups.
-            </p>
-          </div>
-          <div class="flex flex-wrap items-center gap-3">
-            <a
-              class="inline-flex border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
-              href="/api/admin/speaker-dinner.csv"
-              >Caterer CSV</a
-            >
-            <button
-              class="inline-flex border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper disabled:cursor-wait disabled:opacity-60"
-              data-admin-dinner-refresh
-              type="button"
-            >
-              Refresh
-            </button>
-          </div>
-        </div>
-
-        <div
-          class="grid gap-5 border border-ink bg-ink p-5 text-paper md:grid-cols-[1fr_auto] md:items-center"
-        >
-          <div>
-            <p class="text-xs font-bold uppercase text-paper/60">
-              Legacy fallback
-            </p>
-            <h3 class="mt-2 font-headline text-3xl font-black uppercase">
-              Shared link
-            </h3>
-            <p class="mt-3 max-w-3xl text-sm leading-6 text-paper/70">
-              One link for speakers and organizers. Respondents enter their own
-              name. Replacing the link blocks the previous URL but keeps
-              responses.
-            </p>
-            <p
-              class="mt-3 min-h-5 text-xs font-bold uppercase text-paper/70"
-              data-admin-dinner-shared-invite-status
-              aria-live="polite"
-            ></p>
-            <div class="mt-3" data-admin-dinner-shared-link></div>
-          </div>
-          <button
-            class="border border-paper bg-paper px-5 py-3 font-bold uppercase text-ink transition hover:bg-ink hover:text-paper disabled:cursor-wait disabled:opacity-60"
-            data-admin-dinner-shared-invite
-            type="button"
-          >
-            Create shared link
-          </button>
-        </div>
-
-        <div
-          class="grid gap-px bg-ink sm:grid-cols-2 lg:grid-cols-5"
-          data-admin-dinner-summary
-        >
-          <div class="bg-paper p-4">
-            <span class="text-sm font-bold uppercase text-muted">Invited</span
-            ><strong
-              class="mt-2 block font-headline text-4xl"
-              data-admin-dinner-count="invited"
-              >0</strong
-            >
-          </div>
-          <div class="bg-paper p-4">
-            <span class="text-sm font-bold uppercase text-muted">Attending</span
-            ><strong
-              class="mt-2 block font-headline text-4xl"
-              data-admin-dinner-count="attending"
-              >0</strong
-            >
-          </div>
-          <div class="bg-paper p-4">
-            <span class="text-sm font-bold uppercase text-muted">Declined</span
-            ><strong
-              class="mt-2 block font-headline text-4xl"
-              data-admin-dinner-count="not_attending"
-              >0</strong
-            >
-          </div>
-          <div class="bg-paper p-4">
-            <span class="text-sm font-bold uppercase text-muted"
-              >Awaiting reply</span
-            ><strong
-              class="mt-2 block font-headline text-4xl"
-              data-admin-dinner-count="pending"
-              >0</strong
-            >
-          </div>
-          <div class="bg-paper p-4">
-            <span class="text-sm font-bold uppercase text-muted"
-              >Shared replies</span
-            ><strong
-              class="mt-2 block font-headline text-4xl"
-              data-admin-dinner-count="shared"
-              >0</strong
-            >
-          </div>
-        </div>
-
-        <p
-          class="min-h-6 text-sm font-bold uppercase text-muted"
-          data-admin-dinner-status
-          aria-live="polite"
-        >
-          Loading
-        </p>
-        <div class="grid gap-4">
-          <h3 class="font-headline text-3xl font-black uppercase">
-            Shared-link responses
-          </h3>
-          <div class="grid gap-4" data-admin-dinner-shared-responses>
-            <p class="border border-ink p-5 text-muted">
-              Loading shared-link responses.
-            </p>
-          </div>
-        </div>
-
-        <div class="grid gap-4">
-          <h3 class="font-headline text-3xl font-black uppercase">
-            Legacy personalized links
-          </h3>
-          <div class="grid gap-4" data-admin-dinner-speakers>
-            <p class="border border-ink p-5 text-muted">Loading speakers.</p>
-          </div>
-        </div>
-
-        <div
-          class="grid gap-4 border border-ink p-5 md:grid-cols-[1fr_auto] md:items-center"
-        >
-          <div>
-            <h3 class="font-headline text-2xl font-black uppercase">
-              Retention
-            </h3>
-            <p class="mt-2 max-w-3xl text-sm leading-6 text-muted">
-              All invitation tokens and responses are automatically deleted
-              after 26 October 2026. Use this only when catering is complete and
-              the information is no longer needed.
-            </p>
-          </div>
-          <button
-            class="border border-red-700 px-5 py-3 font-bold uppercase text-red-700 transition hover:bg-red-700 hover:text-white disabled:cursor-wait disabled:opacity-60"
-            data-admin-dinner-purge
-            type="button"
-          >
-            Delete dinner data
-          </button>
-        </div>
-      </div>
-    </details>
-  </section>
-
-  <section
-    class="border-b border-ink px-5 py-10 md:px-8 md:py-14"
-    aria-labelledby="poster-proposals-heading"
-  >
-    <div class="mx-auto grid max-w-7xl gap-6">
-      <div class="grid gap-5 md:grid-cols-[1fr_auto] md:items-end">
-        <div>
-          <p class="font-headline text-sm font-black uppercase text-muted">
-            Rolling review
-          </p>
-          <h2
-            class="mt-2 font-headline text-4xl font-black uppercase leading-none md:text-6xl"
-            id="poster-proposals-heading"
-          >
-            Poster proposals
+            Workspaces
           </h2>
         </div>
-        <div class="flex flex-wrap items-center gap-3">
-          <a
-            class="inline-flex border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
-            href="/api/admin/poster-proposals.csv"
-            >Export CSV</a
-          >
-          <button
-            class="inline-flex border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper disabled:cursor-wait disabled:opacity-60"
-            data-admin-poster-refresh
-            type="button"
-          >
-            Refresh
-          </button>
-          <p
-            class="min-h-6 text-sm font-bold uppercase text-muted"
-            data-admin-poster-status
-            aria-live="polite"
-          >
-            Loading
-          </p>
-        </div>
-      </div>
-      <div class="grid gap-5" data-admin-poster-proposals>
-        <p class="border border-ink p-5 text-muted">
-          Loading poster proposals.
+        <p class="max-w-md text-sm font-bold uppercase leading-6 text-paper/60">
+          Every area is private, uncached, and excluded from search indexing.
         </p>
       </div>
-    </div>
-  </section>
 
-  <section
-    class="px-5 py-10 md:px-8 md:py-14"
-    aria-labelledby="interest-list-heading"
-  >
-    <div class="mx-auto grid max-w-7xl gap-6">
-      <div class="grid gap-5 md:grid-cols-[1fr_auto] md:items-end">
-        <div>
-          <p class="font-headline text-sm font-black uppercase text-muted">
-            Registration updates
-          </p>
-          <h2
-            class="mt-2 font-headline text-4xl font-black uppercase leading-none md:text-6xl"
-            id="interest-list-heading"
-          >
-            Interest list
-          </h2>
-        </div>
-        <div class="flex flex-wrap items-center gap-3">
-          <a
-            class="inline-flex border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
-            href="/api/admin/interests.csv"
-            >Export CSV</a
-          >
-          <p
-            class="min-h-6 text-sm font-bold uppercase text-muted"
-            data-admin-status
-            aria-live="polite"
-          >
-            Loading
-          </p>
-        </div>
-      </div>
       <div
-        class="overflow-x-auto border border-ink"
-        tabindex="0"
-        aria-label="Interest list table"
+        class="grid gap-px border border-paper/40 bg-paper/40 md:grid-cols-2"
       >
-        <table class="w-full min-w-[52rem] border-collapse text-left">
-          <thead class="bg-ink text-paper">
-            <tr>
-              <th class="px-4 py-3 text-sm font-bold uppercase">Email</th>
-              <th class="px-4 py-3 text-sm font-bold uppercase">Name</th>
-              <th class="px-4 py-3 text-sm font-bold uppercase">
-                Organization
-              </th>
-              <th class="px-4 py-3 text-sm font-bold uppercase">Created</th>
-            </tr>
-          </thead>
-          <tbody data-admin-interests>
-            <tr>
-              <td class="px-4 py-4 text-muted" colspan="4">
-                Loading interested people.
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <a
+          class="group grid min-h-64 content-between gap-8 bg-ink p-6 transition hover:bg-paper hover:text-ink md:p-8"
+          href="/admin/speakers/"
+        >
+          <span
+            class="font-headline text-sm font-black uppercase text-paper/60 transition group-hover:text-muted"
+            >01 / People and program</span
+          >
+          <span>
+            <strong
+              class="block font-headline text-5xl font-black uppercase leading-none md:text-7xl"
+              >Speakers</strong
+            >
+            <span
+              class="mt-4 block max-w-xl text-lg leading-7 text-paper/70 transition group-hover:text-muted"
+              >Assign email access, review profile and talk changes, manage
+              promotion uploads, and send speaker announcements.</span
+            >
+          </span>
+        </a>
+        <a
+          class="group grid min-h-64 content-between gap-8 bg-ink p-6 transition hover:bg-paper hover:text-ink md:p-8"
+          href="/admin/dinner/"
+        >
+          <span
+            class="font-headline text-sm font-black uppercase text-paper/60 transition group-hover:text-muted"
+            >02 / Catering</span
+          >
+          <span>
+            <strong
+              class="block font-headline text-5xl font-black uppercase leading-none md:text-7xl"
+              >Dinner</strong
+            >
+            <span
+              class="mt-4 block max-w-xl text-lg leading-7 text-paper/70 transition group-hover:text-muted"
+              >Export caterer data and maintain the legacy private and shared
+              RSVP links still needed for earlier responses.</span
+            >
+          </span>
+        </a>
+        <a
+          class="group grid min-h-64 content-between gap-8 bg-ink p-6 transition hover:bg-paper hover:text-ink md:p-8"
+          href="/admin/posters/"
+        >
+          <span
+            class="font-headline text-sm font-black uppercase text-paper/60 transition group-hover:text-muted"
+            >03 / Rolling review</span
+          >
+          <span>
+            <strong
+              class="block font-headline text-5xl font-black uppercase leading-none md:text-7xl"
+              >Posters</strong
+            >
+            <span
+              class="mt-4 block max-w-xl text-lg leading-7 text-paper/70 transition group-hover:text-muted"
+              >Review proposals, update decisions, and export the confidential
+              submission list.</span
+            >
+          </span>
+        </a>
+        <a
+          class="group grid min-h-64 content-between gap-8 bg-ink p-6 transition hover:bg-paper hover:text-ink md:p-8"
+          href="/admin/interests/"
+        >
+          <span
+            class="font-headline text-sm font-black uppercase text-paper/60 transition group-hover:text-muted"
+            >04 / Registration contacts</span
+          >
+          <span>
+            <strong
+              class="block font-headline text-5xl font-black uppercase leading-none md:text-7xl"
+              >Interest list</strong
+            >
+            <span
+              class="mt-4 block max-w-xl text-lg leading-7 text-paper/70 transition group-hover:text-muted"
+              >Inspect and export the people who asked to hear when registration
+              opened.</span
+            >
+          </span>
+        </a>
+        <a
+          class="group grid min-h-64 content-between gap-8 bg-ink p-6 transition hover:bg-paper hover:text-ink md:col-span-2 md:p-8"
+          href="/admin/slides/"
+        >
+          <span
+            class="font-headline text-sm font-black uppercase text-paper/60 transition group-hover:text-muted"
+            >05 / Event day</span
+          >
+          <span>
+            <strong
+              class="block font-headline text-5xl font-black uppercase leading-none md:text-7xl"
+              >Screen assets</strong
+            >
+            <span
+              class="mt-4 block max-w-2xl text-lg leading-7 text-paper/70 transition group-hover:text-muted"
+              >Open protected schedule displays, session slides, and
+              downloadable event artwork.</span
+            >
+          </span>
+        </a>
       </div>
     </div>
   </section>

@@ -57,6 +57,10 @@ for (const pathname of ["/slides/", "/slides/deck/", "/slides/schedule/"]) {
 
 for (const pathname of [
   "/admin/",
+  "/admin/speakers/",
+  "/admin/dinner/",
+  "/admin/posters/",
+  "/admin/interests/",
   "/admin-slides/",
   "/admin-slide-deck/",
   "/admin-slide-schedule/",

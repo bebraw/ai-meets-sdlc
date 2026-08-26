@@ -187,6 +187,62 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   );
   assert.equal(unauthorizedResponse.status, 401);
 
+  const unauthorizedAdminPageResponse = await worker.fetch(
+    `${origin}/admin/speakers/`,
+    { headers: { accept: "text/html" } },
+  );
+  assert.equal(unauthorizedAdminPageResponse.status, 401);
+
+  const adminPages = [
+    {
+      pathname: "/admin/",
+      includes: [/href="\/admin\/speakers\/"/, /href="\/admin\/posters\/"/],
+      excludes: [/data-admin-speakers/, /data-admin-poster-proposals/],
+    },
+    {
+      pathname: "/admin/speakers/",
+      includes: [/data-admin-speakers/, /data-admin-announcement-form/],
+      excludes: [/data-admin-poster-proposals/, /data-admin-interests/],
+    },
+    {
+      pathname: "/admin/dinner/",
+      includes: [/data-admin-dinner-speakers/, /data-admin-dinner-summary/],
+      excludes: [/data-admin-speakers(?:\s|>)/, /data-admin-poster-proposals/],
+    },
+    {
+      pathname: "/admin/posters/",
+      includes: [/data-admin-poster-proposals/, /data-admin-poster-refresh/],
+      excludes: [/data-admin-speakers/, /data-admin-interests/],
+    },
+    {
+      pathname: "/admin/interests/",
+      includes: [/data-admin-interests/, /\/api\/admin\/interests\.csv/],
+      excludes: [/data-admin-speakers/, /data-admin-poster-proposals/],
+    },
+  ];
+
+  for (const adminPage of adminPages) {
+    const response = await worker.fetch(`${origin}${adminPage.pathname}`, {
+      headers: {
+        accept: "text/html",
+        authorization: adminAuthorization,
+      },
+    });
+    const html = await response.text();
+
+    assert.equal(response.status, 200, adminPage.pathname);
+    assert.equal(response.headers.get("cache-control"), "no-store");
+    assert.equal(
+      response.headers.get("x-robots-tag"),
+      "noindex, nofollow, noarchive",
+    );
+    assert.match(response.headers.get("vary") ?? "", /authorization/i);
+
+    for (const pattern of adminPage.includes) assert.match(html, pattern);
+    for (const pattern of adminPage.excludes)
+      assert.doesNotMatch(html, pattern);
+  }
+
   const publicSlidesResponse = await worker.fetch(`${origin}/slides/`, {
     headers: { accept: "text/html" },
   });

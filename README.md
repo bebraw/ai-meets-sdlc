@@ -141,10 +141,11 @@ Stable filenames are based on slide IDs rather than schedule order. Each stable
 URL redirects to a SHA-256-versioned URL, so unchanged inputs reuse the same
 image across deployments.
 
-The deployed Worker also serves `/admin/` and `/admin/slides/` behind HTTP Basic
-auth. Event materials under `/assets/slides/`, including the Aalto-exclusive
-registration ad, use the same protection. The admin desk lists interested
-people and links to `/api/admin/interests.csv` for CSV export.
+The deployed Worker serves a protected dashboard at `/admin/`, with focused
+workspaces at `/admin/speakers/`, `/admin/dinner/`, `/admin/posters/`,
+`/admin/interests/`, and `/admin/slides/`. All use HTTP Basic auth. Event
+materials under `/assets/slides/`, including the Aalto-exclusive registration
+ad, use the same protection.
 
 The schedule and session deck derive from `site/data/seminar.json`,
 `site/data/schedule.json`, `site/data/speakers.json`, and

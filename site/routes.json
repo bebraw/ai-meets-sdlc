@@ -300,7 +300,6 @@
   },
   "admin": {
     "layout": "admin",
-    "scripts": [{ "name": "index" }, { "name": "admin-speakers" }],
     "dataSources": {
       "seminar": {
         "operation": "seminar"
@@ -309,9 +308,59 @@
     "context": {
       "meta": {
         "title": "SDLCAI Admin",
-        "description": "Admin tools for SDLCAI poster proposals and interest list management.",
+        "description": "Protected organizer tools for SDLCAI 2026.",
         "ogEyebrow": "Admin",
-        "ogDescription": "Admin tools for SDLCAI poster proposals and interest list management."
+        "ogDescription": "Protected organizer tools for SDLCAI 2026."
+      }
+    },
+    "routes": {
+      "speakers": {
+        "layout": "admin-speakers",
+        "scripts": [{ "name": "admin-speakers" }],
+        "context": {
+          "meta": {
+            "title": "SDLCAI Admin Speakers",
+            "description": "Coordinate speaker access, profiles, talks, dinner details, promotion assets, and announcements.",
+            "ogEyebrow": "Admin speakers",
+            "ogDescription": "Coordinate SDLCAI speaker access, content, and promotion."
+          }
+        }
+      },
+      "dinner": {
+        "layout": "admin-dinner",
+        "scripts": [{ "name": "index" }],
+        "context": {
+          "meta": {
+            "title": "SDLCAI Admin Dinner",
+            "description": "Export caterer data and manage legacy SDLCAI speaker dinner responses.",
+            "ogEyebrow": "Admin dinner",
+            "ogDescription": "Manage SDLCAI speaker dinner responses."
+          }
+        }
+      },
+      "posters": {
+        "layout": "admin-posters",
+        "scripts": [{ "name": "index" }],
+        "context": {
+          "meta": {
+            "title": "SDLCAI Admin Posters",
+            "description": "Review and export SDLCAI 2026 poster proposals.",
+            "ogEyebrow": "Admin posters",
+            "ogDescription": "Review SDLCAI 2026 poster proposals."
+          }
+        }
+      },
+      "interests": {
+        "layout": "admin-interests",
+        "scripts": [{ "name": "index" }],
+        "context": {
+          "meta": {
+            "title": "SDLCAI Admin Interest List",
+            "description": "Inspect and export the SDLCAI 2026 registration interest list.",
+            "ogEyebrow": "Admin interest list",
+            "ogDescription": "Inspect the SDLCAI 2026 registration interest list."
+          }
+        }
       }
     }
   },

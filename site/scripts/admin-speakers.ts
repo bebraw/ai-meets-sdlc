@@ -464,6 +464,7 @@ function setAnnouncementStatus(message: string, isError = false): void {
   if (!announcementStatus) return;
   announcementStatus.textContent = message;
   announcementStatus.classList.toggle("text-red-300", isError);
+  announcementStatus.classList.toggle("dark:text-red-700", isError);
 }
 
 function setTextContent(selector: string, value: string): void {
@@ -1147,6 +1148,7 @@ function setStatus(message: string, isError = false): void {
   if (!status) return;
   status.textContent = message;
   status.classList.toggle("text-red-300", isError);
+  status.classList.toggle("dark:text-red-700", isError);
 }
 
 function node<K extends keyof HTMLElementTagNameMap>(

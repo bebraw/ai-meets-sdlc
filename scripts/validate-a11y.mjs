@@ -6,9 +6,7 @@ import { chromium } from "playwright";
 
 const buildDir = path.resolve("build");
 const routesConfig = JSON.parse(await readFile("site/routes.json", "utf8"));
-const routes = Object.keys(routesConfig)
-  .filter((route) => !route.endsWith(".xml"))
-  .map((route) => (route === "/" ? "/" : `/${route}/`));
+const routes = getConfiguredRoutes(routesConfig);
 const viewports = [
   { name: "mobile", width: 390, height: 844 },
   { name: "desktop", width: 1440, height: 900 },
@@ -21,6 +19,21 @@ const debug = (...args) => {
     console.error("[a11y]", ...args);
   }
 };
+
+function getConfiguredRoutes(config, prefix = "") {
+  return Object.entries(config).flatMap(([route, definition]) => {
+    const pathname =
+      route === "/" ? "/" : `${prefix}/${route}`.replaceAll("//", "/");
+    const normalizedPathname = pathname === "/" ? "/" : `${pathname}/`;
+    const childRoutes = definition.routes
+      ? getConfiguredRoutes(definition.routes, pathname)
+      : [];
+
+    return route.endsWith(".xml")
+      ? childRoutes
+      : [normalizedPathname, ...childRoutes];
+  });
+}
 const axeRunOptions = {
   runOnly: {
     type: "tag",

@@ -224,11 +224,13 @@ npm run slides:export:social
 This local-only convenience command writes the stable filenames from the same
 manifest and enforces each platform's byte limit.
 
-The admin pages are available at `/admin/` and `/admin/slides/`. Every
-`/api/admin/` route and all `/assets/slides/` downloads are protected with HTTP
-Basic auth. This keeps the Aalto-exclusive registration ad private while the
-general event slides remain shareable. Protected pages and downloads use
-`Cache-Control: no-store` and `X-Robots-Tag: noindex, nofollow, noarchive`.
+The protected admin dashboard at `/admin/` links to focused workspaces at
+`/admin/speakers/`, `/admin/dinner/`, `/admin/posters/`, `/admin/interests/`,
+and `/admin/slides/`. Every `/api/admin/` route and all `/assets/slides/`
+downloads are protected with HTTP Basic auth. This keeps the Aalto-exclusive
+registration ad private while the general event slides remain shareable.
+Protected pages and downloads use `Cache-Control: no-store` and
+`X-Robots-Tag: noindex, nofollow, noarchive`.
 
 | Method | Endpoint                             | Purpose                                      |
 | ------ | ------------------------------------ | -------------------------------------------- |
@@ -353,18 +355,19 @@ For production rollout:
 3. Deploy the Worker and static build.
 4. Open `/posters/`, verify the deadline and A0/A1 portrait terms, and submit a
    controlled test proposal.
-5. Open `/admin/` with Basic auth, confirm the proposal decrypts, change its
-   status, and verify both proposal and interest CSV exports.
+5. Open `/admin/posters/` with Basic auth, confirm the proposal decrypts, and
+   change its status. Then verify the proposal and interest CSV exports from
+   `/admin/posters/` and `/admin/interests/`.
 6. After the next scheduled trigger, confirm the
    `poster-proposals/latest.json` manifest and its referenced dated object exist
    in R2.
 7. Request one stable path from `/slides/`, follow its version redirect, verify
    the response is a JPEG, and confirm the corresponding `social/v1/` object
    exists in `ai-meets-sdlc-social-exports`.
-8. Assign one controlled speaker email in `/admin/`, request a sign-in link from
-   `/speaker/`, redeem it once, confirm replay fails, save dinner details and a
-   profile draft, preview a promotion graphic, and exercise organizer approval
-   without applying the test revision to Git.
+8. Assign one controlled speaker email in `/admin/speakers/`, request a sign-in
+   link from `/speaker/`, redeem it once, confirm replay fails, save dinner
+   details and a profile draft, preview a promotion graphic, and exercise
+   organizer approval without applying the test revision to Git.
 9. Upload a controlled portrait and confirm only the 400x400 WebP derivative
    appears in `ai-meets-sdlc-speaker-uploads`.
 10. Register the Stream webhook, upload a short private test video, confirm the
