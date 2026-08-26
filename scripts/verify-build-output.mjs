@@ -60,6 +60,7 @@ for (const pathname of [
   "/admin-slides/",
   "/admin-slide-deck/",
   "/admin-slide-schedule/",
+  "/speaker/",
 ]) {
   if (sitemap.includes(`<loc>https://sdlcai.org${pathname}</loc>`)) {
     failures.push(`sitemap.xml: includes private/internal route ${pathname}`);

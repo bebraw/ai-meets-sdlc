@@ -351,6 +351,23 @@
       }
     }
   },
+  "speaker": {
+    "layout": "speaker-workspace",
+    "scripts": [{ "name": "speaker-workspace" }],
+    "dataSources": {
+      "seminar": {
+        "operation": "seminar"
+      }
+    },
+    "context": {
+      "meta": {
+        "title": "SDLCAI Speaker Workspace",
+        "description": "Private workspace for SDLCAI speakers to review their profile, talk details, and promotion material.",
+        "ogEyebrow": "Speaker workspace",
+        "ogDescription": "Private workspace for SDLCAI speakers."
+      }
+    }
+  },
   "contact": {
     "layout": "contact",
     "scripts": [{ "name": "index" }],

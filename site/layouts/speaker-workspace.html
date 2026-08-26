@@ -1,0 +1,459 @@
+<BaseLayout
+  &title="(id 'SDLCAI Speaker Workspace')"
+  &description="(id 'Private workspace for SDLCAI speakers to review their profile, talk details, and promotion material.')"
+  &ogDescription="(id 'Private workspace for SDLCAI speakers.')"
+  &ogType="(id 'website')"
+  &robots="(id 'noindex,nofollow,noarchive')"
+>
+  <div class="min-h-[calc(100vh-10rem)] border-b border-ink">
+    <header
+      class="relative overflow-hidden border-b border-ink bg-ink text-paper"
+    >
+      <div
+        class="pointer-events-none absolute -right-24 -top-36 h-[32rem] w-[32rem] rounded-full border border-paper/25 text-paper/10 halftone"
+      ></div>
+      <div class="relative mx-auto max-w-7xl px-5 py-10 md:px-8 md:py-14">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <p class="font-headline text-sm font-black uppercase tracking-wide">
+            Private / Speaker workspace
+          </p>
+          <button
+            class="border border-paper px-4 py-2 text-sm font-bold uppercase transition hover:bg-paper hover:text-ink"
+            data-speaker-logout
+            type="button"
+            hidden
+          >
+            Sign out
+          </button>
+        </div>
+        <div
+          class="mt-10 grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-end"
+        >
+          <div>
+            <p class="font-headline text-sm font-black uppercase text-paper/65">
+              SDLCAI 2026 / Control room
+            </p>
+            <h1
+              class="mt-3 max-w-5xl font-headline text-[clamp(3.8rem,10vw,8rem)] font-black uppercase leading-[0.78]"
+            >
+              Your public story
+            </h1>
+          </div>
+          <p
+            class="max-w-md border-l border-paper/45 pl-5 text-lg leading-7 text-paper/75"
+          >
+            Shape how you and your session appear across the event programme,
+            slides, and promotional material.
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <section class="mx-auto max-w-7xl px-5 py-10 md:px-8 md:py-16">
+      <div class="grid min-h-64 content-center gap-3" data-speaker-loading>
+        <p class="font-headline text-sm font-black uppercase text-muted">
+          Checking your workspace
+        </p>
+        <p class="font-headline text-4xl font-black uppercase">One moment.</p>
+      </div>
+
+      <div
+        class="grid min-h-64 max-w-3xl content-center gap-5 border border-ink p-6 md:p-10"
+        data-speaker-error
+        hidden
+      >
+        <p class="font-headline text-sm font-black uppercase text-muted">
+          Private workspace
+        </p>
+        <h2 class="font-headline text-4xl font-black uppercase leading-none">
+          Open your invitation link
+        </h2>
+        <p
+          class="max-w-2xl text-lg leading-7 text-muted"
+          data-speaker-error-message
+        >
+          This page needs the unique link sent to your speaker email address.
+        </p>
+        <a
+          class="w-fit border border-ink bg-ink px-5 py-3 font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
+          href="mailto:info@sdlcai.org?subject=SDLCAI%20speaker%20workspace%20invitation"
+          >Ask for a new link</a
+        >
+      </div>
+
+      <div class="grid gap-12" data-speaker-workspace hidden>
+        <div
+          class="grid gap-px border border-ink bg-ink sm:grid-cols-3"
+          aria-label="Workspace status"
+        >
+          <div class="bg-paper p-5">
+            <p class="text-xs font-bold uppercase text-muted">Speaker</p>
+            <p
+              class="mt-2 font-headline text-2xl font-black uppercase"
+              data-speaker-name
+            ></p>
+          </div>
+          <div class="bg-paper p-5">
+            <p class="text-xs font-bold uppercase text-muted">Revision</p>
+            <p
+              class="mt-2 font-headline text-2xl font-black uppercase"
+              data-speaker-revision
+            >
+              Published
+            </p>
+          </div>
+          <div class="bg-paper p-5">
+            <p class="text-xs font-bold uppercase text-muted">Publishing</p>
+            <p class="mt-2 font-headline text-2xl font-black uppercase">
+              Organizer review
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="grid gap-10 lg:grid-cols-[15rem_minmax(0,1fr)] lg:items-start"
+        >
+          <aside class="grid gap-5 lg:sticky lg:top-6">
+            <div class="border border-ink p-4">
+              <img
+                class="aspect-square w-full border border-ink object-cover grayscale"
+                data-speaker-photo
+                src="/assets/logo-square.svg"
+                alt=""
+                width="400"
+                height="400"
+                loading="lazy"
+                decoding="async"
+              />
+              <p class="mt-3 text-sm leading-6 text-muted">
+                Your current public portrait. Photo replacement is reviewed
+                separately from text changes.
+              </p>
+            </div>
+            <nav
+              class="border-y border-ink py-4"
+              aria-label="Workspace sections"
+            >
+              <ol class="grid gap-3 font-bold uppercase">
+                <li>
+                  <a class="hover:underline" href="#profile">01 / Profile</a>
+                </li>
+                <li><a class="hover:underline" href="#talks">02 / Talks</a></li>
+                <li>
+                  <a class="hover:underline" href="#promotion"
+                    >03 / Promotion</a
+                  >
+                </li>
+                <li>
+                  <a class="hover:underline" href="#video">04 / Topic video</a>
+                </li>
+              </ol>
+            </nav>
+          </aside>
+
+          <div class="grid gap-14">
+            <form class="grid gap-14" data-speaker-form novalidate>
+              <section
+                class="scroll-mt-6 border-t-4 border-ink pt-5"
+                id="profile"
+              >
+                <div class="grid gap-2 border-b border-ink pb-5">
+                  <p
+                    class="font-headline text-sm font-black uppercase text-muted"
+                  >
+                    01 / Public profile
+                  </p>
+                  <h2
+                    class="font-headline text-5xl font-black uppercase leading-none"
+                  >
+                    How you appear
+                  </h2>
+                </div>
+
+                <div class="mt-7 grid gap-6 sm:grid-cols-2">
+                  <label class="grid gap-2">
+                    <span class="font-bold uppercase">Name</span>
+                    <input
+                      class="w-full border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                      name="profile.name"
+                      maxlength="120"
+                      autocomplete="name"
+                      required
+                    />
+                    <span
+                      class="text-sm font-bold text-signal"
+                      data-error-for="profile.name"
+                    ></span>
+                  </label>
+                  <label class="grid gap-2">
+                    <span class="font-bold uppercase">Role / organization</span>
+                    <input
+                      class="w-full border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                      name="profile.role"
+                      maxlength="160"
+                      autocomplete="organization-title"
+                      required
+                    />
+                    <span
+                      class="text-sm font-bold text-signal"
+                      data-error-for="profile.role"
+                    ></span>
+                  </label>
+                  <label class="grid gap-2 sm:col-span-2">
+                    <span class="font-bold uppercase">Biography</span>
+                    <span class="text-sm leading-6 text-muted">
+                      Plain text and HTTPS Markdown links are supported. HTML
+                      and embedded images are not.
+                    </span>
+                    <textarea
+                      class="min-h-52 w-full resize-y border border-ink bg-paper px-4 py-3 leading-7 outline-none focus:ring-2 focus:ring-ink"
+                      name="profile.bio"
+                      maxlength="2000"
+                      required
+                    ></textarea>
+                    <span
+                      class="text-sm font-bold text-signal"
+                      data-error-for="profile.bio"
+                    ></span>
+                  </label>
+                </div>
+
+                <fieldset class="mt-10 grid gap-5 border-t border-ink pt-6">
+                  <legend
+                    class="pr-3 font-headline text-2xl font-black uppercase"
+                  >
+                    Website and social links
+                  </legend>
+                  <p class="text-sm leading-6 text-muted">
+                    Leave a field empty to hide it. Use the full HTTPS address.
+                  </p>
+                  <div class="grid gap-5 sm:grid-cols-2">
+                    <label class="grid gap-2" data-social-field="website">
+                      <span class="font-bold uppercase">Website</span>
+                      <input
+                        class="w-full border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                        name="profile.website"
+                        type="url"
+                        autocomplete="url"
+                      />
+                      <span
+                        class="text-sm font-bold text-signal"
+                        data-error-for="profile.website"
+                      ></span>
+                    </label>
+                    <label class="grid gap-2" data-social-field="linkedin">
+                      <span class="font-bold uppercase">LinkedIn</span>
+                      <input
+                        class="w-full border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                        name="profile.linkedin"
+                        type="url"
+                      />
+                      <span
+                        class="text-sm font-bold text-signal"
+                        data-error-for="profile.linkedin"
+                      ></span>
+                    </label>
+                    <label class="grid gap-2" data-social-field="x">
+                      <span class="font-bold uppercase">X / Twitter</span>
+                      <input
+                        class="w-full border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                        name="profile.x"
+                        type="url"
+                      />
+                      <span
+                        class="text-sm font-bold text-signal"
+                        data-error-for="profile.x"
+                      ></span>
+                    </label>
+                    <label class="grid gap-2" data-social-field="github">
+                      <span class="font-bold uppercase">GitHub</span>
+                      <input
+                        class="w-full border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                        name="profile.github"
+                        type="url"
+                      />
+                      <span
+                        class="text-sm font-bold text-signal"
+                        data-error-for="profile.github"
+                      ></span>
+                    </label>
+                    <label class="grid gap-2" data-social-field="devto">
+                      <span class="font-bold uppercase">DEV Community</span>
+                      <input
+                        class="w-full border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                        name="profile.devto"
+                        type="url"
+                      />
+                      <span
+                        class="text-sm font-bold text-signal"
+                        data-error-for="profile.devto"
+                      ></span>
+                    </label>
+                    <label class="grid gap-2" data-social-field="scholar">
+                      <span class="font-bold uppercase">Google Scholar</span>
+                      <input
+                        class="w-full border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                        name="profile.scholar"
+                        type="url"
+                      />
+                      <span
+                        class="text-sm font-bold text-signal"
+                        data-error-for="profile.scholar"
+                      ></span>
+                    </label>
+                  </div>
+                </fieldset>
+              </section>
+
+              <section
+                class="scroll-mt-6 border-t-4 border-ink pt-5"
+                id="talks"
+              >
+                <div class="grid gap-2 border-b border-ink pb-5">
+                  <p
+                    class="font-headline text-sm font-black uppercase text-muted"
+                  >
+                    02 / Assigned talks
+                  </p>
+                  <h2
+                    class="font-headline text-5xl font-black uppercase leading-none"
+                  >
+                    What you will share
+                  </h2>
+                  <p class="mt-2 max-w-3xl leading-7 text-muted">
+                    You can refine the title and description. Talk ownership and
+                    schedule placement stay fixed.
+                  </p>
+                </div>
+                <div class="mt-8 grid gap-10" data-speaker-talks></div>
+              </section>
+
+              <div
+                class="sticky bottom-0 z-10 grid gap-3 border border-ink bg-paper/95 p-4 shadow-[8px_8px_0_0_#151515] backdrop-blur sm:grid-cols-[auto_auto_1fr] sm:items-center"
+              >
+                <button
+                  class="border border-ink px-5 py-3 font-bold uppercase transition hover:bg-ink hover:text-paper disabled:cursor-wait disabled:opacity-50"
+                  data-speaker-save
+                  type="submit"
+                  value="save"
+                >
+                  Save draft
+                </button>
+                <button
+                  class="border border-ink bg-ink px-5 py-3 font-bold uppercase text-paper transition hover:bg-paper hover:text-ink disabled:cursor-wait disabled:opacity-50"
+                  data-speaker-submit
+                  type="submit"
+                  value="submit"
+                >
+                  Submit for review
+                </button>
+                <p
+                  class="min-h-6 font-bold sm:text-right"
+                  data-speaker-status
+                  aria-live="polite"
+                ></p>
+              </div>
+            </form>
+
+            <section
+              class="scroll-mt-6 border-t-4 border-ink pt-5"
+              id="promotion"
+            >
+              <div class="grid gap-2 border-b border-ink pb-5">
+                <p
+                  class="font-headline text-sm font-black uppercase text-muted"
+                >
+                  03 / Promotion kit
+                </p>
+                <h2
+                  class="font-headline text-5xl font-black uppercase leading-none"
+                >
+                  Ready to share
+                </h2>
+                <p class="mt-2 max-w-3xl leading-7 text-muted">
+                  Open or download the format that fits your channel. The first
+                  request may take a moment; later requests use the cached
+                  render.
+                </p>
+              </div>
+              <div class="mt-8 grid gap-8" data-speaker-promotions></div>
+            </section>
+
+            <section class="scroll-mt-6 border-t-4 border-ink pt-5" id="video">
+              <div class="grid gap-2 border-b border-ink pb-5">
+                <p
+                  class="font-headline text-sm font-black uppercase text-muted"
+                >
+                  04 / Topic video
+                </p>
+                <h2
+                  class="font-headline text-5xl font-black uppercase leading-none"
+                >
+                  Give us the hook
+                </h2>
+              </div>
+              <div
+                class="mt-7 grid gap-6 border border-ink p-6 md:grid-cols-[1fr_auto] md:items-center md:p-8"
+              >
+                <div>
+                  <p class="font-headline text-2xl font-black uppercase">
+                    Record a 1–2 minute introduction
+                  </p>
+                  <p class="mt-3 max-w-2xl leading-7 text-muted">
+                    Tell attendees what problem your talk tackles and why it
+                    matters. A direct upload will become available here once the
+                    organizer enables video intake.
+                  </p>
+                </div>
+                <span
+                  class="border border-ink px-5 py-3 text-center font-bold uppercase text-muted"
+                >
+                  Upload setup pending
+                </span>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <template data-speaker-talk-template>
+    <fieldset class="grid gap-5 border border-ink p-5 md:p-7">
+      <legend
+        class="px-2 font-headline text-sm font-black uppercase text-muted"
+        data-talk-legend
+      ></legend>
+      <input name="talk.id" type="hidden" />
+      <label class="grid gap-2">
+        <span class="font-bold uppercase">Talk title</span>
+        <input
+          class="w-full border border-ink bg-paper px-4 py-3 text-lg font-bold outline-none focus:ring-2 focus:ring-ink"
+          name="talk.title"
+          maxlength="200"
+          required
+        />
+        <span
+          class="text-sm font-bold text-signal"
+          data-talk-error="title"
+        ></span>
+      </label>
+      <label class="grid gap-2">
+        <span class="font-bold uppercase">Talk description</span>
+        <span class="text-sm leading-6 text-muted"
+          >Plain text and HTTPS Markdown links are supported.</span
+        >
+        <textarea
+          class="min-h-52 w-full resize-y border border-ink bg-paper px-4 py-3 leading-7 outline-none focus:ring-2 focus:ring-ink"
+          name="talk.abstract"
+          maxlength="2500"
+          required
+        ></textarea>
+        <span
+          class="text-sm font-bold text-signal"
+          data-talk-error="abstract"
+        ></span>
+      </label>
+    </fieldset>
+  </template>
+</BaseLayout>
