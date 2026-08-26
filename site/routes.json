@@ -320,9 +320,9 @@
         "context": {
           "meta": {
             "title": "SDLCAI Admin Speakers",
-            "description": "Coordinate speaker access, profiles, talks, dinner details, promotion assets, and announcements.",
+            "description": "Edit and review speaker profiles, talks, access, dinner details, promotion assets, and announcements.",
             "ogEyebrow": "Admin speakers",
-            "ogDescription": "Coordinate SDLCAI speaker access, content, and promotion."
+            "ogDescription": "Edit and review SDLCAI speaker content, access, and promotion."
           }
         }
       },

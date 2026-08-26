@@ -184,7 +184,13 @@ is exchanged at `POST /api/speaker/session` for the existing HTTP-only session
 cookie, so the token does not enter HTTP request logs. Authenticated speakers
 read and save private dinner data at `GET` and `POST /api/speaker/dinner`.
 Organizer email assignment uses `POST /api/admin/speakers/contact`; it stores
-the encrypted mapping without sending mail.
+the encrypted mapping without sending mail. Authenticated organizers can use
+`POST /api/admin/speakers/content` to save a validated speaker-visible draft or
+an approved revision, and `POST /api/admin/speakers/photos/upload` to process
+and approve a replacement portrait. These mutations require a same-origin
+request plus `x-admin-action: save-speaker-content` or
+`x-admin-action: upload-speaker-photo`, respectively. Approved content and
+portrait derivatives remain private until applied to Git and deployed.
 
 The data-driven slide library, session deck, and screen schedule are public at
 `/slides/`, `/slides/deck/`, and `/slides/schedule/`. Generated social exports
@@ -367,9 +373,10 @@ For production rollout:
 8. Assign one controlled speaker email in `/admin/speakers/`, request a sign-in
    link from `/speaker/`, redeem it once, confirm replay fails, save dinner
    details and a profile draft, preview a promotion graphic, and exercise
-   organizer approval without applying the test revision to Git.
-9. Upload a controlled portrait and confirm only the 400x400 WebP derivative
-   appears in `ai-meets-sdlc-speaker-uploads`.
+   organizer approval without applying the test revision to Git. Then create a
+   separate organizer-authored draft and confirm it prefills the same editor.
+9. Upload controlled speaker and organizer portraits and confirm only bounded
+   400x400 WebP derivatives appear in `ai-meets-sdlc-speaker-uploads`.
 10. Register the Stream webhook, upload a short private test video, confirm the
     signed webhook moves it to `ready`, open both private previews, and delete
     or supersede the test submission when verification is complete.

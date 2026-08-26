@@ -1,7 +1,17 @@
 export {};
 
 interface AdminSpeakerContent {
-  profile: Record<string, string>;
+  profile: {
+    bio: string;
+    devto: string;
+    github: string;
+    linkedin: string;
+    name: string;
+    role: string;
+    scholar: string;
+    website: string;
+    x: string;
+  };
   talks: Array<{ abstract: string; id: string; title: string }>;
 }
 
@@ -17,6 +27,8 @@ interface AdminSpeakerRevision {
 
 interface AdminSpeakerItem {
   canonical: AdminSpeakerContent;
+  canonical_hash: string;
+  canonical_photo: string;
   contact: {
     delivery_status: "active" | "suppressed";
     email: string | null;
@@ -86,6 +98,20 @@ interface AdminSpeakersResponse {
   count: number;
   error?: string;
   speakers: AdminSpeakerItem[];
+}
+
+interface AdminSpeakerContentResponse {
+  error?: string;
+  field_errors?: Record<string, string>;
+  message?: string;
+  state?: "approved" | "draft";
+}
+
+type EditorControl = HTMLInputElement | HTMLTextAreaElement;
+
+interface EditorField {
+  control: EditorControl;
+  error: HTMLElement;
 }
 
 interface AnnouncementPreviewResponse {
@@ -519,6 +545,7 @@ function renderSpeaker(speaker: AdminSpeakerItem): HTMLElement {
   headingRow.appendChild(badge);
   article.appendChild(headingRow);
   article.appendChild(renderInvitation(speaker));
+  article.appendChild(renderContentEditor(speaker));
   article.appendChild(renderDinner(speaker));
 
   if (speaker.photo) {
@@ -534,6 +561,433 @@ function renderSpeaker(speaker: AdminSpeakerItem): HTMLElement {
   }
 
   return article;
+}
+
+function renderContentEditor(speaker: AdminSpeakerItem): HTMLElement {
+  const details = node(
+    "details",
+    "border-t border-paper/40 pt-5",
+  ) as HTMLDetailsElement;
+  const summary = node(
+    "summary",
+    "cursor-pointer font-headline text-2xl font-black uppercase",
+    "Edit speaker details",
+  );
+  const body = node("div", "mt-5 grid gap-6 border border-paper/40 p-4 md:p-6");
+  const introduction = node("div", "grid gap-2");
+  introduction.appendChild(
+    node("p", "font-bold uppercase", "Organizer editor / public content"),
+  );
+  introduction.appendChild(
+    node(
+      "p",
+      "max-w-4xl text-sm leading-6 text-paper/70",
+      "Start from the latest valid revision or the published profile. Save a draft to prefill the speaker workspace, or approve the edit and copy its JSON into Git for publication.",
+    ),
+  );
+  body.appendChild(introduction);
+
+  const form = node("form", "grid gap-7") as HTMLFormElement;
+  const fields = new Map<string, EditorField>();
+  const content = speaker.revision?.content ?? speaker.canonical;
+  const profileSection = node("fieldset", "grid gap-5");
+  const profileLegend = node(
+    "legend",
+    "font-headline text-xl font-black uppercase",
+    "Profile",
+  );
+  const profileGrid = node("div", "mt-4 grid gap-5 md:grid-cols-2");
+  profileSection.appendChild(profileLegend);
+  profileGrid.appendChild(
+    createEditorField({
+      fields,
+      label: "Name",
+      maxLength: 120,
+      minLength: 2,
+      name: "profile.name",
+      speakerId: speaker.speaker_id,
+      value: content.profile.name,
+    }),
+  );
+  profileGrid.appendChild(
+    createEditorField({
+      fields,
+      label: "Role / organization",
+      maxLength: 160,
+      minLength: 2,
+      name: "profile.role",
+      speakerId: speaker.speaker_id,
+      value: content.profile.role,
+    }),
+  );
+  const bioField = createEditorField({
+    fields,
+    label: "Bio",
+    maxLength: 2000,
+    minLength: 40,
+    multiline: true,
+    name: "profile.bio",
+    speakerId: speaker.speaker_id,
+    value: content.profile.bio,
+  });
+  bioField.classList.add("md:col-span-2");
+  profileGrid.appendChild(bioField);
+  profileSection.appendChild(profileGrid);
+  form.appendChild(profileSection);
+
+  const socialSection = node(
+    "fieldset",
+    "grid gap-5 border-t border-paper/30 pt-6",
+  );
+  socialSection.appendChild(
+    node(
+      "legend",
+      "pr-3 font-headline text-xl font-black uppercase",
+      "Social links",
+    ),
+  );
+  const socialGrid = node("div", "grid gap-5 md:grid-cols-2");
+  const socialLabels = [
+    ["website", "Website"],
+    ["linkedin", "LinkedIn"],
+    ["x", "X / Twitter"],
+    ["github", "GitHub"],
+    ["devto", "DEV Community"],
+    ["scholar", "Google Scholar"],
+  ] as const;
+  for (const [field, label] of socialLabels) {
+    socialGrid.appendChild(
+      createEditorField({
+        fields,
+        label,
+        maxLength: 2048,
+        name: `profile.${field}`,
+        speakerId: speaker.speaker_id,
+        type: "url",
+        value: content.profile[field] ?? "",
+      }),
+    );
+  }
+  socialSection.appendChild(socialGrid);
+  form.appendChild(socialSection);
+
+  const talksSection = node(
+    "fieldset",
+    "grid gap-5 border-t border-paper/30 pt-6",
+  );
+  talksSection.appendChild(
+    node(
+      "legend",
+      "pr-3 font-headline text-xl font-black uppercase",
+      "Assigned talks",
+    ),
+  );
+  for (const [index, canonicalTalk] of speaker.canonical.talks.entries()) {
+    const talk =
+      content.talks.find(({ id }) => id === canonicalTalk.id) ?? canonicalTalk;
+    const talkGroup = node("div", "grid gap-5 border border-paper/30 p-4");
+    talkGroup.appendChild(
+      node("p", "text-xs font-bold uppercase text-paper/60", canonicalTalk.id),
+    );
+    talkGroup.appendChild(
+      createEditorField({
+        fields,
+        label: "Talk title",
+        maxLength: 200,
+        minLength: 4,
+        name: `talks.${index}.title`,
+        speakerId: speaker.speaker_id,
+        value: talk.title,
+      }),
+    );
+    talkGroup.appendChild(
+      createEditorField({
+        fields,
+        label: "Talk description",
+        maxLength: 2500,
+        minLength: 20,
+        multiline: true,
+        name: `talks.${index}.abstract`,
+        speakerId: speaker.speaker_id,
+        value: talk.abstract,
+      }),
+    );
+    talksSection.appendChild(talkGroup);
+  }
+  form.appendChild(talksSection);
+
+  const actions = node(
+    "div",
+    "grid gap-4 border-t border-paper/30 pt-6 md:grid-cols-[1fr_auto_auto] md:items-end",
+  );
+  const editorStatus = node(
+    "p",
+    "min-h-6 text-sm font-bold uppercase text-paper/70",
+  );
+  editorStatus.setAttribute("aria-live", "polite");
+  const saveDraft = reviewButton("Save as speaker draft", false);
+  const approve = reviewButton("Approve & prepare JSON", true);
+  actions.appendChild(editorStatus);
+  actions.appendChild(saveDraft);
+  actions.appendChild(approve);
+  form.appendChild(actions);
+  form.addEventListener("submit", (event) => event.preventDefault());
+  saveDraft.addEventListener("click", () => {
+    void submitAdminContent(
+      speaker,
+      form,
+      fields,
+      "draft",
+      editorStatus,
+      saveDraft,
+      approve,
+    );
+  });
+  approve.addEventListener("click", () => {
+    void submitAdminContent(
+      speaker,
+      form,
+      fields,
+      "approve",
+      editorStatus,
+      saveDraft,
+      approve,
+    );
+  });
+  body.appendChild(form);
+  body.appendChild(renderAdminPhotoUpload(speaker));
+  details.appendChild(summary);
+  details.appendChild(body);
+  return details;
+}
+
+function createEditorField({
+  fields,
+  label,
+  maxLength,
+  minLength,
+  multiline = false,
+  name,
+  speakerId,
+  type = "text",
+  value,
+}: {
+  fields: Map<string, EditorField>;
+  label: string;
+  maxLength: number;
+  minLength?: number;
+  multiline?: boolean;
+  name: string;
+  speakerId: string;
+  type?: string;
+  value: string;
+}): HTMLLabelElement {
+  const wrapper = node("label", "grid gap-2");
+  const labelText = node("span", "text-sm font-bold uppercase", label);
+  const control = multiline
+    ? document.createElement("textarea")
+    : document.createElement("input");
+  control.className = multiline
+    ? "min-h-32 w-full resize-y border border-paper bg-ink px-4 py-3 leading-6 text-paper outline-none focus:ring-2 focus:ring-paper"
+    : "w-full border border-paper bg-ink px-4 py-3 text-paper outline-none focus:ring-2 focus:ring-paper";
+  control.name = name;
+  control.maxLength = maxLength;
+  control.required = Boolean(minLength);
+  if (minLength) control.minLength = minLength;
+  if (control instanceof HTMLInputElement) control.type = type;
+  control.value = value;
+  const errorId = `admin-${speakerId}-${name.replace(/[^a-z0-9]+/giu, "-")}-error`;
+  const error = node(
+    "span",
+    "min-h-5 text-xs font-bold text-red-300 dark:text-red-700",
+  );
+  error.id = errorId;
+  control.setAttribute("aria-describedby", errorId);
+  wrapper.appendChild(labelText);
+  wrapper.appendChild(control);
+  wrapper.appendChild(error);
+  fields.set(name, { control, error });
+  return wrapper as HTMLLabelElement;
+}
+
+async function submitAdminContent(
+  speaker: AdminSpeakerItem,
+  form: HTMLFormElement,
+  fields: Map<string, EditorField>,
+  mode: "approve" | "draft",
+  editorStatus: HTMLElement,
+  ...buttons: HTMLButtonElement[]
+): Promise<void> {
+  clearEditorErrors(fields);
+  if (!form.reportValidity()) return;
+  for (const button of buttons) button.disabled = true;
+  setEditorStatus(
+    editorStatus,
+    mode === "approve"
+      ? "Approving organizer edit…"
+      : "Saving organizer draft…",
+  );
+  const response = await requestJson<AdminSpeakerContentResponse>(
+    "/api/admin/speakers/content",
+    {
+      body: JSON.stringify({
+        base_content_hash: speaker.canonical_hash,
+        content: readEditorContent(speaker, fields),
+        mode,
+        speaker_id: speaker.speaker_id,
+      }),
+      headers: {
+        "content-type": "application/json",
+        "x-admin-action": "save-speaker-content",
+      },
+      method: "POST",
+    },
+  );
+  for (const button of buttons) button.disabled = false;
+
+  if (!response.ok) {
+    showEditorErrors(fields, response.data.field_errors);
+    setEditorStatus(
+      editorStatus,
+      response.data.error ?? "Speaker details could not be saved.",
+      true,
+    );
+    return;
+  }
+
+  const message = response.data.message ?? "Speaker details saved.";
+  await loadSpeakers();
+  setStatus(message);
+}
+
+function readEditorContent(
+  speaker: AdminSpeakerItem,
+  fields: Map<string, EditorField>,
+): AdminSpeakerContent {
+  const value = (name: string) => fields.get(name)?.control.value ?? "";
+
+  return {
+    profile: {
+      bio: value("profile.bio"),
+      devto: value("profile.devto"),
+      github: value("profile.github"),
+      linkedin: value("profile.linkedin"),
+      name: value("profile.name"),
+      role: value("profile.role"),
+      scholar: value("profile.scholar"),
+      website: value("profile.website"),
+      x: value("profile.x"),
+    },
+    talks: speaker.canonical.talks.map((talk, index) => ({
+      abstract: value(`talks.${index}.abstract`),
+      id: talk.id,
+      title: value(`talks.${index}.title`),
+    })),
+  };
+}
+
+function clearEditorErrors(fields: Map<string, EditorField>): void {
+  for (const { control, error } of fields.values()) {
+    control.removeAttribute("aria-invalid");
+    error.textContent = "";
+  }
+}
+
+function showEditorErrors(
+  fields: Map<string, EditorField>,
+  errors: Record<string, string> | undefined,
+): void {
+  for (const [name, message] of Object.entries(errors ?? {})) {
+    const field = fields.get(name);
+    if (!field) continue;
+    field.control.setAttribute("aria-invalid", "true");
+    field.error.textContent = message;
+  }
+}
+
+function setEditorStatus(
+  target: HTMLElement,
+  message: string,
+  isError = false,
+): void {
+  target.textContent = message;
+  target.classList.toggle("text-red-300", isError);
+  target.classList.toggle("dark:text-red-700", isError);
+}
+
+function renderAdminPhotoUpload(speaker: AdminSpeakerItem): HTMLElement {
+  const section = node(
+    "section",
+    "grid gap-4 border-t border-paper/30 pt-6 md:grid-cols-[6rem_1fr_auto] md:items-end",
+  );
+  const preview = document.createElement("img");
+  preview.className = "aspect-square w-24 border border-paper/50 object-cover";
+  preview.src = speaker.photo?.image_url ?? speaker.canonical_photo;
+  preview.alt = `${speaker.name}'s current working portrait`;
+  preview.width = 400;
+  preview.height = 400;
+  preview.loading = "lazy";
+  preview.decoding = "async";
+  const label = node("label", "grid gap-2");
+  label.appendChild(
+    node("span", "text-sm font-bold uppercase", "Replace portrait"),
+  );
+  label.appendChild(
+    node(
+      "span",
+      "text-xs leading-5 text-paper/60",
+      "JPEG, PNG, or WebP / at least 400 × 400 / maximum 5 MB. Organizer uploads are processed and approved immediately.",
+    ),
+  );
+  const input = document.createElement("input");
+  input.className =
+    "w-full border border-paper px-3 py-3 text-sm file:mr-4 file:border-0 file:bg-paper file:px-3 file:py-2 file:font-bold file:uppercase file:text-ink";
+  input.type = "file";
+  input.accept = "image/jpeg,image/png,image/webp";
+  const status = node(
+    "p",
+    "min-h-5 text-xs font-bold uppercase text-paper/70 md:col-span-3",
+  );
+  status.setAttribute("aria-live", "polite");
+  const button = reviewButton("Process & approve portrait", true);
+  label.appendChild(input);
+  section.appendChild(preview);
+  section.appendChild(label);
+  section.appendChild(button);
+  section.appendChild(status);
+  button.addEventListener("click", async () => {
+    const file = input.files?.[0];
+    if (!file) {
+      setEditorStatus(status, "Choose a portrait first.", true);
+      return;
+    }
+    button.disabled = true;
+    setEditorStatus(status, "Processing portrait…");
+    const response = await requestJson<{ error?: string; message?: string }>(
+      `/api/admin/speakers/photos/upload?speaker_id=${encodeURIComponent(speaker.speaker_id)}`,
+      {
+        body: file,
+        headers: {
+          "content-type": file.type || "application/octet-stream",
+          "x-admin-action": "upload-speaker-photo",
+        },
+        method: "POST",
+      },
+    );
+    button.disabled = false;
+    if (!response.ok) {
+      setEditorStatus(
+        status,
+        response.data.error ?? "Portrait could not be processed.",
+        true,
+      );
+      return;
+    }
+    const message = response.data.message ?? "Portrait processed.";
+    await loadSpeakers();
+    setStatus(message);
+  });
+  return section;
 }
 
 function renderVideos(speaker: AdminSpeakerItem): HTMLElement {

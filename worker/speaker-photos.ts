@@ -90,8 +90,23 @@ export async function readAdminSpeakerPhotos(
 export async function handleAdminSpeakerPhotoRequest(
   request: Request,
   env: Env,
+  allowedSpeakerIds: ReadonlySet<string>,
 ): Promise<Response> {
   const url = new URL(request.url);
+
+  if (url.pathname === "/api/admin/speakers/photos/upload") {
+    if (request.method !== "POST") {
+      return photoJson({ error: "Method not allowed" }, 405);
+    }
+
+    const speakerId = url.searchParams.get("speaker_id")?.trim() ?? "";
+
+    if (!allowedSpeakerIds.has(speakerId)) {
+      return photoJson({ error: "Choose a valid speaker." }, 400);
+    }
+
+    return uploadSpeakerPhoto(request, env, speakerId, "admin");
+  }
 
   if (url.pathname === "/api/admin/speakers/photos/review") {
     if (request.method !== "POST") {
@@ -152,6 +167,7 @@ async function uploadSpeakerPhoto(
   request: Request,
   env: Env,
   speakerId: string,
+  source: "admin" | "speaker" = "speaker",
 ): Promise<Response> {
   if (!env.INTERESTS || !env.SPEAKER_UPLOADS || !env.IMAGES) {
     return photoJson(
@@ -247,9 +263,13 @@ async function uploadSpeakerPhoto(
   const contentHash = await sha256(outputBytes);
   const now = new Date().toISOString();
   const previous = await env.INTERESTS.prepare(
-    `SELECT r2_key
-       FROM speaker_photo_revisions
-      WHERE speaker_id = ?1 AND state = 'submitted'`,
+    source === "admin"
+      ? `SELECT r2_key
+           FROM speaker_photo_revisions
+          WHERE speaker_id = ?1 AND state IN ('submitted', 'approved')`
+      : `SELECT r2_key
+           FROM speaker_photo_revisions
+          WHERE speaker_id = ?1 AND state = 'submitted'`,
   )
     .bind(speakerId)
     .all<{ r2_key: string }>();
@@ -260,16 +280,22 @@ async function uploadSpeakerPhoto(
   });
 
   try {
+    const state = source === "admin" ? "approved" : "submitted";
+    const supersededNote =
+      source === "admin"
+        ? "Superseded by an organizer upload."
+        : "Replaced by a newer upload.";
     await env.INTERESTS.batch([
       env.INTERESTS.prepare(
         `UPDATE speaker_photo_revisions
             SET state = 'rejected',
                 reviewed_at = ?2,
-                reviewed_by = 'speaker',
-                review_note = 'Replaced by a newer upload.',
+                reviewed_by = ?3,
+                review_note = ?4,
                 updated_at = ?2
-          WHERE speaker_id = ?1 AND state = 'submitted'`,
-      ).bind(speakerId, now),
+          WHERE speaker_id = ?1
+            AND state ${source === "admin" ? "IN ('submitted', 'approved')" : "= 'submitted'"}`,
+      ).bind(speakerId, now, source, supersededNote),
       env.INTERESTS.prepare(
         `INSERT INTO speaker_photo_revisions (
            photo_revision_id,
@@ -280,15 +306,22 @@ async function uploadSpeakerPhoto(
            width,
            height,
            state,
+           reviewed_at,
+           reviewed_by,
+           review_note,
            created_at,
            updated_at
-         ) VALUES (?1, ?2, ?3, ?4, ?5, 400, 400, 'submitted', ?6, ?6)`,
+         ) VALUES (?1, ?2, ?3, ?4, ?5, 400, 400, ?6, ?7, ?8, ?9, ?10, ?10)`,
       ).bind(
         photoRevisionId,
         speakerId,
         r2Key,
         contentHash,
         outputBytes.byteLength,
+        state,
+        source === "admin" ? now : null,
+        source === "admin" ? "admin" : null,
+        source === "admin" ? "Uploaded by the organizer." : null,
         now,
       ),
     ]);
@@ -303,7 +336,10 @@ async function uploadSpeakerPhoto(
 
   return photoJson(
     {
-      message: "Photo processed and submitted for organizer review.",
+      message:
+        source === "admin"
+          ? "Photo processed and approved. Download the derivative and replace the canonical WebP in Git."
+          : "Photo processed and submitted for organizer review.",
       photo: serializePhoto(
         {
           byte_size: outputBytes.byteLength,
@@ -312,14 +348,14 @@ async function uploadSpeakerPhoto(
           height: photoSize,
           photo_revision_id: photoRevisionId,
           r2_key: r2Key,
-          review_note: null,
-          reviewed_at: null,
+          review_note: source === "admin" ? "Uploaded by the organizer." : null,
+          reviewed_at: source === "admin" ? now : null,
           speaker_id: speakerId,
-          state: "submitted",
+          state: source === "admin" ? "approved" : "submitted",
           updated_at: now,
           width: photoSize,
         },
-        false,
+        source === "admin",
       ),
     },
     201,

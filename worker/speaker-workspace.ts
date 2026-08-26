@@ -219,6 +219,7 @@ const socialHosts: Record<Exclude<SocialField, "website">, Set<string>> = {
   x: new Set(["twitter.com", "www.twitter.com", "x.com", "www.x.com"]),
 };
 const canonicalSpeakers = speakersData.items as CanonicalSpeaker[];
+const canonicalSpeakerIds = new Set(canonicalSpeakers.map(({ id }) => id));
 const canonicalTalks = (scheduleData.items as ScheduleItem[]).flatMap(
   ({ talks = [] }) => talks,
 );
@@ -269,13 +270,22 @@ export async function handleSpeakerWorkspaceRequest(
   }
 
   if (url.pathname.startsWith("/api/admin/speakers/photos/")) {
-    if (url.pathname === "/api/admin/speakers/photos/review") {
-      const forbidden = requireAdminMutation(request, "review-speaker-photo");
+    const action =
+      url.pathname === "/api/admin/speakers/photos/review"
+        ? "review-speaker-photo"
+        : url.pathname === "/api/admin/speakers/photos/upload"
+          ? "upload-speaker-photo"
+          : null;
+
+    if (action) {
+      const forbidden = requireAdminMutation(request, action);
 
       if (forbidden) return adminSecure(forbidden);
     }
 
-    return adminSecure(await handleAdminSpeakerPhotoRequest(request, env));
+    return adminSecure(
+      await handleAdminSpeakerPhotoRequest(request, env, canonicalSpeakerIds),
+    );
   }
 
   if (url.pathname === "/api/admin/speakers") {
@@ -308,6 +318,18 @@ export async function handleSpeakerWorkspaceRequest(
     if (forbidden) return adminSecure(forbidden);
 
     return adminSecure(await saveSpeakerContact(request, env));
+  }
+
+  if (url.pathname === "/api/admin/speakers/content") {
+    if (request.method !== "POST") {
+      return adminSecure(json({ error: "Method not allowed" }, 405));
+    }
+
+    const forbidden = requireAdminMutation(request, "save-speaker-content");
+
+    if (forbidden) return adminSecure(forbidden);
+
+    return adminSecure(await saveAdminSpeakerContent(request, env));
   }
 
   if (url.pathname === "/api/admin/speakers/review") {
@@ -622,6 +644,8 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
 
       return {
         canonical,
+        canonical_hash: await hashCanonicalContent(canonical),
+        canonical_photo: speaker.photo,
         contact: contact
           ? {
               delivery_status: contact.delivery_status,
@@ -661,6 +685,132 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
   );
 
   return json({ count: speakers.length, speakers });
+}
+
+async function saveAdminSpeakerContent(
+  request: Request,
+  env: Env,
+): Promise<Response> {
+  const configurationError = getConfigurationError(env);
+
+  if (configurationError) return configurationError;
+
+  const body = await readJsonWithinLimit(request, maxWorkspaceBodyBytes);
+
+  if (body instanceof Response) return body;
+
+  if (!isRecord(body)) {
+    return json({ error: "Submit the speaker editor again." }, 400);
+  }
+
+  const speakerId =
+    typeof body.speaker_id === "string" ? body.speaker_id.trim() : "";
+  const mode = body.mode;
+  const canonical = getCanonicalContent(speakerId);
+
+  if (!canonical) return json({ error: "Choose a valid speaker." }, 400);
+
+  if (mode !== "draft" && mode !== "approve") {
+    return json({ error: "Choose whether to save or approve the edit." }, 400);
+  }
+
+  const canonicalHash = await hashCanonicalContent(canonical);
+
+  if (body.base_content_hash !== canonicalHash) {
+    return json(
+      {
+        error:
+          "The published profile changed while this editor was open. Reload and review the latest details.",
+      },
+      409,
+    );
+  }
+
+  const validation = validateSpeakerWorkspaceContent(
+    body.content,
+    canonical.talks.map(({ id }) => id),
+  );
+
+  if (!validation.content) {
+    return json(
+      {
+        error: "Review the highlighted fields.",
+        field_errors: validation.errors,
+      },
+      400,
+    );
+  }
+
+  if ((await hashCanonicalContent(validation.content)) === canonicalHash) {
+    return json({ error: "Change at least one speaker detail first." }, 400);
+  }
+
+  const revisionId = crypto.randomUUID();
+  const now = new Date().toISOString();
+  const state = mode === "approve" ? "approved" : "draft";
+  const reviewNote =
+    mode === "approve"
+      ? "Edited and approved by the organizer."
+      : "Replaced by an organizer draft.";
+
+  await env.INTERESTS!.batch([
+    env
+      .INTERESTS!.prepare(
+        `UPDATE speaker_content_revisions
+            SET state = 'rejected',
+                reviewed_at = ?2,
+                reviewed_by = 'admin',
+                review_note = ?3,
+                updated_at = ?2
+          WHERE speaker_id = ?1
+            AND state IN ('draft', 'submitted', 'approved')`,
+      )
+      .bind(speakerId, now, reviewNote),
+    env
+      .INTERESTS!.prepare(
+        `INSERT INTO speaker_content_revisions (
+         revision_id,
+         speaker_id,
+         base_content_hash,
+         content_json,
+         state,
+         submitted_at,
+         reviewed_at,
+         reviewed_by,
+         review_note,
+         created_at,
+         updated_at
+       ) VALUES (
+         ?1, ?2, ?3, ?4, ?5,
+         CASE WHEN ?5 = 'approved' THEN ?6 ELSE NULL END,
+         CASE WHEN ?5 = 'approved' THEN ?6 ELSE NULL END,
+         CASE WHEN ?5 = 'approved' THEN 'admin' ELSE NULL END,
+         CASE WHEN ?5 = 'approved' THEN ?7 ELSE NULL END,
+         ?6, ?6
+       )`,
+      )
+      .bind(
+        revisionId,
+        speakerId,
+        canonicalHash,
+        JSON.stringify(validation.content),
+        state,
+        now,
+        reviewNote,
+      ),
+  ]);
+
+  return json({
+    changed_fields: getChangedFields(canonical, validation.content),
+    content: validation.content,
+    message:
+      mode === "approve"
+        ? "Organizer edit approved. Copy the revision JSON into Git to publish it."
+        : "Organizer draft saved. It will be prefilled when the speaker signs in.",
+    revision_id: revisionId,
+    speaker_id: speakerId,
+    state,
+  });
 }
 
 async function saveSpeakerContact(

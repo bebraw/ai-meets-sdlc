@@ -11,3 +11,4 @@ decision changes.
 - [ADR 0004: Render social graphics on demand at the edge](0004-render-social-graphics-on-demand-at-the-edge.md)
 - [ADR 0005: Keep Google Workspace for inbound email](0005-keep-google-workspace-for-inbound-email.md)
 - [ADR 0006: Speaker-initiated magic-link access](0006-speaker-initiated-magic-link-access.md)
+- [ADR 0007: Allow organizer-authored speaker revisions](0007-allow-organizer-authored-speaker-revisions.md)

@@ -465,6 +465,106 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   const afterApproval = await afterApprovalResponse.json();
   assert.equal(afterApproval.revision, null);
 
+  const organizerContent = structuredClone(mappedSpeaker.canonical);
+  organizerContent.profile.role = "Co-founder and CEO at Coldtea.ai";
+  organizerContent.talks[0].title = "AI product engineering in practice";
+
+  const rejectedOrganizerOrigin = await saveAdminContent(worker, {
+    base_content_hash: mappedSpeaker.canonical_hash,
+    content: organizerContent,
+    mode: "draft",
+    requestOrigin: "https://attacker.example",
+    speaker_id: mappedSpeaker.speaker_id,
+  });
+  assert.equal(rejectedOrganizerOrigin.status, 403);
+
+  const organizerDraftResponse = await saveAdminContent(worker, {
+    base_content_hash: mappedSpeaker.canonical_hash,
+    content: organizerContent,
+    mode: "draft",
+    speaker_id: mappedSpeaker.speaker_id,
+  });
+  const organizerDraft = await organizerDraftResponse.json();
+  assert.equal(organizerDraftResponse.status, 200);
+  assert.equal(organizerDraft.state, "draft");
+  assert.match(organizerDraft.message, /prefilled/u);
+
+  const afterOrganizerDraftResponse = await worker.fetch(
+    `${origin}/api/admin/speakers`,
+    { headers: { authorization: adminAuthorization } },
+  );
+  const afterOrganizerDraft = await afterOrganizerDraftResponse.json();
+  const draftedSpeaker = afterOrganizerDraft.speakers.find(
+    ({ speaker_id }) => speaker_id === mappedSpeaker.speaker_id,
+  );
+  assert.equal(draftedSpeaker.revision.state, "draft");
+  assert.equal(
+    draftedSpeaker.revision.content.profile.role,
+    "Co-founder and CEO at Coldtea.ai",
+  );
+
+  const organizerApprovalResponse = await saveAdminContent(worker, {
+    base_content_hash: mappedSpeaker.canonical_hash,
+    content: organizerContent,
+    mode: "approve",
+    speaker_id: mappedSpeaker.speaker_id,
+  });
+  const organizerApproval = await organizerApprovalResponse.json();
+  assert.equal(organizerApprovalResponse.status, 200);
+  assert.equal(organizerApproval.state, "approved");
+  assert.match(organizerApproval.message, /Copy the revision JSON/u);
+
+  const staleOrganizerEditResponse = await saveAdminContent(worker, {
+    base_content_hash: "stale-content-hash",
+    content: organizerContent,
+    mode: "draft",
+    speaker_id: mappedSpeaker.speaker_id,
+  });
+  assert.equal(staleOrganizerEditResponse.status, 409);
+
+  const rejectedAdminPhotoResponse = await worker.fetch(
+    `${origin}/api/admin/speakers/photos/upload?speaker_id=mo-khazali`,
+    {
+      body: sourcePhoto,
+      headers: {
+        authorization: adminAuthorization,
+        "content-type": "application/octet-stream",
+        origin,
+        "x-admin-action": "wrong-action",
+      },
+      method: "POST",
+    },
+  );
+  assert.equal(rejectedAdminPhotoResponse.status, 403);
+
+  const adminPhotoResponse = await worker.fetch(
+    `${origin}/api/admin/speakers/photos/upload?speaker_id=mo-khazali`,
+    {
+      body: sourcePhoto,
+      headers: {
+        authorization: adminAuthorization,
+        "content-type": "application/octet-stream",
+        origin,
+        "x-admin-action": "upload-speaker-photo",
+      },
+      method: "POST",
+    },
+  );
+  const adminPhoto = await adminPhotoResponse.json();
+  assert.equal(adminPhotoResponse.status, 201);
+  assert.equal(adminPhoto.photo.state, "approved");
+  assert.match(adminPhoto.message, /replace the canonical WebP in Git/u);
+
+  const adminPhotoImageResponse = await worker.fetch(
+    `${origin}${adminPhoto.photo.image_url}`,
+    { headers: { authorization: adminAuthorization } },
+  );
+  assert.equal(adminPhotoImageResponse.status, 200);
+  assert.equal(
+    adminPhotoImageResponse.headers.get("content-type"),
+    "image/webp",
+  );
+
   const logoutResponse = await worker.fetch(`${origin}/api/speaker/session`, {
     headers: { cookie, origin },
     method: "DELETE",
@@ -498,6 +598,21 @@ function review(worker, body) {
       "content-type": "application/json",
       origin,
       "x-admin-action": "review-speaker-revision",
+    },
+    method: "POST",
+  });
+}
+
+function saveAdminContent(worker, body) {
+  const { requestOrigin = origin, ...payload } = body;
+
+  return worker.fetch(`${origin}/api/admin/speakers/content`, {
+    body: JSON.stringify(payload),
+    headers: {
+      authorization: adminAuthorization,
+      "content-type": "application/json",
+      origin: requestOrigin,
+      "x-admin-action": "save-speaker-content",
     },
     method: "POST",
   });

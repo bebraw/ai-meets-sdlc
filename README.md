@@ -145,7 +145,9 @@ The deployed Worker serves a protected dashboard at `/admin/`, with focused
 workspaces at `/admin/speakers/`, `/admin/dinner/`, `/admin/posters/`,
 `/admin/interests/`, and `/admin/slides/`. All use HTTP Basic auth. Event
 materials under `/assets/slides/`, including the Aalto-exclusive registration
-ad, use the same protection.
+ad, use the same protection. Organizers can prefill or approve speaker profile,
+talk, social, and portrait revisions from the speakers workspace; Git remains
+the publication source of truth.
 
 The schedule and session deck derive from `site/data/seminar.json`,
 `site/data/schedule.json`, `site/data/speakers.json`, and
