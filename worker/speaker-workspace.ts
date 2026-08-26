@@ -72,9 +72,34 @@ interface SpeakerRevisionRow {
   base_content_hash: string;
   content_json: string;
   revision_id: string;
-  state: "draft" | "submitted";
+  state: "approved" | "draft" | "rejected" | "submitted";
   submitted_at: string | null;
   updated_at: string;
+}
+
+interface SpeakerContactRow {
+  delivery_status: "active" | "suppressed";
+  email_ciphertext: string;
+  email_confirmed_at: string | null;
+  email_iv: string;
+  operational_email_enabled: number;
+  promotion_email_enabled: number;
+  retention_until: string;
+  speaker_id: string;
+  updated_at: string;
+}
+
+interface SpeakerAdminAccessRow {
+  invite_expires_at: string;
+  last_sent_at: string | null;
+  revoked_at: string | null;
+  speaker_id: string;
+}
+
+interface SpeakerAdminRevisionRow extends SpeakerRevisionRow {
+  review_note: string | null;
+  reviewed_at: string | null;
+  speaker_id: string;
 }
 
 interface ValidationResult {
@@ -136,6 +161,38 @@ export async function handleSpeakerWorkspaceRequest(
 ): Promise<Response | null> {
   const url = new URL(request.url);
 
+  if (url.pathname === "/api/admin/speakers") {
+    if (request.method !== "GET") {
+      return adminSecure(json({ error: "Method not allowed" }, 405));
+    }
+
+    return adminSecure(await getAdminSpeakers(env));
+  }
+
+  if (url.pathname === "/api/admin/speakers/invite") {
+    if (request.method !== "POST") {
+      return adminSecure(json({ error: "Method not allowed" }, 405));
+    }
+
+    const forbidden = requireAdminMutation(request, "send-speaker-invite");
+
+    if (forbidden) return adminSecure(forbidden);
+
+    return adminSecure(await sendSpeakerInvitation(request, env));
+  }
+
+  if (url.pathname === "/api/admin/speakers/review") {
+    if (request.method !== "POST") {
+      return adminSecure(json({ error: "Method not allowed" }, 405));
+    }
+
+    const forbidden = requireAdminMutation(request, "review-speaker-revision");
+
+    if (forbidden) return adminSecure(forbidden);
+
+    return adminSecure(await reviewSpeakerRevision(request, env));
+  }
+
   if (url.pathname === "/api/speaker/session") {
     if (request.method === "POST") {
       return secure(await redeemSpeakerInvitation(request, env));
@@ -161,6 +218,466 @@ export async function handleSpeakerWorkspaceRequest(
   }
 
   return null;
+}
+
+async function getAdminSpeakers(env: Env): Promise<Response> {
+  const configurationError = getConfigurationError(env);
+
+  if (configurationError) return configurationError;
+
+  const [contactResult, accessResult, revisionResult] = await Promise.all([
+    env
+      .INTERESTS!.prepare(
+        `SELECT
+         speaker_id,
+         email_ciphertext,
+         email_iv,
+         email_confirmed_at,
+         retention_until,
+         operational_email_enabled,
+         promotion_email_enabled,
+         delivery_status,
+         updated_at
+       FROM speaker_contacts`,
+      )
+      .all<SpeakerContactRow>(),
+    env
+      .INTERESTS!.prepare(
+        `SELECT speaker_id, invite_expires_at, last_sent_at, revoked_at
+         FROM speaker_workspace_access`,
+      )
+      .all<SpeakerAdminAccessRow>(),
+    env
+      .INTERESTS!.prepare(
+        `SELECT
+         revision_id,
+         speaker_id,
+         base_content_hash,
+         content_json,
+         state,
+         submitted_at,
+         reviewed_at,
+         review_note,
+         updated_at
+       FROM speaker_content_revisions
+      ORDER BY
+        CASE state
+          WHEN 'submitted' THEN 0
+          WHEN 'approved' THEN 1
+          WHEN 'draft' THEN 2
+          ELSE 3
+        END,
+        updated_at DESC`,
+      )
+      .all<SpeakerAdminRevisionRow>(),
+  ]);
+  const contacts = new Map(
+    contactResult.results.map((contact) => [contact.speaker_id, contact]),
+  );
+  const access = new Map(
+    accessResult.results.map((item) => [item.speaker_id, item]),
+  );
+  const revisions = new Map<string, SpeakerAdminRevisionRow>();
+
+  for (const revision of revisionResult.results) {
+    if (!revisions.has(revision.speaker_id)) {
+      revisions.set(revision.speaker_id, revision);
+    }
+  }
+
+  const speakers = await Promise.all(
+    canonicalSpeakers.map(async (speaker) => {
+      const contact = contacts.get(speaker.id);
+      const invitation = access.get(speaker.id);
+      const revision = revisions.get(speaker.id);
+      const canonical = getCanonicalContent(speaker.id)!;
+      let email: string | null = null;
+
+      if (contact) {
+        try {
+          email = await decryptPrivateText(
+            contact.email_ciphertext,
+            contact.email_iv,
+            env.EMAIL_ENCRYPTION_KEY!,
+          );
+        } catch {
+          console.error("Unable to decrypt speaker contact", {
+            speakerId: speaker.id,
+          });
+        }
+      }
+
+      return {
+        canonical,
+        contact: contact
+          ? {
+              delivery_status: contact.delivery_status,
+              email,
+              email_confirmed_at: contact.email_confirmed_at,
+              operational_email_enabled:
+                contact.operational_email_enabled === 1,
+              promotion_email_enabled: contact.promotion_email_enabled === 1,
+              retention_until: contact.retention_until,
+              updated_at: contact.updated_at,
+            }
+          : null,
+        invitation: invitation
+          ? {
+              active:
+                invitation.revoked_at === null &&
+                Date.parse(invitation.invite_expires_at) > Date.now(),
+              expires_at: invitation.invite_expires_at,
+              last_sent_at: invitation.last_sent_at,
+            }
+          : null,
+        name: speaker.name,
+        revision: revision ? serializeAdminRevision(revision, canonical) : null,
+        speaker_id: speaker.id,
+      };
+    }),
+  );
+
+  return json({ count: speakers.length, speakers });
+}
+
+async function sendSpeakerInvitation(
+  request: Request,
+  env: Env,
+): Promise<Response> {
+  const configurationError = getConfigurationError(env);
+
+  if (configurationError) return configurationError;
+
+  if (!env.EMAIL) {
+    return json({ error: "Speaker invitation email is not configured." }, 503);
+  }
+
+  const accessUntil = parseFutureConfigurationDate(
+    env.SPEAKER_WORKSPACE_ACCESS_UNTIL,
+  );
+  const retentionUntil = parseFutureConfigurationDate(
+    env.SPEAKER_CONTACT_RETENTION_UNTIL,
+  );
+  const publicOrigin = parsePublicOrigin(env.PUBLIC_SITE_ORIGIN);
+
+  if (!accessUntil || !retentionUntil || !publicOrigin) {
+    return json({ error: "Speaker workspace dates are not configured." }, 503);
+  }
+
+  const body = await readJsonWithinLimit(request, 8 * 1024);
+
+  if (body instanceof Response) return body;
+
+  if (!isRecord(body)) {
+    return json({ error: "Choose a speaker and enter their email." }, 400);
+  }
+
+  const speakerId = typeof body.speaker_id === "string" ? body.speaker_id : "";
+  const speaker = findCanonicalSpeaker(speakerId);
+  const email = normalizeEmail(body.email);
+
+  if (!speaker) {
+    return json({ error: "Choose a valid speaker." }, 400);
+  }
+
+  if (!isLikelyEmail(email)) {
+    return json({ error: "Enter a valid speaker email address." }, 400);
+  }
+
+  const emailFingerprint = await hashPrivateText(
+    email,
+    env.EMAIL_ENCRYPTION_KEY!,
+    "email-hash",
+  );
+  const duplicate = await env
+    .INTERESTS!.prepare(
+      `SELECT speaker_id
+       FROM speaker_contacts
+      WHERE email_fingerprint = ?1 AND speaker_id <> ?2
+      LIMIT 1`,
+    )
+    .bind(emailFingerprint, speakerId)
+    .first<{ speaker_id: string }>();
+
+  if (duplicate) {
+    return json(
+      { error: "That email address is already assigned to another speaker." },
+      409,
+    );
+  }
+
+  const token = createToken();
+  const tokenHash = await hashToken(
+    token,
+    env.EMAIL_ENCRYPTION_KEY!,
+    "speaker-workspace-invite-token",
+  );
+  const encryptedEmail = await encryptPrivateText(
+    email,
+    env.EMAIL_ENCRYPTION_KEY!,
+  );
+  const now = new Date().toISOString();
+
+  await env.INTERESTS!.batch([
+    env
+      .INTERESTS!.prepare(
+        `INSERT INTO speaker_contacts (
+         speaker_id,
+         email_ciphertext,
+         email_iv,
+         email_fingerprint,
+         email_confirmed_at,
+         retention_until,
+         created_at,
+         updated_at
+       ) VALUES (?1, ?2, ?3, ?4, NULL, ?5, ?6, ?6)
+       ON CONFLICT (speaker_id) DO UPDATE SET
+         email_ciphertext = excluded.email_ciphertext,
+         email_iv = excluded.email_iv,
+         email_confirmed_at = CASE
+           WHEN speaker_contacts.email_fingerprint = excluded.email_fingerprint
+             THEN speaker_contacts.email_confirmed_at
+           ELSE NULL
+         END,
+         email_fingerprint = excluded.email_fingerprint,
+         retention_until = excluded.retention_until,
+         delivery_status = 'active',
+         updated_at = excluded.updated_at`,
+      )
+      .bind(
+        speakerId,
+        encryptedEmail.ciphertext,
+        encryptedEmail.iv,
+        emailFingerprint,
+        retentionUntil.toISOString(),
+        now,
+      ),
+    env
+      .INTERESTS!.prepare(
+        `INSERT INTO speaker_workspace_access (
+         speaker_id,
+         invite_token_hash,
+         access_generation,
+         invite_created_at,
+         invite_expires_at,
+         last_sent_at,
+         revoked_at,
+         created_at,
+         updated_at
+       ) VALUES (?1, ?2, 1, ?3, ?4, NULL, NULL, ?3, ?3)
+       ON CONFLICT (speaker_id) DO UPDATE SET
+         invite_token_hash = excluded.invite_token_hash,
+         access_generation = speaker_workspace_access.access_generation + 1,
+         invite_created_at = excluded.invite_created_at,
+         invite_expires_at = excluded.invite_expires_at,
+         last_sent_at = NULL,
+         revoked_at = NULL,
+         updated_at = excluded.updated_at`,
+      )
+      .bind(speakerId, tokenHash, now, accessUntil.toISOString()),
+    env
+      .INTERESTS!.prepare(
+        "DELETE FROM speaker_workspace_sessions WHERE speaker_id = ?1",
+      )
+      .bind(speakerId),
+  ]);
+
+  const invitationUrl = `${publicOrigin}/speaker/#${token}`;
+
+  try {
+    await env.EMAIL.send({
+      from: { email: "info@sdlcai.org", name: "SDLCAI" },
+      html: speakerInvitationHtml({
+        expiresAt: accessUntil,
+        invitationUrl,
+        speakerName: speaker.name,
+      }),
+      replyTo: "info@sdlcai.org",
+      subject: "Your SDLCAI speaker workspace",
+      text: speakerInvitationText({
+        expiresAt: accessUntil,
+        invitationUrl,
+        speakerName: speaker.name,
+      }),
+      to: email,
+    });
+  } catch (error) {
+    console.error("Speaker invitation delivery failed", {
+      error: error instanceof Error ? error.message : "Unknown email error",
+      speakerId,
+    });
+    await env
+      .INTERESTS!.prepare(
+        `UPDATE speaker_workspace_access
+          SET revoked_at = ?2, updated_at = ?2
+        WHERE speaker_id = ?1 AND invite_token_hash = ?3`,
+      )
+      .bind(speakerId, new Date().toISOString(), tokenHash)
+      .run();
+
+    return json(
+      {
+        error:
+          "The invitation could not be sent. No active link was left behind.",
+      },
+      502,
+    );
+  }
+
+  const sentAt = new Date().toISOString();
+  await env
+    .INTERESTS!.prepare(
+      `UPDATE speaker_workspace_access
+        SET last_sent_at = ?2, updated_at = ?2
+      WHERE speaker_id = ?1 AND invite_token_hash = ?3`,
+    )
+    .bind(speakerId, sentAt, tokenHash)
+    .run();
+
+  return json({
+    message: `Invitation sent to ${speaker.name}.`,
+    sent_at: sentAt,
+    speaker_id: speakerId,
+  });
+}
+
+async function reviewSpeakerRevision(
+  request: Request,
+  env: Env,
+): Promise<Response> {
+  const configurationError = getConfigurationError(env);
+
+  if (configurationError) return configurationError;
+
+  const body = await readJsonWithinLimit(request, 8 * 1024);
+
+  if (body instanceof Response) return body;
+
+  if (!isRecord(body)) {
+    return json({ error: "Choose a submitted revision." }, 400);
+  }
+
+  const revisionId =
+    typeof body.revision_id === "string" ? body.revision_id.trim() : "";
+  const decision = body.decision;
+  const reviewNote =
+    typeof body.review_note === "string" ? body.review_note.trim() : "";
+
+  if (!/^[0-9a-f]{8}-[0-9a-f-]{27}$/iu.test(revisionId)) {
+    return json({ error: "Choose a submitted revision." }, 400);
+  }
+
+  if (decision !== "approve" && decision !== "reject") {
+    return json({ error: "Choose approve or request changes." }, 400);
+  }
+
+  if (reviewNote.length > 1_000) {
+    return json({ error: "Keep the review note under 1,000 characters." }, 400);
+  }
+
+  if (decision === "reject" && reviewNote.length < 3) {
+    return json(
+      { error: "Add a short note explaining the requested changes." },
+      400,
+    );
+  }
+
+  const revision = await env
+    .INTERESTS!.prepare(
+      `SELECT
+       revision_id,
+       speaker_id,
+       base_content_hash,
+       content_json,
+       state,
+       submitted_at,
+       updated_at
+     FROM speaker_content_revisions
+    WHERE revision_id = ?1 AND state = 'submitted'
+    LIMIT 1`,
+    )
+    .bind(revisionId)
+    .first<SpeakerRevisionRow & { speaker_id: string }>();
+
+  if (!revision) {
+    return json({ error: "That revision is no longer awaiting review." }, 409);
+  }
+
+  const canonical = getCanonicalContent(revision.speaker_id);
+
+  if (!canonical) {
+    return json({ error: "The speaker profile no longer exists." }, 409);
+  }
+
+  if ((await hashCanonicalContent(canonical)) !== revision.base_content_hash) {
+    return json(
+      {
+        error:
+          "The public profile changed after this revision was submitted. Reconcile it before reviewing.",
+      },
+      409,
+    );
+  }
+
+  const now = new Date().toISOString();
+
+  if (decision === "approve") {
+    await env
+      .INTERESTS!.prepare(
+        `UPDATE speaker_content_revisions
+          SET state = 'approved',
+              reviewed_at = ?2,
+              reviewed_by = 'admin',
+              review_note = ?3,
+              updated_at = ?2
+        WHERE revision_id = ?1 AND state = 'submitted'`,
+      )
+      .bind(revisionId, now, reviewNote || null)
+      .run();
+  } else {
+    await env.INTERESTS!.batch([
+      env
+        .INTERESTS!.prepare(
+          `UPDATE speaker_content_revisions
+            SET state = 'rejected',
+                reviewed_at = ?2,
+                reviewed_by = 'admin',
+                review_note = ?3,
+                updated_at = ?2
+          WHERE revision_id = ?1 AND state = 'submitted'`,
+        )
+        .bind(revisionId, now, reviewNote),
+      env
+        .INTERESTS!.prepare(
+          `INSERT INTO speaker_content_revisions (
+           revision_id,
+           speaker_id,
+           base_content_hash,
+           content_json,
+           state,
+           created_at,
+           updated_at
+         ) VALUES (?1, ?2, ?3, ?4, 'draft', ?5, ?5)`,
+        )
+        .bind(
+          crypto.randomUUID(),
+          revision.speaker_id,
+          revision.base_content_hash,
+          revision.content_json,
+          now,
+        ),
+    ]);
+  }
+
+  return json({
+    decision,
+    message:
+      decision === "approve"
+        ? "Revision approved. Apply the approved JSON to Git before publishing."
+        : "Changes requested. The speaker can edit the returned draft.",
+    revision_id: revisionId,
+    speaker_id: revision.speaker_id,
+  });
 }
 
 async function redeemSpeakerInvitation(
@@ -362,21 +879,45 @@ async function updateSpeakerWorkspace(
 
   const canonicalHash = await hashCanonicalContent(canonical);
   const now = new Date().toISOString();
-  const submitted = await env
+  const pending = await env
     .INTERESTS!.prepare(
-      `SELECT revision_id
+      `SELECT revision_id, content_json, state
        FROM speaker_content_revisions
-      WHERE speaker_id = ?1 AND state = 'submitted'
+      WHERE speaker_id = ?1 AND state IN ('submitted', 'approved')
+      ORDER BY CASE state WHEN 'submitted' THEN 0 ELSE 1 END
       LIMIT 1`,
     )
     .bind(session.speaker_id)
-    .first<{ revision_id: string }>();
+    .first<{
+      content_json: string;
+      revision_id: string;
+      state: "approved" | "submitted";
+    }>();
+  let pendingBlocksEditing = Boolean(pending);
 
-  if (submitted) {
+  if (pending?.state === "approved") {
+    try {
+      const approvedValidation = validateSpeakerWorkspaceContent(
+        JSON.parse(pending.content_json) as unknown,
+        canonical.talks.map(({ id }) => id),
+      );
+
+      pendingBlocksEditing =
+        !approvedValidation.content ||
+        (await hashCanonicalContent(approvedValidation.content)) !==
+          canonicalHash;
+    } catch {
+      pendingBlocksEditing = true;
+    }
+  }
+
+  if (pendingBlocksEditing) {
     return json(
       {
         error:
-          "Your submitted changes are awaiting organizer review. You can edit again after that review.",
+          pending?.state === "approved"
+            ? "Your changes are approved and awaiting publication. You can edit again after the updated profile is live."
+            : "Your submitted changes are awaiting organizer review. You can edit again after that review.",
       },
       409,
     );
@@ -532,13 +1073,16 @@ async function buildWorkspacePayload(
        submitted_at,
        updated_at
      FROM speaker_content_revisions
-    WHERE speaker_id = ?1 AND state IN ('draft', 'submitted')
-    ORDER BY CASE state WHEN 'submitted' THEN 0 ELSE 1 END, updated_at DESC
+    WHERE speaker_id = ?1 AND state IN ('draft', 'submitted', 'approved')
+    ORDER BY
+      CASE state WHEN 'submitted' THEN 0 WHEN 'approved' THEN 1 ELSE 2 END,
+      updated_at DESC
     LIMIT 1`,
     )
     .bind(speakerId)
     .first<SpeakerRevisionRow>();
   let content = canonical;
+  let activeRevision = revision;
 
   if (revision) {
     try {
@@ -548,7 +1092,17 @@ async function buildWorkspacePayload(
         canonical.talks.map(({ id }) => id),
       );
 
-      if (validated.content) content = validated.content;
+      if (validated.content) {
+        if (
+          revision.state === "approved" &&
+          (await hashCanonicalContent(validated.content)) ===
+            (await hashCanonicalContent(canonical))
+        ) {
+          activeRevision = null;
+        } else {
+          content = validated.content;
+        }
+      }
     } catch {
       console.error("Invalid stored speaker revision", {
         revisionId: revision.revision_id,
@@ -566,15 +1120,83 @@ async function buildWorkspacePayload(
       speaker_id: speakerId,
       talk_ids: canonical.talks.map(({ id }) => id),
     },
-    revision: revision
+    revision: activeRevision
       ? {
-          revision_id: revision.revision_id,
-          state: revision.state,
-          submitted_at: revision.submitted_at,
-          updated_at: revision.updated_at,
+          revision_id: activeRevision.revision_id,
+          state: activeRevision.state,
+          submitted_at: activeRevision.submitted_at,
+          updated_at: activeRevision.updated_at,
         }
       : null,
   };
+}
+
+function serializeAdminRevision(
+  revision: SpeakerAdminRevisionRow,
+  canonical: SpeakerWorkspaceContent,
+): Record<string, unknown> {
+  let proposed: SpeakerWorkspaceContent | null = null;
+
+  try {
+    const validation = validateSpeakerWorkspaceContent(
+      JSON.parse(revision.content_json) as unknown,
+      canonical.talks.map(({ id }) => id),
+    );
+    proposed = validation.content ?? null;
+  } catch {
+    proposed = null;
+  }
+
+  return {
+    base_content_hash: revision.base_content_hash,
+    changed_fields: proposed ? getChangedFields(canonical, proposed) : [],
+    content: proposed,
+    review_note: revision.review_note,
+    reviewed_at: revision.reviewed_at,
+    revision_id: revision.revision_id,
+    state: revision.state,
+    submitted_at: revision.submitted_at,
+    updated_at: revision.updated_at,
+  };
+}
+
+function getChangedFields(
+  canonical: SpeakerWorkspaceContent,
+  proposed: SpeakerWorkspaceContent,
+): Array<{ before: string; field: string; value: string }> {
+  const changes: Array<{ before: string; field: string; value: string }> = [];
+
+  for (const field of ["name", "role", "bio", ...socialFields] as const) {
+    if (canonical.profile[field] !== proposed.profile[field]) {
+      changes.push({
+        before: canonical.profile[field],
+        field: `profile.${field}`,
+        value: proposed.profile[field],
+      });
+    }
+  }
+
+  const canonicalTalks = new Map(
+    canonical.talks.map((talk) => [talk.id, talk]),
+  );
+
+  for (const talk of proposed.talks) {
+    const current = canonicalTalks.get(talk.id);
+
+    if (!current) continue;
+
+    for (const field of ["title", "abstract"] as const) {
+      if (current[field] !== talk[field]) {
+        changes.push({
+          before: current[field],
+          field: `talks.${talk.id}.${field}`,
+          value: talk[field],
+        });
+      }
+    }
+  }
+
+  return changes;
 }
 
 export function validateSpeakerWorkspaceContent(
@@ -815,6 +1437,191 @@ async function hashCanonicalContent(
   return base64UrlEncode(new Uint8Array(digest));
 }
 
+function requireAdminMutation(
+  request: Request,
+  expectedAction: string,
+): Response | null {
+  if (
+    isSameOriginMutation(request) &&
+    request.headers.get("x-admin-action") === expectedAction
+  ) {
+    return null;
+  }
+
+  return json({ error: "Admin action could not be verified." }, 403);
+}
+
+function parseFutureConfigurationDate(value: string | undefined): Date | null {
+  if (!value) return null;
+
+  const timestamp = Date.parse(value);
+
+  if (!Number.isFinite(timestamp) || timestamp <= Date.now()) return null;
+
+  return new Date(timestamp);
+}
+
+function parsePublicOrigin(value: string | undefined): string | null {
+  if (!value) return null;
+
+  try {
+    const url = new URL(value);
+
+    if (
+      url.protocol !== "https:" ||
+      url.username ||
+      url.password ||
+      url.pathname !== "/" ||
+      url.search ||
+      url.hash
+    ) {
+      return null;
+    }
+
+    return url.origin;
+  } catch {
+    return null;
+  }
+}
+
+function normalizeEmail(value: unknown): string {
+  return typeof value === "string" ? value.trim().toLowerCase() : "";
+}
+
+function isLikelyEmail(value: string): boolean {
+  return (
+    value.length <= 254 &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/u.test(value) &&
+    !/[\r\n]/u.test(value)
+  );
+}
+
+function speakerInvitationText({
+  expiresAt,
+  invitationUrl,
+  speakerName,
+}: {
+  expiresAt: Date;
+  invitationUrl: string;
+  speakerName: string;
+}): string {
+  return [
+    `Hello ${speakerName},`,
+    "",
+    "Your private SDLCAI speaker workspace is ready. Use it to review and suggest updates to your public profile, social links, talk title, and talk description, and to access your promotion graphics.",
+    "",
+    invitationUrl,
+    "",
+    `The link remains valid until ${formatEmailDate(expiresAt)}. Keep it private: anyone with the link can open your workspace.`,
+    "",
+    "Submitted updates are reviewed by the SDLCAI organizer before publication.",
+    "",
+    "Questions? Reply to this message or contact info@sdlcai.org.",
+    "",
+    "SDLCAI",
+  ].join("\n");
+}
+
+function speakerInvitationHtml({
+  expiresAt,
+  invitationUrl,
+  speakerName,
+}: {
+  expiresAt: Date;
+  invitationUrl: string;
+  speakerName: string;
+}): string {
+  const safeName = escapeHtml(speakerName);
+  const safeUrl = escapeHtml(invitationUrl);
+
+  return `<!doctype html>
+<html lang="en">
+  <body style="margin:0;background:#f3efe7;color:#151515;font-family:Arial,sans-serif">
+    <div style="max-width:640px;margin:0 auto;padding:32px 20px">
+      <p style="margin:0 0 24px;font-size:13px;font-weight:700;text-transform:uppercase">SDLCAI / Speaker workspace</p>
+      <div style="border:1px solid #151515;background:#fff;padding:28px">
+        <h1 style="margin:0 0 20px;font-size:32px;line-height:1;text-transform:uppercase">Your workspace is ready</h1>
+        <p style="font-size:17px;line-height:1.6">Hello ${safeName},</p>
+        <p style="font-size:17px;line-height:1.6">Review your public profile, social links, talk details, and promotion graphics in one private place.</p>
+        <p style="margin:28px 0"><a href="${safeUrl}" style="display:inline-block;background:#151515;color:#fff;padding:14px 20px;font-weight:700;text-decoration:none;text-transform:uppercase">Open speaker workspace</a></p>
+        <p style="font-size:14px;line-height:1.6;color:#5d5d5d">This private link remains valid until ${escapeHtml(formatEmailDate(expiresAt))}. Anyone with the link can open your workspace, so please do not forward it.</p>
+        <p style="font-size:14px;line-height:1.6;color:#5d5d5d">Submitted updates are reviewed by the SDLCAI organizer before publication.</p>
+      </div>
+      <p style="font-size:14px;line-height:1.6">Questions? Reply to this message or contact <a href="mailto:info@sdlcai.org" style="color:#151515">info@sdlcai.org</a>.</p>
+    </div>
+  </body>
+</html>`;
+}
+
+function formatEmailDate(value: Date): string {
+  return new Intl.DateTimeFormat("en-GB", {
+    dateStyle: "long",
+    timeZone: "Europe/Helsinki",
+  }).format(value);
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/gu, "&amp;")
+    .replace(/</gu, "&lt;")
+    .replace(/>/gu, "&gt;")
+    .replace(/"/gu, "&quot;")
+    .replace(/'/gu, "&#39;");
+}
+
+async function encryptPrivateText(
+  value: string,
+  keyMaterial: string,
+): Promise<{ ciphertext: string; iv: string }> {
+  const key = await importPrivateAesKey(keyMaterial);
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const ciphertext = await crypto.subtle.encrypt(
+    { iv, name: "AES-GCM" },
+    key,
+    new TextEncoder().encode(value),
+  );
+
+  return {
+    ciphertext: base64Encode(new Uint8Array(ciphertext)),
+    iv: base64Encode(iv),
+  };
+}
+
+async function decryptPrivateText(
+  ciphertext: string,
+  iv: string,
+  keyMaterial: string,
+): Promise<string> {
+  const key = await importPrivateAesKey(keyMaterial);
+  const plaintext = await crypto.subtle.decrypt(
+    { iv: base64Decode(iv), name: "AES-GCM" },
+    key,
+    base64Decode(ciphertext),
+  );
+
+  return new TextDecoder().decode(plaintext);
+}
+
+async function importPrivateAesKey(keyMaterial: string): Promise<CryptoKey> {
+  const derived = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode(`email-encryption:${keyMaterial}`),
+  );
+
+  return crypto.subtle.importKey("raw", derived, "AES-GCM", false, [
+    "decrypt",
+    "encrypt",
+  ]);
+}
+
+function hashPrivateText(
+  value: string,
+  keyMaterial: string,
+  purpose: string,
+): Promise<string> {
+  return hashToken(value, keyMaterial, purpose);
+}
+
 function getConfigurationError(env: Env): Response | null {
   if (!env.INTERESTS) {
     return json({ error: "Speaker workspace storage is not configured." }, 503);
@@ -914,6 +1721,17 @@ function base64Encode(bytes: Uint8Array): string {
   return btoa(binary);
 }
 
+function base64Decode(value: string): Uint8Array<ArrayBuffer> {
+  const binary = atob(value);
+  const bytes: Uint8Array<ArrayBuffer> = new Uint8Array(binary.length);
+
+  for (let index = 0; index < binary.length; index += 1) {
+    bytes[index] = binary.charCodeAt(index);
+  }
+
+  return bytes;
+}
+
 function base64UrlEncode(bytes: Uint8Array): string {
   return base64Encode(bytes)
     .replace(/\+/gu, "-")
@@ -995,4 +1813,24 @@ function json(payload: Record<string, unknown>, status = 200): Response {
 
 function secure(response: Response): Response {
   return withSpeakerWorkspaceSecurityHeaders(response);
+}
+
+function adminSecure(response: Response): Response {
+  const secured = withSpeakerWorkspaceSecurityHeaders(response);
+  const headers = new Headers(secured.headers);
+  const vary = headers.get("vary");
+
+  if (
+    !vary
+      ?.split(",")
+      .some((value) => value.trim().toLowerCase() === "authorization")
+  ) {
+    headers.append("vary", "Authorization");
+  }
+
+  return new Response(secured.body, {
+    headers,
+    status: secured.status,
+    statusText: secured.statusText,
+  });
 }

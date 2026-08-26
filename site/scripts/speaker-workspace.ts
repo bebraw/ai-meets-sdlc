@@ -36,7 +36,7 @@ interface WorkspaceResponse {
   message?: string;
   revision: {
     revision_id: string;
-    state: "draft" | "submitted";
+    state: "approved" | "draft" | "submitted";
     submitted_at: string | null;
     updated_at: string;
   } | null;
@@ -141,9 +141,11 @@ function renderWorkspace(data: WorkspaceResponse): void {
     "[data-speaker-revision]",
     data.revision?.state === "submitted"
       ? "In review"
-      : data.revision?.state === "draft"
-        ? "Draft"
-        : "Published",
+      : data.revision?.state === "approved"
+        ? "Approved / publishing"
+        : data.revision?.state === "draft"
+          ? "Draft"
+          : "Published",
   );
 
   const photo = document.querySelector<HTMLImageElement>(
@@ -165,7 +167,7 @@ function renderWorkspace(data: WorkspaceResponse): void {
   }
 
   renderTalks(data.content.talks);
-  setSubmittedState(data.revision?.state === "submitted");
+  setLockedState(data.revision?.state ?? null);
 }
 
 function renderTalks(talks: WorkspaceTalk[]): void {
@@ -383,8 +385,11 @@ function clearErrors(): void {
   }
 }
 
-function setSubmittedState(submitted: boolean): void {
+function setLockedState(
+  revisionState: "approved" | "draft" | "submitted" | null,
+): void {
   if (!form) return;
+  const locked = revisionState === "submitted" || revisionState === "approved";
 
   for (const control of form.elements) {
     if (
@@ -392,12 +397,14 @@ function setSubmittedState(submitted: boolean): void {
       control instanceof HTMLTextAreaElement ||
       control instanceof HTMLButtonElement
     ) {
-      control.disabled = submitted;
+      control.disabled = locked;
     }
   }
 
-  if (submitted) {
+  if (revisionState === "submitted") {
     setStatus("Submitted changes are awaiting organizer review.");
+  } else if (revisionState === "approved") {
+    setStatus("Your approved changes are awaiting publication.");
   }
 }
 

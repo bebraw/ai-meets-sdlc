@@ -135,6 +135,48 @@
           </p>
         </section>
 
+        <section class="border-t border-ink pt-6" id="speaker-workspace">
+          <h2
+            class="font-headline text-3xl font-black uppercase leading-none md:text-5xl"
+          >
+            Speaker Workspace and Contact
+          </h2>
+          <p class="mt-6 text-muted">
+            For confirmed speakers, we store the email address needed to send a
+            private workspace invitation and operational event announcements.
+            The address is encrypted at rest and linked to the speaker’s stable
+            internal identifier. We store only hashes of invitation and session
+            secrets. Redeeming an invitation confirms that its address reaches
+            the speaker.
+          </p>
+          <p class="mt-4 text-muted">
+            The workspace lets a speaker propose changes to their public name,
+            professional role, biography, website and social links, and the
+            title and description of talks already assigned to them. Drafts and
+            submitted revisions remain private until an organizer reviews them.
+            Approved information may be published in the event programme,
+            slides, and promotion graphics and may remain as part of the public
+            event record.
+          </p>
+          <p class="mt-4 text-muted">
+            Operational email is limited to the speaker relationship, including
+            access, programme review, deadlines, logistics, promotion material,
+            and optional topic-video coordination. Optional promotional
+            communication preferences are stored separately. Delivery records
+            identify the speaker and outcome but do not contain the plaintext
+            address. Replies sent to info@sdlcai.org are received in the
+            organizer’s Google Workspace mailbox.
+          </p>
+          <p class="mt-4 text-muted">
+            Access links and sessions expire after 31 October 2026. We will
+            review and delete private speaker contact details by 30 November
+            2026 unless they are still required for event follow-up or a legal
+            obligation. A speaker can ask us to correct their address, suppress
+            further email, or delete contact details earlier by emailing
+            info@sdlcai.org.
+          </p>
+        </section>
+
         <section class="border-t border-ink pt-6" id="speaker-dinner">
           <h2
             class="font-headline text-3xl font-black uppercase leading-none md:text-5xl"
@@ -244,11 +286,30 @@
               <p class="mt-4 text-muted">
                 The website is hosted via the service Cloudflare. By visiting
                 the website Cloudflare stores access logs including the IP
-                addresses, stored for less than 30 days. Learn more in the
+                addresses, stored for less than 30 days. Cloudflare also
+                provides the encrypted database, private file storage, edge
+                rendering, and transactional Email Sending used by the speaker
+                workspace. Learn more in the
                 <a
                   class="font-bold text-ink underline"
                   href="https://www.cloudflare.com/privacypolicy/"
                   >Cloudflare Privacy Policy</a
+                >.
+              </p>
+            </div>
+            <div class="bg-paper p-5">
+              <h3 class="font-headline text-2xl font-black uppercase">
+                Google Workspace
+              </h3>
+              <p class="mt-4 text-muted">
+                Messages and replies sent to info@sdlcai.org are received in an
+                organizer-controlled Google Workspace mailbox. Google processes
+                message content and sender details to provide that mailbox. See
+                the
+                <a
+                  class="font-bold text-ink underline"
+                  href="https://policies.google.com/privacy"
+                  >Google Privacy Policy</a
                 >.
               </p>
             </div>

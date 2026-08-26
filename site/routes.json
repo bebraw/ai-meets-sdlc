@@ -300,7 +300,7 @@
   },
   "admin": {
     "layout": "admin",
-    "scripts": [{ "name": "index" }],
+    "scripts": [{ "name": "index" }, { "name": "admin-speakers" }],
     "dataSources": {
       "seminar": {
         "operation": "seminar"

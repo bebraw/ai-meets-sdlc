@@ -1,0 +1,280 @@
+import assert from "node:assert/strict";
+import { execFile } from "node:child_process";
+import { mkdtemp, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import path from "node:path";
+import { promisify } from "node:util";
+import test from "node:test";
+import { unstable_dev } from "wrangler";
+
+const execFileAsync = promisify(execFile);
+const origin = "https://sdlcai.org";
+const encryptionKey = "speaker-workspace-local-test-key";
+const adminAuthorization = `Basic ${Buffer.from(
+  "speaker-admin:local-test-password",
+).toString("base64")}`;
+
+test("speaker invitation sessions, revisions, and organizer review stay governed", async (t) => {
+  const persistenceDirectory = await mkdtemp(
+    path.join(tmpdir(), "sdlcai-speaker-workspace-test-"),
+  );
+  t.after(() => rm(persistenceDirectory, { force: true, recursive: true }));
+
+  const wranglerPath = path.resolve("node_modules/.bin/wrangler");
+  await execFileAsync(
+    wranglerPath,
+    [
+      "d1",
+      "migrations",
+      "apply",
+      "ai-meets-sdlc-interests",
+      "--local",
+      "--persist-to",
+      persistenceDirectory,
+    ],
+    { cwd: process.cwd() },
+  );
+
+  const invitationToken = Buffer.alloc(32, 7).toString("base64url");
+  const invitationHash = await hmac(
+    invitationToken,
+    "speaker-workspace-invite-token",
+  );
+  const email = await encrypt("speaker@example.com");
+  const emailFingerprint = await hmac("speaker@example.com", "email-hash");
+  const seedSql = `
+    INSERT INTO speaker_contacts (
+      speaker_id, email_ciphertext, email_iv, email_fingerprint,
+      retention_until, created_at, updated_at
+    ) VALUES (
+      'mo-khazali', '${email.ciphertext}', '${email.iv}', '${emailFingerprint}',
+      '2099-11-30T21:59:59Z', '2026-08-26T00:00:00Z', '2026-08-26T00:00:00Z'
+    );
+    INSERT INTO speaker_workspace_access (
+      speaker_id, invite_token_hash, access_generation, invite_created_at,
+      invite_expires_at, created_at, updated_at
+    ) VALUES (
+      'mo-khazali', '${invitationHash}', 1, '2026-08-26T00:00:00Z',
+      '2099-10-31T21:59:59Z', '2026-08-26T00:00:00Z', '2026-08-26T00:00:00Z'
+    );`;
+  await execFileAsync(
+    wranglerPath,
+    [
+      "d1",
+      "execute",
+      "ai-meets-sdlc-interests",
+      "--local",
+      "--persist-to",
+      persistenceDirectory,
+      "--command",
+      seedSql,
+    ],
+    { cwd: process.cwd() },
+  );
+
+  const worker = await unstable_dev("worker/index.ts", {
+    config: "wrangler.jsonc",
+    experimental: {
+      disableExperimentalWarning: true,
+      forceLocal: true,
+    },
+    local: true,
+    logLevel: "error",
+    persist: true,
+    persistTo: persistenceDirectory,
+    vars: {
+      ADMIN_PASSWORD: "local-test-password",
+      ADMIN_USERNAME: "speaker-admin",
+      EMAIL_ENCRYPTION_KEY: encryptionKey,
+      PUBLIC_SITE_ORIGIN: origin,
+      SPEAKER_CONTACT_RETENTION_UNTIL: "2099-11-30T21:59:59Z",
+      SPEAKER_DINNER_RESPONSE_DEADLINE: "2099-10-05T20:59:59Z",
+      SPEAKER_DINNER_RETENTION_UNTIL: "2099-10-26T21:59:59Z",
+      SPEAKER_WORKSPACE_ACCESS_UNTIL: "2099-10-31T21:59:59Z",
+      SHOW_INTEREST_FORM: "",
+      TURNSTILE_SITE_KEY: "",
+    },
+  });
+  t.after(() => worker.stop());
+
+  const unauthorized = await worker.fetch(`${origin}/api/speaker/workspace`);
+  assert.equal(unauthorized.status, 401);
+  assert.equal(unauthorized.headers.get("cache-control"), "no-store");
+
+  const redemption = await worker.fetch(`${origin}/api/speaker/session`, {
+    headers: { authorization: `Bearer ${invitationToken}` },
+    method: "POST",
+  });
+  assert.equal(redemption.status, 200);
+  const cookie = redemption.headers.get("set-cookie")?.split(";", 1)[0];
+  assert.match(cookie ?? "", /^__Host-sdlcai-speaker-session=/u);
+
+  const workspaceResponse = await speakerFetch(worker, cookie);
+  assert.equal(workspaceResponse.status, 200);
+  const workspace = await workspaceResponse.json();
+  assert.equal(workspace.immutable.speaker_id, "mo-khazali");
+  assert.deepEqual(workspace.immutable.talk_ids, [
+    "mo-khazali-industry-perspective",
+  ]);
+  assert.equal(workspace.revision, null);
+
+  const proposed = structuredClone(workspace.content);
+  proposed.profile.name = "Mo Javad Khazali";
+  proposed.talks[0].title = "AI migrations you can verify";
+
+  const wrongOrigin = await speakerFetch(worker, cookie, {
+    action: "save",
+    content: proposed,
+    requestOrigin: "https://attacker.example",
+  });
+  assert.equal(wrongOrigin.status, 403);
+
+  const draftResponse = await speakerFetch(worker, cookie, {
+    action: "save",
+    content: proposed,
+  });
+  assert.equal(draftResponse.status, 200);
+  assert.equal((await draftResponse.json()).revision.state, "draft");
+
+  const submitResponse = await speakerFetch(worker, cookie, {
+    action: "submit",
+    content: proposed,
+  });
+  const submittedWorkspace = await submitResponse.json();
+  assert.equal(submitResponse.status, 200);
+  assert.equal(submittedWorkspace.revision.state, "submitted");
+
+  const blockedResponse = await speakerFetch(worker, cookie, {
+    action: "save",
+    content: proposed,
+  });
+  assert.equal(blockedResponse.status, 409);
+
+  const adminResponse = await worker.fetch(`${origin}/api/admin/speakers`, {
+    headers: { authorization: adminAuthorization },
+  });
+  assert.equal(adminResponse.status, 200);
+  const admin = await adminResponse.json();
+  const speaker = admin.speakers.find(
+    ({ speaker_id }) => speaker_id === "mo-khazali",
+  );
+  assert.equal(speaker.contact.email, "speaker@example.com");
+  assert.ok(speaker.contact.email_confirmed_at);
+  assert.equal(speaker.revision.state, "submitted");
+  assert.deepEqual(
+    speaker.revision.changed_fields.map(({ field }) => field),
+    ["profile.name", "talks.mo-khazali-industry-perspective.title"],
+  );
+
+  const rejectedResponse = await review(worker, {
+    decision: "reject",
+    review_note: "Please use the name shown on your conference badge.",
+    revision_id: speaker.revision.revision_id,
+  });
+  assert.equal(rejectedResponse.status, 200);
+
+  const returnedDraftResponse = await speakerFetch(worker, cookie);
+  const returnedDraft = await returnedDraftResponse.json();
+  assert.equal(returnedDraft.revision.state, "draft");
+  assert.equal(returnedDraft.content.profile.name, "Mo Javad Khazali");
+
+  const resubmittedResponse = await speakerFetch(worker, cookie, {
+    action: "submit",
+    content: workspace.content,
+  });
+  const resubmitted = await resubmittedResponse.json();
+  assert.equal(resubmittedResponse.status, 200);
+  assert.equal(resubmitted.revision.state, "submitted");
+
+  const approvedResponse = await review(worker, {
+    decision: "approve",
+    review_note: "Ready to apply.",
+    revision_id: resubmitted.revision.revision_id,
+  });
+  assert.equal(approvedResponse.status, 200);
+
+  const afterApprovalResponse = await speakerFetch(worker, cookie);
+  const afterApproval = await afterApprovalResponse.json();
+  assert.equal(afterApproval.revision, null);
+
+  const logoutResponse = await worker.fetch(`${origin}/api/speaker/session`, {
+    headers: { cookie, origin },
+    method: "DELETE",
+  });
+  assert.equal(logoutResponse.status, 200);
+  const afterLogout = await speakerFetch(worker, cookie);
+  assert.equal(afterLogout.status, 401);
+});
+
+async function speakerFetch(worker, cookie, update) {
+  const init = { headers: { cookie } };
+
+  if (update) {
+    init.method = "POST";
+    init.headers["content-type"] = "application/json";
+    init.headers.origin = update.requestOrigin ?? origin;
+    init.body = JSON.stringify({
+      action: update.action,
+      content: update.content,
+    });
+  }
+
+  return worker.fetch(`${origin}/api/speaker/workspace`, init);
+}
+
+function review(worker, body) {
+  return worker.fetch(`${origin}/api/admin/speakers/review`, {
+    body: JSON.stringify(body),
+    headers: {
+      authorization: adminAuthorization,
+      "content-type": "application/json",
+      origin,
+      "x-admin-action": "review-speaker-revision",
+    },
+    method: "POST",
+  });
+}
+
+async function hmac(value, purpose) {
+  const derived = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode(`${purpose}:${encryptionKey}`),
+  );
+  const key = await crypto.subtle.importKey(
+    "raw",
+    derived,
+    { hash: "SHA-256", name: "HMAC" },
+    false,
+    ["sign"],
+  );
+  const signature = await crypto.subtle.sign(
+    "HMAC",
+    key,
+    new TextEncoder().encode(value),
+  );
+  return Buffer.from(signature).toString("base64");
+}
+
+async function encrypt(value) {
+  const derived = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode(`email-encryption:${encryptionKey}`),
+  );
+  const key = await crypto.subtle.importKey(
+    "raw",
+    derived,
+    "AES-GCM",
+    false,
+    ["encrypt"],
+  );
+  const iv = new Uint8Array(12).fill(9);
+  const ciphertext = await crypto.subtle.encrypt(
+    { iv, name: "AES-GCM" },
+    key,
+    new TextEncoder().encode(value),
+  );
+  return {
+    ciphertext: Buffer.from(ciphertext).toString("base64"),
+    iv: Buffer.from(iv).toString("base64"),
+  };
+}

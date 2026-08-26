@@ -22,14 +22,93 @@
       </div>
       <div class="grid content-end gap-5">
         <p class="max-w-3xl text-xl leading-8 text-muted">
-          Coordinate the speaker dinner, review poster proposals, and manage the
-          seminar interest list and protected screen assets.
+          Coordinate speaker profiles and invitations, the speaker dinner,
+          poster proposals, the seminar interest list, and protected screen
+          assets.
         </p>
         <a
           class="w-fit inline-flex border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
           href="/admin/slides/"
           >Screen assets</a
         >
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="border-b border-ink bg-ink px-5 py-10 text-paper md:px-8 md:py-14"
+    aria-labelledby="speaker-workspace-heading"
+  >
+    <div class="mx-auto grid max-w-7xl gap-7">
+      <div class="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-end">
+        <div>
+          <p class="font-headline text-sm font-black uppercase text-paper/60">
+            Profiles / talks / promotion
+          </p>
+          <h2
+            class="mt-2 font-headline text-4xl font-black uppercase leading-none md:text-6xl"
+            id="speaker-workspace-heading"
+          >
+            Speaker workspace
+          </h2>
+          <p class="mt-4 max-w-3xl leading-7 text-paper/70">
+            Store each address privately, send or rotate a workspace invitation,
+            and review field-level changes before applying approved JSON to Git.
+          </p>
+        </div>
+        <button
+          class="border border-paper px-5 py-3 font-bold uppercase transition hover:bg-paper hover:text-ink disabled:cursor-wait disabled:opacity-60"
+          data-admin-speakers-refresh
+          type="button"
+        >
+          Refresh
+        </button>
+      </div>
+
+      <div class="grid gap-px bg-paper/40 sm:grid-cols-3">
+        <div class="bg-ink p-4">
+          <span class="text-sm font-bold uppercase text-paper/60"
+            >Contacts</span
+          >
+          <strong
+            class="mt-2 block font-headline text-4xl"
+            data-admin-speaker-count="contacts"
+            >0</strong
+          >
+        </div>
+        <div class="bg-ink p-4">
+          <span class="text-sm font-bold uppercase text-paper/60"
+            >Confirmed</span
+          >
+          <strong
+            class="mt-2 block font-headline text-4xl"
+            data-admin-speaker-count="confirmed"
+            >0</strong
+          >
+        </div>
+        <div class="bg-ink p-4">
+          <span class="text-sm font-bold uppercase text-paper/60"
+            >Awaiting review</span
+          >
+          <strong
+            class="mt-2 block font-headline text-4xl"
+            data-admin-speaker-count="submitted"
+            >0</strong
+          >
+        </div>
+      </div>
+
+      <p
+        class="min-h-6 text-sm font-bold uppercase text-paper/70"
+        data-admin-speakers-status
+        aria-live="polite"
+      >
+        Loading
+      </p>
+      <div class="grid gap-5" data-admin-speakers>
+        <p class="border border-paper/50 p-5 text-paper/70">
+          Loading speakers.
+        </p>
       </div>
     </div>
   </section>
