@@ -1,9 +1,10 @@
-# ADR 0003: Keep speaker contacts private and use transactional email
+# ADR-003: Keep Speaker Contacts Private and Use Transactional Email
 
-- Status: Accepted
-- Date: 2026-08-26
-- Note: ADR 0006 supersedes organizer-sent invitations as the primary access
-  flow. Existing invitation links remain supported temporarily.
+**Status:** Implemented
+
+**Date:** 2026-08-26
+
+**Amended by:** [ADR-006](./ADR-006-use-speaker-initiated-magic-link-access.md)
 
 ## Context
 
@@ -67,12 +68,24 @@ access, correction, and retention in the privacy policy. Operational and
 optional promotional communication preferences remain separate even when they
 share the same address.
 
+## Trigger
+
+The organizer needed to associate known email addresses with speakers, provide
+private workspace access, and send event announcements without exposing
+contact data through the public, version-controlled content pipeline.
+
 ## Consequences
+
+**Positive:**
 
 - Private contact details do not leak into Git history, public build output, or
   the Worker bundle.
 - Existing application-level encryption and keyed lookup primitives can be
   reused with new purpose strings.
+- Marketing remains deliberately outside the application email capability.
+
+**Negative:**
+
 - Domain onboarding must establish the Cloudflare-provided SPF, DKIM, DMARC,
   and bounce records, and arbitrary-recipient sending requires an eligible
   Cloudflare plan.
@@ -81,9 +94,13 @@ share the same address.
 - The current shared admin authentication cannot attribute sends to an
   individual organizer; stronger organizer identity is needed if that audit
   distinction becomes necessary.
-- Marketing remains deliberately outside the application email capability.
 
-## Alternatives considered
+**Neutral:**
+
+- Operational and optional promotional preferences share an address while
+  remaining separate processing purposes.
+
+## Alternatives Considered
 
 ### Add email to `speakers.json`
 

@@ -1,11 +1,13 @@
-# ADR 0007: Allow organizer-authored speaker revisions
+# ADR-007: Allow Organizer-Authored Speaker Revisions
 
-- Status: Accepted
-- Date: 2026-08-26
+**Status:** Implemented
+
+**Date:** 2026-08-26
 
 ## Context
 
-ADR 0001 established a moderated speaker workspace and kept Git as the source
+[ADR-001](./ADR-001-use-a-moderated-self-service-workspace-for-speakers.md)
+established a moderated speaker workspace and kept Git as the source
 of truth for published profiles, talks, slides, and promotion graphics. That
 workflow assumed speakers would create the first revision. In practice, the
 organizer often already has usable biography, social, talk, and portrait
@@ -41,19 +43,33 @@ re-encoded as a 400 by 400 WebP, stored privately in R2, and marked approved.
 The derivative must still replace the canonical Git asset before it becomes
 public.
 
+## Trigger
+
+The organizer needed to correct typos and prefill profiles, talks, social links,
+and portraits for speakers who might never sign in to the workspace.
+
 ## Consequences
+
+**Positive:**
 
 - Profiles and talks can be prepared without waiting for speaker sign-in.
 - Speakers see organizer-prefilled drafts in the same workspace and can
   continue editing them.
 - Organizer and speaker edits share validation, revision history, immutable
   identifiers, and one publication path.
+
+**Negative:**
+
 - Admin edits do not become public until the canonical JSON or WebP is applied
   to Git and deployed.
 - The shared Basic-auth boundary records the actor as `admin`; it cannot
   distinguish individual organizers without a future admin identity system.
 
-## Alternatives considered
+**Neutral:**
+
+- Organizer-authored and speaker-authored revisions use the same state model.
+
+## Alternatives Considered
 
 ### Require every speaker to create their own revision
 
@@ -67,6 +83,6 @@ different sources of truth until every surface was regenerated.
 
 ### Let the Worker commit directly to Git
 
-Rejected for the same reason as ADR 0001: it would require repository
+Rejected for the same reason as ADR-001: it would require repository
 credentials at the edge and bypass the normal review, validation, and deploy
 pipeline.

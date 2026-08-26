@@ -1,7 +1,8 @@
-# ADR 0002: Provide promotion assets and staged video submissions
+# ADR-002: Provide Promotion Assets and Staged Video Submissions
 
-- Status: Accepted
-- Date: 2026-08-26
+**Status:** Implemented
+
+**Date:** 2026-08-26
 
 ## Context
 
@@ -51,21 +52,37 @@ whether organizers may caption, crop, excerpt, edit, and publish the video.
 Retention for source video, published derivatives, and permission evidence must
 be defined independently of speaker-profile retention.
 
+## Trigger
+
+Speakers needed direct access to their own promotional graphics, while the
+organizer needed a safe way to request and moderate short topic videos without
+proxying large uploads through the application Worker.
+
 ## Consequences
+
+**Positive:**
 
 - Speakers do not have to locate assets in the public slide library or decode
   slide-number-based filenames.
 - Stable manifest keys survive schedule reordering.
 - Video bytes bypass the Worker, avoiding Worker request-size and execution-time
   constraints.
-- Stream, a private upload-creation endpoint, webhook verification, D1 workflow
-  metadata, and organizer moderation UI become required infrastructure.
 - A submitted video is private by default and cannot accidentally become a
   public endorsement.
 - Raster rendering can move from CI to the edge without redesigning the speaker
   experience, provided the manifest and cache contract remain stable.
 
-## Alternatives considered
+**Negative:**
+
+- Stream, a private upload-creation endpoint, webhook verification, D1 workflow
+  metadata, and organizer moderation UI become required infrastructure.
+
+**Neutral:**
+
+- Video retention and recorded permissions remain independent of public
+  speaker-profile retention.
+
+## Alternatives Considered
 
 ### Ask speakers to download assets from the public slide library
 

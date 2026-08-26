@@ -1,7 +1,8 @@
-# ADR 0004: Render social graphics on demand at the edge
+# ADR-004: Render Social Graphics on Demand at the Edge
 
-- Status: Accepted
-- Date: 2026-08-26
+**Status:** Implemented
+
+**Date:** 2026-08-26
 
 ## Context
 
@@ -44,7 +45,15 @@ referenced by that slide, shared deck dependencies, preset, and renderer
 contract. A local export command remains available for visual review, but it is
 not part of the production build.
 
+## Trigger
+
+Cloudflare Workers Builds could generate the static pages but failed when the
+production build attempted to launch a Chromium-compatible browser for social
+graphics.
+
 ## Consequences
+
+**Positive:**
 
 - Workers Builds no longer needs Chromium and does not spend build time
   regenerating 69 JPEGs.
@@ -55,15 +64,21 @@ not part of the production build.
   successful render reusable across locations and deployments.
 - Stable slide-ID paths survive schedule reordering, while content-addressed
   URLs can be cached for a year as immutable.
+
+**Negative:**
+
 - The deployment requires a Browser Rendering binding and a separate R2 bucket.
 - Simultaneous first requests can still race and perform duplicate renders;
   this bounded cold-start cost does not justify Durable Object coordination at
   the current 69-asset scale. R2 remains the authoritative result after either
   render completes.
+
+**Neutral:**
+
 - Old versioned graphics remain in R2 until an explicit lifecycle decision is
   made, preserving previously shared links at a small storage cost.
 
-## Alternatives considered
+## Alternatives Considered
 
 ### Install Chromium in Workers Builds
 

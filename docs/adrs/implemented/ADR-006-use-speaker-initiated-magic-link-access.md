@@ -1,8 +1,10 @@
-# ADR 0006: Speaker-initiated magic-link access
+# ADR-006: Use Speaker-Initiated Magic-Link Access
 
-- Status: Accepted
-- Date: 2026-08-26
-- Supersedes: The organizer-sent invitation flow in ADR 0003
+**Status:** Implemented
+
+**Date:** 2026-08-26
+
+**Amends:** [ADR-003](./ADR-003-keep-speaker-contacts-private-and-use-transactional-email.md) by replacing organizer-sent invitations as the primary access flow
 
 ## Context
 
@@ -49,7 +51,15 @@ Changing a speaker's assigned email revokes existing sessions and outstanding
 magic links for that speaker. Saving the same email does not unnecessarily sign
 the speaker out.
 
+## Trigger
+
+The organizer already knew each confirmed speaker's email address and wanted a
+login page where speakers could request their own access instead of waiting for
+manually created invitations.
+
 ## Consequences
+
+**Positive:**
 
 - The organizer only has to maintain the speaker-to-email mapping.
 - Speakers can recover access without asking for another invitation.
@@ -57,12 +67,19 @@ the speaker out.
   its response body or status.
 - Turnstile, D1 throttling, short expiry, and single use limit email abuse and
   replay.
-- Dinner information is visibly part of the workspace while remaining private
-  operational data with its own consent, deadline, and retention rules.
-- The old invitation and shared-dinner routes can be removed after their
+
+**Negative:**
+
+- The access flow depends on transactional email delivery and abuse controls.
+- The old invitation and shared-dinner routes must be retained until their
   respective access and retention deadlines.
 
-## Alternatives considered
+**Neutral:**
+
+- Dinner information is visibly part of the workspace while remaining private
+  operational data with its own consent, deadline, and retention rules.
+
+## Alternatives Considered
 
 ### Continue organizer-sent invitations
 

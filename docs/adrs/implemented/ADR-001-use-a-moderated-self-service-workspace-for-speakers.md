@@ -1,7 +1,8 @@
-# ADR 0001: Use a moderated self-service workspace for speakers
+# ADR-001: Use a Moderated Self-Service Workspace for Speakers
 
-- Status: Accepted
-- Date: 2026-08-26
+**Status:** Implemented
+
+**Date:** 2026-08-26
 
 ## Context
 
@@ -62,20 +63,36 @@ published:
 - impose explicit length and file-size limits and never trust a browser-supplied
   MIME type or filename.
 
+## Trigger
+
+The existing private dinner-response link showed that speakers could safely
+manage event data through a scoped capability, while profile, talk, and
+promotion changes still required manual organizer coordination.
+
 ## Consequences
+
+**Positive:**
 
 - Speakers have one place to maintain all of their public information.
 - Organizers retain editorial control and can inspect revision history.
 - The public site, slide decks, and promotional assets remain consistent because
   they continue to share one canonical data source.
+- Public Markdown, URLs, and images gain an explicit trust boundary instead of
+  flowing directly from form input into generated HTML.
+
+**Negative:**
+
 - Publishing an approved edit is not instantaneous: it requires an organizer
   action and a successful build/deployment.
 - D1 migrations, revision APIs, organizer review UI, stable talk identifiers,
   image staging, and session handling are required.
-- Public Markdown, URLs, and images gain an explicit trust boundary instead of
-  flowing directly from form input into generated HTML.
 
-## Alternatives considered
+**Neutral:**
+
+- Speaker-facing changes become private revisions before they become public
+  event content.
+
+## Alternatives Considered
 
 ### Write speaker edits directly to the public JSON
 

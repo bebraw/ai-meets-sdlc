@@ -1,13 +1,16 @@
-# ADR 0005: Keep Google Workspace for inbound email
+# ADR-005: Keep Google Workspace for Inbound Email
 
-- Status: Accepted
-- Date: 2026-08-26
-- Supersedes: ADR 0003 for inbound reply handling only
+**Status:** Implemented
+
+**Date:** 2026-08-26
+
+**Amends:** [ADR-003](./ADR-003-keep-speaker-contacts-private-and-use-transactional-email.md) for inbound reply handling
 
 ## Context
 
-ADR 0003 selected Cloudflare Email Routing to forward replies sent to the
-application's outbound address. The domain already has a real
+[ADR-003](./ADR-003-keep-speaker-contacts-private-and-use-transactional-email.md)
+selected Cloudflare Email Routing to forward replies sent to the application's
+outbound address. The domain already has a real
 `info@sdlcai.org` mailbox hosted by Google Workspace, so forwarding is
 unnecessary and would compete with Google's root-domain MX records.
 
@@ -32,19 +35,33 @@ sent manually from Google Workspace must remain authenticated and aligned with
 the domain's DMARC policy.
 
 All other contact privacy, verification, announcement scope, suppression, and
-delivery-audit decisions in ADR 0003 remain in force.
+delivery-audit decisions in ADR-003 remain in force.
+
+## Trigger
+
+The organizer confirmed that `info@sdlcai.org` is an active Google Workspace
+mailbox and that a transactional message sent by the application arrived there
+successfully.
 
 ## Consequences
+
+**Positive:**
 
 - Speakers can reply to the same recognizable address that sent the message.
 - Organizers can receive and answer replies in the existing Google mailbox.
 - No forwarding destination, routing rule, or inbound Email Worker is needed.
+
+**Negative:**
+
 - Root-domain MX changes must continue to be managed as Google Workspace
   infrastructure; enabling Cloudflare Email Routing would conflict with it.
+
+**Neutral:**
+
 - Cloudflare Email Sending can be changed or removed independently without
   changing inbound Google delivery.
 
-## Alternatives considered
+## Alternatives Considered
 
 ### Forward `info@sdlcai.org` through Cloudflare Email Routing
 
