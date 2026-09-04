@@ -73,13 +73,6 @@ type SpeakerDinnerAdminItem = {
   updated_at: string | null;
 };
 
-type SpeakerDinnerSharedAdminItem = {
-  name: string;
-  responded_at: string;
-  response: SpeakerDinnerResponse;
-  updated_at: string;
-};
-
 type SpeakerDinnerStatus = {
   closed: boolean;
   deadline: string;
@@ -1131,9 +1124,6 @@ function initAdminSpeakerDinner() {
   if (!speakersRoot) return;
 
   const root = speakersRoot;
-  const sharedResponsesRoot = document.querySelector<HTMLElement>(
-    "[data-admin-dinner-shared-responses]",
-  );
   const status = document.querySelector<HTMLElement>(
     "[data-admin-dinner-status]",
   );
@@ -1142,15 +1132,6 @@ function initAdminSpeakerDinner() {
   );
   const purgeButton = document.querySelector<HTMLButtonElement>(
     "[data-admin-dinner-purge]",
-  );
-  const sharedInviteButton = document.querySelector<HTMLButtonElement>(
-    "[data-admin-dinner-shared-invite]",
-  );
-  const sharedInviteStatus = document.querySelector<HTMLElement>(
-    "[data-admin-dinner-shared-invite-status]",
-  );
-  const sharedLinkRoot = document.querySelector<HTMLElement>(
-    "[data-admin-dinner-shared-link]",
   );
 
   function setStatus(message: string) {
@@ -1168,24 +1149,16 @@ function initAdminSpeakerDinner() {
     return element;
   }
 
-  function updateSummary(
-    speakers: SpeakerDinnerAdminItem[],
-    sharedResponses: SpeakerDinnerSharedAdminItem[],
-  ) {
-    const allResponses = [
-      ...speakers.map((speaker) => speaker.response).filter(Boolean),
-      ...sharedResponses.map((item) => item.response),
-    ];
+  function updateSummary(speakers: SpeakerDinnerAdminItem[]) {
     const counts = {
-      invited: speakers.filter((speaker) => speaker.invited).length,
-      attending: allResponses.filter(
-        (response) => response?.attendance === "attending",
+      total: speakers.length,
+      attending: speakers.filter(
+        (speaker) => speaker.response?.attendance === "attending",
       ).length,
-      not_attending: allResponses.filter(
-        (response) => response?.attendance === "not_attending",
+      not_attending: speakers.filter(
+        (speaker) => speaker.response?.attendance === "not_attending",
       ).length,
       pending: speakers.filter((speaker) => !speaker.response).length,
-      shared: sharedResponses.length,
     };
 
     for (const [name, count] of Object.entries(counts)) {
@@ -1215,147 +1188,33 @@ function initAdminSpeakerDinner() {
     list.appendChild(group);
   }
 
-  async function copyInviteLink(
-    input: HTMLInputElement,
-    button: HTMLButtonElement,
-  ) {
-    try {
-      await navigator.clipboard.writeText(input.value);
-      button.textContent = "Copied";
-    } catch {
-      input.select();
-      document.execCommand("copy");
-      button.textContent = "Copied";
-    }
-  }
+  function renderSpeakers(speakers: SpeakerDinnerAdminItem[]) {
+    root.replaceChildren();
+    updateSummary(speakers);
 
-  function renderCreatedLink(
-    container: HTMLElement,
-    inviteUrl: string,
-    label: string,
-  ) {
-    container.replaceChildren();
-    const linkGroup = createElement(
-      "div",
-      "grid gap-2 border border-paper/50 p-2 sm:grid-cols-[minmax(0,1fr)_auto]",
-    );
-    const linkInput = createElement(
-      "input",
-      "min-w-0 border border-paper bg-ink px-3 py-2 text-xs text-paper",
-    );
-    linkInput.readOnly = true;
-    linkInput.value = inviteUrl;
-    linkInput.setAttribute("aria-label", label);
-    const copyButton = createElement(
-      "button",
-      "border border-paper px-3 py-2 text-xs font-bold uppercase",
-      "Copy link",
-    );
-    copyButton.type = "button";
-    copyButton.addEventListener("click", () => {
-      void copyInviteLink(linkInput, copyButton);
-    });
-    linkGroup.appendChild(linkInput);
-    linkGroup.appendChild(copyButton);
-    container.appendChild(linkGroup);
-  }
-
-  function renderSharedResponses(items: SpeakerDinnerSharedAdminItem[]) {
-    if (!sharedResponsesRoot) return;
-
-    sharedResponsesRoot.replaceChildren();
-
-    if (!items.length) {
-      sharedResponsesRoot.appendChild(
+    if (!speakers.length) {
+      root.appendChild(
         createElement(
           "p",
           "border border-ink p-5 text-muted",
-          "No shared-link responses yet.",
+          "No speakers are available.",
         ),
       );
       return;
     }
-
-    for (const item of items) {
-      const article = createElement(
-        "article",
-        "grid border border-ink bg-paper lg:grid-cols-[minmax(16rem,0.6fr)_minmax(0,1fr)]",
-      );
-      const header = createElement(
-        "header",
-        "grid content-start gap-3 bg-ink p-5 text-paper",
-      );
-      header.appendChild(
-        createElement(
-          "p",
-          "text-xs font-bold uppercase text-paper/60",
-          item.response.attendance === "attending"
-            ? "Shared link / attending"
-            : "Shared link / not attending",
-        ),
-      );
-      header.appendChild(
-        createElement(
-          "h4",
-          "font-headline text-3xl font-black uppercase leading-none",
-          item.name,
-        ),
-      );
-
-      const details = createElement(
-        "dl",
-        "grid content-start gap-x-8 gap-y-5 p-5 text-sm sm:grid-cols-2",
-      );
-      addDinnerField(
-        details,
-        "Attendance",
-        item.response.attendance.replace("_", " "),
-      );
-      addDinnerField(details, "Meal", item.response.meal_preference);
-      addDinnerField(
-        details,
-        "Food requirements",
-        item.response.food_requirements,
-      );
-      addDinnerField(
-        details,
-        "Cross-contamination",
-        item.response.cross_contamination,
-      );
-      addDinnerField(details, "Responded", item.responded_at);
-      addDinnerField(details, "Last updated", item.updated_at);
-
-      article.appendChild(header);
-      article.appendChild(details);
-      sharedResponsesRoot.appendChild(article);
-    }
-  }
-
-  function renderSpeakers(
-    speakers: SpeakerDinnerAdminItem[],
-    sharedResponses: SpeakerDinnerSharedAdminItem[],
-  ) {
-    root.replaceChildren();
-    renderSharedResponses(sharedResponses);
-    updateSummary(speakers, sharedResponses);
 
     for (const speaker of speakers) {
       const article = createElement(
         "article",
         "grid border border-ink bg-paper lg:grid-cols-[minmax(16rem,0.6fr)_minmax(0,1fr)]",
       );
-      const header = createElement(
-        "header",
-        "grid content-between gap-5 bg-ink p-5 text-paper",
-      );
+      const header = createElement("header", "bg-ink p-5 text-paper");
       const titleGroup = createElement("div");
       const state = speaker.response
         ? speaker.response.attendance === "attending"
           ? "Attending"
           : "Not attending"
-        : speaker.invited
-          ? "Awaiting reply"
-          : "No link created";
+        : "Awaiting reply";
       titleGroup.appendChild(
         createElement("p", "text-xs font-bold uppercase text-paper/60", state),
       );
@@ -1367,92 +1226,7 @@ function initAdminSpeakerDinner() {
         ),
       );
 
-      const inviteGroup = createElement("div", "grid gap-2");
-      const inviteButton = createElement(
-        "button",
-        "border border-paper bg-paper px-4 py-3 text-sm font-bold uppercase text-ink transition hover:bg-ink hover:text-paper disabled:cursor-wait disabled:opacity-60",
-        speaker.invited ? "Replace private link" : "Create private link",
-      );
-      inviteButton.type = "button";
-      const inviteStatus = createElement(
-        "p",
-        "min-h-5 text-xs font-bold uppercase text-paper/70",
-      );
-      inviteStatus.setAttribute("aria-live", "polite");
-      inviteGroup.appendChild(inviteButton);
-      inviteGroup.appendChild(inviteStatus);
-
-      inviteButton.addEventListener("click", async () => {
-        inviteButton.disabled = true;
-        inviteStatus.textContent = "Creating link...";
-
-        try {
-          const body = new FormData();
-          body.append("speaker_id", speaker.speaker_id);
-          const response = await fetch("/api/admin/speaker-dinner/invite", {
-            method: "POST",
-            headers: {
-              accept: "application/json",
-              "x-admin-action": "rotate-speaker-dinner-invite",
-            },
-            body,
-          });
-          const result = (await response.json()) as FormResponse & {
-            invite_url?: string;
-          };
-
-          if (!response.ok || result.error || !result.invite_url) {
-            throw new Error(
-              result.error || "Could not create invitation link.",
-            );
-          }
-
-          inviteGroup.querySelector("[data-dinner-created-link]")?.remove();
-          const linkGroup = createElement(
-            "div",
-            "grid gap-2 border border-paper/50 p-2",
-          );
-          linkGroup.dataset.dinnerCreatedLink = "";
-          const linkInput = createElement(
-            "input",
-            "min-w-0 border border-paper bg-ink px-3 py-2 text-xs text-paper",
-          );
-          linkInput.readOnly = true;
-          linkInput.value = result.invite_url;
-          linkInput.setAttribute(
-            "aria-label",
-            `Private link for ${speaker.name}`,
-          );
-          const copyButton = createElement(
-            "button",
-            "border border-paper px-3 py-2 text-xs font-bold uppercase",
-            "Copy link",
-          );
-          copyButton.type = "button";
-          copyButton.addEventListener("click", () => {
-            void copyInviteLink(linkInput, copyButton);
-          });
-          linkGroup.appendChild(linkInput);
-          linkGroup.appendChild(copyButton);
-          inviteGroup.appendChild(linkGroup);
-          speaker.invited = true;
-          inviteButton.textContent = "Replace private link";
-          inviteStatus.textContent =
-            "New link ready. Earlier links no longer work.";
-          updateSummary(speakers, sharedResponses);
-          setStatus(
-            result.message || `Invitation link created for ${speaker.name}.`,
-          );
-        } catch (error) {
-          inviteStatus.textContent =
-            error instanceof Error ? error.message : "Could not create link.";
-        } finally {
-          inviteButton.disabled = false;
-        }
-      });
-
       header.appendChild(titleGroup);
-      header.appendChild(inviteGroup);
 
       const details = createElement(
         "dl",
@@ -1475,7 +1249,7 @@ function initAdminSpeakerDinner() {
         speaker.response?.cross_contamination ?? "",
       );
       addDinnerField(details, "Responded", speaker.responded_at ?? "");
-      addDinnerField(details, "Invitation updated", speaker.updated_at ?? "");
+      addDinnerField(details, "Last updated", speaker.updated_at ?? "");
 
       article.appendChild(header);
       article.appendChild(details);
@@ -1492,8 +1266,6 @@ function initAdminSpeakerDinner() {
         headers: { accept: "application/json" },
       });
       const payload = (await response.json()) as FormResponse & {
-        shared_invite_active?: boolean;
-        shared_responses?: SpeakerDinnerSharedAdminItem[];
         speakers?: SpeakerDinnerAdminItem[];
       };
 
@@ -1502,18 +1274,13 @@ function initAdminSpeakerDinner() {
       }
 
       const speakers = Array.isArray(payload.speakers) ? payload.speakers : [];
-      const sharedResponses = Array.isArray(payload.shared_responses)
-        ? payload.shared_responses
-        : [];
-      renderSpeakers(speakers, sharedResponses);
-      if (sharedInviteButton) {
-        sharedInviteButton.textContent = payload.shared_invite_active
-          ? "Replace shared link"
-          : "Create shared link";
-      }
+      renderSpeakers(speakers);
+      const responseCount = speakers.filter(
+        (speaker) => speaker.response,
+      ).length;
       setStatus(
         successMessage ||
-          `${speakers.length} speakers / ${sharedResponses.length} shared replies`,
+          `${responseCount} of ${speakers.length} speakers have replied`,
       );
     } catch (error) {
       root.replaceChildren(
@@ -1529,57 +1296,10 @@ function initAdminSpeakerDinner() {
     }
   }
 
-  sharedInviteButton?.addEventListener("click", async () => {
-    sharedInviteButton.disabled = true;
-    if (sharedInviteStatus) {
-      sharedInviteStatus.textContent = "Creating shared link...";
-    }
-
-    try {
-      const response = await fetch("/api/admin/speaker-dinner/shared-invite", {
-        method: "POST",
-        headers: {
-          accept: "application/json",
-          "x-admin-action": "rotate-speaker-dinner-shared-invite",
-        },
-      });
-      const result = (await response.json()) as FormResponse & {
-        invite_url?: string;
-      };
-
-      if (!response.ok || result.error || !result.invite_url) {
-        throw new Error(result.error || "Could not create shared link.");
-      }
-
-      if (sharedLinkRoot) {
-        renderCreatedLink(
-          sharedLinkRoot,
-          result.invite_url,
-          "Shared dinner invitation link",
-        );
-      }
-      sharedInviteButton.textContent = "Replace shared link";
-      if (sharedInviteStatus) {
-        sharedInviteStatus.textContent =
-          "New link ready. Earlier shared links no longer work.";
-      }
-      setStatus(result.message || "Shared invitation link created.");
-    } catch (error) {
-      if (sharedInviteStatus) {
-        sharedInviteStatus.textContent =
-          error instanceof Error
-            ? error.message
-            : "Could not create shared link.";
-      }
-    } finally {
-      sharedInviteButton.disabled = false;
-    }
-  });
-
   refreshButton?.addEventListener("click", () => void loadSpeakers());
   purgeButton?.addEventListener("click", async () => {
     const confirmation = window.prompt(
-      "Type DELETE to remove every speaker dinner invitation and response.",
+      "Type DELETE to remove every speaker dinner response.",
     );
 
     if (confirmation !== "DELETE") return;
@@ -1602,7 +1322,7 @@ function initAdminSpeakerDinner() {
         throw new Error(result.error || "Could not delete dinner data.");
       }
 
-      await loadSpeakers("Dinner invitations and responses deleted.");
+      await loadSpeakers("Dinner responses deleted.");
     } catch (error) {
       setStatus(
         error instanceof Error

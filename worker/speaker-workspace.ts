@@ -2932,7 +2932,7 @@ async function updateSpeakerDinner(
     closed: false,
     consent_text: speakerDinnerConsentText,
     deadline: new Date(configuration.deadline).toISOString(),
-    message: "Your dinner details have been saved.",
+    message: "Your dinner response has been saved.",
     responded_at: respondedAt,
     response,
   });

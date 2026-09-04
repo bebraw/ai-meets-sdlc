@@ -332,7 +332,7 @@
         "context": {
           "meta": {
             "title": "SDLCAI Admin Dinner",
-            "description": "Export caterer data and manage legacy SDLCAI speaker dinner responses.",
+            "description": "Track SDLCAI speaker dinner responses and export caterer data.",
             "ogEyebrow": "Admin dinner",
             "ogDescription": "Manage SDLCAI speaker dinner responses."
           }

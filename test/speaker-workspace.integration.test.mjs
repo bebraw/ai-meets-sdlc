@@ -135,6 +135,7 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   assert.match(speakerPage, /data-speaker-login-form/u);
   assert.match(speakerPage, /data-action="speaker-login-v1"/u);
   assert.match(speakerPage, /data-speaker-dinner-form/u);
+  assert.match(speakerPage, /I won’t attend/u);
   assert.doesNotMatch(speakerPage, /__TURNSTILE_SITE_KEY__/u);
 
   const unauthorized = await worker.fetch(`${origin}/api/speaker/workspace`);
@@ -355,6 +356,35 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
     speaker.dinner.response.food_requirements,
     "Severe hazelnut allergy",
   );
+
+  const dinnerDeclineResponse = await worker.fetch(
+    `${origin}/api/speaker/dinner`,
+    {
+      body: JSON.stringify({ attendance: "not_attending", consent: true }),
+      headers: { "content-type": "application/json", cookie, origin },
+      method: "POST",
+    },
+  );
+  const dinnerDecline = await dinnerDeclineResponse.json();
+  assert.equal(dinnerDeclineResponse.status, 200);
+  assert.deepEqual(dinnerDecline.response, {
+    attendance: "not_attending",
+    cross_contamination: "",
+    food_requirements: "",
+    meal_preference: "",
+  });
+
+  const declinedAdminResponse = await worker.fetch(
+    `${origin}/api/admin/speakers`,
+    { headers: { authorization: adminAuthorization } },
+  );
+  const declinedAdmin = await declinedAdminResponse.json();
+  const declinedSpeaker = declinedAdmin.speakers.find(
+    ({ speaker_id }) => speaker_id === "mo-khazali",
+  );
+  assert.equal(declinedAdminResponse.status, 200);
+  assert.equal(declinedSpeaker.dinner.response.attendance, "not_attending");
+
   const mappedSpeaker = admin.speakers.find(
     ({ speaker_id }) => speaker_id === "ohans-emmanuel",
   );

@@ -207,7 +207,12 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
     {
       pathname: "/admin/dinner/",
       includes: [/data-admin-dinner-speakers/, /data-admin-dinner-summary/],
-      excludes: [/data-admin-speakers(?:\s|>)/, /data-admin-poster-proposals/],
+      excludes: [
+        /data-admin-speakers(?:\s|>)/,
+        /data-admin-poster-proposals/,
+        /data-admin-dinner-shared-invite/,
+        /Legacy dinner links/,
+      ],
     },
     {
       pathname: "/admin/posters/",

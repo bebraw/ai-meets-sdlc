@@ -474,7 +474,7 @@ dinnerForm?.addEventListener("submit", async (event) => {
   );
 
   if (submit) submit.disabled = true;
-  setDinnerStatus("Saving private dinner details…");
+  setDinnerStatus("Saving private dinner response…");
 
   const response = await requestJson<SpeakerDinnerResponse>(
     "/api/speaker/dinner",
@@ -498,14 +498,14 @@ dinnerForm?.addEventListener("submit", async (event) => {
 
   if (!response.ok) {
     setDinnerStatus(
-      response.data.error ?? "Dinner details could not be saved.",
+      response.data.error ?? "Dinner response could not be saved.",
       true,
     );
     return;
   }
 
   renderDinner(response.data);
-  setDinnerStatus(response.data.message ?? "Dinner details saved.");
+  setDinnerStatus(response.data.message ?? "Dinner response saved.");
 });
 
 async function loadDinner(): Promise<void> {
