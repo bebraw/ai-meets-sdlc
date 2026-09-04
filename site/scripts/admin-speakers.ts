@@ -66,6 +66,7 @@ interface AdminSpeakerItem {
   } | null;
   revision: AdminSpeakerRevision | null;
   speaker_id: string;
+  workspace_only: boolean;
   videos: AdminSpeakerVideo[];
 }
 
@@ -528,7 +529,9 @@ function renderSpeaker(speaker: AdminSpeakerItem): HTMLElement {
   const eyebrow = node(
     "p",
     "text-xs font-bold uppercase text-paper/60",
-    speaker.speaker_id,
+    speaker.workspace_only
+      ? `Private test account / ${speaker.speaker_id}`
+      : speaker.speaker_id,
   );
   const title = node(
     "h3",

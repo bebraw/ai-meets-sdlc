@@ -13,7 +13,7 @@ import {
   combineCanonicalVersion,
   getCanonicalPhotoUrl,
   getCanonicalTalks,
-  readCanonicalSpeakers,
+  readPublicCanonicalSpeakers,
   type CanonicalSpeakerRecord,
 } from "./canonical-content";
 import {
@@ -69,7 +69,7 @@ export async function handleSpeakerPromotionManifestRequest(
   try {
     const [manifest, records, sourceResponse] = await Promise.all([
       readManifest(env),
-      readCanonicalSpeakers(env),
+      readPublicCanonicalSpeakers(env),
       env.ASSETS.fetch(
         new Request(`${renderOrigin}${speakerPromotionManifestPath}`),
       ),
@@ -221,7 +221,7 @@ export async function handleSocialRenderRequest(
   let canonicalRecords: CanonicalSpeakerRecord[];
 
   try {
-    canonicalRecords = await readCanonicalSpeakers(env);
+    canonicalRecords = await readPublicCanonicalSpeakers(env);
   } catch (error) {
     console.error("social_render_canonical_content_error", {
       assetId: asset.id,

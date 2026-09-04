@@ -23,6 +23,8 @@ const speakerSocialHosts = {
   scholar: new Set(["scholar.google.com"]),
   x: new Set(["twitter.com", "www.twitter.com", "x.com", "www.x.com"]),
 };
+const workspaceOnlySpeakerIds = new Set();
+const workspaceTalkIds = new Set();
 
 const errors = [];
 
@@ -53,7 +55,12 @@ validateSeminar(seminar);
 validateSpeakersSchema(speakersSchema);
 validateSponsorsSchema(sponsorsSchema);
 const speakerIds = await validateSpeakers(speakers);
-validateSchedule(schedule, speakerIds);
+validateSchedule(
+  schedule,
+  speakerIds,
+  workspaceTalkIds,
+  workspaceOnlySpeakerIds,
+);
 await validateSponsors(sponsors);
 
 if (errors.length) {
@@ -159,6 +166,12 @@ function validateSpeakersSchema(schema) {
       errors.push(`site/data/speakers.schema.json must require ${field}.`);
     }
   }
+
+  for (const field of ["workspaceOnly", "workspaceTalks"]) {
+    if (!itemProperties?.[field]) {
+      errors.push(`site/data/speakers.schema.json is missing ${field}.`);
+    }
+  }
 }
 
 function validateSponsorsSchema(schema) {
@@ -258,7 +271,12 @@ function validateSeminar(seminar) {
   });
 }
 
-function validateSchedule(schedule, speakerIds) {
+function validateSchedule(
+  schedule,
+  speakerIds,
+  reservedTalkIds,
+  privateSpeakerIds,
+) {
   if (!isObject(schedule)) {
     errors.push("site/data/schedule.json must be an object.");
     return;
@@ -283,7 +301,7 @@ function validateSchedule(schedule, speakerIds) {
 
   let previousEnd = -1;
   const scheduleItemIds = new Set();
-  const talkIds = new Set();
+  const talkIds = new Set(reservedTalkIds);
 
   for (const [index, item] of schedule.items.entries()) {
     const itemPath = `site/data/schedule.json items[${index}]`;
@@ -336,7 +354,13 @@ function validateSchedule(schedule, speakerIds) {
       errors.push(`${itemPath}.time must use HH:MM-HH:MM in 24-hour time.`);
     }
 
-    validateTalks(item.talks, `${itemPath}.talks`, speakerIds, talkIds);
+    validateTalks(
+      item.talks,
+      `${itemPath}.talks`,
+      speakerIds,
+      talkIds,
+      privateSpeakerIds,
+    );
   }
 }
 
@@ -525,8 +549,11 @@ async function validateSpeakers(speakers) {
         "devto",
         "x",
         "bio",
+        "workspaceOnly",
+        "workspaceTalks",
       ],
       requiredFields: ["id", "name", "role", "bio"],
+      nonStringFields: ["workspaceOnly", "workspaceTalks"],
     });
 
     if (isNonEmptyString(speaker.id)) {
@@ -542,6 +569,34 @@ async function validateSpeakers(speakers) {
     if (isNonEmptyString(speaker.bio)) {
       validateSafeMarkdown(speaker.bio, `${speakerPath}.bio`);
     }
+
+    if (
+      typeof speaker.workspaceOnly !== "undefined" &&
+      speaker.workspaceOnly !== true
+    ) {
+      errors.push(`${speakerPath}.workspaceOnly must be true when present.`);
+    }
+
+    if (speaker.workspaceOnly === true && isNonEmptyString(speaker.id)) {
+      workspaceOnlySpeakerIds.add(speaker.id);
+
+      if (typeof speaker.workspaceTalks === "undefined") {
+        errors.push(`${speakerPath}.workspaceTalks is required for test flow.`);
+      }
+    }
+
+    if (
+      typeof speaker.workspaceTalks !== "undefined" &&
+      speaker.workspaceOnly !== true
+    ) {
+      errors.push(`${speakerPath}.workspaceTalks requires workspaceOnly.`);
+    }
+
+    validateWorkspaceTalks(
+      speaker.workspaceTalks,
+      `${speakerPath}.workspaceTalks`,
+      workspaceTalkIds,
+    );
 
     await validateSpeakerLinks(speaker, speakerPath);
   }
@@ -679,6 +734,7 @@ function validateOptionalObject({
   path: objectPath,
   allowedFields,
   requiredFields,
+  nonStringFields = [],
 }) {
   if (typeof value === "undefined") return;
 
@@ -688,6 +744,7 @@ function validateOptionalObject({
   }
 
   const allowedFieldSet = new Set(allowedFields);
+  const nonStringFieldSet = new Set(nonStringFields);
 
   for (const key of Object.keys(value)) {
     if (!allowedFieldSet.has(key)) {
@@ -702,7 +759,11 @@ function validateOptionalObject({
   }
 
   for (const [field, fieldValue] of Object.entries(value)) {
-    if (typeof fieldValue !== "undefined" && !isNonEmptyString(fieldValue)) {
+    if (
+      typeof fieldValue !== "undefined" &&
+      !nonStringFieldSet.has(field) &&
+      !isNonEmptyString(fieldValue)
+    ) {
       errors.push(`${objectPath}.${field} must be a non-empty string.`);
     }
   }
@@ -865,7 +926,13 @@ function getWebpDimensions(image) {
   return undefined;
 }
 
-function validateTalks(talks, talksPath, speakerIds, talkIds) {
+function validateTalks(
+  talks,
+  talksPath,
+  speakerIds,
+  talkIds,
+  privateSpeakerIds,
+) {
   if (typeof talks === "undefined") return;
 
   if (!Array.isArray(talks)) {
@@ -925,11 +992,56 @@ function validateTalks(talks, talksPath, speakerIds, talkIds) {
 
         validateTalkSpeaker(speakerId, speakerPath, speakerIds);
 
+        if (privateSpeakerIds.has(speakerId)) {
+          errors.push(
+            `${speakerPath} must not place a workspace-only speaker in the public schedule.`,
+          );
+        }
+
         if (seenSpeakerIds.has(speakerId)) {
           errors.push(`${speakerPath} duplicates another talk speaker.`);
         }
 
         seenSpeakerIds.add(speakerId);
+      }
+    }
+  }
+}
+
+function validateWorkspaceTalks(talks, talksPath, talkIds) {
+  if (typeof talks === "undefined") return;
+
+  if (!Array.isArray(talks) || talks.length === 0) {
+    errors.push(`${talksPath} must be a non-empty array.`);
+    return;
+  }
+
+  for (const [index, talk] of talks.entries()) {
+    const talkPath = `${talksPath}[${index}]`;
+
+    if (!isObject(talk)) {
+      errors.push(`${talkPath} must be an object.`);
+      continue;
+    }
+
+    validateOptionalObject({
+      value: talk,
+      path: talkPath,
+      allowedFields: ["id", "title", "abstract"],
+      requiredFields: ["id", "title", "abstract"],
+    });
+
+    if (isNonEmptyString(talk.abstract)) {
+      validateSafeMarkdown(talk.abstract, `${talkPath}.abstract`);
+    }
+
+    if (isNonEmptyString(talk.id)) {
+      if (!slugPattern.test(talk.id)) {
+        errors.push(`${talkPath}.id must be a lowercase slug.`);
+      } else if (talkIds.has(talk.id)) {
+        errors.push(`${talkPath}.id duplicates another talk.`);
+      } else {
+        talkIds.add(talk.id);
       }
     }
   }

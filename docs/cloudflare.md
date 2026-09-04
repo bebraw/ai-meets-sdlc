@@ -382,7 +382,9 @@ For production rollout:
    wrangler d1 execute ai-meets-sdlc-interests --remote --command "SELECT COUNT(*) AS speakers, SUM(json_valid(content_json)) AS valid_json FROM canonical_speaker_content"
    ```
 
-   Both values should currently be `9`.
+   Both values should currently be `10`: nine public speakers plus one
+   workspace-only organizer test account. Workspace-only records are excluded
+   from public pages, schedules, slides, and promotion manifests.
 
 3. Deploy the Worker and static build only after that verification succeeds.
 4. Open `/posters/`, verify the deadline and A0/A1 portrait terms, and submit a

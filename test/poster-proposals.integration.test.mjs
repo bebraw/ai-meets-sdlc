@@ -495,13 +495,30 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   const initialDinnerAdmin = await initialDinnerAdminResponse.json();
 
   assert.equal(initialDinnerAdminResponse.status, 200);
-  assert.equal(initialDinnerAdmin.speakers.length, 9);
+  assert.equal(initialDinnerAdmin.speakers.length, 10);
   assert.deepEqual(initialDinnerAdmin.shared_responses, []);
   assert.equal(initialDinnerAdmin.shared_invite_active, false);
   assert.equal(
     initialDinnerAdmin.speakers.every((speaker) => !speaker.invited),
     true,
   );
+  assert.equal(
+    initialDinnerAdmin.speakers.some(
+      ({ speaker_id }) => speaker_id === "juho-vepsalainen",
+    ),
+    true,
+  );
+
+  for (const pathname of ["/schedule/", "/speakers/"]) {
+    const publicPageResponse = await worker.fetch(`${origin}${pathname}`, {
+      headers: { accept: "text/html" },
+    });
+    const publicPage = await publicPageResponse.text();
+
+    assert.equal(publicPageResponse.status, 200);
+    assert.doesNotMatch(publicPage, /Juho Vepsäläinen/u);
+    assert.doesNotMatch(publicPage, /juho-vepsalainen-test-session/u);
+  }
 
   const forbiddenInviteResponse = await worker.fetch(
     `${origin}/api/admin/speaker-dinner/invite`,

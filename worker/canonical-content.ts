@@ -66,6 +66,8 @@ interface BundledSpeaker {
   role: string;
   scholar?: string;
   website?: string;
+  workspaceOnly?: boolean;
+  workspaceTalks?: Array<Pick<BundledTalk, "abstract" | "id" | "title">>;
   x?: string;
 }
 
@@ -110,9 +112,11 @@ const bundledContent = new Map(
           website: speaker.website ?? "",
           x: speaker.x ?? "",
         },
-        talks: (bundledTalksBySpeaker.get(speaker.id) ?? []).map(
-          ({ abstract, id, title }) => ({ abstract, id, title }),
-        ),
+        talks: (
+          speaker.workspaceTalks ??
+          bundledTalksBySpeaker.get(speaker.id) ??
+          []
+        ).map(({ abstract, id, title }) => ({ abstract, id, title })),
       },
       photoPath: speaker.photo,
       sortOrder,
@@ -122,6 +126,11 @@ const bundledContent = new Map(
 
 export const canonicalSpeakerIds: ReadonlySet<string> = new Set(
   bundledContent.keys(),
+);
+export const workspaceOnlySpeakerIds: ReadonlySet<string> = new Set(
+  bundledSpeakers
+    .filter(({ workspaceOnly }) => workspaceOnly === true)
+    .map(({ id }) => id),
 );
 
 export async function readCanonicalSpeaker(
@@ -158,6 +167,14 @@ export async function readCanonicalSpeakers(
   }
 
   return records;
+}
+
+export async function readPublicCanonicalSpeakers(
+  env: Env,
+): Promise<CanonicalSpeakerRecord[]> {
+  return (await readCanonicalSpeakers(env)).filter(
+    ({ speakerId }) => !workspaceOnlySpeakerIds.has(speakerId),
+  );
 }
 
 export function getCanonicalPhotoUrl(record: CanonicalSpeakerRecord): string {

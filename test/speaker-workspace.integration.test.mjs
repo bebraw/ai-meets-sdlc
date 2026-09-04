@@ -186,6 +186,7 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   assert.deepEqual(workspace.immutable.talk_ids, [
     "mo-khazali-industry-perspective",
   ]);
+  assert.equal(workspace.immutable.workspace_only, false);
   assert.equal(workspace.revision, null);
 
   const emptyDinnerResponse = await worker.fetch(
@@ -351,6 +352,7 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   assert.equal(speaker.photo.state, "submitted");
   assert.equal(speaker.videos[0].state, "ready");
   assert.equal(speaker.videos[0].duration_seconds, 91.4);
+  assert.equal(speaker.workspace_only, false);
   assert.equal(speaker.dinner.response.attendance, "attending");
   assert.equal(
     speaker.dinner.response.food_requirements,
@@ -390,6 +392,14 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   );
   assert.equal(mappedSpeaker.contact.email, "ohans@example.com");
   assert.equal(mappedSpeaker.invitation.last_sent_at, null);
+  const privateTestSpeaker = admin.speakers.find(
+    ({ speaker_id }) => speaker_id === "juho-vepsalainen",
+  );
+  assert.equal(privateTestSpeaker.workspace_only, true);
+  assert.deepEqual(
+    privateTestSpeaker.canonical.talks.map(({ id }) => id),
+    ["juho-vepsalainen-test-session"],
+  );
   assert.deepEqual(
     speaker.revision.changed_fields.map(({ field }) => field),
     ["profile.name", "talks.mo-khazali-industry-perspective.title"],

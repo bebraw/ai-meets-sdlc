@@ -6,6 +6,7 @@ import {
 import {
   readCanonicalSpeaker,
   readCanonicalSpeakers,
+  readPublicCanonicalSpeakers,
 } from "./canonical-content";
 import {
   applyCanonicalContentToResponse,
@@ -512,7 +513,7 @@ export default {
       try {
         response = await applyCanonicalContentToResponse(
           response,
-          await readCanonicalSpeakers(env),
+          await readPublicCanonicalSpeakers(env),
           { private: isAdminProtected },
         );
       } catch (error) {

@@ -313,19 +313,23 @@ export function buildSpeakerPromotionManifest({ assets, schedule, speakers }) {
     }
   }
 
-  const speakerItems = (speakers.items ?? []).map((speaker) => {
+  const speakerItems = (speakers.items ?? []).flatMap((speaker) => {
     const talks = talksBySpeaker.get(speaker.id) ?? [];
 
     if (talks.length === 0) {
+      if (speaker.workspaceOnly === true) return [];
+
       throw new Error(`Speaker ${speaker.id} has no promotional talk assets.`);
     }
 
-    return {
-      id: speaker.id,
-      name: speaker.name,
-      photo: speaker.photo,
-      talks,
-    };
+    return [
+      {
+        id: speaker.id,
+        name: speaker.name,
+        photo: speaker.photo,
+        talks,
+      },
+    ];
   });
 
   return {

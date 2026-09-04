@@ -33,6 +33,7 @@ interface WorkspaceResponse {
     photo: string;
     speaker_id: string;
     talk_ids: string[];
+    workspace_only: boolean;
   };
   message?: string;
   revision: {
@@ -200,7 +201,10 @@ async function loadWorkspace(): Promise<void> {
   currentWorkspace = response.data;
   renderWorkspace(response.data);
   await Promise.all([
-    loadPromotions(response.data.immutable.speaker_id),
+    loadPromotions(
+      response.data.immutable.speaker_id,
+      response.data.immutable.workspace_only,
+    ),
     loadPhotoStatus(),
     loadVideos(),
     loadDinner(),
@@ -329,13 +333,22 @@ function renderTalks(talks: WorkspaceTalk[]): void {
   }
 }
 
-async function loadPromotions(speakerId: string): Promise<void> {
+async function loadPromotions(
+  speakerId: string,
+  workspaceOnly: boolean,
+): Promise<void> {
   if (!promotionContainer) return;
 
   const response = await requestJson<PromotionManifest>(
     "/assets/social/speakers.json",
   );
   const speaker = response.data.speakers?.find(({ id }) => id === speakerId);
+
+  if (workspaceOnly && !speaker) {
+    promotionContainer.textContent =
+      "Promotion graphics are not generated for this private test account.";
+    return;
+  }
 
   if (!response.ok || response.data.schemaVersion !== 1 || !speaker) {
     promotionContainer.textContent =

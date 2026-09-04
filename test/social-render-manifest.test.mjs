@@ -47,6 +47,12 @@ const promotionData = {
         name: "Second Speaker",
         photo: "/assets/speakers/second.webp",
       },
+      {
+        id: "private-test-speaker",
+        name: "Private Test Speaker",
+        photo: "/assets/speakers/private.webp",
+        workspaceOnly: true,
+      },
     ],
   },
 };
@@ -166,6 +172,13 @@ test("social render versions only invalidate affected slides", async (t) => {
     await readFile(path.join(buildDir, "assets/social/speakers.json"), "utf8"),
   );
   assert.equal(savedSpeakerManifest.schemaVersion, 1);
+  assert.equal(savedSpeakerManifest.speakers.length, 2);
+  assert.equal(
+    savedSpeakerManifest.speakers.some(
+      ({ id }) => id === "private-test-speaker",
+    ),
+    false,
+  );
   assert.equal(savedSpeakerManifest.speakers[0].id, "first-speaker");
   assert.deepEqual(
     savedSpeakerManifest.speakers[0].talks[0].assets.map(

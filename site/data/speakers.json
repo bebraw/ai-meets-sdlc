@@ -80,6 +80,21 @@
       "photo": "/assets/speakers/tapio-pitkaranta.webp",
       "linkedin": "https://www.linkedin.com/in/tapio-pitkaranta/",
       "bio": "Tapio Pitkäranta is Head of AI Development at Siili Solutions and a PhD candidate at Aalto University researching Software Agents and Generative AI. He has over 20 years of AI experience, spanning early semantic-web agent research, healthcare analytics entrepreneurship, and senior technology leadership across retail, healthcare, tax, and HR. He has served as CTO four times, including at RELEX Solutions during its unicorn-scale growth, and now focuses on applying agentic AI, multi-agent systems, and coding agents to real software delivery."
+    },
+    {
+      "id": "juho-vepsalainen",
+      "name": "Juho Vepsäläinen",
+      "role": "SDLCAI organizer / test account",
+      "photo": "/assets/organizers/juho.webp",
+      "bio": "Juho Vepsäläinen is an SDLCAI organizer using this private account to test the speaker workspace before inviting the event speakers.",
+      "workspaceOnly": true,
+      "workspaceTalks": [
+        {
+          "id": "juho-vepsalainen-test-session",
+          "title": "Private test session",
+          "abstract": "This private placeholder lets the organizer exercise the complete speaker workflow without adding a session to the official program."
+        }
+      ]
     }
   ]
 }

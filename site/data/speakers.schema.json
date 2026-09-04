@@ -60,6 +60,32 @@
           "bio": {
             "type": "string",
             "minLength": 1
+          },
+          "workspaceOnly": {
+            "type": "boolean"
+          },
+          "workspaceTalks": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["id", "title", "abstract"],
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+                },
+                "title": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "abstract": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
           }
         }
       }

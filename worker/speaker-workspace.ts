@@ -5,6 +5,7 @@ import {
   hashCanonicalContent,
   readCanonicalSpeaker,
   readCanonicalSpeakers,
+  workspaceOnlySpeakerIds,
   type SpeakerProfileContent,
   type SpeakerTalkContent,
   type SpeakerWorkspaceContent,
@@ -637,6 +638,7 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
         photo: photos.get(record.speakerId) ?? null,
         revision: revision ? serializeAdminRevision(revision, canonical) : null,
         speaker_id: record.speakerId,
+        workspace_only: workspaceOnlySpeakerIds.has(record.speakerId),
         videos: videos.get(record.speakerId) ?? [],
       };
     }),
@@ -3168,6 +3170,7 @@ async function buildWorkspacePayload(
       photo: getCanonicalPhotoUrl(canonicalRecord),
       speaker_id: speakerId,
       talk_ids: canonical.talks.map(({ id }) => id),
+      workspace_only: workspaceOnlySpeakerIds.has(speakerId),
     },
     revision: revision
       ? {
