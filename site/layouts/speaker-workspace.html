@@ -1,6 +1,6 @@
 <BaseLayout
   &title="(id 'SDLCAI Speaker Workspace')"
-  &description="(id 'Private workspace for SDLCAI speakers to manage their profile, talk, dinner details, and promotion material.')"
+  &description="(id 'Private workspace for SDLCAI speakers to manage their profile, talk, presentation setup, dinner details, and promotion material.')"
   &ogDescription="(id 'Private workspace for SDLCAI speakers.')"
   &ogType="(id 'website')"
   &robots="(id 'noindex,nofollow,noarchive')"
@@ -43,8 +43,8 @@
           <p
             class="max-w-md border-l border-paper/45 pl-5 text-lg leading-7 text-paper/75"
           >
-            Keep your profile, session, dinner details, promotion graphics,
-            portrait, and topic video in one private place.
+            Keep your profile, session, presentation setup, dinner details,
+            promotion graphics, portrait, and topic video in one private place.
           </p>
         </div>
       </div>
@@ -223,15 +223,20 @@
                 </li>
                 <li><a class="hover:underline" href="#talks">02 / Talks</a></li>
                 <li>
-                  <a class="hover:underline" href="#dinner">03 / Dinner</a>
-                </li>
-                <li>
-                  <a class="hover:underline" href="#promotion"
-                    >04 / Promotion</a
+                  <a class="hover:underline" href="#presentation"
+                    >03 / Presentation</a
                   >
                 </li>
                 <li>
-                  <a class="hover:underline" href="#video">05 / Topic video</a>
+                  <a class="hover:underline" href="#dinner">04 / Dinner</a>
+                </li>
+                <li>
+                  <a class="hover:underline" href="#promotion"
+                    >05 / Promotion</a
+                  >
+                </li>
+                <li>
+                  <a class="hover:underline" href="#video">06 / Topic video</a>
                 </li>
               </ol>
             </nav>
@@ -441,12 +446,143 @@
               </div>
             </form>
 
+            <section
+              class="scroll-mt-6 border-t-4 border-ink pt-5"
+              id="presentation"
+            >
+              <div class="grid gap-2 border-b border-ink pb-5">
+                <p
+                  class="font-headline text-sm font-black uppercase text-muted"
+                >
+                  03 / Presentation setup / private
+                </p>
+                <h2
+                  class="font-headline text-5xl font-black uppercase leading-none"
+                >
+                  Choose the handoff
+                </h2>
+                <p class="mt-2 max-w-3xl leading-7 text-muted">
+                  The venue recommends running your talk from its presentation
+                  computer. Tell us whether you will provide material in advance
+                  or need to connect your own laptop.
+                </p>
+              </div>
+
+              <form
+                class="mt-7 grid gap-7 border border-ink p-5 md:p-7"
+                data-speaker-presentation-form
+                novalidate
+              >
+                <fieldset class="grid gap-3">
+                  <legend class="font-headline text-2xl font-black uppercase">
+                    How will you present?
+                  </legend>
+                  <div class="grid gap-px bg-ink sm:grid-cols-2">
+                    <label
+                      class="grid cursor-pointer grid-cols-[auto_1fr] gap-3 bg-paper p-4"
+                    >
+                      <input
+                        class="mt-1 h-5 w-5"
+                        name="delivery_method"
+                        type="radio"
+                        value="advance_materials"
+                        required
+                      />
+                      <span
+                        ><strong class="block uppercase"
+                          >Provide material in advance</strong
+                        ><span class="text-sm text-muted"
+                          >Recommended. The venue computer runs your
+                          presentation.</span
+                        ></span
+                      >
+                    </label>
+                    <label
+                      class="grid cursor-pointer grid-cols-[auto_1fr] gap-3 bg-paper p-4"
+                    >
+                      <input
+                        class="mt-1 h-5 w-5"
+                        name="delivery_method"
+                        type="radio"
+                        value="own_laptop"
+                        required
+                      />
+                      <span
+                        ><strong class="block uppercase"
+                          >Use my own laptop</strong
+                        ><span class="text-sm font-bold text-signal"
+                          >Discouraged because changeovers and display
+                          compatibility can cause delays.</span
+                        ></span
+                      >
+                    </label>
+                  </div>
+                </fieldset>
+
+                <div
+                  class="grid gap-5 border-t border-ink pt-6 sm:grid-cols-2"
+                  data-speaker-presentation-materials
+                  hidden
+                >
+                  <label class="grid gap-2">
+                    <span class="font-bold uppercase">Material format</span>
+                    <select
+                      class="border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                      name="material_format"
+                    >
+                      <option value="">Choose one</option>
+                      <option value="powerpoint">PowerPoint (.pptx)</option>
+                      <option value="pdf">PDF</option>
+                      <option value="web">Web presentation</option>
+                    </select>
+                  </label>
+                  <label
+                    class="grid gap-2"
+                    data-speaker-presentation-url
+                    hidden
+                  >
+                    <span class="font-bold uppercase"
+                      >Web presentation URL</span
+                    >
+                    <input
+                      class="w-full border border-ink bg-paper px-4 py-3 outline-none focus:ring-2 focus:ring-ink"
+                      name="material_url"
+                      type="url"
+                      inputmode="url"
+                      maxlength="2048"
+                      placeholder="https://…"
+                    />
+                  </label>
+                  <p class="text-sm leading-6 text-muted sm:col-span-2">
+                    We will coordinate file handoff for PowerPoint and PDF
+                    presentations after your reply. Web presentations must be
+                    available over HTTPS.
+                  </p>
+                </div>
+
+                <div class="grid gap-3 sm:grid-cols-[auto_1fr] sm:items-center">
+                  <button
+                    class="border border-ink bg-ink px-5 py-3 font-bold uppercase text-paper transition hover:bg-paper hover:text-ink disabled:cursor-wait disabled:opacity-50"
+                    data-speaker-presentation-submit
+                    type="submit"
+                  >
+                    Save presentation setup
+                  </button>
+                  <p
+                    class="min-h-6 font-bold"
+                    data-speaker-presentation-status
+                    aria-live="polite"
+                  ></p>
+                </div>
+              </form>
+            </section>
+
             <section class="scroll-mt-6 border-t-4 border-ink pt-5" id="dinner">
               <div class="grid gap-2 border-b border-ink pb-5">
                 <p
                   class="font-headline text-sm font-black uppercase text-muted"
                 >
-                  03 / Dinner details / private
+                  04 / Dinner details / private
                 </p>
                 <h2
                   class="font-headline text-5xl font-black uppercase leading-none"
@@ -604,7 +740,7 @@
                 <p
                   class="font-headline text-sm font-black uppercase text-muted"
                 >
-                  04 / Promotion kit
+                  05 / Promotion kit
                 </p>
                 <h2
                   class="font-headline text-5xl font-black uppercase leading-none"
@@ -625,7 +761,7 @@
                 <p
                   class="font-headline text-sm font-black uppercase text-muted"
                 >
-                  05 / Topic video
+                  06 / Topic video
                 </p>
                 <h2
                   class="font-headline text-5xl font-black uppercase leading-none"

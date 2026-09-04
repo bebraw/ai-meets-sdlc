@@ -1,7 +1,7 @@
 <BaseLayout
   &title="(id 'SDLCAI Admin Speakers')"
-  &description="(id 'Edit and review speaker profiles, talks, access, dinner details, promotion assets, and announcements.')"
-  &ogDescription="(id 'Edit and review speaker profiles, talks, access, dinner details, promotion assets, and announcements.')"
+  &description="(id 'Edit and review speaker profiles, talks, access, presentation setup, dinner details, promotion assets, and announcements.')"
+  &ogDescription="(id 'Edit and review speaker profiles, talks, access, presentation setup, dinner details, promotion assets, and announcements.')"
   &url="(id 'https://sdlcai.org/admin/speakers/')"
   &ogType="(id 'website')"
   &robots="(id 'noindex,nofollow,noarchive')"
@@ -10,7 +10,7 @@
   <AdminPageHeader
     &eyebrow="(id 'Admin / People and program')"
     &title="(id 'Speakers')"
-    &description="(id 'Edit and review speaker profiles, talks, access, dinner details, promotion assets, and announcements.')"
+    &description="(id 'Edit and review speaker profiles, talks, access, presentation setup, dinner details, promotion assets, and announcements.')"
   ></AdminPageHeader>
 
   <section
@@ -31,9 +31,9 @@
           </h2>
           <p class="mt-4 max-w-3xl leading-7 text-paper/70">
             Prefill or correct each public profile and assigned talk, assign the
-            speaker’s email, monitor their private dinner response, and review
-            speaker-submitted changes. Approval publishes the validated content
-            and portrait to D1 immediately.
+            speaker’s email, monitor their private presentation setup and dinner
+            response, and review speaker-submitted changes. Approval publishes
+            the validated content and portrait to D1 immediately.
           </p>
         </div>
         <div class="flex flex-wrap gap-3">
@@ -52,7 +52,7 @@
         </div>
       </div>
 
-      <div class="grid gap-px bg-paper/40 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="grid gap-px bg-paper/40 sm:grid-cols-2 lg:grid-cols-5">
         <div class="bg-ink p-4">
           <span class="text-sm font-bold uppercase text-paper/60"
             >Contacts</span
@@ -80,6 +80,16 @@
           <strong
             class="mt-2 block font-headline text-4xl"
             data-admin-speaker-count="dinner"
+            >0</strong
+          >
+        </div>
+        <div class="bg-ink p-4">
+          <span class="text-sm font-bold uppercase text-paper/60"
+            >Presentation plans</span
+          >
+          <strong
+            class="mt-2 block font-headline text-4xl"
+            data-admin-speaker-count="presentation"
             >0</strong
           >
         </div>

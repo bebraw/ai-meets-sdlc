@@ -72,6 +72,24 @@ interface SpeakerDinnerRow {
   updated_at: string;
 }
 
+type SpeakerPresentationDeliveryMethod = "advance_materials" | "own_laptop";
+type SpeakerPresentationMaterialFormat = "" | "pdf" | "powerpoint" | "web";
+
+interface SpeakerPresentationResponseData {
+  delivery_method: SpeakerPresentationDeliveryMethod;
+  material_format: SpeakerPresentationMaterialFormat;
+  material_url: string;
+}
+
+interface SpeakerPresentationRow {
+  expires_at: string;
+  responded_at: string;
+  response_ciphertext: string;
+  response_iv: string;
+  speaker_id: string;
+  updated_at: string;
+}
+
 interface SpeakerLoginContactRow extends SpeakerAccessRow {
   delivery_status: "active" | "suppressed";
   email_ciphertext: string;
@@ -152,6 +170,7 @@ const speakerSessionCookie = "__Host-sdlcai-speaker-session";
 const maxWorkspaceBodyBytes = 24 * 1024;
 const maxLoginBodyBytes = 8 * 1024;
 const maxDinnerBodyBytes = 8 * 1024;
+const maxPresentationBodyBytes = 8 * 1024;
 const sessionLifetimeMilliseconds = 14 * 24 * 60 * 60 * 1000;
 const magicLinkLifetimeMilliseconds = 15 * 60 * 1000;
 const loginRequestRetentionMilliseconds = 24 * 60 * 60 * 1000;
@@ -410,6 +429,28 @@ export async function handleSpeakerWorkspaceRequest(
     return secure(json({ error: "Method not allowed" }, 405));
   }
 
+  if (url.pathname === "/api/speaker/presentation") {
+    if (request.method === "POST" && !isSameOriginMutation(request)) {
+      return secure(json({ error: "Request origin was not accepted." }, 403));
+    }
+
+    const session = await authenticateSpeaker(request, env);
+
+    if (session instanceof Response) return secure(session);
+
+    if (request.method === "GET") {
+      return secure(await getSpeakerPresentation(session.speaker_id, env));
+    }
+
+    if (request.method === "POST") {
+      return secure(
+        await updateSpeakerPresentation(request, session.speaker_id, env),
+      );
+    }
+
+    return secure(json({ error: "Method not allowed" }, 405));
+  }
+
   if (
     url.pathname === "/api/speaker/photo" ||
     url.pathname === "/api/speaker/photo/image"
@@ -482,6 +523,7 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
     accessResult,
     revisionResult,
     dinnerResult,
+    presentationResult,
     photos,
     videos,
   ] = await Promise.all([
@@ -543,6 +585,20 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
        FROM speaker_dinner_responses`,
       )
       .all<SpeakerDinnerRow>(),
+    env
+      .INTERESTS!.prepare(
+        `SELECT
+         speaker_id,
+         response_ciphertext,
+         response_iv,
+         expires_at,
+         responded_at,
+         updated_at
+       FROM speaker_presentation_responses
+      WHERE expires_at > ?1`,
+      )
+      .bind(new Date().toISOString())
+      .all<SpeakerPresentationRow>(),
     readAdminSpeakerPhotos(env),
     readAdminSpeakerVideos(env),
   ]);
@@ -555,6 +611,9 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
   const revisions = new Map<string, SpeakerAdminRevisionRow>();
   const dinners = new Map(
     dinnerResult.results.map((item) => [item.speaker_id, item]),
+  );
+  const presentations = new Map(
+    presentationResult.results.map((item) => [item.speaker_id, item]),
   );
 
   for (const revision of revisionResult.results) {
@@ -569,9 +628,11 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
       const invitation = access.get(record.speakerId);
       const revision = revisions.get(record.speakerId);
       const dinnerRow = dinners.get(record.speakerId);
+      const presentationRow = presentations.get(record.speakerId);
       const canonical = record.content;
       let email: string | null = null;
       let dinner: SpeakerDinnerResponseData | null = null;
+      let presentation: SpeakerPresentationResponseData | null = null;
 
       if (contact) {
         try {
@@ -594,6 +655,22 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
           console.error(
             JSON.stringify({
               message: "Unable to decrypt speaker dinner response",
+              speakerId: record.speakerId,
+            }),
+          );
+        }
+      }
+
+      if (presentationRow) {
+        try {
+          presentation = await decryptSpeakerPresentationResponse(
+            presentationRow,
+            env,
+          );
+        } catch {
+          console.error(
+            JSON.stringify({
+              message: "Unable to decrypt speaker presentation response",
               speakerId: record.speakerId,
             }),
           );
@@ -636,6 +713,14 @@ async function getAdminSpeakers(env: Env): Promise<Response> {
           : null,
         name: canonical.profile.name,
         photo: photos.get(record.speakerId) ?? null,
+        presentation: presentationRow
+          ? {
+              expires_at: presentationRow.expires_at,
+              responded_at: presentationRow.responded_at,
+              response: presentation,
+              updated_at: presentationRow.updated_at,
+            }
+          : null,
         revision: revision ? serializeAdminRevision(revision, canonical) : null,
         speaker_id: record.speakerId,
         workspace_only: workspaceOnlySpeakerIds.has(record.speakerId),
@@ -2811,6 +2896,231 @@ async function updateSpeakerWorkspace(
   });
 }
 
+async function getSpeakerPresentation(
+  speakerId: string,
+  env: Env,
+): Promise<Response> {
+  const configurationError = getConfigurationError(env);
+
+  if (configurationError) return configurationError;
+
+  const row = await env
+    .INTERESTS!.prepare(
+      `SELECT
+       speaker_id,
+       response_ciphertext,
+       response_iv,
+       expires_at,
+       responded_at,
+       updated_at
+     FROM speaker_presentation_responses
+    WHERE speaker_id = ?1
+      AND expires_at > ?2
+    LIMIT 1`,
+    )
+    .bind(speakerId, new Date().toISOString())
+    .first<SpeakerPresentationRow>();
+  let response: SpeakerPresentationResponseData | null = null;
+
+  if (row) {
+    try {
+      response = await decryptSpeakerPresentationResponse(row, env);
+    } catch {
+      console.error(
+        JSON.stringify({
+          message: "Unable to decrypt speaker presentation response",
+          speakerId,
+        }),
+      );
+      return json(
+        { error: "Your presentation setup could not be loaded." },
+        500,
+      );
+    }
+  }
+
+  return json({
+    responded_at: row?.responded_at ?? null,
+    response,
+  });
+}
+
+async function updateSpeakerPresentation(
+  request: Request,
+  speakerId: string,
+  env: Env,
+): Promise<Response> {
+  const configurationError = getConfigurationError(env);
+
+  if (configurationError) return configurationError;
+
+  const retentionUntil = parseFutureConfigurationDate(
+    env.SPEAKER_CONTACT_RETENTION_UNTIL,
+  );
+
+  if (!retentionUntil) {
+    return json(
+      { error: "Presentation response storage is not configured." },
+      503,
+    );
+  }
+
+  const body = await readJsonWithinLimit(request, maxPresentationBodyBytes);
+
+  if (body instanceof Response) return body;
+
+  const response = validateSpeakerPresentationResponse(body);
+
+  if (response instanceof Response) return response;
+
+  const encryptedResponse = await encryptPrivateText(
+    JSON.stringify(response),
+    env.EMAIL_ENCRYPTION_KEY!,
+  );
+  const respondedAt = new Date().toISOString();
+
+  await env
+    .INTERESTS!.prepare(
+      `INSERT INTO speaker_presentation_responses (
+       speaker_id,
+       response_ciphertext,
+       response_iv,
+       created_at,
+       expires_at,
+       responded_at,
+       updated_at
+     ) VALUES (?1, ?2, ?3, ?4, ?5, ?4, ?4)
+     ON CONFLICT (speaker_id) DO UPDATE SET
+       response_ciphertext = excluded.response_ciphertext,
+       response_iv = excluded.response_iv,
+       expires_at = excluded.expires_at,
+       responded_at = excluded.responded_at,
+       updated_at = excluded.updated_at`,
+    )
+    .bind(
+      speakerId,
+      encryptedResponse.ciphertext,
+      encryptedResponse.iv,
+      respondedAt,
+      retentionUntil.toISOString(),
+    )
+    .run();
+
+  return json({
+    message: "Your presentation setup has been saved.",
+    responded_at: respondedAt,
+    response,
+  });
+}
+
+function validateSpeakerPresentationResponse(
+  value: unknown,
+): SpeakerPresentationResponseData | Response {
+  if (!isRecord(value)) {
+    return json({ error: "Choose how you will present." }, 400);
+  }
+
+  if (value.delivery_method === "own_laptop") {
+    return {
+      delivery_method: "own_laptop",
+      material_format: "",
+      material_url: "",
+    };
+  }
+
+  if (value.delivery_method !== "advance_materials") {
+    return json({ error: "Choose how you will present." }, 400);
+  }
+
+  const materialFormat = value.material_format;
+
+  if (
+    materialFormat !== "powerpoint" &&
+    materialFormat !== "pdf" &&
+    materialFormat !== "web"
+  ) {
+    return json({ error: "Choose a presentation material format." }, 400);
+  }
+
+  if (materialFormat !== "web") {
+    return {
+      delivery_method: "advance_materials",
+      material_format: materialFormat,
+      material_url: "",
+    };
+  }
+
+  const materialUrl =
+    typeof value.material_url === "string" ? value.material_url.trim() : "";
+
+  if (materialUrl.length > 2_048) {
+    return json({ error: "The web presentation URL is too long." }, 400);
+  }
+
+  const parsedUrl = parseHttpsUrl(materialUrl);
+
+  if (!parsedUrl) {
+    return json(
+      { error: "Enter the complete HTTPS URL for your web presentation." },
+      400,
+    );
+  }
+
+  return {
+    delivery_method: "advance_materials",
+    material_format: "web",
+    material_url: parsedUrl.toString(),
+  };
+}
+
+async function decryptSpeakerPresentationResponse(
+  row: SpeakerPresentationRow,
+  env: Env,
+): Promise<SpeakerPresentationResponseData> {
+  const plaintext = await decryptPrivateText(
+    row.response_ciphertext,
+    row.response_iv,
+    env.EMAIL_ENCRYPTION_KEY!,
+  );
+  const candidate: unknown = JSON.parse(plaintext);
+
+  if (!isSpeakerPresentationResponseData(candidate)) {
+    throw new Error("Encrypted speaker presentation response is invalid");
+  }
+
+  return candidate;
+}
+
+function isSpeakerPresentationResponseData(
+  candidate: unknown,
+): candidate is SpeakerPresentationResponseData {
+  if (!isRecord(candidate)) return false;
+
+  if (candidate.delivery_method === "own_laptop") {
+    return candidate.material_format === "" && candidate.material_url === "";
+  }
+
+  if (candidate.delivery_method !== "advance_materials") return false;
+
+  if (
+    candidate.material_format !== "powerpoint" &&
+    candidate.material_format !== "pdf" &&
+    candidate.material_format !== "web"
+  ) {
+    return false;
+  }
+
+  if (candidate.material_format !== "web") {
+    return candidate.material_url === "";
+  }
+
+  return (
+    typeof candidate.material_url === "string" &&
+    candidate.material_url.length <= 2_048 &&
+    parseHttpsUrl(candidate.material_url) !== null
+  );
+}
+
 async function getSpeakerDinner(
   speakerId: string,
   env: Env,
@@ -3791,6 +4101,9 @@ export async function purgeExpiredSpeakerWorkspaceData(
     env.INTERESTS.prepare(
       "DELETE FROM speaker_login_requests WHERE created_at < ?1",
     ).bind(retentionStart),
+    env.INTERESTS.prepare(
+      "DELETE FROM speaker_presentation_responses WHERE expires_at <= ?1",
+    ).bind(nowIso),
   ]);
 }
 

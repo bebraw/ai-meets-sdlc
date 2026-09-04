@@ -332,7 +332,7 @@
         "context": {
           "meta": {
             "title": "SDLCAI Admin Speakers",
-            "description": "Edit and review speaker profiles, talks, access, dinner details, promotion assets, and announcements.",
+            "description": "Edit and review speaker profiles, talks, access, presentation setup, dinner details, promotion assets, and announcements.",
             "ogEyebrow": "Admin speakers",
             "ogDescription": "Edit and review SDLCAI speaker content, access, and promotion."
           }
@@ -423,7 +423,7 @@
     "context": {
       "meta": {
         "title": "SDLCAI Speaker Workspace",
-        "description": "Private workspace for SDLCAI speakers to manage their profile, talk, dinner details, and promotion material.",
+        "description": "Private workspace for SDLCAI speakers to manage their profile, talk, presentation setup, dinner details, and promotion material.",
         "ogEyebrow": "Speaker workspace",
         "ogDescription": "Private workspace for SDLCAI speakers."
       }

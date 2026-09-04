@@ -61,6 +61,19 @@ interface SpeakerDinnerResponse {
   response: SpeakerDinnerResponseData | null;
 }
 
+interface SpeakerPresentationResponseData {
+  delivery_method: "advance_materials" | "own_laptop";
+  material_format: "" | "pdf" | "powerpoint" | "web";
+  material_url: string;
+}
+
+interface SpeakerPresentationResponse {
+  error?: string;
+  message?: string;
+  responded_at: string | null;
+  response: SpeakerPresentationResponseData | null;
+}
+
 interface PromotionAsset {
   height: number;
   path: string;
@@ -154,6 +167,12 @@ const dinnerForm = document.querySelector<HTMLFormElement>(
 const dinnerStatus = document.querySelector<HTMLElement>(
   "[data-speaker-dinner-status]",
 );
+const presentationForm = document.querySelector<HTMLFormElement>(
+  "[data-speaker-presentation-form]",
+);
+const presentationStatus = document.querySelector<HTMLElement>(
+  "[data-speaker-presentation-status]",
+);
 let currentWorkspace: WorkspaceResponse | null = null;
 
 void initialize();
@@ -208,6 +227,7 @@ async function loadWorkspace(): Promise<void> {
     loadPhotoStatus(),
     loadVideos(),
     loadDinner(),
+    loadPresentation(),
   ]);
 }
 
@@ -468,6 +488,148 @@ logoutButton?.addEventListener("click", async () => {
   await requestJson("/api/speaker/session", { method: "DELETE" });
   location.reload();
 });
+
+for (const deliveryMethod of presentationForm?.querySelectorAll<HTMLInputElement>(
+  '[name="delivery_method"]',
+) ?? []) {
+  deliveryMethod.addEventListener("change", updatePresentationFields);
+}
+
+const presentationFormatTarget = presentationForm?.querySelector(
+  '[name="material_format"]',
+);
+if (presentationFormatTarget instanceof HTMLSelectElement) {
+  presentationFormatTarget.addEventListener("change", updatePresentationFields);
+}
+
+presentationForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  updatePresentationFields();
+  if (!presentationForm.reportValidity()) return;
+
+  const formData = new FormData(presentationForm);
+  const submit = presentationForm.querySelector<HTMLButtonElement>(
+    "[data-speaker-presentation-submit]",
+  );
+
+  if (submit) submit.disabled = true;
+  setPresentationStatus("Saving private presentation setup…");
+
+  const response = await requestJson<SpeakerPresentationResponse>(
+    "/api/speaker/presentation",
+    {
+      body: JSON.stringify({
+        delivery_method: formData.get("delivery_method"),
+        material_format: formData.get("material_format"),
+        material_url: formData.get("material_url"),
+      }),
+      headers: { "content-type": "application/json" },
+      method: "POST",
+    },
+  );
+
+  if (submit) submit.disabled = false;
+
+  if (!response.ok) {
+    setPresentationStatus(
+      response.data.error ?? "Presentation setup could not be saved.",
+      true,
+    );
+    return;
+  }
+
+  renderPresentation(response.data);
+  setPresentationStatus(response.data.message ?? "Presentation setup saved.");
+});
+
+async function loadPresentation(): Promise<void> {
+  if (!presentationForm) return;
+
+  const response = await requestJson<SpeakerPresentationResponse>(
+    "/api/speaker/presentation",
+  );
+
+  if (!response.ok) {
+    setPresentationStatus(
+      response.data.error ?? "Presentation setup could not be loaded.",
+      true,
+    );
+    return;
+  }
+
+  renderPresentation(response.data);
+}
+
+function renderPresentation(data: SpeakerPresentationResponse): void {
+  if (!presentationForm) return;
+
+  for (const deliveryMethod of presentationForm.querySelectorAll<HTMLInputElement>(
+    '[name="delivery_method"]',
+  )) {
+    deliveryMethod.checked =
+      deliveryMethod.value === data.response?.delivery_method;
+  }
+
+  const materialFormat = presentationForm.elements.namedItem("material_format");
+  const materialUrl = presentationForm.elements.namedItem("material_url");
+
+  if (materialFormat instanceof HTMLSelectElement) {
+    materialFormat.value = data.response?.material_format ?? "";
+  }
+  if (materialUrl instanceof HTMLInputElement) {
+    materialUrl.value = data.response?.material_url ?? "";
+  }
+
+  updatePresentationFields();
+
+  if (data.responded_at) {
+    setPresentationStatus(
+      `Last saved ${formatWorkspaceDate(data.responded_at)}.`,
+    );
+  } else {
+    setPresentationStatus("Please choose your presentation setup.");
+  }
+}
+
+function updatePresentationFields(): void {
+  if (!presentationForm) return;
+
+  const selectedMethod = presentationForm.querySelector<HTMLInputElement>(
+    '[name="delivery_method"]:checked',
+  );
+  const materials = presentationForm.querySelector<HTMLElement>(
+    "[data-speaker-presentation-materials]",
+  );
+  const urlField = presentationForm.querySelector<HTMLElement>(
+    "[data-speaker-presentation-url]",
+  );
+  const materialFormat = presentationForm.elements.namedItem("material_format");
+  const materialUrl = presentationForm.elements.namedItem("material_url");
+  const providingMaterials = selectedMethod?.value === "advance_materials";
+  const isWeb =
+    providingMaterials &&
+    materialFormat instanceof HTMLSelectElement &&
+    materialFormat.value === "web";
+
+  materials?.toggleAttribute("hidden", !providingMaterials);
+  urlField?.toggleAttribute("hidden", !isWeb);
+
+  if (materialFormat instanceof HTMLSelectElement) {
+    materialFormat.disabled = !providingMaterials;
+    materialFormat.required = providingMaterials;
+  }
+  if (materialUrl instanceof HTMLInputElement) {
+    materialUrl.disabled = !isWeb;
+    materialUrl.required = isWeb;
+  }
+}
+
+function setPresentationStatus(message: string, isError = false): void {
+  if (!presentationStatus) return;
+  presentationStatus.textContent = message;
+  presentationStatus.classList.toggle("text-signal", isError);
+}
 
 for (const attendance of dinnerForm?.querySelectorAll<HTMLInputElement>(
   '[name="attendance"]',

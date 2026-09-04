@@ -183,7 +183,9 @@ response whether or not the address is mapped to a speaker. Known,
 non-throttled addresses receive a 15-minute, single-use link. The link fragment
 is exchanged at `POST /api/speaker/session` for the existing HTTP-only session
 cookie, so the token does not enter HTTP request logs. Authenticated speakers
-read and save private dinner data at `GET` and `POST /api/speaker/dinner`.
+read and save encrypted presentation logistics at `GET` and `POST
+/api/speaker/presentation`, and private dinner data at `GET` and `POST
+/api/speaker/dinner`.
 Organizer email assignment uses `POST /api/admin/speakers/contact`; it stores
 the encrypted mapping without sending mail. Authenticated organizers can use
 `POST /api/admin/speakers/content` to save a validated speaker-visible draft or

@@ -64,6 +64,16 @@ interface AdminSpeakerItem {
     state: "approved" | "rejected" | "submitted";
     updated_at: string;
   } | null;
+  presentation: {
+    expires_at: string;
+    responded_at: string;
+    response: {
+      delivery_method: "advance_materials" | "own_laptop";
+      material_format: "" | "pdf" | "powerpoint" | "web";
+      material_url: string;
+    } | null;
+    updated_at: string;
+  } | null;
   revision: AdminSpeakerRevision | null;
   speaker_id: string;
   workspace_only: boolean;
@@ -514,6 +524,10 @@ function renderSummary(speakers: AdminSpeakerItem[]): void {
     "dinner",
     speakers.filter(({ dinner }) => dinner?.responded_at).length,
   );
+  setCount(
+    "presentation",
+    speakers.filter(({ presentation }) => presentation?.responded_at).length,
+  );
 }
 
 function renderSpeaker(speaker: AdminSpeakerItem): HTMLElement {
@@ -550,6 +564,7 @@ function renderSpeaker(speaker: AdminSpeakerItem): HTMLElement {
   article.appendChild(headingRow);
   article.appendChild(renderInvitation(speaker));
   article.appendChild(renderContentEditor(speaker));
+  article.appendChild(renderPresentation(speaker));
   article.appendChild(renderDinner(speaker));
 
   if (speaker.photo) {
@@ -1374,6 +1389,130 @@ function renderDinner(speaker: AdminSpeakerItem): HTMLElement {
   );
   section.appendChild(details);
   return section;
+}
+
+function renderPresentation(speaker: AdminSpeakerItem): HTMLElement {
+  const section = node("section", "grid gap-3 border-t border-paper/40 pt-5");
+  const heading = node(
+    "div",
+    "grid gap-1 sm:grid-cols-[1fr_auto] sm:items-start",
+  );
+  const copy = node("div", "grid gap-1");
+  copy.appendChild(
+    node(
+      "h4",
+      "font-headline text-2xl font-black uppercase",
+      "Presentation setup",
+    ),
+  );
+  copy.appendChild(
+    node(
+      "p",
+      "text-xs font-bold uppercase text-paper/60",
+      "Private venue logistics / not published",
+    ),
+  );
+  heading.appendChild(copy);
+
+  if (speaker.presentation?.responded_at) {
+    heading.appendChild(
+      node(
+        "span",
+        "w-fit border border-paper/50 px-3 py-2 text-xs font-bold uppercase",
+        formatDate(speaker.presentation.responded_at),
+      ),
+    );
+  }
+
+  section.appendChild(heading);
+  const response = speaker.presentation?.response;
+
+  if (!response) {
+    section.appendChild(
+      node(
+        "p",
+        "text-sm text-paper/60",
+        "No presentation setup has been saved yet.",
+      ),
+    );
+    return section;
+  }
+
+  if (response.delivery_method === "own_laptop") {
+    const warning = node(
+      "div",
+      "grid gap-1 border border-red-300 p-4 dark:border-red-700",
+    );
+    warning.appendChild(
+      node(
+        "p",
+        "font-bold uppercase text-red-300 dark:text-red-700",
+        "Own laptop",
+      ),
+    );
+    warning.appendChild(
+      node(
+        "p",
+        "text-sm text-paper/70",
+        "Discouraged by the venue; confirm the connection and changeover plan with the speaker.",
+      ),
+    );
+    section.appendChild(warning);
+    return section;
+  }
+
+  const details = node("dl", "grid gap-px bg-paper/30 sm:grid-cols-2");
+  details.appendChild(
+    logisticsDetail("Delivery", "Material provided in advance"),
+  );
+  details.appendChild(
+    logisticsDetail(
+      "Format",
+      presentationMaterialLabel(response.material_format),
+    ),
+  );
+  section.appendChild(details);
+
+  if (response.material_url) {
+    const urlRow = node("div", "grid gap-1 border border-paper/30 p-3");
+    urlRow.appendChild(
+      node(
+        "p",
+        "text-xs font-bold uppercase text-paper/50",
+        "Web presentation",
+      ),
+    );
+    const anchor = document.createElement("a");
+    anchor.className = "break-all text-sm underline";
+    anchor.href = response.material_url;
+    anchor.rel = "noopener";
+    anchor.target = "_blank";
+    anchor.textContent = response.material_url;
+    urlRow.appendChild(anchor);
+    section.appendChild(urlRow);
+  }
+
+  return section;
+}
+
+function logisticsDetail(label: string, value: string): HTMLElement {
+  const item = node("div", "grid gap-1 bg-ink p-3");
+  item.appendChild(
+    node("dt", "text-xs font-bold uppercase text-paper/50", label),
+  );
+  item.appendChild(node("dd", "whitespace-pre-wrap text-sm", value));
+  return item;
+}
+
+function presentationMaterialLabel(
+  value: "" | "pdf" | "powerpoint" | "web",
+): string {
+  return {
+    "": "Not stated",
+    pdf: "PDF",
+    powerpoint: "PowerPoint (.pptx)",
+    web: "Web presentation",
+  }[value];
 }
 
 function dinnerDetail(label: string, value: string): HTMLElement {

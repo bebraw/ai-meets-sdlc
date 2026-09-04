@@ -135,6 +135,10 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   assert.match(speakerPage, /data-speaker-login-form/u);
   assert.match(speakerPage, /data-action="speaker-login-v1"/u);
   assert.match(speakerPage, /data-speaker-dinner-form/u);
+  assert.match(speakerPage, /data-speaker-presentation-form/u);
+  assert.match(speakerPage, /Provide material in advance/u);
+  assert.match(speakerPage, /Use my own laptop/u);
+  assert.match(speakerPage, /Discouraged/u);
   assert.match(speakerPage, /I won’t attend/u);
   assert.doesNotMatch(speakerPage, /__TURNSTILE_SITE_KEY__/u);
 
@@ -188,6 +192,82 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   ]);
   assert.equal(workspace.immutable.workspace_only, false);
   assert.equal(workspace.revision, null);
+
+  const emptyPresentationResponse = await worker.fetch(
+    `${origin}/api/speaker/presentation`,
+    { headers: { cookie } },
+  );
+  const emptyPresentation = await emptyPresentationResponse.json();
+  assert.equal(emptyPresentationResponse.status, 200);
+  assert.equal(emptyPresentation.response, null);
+
+  const rejectedPresentationOrigin = await worker.fetch(
+    `${origin}/api/speaker/presentation`,
+    {
+      body: JSON.stringify({ delivery_method: "own_laptop" }),
+      headers: {
+        "content-type": "application/json",
+        cookie,
+        origin: "https://attacker.example",
+      },
+      method: "POST",
+    },
+  );
+  assert.equal(rejectedPresentationOrigin.status, 403);
+
+  const laptopPresentationResponse = await worker.fetch(
+    `${origin}/api/speaker/presentation`,
+    {
+      body: JSON.stringify({
+        delivery_method: "own_laptop",
+        material_format: "pdf",
+        material_url: "https://example.com/ignored.pdf",
+      }),
+      headers: { "content-type": "application/json", cookie, origin },
+      method: "POST",
+    },
+  );
+  const laptopPresentation = await laptopPresentationResponse.json();
+  assert.equal(laptopPresentationResponse.status, 200);
+  assert.deepEqual(laptopPresentation.response, {
+    delivery_method: "own_laptop",
+    material_format: "",
+    material_url: "",
+  });
+
+  const invalidWebPresentation = await worker.fetch(
+    `${origin}/api/speaker/presentation`,
+    {
+      body: JSON.stringify({
+        delivery_method: "advance_materials",
+        material_format: "web",
+        material_url: "http://slides.example.com/talk",
+      }),
+      headers: { "content-type": "application/json", cookie, origin },
+      method: "POST",
+    },
+  );
+  assert.equal(invalidWebPresentation.status, 400);
+
+  const presentationSaveResponse = await worker.fetch(
+    `${origin}/api/speaker/presentation`,
+    {
+      body: JSON.stringify({
+        delivery_method: "advance_materials",
+        material_format: "web",
+        material_url: "https://slides.example.com/talk",
+      }),
+      headers: { "content-type": "application/json", cookie, origin },
+      method: "POST",
+    },
+  );
+  const presentationSave = await presentationSaveResponse.json();
+  assert.equal(presentationSaveResponse.status, 200);
+  assert.deepEqual(presentationSave.response, {
+    delivery_method: "advance_materials",
+    material_format: "web",
+    material_url: "https://slides.example.com/talk",
+  });
 
   const emptyDinnerResponse = await worker.fetch(
     `${origin}/api/speaker/dinner`,
@@ -353,6 +433,15 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   assert.equal(speaker.videos[0].state, "ready");
   assert.equal(speaker.videos[0].duration_seconds, 91.4);
   assert.equal(speaker.workspace_only, false);
+  assert.equal(
+    speaker.presentation.response.delivery_method,
+    "advance_materials",
+  );
+  assert.equal(speaker.presentation.response.material_format, "web");
+  assert.equal(
+    speaker.presentation.response.material_url,
+    "https://slides.example.com/talk",
+  );
   assert.equal(speaker.dinner.response.attendance, "attending");
   assert.equal(
     speaker.dinner.response.food_requirements,
