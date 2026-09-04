@@ -18,6 +18,7 @@
     "layout:install-browsers": "playwright install webkit",
     "slides:export": "node scripts/export-slide-assets.mjs",
     "slides:export:social": "node scripts/export-social-slides.mjs",
+    "youtube:export": "node scripts/export-youtube-assets.mjs",
     "social:manifest": "node scripts/generate-social-render-manifest.mjs",
     "slides:check": "node scripts/validate-slide-layout.mjs",
     "quality:gate": "npm test && npm run validate && npm run layout:check && npm run slides:check && npm run a11y:check",

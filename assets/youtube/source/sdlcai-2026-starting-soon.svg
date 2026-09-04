@@ -1,0 +1,173 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="1920"
+  height="1080"
+  viewBox="0 0 1920 1080"
+  role="img"
+  aria-labelledby="title description"
+>
+  <title id="title">SDLCAI 2026 stream starting soon</title>
+  <desc id="description">
+    Dark broadcast holding slide saying the SDLCAI 2026 stream is starting soon.
+  </desc>
+  <defs>
+    <style>
+      @font-face {
+        font-family: "Finlandica Headline";
+        src: url("../../fonts/FinlandicaHeadline-Black.woff2") format("woff2");
+        font-weight: 900;
+      }
+
+      @font-face {
+        font-family: "Finlandica Text";
+        src: url("../../fonts/FinlandicaText-Bold.woff2") format("woff2");
+        font-weight: 700;
+      }
+
+      .headline {
+        font-family: "Finlandica Headline", "Arial Black", Impact, sans-serif;
+        font-weight: 900;
+      }
+
+      .text {
+        font-family: "Finlandica Text", Arial, sans-serif;
+        font-weight: 700;
+      }
+    </style>
+    <pattern id="halftone" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="3" r="1.7" fill="#f6f4ef" opacity="0.11" />
+    </pattern>
+    <pattern id="dark-halftone" width="12" height="12" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.2" fill="#101010" opacity="0.14" />
+    </pattern>
+  </defs>
+
+  <rect width="1920" height="1080" fill="#101010" />
+  <rect width="1920" height="1080" fill="url(#halftone)" />
+  <rect x="40" y="40" width="1840" height="1000" fill="#101010" />
+
+  <rect
+    id="top-label-frame"
+    x="82"
+    y="82"
+    width="442"
+    height="62"
+    fill="none"
+    stroke="#f6f4ef"
+    stroke-width="3"
+  />
+  <text
+    x="108"
+    y="126"
+    class="text"
+    fill="#f6f4ef"
+    font-size="27"
+    letter-spacing="2.5"
+    data-fit-frame="top-label-frame"
+    data-fit-padding="24"
+  >
+    FROM MARSIO / AALTO
+  </text>
+
+  <text
+    x="74"
+    y="458"
+    class="headline"
+    fill="#f6f4ef"
+    font-size="270"
+    letter-spacing="-3"
+  >
+    STARTING
+  </text>
+  <text
+    x="74"
+    y="788"
+    class="headline"
+    fill="#f6f4ef"
+    font-size="388"
+    letter-spacing="-4"
+  >
+    SOON
+  </text>
+  <rect x="82" y="836" width="1268" height="8" fill="#f6f4ef" />
+  <text x="86" y="918" class="text" fill="#b7b0a4" font-size="38">
+    SDLCAI 2026 / AI MEETS SDLC
+  </text>
+  <text
+    x="86"
+    y="981"
+    class="text"
+    fill="#f6f4ef"
+    font-size="26"
+    letter-spacing="2"
+  >
+    13 OCTOBER 2026 / ESPOO
+  </text>
+
+  <g id="side-panel">
+    <rect x="1408" y="40" width="472" height="1000" fill="#f6f4ef" />
+    <rect x="1408" y="40" width="472" height="1000" fill="url(#dark-halftone)" />
+    <text
+      x="1644"
+      y="374"
+      class="headline"
+      fill="#101010"
+      font-size="350"
+      text-anchor="middle"
+    >
+      13
+    </text>
+    <rect x="1484" y="414" width="320" height="8" fill="#101010" />
+    <text
+      x="1644"
+      y="565"
+      class="headline"
+      fill="#101010"
+      font-size="144"
+      text-anchor="middle"
+    >
+      OCT
+    </text>
+    <text
+      x="1644"
+      y="684"
+      class="headline"
+      fill="#101010"
+      font-size="92"
+      text-anchor="middle"
+    >
+      2026
+    </text>
+
+    <image
+      x="1534"
+      y="710"
+      width="220"
+      height="220"
+      href="../../logo.svg"
+      preserveAspectRatio="xMidYMid meet"
+    />
+    <text
+      x="1644"
+      y="984"
+      class="text"
+      fill="#101010"
+      font-size="28"
+      letter-spacing="2"
+      text-anchor="middle"
+    >
+      SDLCAI.ORG
+    </text>
+  </g>
+
+  <rect
+    x="40"
+    y="40"
+    width="1840"
+    height="1000"
+    fill="none"
+    stroke="#f6f4ef"
+    stroke-width="8"
+  />
+  <path d="M1408 40V1040" stroke="#f6f4ef" stroke-width="8" />
+</svg>
