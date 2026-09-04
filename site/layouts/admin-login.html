@@ -1,0 +1,107 @@
+<BaseLayout
+  &title="(id 'SDLCAI Admin Sign In')"
+  &description="(id 'Sign in to the private SDLCAI organizer workspace.')"
+  &ogDescription="(id 'Private SDLCAI organizer sign-in.')"
+  &url="(id 'https://sdlcai.org/admin/login/')"
+  &ogType="(id 'website')"
+  &robots="(id 'noindex,nofollow,noarchive')"
+>
+  <section class="relative overflow-hidden border-b border-ink">
+    <div
+      class="pointer-events-none absolute -right-36 -top-56 h-[42rem] w-[42rem] rounded-full border border-ink/20 text-ink/10 halftone-xl"
+    ></div>
+    <div
+      class="relative mx-auto grid min-h-[calc(100vh-18rem)] max-w-7xl gap-12 px-5 py-12 lg:grid-cols-[minmax(0,1fr)_28rem] lg:items-center lg:px-8 lg:py-20"
+    >
+      <div class="max-w-4xl">
+        <p class="font-headline text-sm font-black uppercase text-muted">
+          Private / Organizer access
+        </p>
+        <h1
+          class="mt-4 font-headline text-[clamp(4rem,11vw,9rem)] font-black uppercase leading-[0.78] tracking-tight"
+        >
+          Admin<br />desk
+        </h1>
+        <p class="mt-8 max-w-2xl text-xl leading-8 text-muted">
+          Sign in to coordinate speakers, submissions, dinner responses, and
+          event-day materials.
+        </p>
+      </div>
+
+      <div
+        class="relative border border-ink bg-paper p-6 shadow-[12px_12px_0_0_var(--color-ink)] md:p-8"
+      >
+        <div
+          class="mb-8 flex items-center justify-between gap-4 border-b border-ink pb-5"
+        >
+          <div>
+            <p class="text-xs font-bold uppercase text-muted">SDLCAI 2026</p>
+            <h2 class="mt-1 font-headline text-3xl font-black uppercase">
+              Sign in
+            </h2>
+          </div>
+          <span
+            class="grid h-12 w-12 place-items-center border border-ink bg-ink font-headline text-lg font-black text-paper"
+            aria-hidden="true"
+            >A</span
+          >
+        </div>
+
+        <p
+          class="mb-6 border border-signal bg-signal/10 p-4 text-sm font-bold leading-6 text-signal"
+          data-admin-login-error
+          role="alert"
+          hidden
+        ></p>
+
+        <form class="grid gap-5" action="/admin/login/" method="post">
+          <input
+            data-admin-login-next
+            name="next"
+            type="hidden"
+            value="/admin/"
+          />
+          <label class="grid gap-2">
+            <span class="text-sm font-bold uppercase">Username</span>
+            <input
+              class="w-full border border-ink bg-paper px-4 py-3 text-lg outline-none transition focus:ring-2 focus:ring-ink focus:ring-offset-2 focus:ring-offset-paper"
+              data-admin-login-username
+              name="username"
+              type="text"
+              autocomplete="username"
+              autocapitalize="none"
+              maxlength="254"
+              spellcheck="false"
+              autofocus
+              required
+            />
+          </label>
+          <label class="grid gap-2">
+            <span class="text-sm font-bold uppercase">Password</span>
+            <input
+              class="w-full border border-ink bg-paper px-4 py-3 text-lg outline-none transition focus:ring-2 focus:ring-ink focus:ring-offset-2 focus:ring-offset-paper"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              maxlength="4096"
+              required
+            />
+          </label>
+          <button
+            class="mt-2 border border-ink bg-ink px-5 py-4 font-bold uppercase text-paper transition hover:bg-paper hover:text-ink focus:outline-none focus:ring-2 focus:ring-ink focus:ring-offset-2 focus:ring-offset-paper"
+            type="submit"
+          >
+            Open admin desk
+          </button>
+        </form>
+
+        <div class="mt-7 border-t border-ink pt-5">
+          <p class="text-sm leading-6 text-muted">
+            Your password manager can fill this form. A successful sign-in is
+            remembered on this device for seven days.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

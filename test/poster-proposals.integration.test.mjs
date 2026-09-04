@@ -186,12 +186,112 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
     `${origin}/api/admin/poster-proposals`,
   );
   assert.equal(unauthorizedResponse.status, 401);
+  assert.equal(unauthorizedResponse.headers.get("www-authenticate"), null);
+  assert.deepEqual(await unauthorizedResponse.json(), {
+    error: "Admin authentication is required.",
+  });
 
   const unauthorizedAdminPageResponse = await worker.fetch(
     `${origin}/admin/speakers/`,
+    { headers: { accept: "text/html" }, redirect: "manual" },
+  );
+  assert.equal(unauthorizedAdminPageResponse.status, 303);
+  assert.equal(
+    unauthorizedAdminPageResponse.headers.get("location"),
+    `${origin}/admin/login/?next=%2Fadmin%2Fspeakers%2F`,
+  );
+
+  const loginPageResponse = await worker.fetch(
+    `${origin}/admin/login/?next=%2Fadmin%2Fspeakers%2F%3Fview%3Dreview`,
     { headers: { accept: "text/html" } },
   );
-  assert.equal(unauthorizedAdminPageResponse.status, 401);
+  const loginPage = await loginPageResponse.text();
+
+  assert.equal(loginPageResponse.status, 200);
+  assert.equal(loginPageResponse.headers.get("cache-control"), "no-store");
+  assert.equal(
+    loginPageResponse.headers.get("x-robots-tag"),
+    "noindex, nofollow, noarchive",
+  );
+  assert.match(loginPage, /action="\/admin\/login\/" method="post"/u);
+  assert.match(loginPage, /name="username"[^>]*autocomplete="username"/u);
+  assert.match(
+    loginPage,
+    /name="password"[^>]*autocomplete="current-password"/u,
+  );
+  assert.match(
+    loginPage,
+    /name="next"[^>]*value="\/admin\/speakers\/\?view=review"/u,
+  );
+
+  const rejectedLoginResponse = await worker.fetch(`${origin}/admin/login/`, {
+    method: "POST",
+    body: new URLSearchParams({
+      next: "/admin/speakers/",
+      password: "not-the-password",
+      username: "poster-admin",
+    }),
+    headers: { origin },
+    redirect: "manual",
+  });
+  const rejectedLoginPage = await rejectedLoginResponse.text();
+
+  assert.equal(rejectedLoginResponse.status, 401);
+  assert.equal(rejectedLoginResponse.headers.get("www-authenticate"), null);
+  assert.match(rejectedLoginPage, /username or password was not accepted/u);
+  assert.match(rejectedLoginPage, /name="username"[^>]*value="poster-admin"/u);
+
+  const crossOriginLoginResponse = await worker.fetch(
+    `${origin}/admin/login/`,
+    {
+      method: "POST",
+      body: new URLSearchParams({
+        password: "local-test-password",
+        username: "poster-admin",
+      }),
+      headers: { origin: "https://example.com" },
+      redirect: "manual",
+    },
+  );
+
+  assert.equal(crossOriginLoginResponse.status, 403);
+  assert.equal(crossOriginLoginResponse.headers.get("set-cookie"), null);
+
+  const loginResponse = await worker.fetch(`${origin}/admin/login/`, {
+    method: "POST",
+    body: new URLSearchParams({
+      next: "/admin/speakers/?view=review",
+      password: "local-test-password",
+      username: "poster-admin",
+    }),
+    headers: { origin },
+    redirect: "manual",
+  });
+  const adminCookie = loginResponse.headers.get("set-cookie")?.split(";", 1)[0];
+
+  assert.equal(loginResponse.status, 303);
+  assert.equal(
+    loginResponse.headers.get("location"),
+    "/admin/speakers/?view=review",
+  );
+  assert.match(
+    loginResponse.headers.get("set-cookie") ?? "",
+    /^__Host-sdlcai-admin-session=v1\.\d{10}\.[A-Za-z0-9_-]{43}\.[A-Za-z0-9_-]{43}; Path=\/; HttpOnly; Secure; SameSite=Strict; Max-Age=604800$/u,
+  );
+  assert.ok(adminCookie);
+
+  const tamperedAdminCookie = `${adminCookie.slice(0, -1)}${adminCookie.endsWith("a") ? "b" : "a"}`;
+  const tamperedSessionResponse = await worker.fetch(
+    `${origin}/api/admin/poster-proposals`,
+    { headers: { cookie: tamperedAdminCookie } },
+  );
+  assert.equal(tamperedSessionResponse.status, 401);
+
+  const basicFallbackResponse = await worker.fetch(
+    `${origin}/api/admin/poster-proposals`,
+    { headers: { authorization: adminAuthorization } },
+  );
+  assert.equal(basicFallbackResponse.status, 200);
 
   const adminPages = [
     {
@@ -230,7 +330,7 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
     const response = await worker.fetch(`${origin}${adminPage.pathname}`, {
       headers: {
         accept: "text/html",
-        authorization: adminAuthorization,
+        cookie: adminCookie,
       },
     });
     const html = await response.text();
@@ -242,6 +342,7 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
       "noindex, nofollow, noarchive",
     );
     assert.match(response.headers.get("vary") ?? "", /authorization/i);
+    assert.match(response.headers.get("vary") ?? "", /cookie/i);
 
     for (const pattern of adminPage.includes) assert.match(html, pattern);
     for (const pattern of adminPage.excludes)
@@ -335,18 +436,22 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
 
   const unauthorizedSlidesResponse = await worker.fetch(
     `${origin}/admin/slides/`,
-    { headers: { accept: "text/html" } },
+    { headers: { accept: "text/html" }, redirect: "manual" },
   );
-  assert.equal(unauthorizedSlidesResponse.status, 401);
+  assert.equal(unauthorizedSlidesResponse.status, 303);
   assert.equal(
     unauthorizedSlidesResponse.headers.get("x-robots-tag"),
     "noindex, nofollow, noarchive",
+  );
+  assert.equal(
+    unauthorizedSlidesResponse.headers.get("location"),
+    `${origin}/admin/login/?next=%2Fadmin%2Fslides%2F`,
   );
 
   const slidesResponse = await worker.fetch(`${origin}/admin/slides/`, {
     headers: {
       accept: "text/html",
-      authorization: adminAuthorization,
+      cookie: adminCookie,
     },
   });
   const slidesHtml = await slidesResponse.text();
@@ -358,6 +463,7 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
     "noindex, nofollow, noarchive",
   );
   assert.match(slidesResponse.headers.get("vary") ?? "", /authorization/i);
+  assert.match(slidesResponse.headers.get("vary") ?? "", /cookie/i);
   assert.match(
     slidesHtml,
     /<meta name="robots" content="noindex,nofollow,noarchive">/,
@@ -365,9 +471,9 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
 
   const unauthorizedDeckResponse = await worker.fetch(
     `${origin}/admin/slides/deck/`,
-    { headers: { accept: "text/html" } },
+    { headers: { accept: "text/html" }, redirect: "manual" },
   );
-  assert.equal(unauthorizedDeckResponse.status, 401);
+  assert.equal(unauthorizedDeckResponse.status, 303);
 
   const deckRedirectResponse = await worker.fetch(
     `${origin}/admin/slides/deck?slide=4`,
@@ -429,8 +535,13 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
 
   const unauthorizedSlidesPdfResponse = await worker.fetch(
     `${origin}/assets/slides/sdlcai-2026-screen-ad.pdf`,
+    { redirect: "manual" },
   );
-  assert.equal(unauthorizedSlidesPdfResponse.status, 401);
+  assert.equal(unauthorizedSlidesPdfResponse.status, 303);
+  assert.equal(
+    unauthorizedSlidesPdfResponse.headers.get("location"),
+    `${origin}/admin/login/?next=%2Fassets%2Fslides%2Fsdlcai-2026-screen-ad.pdf`,
+  );
 
   const slidesPdfResponse = await worker.fetch(
     `${origin}/assets/slides/sdlcai-2026-screen-ad.pdf`,
@@ -446,6 +557,19 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   assert.equal(
     slidesPdfResponse.headers.get("x-robots-tag"),
     "noindex, nofollow, noarchive",
+  );
+
+  const logoutResponse = await worker.fetch(`${origin}/admin/logout/`, {
+    method: "POST",
+    headers: { cookie: adminCookie, origin },
+    redirect: "manual",
+  });
+
+  assert.equal(logoutResponse.status, 303);
+  assert.equal(logoutResponse.headers.get("location"), "/admin/login/");
+  assert.equal(
+    logoutResponse.headers.get("set-cookie"),
+    "__Host-sdlcai-admin-session=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0",
   );
 
   const dinnerPageResponse = await worker.fetch(`${origin}/speaker-dinner/`, {

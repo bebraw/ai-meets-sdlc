@@ -3990,14 +3990,17 @@ function secure(response: Response): Response {
 function adminSecure(response: Response): Response {
   const secured = withSpeakerWorkspaceSecurityHeaders(response);
   const headers = new Headers(secured.headers);
-  const vary = headers.get("vary");
+  const varyValues = new Set(
+    (headers.get("vary") ?? "")
+      .split(",")
+      .map((value) => value.trim().toLowerCase())
+      .filter(Boolean),
+  );
 
-  if (
-    !vary
-      ?.split(",")
-      .some((value) => value.trim().toLowerCase() === "authorization")
-  ) {
-    headers.append("vary", "Authorization");
+  for (const headerName of ["Authorization", "Cookie"]) {
+    if (!varyValues.has(headerName.toLowerCase())) {
+      headers.append("vary", headerName);
+    }
   }
 
   return new Response(secured.body, {

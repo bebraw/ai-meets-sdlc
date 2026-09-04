@@ -314,6 +314,18 @@
       }
     },
     "routes": {
+      "login": {
+        "layout": "admin-login",
+        "scripts": [{ "name": "index" }],
+        "context": {
+          "meta": {
+            "title": "SDLCAI Admin Sign In",
+            "description": "Sign in to the private SDLCAI organizer workspace.",
+            "ogEyebrow": "Admin sign-in",
+            "ogDescription": "Private SDLCAI organizer sign-in."
+          }
+        }
+      },
       "speakers": {
         "layout": "admin-speakers",
         "scripts": [{ "name": "admin-speakers" }],

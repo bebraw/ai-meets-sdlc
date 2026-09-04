@@ -19,6 +19,12 @@ import {
   purgeExpiredSpeakerWorkspaceData,
   withSpeakerWorkspaceSecurityHeaders,
 } from "./speaker-workspace";
+import {
+  handleAdminAuthRequest,
+  isAdminProtectedPath,
+  requireAdmin,
+  withAdminSecurityHeaders,
+} from "./admin-auth";
 
 type JsonObject = Record<string, unknown>;
 
@@ -88,11 +94,6 @@ interface PosterProposalRow {
   title_ciphertext: string;
   title_iv: string;
   updated_at: string;
-}
-
-interface AdminBindings {
-  ADMIN_PASSWORD?: string;
-  ADMIN_USERNAME?: string;
 }
 
 interface BackupManifest {
@@ -191,7 +192,7 @@ export default {
     ctx: ExecutionContext,
   ): Promise<Response> {
     const url = new URL(request.url);
-    const isAdminProtected = isAdminPath(url.pathname);
+    const isAdminProtected = isAdminProtectedPath(url.pathname);
     const isSpeakerDinnerPrivate = isSpeakerDinnerPath(url.pathname);
     const isSpeakerWorkspacePrivate = isSpeakerWorkspacePath(url.pathname);
 
@@ -246,6 +247,10 @@ export default {
         Response.redirect(`${url.origin}/speaker/`, 308),
       );
     }
+
+    const adminAuthResponse = await handleAdminAuthRequest(request, env);
+
+    if (adminAuthResponse) return adminAuthResponse;
 
     if (isAdminProtected) {
       const unauthorizedResponse = await requireAdmin(request, env);
@@ -583,28 +588,6 @@ function withStaticAssetCache(response: Response, url: URL): Response {
 
   const headers = new Headers(response.headers);
   headers.set("cache-control", immutableAssetCacheControl);
-
-  return new Response(response.body, {
-    headers,
-    status: response.status,
-    statusText: response.statusText,
-  });
-}
-
-function withAdminSecurityHeaders(response: Response): Response {
-  const headers = new Headers(response.headers);
-  const vary = headers.get("vary");
-  const variesByAuthorization = vary
-    ?.split(",")
-    .some((value) => value.trim().toLowerCase() === "authorization");
-
-  headers.set("cache-control", "no-store");
-  headers.set("referrer-policy", "no-referrer");
-  headers.set("x-robots-tag", "noindex, nofollow, noarchive");
-
-  if (!variesByAuthorization) {
-    headers.append("vary", "Authorization");
-  }
 
   return new Response(response.body, {
     headers,
@@ -1801,16 +1784,6 @@ function deleteSpeakerDinnerData(env: Env) {
   ]);
 }
 
-function isAdminPath(pathname: string): boolean {
-  return (
-    pathname === "/admin/" ||
-    pathname.startsWith("/admin/") ||
-    pathname.startsWith("/api/admin/") ||
-    pathname === "/assets/slides" ||
-    pathname.startsWith("/assets/slides/")
-  );
-}
-
 function isSpeakerDinnerPath(pathname: string): boolean {
   return (
     pathname === "/speaker-dinner" ||
@@ -1844,44 +1817,6 @@ async function serveNotFound(
   }
 
   return injectRuntimeConfig(notFoundResponse, env, 404);
-}
-
-async function requireAdmin(
-  request: Request,
-  env: Env,
-): Promise<Response | null> {
-  const adminEnv = env as Env & AdminBindings;
-
-  if (!adminEnv.ADMIN_USERNAME || !adminEnv.ADMIN_PASSWORD) {
-    return new Response("Admin auth is not configured.", {
-      status: 503,
-      headers: {
-        "cache-control": "no-store",
-        "content-type": "text/plain; charset=utf-8",
-        vary: "Authorization",
-        "x-robots-tag": "noindex, nofollow, noarchive",
-      },
-    });
-  }
-
-  const credentials = parseBasicAuth(request.headers.get("authorization"));
-  const isAuthorized =
-    credentials &&
-    (await timingSafeEqual(credentials.username, adminEnv.ADMIN_USERNAME)) &&
-    (await timingSafeEqual(credentials.password, adminEnv.ADMIN_PASSWORD));
-
-  if (isAuthorized) return null;
-
-  return new Response("Authentication required.", {
-    status: 401,
-    headers: {
-      "cache-control": "no-store",
-      "content-type": "text/plain; charset=utf-8",
-      vary: "Authorization",
-      "www-authenticate": 'Basic realm="SDLCAI Admin", charset="UTF-8"',
-      "x-robots-tag": "noindex, nofollow, noarchive",
-    },
-  });
 }
 
 function requireAdminAction(
@@ -1965,40 +1900,6 @@ async function handlePosterProposalStatus(
     200,
     { "cache-control": "no-store" },
   );
-}
-
-function parseBasicAuth(
-  authorization: string | null,
-): { password: string; username: string } | null {
-  if (!authorization?.startsWith("Basic ")) return null;
-
-  try {
-    const decoded = atob(authorization.slice("Basic ".length));
-    const separatorIndex = decoded.indexOf(":");
-
-    if (separatorIndex < 0) return null;
-
-    return {
-      username: decoded.slice(0, separatorIndex),
-      password: decoded.slice(separatorIndex + 1),
-    };
-  } catch {
-    return null;
-  }
-}
-
-async function timingSafeEqual(a: string, b: string): Promise<boolean> {
-  const [aHash, bHash] = await Promise.all([sha256Bytes(a), sha256Bytes(b)]);
-
-  if (aHash.byteLength !== bHash.byteLength) return false;
-
-  let difference = 0;
-
-  for (let index = 0; index < aHash.byteLength; index++) {
-    difference |= aHash[index]! ^ bHash[index]!;
-  }
-
-  return difference === 0;
 }
 
 async function readInterestContacts(env: Env): Promise<InterestContact[]> {

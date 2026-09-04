@@ -143,12 +143,16 @@ image across deployments.
 
 The deployed Worker serves a protected dashboard at `/admin/`, with focused
 workspaces at `/admin/speakers/`, `/admin/dinner/`, `/admin/posters/`,
-`/admin/interests/`, and `/admin/slides/`. All use HTTP Basic auth. Event
-materials under `/assets/slides/`, including the Aalto-exclusive registration
-ad, use the same protection. Organizers can prefill or approve speaker profile,
-talk, social, and portrait revisions from the speakers workspace. Approved
-changes publish to versioned D1 records; Git retains stable IDs, assignments,
-schedule placement, and the seed/fallback copy.
+`/admin/interests/`, and `/admin/slides/`. Organizers sign in through the
+password-manager-compatible form at `/admin/login/`; a signed, secure cookie
+keeps the browser session active for seven days. HTTP Basic credentials remain
+accepted when supplied proactively by scripts, but unauthenticated browser
+requests no longer receive a Basic auth challenge. Event materials under
+`/assets/slides/`, including the Aalto-exclusive registration ad, use the same
+protection. Organizers can prefill or approve speaker profile, talk, social, and
+portrait revisions from the speakers workspace. Approved changes publish to
+versioned D1 records; Git retains stable IDs, assignments, schedule placement,
+and the seed/fallback copy.
 
 The schedule structure and session deck scaffold derive from
 `site/data/seminar.json`, `site/data/schedule.json`, `site/data/speakers.json`,

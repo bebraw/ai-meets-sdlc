@@ -24,8 +24,8 @@ for daily backup export.
 | `IMAGES`                   | Images         | Decodes, crops, strips metadata, and re-encodes portraits.                        |
 | `STREAM`                   | Stream         | Creates private one-time topic-video uploads and previews.                        |
 | `EMAIL`                    | Email Sending  | Sends one separately addressed speaker message at a time.                         |
-| `ADMIN_USERNAME`           | Secret         | Username for HTTP Basic auth protecting `/admin/`.                                |
-| `ADMIN_PASSWORD`           | Secret         | Password for HTTP Basic auth protecting `/admin/`.                                |
+| `ADMIN_USERNAME`           | Secret         | Username for the form and scripted Basic auth protecting `/admin/`.               |
+| `ADMIN_PASSWORD`           | Secret         | Password for admin sign-in and signing browser sessions.                          |
 | `TURNSTILE_SITE_KEY`       | Worker var     | Public Turnstile widget site key injected into HTML.                              |
 | `TURNSTILE_HOSTNAMES`      | Worker var     | Comma-separated hostnames accepted from Siteverify.                               |
 | `TURNSTILE_SECRET_KEY`     | Secret         | Server-side Turnstile verification key.                                           |
@@ -237,10 +237,15 @@ manifest and enforces each platform's byte limit.
 
 The protected admin dashboard at `/admin/` links to focused workspaces at
 `/admin/speakers/`, `/admin/dinner/`, `/admin/posters/`, `/admin/interests/`,
-and `/admin/slides/`. Every `/api/admin/` route and all `/assets/slides/`
-downloads are protected with HTTP Basic auth. This keeps the Aalto-exclusive
-registration ad private while the general event slides remain shareable.
-Protected pages and downloads use `Cache-Control: no-store` and
+and `/admin/slides/`. The form at `/admin/login/` validates `ADMIN_USERNAME` and
+`ADMIN_PASSWORD`, then creates a signed, `HttpOnly`, `Secure`, `SameSite=Strict`
+cookie that expires after seven days. Changing either credential invalidates
+all existing admin sessions. HTTP Basic credentials remain accepted when a
+script supplies them proactively, but the Worker does not send a Basic auth
+challenge. Every `/api/admin/` route and all `/assets/slides/` downloads accept
+the same admin session. This keeps the Aalto-exclusive registration ad private
+while the general event slides remain shareable. Protected pages and downloads
+use `Cache-Control: no-store` and
 `X-Robots-Tag: noindex, nofollow, noarchive`.
 
 | Method | Endpoint                             | Purpose                                      |
@@ -253,7 +258,7 @@ Protected pages and downloads use `Cache-Control: no-store` and
 
 The status endpoint accepts FormData containing `id` and `status`. Allowed
 statuses are `submitted`, `shortlisted`, `accepted`, `waitlisted`,
-`declined`, and `withdrawn`. In addition to Basic auth, a status change
+`declined`, and `withdrawn`. In addition to the admin session, a status change
 requires a same-origin `Origin` header and
 `x-admin-action: update-poster-status`. Returning a proposal to `submitted`
 clears `reviewed_at`; every other status sets it to the update time.
@@ -389,7 +394,7 @@ For production rollout:
 3. Deploy the Worker and static build only after that verification succeeds.
 4. Open `/posters/`, verify the deadline and A0/A1 portrait terms, and submit a
    controlled test proposal.
-5. Open `/admin/posters/` with Basic auth, confirm the proposal decrypts, and
+5. Sign in at `/admin/login/`, open `/admin/posters/`, confirm the proposal decrypts, and
    change its status. Then verify the proposal and interest CSV exports from
    `/admin/posters/` and `/admin/interests/`.
 6. After the next scheduled trigger, confirm the
