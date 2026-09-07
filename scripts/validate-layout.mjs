@@ -12,6 +12,7 @@ const routes = [
   "/admin/",
   "/admin/login/",
   "/admin/dinner/",
+  "/admin/receipts/",
   "/admin/interests/",
   "/admin/posters/",
   "/admin/speakers/",

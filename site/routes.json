@@ -350,6 +350,16 @@
           }
         }
       },
+      "receipts": {
+        "layout": "admin-receipts",
+        "scripts": [{ "name": "receipts" }],
+        "context": {
+          "meta": {
+            "title": "SDLCAI Admin Travel Receipts",
+            "description": "Review private speaker travel receipts and track processing after the event."
+          }
+        }
+      },
       "posters": {
         "layout": "admin-posters",
         "scripts": [{ "name": "index" }],

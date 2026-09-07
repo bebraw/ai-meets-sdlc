@@ -1,5 +1,10 @@
 import { normalizeHostname, verifyTurnstile } from "./turnstile.ts";
 import {
+  handleAdminReceiptRequest,
+  handleSpeakerReceiptRequest,
+  purgeDeletedSpeakerReceipts,
+} from "./speaker-receipts.ts";
+import {
   canonicalSpeakerIds,
   getCanonicalPhotoUrl,
   hashCanonicalContent,
@@ -232,6 +237,38 @@ export async function handleSpeakerWorkspaceRequest(
 
   if (url.pathname === "/api/stream/webhook") {
     return handleStreamWebhookRequest(request, env);
+  }
+
+  if (
+    url.pathname === "/api/admin/receipts" ||
+    url.pathname === "/api/admin/receipts.csv" ||
+    url.pathname.startsWith("/api/admin/receipts/")
+  ) {
+    if (!["GET", "HEAD"].includes(request.method)) {
+      const forbidden = requireAdminMutation(
+        request,
+        "manage-speaker-receipts",
+      );
+      if (forbidden) return adminSecure(forbidden);
+    }
+    return adminSecure(await handleAdminReceiptRequest(request, env));
+  }
+
+  if (
+    url.pathname === "/api/speaker/receipts" ||
+    url.pathname.startsWith("/api/speaker/receipts/")
+  ) {
+    if (
+      !["GET", "HEAD"].includes(request.method) &&
+      !isSameOriginMutation(request)
+    ) {
+      return secure(json({ error: "Request origin was not accepted." }, 403));
+    }
+    const session = await authenticateSpeaker(request, env);
+    if (session instanceof Response) return secure(session);
+    return secure(
+      await handleSpeakerReceiptRequest(request, env, session.speaker_id),
+    );
   }
 
   if (url.pathname.startsWith("/api/admin/speakers/videos/")) {
@@ -4084,6 +4121,7 @@ export async function purgeExpiredSpeakerWorkspaceData(
   if (!env.INTERESTS) return;
 
   const now = new Date();
+  await purgeDeletedSpeakerReceipts(env);
   const nowIso = now.toISOString();
   const retentionStart = new Date(
     now.getTime() - loginRequestRetentionMilliseconds,

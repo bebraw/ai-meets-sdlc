@@ -1,5 +1,7 @@
 export {};
 
+import { loadSpeakerReceipts } from "./receipts";
+
 interface WorkspaceProfile {
   bio: string;
   devto: string;
@@ -228,6 +230,7 @@ async function loadWorkspace(): Promise<void> {
     loadVideos(),
     loadDinner(),
     loadPresentation(),
+    loadSpeakerReceipts(),
   ]);
 }
 

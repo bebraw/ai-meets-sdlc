@@ -1,6 +1,6 @@
 <BaseLayout
   &title="(id 'SDLCAI Speaker Workspace')"
-  &description="(id 'Private workspace for SDLCAI speakers to manage their profile, talk, presentation setup, dinner details, and promotion material.')"
+  &description="(id 'Private workspace for SDLCAI speakers to manage their profile, talk, presentation setup, dinner details, promotion material, and travel receipts.')"
   &ogDescription="(id 'Private workspace for SDLCAI speakers.')"
   &ogType="(id 'website')"
   &robots="(id 'noindex,nofollow,noarchive')"
@@ -44,7 +44,8 @@
             class="max-w-md border-l border-paper/45 pl-5 text-lg leading-7 text-paper/75"
           >
             Keep your profile, session, presentation setup, dinner details,
-            promotion graphics, portrait, and topic video in one private place.
+            promotion graphics, portrait, topic video, and travel receipts in
+            one private place.
           </p>
         </div>
       </div>
@@ -128,7 +129,7 @@
         </form>
       </div>
 
-      <div class="grid gap-12" data-speaker-workspace hidden>
+      <div class="grid grid-cols-1 gap-12" data-speaker-workspace hidden>
         <div
           class="grid gap-px border border-ink bg-ink sm:grid-cols-3"
           aria-label="Workspace status"
@@ -158,7 +159,7 @@
         </div>
 
         <div
-          class="grid gap-10 lg:grid-cols-[15rem_minmax(0,1fr)] lg:items-start"
+          class="grid grid-cols-1 gap-10 lg:grid-cols-[15rem_minmax(0,1fr)] lg:items-start"
         >
           <aside class="grid gap-5 lg:sticky lg:top-6">
             <div class="border border-ink p-4">
@@ -238,11 +239,16 @@
                 <li>
                   <a class="hover:underline" href="#video">06 / Topic video</a>
                 </li>
+                <li>
+                  <a class="hover:underline" href="#receipts"
+                    >07 / Travel receipts</a
+                  >
+                </li>
               </ol>
             </nav>
           </aside>
 
-          <div class="grid gap-14">
+          <div class="grid min-w-0 grid-cols-1 gap-14">
             <form class="grid gap-14" data-speaker-form novalidate>
               <section
                 class="scroll-mt-6 border-t-4 border-ink pt-5"
@@ -941,6 +947,7 @@
                 </form>
               </div>
             </section>
+            <SpeakerReceipts></SpeakerReceipts>
           </div>
         </div>
       </div>

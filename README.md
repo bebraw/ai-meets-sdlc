@@ -145,7 +145,7 @@ URL redirects to a SHA-256-versioned URL, so unchanged inputs reuse the same
 image across deployments.
 
 The deployed Worker serves a protected dashboard at `/admin/`, with focused
-workspaces at `/admin/speakers/`, `/admin/dinner/`, `/admin/posters/`,
+workspaces at `/admin/speakers/`, `/admin/dinner/`, `/admin/receipts/`, `/admin/posters/`,
 `/admin/interests/`, and `/admin/slides/`. Organizers sign in through the
 password-manager-compatible form at `/admin/login/`; a signed, secure cookie
 keeps the browser session active for seven days. HTTP Basic credentials remain
@@ -164,6 +164,39 @@ and `site/data/sponsors.json`; the Worker resolves mutable speaker and talk copy
 from D1. Sponsor data records the package tier and whether the contract includes
 between-talk placement; validation requires Epic and Tech sponsors to receive
 that placement and excludes Brand and Location sponsors.
+
+## Speaker travel receipts
+
+At `/admin/receipts/`, enable uploads for the speakers whose travel expenses
+have been agreed. Their private workspace then accepts PDF, JPEG, PNG, and
+WebP receipts, with an expense description, date, original amount and currency,
+and optional note. The limit is 10 MB per file and 30 receipts per speaker.
+Speakers can download their own receipts and delete unprocessed submissions to
+replace mistakes. Uploads use the existing speaker access period, currently
+ending 31 October 2026; organizer review remains available afterwards.
+
+The receipts inbox filters by speaker and processing status, provides original
+file downloads and a CSV of all receipt details, and records processing notes
+visible to the speaker. Marking a receipt processed does not transfer money.
+CSV download links require organizer access; download the files separately when
+saving accounting records.
+
+Migration `0013_create_speaker_travel_receipts.sql` adds the private metadata
+and upload-access tables. Apply it before deploying this feature:
+
+```sh
+npm run db:migrate:remote
+```
+
+Receipt files use the existing private `SPEAKER_UPLOADS` R2 bucket, under the
+`travel-receipts/` prefix. Files and metadata use AES-GCM with a receipt-specific
+context and a key derived from `EMAIL_ENCRYPTION_KEY`. Keep this encryption key
+available while receipts are retained. No new bindings or secrets are needed.
+Records do not cascade from speaker contacts and are not expired by dinner or
+presentation cleanup. Organizers explicitly delete receipts after processing
+and saving any required records. Failed object deletions are retried by the
+daily cleanup. The existing custom interest, poster, and canonical-content
+backup jobs do not include receipt records or files.
 
 ## Deployment
 

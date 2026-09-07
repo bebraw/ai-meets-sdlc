@@ -1,0 +1,105 @@
+<BaseLayout
+  &title="(id 'SDLCAI Admin Travel Receipts')"
+  &description="(id 'Review private speaker travel receipts and track processing after the event.')"
+  &ogDescription="(id 'Review private speaker travel receipts and track processing after the event.')"
+  &url="(id 'https://sdlcai.org/admin/receipts/')"
+  &ogType="(id 'website')"
+  &robots="(id 'noindex,nofollow,noarchive')"
+>
+  <AdminNavigation></AdminNavigation>
+  <AdminPageHeader
+    &eyebrow="(id 'Admin / Event follow-up')"
+    &title="(id 'Travel receipts')"
+    &description="(id 'Enable uploads for the speakers whose travel you have agreed to cover. Download receipts, export the list, and record processing after the event.')"
+  ></AdminPageHeader>
+  <section
+    data-admin-receipts
+    class="border-b border-ink px-5 py-10 md:px-8 md:py-14"
+    aria-labelledby="receipt-review-heading"
+  >
+    <div class="mx-auto grid max-w-7xl gap-8">
+      <details class="border border-ink p-5 md:p-7">
+        <summary
+          class="cursor-pointer font-headline text-2xl font-black uppercase"
+        >
+          Speaker upload access
+        </summary>
+        <p class="mt-4 text-sm leading-6 text-muted">
+          Enable receipt uploads per speaker. Turning uploads off keeps existing
+          receipts available for review.
+        </p>
+        <div
+          data-receipt-speakers
+          class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3"
+        >
+          <p class="text-muted">Loading speakers…</p>
+        </div>
+      </details>
+      <div class="grid gap-5 md:grid-cols-[1fr_auto] md:items-end">
+        <div>
+          <h2
+            id="receipt-review-heading"
+            class="font-headline text-4xl font-black uppercase leading-none md:text-6xl"
+          >
+            Receipt inbox
+          </h2>
+          <p data-receipt-summary class="mt-4 font-bold text-muted">
+            Loading receipt totals…
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a
+            class="border border-ink bg-ink px-5 py-3 font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
+            href="/api/admin/receipts.csv"
+            >Export all receipts CSV</a
+          ><button
+            data-receipt-refresh
+            class="border border-ink px-5 py-3 font-bold uppercase"
+            type="button"
+          >
+            Refresh
+          </button>
+        </div>
+      </div>
+      <div class="grid gap-5 sm:grid-cols-2">
+        <label class="grid gap-2"
+          ><span class="font-bold uppercase">Status</span
+          ><select
+            data-receipt-filter
+            class="min-w-0 border border-ink bg-paper px-4 py-3"
+          >
+            <option value="submitted">Awaiting processing</option>
+            <option value="processed">Processed</option>
+            <option value="all">All receipts</option>
+          </select></label
+        >
+        <label class="grid gap-2"
+          ><span class="font-bold uppercase">Speaker</span
+          ><select
+            data-receipt-speaker-filter
+            class="min-w-0 border border-ink bg-paper px-4 py-3"
+          >
+            <option value="all">All speakers</option>
+          </select></label
+        >
+      </div>
+      <p
+        data-receipt-status
+        class="min-h-6 text-sm font-bold"
+        aria-live="polite"
+      ></p>
+      <div data-receipt-list class="grid gap-5">
+        <p class="border border-ink p-5 text-muted">Loading receipts…</p>
+      </div>
+      <p
+        class="max-w-4xl border-t border-ink pt-6 text-sm leading-6 text-muted"
+      >
+        “Processed” records that you have handled a receipt; it does not send a
+        payment. Receipts remain available after speaker workspace access
+        expires. Export the records you need before deleting them from this
+        workspace. CSV exports contain receipt details and private download
+        links; download the files separately for your records.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
