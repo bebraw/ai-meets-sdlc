@@ -1,0 +1,194 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="1200"
+  height="630"
+  viewBox="0 0 1200 630"
+  role="img"
+  aria-labelledby="title description"
+>
+  <title id="title">SDLCAI 2026 — AI meets SDLC</title>
+  <desc id="description">
+    A one-day seminar on AI across the full software development lifecycle. 13
+    October 2026, Marsio, Aalto University, Espoo, Finland. Program and tickets
+    at sdlcai.org.
+  </desc>
+  <defs>
+    <style>
+      @font-face {
+        font-family: "Finlandica Headline";
+        src: url("../../fonts/FinlandicaHeadline-Black.woff2") format("woff2");
+        font-weight: 900;
+      }
+      @font-face {
+        font-family: "Finlandica Text";
+        src: url("../../fonts/FinlandicaText-Regular.woff2") format("woff2");
+        font-weight: 400;
+      }
+      @font-face {
+        font-family: "Finlandica Text";
+        src: url("../../fonts/FinlandicaText-Bold.woff2") format("woff2");
+        font-weight: 700;
+      }
+      text {
+        fill: #f6f4ef;
+        font-family: "Finlandica Text", sans-serif;
+      }
+      .headline {
+        font-family: "Finlandica Headline", sans-serif;
+        font-weight: 900;
+      }
+      .label {
+        font-weight: 700;
+        letter-spacing: 1.4px;
+      }
+      .muted {
+        fill: #b7b0a4;
+      }
+      .inverse {
+        fill: #101010;
+      }
+    </style>
+    <pattern id="halftone" width="12" height="12" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.2" fill="#f6f4ef" opacity=".14" />
+    </pattern>
+    <pattern
+      id="paper-halftone"
+      width="10"
+      height="10"
+      patternUnits="userSpaceOnUse"
+    >
+      <circle cx="2" cy="2" r=".8" fill="#101010" opacity=".12" />
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="#101010" />
+  <rect width="1200" height="630" fill="url(#halftone)" />
+  <rect
+    x="18"
+    y="18"
+    width="1164"
+    height="594"
+    fill="#101010"
+    stroke="#f6f4ef"
+    stroke-width="2"
+  />
+
+  <image x="48" y="46" width="68" height="68" href="../../logo.svg" />
+  <text x="136" y="73" font-size="22" class="label" data-safe="136 40 702 80">
+    ONE-DAY SEMINAR
+  </text>
+  <text
+    x="136"
+    y="104"
+    font-size="18"
+    class="label muted"
+    data-safe="136 40 702 80"
+  >
+    INDUSTRY + RESEARCH
+  </text>
+  <text
+    x="40"
+    y="284"
+    font-size="208"
+    class="headline"
+    data-safe="40 134 820 172"
+  >
+    SDLCAI
+  </text>
+  <path d="M48 315H868" stroke="#f6f4ef" stroke-width="4" />
+  <text
+    x="45"
+    y="408"
+    font-size="81"
+    class="headline"
+    data-safe="44 332 824 96"
+  >
+    AI MEETS SDLC
+  </text>
+  <text x="49" y="456" font-size="26" class="muted" data-safe="48 427 820 68">
+    AI across the full software development lifecycle.
+  </text>
+
+  <rect x="910" y="18" width="272" height="484" fill="#f6f4ef" />
+  <rect x="910" y="18" width="272" height="484" fill="url(#paper-halftone)" />
+  <text
+    x="1046"
+    y="80"
+    text-anchor="middle"
+    font-size="19"
+    class="label inverse"
+    data-safe="926 44 240 55"
+  >
+    SAVE THE DATE
+  </text>
+  <text
+    x="1046"
+    y="269"
+    text-anchor="middle"
+    font-size="218"
+    class="headline inverse"
+    data-safe="924 110 244 180"
+  >
+    13
+  </text>
+  <path d="M946 300H1146" stroke="#101010" stroke-width="4" />
+  <text
+    x="1046"
+    y="394"
+    text-anchor="middle"
+    font-size="92"
+    class="headline inverse"
+    data-safe="936 312 220 101"
+  >
+    OCT
+  </text>
+  <text
+    x="1046"
+    y="464"
+    text-anchor="middle"
+    font-size="60"
+    class="headline inverse"
+    data-safe="936 412 220 64"
+  >
+    2026
+  </text>
+
+  <path d="M18 502H1182" stroke="#f6f4ef" stroke-width="2" />
+  <text
+    x="48"
+    y="552"
+    font-size="28"
+    font-weight="700"
+    data-safe="48 520 680 76"
+  >
+    Marsio / Aalto University
+  </text>
+  <text
+    x="49"
+    y="587"
+    font-size="20"
+    class="label muted"
+    data-safe="48 520 680 76"
+  >
+    ESPOO, FINLAND
+  </text>
+  <text
+    x="1152"
+    y="540"
+    text-anchor="end"
+    font-size="17"
+    class="label muted"
+    data-safe="842 512 310 86"
+  >
+    PROGRAM &amp; TICKETS
+  </text>
+  <text
+    x="1152"
+    y="588"
+    text-anchor="end"
+    font-size="42"
+    class="headline"
+    data-safe="842 512 310 86"
+  >
+    SDLCAI.ORG
+  </text>
+</svg>

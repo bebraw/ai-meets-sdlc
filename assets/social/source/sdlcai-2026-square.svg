@@ -1,0 +1,175 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="1080"
+  height="1080"
+  viewBox="0 0 1080 1080"
+  role="img"
+  aria-labelledby="title description"
+>
+  <title id="title">SDLCAI 2026 — AI meets SDLC</title>
+  <desc id="description">
+    A one-day seminar on AI across the full software development lifecycle. 13
+    October 2026, Marsio, Aalto University, Espoo, Finland. Program and tickets
+    at sdlcai.org.
+  </desc>
+  <defs>
+    <style>
+      @font-face {
+        font-family: "Finlandica Headline";
+        src: url("../../fonts/FinlandicaHeadline-Black.woff2") format("woff2");
+        font-weight: 900;
+      }
+      @font-face {
+        font-family: "Finlandica Text";
+        src: url("../../fonts/FinlandicaText-Regular.woff2") format("woff2");
+        font-weight: 400;
+      }
+      @font-face {
+        font-family: "Finlandica Text";
+        src: url("../../fonts/FinlandicaText-Bold.woff2") format("woff2");
+        font-weight: 700;
+      }
+      text {
+        fill: #f6f4ef;
+        font-family: "Finlandica Text", sans-serif;
+      }
+      .headline {
+        font-family: "Finlandica Headline", sans-serif;
+        font-weight: 900;
+      }
+      .label {
+        font-weight: 700;
+        letter-spacing: 2px;
+      }
+      .muted {
+        fill: #b7b0a4;
+      }
+      .inverse {
+        fill: #101010;
+      }
+    </style>
+    <pattern id="halftone" width="14" height="14" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="3" r="1.4" fill="#f6f4ef" opacity=".14" />
+    </pattern>
+    <pattern
+      id="paper-halftone"
+      width="12"
+      height="12"
+      patternUnits="userSpaceOnUse"
+    >
+      <circle cx="2" cy="2" r="1" fill="#101010" opacity=".12" />
+    </pattern>
+  </defs>
+  <rect width="1080" height="1080" fill="#101010" />
+  <rect width="1080" height="1080" fill="url(#halftone)" />
+  <rect
+    x="24"
+    y="24"
+    width="1032"
+    height="1032"
+    fill="#101010"
+    stroke="#f6f4ef"
+    stroke-width="2"
+  />
+
+  <image x="64" y="64" width="88" height="88" href="../../logo.svg" />
+  <text x="180" y="98" font-size="26" class="label" data-safe="180 64 800 100">
+    ONE-DAY SEMINAR
+  </text>
+  <text
+    x="180"
+    y="136"
+    font-size="22"
+    class="label muted"
+    data-safe="180 64 800 100"
+  >
+    INDUSTRY + RESEARCH
+  </text>
+  <text
+    x="52"
+    y="383"
+    font-size="245"
+    class="headline"
+    data-safe="52 206 976 202"
+  >
+    SDLCAI
+  </text>
+  <path d="M64 430H1016" stroke="#f6f4ef" stroke-width="5" />
+  <text
+    x="60"
+    y="548"
+    font-size="101"
+    class="headline"
+    data-safe="60 446 956 126"
+  >
+    AI MEETS SDLC
+  </text>
+  <text x="66" y="617" font-size="33" class="muted" data-safe="64 578 952 93">
+    AI across the full software
+  </text>
+  <text x="66" y="661" font-size="33" class="muted" data-safe="64 578 952 93">
+    development lifecycle.
+  </text>
+
+  <rect x="24" y="713" width="1032" height="160" fill="#f6f4ef" />
+  <rect x="24" y="713" width="1032" height="160" fill="url(#paper-halftone)" />
+  <text
+    x="60"
+    y="834"
+    font-size="130"
+    class="headline inverse"
+    data-safe="56 729 646 123"
+  >
+    13 OCT
+  </text>
+  <path d="M727 746V840" stroke="#101010" stroke-width="3" />
+  <text
+    x="1008"
+    y="823"
+    text-anchor="end"
+    font-size="84"
+    class="headline inverse"
+    data-safe="764 752 252 88"
+  >
+    2026
+  </text>
+
+  <text
+    x="64"
+    y="931"
+    font-size="30"
+    font-weight="700"
+    data-safe="64 894 670 134"
+  >
+    Marsio / Aalto University
+  </text>
+  <text
+    x="66"
+    y="976"
+    font-size="23"
+    class="label muted"
+    data-safe="64 894 670 134"
+  >
+    ESPOO, FINLAND
+  </text>
+  <text
+    x="1016"
+    y="968"
+    text-anchor="end"
+    font-size="18"
+    class="label muted"
+    data-safe="698 931 318 100"
+  >
+    PROGRAM &amp; TICKETS
+  </text>
+  <text
+    x="1016"
+    y="1020"
+    text-anchor="end"
+    font-size="43"
+    class="headline"
+    data-safe="698 931 318 100"
+  >
+    SDLCAI.ORG
+  </text>
+</svg>

@@ -21,6 +21,9 @@ deployed as a Cloudflare Worker with static assets. The production domain is
 - `site/data/`: shared seminar, schedule, speaker, and sponsor data used by the
   public site, public presentation slides, and protected event materials.
 - `assets/`: logo, favicon, fonts, and referenced media.
+- `assets/social/`: [social promotion pack](assets/social/README.md), including
+  dark feed graphics for Bluesky, X, and Facebook. Re-export with
+  `npm run social:export`.
 - `worker/index.ts`: Cloudflare Worker, interest form endpoint, and scheduled
   backups.
 - `migrations/`: D1 schema.
