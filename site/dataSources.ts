@@ -142,7 +142,7 @@ function getAnnouncementItem(announcementItemsBySlug, slug) {
             name: "Toska Osuuskunta",
             url: "https://sdlcai.org/",
           },
-          image: "https://sdlcai.org/og.png?v=20260618",
+          image: "https://sdlcai.org/og.png?v=20260907",
           mainEntityOfPage: {
             "@type": "WebPage",
             "@id": item.url,

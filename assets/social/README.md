@@ -47,6 +47,20 @@ Keep the SVGs in this folder structure so their relative font and logo links
 resolve. PNG uploads are self-contained. The exporter checks brand-font loading,
 logo decoding, text fit, and output size before completing.
 
+## Website Open Graph image
+
+The site publishes `exports/sdlcai-2026-facebook.png` at `/og.png` and the
+existing per-page OG paths. `scripts/og-image-plugin.mjs` copies the PNG without
+re-rendering it, so production builds need neither installed Finlandica fonts
+nor Chromium. The old SVG rasterizer depended on system fonts, causing wider
+fallback text to overlap the date panel on production.
+
+After editing this graphic, run `npm run social:export` and commit the updated
+PNG. Bump the OG image version in `site/layouts/BaseLayout.html`,
+`site/dataSources.ts`, and `scripts/verify-build-output.mjs` when changing it so
+new shares request the updated image. The build verifier checks image dimensions,
+page metadata, and that every generated OG image matches this PNG exactly.
+
 The existing Bluesky and LinkedIn profile headers remain in this directory's
 root. Presentation-derived social images use the separate
 `npm run slides:export:social` command.

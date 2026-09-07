@@ -14,6 +14,8 @@ const speakerImageBudgetBytes = 50 * 1024;
 const speakerImagesDir = "assets/speakers";
 const venueImageBudgetBytes = 80 * 1024;
 const venueImagePath = "assets/marsio-saastamoinen-stage.webp";
+const ogImagePath = "assets/social/exports/sdlcai-2026-facebook.png";
+const ogImageUrl = "https://sdlcai.org/og.png?v=20260907";
 
 try {
   await access(path.join(buildDir, "index.html"));
@@ -28,6 +30,15 @@ const htmlFiles = await getHtmlFiles(buildDir);
 const cssFiles = await getFilesByExtension(buildDir, ".css");
 const speakerImageFiles = await getFilesByExtension(speakerImagesDir, ".webp");
 const failures = [];
+const ogImage = await readFile(ogImagePath);
+if (
+  ogImage.length < 24 ||
+  ogImage.subarray(0, 8).toString("hex") !== "89504e470d0a1a0a" ||
+  ogImage.readUInt32BE(16) !== 1200 ||
+  ogImage.readUInt32BE(20) !== 630
+) {
+  failures.push(`${ogImagePath}: expected a 1200 × 630 PNG`);
+}
 const sitemap = await readFile(path.join(buildDir, "sitemap.xml"), "utf8");
 const slideDeckHtml = await readFile(
   path.join(buildDir, "slides/deck/index.html"),
@@ -74,6 +85,36 @@ for (const pathname of [
 
 for (const filePath of htmlFiles) {
   const html = await readFile(filePath, "utf8");
+  const metaTags = html.match(/<meta\b[^>]*>/g) ?? [];
+  // Standalone presentation layouts do not emit social metadata.
+  const hasSocialMetadata = metaTags.some(
+    (tag) => getAttribute(tag, "property") === "og:title",
+  );
+  for (const [attribute, key, expected] of hasSocialMetadata
+    ? [
+        ["property", "og:image", ogImageUrl],
+        ["name", "twitter:image", ogImageUrl],
+        ["property", "og:image:width", "1200"],
+        ["property", "og:image:height", "630"],
+      ]
+    : []) {
+    const tag = metaTags.find(
+      (candidate) => getAttribute(candidate, attribute) === key,
+    );
+    if (!tag || getAttribute(tag, "content") !== expected) {
+      failures.push(`${filePath}: expected ${key} to be ${expected}`);
+    }
+  }
+  const pageOgPath = path.join(path.dirname(filePath), "og.png");
+  try {
+    if (!(await readFile(pageOgPath)).equals(ogImage)) {
+      failures.push(
+        `${pageOgPath}: OG image differs from the verified promotion graphic`,
+      );
+    }
+  } catch {
+    failures.push(`${pageOgPath}: missing OG image`);
+  }
   const imageTags = html.match(/<img\b[^>]*>/g) ?? [];
   const unsupportedCharacters = getUnsupportedTextCharacters(
     html,

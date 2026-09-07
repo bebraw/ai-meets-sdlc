@@ -44,9 +44,9 @@
       }
     },
     {
-      "path": "./node_modules/gustwind/plugins/og/mod.js",
+      "path": "./scripts/og-image-plugin.mjs",
       "options": {
-        "layout": "./site/layouts/og.html"
+        "image": "./assets/social/exports/sdlcai-2026-facebook.png"
       }
     },
     {
