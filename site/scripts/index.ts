@@ -73,6 +73,11 @@ type SpeakerDinnerAdminItem = {
   updated_at: string | null;
 };
 
+type DinnerAdminResponse = Pick<
+  SpeakerDinnerAdminItem,
+  "name" | "responded_at" | "response" | "updated_at"
+>;
+
 type SpeakerDinnerStatus = {
   closed: boolean;
   deadline: string;
@@ -1124,6 +1129,28 @@ function initAdminSpeakerDinner() {
   if (!speakersRoot) return;
 
   const root = speakersRoot;
+  const organizersRoot = document.querySelector<HTMLElement>(
+    "[data-admin-dinner-organizers]",
+  );
+  const createInviteButton = document.querySelector<HTMLButtonElement>(
+    "[data-admin-dinner-create-invite]",
+  );
+  const copyInviteButton = document.querySelector<HTMLButtonElement>(
+    "[data-admin-dinner-copy-invite]",
+  );
+  const inviteResult = document.querySelector<HTMLElement>(
+    "[data-admin-dinner-invite-result]",
+  );
+  const inviteUrl = document.querySelector<HTMLInputElement>(
+    "[data-admin-dinner-invite-url]",
+  );
+  const inviteState = document.querySelector<HTMLElement>(
+    "[data-admin-dinner-invite-state]",
+  );
+  const inviteStatus = document.querySelector<HTMLElement>(
+    "[data-admin-dinner-invite-status]",
+  );
+  let sharedInviteActive = false;
   const status = document.querySelector<HTMLElement>(
     "[data-admin-dinner-status]",
   );
@@ -1149,13 +1176,17 @@ function initAdminSpeakerDinner() {
     return element;
   }
 
-  function updateSummary(speakers: SpeakerDinnerAdminItem[]) {
+  function updateSummary(
+    speakers: SpeakerDinnerAdminItem[],
+    organizers: DinnerAdminResponse[],
+  ) {
+    const guests = [...speakers, ...organizers];
     const counts = {
-      total: speakers.length,
-      attending: speakers.filter(
+      total: guests.length,
+      attending: guests.filter(
         (speaker) => speaker.response?.attendance === "attending",
       ).length,
-      not_attending: speakers.filter(
+      not_attending: guests.filter(
         (speaker) => speaker.response?.attendance === "not_attending",
       ).length,
       pending: speakers.filter((speaker) => !speaker.response).length,
@@ -1188,25 +1219,24 @@ function initAdminSpeakerDinner() {
     list.appendChild(group);
   }
 
-  function renderSpeakers(speakers: SpeakerDinnerAdminItem[]) {
-    root.replaceChildren();
-    updateSummary(speakers);
+  function renderResponses(
+    target: HTMLElement,
+    responses: DinnerAdminResponse[],
+    emptyMessage: string,
+  ) {
+    target.replaceChildren();
 
-    if (!speakers.length) {
-      root.appendChild(
-        createElement(
-          "p",
-          "border border-ink p-5 text-muted",
-          "No speakers are available.",
-        ),
+    if (!responses.length) {
+      target.appendChild(
+        createElement("p", "border border-ink p-5 text-muted", emptyMessage),
       );
       return;
     }
 
-    for (const speaker of speakers) {
+    for (const speaker of responses) {
       const article = createElement(
         "article",
-        "grid border border-ink bg-paper lg:grid-cols-[minmax(16rem,0.6fr)_minmax(0,1fr)]",
+        "grid min-w-0 grid-cols-1 border border-ink bg-paper lg:grid-cols-[minmax(16rem,0.6fr)_minmax(0,1fr)]",
       );
       const header = createElement("header", "bg-ink p-5 text-paper");
       const titleGroup = createElement("div");
@@ -1221,7 +1251,7 @@ function initAdminSpeakerDinner() {
       titleGroup.appendChild(
         createElement(
           "h3",
-          "mt-2 font-headline text-3xl font-black uppercase leading-none",
+          "mt-2 break-words font-headline text-3xl font-black uppercase leading-none",
           speaker.name,
         ),
       );
@@ -1253,7 +1283,26 @@ function initAdminSpeakerDinner() {
 
       article.appendChild(header);
       article.appendChild(details);
-      root.appendChild(article);
+      target.appendChild(article);
+    }
+  }
+
+  function updateInviteState(active: boolean) {
+    sharedInviteActive = active;
+    if (createInviteButton) {
+      createInviteButton.disabled = false;
+      createInviteButton.textContent = active
+        ? "Replace RSVP link"
+        : "Create RSVP link";
+    }
+    if (inviteState)
+      inviteState.textContent = active
+        ? "An RSVP link is active. Use the link you saved, or create a replacement below."
+        : "No shared RSVP link is active yet.";
+    if (!active) {
+      if (inviteUrl) inviteUrl.value = "";
+      if (inviteResult) inviteResult.hidden = true;
+      if (inviteStatus) inviteStatus.textContent = "";
     }
   }
 
@@ -1267,6 +1316,8 @@ function initAdminSpeakerDinner() {
       });
       const payload = (await response.json()) as FormResponse & {
         speakers?: SpeakerDinnerAdminItem[];
+        shared_responses?: DinnerAdminResponse[];
+        shared_invite_active?: boolean;
       };
 
       if (!response.ok || payload.error) {
@@ -1274,13 +1325,24 @@ function initAdminSpeakerDinner() {
       }
 
       const speakers = Array.isArray(payload.speakers) ? payload.speakers : [];
-      renderSpeakers(speakers);
+      const organizers = Array.isArray(payload.shared_responses)
+        ? payload.shared_responses
+        : [];
+      renderResponses(root, speakers, "No speakers are available.");
+      if (organizersRoot)
+        renderResponses(
+          organizersRoot,
+          organizers,
+          "No organizer replies yet. Share the RSVP link above to collect them.",
+        );
+      updateSummary(speakers, organizers);
+      updateInviteState(Boolean(payload.shared_invite_active));
       const responseCount = speakers.filter(
         (speaker) => speaker.response,
       ).length;
       setStatus(
         successMessage ||
-          `${responseCount} of ${speakers.length} speakers have replied`,
+          `${responseCount} of ${speakers.length} speakers have replied. ${organizers.length} shared RSVP ${organizers.length === 1 ? "reply" : "replies"}.`,
       );
     } catch (error) {
       root.replaceChildren(
@@ -1290,6 +1352,8 @@ function initAdminSpeakerDinner() {
           error instanceof Error ? error.message : "Could not load responses.",
         ),
       );
+      organizersRoot?.replaceChildren();
+      if (createInviteButton) createInviteButton.disabled = true;
       setStatus("Failed to load");
     } finally {
       refreshButton?.removeAttribute("disabled");
@@ -1297,9 +1361,62 @@ function initAdminSpeakerDinner() {
   }
 
   refreshButton?.addEventListener("click", () => void loadSpeakers());
+  createInviteButton?.addEventListener("click", async () => {
+    if (
+      sharedInviteActive &&
+      !window.confirm(
+        "Replace the shared RSVP link? The previous link will stop working. Existing dinner replies will be kept.",
+      )
+    )
+      return;
+
+    createInviteButton.disabled = true;
+    if (inviteStatus) inviteStatus.textContent = "Creating RSVP link…";
+    try {
+      const response = await fetch("/api/admin/speaker-dinner/shared-invite", {
+        method: "POST",
+        headers: {
+          accept: "application/json",
+          "x-admin-action": "rotate-speaker-dinner-shared-invite",
+        },
+      });
+      const payload = (await response.json()) as FormResponse & {
+        invite_url?: string;
+      };
+      if (!response.ok || payload.error || !payload.invite_url)
+        throw new Error(payload.error || "Could not create the RSVP link.");
+
+      updateInviteState(true);
+      if (inviteUrl) inviteUrl.value = payload.invite_url;
+      if (inviteResult) inviteResult.hidden = false;
+      if (inviteStatus)
+        inviteStatus.textContent =
+          "RSVP link ready. Copy it to share with your co-organizers.";
+    } catch (error) {
+      if (inviteStatus)
+        inviteStatus.textContent =
+          error instanceof Error
+            ? error.message
+            : "Could not create the RSVP link.";
+    } finally {
+      createInviteButton.disabled = false;
+    }
+  });
+  copyInviteButton?.addEventListener("click", async () => {
+    if (!inviteUrl?.value) return;
+    try {
+      await navigator.clipboard.writeText(inviteUrl.value);
+      if (inviteStatus) inviteStatus.textContent = "RSVP link copied.";
+    } catch {
+      inviteUrl.focus();
+      inviteUrl.select();
+      if (inviteStatus)
+        inviteStatus.textContent = "Copy the selected RSVP link manually.";
+    }
+  });
   purgeButton?.addEventListener("click", async () => {
     const confirmation = window.prompt(
-      "Type DELETE to remove every speaker dinner response.",
+      "Type DELETE to remove all speaker and organizer dinner responses and invitation links.",
     );
 
     if (confirmation !== "DELETE") return;
