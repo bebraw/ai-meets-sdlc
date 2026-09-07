@@ -25,6 +25,7 @@ const socialLinks = [
 
 export function isCanonicalPublicHtmlPath(pathname: string): boolean {
   return new Set([
+    "/",
     "/admin/slides/",
     "/admin/slides/deck/",
     "/admin/slides/schedule/",

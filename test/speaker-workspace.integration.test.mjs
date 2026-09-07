@@ -598,6 +598,8 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   const organizerContent = structuredClone(mappedSpeaker.canonical);
   organizerContent.profile.role = "Co-founder and CEO at Coldtea.ai";
   organizerContent.talks[0].title = "AI product engineering in practice";
+  organizerContent.talks[0].abstract =
+    "An organizer-updated description about **AI product engineering**, published through the speaker editor.";
   const promotionPath =
     "/assets/social/linkedin/sdlcai-2026-talk-ohans-emmanuel-industry-perspective-linkedin-1200x627.jpg";
   const unrelatedPromotionPath =
@@ -653,6 +655,12 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
     "Co-founder and CEO at Coldtea.ai",
   );
 
+  const draftHomeResponse = await worker.fetch(`${origin}/`);
+  const draftHome = await draftHomeResponse.text();
+  assert.equal(draftHomeResponse.status, 200);
+  assert.doesNotMatch(draftHome, /An organizer-updated description/u);
+  assert.doesNotMatch(draftHome, /AI product engineering in practice/u);
+
   const organizerApprovalResponse = await saveAdminContent(worker, {
     base_content_hash: mappedSpeaker.canonical_hash,
     base_content_version: mappedSpeaker.canonical_version,
@@ -688,6 +696,27 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   );
   assert.match(publicSpeakers, /Co-founder and CEO at Coldtea\.ai/u);
   assert.match(publicSpeakers, /AI product engineering in practice/u);
+
+  for (const pathname of ["/", "/schedule/"]) {
+    const publicPageResponse = await worker.fetch(`${origin}${pathname}`);
+    const publicPage = await publicPageResponse.text();
+    assert.equal(publicPageResponse.status, 200);
+    assert.equal(
+      publicPageResponse.headers.get("x-sdlcai-content-source"),
+      "d1",
+    );
+    assert.equal(
+      publicPageResponse.headers.get("x-sdlcai-content-version"),
+      publicSpeakersResponse.headers.get("x-sdlcai-content-version"),
+    );
+    assert.match(publicPage, /AI product engineering in practice/u);
+    assert.match(
+      publicPage,
+      /An organizer-updated description about <strong>AI product engineering<\/strong>/u,
+    );
+    assert.match(publicPage, /Co-founder and CEO at Coldtea\.ai/u);
+    assert.doesNotMatch(publicPage, /juho-vepsalainen-test-session/u);
+  }
 
   const afterPromotionResponse = await worker.fetch(
     `${origin}${promotionPath}`,
