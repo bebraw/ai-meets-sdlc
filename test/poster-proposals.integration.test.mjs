@@ -293,6 +293,42 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   );
   assert.equal(basicFallbackResponse.status, 200);
 
+  // A browser can cache Basic credentials for /admin/ without sending them to
+  // /assets/slides/. The login redirect must establish a path-wide session or
+  // the protected asset and login page will keep redirecting to each other.
+  for (const extension of ["svg", "pdf"]) {
+    const assetPath = `/assets/slides/sdlcai-2026-screen-ad.${extension}`;
+    const assetRedirect = await worker.fetch(`${origin}${assetPath}`, {
+      redirect: "manual",
+    });
+    assert.equal(assetRedirect.status, 303);
+    const signInRedirect = await worker.fetch(
+      assetRedirect.headers.get("location"),
+      {
+        headers: { authorization: adminAuthorization },
+        redirect: "manual",
+      },
+    );
+    assert.equal(signInRedirect.status, 303);
+    assert.equal(signInRedirect.headers.get("location"), assetPath);
+    assert.equal(signInRedirect.headers.get("cache-control"), "no-store");
+    const sessionHeader = signInRedirect.headers.get("set-cookie") ?? "";
+    assert.match(
+      sessionHeader,
+      /^__Host-sdlcai-admin-session=v1\..*; Path=\/; HttpOnly; Secure; SameSite=Strict; Max-Age=604800$/u,
+    );
+    const assetResponse = await worker.fetch(`${origin}${assetPath}`, {
+      headers: { cookie: sessionHeader.split(";", 1)[0] },
+      redirect: "manual",
+    });
+    assert.equal(assetResponse.status, 200);
+    assert.equal(assetResponse.headers.get("location"), null);
+    assert.match(
+      assetResponse.headers.get("content-type") ?? "",
+      extension === "svg" ? /^image\/svg\+xml/u : /^application\/pdf/u,
+    );
+  }
+
   const adminPages = [
     {
       pathname: "/admin/",

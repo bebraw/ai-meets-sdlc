@@ -148,7 +148,15 @@ async function handleAdminLoginPage(
   }
 
   if (await isAdminAuthorized(request, adminEnv)) {
-    return withAdminSecurityHeaders(redirectResponse(nextPath, 303));
+    const response = redirectResponse(nextPath, 303);
+    // Cached Basic credentials may only cover /admin/. Establish a session
+    // before redirecting to protected assets outside that browser auth scope.
+    response.headers.append(
+      "set-cookie",
+      await createAdminSessionCookie(adminEnv),
+    );
+
+    return withAdminSecurityHeaders(response);
   }
 
   return renderAdminLoginPage(request, env, { nextPath });
