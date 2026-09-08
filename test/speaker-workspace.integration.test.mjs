@@ -515,9 +515,37 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   );
   const announcementPreview = await announcementPreviewResponse.json();
   assert.equal(announcementPreviewResponse.status, 200);
-  assert.equal(announcementPreview.recipient_count, 1);
-  assert.equal(announcementPreview.recipients[0].speaker_id, "mo-khazali");
-  assert.deepEqual(announcementPreview.excluded, [
+  assert.equal(mappedSpeaker.contact.email_confirmed_at, null);
+  assert.equal(announcementPreview.recipient_count, 2);
+  assert.deepEqual(
+    announcementPreview.recipients.map(({ speaker_id }) => speaker_id),
+    ["mo-khazali", "ohans-emmanuel"],
+  );
+  assert.deepEqual(announcementPreview.excluded, []);
+
+  const promotionResponse = await worker.fetch(
+    `${origin}/api/admin/speakers/announcements/preview`,
+    {
+      body: JSON.stringify({
+        category: "promotion",
+        speaker_ids: ["mo-khazali", "ohans-emmanuel"],
+        subject: "SDLCAI promotional update",
+        text_body: "Please share the latest programme with your community.",
+      }),
+      headers: {
+        authorization: adminAuthorization,
+        "content-type": "application/json",
+        origin,
+        "x-admin-action": "preview-speaker-announcement",
+      },
+      method: "POST",
+    },
+  );
+  assert.equal(promotionResponse.status, 200);
+  const promotionPreview = await promotionResponse.json();
+  assert.equal(promotionPreview.recipient_count, 0);
+  assert.deepEqual(promotionPreview.excluded, [
+    { reason: "promotion-disabled", speaker_id: "mo-khazali" },
     { reason: "unconfirmed", speaker_id: "ohans-emmanuel" },
   ]);
   assert.match(announcementPreview.text_body, /Hello \{\{speaker name\}\}/u);

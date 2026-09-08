@@ -456,7 +456,8 @@ async function getAnnouncementRecipients(
 
     if (!speaker) reason = "unknown-speaker";
     else if (!contact) reason = "no-contact";
-    else if (!contact.email_confirmed_at) reason = "unconfirmed";
+    else if (category === "promotion" && !contact.email_confirmed_at)
+      reason = "unconfirmed";
     else if (contact.delivery_status !== "active") reason = "suppressed";
     else if (
       category === "operational" &&

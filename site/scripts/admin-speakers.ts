@@ -219,6 +219,12 @@ document
   .querySelector<HTMLButtonElement>("[data-admin-announcement-test]")
   ?.addEventListener("click", () => void testAnnouncement());
 announcementSend?.addEventListener("click", () => void sendAnnouncement());
+document
+  .querySelector<HTMLButtonElement>("[data-admin-announcement-copy]")
+  ?.addEventListener("click", () => void copyAnnouncement());
+document
+  .querySelector<HTMLButtonElement>("[data-admin-announcement-download]")
+  ?.addEventListener("click", downloadAnnouncement);
 announcementConfirm?.addEventListener("change", () => {
   if (announcementSend)
     announcementSend.disabled = !announcementConfirm.checked;
@@ -382,6 +388,45 @@ function readAnnouncementPayload(): {
     subject: String(formData.get("subject") ?? ""),
     text_body: String(formData.get("text_body") ?? ""),
   };
+}
+
+function readAnnouncementMessage(): string | null {
+  const { subject, text_body } = readAnnouncementPayload();
+  if (!subject.trim() || !text_body.trim()) {
+    setAnnouncementStatus("Enter a subject and message first.", true);
+    return null;
+  }
+  return `Subject: ${subject.trim()}\n\n${text_body.trim()}\n`;
+}
+
+async function copyAnnouncement(): Promise<void> {
+  const message = readAnnouncementMessage();
+  if (!message) return;
+  try {
+    await navigator.clipboard.writeText(message);
+    setAnnouncementStatus("Subject and message copied.");
+  } catch {
+    setAnnouncementStatus(
+      "Clipboard access failed. Use Download .txt to save the message.",
+      true,
+    );
+  }
+}
+
+function downloadAnnouncement(): void {
+  const message = readAnnouncementMessage();
+  if (!message) return;
+  const url = URL.createObjectURL(
+    new Blob([message], { type: "text/plain;charset=utf-8" }),
+  );
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "sdlcai-speaker-message.txt";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  setAnnouncementStatus("Message file downloaded.");
 }
 
 function setAnnouncementPreview(preview: AnnouncementPreviewResponse): void {
