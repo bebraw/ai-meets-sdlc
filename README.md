@@ -24,8 +24,21 @@ deployed as a Cloudflare Worker with static assets. The production domain is
 - `assets/social/`: [social promotion pack](assets/social/README.md), including
   dark feed graphics for Bluesky, X, and Facebook. Re-export with
   `npm run social:export`.
-- `worker/index.ts`: Cloudflare Worker, interest form endpoint, and scheduled
-  backups.
+- `worker/index.ts`: public/admin request routing and scheduled job orchestration.
+- `worker/interests.ts`, `worker/poster-proposals.ts`, `worker/speaker-dinner.ts`:
+  form handlers, validation, storage, and exports for each workflow.
+- `worker/backups.ts`, `worker/receipt-backups.ts`: scheduled metadata backups
+  and deduplicated encrypted receipt recovery snapshots.
+- `worker/static-responses.ts`: asset mapping, caching, runtime config, and calendar.
+- `worker/speaker-workspace.ts`: speaker and organizer workspace routing.
+- `worker/speaker-login.ts`, `worker/speaker-admin.ts`,
+  `worker/speaker-announcements.ts`, `worker/speaker-content.ts`,
+  `worker/speaker-responses.ts`: sign-in, organizer review, email campaigns,
+  speaker edits, and private dinner/presentation responses.
+- `worker/speaker-content-validation.ts`, `worker/speaker-workspace-types.ts`,
+  `worker/speaker-workspace-utils.ts`, `worker/form-utils.ts`: validation,
+  shared contracts, configuration, security, and bounded request parsing.
+- `worker/speaker-cleanup.ts`: expired workspace data and deleted receipt cleanup.
 - `migrations/`: D1 schema.
 - `scripts/`: local helper scripts for dotenv, backup decryption, and build
   verification.
