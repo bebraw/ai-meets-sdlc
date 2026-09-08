@@ -131,9 +131,18 @@
     </noop>
   </head>
   <body class="bg-paper text-ink">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-5 focus:top-5 focus:z-50 focus:border focus:border-ink focus:bg-paper focus:px-5 focus:py-3 focus:font-bold focus:text-ink focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-ink"
+      >Skip to content</a
+    >
     <div class="min-h-screen overflow-hidden">
       <SiteHeader></SiteHeader>
-      <main &children="(get props children)"></main>
+      <main
+        id="main-content"
+        tabindex="-1"
+        &children="(get props children)"
+      ></main>
       <SiteFooter></SiteFooter>
     </div>
     <noop &children="(get props afterContent)"></noop>
