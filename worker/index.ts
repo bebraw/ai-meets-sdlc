@@ -65,6 +65,7 @@ import {
 } from "./social-renderer.ts";
 import { readPublicCanonicalSpeakers } from "./canonical-content.ts";
 import { backupSpeakerReceipts } from "./receipt-backups.ts";
+import { handleEventFeed } from "./event-feed.ts";
 
 export default {
   async fetch(
@@ -73,6 +74,12 @@ export default {
     ctx: ExecutionContext,
   ): Promise<Response> {
     const url = new URL(request.url);
+    if (
+      url.pathname === "/event.json" ||
+      url.pathname === "/event.schema.json"
+    ) {
+      return handleEventFeed(request, env);
+    }
     const isAdminProtected = isAdminProtectedPath(url.pathname);
     const isSpeakerDinnerPrivate = isSpeakerDinnerPath(url.pathname);
     const isSpeakerWorkspacePrivate = isSpeakerWorkspacePath(url.pathname);

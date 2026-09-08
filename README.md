@@ -47,6 +47,9 @@ deployed as a Cloudflare Worker with static assets. The production domain is
 
 ## Development
 
+The [public event feed](docs/event-feed.md) is generated and validated with the
+site at `/event.json`, with its JSON Schema at `/event.schema.json`.
+
 Install dependencies:
 
 ```bash

@@ -697,6 +697,42 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   assert.match(publicSpeakers, /Co-founder and CEO at Coldtea\.ai/u);
   assert.match(publicSpeakers, /AI product engineering in practice/u);
 
+  const eventResponse = await worker.fetch(`${origin}/event.json`, {
+    headers: { origin: "https://lecture.example" },
+  });
+  assert.equal(eventResponse.status, 200);
+  assert.equal(eventResponse.headers.get("access-control-allow-origin"), "*");
+  assert.equal(
+    eventResponse.headers.get("content-type"),
+    "application/json; charset=utf-8",
+  );
+  assert.equal(
+    eventResponse.headers.get("cache-control"),
+    "public, max-age=300",
+  );
+  assert.equal(eventResponse.headers.get("set-cookie"), null);
+  const eventFeed = await eventResponse.json();
+  assert.equal(
+    eventFeed.sessions.find(
+      (session) => session.id === "ohans-emmanuel-industry-perspective",
+    ).title,
+    "AI product engineering in practice",
+  );
+  assert.ok(
+    !eventFeed.speakers.some((speaker) => speaker.id === "juho-vepsalainen"),
+  );
+  const eventCached = await worker.fetch(`${origin}/event.json`, {
+    headers: { "if-none-match": eventResponse.headers.get("etag") },
+  });
+  assert.equal(eventCached.status, 304);
+  assert.equal(await eventCached.text(), "");
+  const eventSchemaResponse = await worker.fetch(`${origin}/event.schema.json`);
+  assert.equal(eventSchemaResponse.status, 200);
+  assert.equal(
+    (await eventSchemaResponse.json()).properties.schemaVersion.const,
+    1,
+  );
+
   for (const pathname of ["/", "/schedule/"]) {
     const publicPageResponse = await worker.fetch(`${origin}${pathname}`);
     const publicPage = await publicPageResponse.text();
