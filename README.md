@@ -226,12 +226,16 @@ Deploy through Cloudflare Workers Builds or locally with:
 npm run deploy
 ```
 
-`deploy` runs the complete quality gate before invoking Wrangler: build, types,
-integration tests, generated-site validation, responsive layout, slides, and
-accessibility. Its `predeploy` hook automatically installs Chromium and WebKit,
-including their OS dependencies on Linux, before the quality gate starts.
+`deploy` runs `quality:build` before invoking Wrangler: build, types, integration
+tests, and generated-site validation. It does not install or launch browsers.
 Workers Builds can keep `npm run worker:build` as the build command and
 `npm run deploy` as the deploy command.
+
+GitHub Actions runs the complete `quality:gate`, including responsive layout,
+slides, and accessibility checks, on pull requests and pushes to `main`. Its
+Ubuntu runner installs Chromium, WebKit, and their OS dependencies. Require the
+`Quality gate` status check in branch protection to block merges on failures.
+Cloudflare Workers Builds runs independently of this workflow.
 
 See [Cloudflare setup](docs/cloudflare.md) for provisioning, secrets, backup, and
 deployment notes.

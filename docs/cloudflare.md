@@ -105,18 +105,25 @@ rendering still runs on Cloudflare; local browsers are needed for release checks
 ### Release checks
 
 Use `npm run deploy` as the deployment command, including in Workers Builds.
-Its `predeploy` hook installs Chromium, WebKit, and their Linux OS dependencies
-before `quality:gate` runs and Wrangler can deploy. Workers Builds can use
-`npm run worker:build` as the build command; browser setup is handled by
-`npm run deploy`. Run `npm ci` first if dependencies are not installed
-automatically. The validators support Playwright's bundled
-Chromium as well as system Chrome and `LAYOUT_BROWSER_PATH`.
+It runs `quality:build` (build, types, integration tests, and generated-site
+validation) before Wrangler can deploy. Workers Builds can keep
+`npm run worker:build` as the build command. Run `npm ci` first if dependencies
+are not installed automatically. Deployment does not install or launch browsers:
+the hosted runner cannot elevate to root to install their OS dependencies.
 
-The build runner must support Chromium and WebKit and allow their OS dependencies
-to be installed. If the hosted build runner cannot do this, run this same release
-command in a supported Linux CI runner; do not replace it with bare `wrangler deploy`.
-The quality gate builds the assets once through `npm test`, then checks that build.
-A failing test, layout, slide, or accessibility check prevents deployment.
+The GitHub Actions workflow in `.github/workflows/quality.yml` runs the complete
+`quality:gate` on pull requests and pushes to `main`. Its Ubuntu runner installs
+Chromium and WebKit with `--with-deps` before running layout, slide, and
+accessibility checks. For local checks, install browsers with
+`npm run layout:install-browsers`, then run `npm run quality:gate`.
+The validators support Playwright's bundled Chromium as well as system Chrome
+and `LAYOUT_BROWSER_PATH`.
+
+Require the `Quality gate` status check in GitHub branch protection to block
+merges when these checks fail. Workers Builds runs independently and does not
+wait for GitHub Actions; direct pushes can deploy before browser checks finish.
+Build, integration-test, and generated-site validation failures still stop
+`npm run deploy` directly.
 
 Cloudflare Email Sending is onboarded for `sdlcai.org`. Cloudflare manages the
 outbound bounce MX, SPF, and DKIM records separately from the root-domain email
