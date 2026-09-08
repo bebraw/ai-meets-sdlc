@@ -187,7 +187,7 @@ const speakerLoginTurnstileAction = "speaker-login-v1";
 const speakerDinnerConsentText =
   "I consent to Toska Osuuskunta processing this response and, if I attend, sharing only the necessary food information with the dinner caterer. I can withdraw by contacting info@sdlcai.org.";
 const genericLoginMessage =
-  "If that address is assigned to an SDLCAI speaker, a sign-in link is on its way. Check your inbox and spam folder.";
+  "If that address is assigned to an SDLCAI speaker, a sign-in link is on its way. It expires after 15 minutes. Check your inbox and spam folder.";
 const tokenPattern = /^[A-Za-z0-9_-]{43}$/u;
 const socialFields = [
   "website",
