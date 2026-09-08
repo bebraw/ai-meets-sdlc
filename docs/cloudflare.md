@@ -105,10 +105,11 @@ rendering still runs on Cloudflare; local browsers are needed for release checks
 ### Release checks
 
 Use `npm run deploy` as the deployment command, including in Workers Builds.
-It runs `quality:gate` before Wrangler can deploy. Configure the build step to
-install the validation browsers with
-`npx playwright install --with-deps chromium webkit` (and `npm ci` if dependencies
-are not installed automatically). The validators support Playwright's bundled
+Its `predeploy` hook installs Chromium, WebKit, and their Linux OS dependencies
+before `quality:gate` runs and Wrangler can deploy. Workers Builds can use
+`npm run worker:build` as the build command; browser setup is handled by
+`npm run deploy`. Run `npm ci` first if dependencies are not installed
+automatically. The validators support Playwright's bundled
 Chromium as well as system Chrome and `LAYOUT_BROWSER_PATH`.
 
 The build runner must support Chromium and WebKit and allow their OS dependencies

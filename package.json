@@ -31,6 +31,7 @@
     "validate": "npm run data:validate && gustwind --validate --input ./build",
     "worker:build": "npm run data:validate && npm run types:check && npm run build && node scripts/verify-build-output.mjs",
     "worker:dev": "npm run dev:env && npm run worker:build && wrangler dev",
+    "predeploy": "npm run layout:install-browsers -- --with-deps",
     "deploy": "npm run quality:gate && wrangler deploy",
     "event:build": "node scripts/generate-event-feed.mjs"
   },

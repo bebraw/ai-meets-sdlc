@@ -228,9 +228,10 @@ npm run deploy
 
 `deploy` runs the complete quality gate before invoking Wrangler: build, types,
 integration tests, generated-site validation, responsive layout, slides, and
-accessibility. Install Chromium and WebKit first with `npm run layout:install-browsers`.
-On Linux CI, install their OS dependencies with
-`npx playwright install --with-deps chromium webkit`.
+accessibility. Its `predeploy` hook automatically installs Chromium and WebKit,
+including their OS dependencies on Linux, before the quality gate starts.
+Workers Builds can keep `npm run worker:build` as the build command and
+`npm run deploy` as the deploy command.
 
 See [Cloudflare setup](docs/cloudflare.md) for provisioning, secrets, backup, and
 deployment notes.
