@@ -1,0 +1,70 @@
+{
+  "template_sha256": "15faa7875a5f7ab2627c7f13b828776651243208a6d9baa18d69d7ddfb0f9fe3",
+  "template_unchanged": true,
+  "trim_mm": [
+    205,
+    85
+  ],
+  "bleed_mm": 3,
+  "artboard_mm": [
+    211,
+    91
+  ],
+  "color_space": "RGB; supplier print conversion pending",
+  "qr_url": "https://sdlcai.org/",
+  "water_supplier_panel": "Original vector artwork, original position and scale",
+  "lager": "Preliminary; 330 ml assumed; brewery details pending",
+  "outputs": [
+    {
+      "trimbox_pt": [
+        8.503936767578125,
+        8.503936767578125,
+        589.6063232421875,
+        249.44881916046143
+      ],
+      "raster_images": 0
+    },
+    {
+      "trimbox_pt": [
+        8.503936767578125,
+        8.503936767578125,
+        589.6063232421875,
+        249.44881916046143
+      ],
+      "raster_images": 0
+    }
+  ],
+  "decoded_codes": {
+    "sdlcai-sparkling-water-light.png": [
+      [
+        "QR Code",
+        "https://sdlcai.org/"
+      ],
+      [
+        "EAN-13",
+        "6429830245209"
+      ]
+    ],
+    "sdlcai-sparkling-water-light-browser.png": [
+      [
+        "QR Code",
+        "https://sdlcai.org/"
+      ],
+      [
+        "EAN-13",
+        "6429830245209"
+      ]
+    ],
+    "sdlcai-lager-dark-preliminary.png": [],
+    "sdlcai-lager-dark-preliminary-browser.png": []
+  },
+  "water_panel_pixel_difference": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "visual_checks": [
+    "Final PDF render inspected with Poppler",
+    "Both final SVGs inspected in Chromium"
+  ]
+}
