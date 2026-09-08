@@ -451,3 +451,69 @@ part of the event record.
 Treat the retention cleanup as a reviewed production operation: record
 non-personal aggregate counts if needed, confirm the exact affected statuses,
 take the approved deletion action, and verify both D1 and R2 afterward.
+
+## Receipt backup and recovery
+
+The existing daily cron (`17 2 * * *`, 02:17 UTC) also runs
+`worker/receipt-backups.ts`. It reads active `speaker_travel_receipts` and
+`speaker_receipt_access` together, hashes the encrypted table data, and skips
+writes when that hash matches the latest successful backup. No encryption key
+is needed to copy backups: personal details and file contents remain encrypted.
+
+The private `INTEREST_BACKUPS` bucket contains:
+
+- `travel-receipts/latest.json`: pointer to the last complete snapshot.
+- `travel-receipts/snapshots/<rows-hash>.json`: immutable metadata snapshots,
+  including both tables and a file mapping with SHA-256 checksums.
+- `travel-receipts/files/<object-key-hash>.enc`: one copy per immutable receipt
+  upload. Review/status changes and repeated cron runs reuse that copy.
+
+Files are copied sequentially, bounded to the existing 10 MB upload limit.
+The latest pointer advances only after every referenced file and the snapshot
+have been stored. Missing files or R2 failures leave the previous pointer intact;
+the next daily invocation retries and reuses already copied files. Concurrent
+runs cannot overwrite a manifest changed since their initial read. Changes
+between daily runs are not backed up until the next successful invocation.
+
+Deleted receipt rows are excluded from new snapshots. **Deleting a live receipt
+does not erase historical backups.** Existing snapshots and their files remain
+available for recovery until an organizer explicitly removes them. Include the
+`travel-receipts/` prefix when deleting retained receipt data after accounting
+records have been saved. Do not expire file copies independently of snapshots:
+new snapshots can refer to older files. Keep `EMAIL_ENCRYPTION_KEY` available
+for as long as any receipt backups are retained.
+
+To recover, first use an isolated D1 database and private R2 bucket with the same
+migrations. Do not import a historical snapshot over a running application:
+that could resurrect deleted records or overwrite newer reviews.
+
+1. Download `travel-receipts/latest.json` from `ai-meets-sdlc-interest-backups`
+   with `wrangler r2 object get ... --remote --file latest.json`, then download
+   the snapshot at its `key` as `snapshot.json`.
+2. Download each `files[].backup_key` from that snapshot into a local directory,
+   keeping its basename (`<object-key-hash>.enc`).
+3. Run the offline validation and SQL preparation:
+
+   ```sh
+   node scripts/prepare-receipt-restore.mjs snapshot.json downloaded-files/ restore/
+   ```
+
+   This verifies the metadata hash, file sizes, ciphertext checksums, and the
+   one-to-one receipt/file mapping before writing `restore/receipts.sql` and
+   `restore/files.json`. No credentials, remote changes, or decryption are involved.
+
+4. Upload each verified file to the recovery bucket under its `source_key`
+   from `restore/files.json` using `wrangler r2 object put
+<recovery-bucket>/<source_key> --remote --file <local_path>`. Preserve those
+   exact keys and receipt/speaker IDs: they are bound to the encrypted data.
+5. Apply migration 0013 (and preceding migrations), then import `restore/receipts.sql`
+   into empty receipt tables with `wrangler d1 execute <recovery-db> --remote
+--file restore/receipts.sql`. The helper uses plain INSERTs so existing IDs
+   fail instead of being silently overwritten.
+6. Point an isolated recovery Worker at those resources, provide the original
+   `EMAIL_ENCRYPTION_KEY`, and verify organizer list, file downloads, processing
+   status, and upload-access settings before deciding how to recover production.
+
+Automated tests exercise backup deduplication, changes within one day, failed
+writes, missing files, deletion handling, and restoring SQL plus encrypted file
+bytes. No new bucket, binding, secret, or migration is required for the backup job.

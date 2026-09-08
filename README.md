@@ -196,8 +196,11 @@ available while receipts are retained. No new bindings or secrets are needed.
 Records do not cascade from speaker contacts and are not expired by dinner or
 presentation cleanup. Organizers explicitly delete receipts after processing
 and saving any required records. Failed object deletions are retried by the
-daily cleanup. The existing custom interest, poster, and canonical-content
-backup jobs do not include receipt records or files.
+daily cleanup. The daily scheduled backup includes active receipt records, upload-access
+settings, and encrypted files in the private `INTEREST_BACKUPS` bucket. Unchanged
+runs do not write duplicate objects; status changes reuse existing file copies.
+See [receipt backup and recovery](docs/cloudflare.md#receipt-backup-and-recovery)
+for retention and verified restore instructions.
 
 ## Deployment
 

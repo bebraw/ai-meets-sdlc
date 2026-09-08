@@ -1,3 +1,4 @@
+import { backupSpeakerReceipts } from "./receipt-backups.ts";
 import { normalizeHostname, verifyTurnstile } from "./turnstile";
 import {
   handleSocialRenderRequest,
@@ -559,6 +560,7 @@ export default {
       ctx.waitUntil(backupInterests(env));
       ctx.waitUntil(backupPosterProposals(env));
       ctx.waitUntil(backupCanonicalSpeakerContent(env));
+      ctx.waitUntil(backupSpeakerReceipts(env));
     }
 
     if (shouldPurgeSpeakerDinnerData(env)) {
