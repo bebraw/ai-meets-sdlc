@@ -99,8 +99,23 @@ wrangler r2 bucket create ai-meets-sdlc-social-exports
 wrangler r2 bucket create ai-meets-sdlc-speaker-uploads
 ```
 
-The Browser Rendering binding is declared in `wrangler.jsonc`; no browser
-binary or browser path is installed in the Workers Builds environment.
+The Browser Rendering binding is declared in `wrangler.jsonc`. Production social
+rendering still runs on Cloudflare; local browsers are needed for release checks.
+
+### Release checks
+
+Use `npm run deploy` as the deployment command, including in Workers Builds.
+It runs `quality:gate` before Wrangler can deploy. Configure the build step to
+install the validation browsers with
+`npx playwright install --with-deps chromium webkit` (and `npm ci` if dependencies
+are not installed automatically). The validators support Playwright's bundled
+Chromium as well as system Chrome and `LAYOUT_BROWSER_PATH`.
+
+The build runner must support Chromium and WebKit and allow their OS dependencies
+to be installed. If the hosted build runner cannot do this, run this same release
+command in a supported Linux CI runner; do not replace it with bare `wrangler deploy`.
+The quality gate builds the assets once through `npm test`, then checks that build.
+A failing test, layout, slide, or accessibility check prevents deployment.
 
 Cloudflare Email Sending is onboarded for `sdlcai.org`. Cloudflare manages the
 outbound bounce MX, SPF, and DKIM records separately from the root-domain email

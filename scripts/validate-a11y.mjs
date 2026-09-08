@@ -61,6 +61,7 @@ const browserCandidates = [
   "/usr/bin/chromium-browser",
   "/usr/bin/google-chrome",
   "/usr/bin/google-chrome-stable",
+  chromium.executablePath(),
 ].filter(Boolean);
 
 async function fileExists(filePath) {

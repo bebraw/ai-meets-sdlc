@@ -15,7 +15,7 @@
     "interests:decrypt": "node scripts/decrypt-interests.mjs",
     "interests:export": "node scripts/export-interest-contacts.mjs",
     "layout:check": "node scripts/validate-layout.mjs",
-    "layout:install-browsers": "playwright install webkit",
+    "layout:install-browsers": "playwright install chromium webkit",
     "slides:export": "node scripts/export-slide-assets.mjs",
     "slides:export:social": "node scripts/export-social-slides.mjs",
     "youtube:export": "node scripts/export-youtube-assets.mjs",
@@ -31,7 +31,7 @@
     "validate": "npm run data:validate && gustwind --validate --input ./build",
     "worker:build": "npm run data:validate && npm run types:check && npm run build && node scripts/verify-build-output.mjs",
     "worker:dev": "npm run dev:env && npm run worker:build && wrangler dev",
-    "deploy": "npm run worker:build && wrangler deploy"
+    "deploy": "npm run quality:gate && wrangler deploy"
   },
   "engines": {
     "node": "24.x"

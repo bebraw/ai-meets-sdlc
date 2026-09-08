@@ -4,6 +4,7 @@ import { createReadStream } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { spawn } from "node:child_process";
+import { chromium } from "playwright";
 
 const buildDir = path.resolve("build");
 const routes = [
@@ -58,6 +59,7 @@ const browserCandidates = [
   "/usr/bin/chromium-browser",
   "/usr/bin/google-chrome",
   "/usr/bin/google-chrome-stable",
+  chromium.executablePath(),
 ].filter(Boolean);
 
 async function fileExists(filePath) {

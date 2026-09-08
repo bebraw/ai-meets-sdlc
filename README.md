@@ -68,6 +68,7 @@ npm run serve
 Format and validate:
 
 ```bash
+npm run layout:install-browsers
 npm run format
 npm run format:check
 npm run validate
@@ -205,6 +206,12 @@ Deploy through Cloudflare Workers Builds or locally with:
 ```bash
 npm run deploy
 ```
+
+`deploy` runs the complete quality gate before invoking Wrangler: build, types,
+integration tests, generated-site validation, responsive layout, slides, and
+accessibility. Install Chromium and WebKit first with `npm run layout:install-browsers`.
+On Linux CI, install their OS dependencies with
+`npx playwright install --with-deps chromium webkit`.
 
 See [Cloudflare setup](docs/cloudflare.md) for provisioning, secrets, backup, and
 deployment notes.
