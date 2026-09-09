@@ -46,6 +46,17 @@
       "betweenTalks": true
     },
     {
+      "id": "rakettitiede",
+      "name": "Rakettitiede",
+      "url": "https://rakettitiede.com/",
+      "logo": "/assets/sponsors/rakettitiede.svg",
+      "logoWidth": 202,
+      "logoHeight": 27,
+      "tier": "tech",
+      "logoSurface": "light",
+      "betweenTalks": true
+    },
+    {
       "id": "aimbition",
       "name": "AIMBITION",
       "url": "https://www.aimbition.com/",
