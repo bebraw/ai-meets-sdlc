@@ -308,7 +308,7 @@ function getSponsorItems() {
         isEpic
           ? "min-[900px]:grid-cols-[18rem_minmax(0,1fr)] xl:col-span-6 md:p-8"
           : isTech
-            ? "md:grid-cols-[14rem_1fr] xl:col-span-2 xl:grid-cols-1"
+            ? "md:grid-cols-[14rem_1fr] xl:col-span-3 xl:grid-cols-1"
             : "md:grid-cols-[12rem_1fr] xl:col-span-3",
       ].join(" "),
       homeLogoFrameClassName: [
@@ -322,8 +322,12 @@ function getSponsorItems() {
           ? "max-h-24 w-full object-contain"
           : "max-h-28 w-full object-contain",
       homeTitleClassName: [
-        "mt-3 break-words font-headline font-black uppercase leading-none",
-        isEpic || isTech ? "text-5xl md:text-7xl" : "text-4xl md:text-6xl",
+        "mt-3 [overflow-wrap:anywhere] font-headline font-black uppercase leading-none",
+        isEpic
+          ? "text-4xl sm:text-5xl md:text-7xl"
+          : isTech
+            ? "text-3xl sm:text-4xl md:text-5xl xl:text-6xl"
+            : "text-4xl md:text-6xl xl:text-5xl",
       ].join(" "),
       presentationClassName: [
         "presentation-sponsor",
