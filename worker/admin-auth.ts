@@ -114,7 +114,9 @@ export function withAdminSecurityHeaders(response: Response): Response {
   );
 
   headers.set("cache-control", "no-store");
-  headers.set("referrer-policy", "no-referrer");
+  // no-referrer can turn native form POST origins into "null" in Safari.
+  // Preserve same-origin form verification without leaking referrers off-site.
+  headers.set("referrer-policy", "same-origin");
   headers.set("x-robots-tag", "noindex, nofollow, noarchive");
 
   for (const headerName of ["Authorization", "Cookie"]) {
