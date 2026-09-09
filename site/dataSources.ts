@@ -39,6 +39,7 @@ function init() {
     slideDeckItems: () => slideDeckItems,
     socialExportPresets: () => socialExportPresets,
     sponsorItems: () => sponsorItems,
+    sponsorAvailability: () => getSponsorAvailability(),
     betweenTalkSponsorItems: () =>
       sponsorItems.filter((sponsor) => sponsor.betweenTalks),
     speakerItems: () =>
@@ -285,6 +286,24 @@ function getSeminar() {
       footer: `${seminarData.name} / ${seminarData.date.display} / ${seminarData.venue.name} / sdlcai.org`,
     },
   };
+}
+
+function getSponsorAvailability() {
+  const capacities = { brand: 10, tech: 4, epic: 2 };
+
+  return Object.fromEntries(
+    Object.entries(capacities).map(([tier, capacity]) => [
+      tier,
+      String(
+        Math.max(
+          0,
+          capacity -
+            sponsorsData.items.filter((sponsor) => sponsor.tier === tier)
+              .length,
+        ),
+      ),
+    ]),
+  );
 }
 
 function getSponsorItems() {

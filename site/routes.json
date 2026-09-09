@@ -28,6 +28,9 @@
     "dataSources": {
       "seminar": {
         "operation": "seminar"
+      },
+      "sponsorAvailability": {
+        "operation": "sponsorAvailability"
       }
     },
     "context": {
