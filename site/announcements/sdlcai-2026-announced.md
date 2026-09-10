@@ -15,7 +15,7 @@ It is on this framing that the idea for SDLCAI seminar was born. It is a spiritu
 
 ## SDLCAI – 13 October 2026 at Marsio
 
-The first SDLCAI seminar will be held 13th of October 2026 at Marsio, Aalto University, Espoo. Aalto University provides the space. It is up to us as attendees to fill the day with discussion. Since it is a seminar, expect an almost overwhelming amount of content at a minimal cost. To keep it affordable, we have priced our tickets at 75€ including VAT, excluding lunch, and we've already planned an afterparty in the same location to make sure you have a chance to hang around with other practitioners after the long day.
+The first SDLCAI seminar will be held 13th of October 2026 at Marsio, Aalto University, Espoo. Aalto University provides the space. It is up to us as attendees to fill the day with discussion. Since it is a seminar, expect an almost overwhelming amount of content at a minimal cost. To keep it affordable, we have priced our tickets at 75€ (inc. VAT). The ticket price includes coffee during the breaks, lunch, and an afterparty in the same location to make sure you have a chance to hang around with other practitioners after the long day.
 
 ![Marsio Saastamoinen Foundation Stage](/assets/marsio-saastamoinen-stage.webp "Marsio Saastamoinen Foundation Stage, Aalto University.")
 
