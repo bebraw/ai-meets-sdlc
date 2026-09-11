@@ -20,11 +20,17 @@ import {
   readCanonicalSpeakers,
 } from "./canonical-content.ts";
 
-export async function getSpeakerAnnouncements(env: Env): Promise<Response> {
+export async function getSpeakerAnnouncements(
+  env: Env,
+  request: Request,
+): Promise<Response> {
   const configurationError = getConfigurationError(env);
 
   if (configurationError) return configurationError;
 
+  const offset = Number(new URL(request.url).searchParams.get("offset") ?? "0");
+  if (!Number.isSafeInteger(offset) || offset < 0)
+    return json({ error: "Invalid archive offset." }, 400);
   const result = await env
     .INTERESTS!.prepare(
       `SELECT
@@ -40,12 +46,37 @@ export async function getSpeakerAnnouncements(env: Env): Promise<Response> {
        created_at,
        completed_at
      FROM speaker_email_campaigns
-    ORDER BY created_at DESC
-    LIMIT 20`,
+    ORDER BY created_at DESC, campaign_id DESC
+    LIMIT 21 OFFSET ?1`,
     )
+    .bind(offset)
     .all<SpeakerEmailCampaignRow>();
 
-  return json({ campaigns: result.results, count: result.results.length });
+  const campaigns = result.results.slice(0, 20);
+  const deliveries = campaigns.length
+    ? await env
+        .INTERESTS!.prepare(
+          `SELECT campaign_id, speaker_id, status, sent_at FROM speaker_email_deliveries
+     WHERE campaign_id IN (${campaigns.map(() => "?").join(",")}) ORDER BY speaker_id`,
+        )
+        .bind(...campaigns.map(({ campaign_id }) => campaign_id))
+        .all<{
+          campaign_id: string;
+          speaker_id: string;
+          status: string;
+          sent_at: string | null;
+        }>()
+    : { results: [] };
+  return json({
+    campaigns: campaigns.map((campaign) => ({
+      ...campaign,
+      deliveries: deliveries.results.filter(
+        (delivery) => delivery.campaign_id === campaign.campaign_id,
+      ),
+    })),
+    count: campaigns.length,
+    next_offset: result.results.length > 20 ? offset + 20 : null,
+  });
 }
 
 export async function previewSpeakerAnnouncement(

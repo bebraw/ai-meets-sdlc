@@ -46,6 +46,17 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   const email = await encrypt("speaker@example.com");
   const emailFingerprint = await hmac("speaker@example.com", "email-hash");
   const seedSql = `
+    ${Array.from(
+      { length: 21 },
+      (_, index) => `
+      INSERT INTO speaker_email_campaigns
+        (campaign_id, category, subject, text_body, html_body, status, recipient_count, sent_count, created_at)
+      VALUES ('archive-${String(index).padStart(2, "0")}', 'operational', 'Archived update', 'Archived message body', '<p>Archived message body</p>', 'sent', 1, 1, '2026-08-26T00:00:00Z');
+      INSERT INTO speaker_email_deliveries (campaign_id, speaker_id, status, attempts, sent_at, updated_at)
+      VALUES ('archive-${String(index).padStart(2, "0")}', 'mo-khazali', 'sent', 1, '2026-08-26T00:00:00Z', '2026-08-26T00:00:00Z');
+    `,
+    ).join("\n")}
+
     INSERT INTO speaker_contacts (
       speaker_id, email_ciphertext, email_iv, email_fingerprint,
       retention_until, created_at, updated_at
@@ -493,6 +504,34 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
     speaker.revision.changed_fields.map(({ field }) => field),
     ["profile.name", "talks.mo-khazali-industry-perspective.title"],
   );
+
+  const archiveResponse = await worker.fetch(
+    `${origin}/api/admin/speakers/announcements`,
+    { headers: { authorization: adminAuthorization } },
+  );
+  assert.equal(archiveResponse.status, 200);
+  const archive = await archiveResponse.json();
+  assert.equal(archive.campaigns.length, 20);
+  assert.equal(archive.next_offset, 20);
+  assert.equal(archive.campaigns[0].text_body, "Archived message body");
+  assert.equal(archive.campaigns[0].deliveries[0].speaker_id, "mo-khazali");
+  const olderResponse = await worker.fetch(
+    `${origin}/api/admin/speakers/announcements?offset=20`,
+    { headers: { authorization: adminAuthorization } },
+  );
+  const older = await olderResponse.json();
+  assert.equal(older.campaigns.length, 1);
+  assert.equal(older.next_offset, null);
+  assert.ok(
+    !archive.campaigns.some(
+      ({ campaign_id }) => campaign_id === older.campaigns[0].campaign_id,
+    ),
+  );
+  const invalidArchive = await worker.fetch(
+    `${origin}/api/admin/speakers/announcements?offset=-1`,
+    { headers: { authorization: adminAuthorization } },
+  );
+  assert.equal(invalidArchive.status, 400);
 
   const announcementPreviewResponse = await worker.fetch(
     `${origin}/api/admin/speakers/announcements/preview`,

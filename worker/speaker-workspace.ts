@@ -198,7 +198,7 @@ export async function handleSpeakerWorkspaceRequest(
       return adminSecure(json({ error: "Method not allowed" }, 405));
     }
 
-    return adminSecure(await getSpeakerAnnouncements(env));
+    return adminSecure(await getSpeakerAnnouncements(env, request));
   }
 
   if (url.pathname === "/api/admin/speakers/announcements/preview") {

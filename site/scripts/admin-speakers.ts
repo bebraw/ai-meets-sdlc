@@ -137,6 +137,12 @@ interface AnnouncementPreviewResponse {
 }
 
 interface AnnouncementCampaign {
+  text_body: string;
+  deliveries: Array<{
+    speaker_id: string;
+    status: string;
+    sent_at: string | null;
+  }>;
   campaign_id: string;
   category: "operational" | "promotion";
   completed_at: string | null;
@@ -459,7 +465,7 @@ function invalidateAnnouncementPreview(): void {
   if (announcementSend) announcementSend.disabled = true;
 }
 
-async function loadAnnouncementHistory(): Promise<void> {
+async function loadAnnouncementHistory(offset = 0): Promise<void> {
   const history = document.querySelector<HTMLElement>(
     "[data-admin-announcement-history]",
   );
@@ -467,8 +473,9 @@ async function loadAnnouncementHistory(): Promise<void> {
 
   const response = await requestJson<{
     campaigns: AnnouncementCampaign[];
+    next_offset: number | null;
     error?: string;
-  }>("/api/admin/speakers/announcements");
+  }>(`/api/admin/speakers/announcements?offset=${offset}`);
 
   if (!response.ok || !Array.isArray(response.data.campaigns)) {
     history.textContent =
@@ -481,9 +488,21 @@ async function loadAnnouncementHistory(): Promise<void> {
     return;
   }
 
-  history.replaceChildren(
-    ...response.data.campaigns.map((campaign) => renderCampaign(campaign)),
-  );
+  if (offset === 0) history.replaceChildren();
+  history.querySelector("[data-archive-more]")?.remove();
+  for (const campaign of response.data.campaigns)
+    history.appendChild(renderCampaign(campaign));
+  const nextOffset = response.data.next_offset;
+  if (nextOffset !== null) {
+    const more = reviewButton("Load older messages", false);
+    more.dataset.archiveMore = "";
+    more.addEventListener("click", async () => {
+      more.disabled = true;
+      await loadAnnouncementHistory(nextOffset);
+      more.disabled = false;
+    });
+    history.appendChild(more);
+  }
 }
 
 function renderCampaign(campaign: AnnouncementCampaign): HTMLElement {
@@ -500,6 +519,33 @@ function renderCampaign(campaign: AnnouncementCampaign): HTMLElement {
       `${formatDate(campaign.created_at)} / ${campaign.category} / ${campaign.sent_count} sent / ${campaign.failed_count} failed`,
     ),
   );
+  const details = node("details", "mt-3");
+  details.appendChild(
+    node(
+      "summary",
+      "cursor-pointer text-sm font-bold uppercase",
+      "View message and recipients",
+    ),
+  );
+  details.appendChild(
+    node(
+      "p",
+      "my-4 whitespace-pre-wrap break-words text-sm",
+      campaign.text_body,
+    ),
+  );
+  const recipients = node("ul", "grid gap-2 text-sm");
+  for (const delivery of campaign.deliveries) {
+    recipients.appendChild(
+      node(
+        "li",
+        "border-t border-paper/20 pt-2",
+        `${delivery.speaker_id} / ${delivery.status}${delivery.sent_at ? ` / ${formatDate(delivery.sent_at)}` : ""}`,
+      ),
+    );
+  }
+  details.appendChild(recipients);
+  copy.appendChild(details);
   row.appendChild(copy);
 
   if (campaign.failed_count > 0) {
