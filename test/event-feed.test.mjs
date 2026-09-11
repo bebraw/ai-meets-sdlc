@@ -108,12 +108,14 @@ test("a changed destination is checked against the element, not HTTP success", a
 });
 
 test("public canonical edits update the feed and revision without changing identity or anchors", async () => {
-  const records = seed.speakers.map((speaker) => ({
+  const fixture = structuredClone(seed);
+  fixture.updatedAt = "2026-09-08T10:00:00.000Z";
+  const records = fixture.speakers.map((speaker) => ({
     speakerId: speaker.id,
     updatedAt: "2026-09-09T10:00:00Z",
     content: {
       profile: { name: speaker.name, bio: speaker.summary },
-      talks: seed.sessions
+      talks: fixture.sessions
         .filter((session) => session.speakerIds.includes(speaker.id))
         .map((session) => ({
           id: session.id,
@@ -122,12 +124,12 @@ test("public canonical edits update the feed and revision without changing ident
         })),
     },
   }));
-  const first = await applyFeedContent(seed, records);
+  const first = await applyFeedContent(fixture, records);
   records[0].content.profile.name = "Updated name";
   records[0].content.talks[0].title = "Updated title";
   records[0].content.talks[0].abstract =
     "A **confirmed** abstract with a [link](https://example.com).";
-  const second = await applyFeedContent(seed, records);
+  const second = await applyFeedContent(fixture, records);
   assert.notEqual(first.revision, second.revision);
   assert.equal(second.speakers[0].name, "Updated name");
   assert.equal(second.sessions[0].title, "Updated title");
@@ -137,10 +139,15 @@ test("public canonical edits update the feed and revision without changing ident
   assert.equal(second.sessions[0].url, seed.sessions[0].url);
   assert.equal(second.updatedAt, new Date(records[0].updatedAt).toISOString());
   assert.equal(
-    (await applyFeedContent(seed, records)).revision,
+    (await applyFeedContent(fixture, records)).revision,
     second.revision,
   );
-  await assert.rejects(applyFeedContent(seed, []), /Missing published speaker/);
+  fixture.updatedAt = "2026-09-10T10:00:00.000Z";
+  assert.equal(
+    (await applyFeedContent(fixture, records)).updatedAt,
+    fixture.updatedAt,
+  );
+  await assert.rejects(applyFeedContent(fixture, []), /Missing published speaker/);
 });
 
 test("plain text and missing abstracts", () => {
