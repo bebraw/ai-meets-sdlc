@@ -658,6 +658,7 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   assert.equal(initialDinnerAdmin.speakers.length, 10);
   assert.deepEqual(initialDinnerAdmin.shared_responses, []);
   assert.equal(initialDinnerAdmin.shared_invite_active, false);
+  assert.equal(initialDinnerAdmin.shared_invite_url, null);
   assert.equal(
     initialDinnerAdmin.speakers.every((speaker) => !speaker.invited),
     true,
@@ -828,6 +829,7 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
     meal_preference: "vegan",
   });
   assert.equal(dinnerAdmin.shared_invite_active, true);
+  assert.equal(dinnerAdmin.shared_invite_url, sharedInvite.invite_url);
   assert.deepEqual(dinnerAdmin.shared_responses, [
     {
       name: "Organizer Example",
@@ -878,7 +880,7 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   const replacementSharedToken = new URL(
     replacementSharedInvite.invite_url,
   ).hash.slice(1);
-  const invalidatedSharedInviteResponse = await worker.fetch(
+  const earlierSharedInviteResponse = await worker.fetch(
     `${origin}/api/speaker-dinner/shared`,
     { headers: { authorization: `Bearer ${sharedInviteToken}` } },
   );
@@ -893,7 +895,16 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   );
   const replacementSharedStatus = await replacementSharedStatusResponse.json();
 
-  assert.equal(invalidatedSharedInviteResponse.status, 404);
+  assert.equal(earlierSharedInviteResponse.status, 200);
+  assert.notEqual(replacementSharedToken, sharedInviteToken);
+  const refreshedDinnerAdmin = await worker.fetch(
+    `${origin}/api/admin/speaker-dinner`,
+    { headers: { authorization: adminAuthorization } },
+  );
+  assert.equal(
+    (await refreshedDinnerAdmin.json()).shared_invite_url,
+    replacementSharedInvite.invite_url,
+  );
   assert.equal(replacementSharedStatusResponse.status, 200);
   assert.equal(replacementSharedStatus.name, "Organizer Example");
 
@@ -992,7 +1003,7 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   const purge = await purgeResponse.json();
 
   assert.equal(purgeResponse.status, 200);
-  assert.equal(purge.deleted, 3);
+  assert.equal(purge.deleted, 4);
 
   const purgedInviteResponse = await worker.fetch(
     `${origin}/api/speaker-dinner`,

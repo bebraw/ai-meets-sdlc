@@ -290,23 +290,28 @@ export async function handleSpeakerDinnerSharedInvite(
     token,
     env.EMAIL_ENCRYPTION_KEY,
   );
+  const encryptedToken = await encryptText(token, env.EMAIL_ENCRYPTION_KEY);
   const now = new Date().toISOString();
   const expiresAt = new Date(configuration.retention).toISOString();
 
   await env.INTERESTS.prepare(
     `INSERT INTO speaker_dinner_shared_invites (
-      id,
       token_hash,
+      token_ciphertext,
+      token_iv,
       created_at,
       expires_at,
       updated_at
-    ) VALUES (1, ?, ?, ?, ?)
-    ON CONFLICT(id) DO UPDATE SET
-      token_hash = excluded.token_hash,
-      expires_at = excluded.expires_at,
-      updated_at = excluded.updated_at`,
+    ) VALUES (?, ?, ?, ?, ?, ?)`,
   )
-    .bind(tokenHash, now, expiresAt, now)
+    .bind(
+      tokenHash,
+      encryptedToken.ciphertext,
+      encryptedToken.iv,
+      now,
+      expiresAt,
+      now,
+    )
     .run();
 
   const inviteUrl = new URL("/speaker-dinner/shared/", request.url);
@@ -316,7 +321,7 @@ export async function handleSpeakerDinnerSharedInvite(
     {
       invite_url: inviteUrl.toString(),
       message:
-        "A new shared dinner link was created. Any earlier shared link is now invalid.",
+        "A new shared dinner link was created. Earlier shared links remain valid.",
       ok: true,
     },
     201,
@@ -597,23 +602,39 @@ async function readSpeakerDinnerSharedInvitation(
   return env.INTERESTS.prepare(
     `SELECT id, token_hash, created_at, expires_at, updated_at
     FROM speaker_dinner_shared_invites
-    WHERE id = 1 AND token_hash = ? AND expires_at > ?`,
+    WHERE token_hash = ? AND expires_at > ?`,
   )
     .bind(tokenHash, now)
     .first<SpeakerDinnerSharedInviteRow>();
 }
 
-export async function hasSpeakerDinnerSharedInvite(env: Env): Promise<boolean> {
+export async function readSpeakerDinnerSharedInvite(
+  request: Request,
+  env: Env,
+): Promise<{ active: boolean; invite_url: string | null }> {
   const now = new Date().toISOString();
   const row = await env.INTERESTS.prepare(
-    `SELECT id
+    `SELECT token_ciphertext, token_iv
     FROM speaker_dinner_shared_invites
-    WHERE id = 1 AND expires_at > ?`,
+    WHERE expires_at > ?
+    ORDER BY id DESC
+    LIMIT 1`,
   )
     .bind(now)
-    .first<{ id: number }>();
+    .first<{ token_ciphertext: string | null; token_iv: string | null }>();
 
-  return Boolean(row);
+  if (!row) return { active: false, invite_url: null };
+  if (!row.token_ciphertext || !row.token_iv)
+    return { active: true, invite_url: null };
+
+  const token = await decryptText(
+    row.token_ciphertext,
+    row.token_iv,
+    env.EMAIL_ENCRYPTION_KEY,
+  );
+  const inviteUrl = new URL("/speaker-dinner/shared/", request.url);
+  inviteUrl.hash = token;
+  return { active: true, invite_url: inviteUrl.toString() };
 }
 
 export async function readSpeakerDinnerAdminItems(

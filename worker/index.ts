@@ -2,7 +2,7 @@ import {
   isSpeakerDinnerPath,
   readSpeakerDinnerAdminItems,
   readSpeakerDinnerSharedAdminItems,
-  hasSpeakerDinnerSharedInvite,
+  readSpeakerDinnerSharedInvite,
   formatSpeakerDinnerCsv,
   handleSpeakerDinnerInvite,
   handleSpeakerDinnerSharedInvite,
@@ -239,18 +239,17 @@ export default {
         return jsonResponse({ error: "Method not allowed" }, 405);
       }
 
-      const [speakers, sharedResponses, sharedInviteActive] = await Promise.all(
-        [
-          readSpeakerDinnerAdminItems(env),
-          readSpeakerDinnerSharedAdminItems(env),
-          hasSpeakerDinnerSharedInvite(env),
-        ],
-      );
+      const [speakers, sharedResponses, sharedInvite] = await Promise.all([
+        readSpeakerDinnerAdminItems(env),
+        readSpeakerDinnerSharedAdminItems(env),
+        readSpeakerDinnerSharedInvite(request, env),
+      ]);
 
       return withAdminSecurityHeaders(
         jsonResponse({
           count: speakers.length + sharedResponses.length,
-          shared_invite_active: sharedInviteActive,
+          shared_invite_active: sharedInvite.active,
+          shared_invite_url: sharedInvite.invite_url,
           shared_responses: sharedResponses,
           speakers,
         }),

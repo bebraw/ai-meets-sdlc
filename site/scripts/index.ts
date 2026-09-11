@@ -1150,7 +1150,6 @@ function initAdminSpeakerDinner() {
   const inviteStatus = document.querySelector<HTMLElement>(
     "[data-admin-dinner-invite-status]",
   );
-  let sharedInviteActive = false;
   const status = document.querySelector<HTMLElement>(
     "[data-admin-dinner-status]",
   );
@@ -1287,21 +1286,22 @@ function initAdminSpeakerDinner() {
     }
   }
 
-  function updateInviteState(active: boolean) {
-    sharedInviteActive = active;
+  function updateInviteState(active: boolean, url: string | null = null) {
     if (createInviteButton) {
       createInviteButton.disabled = false;
       createInviteButton.textContent = active
-        ? "Replace RSVP link"
+        ? "Create another RSVP link"
         : "Create RSVP link";
     }
     if (inviteState)
       inviteState.textContent = active
-        ? "An RSVP link is active. Use the link you saved, or create a replacement below."
+        ? url
+          ? "An RSVP link is active. Copy it below to share with your co-organizers."
+          : "An RSVP link is active, but cannot be retrieved. Use your saved link or create another."
         : "No shared RSVP link is active yet.";
+    if (inviteUrl) inviteUrl.value = active && url ? url : "";
+    if (inviteResult) inviteResult.hidden = !active || !url;
     if (!active) {
-      if (inviteUrl) inviteUrl.value = "";
-      if (inviteResult) inviteResult.hidden = true;
       if (inviteStatus) inviteStatus.textContent = "";
     }
   }
@@ -1318,6 +1318,7 @@ function initAdminSpeakerDinner() {
         speakers?: SpeakerDinnerAdminItem[];
         shared_responses?: DinnerAdminResponse[];
         shared_invite_active?: boolean;
+        shared_invite_url?: string | null;
       };
 
       if (!response.ok || payload.error) {
@@ -1336,7 +1337,10 @@ function initAdminSpeakerDinner() {
           "No organizer replies yet. Share the RSVP link above to collect them.",
         );
       updateSummary(speakers, organizers);
-      updateInviteState(Boolean(payload.shared_invite_active));
+      updateInviteState(
+        Boolean(payload.shared_invite_active),
+        payload.shared_invite_url,
+      );
       const responseCount = speakers.filter(
         (speaker) => speaker.response,
       ).length;
@@ -1362,14 +1366,6 @@ function initAdminSpeakerDinner() {
 
   refreshButton?.addEventListener("click", () => void loadSpeakers());
   createInviteButton?.addEventListener("click", async () => {
-    if (
-      sharedInviteActive &&
-      !window.confirm(
-        "Replace the shared RSVP link? The previous link will stop working. Existing dinner replies will be kept.",
-      )
-    )
-      return;
-
     createInviteButton.disabled = true;
     if (inviteStatus) inviteStatus.textContent = "Creating RSVP link…";
     try {
@@ -1386,9 +1382,7 @@ function initAdminSpeakerDinner() {
       if (!response.ok || payload.error || !payload.invite_url)
         throw new Error(payload.error || "Could not create the RSVP link.");
 
-      updateInviteState(true);
-      if (inviteUrl) inviteUrl.value = payload.invite_url;
-      if (inviteResult) inviteResult.hidden = false;
+      updateInviteState(true, payload.invite_url);
       if (inviteStatus)
         inviteStatus.textContent =
           "RSVP link ready. Copy it to share with your co-organizers.";
