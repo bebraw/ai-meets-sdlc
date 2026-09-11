@@ -226,8 +226,9 @@ Deploy through Cloudflare Workers Builds or locally with:
 npm run deploy
 ```
 
-`deploy` runs `quality:build` before invoking Wrangler: build, types, integration
-tests, and generated-site validation. It does not install or launch browsers.
+`deploy` runs `quality:build` (build, types, integration tests, and generated-site
+validation), applies pending production D1 migrations, and then deploys the Worker.
+A failed migration stops deployment. It does not install or launch browsers.
 Workers Builds can keep `npm run worker:build` as the build command and
 `npm run deploy` as the deploy command.
 

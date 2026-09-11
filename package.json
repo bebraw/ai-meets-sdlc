@@ -32,7 +32,7 @@
     "validate": "npm run data:validate && gustwind --validate --input ./build",
     "worker:build": "npm run data:validate && npm run types:check && npm run build && node scripts/verify-build-output.mjs",
     "worker:dev": "npm run dev:env && npm run worker:build && wrangler dev",
-    "deploy": "npm run quality:build && wrangler deploy",
+    "deploy": "npm run quality:build && npm run db:migrate:remote && wrangler deploy",
     "event:build": "node scripts/generate-event-feed.mjs"
   },
   "engines": {
