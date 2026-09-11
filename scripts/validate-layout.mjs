@@ -565,9 +565,7 @@ async function evaluatePageLayout(session) {
 
       if (route === "/") {
         const title = document.querySelector("h1");
-        const intro = [...document.querySelectorAll("p")].find((element) =>
-          element.textContent.includes("A focused seminar"),
-        );
+        const intro = document.querySelector("[data-seminar-intro]");
         const countdown = document.querySelector("aside");
 
         if (!title || !intro || !countdown) {
