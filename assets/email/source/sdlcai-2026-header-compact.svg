@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-labelledby="title"><title id="title">SDLCAI — AI meets SDLC. 13 October 2026, Marsio, Aalto University, Espoo.</title>  <defs>
+    <style>
+      @font-face {
+        font-family: "Finlandica Headline";
+        src: url("../../fonts/FinlandicaHeadline-Black.woff2") format("woff2");
+        font-weight: 900;
+      }
+      @font-face {
+        font-family: "Finlandica Text";
+        src: url("../../fonts/FinlandicaText-Regular.woff2") format("woff2");
+        font-weight: 400;
+      }
+      @font-face {
+        font-family: "Finlandica Text";
+        src: url("../../fonts/FinlandicaText-Bold.woff2") format("woff2");
+        font-weight: 700;
+      }
+      text {
+        fill: #f6f4ef;
+        font-family: "Finlandica Text", sans-serif;
+      }
+      .headline {
+        font-family: "Finlandica Headline", sans-serif;
+        font-weight: 900;
+      }
+      .label {
+        font-weight: 700;
+        letter-spacing: 1.4px;
+      }
+      .muted {
+        fill: #b7b0a4;
+      }
+      .inverse {
+        fill: #101010;
+      }
+    </style>
+    <pattern id="halftone" width="12" height="12" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.2" fill="#f6f4ef" opacity=".14" />
+    </pattern>
+    <pattern
+      id="paper-halftone"
+      width="10"
+      height="10"
+      patternUnits="userSpaceOnUse"
+    >
+      <circle cx="2" cy="2" r=".8" fill="#101010" opacity=".12" />
+    </pattern>
+  </defs><rect width="1200" height="320" fill="#101010"/><rect width="1200" height="320" fill="url(#halftone)"/><rect x="20" y="20" width="1160" height="280" fill="#101010" stroke="#f6f4ef" stroke-width="2"/><image x="48" y="54" width="70" height="70" href="../../logo.svg"/><text x="140" y="125" font-size="102" class="headline" data-safe="136 45 480 100">SDLCAI</text><text x="48" y="211" font-size="57" class="headline" data-safe="44 155 690 72">AI MEETS SDLC</text><text x="48" y="270" font-size="25" class="muted" data-safe="46 240 710 38">Marsio / Aalto University / Espoo</text><rect x="812" y="20" width="368" height="280" fill="#f6f4ef"/><rect x="812" y="20" width="368" height="280" fill="url(#paper-halftone)"/><text x="848" y="157" font-size="82" class="headline inverse" data-safe="842 72 308 100">13 OCT</text><text x="921" y="240" font-size="64" class="headline inverse" data-safe="842 175 308 78">2026</text></svg>
