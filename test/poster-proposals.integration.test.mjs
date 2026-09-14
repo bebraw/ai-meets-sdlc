@@ -407,7 +407,7 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   assert.equal(publicDeckResponse.headers.get("x-robots-tag"), null);
   assert.equal(
     (publicDeckHtml.match(/data-presentation-slide/g) ?? []).length,
-    23,
+    24,
   );
   assert.match(publicDeckHtml, /alt="Wunderdog"/);
   assert.doesNotMatch(publicDeckHtml, /bit\.ly\/4wRkjCa/);

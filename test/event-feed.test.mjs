@@ -16,7 +16,7 @@ const seed = JSON.parse(await readFile("build/event.json", "utf8"));
 
 test("built feed resolves real fragments and excludes private content", async () => {
   await validateFeed(seed, schema, "build");
-  assert.equal(seed.speakers.length, 9);
+  assert.equal(seed.speakers.length, 10);
   assert.ok(
     !seed.speakers.some((speaker) => speaker.id === "juho-vepsalainen"),
   );
