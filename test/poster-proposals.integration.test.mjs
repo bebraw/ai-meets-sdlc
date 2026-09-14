@@ -538,7 +538,7 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
     deckResponse.headers.get("x-robots-tag"),
     "noindex, nofollow, noarchive",
   );
-  assert.equal((deckHtml.match(/data-presentation-slide/g) ?? []).length, 23);
+  assert.equal((deckHtml.match(/data-presentation-slide/g) ?? []).length, 24);
   assert.match(deckHtml, /alt="Wunderdog"/);
   assert.match(deckHtml, /alt="Reaktor"/);
   assert.doesNotMatch(deckHtml, /alt="AIMBITION"/);
@@ -655,7 +655,7 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   const initialDinnerAdmin = await initialDinnerAdminResponse.json();
 
   assert.equal(initialDinnerAdminResponse.status, 200);
-  assert.equal(initialDinnerAdmin.speakers.length, 10);
+  assert.equal(initialDinnerAdmin.speakers.length, 11);
   assert.deepEqual(initialDinnerAdmin.shared_responses, []);
   assert.equal(initialDinnerAdmin.shared_invite_active, false);
   assert.equal(initialDinnerAdmin.shared_invite_url, null);
