@@ -62,6 +62,12 @@
           "title": "Agentic Discovery",
           "abstract": "Abstract forthcoming.",
           "speakers": ["tapio-pitkaranta"]
+        },
+        {
+          "id": "joongi-shin-ui-perspective",
+          "title": "Mystery talk",
+          "abstract": "Joongi Shin will give a talk related to user interfaces. The exact title and abstract are forthcoming.",
+          "speakers": ["joongi-shin"]
         }
       ]
     },

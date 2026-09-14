@@ -82,6 +82,15 @@
       "bio": "Tapio Pitkäranta is Head of AI Development at Siili Solutions and a PhD candidate at Aalto University researching Software Agents and Generative AI. He has over 20 years of AI experience, spanning early semantic-web agent research, healthcare analytics entrepreneurship, and senior technology leadership across retail, healthcare, tax, and HR. He has served as CTO four times, including at RELEX Solutions during its unicorn-scale growth, and now focuses on applying agentic AI, multi-agent systems, and coding agents to real software delivery."
     },
     {
+      "id": "joongi-shin",
+      "name": "Joongi Shin",
+      "role": "Postdoctoral Researcher at Aalto University",
+      "photo": "/assets/speakers/joongi-shin.jpg",
+      "website": "https://www.joongishin.com/",
+      "linkedin": "https://www.linkedin.com/in/joongi-shin/",
+      "bio": "Joongi Shin is a postdoctoral researcher at Aalto University investigating how emerging technologies and AI can support human creativity and design. His research spans human-computer interaction, user-centred design, collaborative creativity, and generative AI. He received his PhD in Industrial Design from KAIST in 2021."
+    },
+    {
       "id": "juho-vepsalainen",
       "name": "Juho Vepsäläinen",
       "role": "SDLCAI organizer / test account",
