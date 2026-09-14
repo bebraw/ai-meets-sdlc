@@ -387,6 +387,7 @@ function getSlideDeckItems(scheduleItems, seminar, socialExportPresets) {
   for (const scheduleItem of scheduleItems) {
     deckItems.push({
       id: `session-${scheduleItem.id}`,
+      sessionId: scheduleItem.id,
       showSession: true,
       eyebrow: scheduleItem.talks?.length ? "Next session" : "Program",
       time: scheduleItem.time,
@@ -427,7 +428,7 @@ function getSlideDeckItems(scheduleItems, seminar, socialExportPresets) {
       kindLabel,
       thumbnailAlt,
       thumbnailSrc: `/assets/social/linkedin/sdlcai-2026-${item.id}-linkedin-1200x627.jpg`,
-      publicHref: `/slides/deck/?slide=${number}`,
+      publicHref: `/slides/deck/?slideId=${item.id}`,
       socialExports: socialExportPresets.map((preset) => {
         const dimensions = preset.dimensions.replaceAll(" ", "");
 

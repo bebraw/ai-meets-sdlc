@@ -3,6 +3,7 @@ import { stat } from "node:fs/promises";
 import { createServer } from "node:http";
 import path from "node:path";
 import { chromium } from "playwright";
+import sponsors from "../site/data/sponsors.json" with { type: "json" };
 
 const buildDir = path.resolve("build");
 const deckRoute = "/slides/deck/";
@@ -111,141 +112,158 @@ async function validateDeck(page, origin, viewport, failures) {
   const slideCount = await page.locator("[data-presentation-slide]").count();
 
   for (let index = 0; index < slideCount; index += 1) {
-    const result = await page.evaluate(() => {
-      const activeSlides = [
-        ...document.querySelectorAll("[data-presentation-slide].is-active"),
-      ];
-      const active = activeSlides[0];
+    const result = await page.evaluate(
+      (expectedSponsors) => {
+        const activeSlides = [
+          ...document.querySelectorAll("[data-presentation-slide].is-active"),
+        ];
+        const active = activeSlides[0];
 
-      if (!(active instanceof HTMLElement)) {
-        return { errors: ["missing active slide"] };
-      }
-
-      const errors = [];
-      const tolerance = 2;
-      const slideRect = active.getBoundingClientRect();
-      const header = active.querySelector(".presentation-header");
-      const content = [
-        ...active.querySelectorAll(
-          ".presentation-title-content,.presentation-session-content,.presentation-talk-content",
-        ),
-      ].find((element) => getComputedStyle(element).display !== "none");
-      const footer = active.querySelector(".presentation-footer");
-
-      if (activeSlides.length !== 1) {
-        errors.push(`expected one active slide, found ${activeSlides.length}`);
-      }
-
-      if (
-        Math.abs(slideRect.width - innerWidth) > tolerance ||
-        Math.abs(slideRect.height - innerHeight) > tolerance
-      ) {
-        errors.push(
-          `slide is ${Math.round(slideRect.width)}x${Math.round(slideRect.height)}, viewport is ${innerWidth}x${innerHeight}`,
-        );
-      }
-
-      if (
-        active.scrollWidth > active.clientWidth + tolerance ||
-        active.scrollHeight > active.clientHeight + tolerance
-      ) {
-        errors.push(
-          `slide overflows ${active.scrollWidth}x${active.scrollHeight} inside ${active.clientWidth}x${active.clientHeight}`,
-        );
-      }
-
-      const regions = [header, content, footer].filter(
-        (element) => element instanceof HTMLElement,
-      );
-
-      for (const region of regions) {
-        const rect = region.getBoundingClientRect();
-
-        if (
-          rect.left < slideRect.left - tolerance ||
-          rect.top < slideRect.top - tolerance ||
-          rect.right > slideRect.right + tolerance ||
-          rect.bottom > slideRect.bottom + tolerance
-        ) {
-          errors.push(`${region.className} crosses the slide boundary`);
+        if (!(active instanceof HTMLElement)) {
+          return { errors: ["missing active slide"] };
         }
-      }
 
-      if (header && content) {
-        const headerRect = header.getBoundingClientRect();
-        const contentRect = content.getBoundingClientRect();
+        const errors = [];
+        const tolerance = 2;
+        const slideRect = active.getBoundingClientRect();
+        const header = active.querySelector(".presentation-header");
+        const content = [
+          ...active.querySelectorAll(
+            ".presentation-title-content,.presentation-session-content,.presentation-talk-content",
+          ),
+        ].find((element) => getComputedStyle(element).display !== "none");
+        const footer = active.querySelector(".presentation-footer");
 
-        if (headerRect.bottom > contentRect.top + tolerance) {
-          errors.push("header overlaps slide content");
-        }
-      }
-
-      if (content && footer) {
-        const contentRect = content.getBoundingClientRect();
-        const footerRect = footer.getBoundingClientRect();
-
-        if (contentRect.bottom > footerRect.top + tolerance) {
-          errors.push("slide content overlaps sponsor footer");
-        }
-      }
-
-      for (const image of active.querySelectorAll("img")) {
-        if (!image.complete || image.naturalWidth === 0) {
-          errors.push(`image did not load: ${image.getAttribute("src")}`);
-        }
-      }
-
-      const sponsorStrip = active.querySelector(".presentation-sponsor-strip");
-
-      if (sponsorStrip?.querySelectorAll("figure").length !== 4) {
-        errors.push(
-          "between-talk strip must contain one Epic and three Tech sponsors",
-        );
-      }
-
-      if (sponsorStrip?.querySelector(".presentation-sponsor-brand")) {
-        errors.push("Brand sponsor appeared in the between-talk strip");
-      }
-
-      if (sponsorStrip?.querySelector(".presentation-sponsor-location")) {
-        errors.push("Location sponsor appeared in the between-talk strip");
-      }
-
-      for (const image of sponsorStrip?.querySelectorAll("img") ?? []) {
-        const rect = image.getBoundingClientRect();
-        const frame = image.closest("figure");
-        const naturalRatio = image.naturalWidth / image.naturalHeight;
-        const renderedRatio = rect.width / rect.height;
-
-        if (Math.abs(renderedRatio / naturalRatio - 1) > 0.02) {
+        if (activeSlides.length !== 1) {
           errors.push(
-            `sponsor logo aspect ratio changed: ${image.getAttribute("alt")}`,
+            `expected one active slide, found ${activeSlides.length}`,
           );
         }
 
-        if (frame) {
-          const frameRect = frame.getBoundingClientRect();
-          const frameStyle = getComputedStyle(frame);
-          const padding = Number.parseFloat(frameStyle.paddingTop);
+        if (
+          Math.abs(slideRect.width - innerWidth) > tolerance ||
+          Math.abs(slideRect.height - innerHeight) > tolerance
+        ) {
+          errors.push(
+            `slide is ${Math.round(slideRect.width)}x${Math.round(slideRect.height)}, viewport is ${innerWidth}x${innerHeight}`,
+          );
+        }
+
+        if (
+          active.scrollWidth > active.clientWidth + tolerance ||
+          active.scrollHeight > active.clientHeight + tolerance
+        ) {
+          errors.push(
+            `slide overflows ${active.scrollWidth}x${active.scrollHeight} inside ${active.clientWidth}x${active.clientHeight}`,
+          );
+        }
+
+        const regions = [header, content, footer].filter(
+          (element) => element instanceof HTMLElement,
+        );
+
+        for (const region of regions) {
+          const rect = region.getBoundingClientRect();
 
           if (
-            rect.left < frameRect.left + padding - tolerance ||
-            rect.top < frameRect.top + padding - tolerance ||
-            rect.right > frameRect.right - padding + tolerance ||
-            rect.bottom > frameRect.bottom - padding + tolerance
+            rect.left < slideRect.left - tolerance ||
+            rect.top < slideRect.top - tolerance ||
+            rect.right > slideRect.right + tolerance ||
+            rect.bottom > slideRect.bottom + tolerance
           ) {
-            errors.push(
-              `sponsor logo crosses its safe area: ${image.getAttribute("alt")}`,
-            );
+            errors.push(`${region.className} crosses the slide boundary`);
           }
         }
-      }
 
-      return {
-        errors,
-        number: active.getAttribute("data-slide-number"),
-      };
-    });
+        if (header && content) {
+          const headerRect = header.getBoundingClientRect();
+          const contentRect = content.getBoundingClientRect();
+
+          if (headerRect.bottom > contentRect.top + tolerance) {
+            errors.push("header overlaps slide content");
+          }
+        }
+
+        if (content && footer) {
+          const contentRect = content.getBoundingClientRect();
+          const footerRect = footer.getBoundingClientRect();
+
+          if (contentRect.bottom > footerRect.top + tolerance) {
+            errors.push("slide content overlaps sponsor footer");
+          }
+        }
+
+        for (const image of active.querySelectorAll("img")) {
+          if (!image.complete || image.naturalWidth === 0) {
+            errors.push(`image did not load: ${image.getAttribute("src")}`);
+          }
+        }
+
+        const sponsorStrip = active.querySelector(
+          ".presentation-sponsor-strip",
+        );
+
+        const actualSponsors = [
+          ...(sponsorStrip?.querySelectorAll("figure img") ?? []),
+        ]
+          .map((image) => image.alt)
+          .sort();
+        if (
+          JSON.stringify(actualSponsors) !== JSON.stringify(expectedSponsors)
+        ) {
+          errors.push(
+            "between-talk strip must contain the configured sponsors",
+          );
+        }
+
+        if (sponsorStrip?.querySelector(".presentation-sponsor-brand")) {
+          errors.push("Brand sponsor appeared in the between-talk strip");
+        }
+
+        if (sponsorStrip?.querySelector(".presentation-sponsor-location")) {
+          errors.push("Location sponsor appeared in the between-talk strip");
+        }
+
+        for (const image of sponsorStrip?.querySelectorAll("img") ?? []) {
+          const rect = image.getBoundingClientRect();
+          const frame = image.closest("figure");
+          const naturalRatio = image.naturalWidth / image.naturalHeight;
+          const renderedRatio = rect.width / rect.height;
+
+          if (Math.abs(renderedRatio / naturalRatio - 1) > 0.02) {
+            errors.push(
+              `sponsor logo aspect ratio changed: ${image.getAttribute("alt")}`,
+            );
+          }
+
+          if (frame) {
+            const frameRect = frame.getBoundingClientRect();
+            const frameStyle = getComputedStyle(frame);
+            const padding = Number.parseFloat(frameStyle.paddingTop);
+
+            if (
+              rect.left < frameRect.left + padding - tolerance ||
+              rect.top < frameRect.top + padding - tolerance ||
+              rect.right > frameRect.right - padding + tolerance ||
+              rect.bottom > frameRect.bottom - padding + tolerance
+            ) {
+              errors.push(
+                `sponsor logo crosses its safe area: ${image.getAttribute("alt")}`,
+              );
+            }
+          }
+        }
+
+        return {
+          errors,
+          number: active.getAttribute("data-slide-number"),
+        };
+      },
+      sponsors.items
+        .filter((sponsor) => sponsor.betweenTalks)
+        .map((sponsor) => sponsor.name)
+        .sort(),
+    );
 
     for (const error of result.errors) {
       failures.push({
@@ -279,85 +297,93 @@ async function validateSchedule(page, origin, failures) {
   });
   await waitForPageAssets(page);
 
-  const result = await page.evaluate(() => {
-    const errors = [];
-    const sheet = document.querySelector(".presentation-schedule-sheet");
-    const list = document.querySelector(".presentation-schedule-list");
-    const footer = document.querySelector(".presentation-schedule-footer");
+  const result = await page.evaluate(
+    (expectedSponsors) => {
+      const errors = [];
+      const sheet = document.querySelector(".presentation-schedule-sheet");
+      const list = document.querySelector(".presentation-schedule-list");
+      const footer = document.querySelector(".presentation-schedule-footer");
 
-    if (!(sheet instanceof HTMLElement)) {
-      return { errors: ["missing schedule sheet"] };
-    }
-
-    if (sheet.scrollWidth > sheet.clientWidth + 2) {
-      errors.push("schedule sheet overflows horizontally");
-    }
-
-    if (document.documentElement.scrollWidth > innerWidth + 2) {
-      errors.push("schedule page overflows the viewport horizontally");
-    }
-
-    if (list && footer) {
-      const listRect = list.getBoundingClientRect();
-      const footerRect = footer.getBoundingClientRect();
-
-      if (listRect.bottom > footerRect.top + 2) {
-        errors.push("schedule rows overlap the sponsor footer");
+      if (!(sheet instanceof HTMLElement)) {
+        return { errors: ["missing schedule sheet"] };
       }
-    }
 
-    if (
-      document.querySelectorAll(".presentation-schedule-item").length !== 13
-    ) {
-      errors.push("schedule must contain all 13 program rows");
-    }
-
-    if (
-      document.querySelectorAll(".presentation-schedule-sponsor").length !== 6
-    ) {
-      errors.push("schedule must acknowledge all six sponsors and partners");
-    }
-
-    for (const image of sheet.querySelectorAll("img")) {
-      if (!image.complete || image.naturalWidth === 0) {
-        errors.push(`image did not load: ${image.getAttribute("src")}`);
+      if (sheet.scrollWidth > sheet.clientWidth + 2) {
+        errors.push("schedule sheet overflows horizontally");
       }
-    }
 
-    for (const image of sheet.querySelectorAll(
-      ".presentation-schedule-sponsor img",
-    )) {
-      const rect = image.getBoundingClientRect();
-      const frame = image.closest("figure");
-      const naturalRatio = image.naturalWidth / image.naturalHeight;
-      const renderedRatio = rect.width / rect.height;
+      if (document.documentElement.scrollWidth > innerWidth + 2) {
+        errors.push("schedule page overflows the viewport horizontally");
+      }
 
-      if (Math.abs(renderedRatio / naturalRatio - 1) > 0.02) {
+      if (list && footer) {
+        const listRect = list.getBoundingClientRect();
+        const footerRect = footer.getBoundingClientRect();
+
+        if (listRect.bottom > footerRect.top + 2) {
+          errors.push("schedule rows overlap the sponsor footer");
+        }
+      }
+
+      if (
+        document.querySelectorAll(".presentation-schedule-item").length !== 13
+      ) {
+        errors.push("schedule must contain all 13 program rows");
+      }
+
+      const actualSponsors = [
+        ...document.querySelectorAll(".presentation-schedule-sponsor img"),
+      ]
+        .map((image) => image.alt)
+        .sort();
+      if (JSON.stringify(actualSponsors) !== JSON.stringify(expectedSponsors)) {
         errors.push(
-          `schedule sponsor logo aspect ratio changed: ${image.getAttribute("alt")}`,
+          "schedule must acknowledge all configured sponsors and partners",
         );
       }
 
-      if (frame) {
-        const frameRect = frame.getBoundingClientRect();
-        const frameStyle = getComputedStyle(frame);
-        const padding = Number.parseFloat(frameStyle.paddingTop);
-
-        if (
-          rect.left < frameRect.left + padding - 2 ||
-          rect.top < frameRect.top + padding - 2 ||
-          rect.right > frameRect.right - padding + 2 ||
-          rect.bottom > frameRect.bottom - padding + 2
-        ) {
-          errors.push(
-            `schedule sponsor logo crosses its safe area: ${image.getAttribute("alt")}`,
-          );
+      for (const image of sheet.querySelectorAll("img")) {
+        if (!image.complete || image.naturalWidth === 0) {
+          errors.push(`image did not load: ${image.getAttribute("src")}`);
         }
       }
-    }
 
-    return { errors };
-  });
+      for (const image of sheet.querySelectorAll(
+        ".presentation-schedule-sponsor img",
+      )) {
+        const rect = image.getBoundingClientRect();
+        const frame = image.closest("figure");
+        const naturalRatio = image.naturalWidth / image.naturalHeight;
+        const renderedRatio = rect.width / rect.height;
+
+        if (Math.abs(renderedRatio / naturalRatio - 1) > 0.02) {
+          errors.push(
+            `schedule sponsor logo aspect ratio changed: ${image.getAttribute("alt")}`,
+          );
+        }
+
+        if (frame) {
+          const frameRect = frame.getBoundingClientRect();
+          const frameStyle = getComputedStyle(frame);
+          const padding = Number.parseFloat(frameStyle.paddingTop);
+
+          if (
+            rect.left < frameRect.left + padding - 2 ||
+            rect.top < frameRect.top + padding - 2 ||
+            rect.right > frameRect.right - padding + 2 ||
+            rect.bottom > frameRect.bottom - padding + 2
+          ) {
+            errors.push(
+              `schedule sponsor logo crosses its safe area: ${image.getAttribute("alt")}`,
+            );
+          }
+        }
+      }
+
+      return { errors };
+    },
+    sponsors.items.map((sponsor) => sponsor.name).sort(),
+  );
 
   for (const error of result.errors) {
     failures.push({ route: scheduleRoute, viewport: "desktop", error });

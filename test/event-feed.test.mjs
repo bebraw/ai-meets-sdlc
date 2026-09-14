@@ -147,7 +147,10 @@ test("public canonical edits update the feed and revision without changing ident
     (await applyFeedContent(fixture, records)).updatedAt,
     fixture.updatedAt,
   );
-  await assert.rejects(applyFeedContent(fixture, []), /Missing published speaker/);
+  await assert.rejects(
+    applyFeedContent(fixture, []),
+    /Missing published speaker/,
+  );
 });
 
 test("plain text and missing abstracts", () => {
@@ -174,7 +177,10 @@ test("cross-origin responses support validators and HEAD without cookies", async
       response.headers.get("content-type"),
       "application/json; charset=utf-8",
     );
-    assert.equal(response.headers.get("cache-control"), "public, max-age=300");
+    assert.equal(
+      response.headers.get("cache-control"),
+      "public, max-age=0, must-revalidate",
+    );
     assert.equal(response.headers.get("etag"), '"abc"');
     assert.equal(response.headers.get("set-cookie"), null);
     assert.equal(response.status, headers["If-None-Match"] ? 304 : 200);

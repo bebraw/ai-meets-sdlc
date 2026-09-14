@@ -73,6 +73,7 @@ for (const pathname of [
   "/admin/dinner/",
   "/admin/receipts/",
   "/admin/volunteers/",
+  "/admin/schedule/",
   "/admin/posters/",
   "/admin/interests/",
   "/admin-slides/",

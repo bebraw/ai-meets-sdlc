@@ -25,6 +25,7 @@
           &class="slideItem.className"
           &aria-hidden="slideItem.ariaHidden"
           &data-slide-id="slideItem.id"
+          &data-runtime-slide="slideItem.id"
           &data-slide-number="slideItem.number"
           data-presentation-slide
         >
@@ -49,6 +50,7 @@
               <span
                 &visibleIf="slideItem.time"
                 &children="slideItem.time"
+                data-runtime-slide-time
               ></span>
             </div>
           </header>
@@ -80,9 +82,17 @@
                 &children="slideItem.body"
               ></p>
             </div>
-            <div class="presentation-talk-grid" &visibleIf="slideItem.hasTalks">
+            <div
+              class="presentation-talk-grid"
+              &visibleIf="slideItem.hasTalks"
+              &data-schedule-group="slideItem.sessionId"
+              data-schedule-kind="cards"
+            >
               <noop &foreach="slideItem.talks as talkItem">
-                <article class="presentation-talk-card">
+                <article
+                  class="presentation-talk-card"
+                  &data-schedule-talk="talkItem.id"
+                >
                   <h2
                     &children="talkItem.title"
                     &data-canonical-talk-id="talkItem.id"

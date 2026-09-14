@@ -172,8 +172,8 @@ requests no longer receive a Basic auth challenge. Event materials under
 protection. Organizers can prefill or approve speaker profile, talk, social, and
 portrait revisions from the speakers workspace, and monitor each speaker's
 private presentation setup and dinner response. Approved changes publish to
-versioned D1 records; Git retains stable IDs, assignments, schedule placement,
-and the seed/fallback copy.
+versioned D1 records; Git retains stable IDs, talk ownership, session times,
+and the seed/fallback copy. Published talk order and session placement live in D1.
 
 The schedule structure and session deck scaffold derive from
 `site/data/seminar.json`, `site/data/schedule.json`, `site/data/speakers.json`,
@@ -181,6 +181,26 @@ and `site/data/sponsors.json`; the Worker resolves mutable speaker and talk copy
 from D1. Sponsor data records the package tier and whether the contract includes
 between-talk placement; validation requires Epic and Tech sponsors to receive
 that placement and excludes Brand and Location sponsors.
+
+## Schedule editor
+
+At `/admin/schedule/`, drag talks within or between sessions, then select
+**Save changes** to publish the complete running order. Up/Down buttons and a
+session selector provide keyboard and mobile alternatives. Changes stay in the
+browser until saved; reloading a dirty draft asks before discarding it. A stale
+save is rejected without overwriting the published schedule.
+
+Migration `0016_create_schedule_order.sql` seeds the versioned schedule from
+the bundled JSON. Apply it before deploying. All scheduled talks must appear
+exactly once. Session times and talk ownership remain in Git; adding or removing
+talks or sessions requires a migration updating the stored schedule too.
+
+Public schedule pages, session decks, screen schedules, the slide library,
+speaker session labels, and the event feed use the published order. Slide links
+use stable `slideId` values; numeric `slide` links remain supported. Generated
+graphics include the schedule in their cache version. Public HTML falls back to
+the bundled schedule without caching if D1 is unavailable; admin reads and saves,
+the feed, and new graphics fail closed.
 
 ## Volunteers
 

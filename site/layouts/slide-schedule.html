@@ -51,10 +51,12 @@
                 <h2 &children="scheduleItem.title"></h2>
                 <ul
                   class="presentation-schedule-talks"
+                  &data-schedule-group="scheduleItem.id"
+                  data-schedule-kind="screen"
                   &visibleIf="scheduleItem.talks"
                 >
                   <noop &foreach="scheduleItem.talks as talkItem">
-                    <li>
+                    <li &data-schedule-talk="talkItem.id">
                       <h3
                         &children="talkItem.title"
                         &data-canonical-talk-id="talkItem.id"

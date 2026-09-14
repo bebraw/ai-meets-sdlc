@@ -44,6 +44,10 @@ function initializeSlideDeck() {
 
     const url = new URL(window.location.href);
     url.searchParams.set("slide", String(currentIndex + 1));
+    url.searchParams.set(
+      "slideId",
+      slides[currentIndex]?.dataset.slideId ?? "event",
+    );
     window.history.replaceState({}, "", url);
   }
 
@@ -139,7 +143,14 @@ function initializeSlideDeck() {
     { passive: false },
   );
 
-  showSlide(getInitialIndex(slides.length), false);
+  const requestedId = new URL(window.location.href).searchParams.get("slideId");
+  const requestedIndex = slides.findIndex(
+    (slide) => slide.dataset.slideId === requestedId,
+  );
+  showSlide(
+    requestedIndex >= 0 ? requestedIndex : getInitialIndex(slides.length),
+    false,
+  );
 }
 
 function getInitialIndex(slideCount: number) {

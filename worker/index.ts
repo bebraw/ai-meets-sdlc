@@ -67,6 +67,7 @@ import { readPublicCanonicalSpeakers } from "./canonical-content.ts";
 import { backupSpeakerReceipts } from "./receipt-backups.ts";
 import { handleEventFeed } from "./event-feed.ts";
 import { handleVolunteersRequest } from "./volunteers.ts";
+import { handleScheduleOrder, readScheduleOrder } from "./schedule-order.ts";
 
 export default {
   async fetch(
@@ -154,6 +155,8 @@ export default {
     );
 
     if (speakerWorkspaceResponse) return speakerWorkspaceResponse;
+    if (url.pathname === "/api/admin/schedule")
+      return handleScheduleOrder(request, env);
 
     if (
       url.pathname === "/api/admin/volunteers" ||
@@ -411,10 +414,14 @@ export default {
       isCanonicalPublicHtmlPath(url.pathname)
     ) {
       try {
+        const [records, schedule] = await Promise.all([
+          readPublicCanonicalSpeakers(env),
+          readScheduleOrder(env),
+        ]);
         response = await applyCanonicalContentToResponse(
-          response,
-          await readPublicCanonicalSpeakers(env),
-          { private: isAdminProtected },
+          response.clone(),
+          records,
+          { private: isAdminProtected, schedule },
         );
       } catch (error) {
         console.error("canonical_public_content_fallback", {

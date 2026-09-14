@@ -373,6 +373,16 @@
           }
         }
       },
+      "schedule": {
+        "layout": "admin-schedule",
+        "scripts": [{ "name": "admin-schedule" }],
+        "context": {
+          "meta": {
+            "title": "SDLCAI Admin Schedule",
+            "description": "Arrange talks within and between sessions."
+          }
+        }
+      },
       "posters": {
         "layout": "admin-posters",
         "scripts": [{ "name": "index" }],

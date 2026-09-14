@@ -20,6 +20,11 @@ import {
   applyCanonicalContentToResponse,
   serveCanonicalSpeakerPhoto,
 } from "./public-content";
+import {
+  readScheduleOrder,
+  withScheduleVersion,
+  type ScheduleOrder,
+} from "./schedule-order.ts";
 
 const manifestPath = "/assets/social/manifest.json";
 const speakerPromotionManifestPath = "/assets/social/speakers.json";
@@ -67,12 +72,13 @@ export async function handleSpeakerPromotionManifestRequest(
   }
 
   try {
-    const [manifest, records, sourceResponse] = await Promise.all([
+    const [manifest, records, sourceResponse, schedule] = await Promise.all([
       readManifest(env),
       readPublicCanonicalSpeakers(env),
       env.ASSETS.fetch(
         new Request(`${renderOrigin}${speakerPromotionManifestPath}`),
       ),
+      readScheduleOrder(env),
     ]);
 
     if (!sourceResponse.ok) {
@@ -125,10 +131,10 @@ export async function handleSpeakerPromotionManifestRequest(
 
                     return {
                       ...promotionAsset,
-                      version: await combineCanonicalVersion(
-                        asset.version,
-                        asset.speakerIds,
+                      version: await scheduleAssetVersion(
+                        asset,
                         records,
+                        schedule,
                       ),
                     };
                   }),
@@ -139,16 +145,19 @@ export async function handleSpeakerPromotionManifestRequest(
         };
       }),
     );
-    const version = await combineCanonicalVersion(
-      source.version,
-      records.map(({ speakerId }) => speakerId),
-      records,
+    const version = await withScheduleVersion(
+      await combineCanonicalVersion(
+        source.version,
+        records.map(({ speakerId }) => speakerId),
+        records,
+      ),
+      schedule,
     );
     const body = JSON.stringify({ ...source, speakers, version });
 
     return new Response(request.method === "HEAD" ? null : body, {
       headers: {
-        "cache-control": "public, max-age=60, s-maxage=300",
+        "cache-control": "no-store",
         "content-length": String(new TextEncoder().encode(body).byteLength),
         "content-type": "application/json; charset=utf-8",
         "x-sdlcai-content-source": "d1",
@@ -219,9 +228,13 @@ export async function handleSocialRenderRequest(
 
   const { asset } = match;
   let canonicalRecords: CanonicalSpeakerRecord[];
+  let schedule: ScheduleOrder;
 
   try {
-    canonicalRecords = await readPublicCanonicalSpeakers(env);
+    [canonicalRecords, schedule] = await Promise.all([
+      readPublicCanonicalSpeakers(env),
+      readScheduleOrder(env),
+    ]);
   } catch (error) {
     console.error("social_render_canonical_content_error", {
       assetId: asset.id,
@@ -230,10 +243,10 @@ export async function handleSocialRenderRequest(
     return unavailableResponse();
   }
 
-  const effectiveVersion = await combineCanonicalVersion(
-    asset.version,
-    asset.speakerIds,
+  const effectiveVersion = await scheduleAssetVersion(
+    asset,
     canonicalRecords,
+    schedule,
   );
 
   if (
@@ -290,6 +303,7 @@ export async function handleSocialRenderRequest(
       asset,
       manifest,
       canonicalRecords,
+      schedule,
     );
     const stored = await env.SOCIAL_EXPORTS.put(objectKey, image, {
       customMetadata: {
@@ -434,6 +448,7 @@ async function renderSocialAsset(
   asset: SocialRenderAsset,
   manifest: SocialRenderManifest,
   canonicalRecords: readonly CanonicalSpeakerRecord[],
+  schedule: ScheduleOrder,
 ): Promise<Uint8Array<ArrayBuffer>> {
   let browser: Browser | undefined;
 
@@ -444,11 +459,16 @@ async function renderSocialAsset(
     await page.setViewport({ width: asset.width, height: asset.height });
     await page.setRequestInterception(true);
     page.on("request", (interceptedRequest) => {
-      void respondWithRenderAsset(interceptedRequest, env, canonicalRecords);
+      void respondWithRenderAsset(
+        interceptedRequest,
+        env,
+        canonicalRecords,
+        schedule,
+      );
     });
 
     const deckUrl = new URL(manifest.deckPath, renderOrigin);
-    deckUrl.searchParams.set("slide", String(asset.slideNumber));
+    deckUrl.searchParams.set("slideId", asset.slideId);
     await page.goto(deckUrl.href, { waitUntil: "domcontentloaded" });
     await page.evaluate(async () => {
       await document.fonts.ready;
@@ -509,6 +529,7 @@ async function respondWithRenderAsset(
   interceptedRequest: HTTPRequest,
   env: Env,
   canonicalRecords: readonly CanonicalSpeakerRecord[],
+  schedule: ScheduleOrder,
 ): Promise<void> {
   const url = new URL(interceptedRequest.url());
   const isAllowed =
@@ -535,7 +556,7 @@ async function respondWithRenderAsset(
       assetResponse = await applyCanonicalContentToResponse(
         assetResponse,
         canonicalRecords,
-        { private: true },
+        { private: true, schedule },
       );
     }
     const body = new Uint8Array(await assetResponse.arrayBuffer());
@@ -578,4 +599,25 @@ function unavailableResponse(): Response {
 
 function getErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
+}
+
+async function scheduleAssetVersion(
+  asset: SocialRenderAsset,
+  records: readonly CanonicalSpeakerRecord[],
+  order: ScheduleOrder,
+): Promise<string> {
+  const group = order.groups.find(
+    (item) => `session-${item.id}` === asset.slideId,
+  );
+  const speakerIds = group
+    ? records
+        .filter((record) =>
+          record.content.talks.some((talk) => group.talkIds.includes(talk.id)),
+        )
+        .map((record) => record.speakerId)
+    : asset.speakerIds;
+  return withScheduleVersion(
+    await combineCanonicalVersion(asset.version, speakerIds, records),
+    order,
+  );
 }

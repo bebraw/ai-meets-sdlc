@@ -775,7 +775,7 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   );
   assert.equal(
     eventResponse.headers.get("cache-control"),
-    "public, max-age=300",
+    "public, max-age=0, must-revalidate",
   );
   assert.equal(eventResponse.headers.get("set-cookie"), null);
   const eventFeed = await eventResponse.json();

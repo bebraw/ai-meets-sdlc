@@ -9,10 +9,12 @@ import {
   sessionContent,
   type EventFeed,
 } from "./event-feed-data.ts";
+import { readScheduleOrder, type ScheduleOrder } from "./schedule-order.ts";
 
 export async function applyFeedContent(
   seed: EventFeed,
   records: readonly CanonicalSpeakerRecord[],
+  order?: ScheduleOrder,
 ): Promise<EventFeed> {
   const feed = structuredClone(seed);
   const speakers = new Map(records.map((record) => [record.speakerId, record]));
@@ -33,6 +35,19 @@ export async function applyFeedContent(
     if (!talk) throw new Error(`Missing published talk: ${session.id}`);
     return { ...session, ...sessionContent(talk.title, talk.abstract) };
   });
+  if (order) {
+    const sessions = new Map(
+      feed.sessions.map((session) => [session.id, session]),
+    );
+    feed.sessions = order.groups.flatMap((group) =>
+      group.talkIds.map((id) => {
+        const session = sessions.get(id);
+        if (!session) throw new Error(`Missing scheduled talk ${id}`);
+        return { ...session, topicIds: [group.id] };
+      }),
+    );
+    if (order.updatedAt > feed.updatedAt) feed.updatedAt = order.updatedAt;
+  }
   return reviseFeed(feed);
 }
 
@@ -45,7 +60,7 @@ export function feedResponse(
     "content-type": "application/json; charset=utf-8",
     "access-control-allow-origin": "*",
     "access-control-expose-headers": "ETag",
-    "cache-control": "public, max-age=300",
+    "cache-control": "public, max-age=0, must-revalidate",
     etag,
   });
   const matches = request.headers
@@ -101,6 +116,7 @@ export async function handleEventFeed(
     const feed = await applyFeedContent(
       seed,
       await readPublicCanonicalSpeakers(env),
+      await readScheduleOrder(env),
     );
     return feedResponse(request, JSON.stringify(feed), `"${feed.revision}"`);
   } catch {

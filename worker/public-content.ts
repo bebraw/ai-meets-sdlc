@@ -7,6 +7,8 @@ import {
   type CanonicalSpeakerRecord,
   type SpeakerProfileContent,
 } from "./canonical-content";
+import { applyScheduleToResponse } from "./schedule-html.ts";
+import type { ScheduleOrder } from "./schedule-order.ts";
 
 const canonicalHtmlCacheControl =
   "public, max-age=60, s-maxage=300, stale-while-revalidate=86400";
@@ -31,6 +33,7 @@ export function isCanonicalPublicHtmlPath(pathname: string): boolean {
     "/admin/slides/schedule/",
     "/schedule/",
     "/slides/deck/",
+    "/slides/",
     "/slides/schedule/",
     "/speakers/",
   ]).has(pathname);
@@ -39,11 +42,13 @@ export function isCanonicalPublicHtmlPath(pathname: string): boolean {
 export async function applyCanonicalContentToResponse(
   response: Response,
   records: readonly CanonicalSpeakerRecord[],
-  options: { private?: boolean } = {},
+  options: { private?: boolean; schedule?: ScheduleOrder } = {},
 ): Promise<Response> {
   if (!response.headers.get("content-type")?.includes("text/html")) {
     return response;
   }
+  if (options.schedule)
+    response = await applyScheduleToResponse(response, options.schedule);
 
   const speakers = new Map(records.map((record) => [record.speakerId, record]));
   const talks = getCanonicalTalks(records);
@@ -115,7 +120,11 @@ export async function applyCanonicalContentToResponse(
   headers.delete("etag");
   headers.set(
     "cache-control",
-    options.private ? "private, no-store" : canonicalHtmlCacheControl,
+    options.private
+      ? "private, no-store"
+      : options.schedule
+        ? "no-store"
+        : canonicalHtmlCacheControl,
   );
   headers.set("x-sdlcai-content-source", "d1");
   headers.set("x-sdlcai-content-version", await hashCanonicalVersions(records));

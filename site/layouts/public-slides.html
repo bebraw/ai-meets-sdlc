@@ -80,6 +80,7 @@
       <div class="grid gap-8 lg:grid-cols-2">
         <noop &foreach="slideDeckItems as slideItem">
           <article
+            &data-runtime-slide="slideItem.id"
             class="group grid content-start overflow-hidden border border-[#f6f4ef]/35 bg-[#0a0a0a]"
           >
             <a
@@ -101,17 +102,23 @@
               <div class="grid gap-2">
                 <p class="text-xs font-bold uppercase text-[#f6f4ef]/55">
                   <span>Slide </span
-                  ><span &children="slideItem.paddedNumber"></span>
+                  ><span
+                    &children="slideItem.paddedNumber"
+                    data-runtime-slide-number
+                  ></span>
                   <span> / </span><span &children="slideItem.kindLabel"></span>
                 </p>
                 <h2
                   class="font-headline text-3xl font-black uppercase leading-[0.9] md:text-4xl"
                   &children="slideItem.title"
+                  &data-canonical-talk-id="slideItem.talkId"
+                  data-canonical-talk-title
                 ></h2>
                 <p
                   class="text-sm font-bold uppercase text-[#f6f4ef]/55"
                   &visibleIf="slideItem.time"
                   &children="slideItem.time"
+                  data-runtime-slide-time
                 ></p>
               </div>
               <div class="grid gap-px bg-[#f6f4ef]/35 sm:grid-cols-3">
@@ -132,7 +139,10 @@
               </div>
               <p class="text-sm leading-6 text-[#f6f4ef]/55">
                 Suggested alt text:
-                <span &children="slideItem.thumbnailAlt"></span>
+                <span
+                  &children="slideItem.thumbnailAlt"
+                  data-runtime-slide-alt
+                ></span>
               </p>
             </div>
           </article>
