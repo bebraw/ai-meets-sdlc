@@ -163,7 +163,7 @@ image across deployments.
 
 The deployed Worker serves a protected dashboard at `/admin/`, with focused
 workspaces at `/admin/speakers/`, `/admin/dinner/`, `/admin/receipts/`, `/admin/posters/`,
-`/admin/interests/`, and `/admin/slides/`. Organizers sign in through the
+`/admin/interests/`, `/admin/volunteers/`, and `/admin/slides/`. Organizers sign in through the
 password-manager-compatible form at `/admin/login/`; a signed, secure cookie
 keeps the browser session active for seven days. HTTP Basic credentials remain
 accepted when supplied proactively by scripts, but unauthenticated browser
@@ -181,6 +181,14 @@ and `site/data/sponsors.json`; the Worker resolves mutable speaker and talk copy
 from D1. Sponsor data records the package tier and whether the contract includes
 between-talk placement; validation requires Epic and Tech sponsors to receive
 that placement and excludes Brand and Location sponsors.
+
+## Volunteers
+
+At `/admin/volunteers/`, organizers can add, edit, and remove volunteers by
+name, email, and optional free-text task. Records are private and encrypted
+using the existing `EMAIL_ENCRYPTION_KEY`. Stale edits and removals are rejected
+until the list is reloaded. Apply `0015_create_volunteers.sql` before deploying
+this section; no new bindings or secrets are needed.
 
 ## Speaker travel receipts
 

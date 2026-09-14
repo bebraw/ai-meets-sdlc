@@ -363,6 +363,16 @@
           }
         }
       },
+      "volunteers": {
+        "layout": "admin-volunteers",
+        "scripts": [{ "name": "admin-volunteers" }],
+        "context": {
+          "meta": {
+            "title": "SDLCAI Admin Volunteers",
+            "description": "Manage volunteer names, email addresses, and tasks."
+          }
+        }
+      },
       "posters": {
         "layout": "admin-posters",
         "scripts": [{ "name": "index" }],

@@ -66,6 +66,7 @@ import {
 import { readPublicCanonicalSpeakers } from "./canonical-content.ts";
 import { backupSpeakerReceipts } from "./receipt-backups.ts";
 import { handleEventFeed } from "./event-feed.ts";
+import { handleVolunteersRequest } from "./volunteers.ts";
 
 export default {
   async fetch(
@@ -153,6 +154,13 @@ export default {
     );
 
     if (speakerWorkspaceResponse) return speakerWorkspaceResponse;
+
+    if (
+      url.pathname === "/api/admin/volunteers" ||
+      url.pathname.startsWith("/api/admin/volunteers/")
+    ) {
+      return handleVolunteersRequest(request, env);
+    }
 
     const adminSlideRedirect = getAdminSlideRedirect(url);
 

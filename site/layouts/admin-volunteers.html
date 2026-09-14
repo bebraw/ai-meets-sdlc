@@ -1,0 +1,134 @@
+<BaseLayout
+  &title="(id 'SDLCAI Admin Volunteers')"
+  &description="(id 'Manage volunteer names, email addresses, and tasks.')"
+  &ogDescription="(id 'Private volunteer coordination for SDLCAI 2026.')"
+  &url="(id 'https://sdlcai.org/admin/volunteers/')"
+  &ogType="(id 'website')"
+  &robots="(id 'noindex,nofollow,noarchive')"
+>
+  <AdminNavigation></AdminNavigation>
+  <section class="border-b border-ink">
+    <div class="mx-auto grid max-w-7xl gap-5 px-5 py-12 md:px-8 md:py-16">
+      <div>
+        <p class="font-headline text-sm font-black uppercase text-muted">
+          Admin / People
+        </p>
+        <h1
+          class="mt-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl"
+        >
+          Volunteers
+        </h1>
+      </div>
+      <p class="max-w-3xl text-xl leading-8 text-muted">
+        Keep track of who is helping and what they are doing.
+      </p>
+    </div>
+  </section>
+  <section
+    class="border-b border-ink px-5 py-10 md:px-8 md:py-16"
+    data-admin-volunteers
+  >
+    <div
+      class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-12"
+    >
+      <div class="min-w-0">
+        <h2
+          class="font-headline text-3xl font-black uppercase"
+          id="volunteer-form-heading"
+        >
+          Add volunteer
+        </h2>
+        <form
+          class="mt-6 grid gap-5"
+          data-volunteer-form
+          aria-labelledby="volunteer-form-heading"
+        >
+          <fieldset class="grid min-w-0 gap-5" data-volunteer-fields>
+            <legend class="sr-only">Volunteer details</legend>
+            <label class="grid gap-2">
+              <span class="text-sm font-bold uppercase">Name</span>
+              <input
+                class="min-w-0 w-full border border-ink bg-paper px-4 py-3"
+                name="name"
+                autocomplete="off"
+                maxlength="200"
+                required
+              />
+            </label>
+            <label class="grid gap-2">
+              <span class="text-sm font-bold uppercase">Email</span>
+              <input
+                class="min-w-0 w-full border border-ink bg-paper px-4 py-3"
+                name="email"
+                type="email"
+                autocomplete="off"
+                maxlength="254"
+                required
+              />
+            </label>
+            <label class="grid gap-2">
+              <span class="text-sm font-bold uppercase"
+                >Task
+                <span class="font-normal normal-case">(optional)</span></span
+              >
+              <textarea
+                class="min-w-0 w-full border border-ink bg-paper px-4 py-3"
+                name="task"
+                rows="4"
+                maxlength="2000"
+                placeholder="e.g. Welcome desk, 08:00–10:00"
+              ></textarea>
+            </label>
+            <div class="flex flex-wrap gap-3">
+              <button
+                class="border border-ink bg-ink px-5 py-3 font-bold uppercase text-paper disabled:opacity-50"
+                type="submit"
+                data-volunteer-save
+              >
+                Add volunteer
+              </button>
+              <button
+                class="border border-ink px-5 py-3 font-bold uppercase"
+                type="button"
+                data-volunteer-cancel
+                hidden
+              >
+                Cancel
+              </button>
+            </div>
+          </fieldset>
+          <p
+            class="text-sm leading-6"
+            role="status"
+            aria-live="polite"
+            data-volunteer-status
+          ></p>
+        </form>
+        <noscript
+          ><p class="mt-5 border border-ink p-4">
+            Enable JavaScript to manage volunteers.
+          </p></noscript
+        >
+      </div>
+      <div class="min-w-0">
+        <div
+          class="flex flex-wrap items-center justify-between gap-4 border-b border-ink pb-5"
+        >
+          <h2 class="font-headline text-3xl font-black uppercase">
+            Volunteer list <span class="text-muted" data-volunteer-count></span>
+          </h2>
+          <button
+            class="border border-ink px-4 py-3 text-sm font-bold uppercase disabled:opacity-50"
+            type="button"
+            data-volunteer-reload
+          >
+            Reload list
+          </button>
+        </div>
+        <div class="mt-5 grid gap-4" data-volunteer-list aria-busy="true">
+          <p class="text-muted">Loading volunteers…</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
