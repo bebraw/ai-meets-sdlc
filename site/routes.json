@@ -9,8 +9,8 @@
       "scheduleItems": {
         "operation": "scheduleItems"
       },
-      "sponsorItems": {
-        "operation": "sponsorItems"
+      "homeSponsorTiers": {
+        "operation": "homeSponsorTiers"
       }
     },
     "context": {

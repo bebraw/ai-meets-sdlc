@@ -39,6 +39,7 @@ function init() {
     slideDeckItems: () => slideDeckItems,
     socialExportPresets: () => socialExportPresets,
     sponsorItems: () => sponsorItems,
+    homeSponsorTiers: () => getHomeSponsorTiers(sponsorItems),
     sponsorAvailability: () => getSponsorAvailability(),
     betweenTalkSponsorItems: () =>
       sponsorItems.filter((sponsor) => sponsor.betweenTalks),
@@ -307,66 +308,14 @@ function getSponsorAvailability() {
 }
 
 function getSponsorItems() {
-  const tierLabels = {
-    epic: "Epic sponsor",
-    tech: "Tech sponsor",
-    brand: "Brand sponsor",
-    location: "Location sponsor",
-  };
-
   return sponsorsData.items.map((sponsor) => {
-    const isEpic = sponsor.tier === "epic";
-    const isTech = sponsor.tier === "tech";
-    const isGroupLogo =
-      sponsor.id === "wunderdog" || sponsor.id === "aimbition";
-    const isDark = sponsor.logoSurface === "dark";
-
     return {
       ...sponsor,
-      tierLabel: tierLabels[sponsor.tier],
-      homeTierClassName: isEpic
-        ? "sponsor-epic-label font-headline font-black uppercase"
-        : "font-headline text-sm font-black uppercase text-muted transition group-hover:text-paper/60",
-      homeLogos: sponsor.logoDark
-        ? [
-            { src: sponsor.logo, className: "sponsor-logo-light" },
-            { src: sponsor.logoDark, className: "sponsor-logo-dark" },
-          ]
-        : [{ src: sponsor.logo, className: "" }],
-      homeCardClassName: [
-        "group grid min-w-0 gap-6 bg-paper p-5 transition hover:bg-ink hover:text-paper md:p-7",
-        isEpic
-          ? "sponsor-card-epic min-[900px]:grid-cols-[24rem_minmax(0,1fr)] xl:col-span-6 md:p-8"
-          : isTech
-            ? "md:grid-cols-[14rem_1fr] xl:col-span-3 xl:grid-cols-1"
-            : sponsor.id === "aimbition"
-              ? "xl:col-span-3"
-              : "md:grid-cols-[12rem_1fr] xl:col-span-3",
-      ].join(" "),
-      homeLogoFrameClassName: [
-        "grid place-items-center border border-ink transition group-hover:border-paper",
-        isGroupLogo ? "p-2" : "p-6",
-        isEpic ? "min-h-56" : isTech ? "min-h-48" : "min-h-40",
-        sponsor.logoDark
-          ? "bg-paper"
-          : isDark
-            ? "bg-[#05061c]"
-            : "bg-[#f6f4ef]",
-      ].join(" "),
-      homeLogoClassName: isGroupLogo
-        ? "sponsor-logo w-full"
-        : isEpic
-          ? "sponsor-logo max-h-40 w-full"
-          : isTech
-            ? "sponsor-logo max-h-24 w-full"
-            : "sponsor-logo max-h-28 w-full",
-      homeTitleClassName: [
-        "mt-3 [overflow-wrap:anywhere] font-headline font-black uppercase leading-none",
-        isEpic
-          ? "text-4xl sm:text-5xl min-[1100px]:text-7xl"
-          : isTech
-            ? "text-3xl sm:text-4xl md:text-5xl xl:text-6xl"
-            : "text-4xl md:text-6xl xl:text-5xl",
+      homeLogoClassName: [
+        "sponsor-logo-link",
+        `sponsor-logo-${sponsor.tier}`,
+        `sponsor-logo-${sponsor.id}`,
+        `sponsor-logo-surface-${sponsor.logoSurface}`,
       ].join(" "),
       presentationClassName: [
         "presentation-sponsor",
@@ -382,6 +331,26 @@ function getSponsorItems() {
       ].join(" "),
     };
   });
+}
+
+function getHomeSponsorTiers(sponsorItems) {
+  return [
+    { tier: "epic", label: "Epic sponsor" },
+    { tier: "tech", label: "Tech sponsor" },
+    { tier: "brand", label: "Brand sponsor" },
+    { tier: "location", label: "Location sponsor" },
+  ]
+    .map(({ tier, label }) => {
+      const items = sponsorItems.filter((sponsor) => sponsor.tier === tier);
+
+      return {
+        id: `sponsors-${tier}`,
+        label: items.length === 1 ? label : `${label}s`,
+        className: `sponsor-tier sponsor-tier-${tier}`,
+        items,
+      };
+    })
+    .filter(({ items }) => items.length > 0);
 }
 
 function getSocialExportPresets() {

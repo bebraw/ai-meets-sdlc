@@ -1138,43 +1138,115 @@
   }
 }
 
-/* Theme variants share one frame and retain the supplied brand colors. */
-.sponsor-logo-dark {
-  display: none;
-}
-.dark .sponsor-logo-light {
-  display: none;
-}
-.dark .sponsor-logo-dark {
-  display: block;
+/* A shared light surface gives every sponsor the same contrast in both themes. */
+.sponsor-tiers {
+  padding: 1.25rem;
+  background: #f6f4ef;
+  color: #0b0b0b;
 }
 
-.sponsor-logo > img {
-  max-height: inherit;
+.sponsor-tier {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+  padding-block: 1.5rem;
+  border-bottom: 1px solid #0b0b0b30;
+}
+
+.sponsor-tier:first-child {
+  padding-top: 0;
+}
+
+.sponsor-tier:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.sponsor-tier-logos {
+  display: grid;
+  align-items: center;
+  gap: 0.5rem 1.5rem;
+  min-width: 0;
+}
+
+.sponsor-tier-logos > li {
+  min-width: 0;
+}
+
+.sponsor-logo-link {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: var(--sponsor-logo-height);
+  padding: 0.75rem;
+  outline-offset: 4px;
+}
+
+.sponsor-logo-link:hover,
+.sponsor-logo-link:focus-visible {
+  outline: 2px solid #0b0b0b;
+}
+
+.sponsor-logo-link > img {
   width: 100%;
+  height: auto;
+  max-width: var(--sponsor-logo-width);
+  max-height: var(--sponsor-logo-height);
   object-fit: contain;
 }
 
-/* The highest sponsor tier has its own strong, monochrome label. */
-.sponsor-card-epic {
-  border-top: 6px solid var(--color-ink);
+.sponsor-logo-epic {
+  --sponsor-logo-width: 17rem;
+  --sponsor-logo-height: 17rem;
 }
 
-.sponsor-epic-label {
-  display: table;
-  max-width: 100%;
-  padding: 0.3em 0.45em 0.35em;
-  background: var(--color-ink);
-  color: var(--color-paper);
-  font-size: clamp(1.75rem, 3.4vw, 3rem);
-  line-height: 1;
+.sponsor-logo-tech {
+  --sponsor-logo-width: 16rem;
+  --sponsor-logo-height: 6rem;
 }
 
-.sponsor-card-epic h3 {
-  margin-top: 1.5rem;
+/* Balance Wonna's stacked mark with the other Tech sponsors' wordmarks. */
+.sponsor-logo-wonna {
+  --sponsor-logo-width: 11rem;
 }
 
-.sponsor-card-epic:hover .sponsor-epic-label {
-  background: var(--color-paper);
-  color: var(--color-ink);
+.sponsor-logo-brand {
+  --sponsor-logo-width: 12rem;
+  --sponsor-logo-height: 5rem;
+}
+
+.sponsor-logo-location {
+  --sponsor-logo-width: 6rem;
+  --sponsor-logo-height: 5.5rem;
+}
+
+.sponsor-logo-surface-dark {
+  background: #05061c;
+}
+
+@media (min-width: 640px) {
+  .sponsor-tiers {
+    padding: 2rem;
+  }
+
+  .sponsor-tier-logos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sponsor-tier-logos > li:only-child {
+    grid-column: 1 / -1;
+  }
+
+  .sponsor-logo-epic {
+    --sponsor-logo-width: 20rem;
+    --sponsor-logo-height: 20rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .sponsor-tier {
+    grid-template-columns: 9rem minmax(0, 1fr);
+    align-items: center;
+    gap: 2rem;
+  }
 }
