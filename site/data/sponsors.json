@@ -17,23 +17,25 @@
       "id": "reaktor",
       "name": "Reaktor",
       "url": "https://www.reaktor.com/",
-      "logo": "/assets/sponsors/reaktor.svg",
+      "logo": "/assets/sponsors/reaktor-black.svg",
       "logoWidth": 747,
       "logoHeight": 155,
       "tier": "tech",
       "logoSurface": "light",
-      "betweenTalks": true
+      "betweenTalks": true,
+      "logoDark": "/assets/sponsors/reaktor-white.svg"
     },
     {
       "id": "swarmia",
       "name": "Swarmia",
       "url": "https://www.swarmia.com/",
-      "logo": "/assets/sponsors/swarmia.svg",
+      "logo": "/assets/sponsors/swarmia-black.svg",
       "logoWidth": 152,
       "logoHeight": 31,
       "tier": "tech",
-      "logoSurface": "dark",
-      "betweenTalks": true
+      "logoSurface": "light",
+      "betweenTalks": true,
+      "logoDark": "/assets/sponsors/swarmia-white.svg"
     },
     {
       "id": "wonna",
@@ -73,12 +75,13 @@
       "id": "aalto-university",
       "name": "Aalto University",
       "url": "https://www.aalto.fi/",
-      "logo": "/assets/sponsors/aalto-university.svg",
-      "logoWidth": 240,
-      "logoHeight": 200,
+      "logo": "/assets/sponsors/aalto-university-black.png",
+      "logoWidth": 691,
+      "logoHeight": 606,
       "tier": "location",
       "logoSurface": "light",
-      "betweenTalks": false
+      "betweenTalks": false,
+      "logoDark": "/assets/sponsors/aalto-university-white.png"
     }
   ]
 }

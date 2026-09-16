@@ -1154,3 +1154,27 @@
   width: 100%;
   object-fit: contain;
 }
+
+/* The highest sponsor tier has its own strong, monochrome label. */
+.sponsor-card-epic {
+  border-top: 6px solid var(--color-ink);
+}
+
+.sponsor-epic-label {
+  display: table;
+  max-width: 100%;
+  padding: 0.3em 0.45em 0.35em;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-size: clamp(1.75rem, 3.4vw, 3rem);
+  line-height: 1;
+}
+
+.sponsor-card-epic h3 {
+  margin-top: 1.5rem;
+}
+
+.sponsor-card-epic:hover .sponsor-epic-label {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}

@@ -317,11 +317,16 @@ function getSponsorItems() {
   return sponsorsData.items.map((sponsor) => {
     const isEpic = sponsor.tier === "epic";
     const isTech = sponsor.tier === "tech";
+    const isGroupLogo =
+      sponsor.id === "wunderdog" || sponsor.id === "aimbition";
     const isDark = sponsor.logoSurface === "dark";
 
     return {
       ...sponsor,
       tierLabel: tierLabels[sponsor.tier],
+      homeTierClassName: isEpic
+        ? "sponsor-epic-label font-headline font-black uppercase"
+        : "font-headline text-sm font-black uppercase text-muted transition group-hover:text-paper/60",
       homeLogos: sponsor.logoDark
         ? [
             { src: sponsor.logo, className: "sponsor-logo-light" },
@@ -331,29 +336,34 @@ function getSponsorItems() {
       homeCardClassName: [
         "group grid min-w-0 gap-6 bg-paper p-5 transition hover:bg-ink hover:text-paper md:p-7",
         isEpic
-          ? "min-[900px]:grid-cols-[18rem_minmax(0,1fr)] xl:col-span-6 md:p-8"
+          ? "sponsor-card-epic min-[900px]:grid-cols-[24rem_minmax(0,1fr)] xl:col-span-6 md:p-8"
           : isTech
             ? "md:grid-cols-[14rem_1fr] xl:col-span-3 xl:grid-cols-1"
-            : "md:grid-cols-[12rem_1fr] xl:col-span-3",
+            : sponsor.id === "aimbition"
+              ? "xl:col-span-3"
+              : "md:grid-cols-[12rem_1fr] xl:col-span-3",
       ].join(" "),
       homeLogoFrameClassName: [
-        "grid place-items-center border border-ink p-6 transition group-hover:border-paper",
-        isEpic ? "min-h-56 p-8" : isTech ? "min-h-48" : "min-h-40",
+        "grid place-items-center border border-ink transition group-hover:border-paper",
+        isGroupLogo ? "p-2" : "p-6",
+        isEpic ? "min-h-56" : isTech ? "min-h-48" : "min-h-40",
         sponsor.logoDark
           ? "bg-paper"
           : isDark
             ? "bg-[#05061c]"
             : "bg-[#f6f4ef]",
       ].join(" "),
-      homeLogoClassName: isEpic
-        ? "sponsor-logo max-h-40 w-full"
-        : isTech
-          ? "sponsor-logo max-h-24 w-full"
-          : "sponsor-logo max-h-28 w-full",
+      homeLogoClassName: isGroupLogo
+        ? "sponsor-logo w-full"
+        : isEpic
+          ? "sponsor-logo max-h-40 w-full"
+          : isTech
+            ? "sponsor-logo max-h-24 w-full"
+            : "sponsor-logo max-h-28 w-full",
       homeTitleClassName: [
         "mt-3 [overflow-wrap:anywhere] font-headline font-black uppercase leading-none",
         isEpic
-          ? "text-4xl sm:text-5xl md:text-7xl"
+          ? "text-4xl sm:text-5xl min-[1100px]:text-7xl"
           : isTech
             ? "text-3xl sm:text-4xl md:text-5xl xl:text-6xl"
             : "text-4xl md:text-6xl xl:text-5xl",
