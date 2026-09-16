@@ -322,6 +322,12 @@ function getSponsorItems() {
     return {
       ...sponsor,
       tierLabel: tierLabels[sponsor.tier],
+      homeLogos: sponsor.logoDark
+        ? [
+            { src: sponsor.logo, className: "sponsor-logo-light" },
+            { src: sponsor.logoDark, className: "sponsor-logo-dark" },
+          ]
+        : [{ src: sponsor.logo, className: "" }],
       homeCardClassName: [
         "group grid min-w-0 gap-6 bg-paper p-5 transition hover:bg-ink hover:text-paper md:p-7",
         isEpic
@@ -333,13 +339,17 @@ function getSponsorItems() {
       homeLogoFrameClassName: [
         "grid place-items-center border border-ink p-6 transition group-hover:border-paper",
         isEpic ? "min-h-56 p-8" : isTech ? "min-h-48" : "min-h-40",
-        isDark ? "bg-[#05061c]" : "bg-[#f6f4ef]",
+        sponsor.logoDark
+          ? "bg-paper"
+          : isDark
+            ? "bg-[#05061c]"
+            : "bg-[#f6f4ef]",
       ].join(" "),
       homeLogoClassName: isEpic
-        ? "max-h-40 w-full object-contain"
+        ? "sponsor-logo max-h-40 w-full"
         : isTech
-          ? "max-h-24 w-full object-contain"
-          : "max-h-28 w-full object-contain",
+          ? "sponsor-logo max-h-24 w-full"
+          : "sponsor-logo max-h-28 w-full",
       homeTitleClassName: [
         "mt-3 [overflow-wrap:anywhere] font-headline font-black uppercase leading-none",
         isEpic

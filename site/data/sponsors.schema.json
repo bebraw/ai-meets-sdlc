@@ -59,6 +59,10 @@
           },
           "betweenTalks": {
             "type": "boolean"
+          },
+          "logoDark": {
+            "type": "string",
+            "pattern": "^/assets/sponsors/.+\\.(svg|webp|png|jpg|jpeg)$"
           }
         }
       }

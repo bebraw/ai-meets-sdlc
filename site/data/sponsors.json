@@ -5,12 +5,13 @@
       "id": "wunderdog",
       "name": "Wunderdog",
       "url": "https://www.wunderdog.io/",
-      "logo": "/assets/sponsors/wunderdog.svg",
-      "logoWidth": 223,
-      "logoHeight": 212,
+      "logo": "/assets/sponsors/wunderdog-group-black.png",
+      "logoWidth": 3750,
+      "logoHeight": 3750,
       "tier": "epic",
       "logoSurface": "light",
-      "betweenTalks": true
+      "betweenTalks": true,
+      "logoDark": "/assets/sponsors/wunderdog-group-white.png"
     },
     {
       "id": "reaktor",
@@ -60,12 +61,13 @@
       "id": "aimbition",
       "name": "AIMBITION",
       "url": "https://www.aimbition.com/",
-      "logo": "/assets/sponsors/aimbition.webp",
-      "logoWidth": 800,
-      "logoHeight": 122,
+      "logo": "/assets/sponsors/aimbition-group-black.png",
+      "logoWidth": 4688,
+      "logoHeight": 1563,
       "tier": "brand",
-      "logoSurface": "dark",
-      "betweenTalks": false
+      "logoSurface": "light",
+      "betweenTalks": false,
+      "logoDark": "/assets/sponsors/aimbition-group-white.png"
     },
     {
       "id": "aalto-university",

@@ -640,6 +640,7 @@ async function validateSponsors(sponsors) {
       "name",
       "url",
       "logo",
+      "logoDark",
       "logoWidth",
       "logoHeight",
       "tier",
@@ -711,6 +712,24 @@ async function validateSponsors(sponsors) {
         `${sponsorPath}.logo must point to an image under /assets/sponsors/.`,
       );
       continue;
+    }
+
+    if (sponsor.logoDark !== undefined) {
+      if (
+        !/^\/assets\/sponsors\/.+\.(svg|webp|png|jpg|jpeg)$/.test(
+          sponsor.logoDark,
+        )
+      ) {
+        errors.push(
+          `${sponsorPath}.logoDark must point to an image under /assets/sponsors/.`,
+        );
+      } else {
+        try {
+          await access(path.resolve(sponsor.logoDark.slice(1)));
+        } catch {
+          errors.push(`${sponsorPath}.logoDark points to a missing file.`);
+        }
+      }
     }
 
     try {
