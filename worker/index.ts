@@ -12,6 +12,7 @@ import {
   handleSpeakerDinnerResponse,
   handleSpeakerDinnerSharedStatus,
   handleSpeakerDinnerSharedResponse,
+  handleAdminDinnerGuest,
   shouldPurgeSpeakerDinnerData,
   purgeSpeakerDinnerData,
 } from "./speaker-dinner.ts";
@@ -327,6 +328,17 @@ export default {
 
       return withAdminSecurityHeaders(
         await handleSpeakerDinnerSharedInvite(request, env),
+      );
+    }
+
+    if (url.pathname === "/api/admin/speaker-dinner/guests") {
+      if (request.method !== "POST") {
+        return jsonResponse({ error: "Method not allowed" }, 405);
+      }
+      const forbiddenResponse = requireAdminAction(request, "add-dinner-guest");
+      if (forbiddenResponse) return forbiddenResponse;
+      return withAdminSecurityHeaders(
+        await handleAdminDinnerGuest(request, env),
       );
     }
 

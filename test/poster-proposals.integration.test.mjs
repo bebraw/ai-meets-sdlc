@@ -988,6 +988,84 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   assert.match(csv, /AI-assisted review beyond code completion/);
   assert.match(csv, /accepted/);
 
+  const addGuestUrl = `${origin}/api/admin/speaker-dinner/guests`;
+  const guestHeaders = {
+    authorization: adminAuthorization,
+    origin,
+    "x-admin-action": "add-dinner-guest",
+  };
+  const guestData = {
+    name: "Manual Guest One",
+    attendance: "attending",
+    meal_preference: "vegan",
+    cross_contamination: "yes",
+    food_requirements: "No sesame",
+    consent: "yes",
+  };
+  for (const [headers, expected] of [
+    [{}, 401],
+    [{ authorization: adminAuthorization, origin }, 403],
+    [{ ...guestHeaders, origin: "https://attacker.example" }, 403],
+  ]) {
+    const rejected = await worker.fetch(addGuestUrl, {
+      method: "POST",
+      headers,
+      body: new URLSearchParams(guestData),
+    });
+    assert.equal(rejected.status, expected);
+  }
+  for (const invalid of [
+    { name: "" },
+    { consent: "" },
+    { meal_preference: "invalid" },
+    { food_requirements: "x".repeat(801) },
+  ]) {
+    const rejected = await worker.fetch(addGuestUrl, {
+      method: "POST",
+      headers: guestHeaders,
+      body: new URLSearchParams({ ...guestData, ...invalid }),
+    });
+    assert.equal(rejected.status, 400);
+  }
+  for (const name of ["Manual Guest One", "Manual Guest Two"]) {
+    const added = await worker.fetch(addGuestUrl, {
+      method: "POST",
+      headers: guestHeaders,
+      body: new URLSearchParams({ ...guestData, name }),
+    });
+    assert.equal(added.status, 200);
+    assert.equal(added.headers.get("cache-control"), "no-store");
+    assert.equal((await added.json()).name, name);
+  }
+  const manualList = await worker.fetch(`${origin}/api/admin/speaker-dinner`, {
+    headers: { authorization: adminAuthorization },
+  });
+  const manualGuests = (await manualList.json()).shared_responses;
+  assert.equal(manualGuests.length, 3);
+  assert.deepEqual(
+    manualGuests
+      .filter((g) => g.source === "admin")
+      .map((g) => g.name)
+      .sort(),
+    ["Manual Guest One", "Manual Guest Two"],
+  );
+  assert.ok(manualGuests.some((g) => g.name === "Organizer Example"));
+  const manualCsvResponse = await worker.fetch(
+    `${origin}/api/admin/speaker-dinner.csv`,
+    {
+      headers: { authorization: adminAuthorization },
+    },
+  );
+  const manualCsv = await manualCsvResponse.text();
+  assert.match(
+    manualCsv,
+    /"Manual Guest One","added by admin","vegan","No sesame","yes"/,
+  );
+  assert.match(
+    manualCsv,
+    /"Manual Guest Two","added by admin","vegan","No sesame","yes"/,
+  );
+
   const purgeResponse = await worker.fetch(
     `${origin}/api/admin/speaker-dinner/purge`,
     {
@@ -1003,7 +1081,7 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   const purge = await purgeResponse.json();
 
   assert.equal(purgeResponse.status, 200);
-  assert.equal(purge.deleted, 4);
+  assert.equal(purge.deleted, 6);
 
   const purgedInviteResponse = await worker.fetch(
     `${origin}/api/speaker-dinner`,

@@ -303,3 +303,10 @@ Cloudflare Workers Builds runs independently of this workflow.
 
 See [Cloudflare setup](docs/cloudflare.md) for provisioning, secrets, backup, and
 deployment notes.
+
+Administrators can add dinner guests manually from **Add Guest** on `/admin/dinner/`.
+Each save creates a separate encrypted response alongside shared RSVP guests,
+with attending guests included in the caterer CSV as “added by admin”. The form
+records the administrator’s confirmation that the guest agreed to the processing.
+Manual additions remain available until dinner data retention ends and use the
+existing dinner cleanup and backup exclusions; no additional migration is needed.

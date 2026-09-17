@@ -52,6 +52,106 @@
         </div>
       </div>
 
+      <details class="border border-ink p-5 md:p-7" data-admin-dinner-add-panel>
+        <summary class="cursor-pointer font-headline text-2xl font-black">
+          Add Guest
+        </summary>
+        <p class="mt-4 max-w-3xl text-sm leading-6 text-muted">
+          Add someone who has confirmed their dinner plans with you. Save each
+          guest separately; attending guests are included in the caterer CSV.
+        </p>
+        <form data-admin-dinner-add-form class="mt-5 grid gap-5">
+          <div class="grid gap-5 md:grid-cols-2">
+            <label class="grid gap-2 text-sm font-bold"
+              >Guest Name
+              <input
+                name="name"
+                required
+                maxlength="120"
+                autocomplete="off"
+                class="min-w-0 border border-ink bg-paper px-4 py-3 font-normal"
+              />
+            </label>
+            <label class="grid gap-2 text-sm font-bold"
+              >Attendance
+              <select
+                name="attendance"
+                class="min-w-0 border border-ink bg-paper px-4 py-3 font-normal"
+              >
+                <option value="attending">Attending</option>
+                <option value="not_attending">Not Attending</option>
+              </select>
+            </label>
+          </div>
+          <fieldset data-admin-dinner-guest-food class="grid gap-5">
+            <legend class="mb-3 text-sm font-bold">Catering Details</legend>
+            <div class="grid gap-5 md:grid-cols-2">
+              <label class="grid gap-2 text-sm font-bold"
+                >Meal Preference
+                <select
+                  name="meal_preference"
+                  required
+                  class="min-w-0 border border-ink bg-paper px-4 py-3 font-normal"
+                >
+                  <option value="">Choose a meal preference</option>
+                  <option value="omnivore">Omnivore</option>
+                  <option value="vegetarian">Vegetarian</option>
+                  <option value="vegan">Vegan</option>
+                  <option value="other">Other</option>
+                </select>
+              </label>
+              <label class="grid gap-2 text-sm font-bold"
+                >Cross-contamination Concern
+                <select
+                  name="cross_contamination"
+                  required
+                  class="min-w-0 border border-ink bg-paper px-4 py-3 font-normal"
+                >
+                  <option value="">Choose an answer</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                  <option value="unsure">Unsure</option>
+                </select>
+              </label>
+            </div>
+            <label class="grid gap-2 text-sm font-bold"
+              >Food Requirements (Optional)
+              <textarea
+                name="food_requirements"
+                maxlength="800"
+                rows="3"
+                class="min-w-0 border border-ink bg-paper px-4 py-3 font-normal"
+                placeholder="Allergies, dietary requirements, or other catering notes"
+              ></textarea>
+            </label>
+          </fieldset>
+          <label class="flex items-start gap-3 text-sm leading-6">
+            <input
+              type="checkbox"
+              name="consent"
+              value="yes"
+              required
+              class="mt-1"
+            />
+            <span
+              >The guest has agreed to their dinner details being recorded and
+              necessary food information being shared with the caterer.</span
+            >
+          </label>
+          <button
+            type="submit"
+            class="w-fit border border-ink bg-ink px-5 py-3 font-bold text-paper transition hover:bg-paper hover:text-ink disabled:cursor-wait disabled:opacity-60"
+          >
+            Add Guest
+          </button>
+          <p
+            data-admin-dinner-add-status
+            class="min-h-6 text-sm font-bold"
+            aria-live="polite"
+          ></p>
+        </form>
+      </details>
+
       <section
         class="grid min-w-0 gap-5 border border-ink p-5 md:p-7"
         aria-labelledby="organizer-rsvp-heading"
@@ -119,7 +219,7 @@
       >
         <div class="bg-paper p-4">
           <span class="text-sm font-bold text-muted"
-            >Speakers + organizer replies</span
+            >Speakers + other guests</span
           ><strong
             class="mt-2 block font-headline text-4xl"
             data-admin-dinner-count="total"
@@ -201,16 +301,14 @@
       </p>
       <div class="grid gap-4">
         <h3 class="font-headline text-3xl font-black uppercase">
-          Organizer replies
+          Other guests
         </h3>
         <p class="text-sm leading-6 text-muted">
-          Replies submitted through the shared RSVP link. Check these names
+          Guests added here or through the shared RSVP link. Check these names
           against your organizer list to see who still needs to answer.
         </p>
         <div class="grid gap-4" data-admin-dinner-organizers>
-          <p class="border border-ink p-5 text-muted">
-            Loading organizer replies.
-          </p>
+          <p class="border border-ink p-5 text-muted">Loading other guests.</p>
         </div>
       </div>
       <div class="grid gap-4">

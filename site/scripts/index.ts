@@ -1182,10 +1182,10 @@ function initAdminSpeakerDinner() {
         organizersRoot,
         loadedOrganizers.filter(matches),
         activeFilter === "all"
-          ? "No organizer replies yet. Share the RSVP link above to collect them."
+          ? "No other guests yet. Add a guest or share the RSVP link above."
           : activeFilter === "pending"
             ? "Awaiting Reply applies to speakers only. Check organizer names against your organizer list for missing replies."
-            : "No organizer replies match this status.",
+            : "No other guests match this status.",
       );
   }
 
@@ -1200,6 +1200,69 @@ function initAdminSpeakerDinner() {
       renderFilteredResponses();
     });
   }
+
+  const addGuestForm = document.querySelector<HTMLFormElement>(
+    "[data-admin-dinner-add-form]",
+  );
+  const addGuestStatus = document.querySelector<HTMLElement>(
+    "[data-admin-dinner-add-status]",
+  );
+  const guestFood = document.querySelector<HTMLFieldSetElement>(
+    "[data-admin-dinner-guest-food]",
+  );
+  const guestAttendance = addGuestForm?.querySelector<HTMLElement>(
+    '[name="attendance"]',
+  );
+  function updateGuestFood() {
+    if (!guestFood) return;
+    guestFood.disabled = Boolean(
+      addGuestForm &&
+      new FormData(addGuestForm).get("attendance") === "not_attending",
+    );
+    guestFood.hidden = guestFood.disabled;
+  }
+  guestAttendance?.addEventListener("change", updateGuestFood);
+  addGuestForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const submit =
+      addGuestForm.querySelector<HTMLButtonElement>('[type="submit"]');
+    if (!submit || submit.disabled) return;
+    submit.disabled = true;
+    if (addGuestStatus) addGuestStatus.textContent = "Adding guest…";
+    try {
+      const response = await fetch("/api/admin/speaker-dinner/guests", {
+        method: "POST",
+        headers: {
+          accept: "application/json",
+          "x-admin-action": "add-dinner-guest",
+        },
+        body: new FormData(addGuestForm),
+      });
+      const payload = (await response.json()) as FormResponse & {
+        name?: string;
+      };
+      if (!response.ok || payload.error)
+        throw new Error(payload.error || "Could not add guest.");
+      addGuestForm.reset();
+      updateGuestFood();
+      activeFilter = "all";
+      for (const filter of filterButtons)
+        filter.setAttribute(
+          "aria-pressed",
+          String(filter.dataset.adminDinnerFilter === "all"),
+        );
+      await loadSpeakers();
+      if (addGuestStatus)
+        addGuestStatus.textContent = `${payload.name || "Guest"} added. You can add the next guest now.`;
+      addGuestForm.querySelector<HTMLInputElement>('[name="name"]')?.focus();
+    } catch (error) {
+      if (addGuestStatus)
+        addGuestStatus.textContent =
+          error instanceof Error ? error.message : "Could not add guest.";
+    } finally {
+      submit.disabled = false;
+    }
+  });
 
   function setStatus(message: string) {
     if (status) status.textContent = message;
@@ -1379,7 +1442,7 @@ function initAdminSpeakerDinner() {
       ).length;
       setStatus(
         successMessage ||
-          `${responseCount} of ${speakers.length} speakers have replied. ${organizers.length} shared RSVP ${organizers.length === 1 ? "reply" : "replies"}.`,
+          `${responseCount} of ${speakers.length} speakers have replied. ${organizers.length} other ${organizers.length === 1 ? "guest" : "guests"}.`,
       );
     } catch (error) {
       root.replaceChildren(

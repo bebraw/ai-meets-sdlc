@@ -77,6 +77,7 @@ interface SpeakerDinnerSharedResponseRow {
 }
 
 interface SpeakerDinnerSharedAdminItem {
+  source?: "admin";
   name: string;
   responded_at: string;
   response: SpeakerDinnerResponseData;
@@ -85,6 +86,9 @@ interface SpeakerDinnerSharedAdminItem {
 
 const speakerDinnerConsentText =
   "I consent to Toska Osuuskunta processing this response and, if I attend, sharing only the necessary food information with the dinner caterer. I can withdraw by contacting info@sdlcai.org.";
+
+const adminDinnerConsentText =
+  "An administrator confirmed that the guest agreed to their dinner details being recorded and necessary food information shared with the caterer.";
 
 const maxSpeakerDinnerBodyBytes = 16 * 1024;
 
@@ -386,6 +390,37 @@ export async function handleSpeakerDinnerSharedResponse(
     return jsonResponse({ error: "Reload the invitation and try again." }, 400);
   }
 
+  return saveNamedDinnerResponse(
+    request,
+    env,
+    responseId,
+    speakerDinnerConsentText,
+  );
+}
+
+export async function handleAdminDinnerGuest(
+  request: Request,
+  env: Env,
+): Promise<Response> {
+  const configurationError = getSpeakerDinnerConfigurationError(env);
+  if (configurationError) return configurationError;
+  if (Date.now() > getSpeakerDinnerConfiguration(env)!.retention) {
+    return jsonResponse({ error: "Dinner data retention has ended." }, 410);
+  }
+  return saveNamedDinnerResponse(
+    request,
+    env,
+    crypto.randomUUID(),
+    adminDinnerConsentText,
+  );
+}
+
+async function saveNamedDinnerResponse(
+  request: Request,
+  env: Env,
+  responseId: string,
+  consentText: string,
+): Promise<Response> {
   const formDataResult = await readFormDataWithinLimit(
     request,
     maxSpeakerDinnerBodyBytes,
@@ -444,7 +479,7 @@ export async function handleSpeakerDinnerSharedResponse(
       encryptedName.iv,
       encryptedResponse.ciphertext,
       encryptedResponse.iv,
-      speakerDinnerConsentText,
+      consentText,
       respondedAt,
       respondedAt,
       respondedAt,
@@ -453,7 +488,9 @@ export async function handleSpeakerDinnerSharedResponse(
 
   return jsonResponse({
     message:
-      "Your dinner response has been saved. Keep this tab open to update it before the deadline.",
+      consentText === adminDinnerConsentText
+        ? "Guest added."
+        : "Your dinner response has been saved. Keep this tab open to update it before the deadline.",
     name,
     ok: true,
     responded_at: respondedAt,
@@ -758,6 +795,9 @@ async function decryptSpeakerDinnerSharedResponse(
     name,
     responded_at: row.responded_at,
     response: candidate,
+    ...(row.consent_text === adminDinnerConsentText
+      ? { source: "admin" as const }
+      : {}),
     updated_at: row.updated_at,
   };
 }
@@ -962,7 +1002,7 @@ export function formatSpeakerDinnerCsv(
       .filter((item) => item.response.attendance === "attending")
       .map((item) => [
         item.name,
-        "shared link",
+        item.source === "admin" ? "added by admin" : "shared link",
         item.response.meal_preference,
         item.response.food_requirements,
         item.response.cross_contamination,
