@@ -1,70 +1,49 @@
 {
-  "template_sha256": "15faa7875a5f7ab2627c7f13b828776651243208a6d9baa18d69d7ddfb0f9fe3",
-  "template_unchanged": true,
-  "trim_mm": [
-    205,
-    85
-  ],
-  "bleed_mm": 3,
-  "artboard_mm": [
-    211,
-    91
-  ],
-  "color_space": "RGB; supplier print conversion pending",
-  "qr_url": "https://sdlcai.org/",
-  "water_supplier_panel": "Original vector artwork, original position and scale",
-  "lager": "Preliminary; 330 ml assumed; brewery details pending",
-  "outputs": [
-    {
-      "trimbox_pt": [
-        8.503936767578125,
-        8.503936767578125,
-        589.6063232421875,
-        249.44881916046143
-      ],
-      "raster_images": 0
-    },
-    {
-      "trimbox_pt": [
-        8.503936767578125,
-        8.503936767578125,
-        589.6063232421875,
-        249.44881916046143
-      ],
-      "raster_images": 0
-    }
-  ],
-  "decoded_codes": {
-    "sdlcai-sparkling-water-light.png": [
-      [
-        "QR Code",
-        "https://sdlcai.org/"
-      ],
-      [
-        "EAN-13",
-        "6429830245209"
-      ]
+  "water": {
+    "trim_mm": [
+      205,
+      85
     ],
-    "sdlcai-sparkling-water-light-browser.png": [
-      [
-        "QR Code",
-        "https://sdlcai.org/"
-      ],
-      [
-        "EAN-13",
-        "6429830245209"
-      ]
-    ],
-    "sdlcai-lager-dark-preliminary.png": [],
-    "sdlcai-lager-dark-preliminary-browser.png": []
+    "bleed_mm": 3,
+    "pdf_sha256": "3c11d378c54738bf736375f7bc1ffb0fc4c0969f3e228e003c43647b92198826",
+    "retained_existing_pdf": true,
+    "qr_url": "https://sdlcai.org/"
   },
-  "water_panel_pixel_difference": [
-    0.0,
-    0.0,
-    0.0
-  ],
-  "visual_checks": [
-    "Final PDF render inspected with Poppler",
-    "Both final SVGs inspected in Chromium"
-  ]
+  "lager": {
+    "template": "assets/labels/templates/masis-lager-2026-09.pdf",
+    "template_sha256": "dfccbcb2d30415dbf11d587102b12abf9ca3bd62a9b434a5dacdf90a0c09287e",
+    "template_unchanged": true,
+    "trim_mm": [
+      200,
+      115
+    ],
+    "bleed_mm": 2,
+    "artboard_mm": [
+      204,
+      119
+    ],
+    "trimbox_pt": [
+      5.669280052185059,
+      5.66900634765625,
+      572.5980224609375,
+      331.65371799468994
+    ],
+    "page_boxes_match_template": true,
+    "volume_ml": 440,
+    "abv_percent": 5.0,
+    "best_before_from_template": "08/2027",
+    "brewery_panel": "Complete original template retained; new artwork ends before x=170 mm",
+    "brewery_panel_pixel_identical_at_dpi": 600,
+    "decoded_barcode": [
+      [
+        "EAN-13",
+        "6430079213034"
+      ]
+    ],
+    "source_raster_images": 1,
+    "output_raster_images": 1,
+    "source_image_pixels_and_position_unchanged": true,
+    "new_lettering": "Outlined vector paths, named SVG groups and PDF artwork layer",
+    "color_space": "Original CMYK template plus RGB SDLCAI artwork; supplier print conversion pending"
+  }
 }

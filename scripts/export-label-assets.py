@@ -1,7 +1,7 @@
-"""Build SDLCAI label concepts with vector lettering and the supplier's water panel.
+"""Build SDLCAI labels with outlined lettering and original supplier artwork.
 
-Dependencies: reportlab, pymupdf, fonttools[woff], pillow, qrcode.
-The original AI is read as a PDF; it is never modified.
+Dependencies: reportlab, pymupdf, pypdf, fonttools[woff], pillow, qrcode, zxing-cpp.
+Original supplier files are never modified.
 """
 
 from pathlib import Path
@@ -12,9 +12,13 @@ import io
 import json
 import math
 import re
+import zipfile
+import xml.etree.ElementTree as ET
 
 import pymupdf as fitz
 import qrcode
+import zxingcpp
+from PIL import Image
 from fontTools.pens.basePen import BasePen
 from fontTools.pens.boundsPen import BoundsPen
 from fontTools.pens.svgPathPen import SVGPathPen
@@ -29,8 +33,7 @@ W, H = 211, 91
 OUT = ROOT / "output/pdf"
 SRC = ROOT / "assets/labels/source"
 PRE = ROOT / "assets/labels/previews"
-TMP = ROOT / "tmp/pdfs"
-PAPER, BLACK, DARK = "#f6f4ef", "#0b0b0b", "#101010"
+PAPER, BLACK = "#f6f4ef", "#0b0b0b"
 FONTS = {}
 for key, name in [("headline", "FinlandicaHeadline-Black"), ("regular", "FinlandicaText-Regular"), ("bold", "FinlandicaText-Bold")]:
     FONTS[key] = TTFont(ROOT / f"assets/fonts/{name}.woff2")
@@ -60,15 +63,16 @@ def rgb(value):
 
 
 class Artwork:
-    def __init__(self, name, title):
+    def __init__(self, name, title, width=W, height=H, bleed=3):
         self.name = name
+        self.width, self.height, self.bleed = width, height, bleed
         self.pdf = io.BytesIO()
-        self.c = canvas.Canvas(self.pdf, pagesize=(W * MM, H * MM), pageCompression=1, pdfVersion=(1, 6))
+        self.c = canvas.Canvas(self.pdf, pagesize=(width * MM, height * MM), pageCompression=1, pdfVersion=(1, 6))
         self.c.setTitle(title)
         self.c.setAuthor("SDLCAI")
-        self.c.translate(0, H * MM)
+        self.c.translate(0, height * MM)
         self.c.scale(MM, -MM)
-        self.svg = [f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="211mm" height="91mm" viewBox="0 0 211 91"><title>{html.escape(title)}</title><desc>205 x 85 mm trim. 3 mm bleed. Lettering is outlined. Named groups remain editable. Product details belong to the supplier.</desc>']
+        self.svg = [f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="{width}mm" height="{height}mm" viewBox="0 0 {width} {height}"><title>{html.escape(title)}</title><desc>{width-2*bleed:g} x {height-2*bleed:g} mm trim. {bleed} mm bleed. SDLCAI lettering is outlined. Named groups remain editable. Product details belong to the supplier.</desc>']
         self.copy = []
         self.bounds = []
 
@@ -160,10 +164,27 @@ class Artwork:
                 if cell:
                     self.rect(x + ix*module, y + iy*module, module, module, BLACK)
 
-    def finish(self, supplier=None):
+    def finish(self, supplier=None, template_base=None):
         self.c.showPage()
         self.c.save()
         doc = fitz.open(stream=self.pdf.getvalue(), filetype="pdf")
+        if template_base is not None:
+            # Clone the complete template; add only our transparent vector overlay.
+            # This preserves the original CMYK content, barcode image, page boxes,
+            # brewery artwork, and source coordinates without clipping or scaling.
+            overlay = doc
+            doc = fitz.open(stream=template_base.tobytes(), filetype="pdf")
+            # Discard stale Illustrator private data so editors read the updated
+            # PDF artwork instead of reopening the original embedded AI document.
+            for xref in (doc.pdf_catalog(), doc[0].xref):
+                doc.xref_set_key(xref, "PieceInfo", "null")
+            doc.xref_set_key(doc[0].xref, "Thumb", "null")
+            doc.del_xml_metadata()
+            oc = doc.add_ocg("SDLCAI afterparty artwork")
+            doc[0].show_pdf_page(doc[0].rect, overlay, 0, oc=oc)
+            raw = template_base[0].get_svg_image(text_as_path=True)
+            raw = re.sub(r'^<svg\b[^>]*>', '', raw).rsplit('</svg>', 1)[0]
+            self.svg.insert(1, f'<g id="original-masis-brewery-template" transform="scale({1/MM})">{raw}</g>')
         page = doc[0]
         if supplier:
             panel = fitz.Rect(148 * MM, 0, supplier[0].rect.width, supplier[0].rect.height)
@@ -173,24 +194,26 @@ class Artwork:
             raw = re.sub(r'^<svg\b[^>]*>', '', raw).rsplit('</svg>', 1)[0]
             # Root-space clipping also works in editors with limited nested-SVG support.
             self.svg.append(f'<defs><clipPath id="water-panel-clip"><rect x="148" y="0" width="63" height="91"/></clipPath></defs><g id="original-water-supplier-panel" clip-path="url(#water-panel-clip)"><g transform="scale({1/MM})">{raw}</g></g>')
-        page.set_trimbox(fitz.Rect(3*MM, 3*MM, 208*MM, 88*MM))
-        page.set_bleedbox(page.mediabox)
-        doc.set_metadata({"title": self.name.replace("-", " "), "author": "SDLCAI", "subject": "205 x 85 mm trim; 3 mm bleed; RGB vector artwork; supplier confirmation required"})
+        b, w, h = self.bleed, self.width, self.height
+        if template_base is None:
+            page.set_trimbox(fitz.Rect(b*MM, b*MM, (w-b)*MM, (h-b)*MM))
+            page.set_bleedbox(page.mediabox)
+        doc.set_metadata({"title": self.name.replace("-", " "), "author": "SDLCAI", "subject": f"{w-2*b:g} x {h-2*b:g} mm trim; {b} mm bleed; design proof; original supplier artwork retained"})
         doc.save(OUT / f"{self.name}.pdf", garbage=4, deflate=True)
-        self.svg.append('<defs><g id="non-printing-trim-guide"><rect x="3" y="3" width="205" height="85" fill="none" stroke="#ff00ff" stroke-width="0.1"/></g></defs></svg>')
-        (SRC / f"{self.name}.svg").write_text('\n'.join(self.svg))
+        self.svg.append(f'<defs><g id="non-printing-trim-guide"><rect x="{b}" y="{b}" width="{w-2*b}" height="{h-2*b}" fill="none" stroke="#ff00ff" stroke-width="0.1"/></g></defs></svg>')
+        svg_text = '\n'.join(self.svg)
+        ET.fromstring(svg_text)
+        (SRC / f"{self.name}.svg").write_text(svg_text)
         (SRC / f"{self.name}-copy.txt").write_text('\n'.join(self.copy) + '\n')
-        bad = [(t, b) for t, b in self.bounds if b[0] < 6 or b[1] < 6 or b[2] > 205 or b[3] > 85]
+        bad = [(t, box) for t, box in self.bounds if box[0] < b+3 or box[1] < b+3 or box[2] > w-b-3 or box[3] > h-b-3]
         if bad:
             raise ValueError(f"Text outside 3 mm safety inset: {bad}")
         return doc
 
 
-def label(kind, supplier):
-    water = kind == "sparkling-water-light"
-    name = f"sdlcai-{kind}" + ("" if water else "-preliminary")
-    a = Artwork(name, "SDLCAI / Sparkling water / Light theme" if water else "SDLCAI / Lager / Dark theme / Preliminary")
-    bg, ink, muted, dot = (PAPER, BLACK, "#69645d", "#d2cec5") if water else (DARK, PAPER, "#b7b0a4", "#393733")
+def water_label(supplier):
+    a = Artwork("sdlcai-sparkling-water-light", "SDLCAI / Sparkling water / Light theme")
+    bg, ink, muted, dot = PAPER, BLACK, "#69645d", "#d2cec5"
     a.group("background-and-halftone")
     a.rect(0, 0, W, H, bg)
     # A clipped halftone disc echoes the site's circular texture.
@@ -210,67 +233,87 @@ def label(kind, supplier):
         a.text(value, 10, y, 8, muted if y < 45 else ink, "regular" if y < 45 else "bold")
     a.text("13 OCT 2026", 10, 60.2, 14, ink, "headline")
     a.text("MARSIO / AALTO UNIVERSITY", 10, 64.4, 6.9, muted, "bold")
-    if water:
-        a.qr(9.5, 67.5, 17)
-        a.text("EXPLORE THE PROGRAM", 29, 73, 5.2, muted, "bold")
-        a.text("SDLCAI.ORG", 29, 78.2, 10.1, ink, "headline")
-    else:
-        a.text("THANKS FOR", 10, 73, 14, ink, "headline")
-        a.text("JOINING US.", 10, 78.5, 14, ink, "headline")
-        a.text("SDLCAI.ORG", 10, 84, 7.2, muted, "bold", tracking=.3)
+    a.qr(9.5, 67.5, 17)
+    a.text("EXPLORE THE PROGRAM", 29, 73, 5.2, muted, "bold")
+    a.text("SDLCAI.ORG", 29, 78.2, 10.1, ink, "headline")
     a.line(55, 10, 55, 82, ink, .2)
     a.end()
     a.group("front-brand-and-product")
     a.text("AI MEETS SDLC", 102, 11.8, 8, ink, "bold", "center", tracking=.65)
     a.text("SDLCAI", 102, 34.5, 69, ink, "headline", "center", fit=80)
     a.line(62, 41, 142, 41, ink, .65)
-    if water:
-        a.text("SPARKLING", 102, 55.7, 31.5, ink, "headline", "center")
-        a.text("WATER", 102, 71, 48, ink, "headline", "center")
-        a.text("KIVENNÄISVESI", 63, 81, 8.6, ink, "bold", tracking=.18)
-    else:
-        a.text("LAGER", 102, 67, 65, ink, "headline", "center")
-        a.text("OLUT / ÖL", 63, 81, 8.6, ink, "bold", tracking=.18)
+    a.text("SPARKLING", 102, 55.7, 31.5, ink, "headline", "center")
+    a.text("WATER", 102, 71, 48, ink, "headline", "center")
+    a.text("KIVENNÄISVESI", 63, 81, 8.6, ink, "bold", tracking=.18)
     a.text("330 ml", 141, 81, 10, ink, "bold", "right")
     a.end()
-    if not water:
-        a.group("preliminary-brewery-panel")
-        a.rect(150, 0, 61, 91, "#1d1c1a")
-        a.line(157, 12, 201, 12, muted, .2)
-        a.text("BREWERY PANEL", 157, 18.5, 11.5, ink, "headline")
-        a.text("PRELIMINARY LAYOUT", 157, 23.7, 6.5, muted, "bold", tracking=.14)
-        for y, value in [(34, "Reserved for the brewery's"), (38.5, "product information and artwork."), (49, "ABV / ingredients / allergens"), (53.5, "Producer / batch / best before"), (58, "Barcode / deposit markings")]:
-            a.text(value, 157, y, 7.3, muted)
-        a.line(157, 67, 201, 67, muted, .2)
-        a.text("330 ml assumed for this concept.", 157, 74, 7.1, ink)
-        a.text("Final size follows the lager template.", 157, 79, 7.1, muted)
-        a.end()
-    return a.finish(supplier if water else None)
+    return a.finish(supplier)
+
+
+def lager_label(supplier):
+    a = Artwork("sdlcai-lager-dark", "SDLCAI / Afterparty lager / Masis Brewery", 204, 119, 2)
+    ink, muted, dot = PAPER, "#b7b0a4", "#393733"
+    # The supplier's full-bleed background remains underneath this overlay.
+    a.group("halftone")
+    for ix in range(65):
+        for iy in range(67):
+            x, y = 89 + ix*1.2, 39 + iy*1.2
+            d = math.hypot(x - 145, y - 86)
+            if d < 36 and x < 170 and y < 119:
+                a.circle(x, y, .11 + .05 * (1 - d/36), dot)
+    a.end()
+    a.group("event-and-thanks")
+    a.logo(10, 11, 16)
+    a.text("AI MEETS", 30, 17, 9, ink, "headline")
+    a.text("SDLC", 30, 23, 14, ink, "headline")
+    a.line(10, 35, 49, 35, ink, .25)
+    for y, value in [(45, "AI across the full software"), (49.2, "development lifecycle."), (57, "Industry. Research."), (61.2, "A shared conversation.")]:
+        a.text(value, 10, y, 8, muted if y < 50 else ink, "regular" if y < 50 else "bold")
+    a.text("13 OCT 2026", 10, 78, 14, ink, "headline")
+    a.text("MARSIO / AALTO UNIVERSITY", 10, 83, 6.9, muted, "bold")
+    a.text("THANKS FOR", 10, 98, 14, ink, "headline")
+    a.text("JOINING US.", 10, 104, 14, ink, "headline")
+    a.text("SDLCAI.ORG", 10, 110, 7.2, muted, "bold", tracking=.3)
+    a.line(55, 11, 55, 110, ink, .2)
+    a.end()
+    a.group("front-brand-and-product")
+    a.text("AI MEETS SDLC", 115, 17, 9, ink, "bold", "center", tracking=.8)
+    a.text("SDLCAI", 115, 49, 90, ink, "headline", "center", fit=104)
+    a.line(63, 59, 167, 59, ink, .65)
+    a.text("LAGER", 115, 88, 83, ink, "headline", "center", fit=102)
+    a.text("OLUT / ÖL", 63, 108, 9, ink, "bold", tracking=.18)
+    a.text("5.0% vol", 117, 108, 9, ink, "bold", "center")
+    a.text("440 ml", 167, 108, 11, ink, "bold", "right")
+    a.end()
+    # All original brewery foreground artwork starts beyond x=175.98 mm.
+    assert all(box[2] < 170 for _, box in a.bounds)
+    return a.finish(template_base=supplier)
 
 
 def review(docs):
     buf = io.BytesIO()
-    c = canvas.Canvas(buf, pagesize=(297*MM, 315*MM), pdfVersion=(1, 6))
+    c = canvas.Canvas(buf, pagesize=(297*MM, 360*MM), pdfVersion=(1, 6))
     c.setFillColorRGB(*rgb("#e4e0d7"))
-    c.rect(0, 0, 297*MM, 315*MM, fill=1, stroke=0)
+    c.rect(0, 0, 297*MM, 360*MM, fill=1, stroke=0)
     c.setFillColorRGB(*rgb(BLACK))
     c.setFont("Helvetica-Bold", 20)
-    c.drawString(17*MM, 297*MM, "SDLCAI / LABEL DESIGNS")
+    c.drawString(17*MM, 342*MM, "SDLCAI / LABEL DESIGNS")
     c.setFont("Helvetica", 9)
-    c.drawString(17*MM, 288*MM, "205 x 85 mm trim  /  3 mm bleed  /  Finlandica type  /  SDLCAI light and dark themes")
-    for y, title, subtitle in [(273, "01  SPARKLING WATER / LIGHT", "Original water supplier panel retained. Supplier to confirm the existing date and product details."), (139, "02  LAGER / DARK", "Preliminary design. Brewery information and final lager template pending. 330 ml assumed.")]:
+    c.drawString(17*MM, 333*MM, "Finlandica type  /  SDLCAI light and dark themes  /  Original supplier artwork retained")
+    for y, title, subtitle in [(318, "01  SPARKLING WATER / LIGHT", "205 x 85 mm trim / 3 mm bleed. Existing water design retained."), (184, "02  AFTERPARTY LAGER / DARK", "Masis template: 200 x 115 mm trim / 2 mm bleed. 440 ml / 5.0% vol. Original brewery panel retained.")]:
         c.setFont("Helvetica-Bold", 11)
         c.drawString(17*MM, y*MM, title)
         c.setFont("Helvetica", 8)
         c.drawString(17*MM, (y-7)*MM, subtitle)
     c.setFont("Helvetica", 7)
-    c.drawString(17*MM, 8*MM, "DESIGN REVIEW  /  RGB color proof. Final print profile and production details to be confirmed with the supplier.")
+    c.drawString(17*MM, 8*MM, "DESIGN REVIEW / Enlarged labels. Use individual PDFs for dimensions. Final print profile and batch date to be confirmed.")
     c.showPage()
     c.save()
     result = fitz.open(stream=buf.getvalue(), filetype="pdf")
     p = result[0]
     for doc, top in zip(docs, (56, 190)):
-        rect = fitz.Rect(17*MM, top*MM, 280*MM, (top + 263*85/205)*MM)
+        ratio = doc[0].trimbox.height / doc[0].trimbox.width
+        rect = fitz.Rect(17*MM, top*MM, 280*MM, (top + 263*ratio)*MM)
         p.show_pdf_page(rect, doc, 0, clip=doc[0].trimbox)
     result.set_metadata({"title": "SDLCAI - paired label design review", "author": "SDLCAI"})
     result.save(OUT / "sdlcai-label-design-review.pdf", garbage=4, deflate=True)
@@ -316,26 +359,77 @@ def visible_template(path):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--template", type=Path, default=Path("/Users/juhovepsalainen/Downloads/-kivennaisvesi (2).ai"))
+    parser.add_argument("--template", type=Path, help="Optional water template; omit to retain the existing water label")
+    parser.add_argument("--lager-template", type=Path, default=SRC.parent / "templates/masis-lager-2026-09.pdf")
     args = parser.parse_args()
-    for folder in (OUT, SRC, PRE, TMP):
+    for folder in (OUT, SRC, PRE):
         folder.mkdir(parents=True, exist_ok=True)
-    before = hashlib.sha256(args.template.read_bytes()).hexdigest()
-    original = visible_template(args.template)
-    docs = [label("sparkling-water-light", original), label("lager-dark", original)]
+    before = hashlib.sha256(args.lager_template.read_bytes()).hexdigest()
+    original = fitz.open(args.lager_template)
+    assert len(original) == 1
+    assert abs(original[0].rect.width/MM - 204) < .001
+    assert abs(original[0].rect.height/MM - 119) < .001
+    assert abs(original[0].trimbox.width/MM - 200) < .001
+    assert abs(original[0].trimbox.height/MM - 115) < .001
+    water_path = OUT / "sdlcai-sparkling-water-light.pdf"
+    water_before = hashlib.sha256(water_path.read_bytes()).hexdigest() if water_path.exists() else None
+    if args.template:
+        water = water_label(visible_template(args.template))
+        water[0].get_pixmap(dpi=300, clip=water[0].trimbox, alpha=False).save(PRE / "sdlcai-sparkling-water-light.png")
+    else:
+        water = fitz.open(water_path)
+    docs = [water, lager_label(original)]
     board = review(docs)
-    for name, doc in zip(["sdlcai-sparkling-water-light", "sdlcai-lager-dark-preliminary"], docs):
-        doc[0].get_pixmap(matrix=fitz.Matrix(300/72, 300/72), clip=doc[0].trimbox, alpha=False).save(PRE / f"{name}.png")
+    docs[1][0].get_pixmap(dpi=300, clip=docs[1][0].trimbox, alpha=False).save(PRE / "sdlcai-lager-dark.png")
     board[0].get_pixmap(matrix=fitz.Matrix(1.8, 1.8), alpha=False).save(PRE / "sdlcai-label-design-review.png")
-    report = {"template_sha256": before, "template_unchanged": before == hashlib.sha256(args.template.read_bytes()).hexdigest(), "trim_mm": [205, 85], "bleed_mm": 3, "artboard_mm": [211, 91], "color_space": "RGB; supplier print conversion pending", "qr_url": "https://sdlcai.org/", "water_supplier_panel": "Original vector artwork, original position and scale", "lager": "Preliminary; 330 ml assumed; brewery details pending", "outputs": []}
-    for doc in docs:
-        p = doc[0]
-        assert len(doc) == 1
-        assert not p.get_images(), "Labels should contain no raster images"
-        assert abs(p.trimbox.width/MM - 205) < .001
-        assert abs(p.trimbox.height/MM - 85) < .001
-        report["outputs"].append({"trimbox_pt": list(p.trimbox), "raster_images": len(p.get_images())})
+    # Compare the complete brewery panel at 600 dpi, including the barcode.
+    panel = fitz.Rect(174*MM, 0, original[0].rect.width, original[0].rect.height)
+    expected = original[0].get_pixmap(dpi=600, clip=panel, alpha=False)
+    actual = docs[1][0].get_pixmap(dpi=600, clip=panel, alpha=False)
+    assert expected.samples == actual.samples, "Original brewery panel changed"
+    def barcodes(pixmap):
+        bitmap = Image.frombytes("RGB", (pixmap.width, pixmap.height), pixmap.samples)
+        return [(str(code.format), code.text) for code in zxingcpp.read_barcodes(bitmap)]
+    decoded = barcodes(actual)
+    assert decoded == barcodes(expected) == [("EAN-13", "6430079213034")]
+    assert docs[1][0].mediabox == original[0].mediabox
+    assert docs[1][0].trimbox == original[0].trimbox
+    assert docs[1][0].bleedbox == original[0].bleedbox
+    images = docs[1][0].get_image_info(hashes=True)
+    source_images = original[0].get_image_info(hashes=True)
+    assert [(i['digest'], i['bbox']) for i in images] == [(i['digest'], i['bbox']) for i in source_images]
+    assert before == hashlib.sha256(args.lager_template.read_bytes()).hexdigest()
+    water_after = hashlib.sha256(water_path.read_bytes()).hexdigest()
+    if not args.template:
+        assert water_before == water_after
+    report = {
+        "water": {"trim_mm": [205, 85], "bleed_mm": 3, "pdf_sha256": water_after,
+                  "retained_existing_pdf": not bool(args.template), "qr_url": "https://sdlcai.org/"},
+        "lager": {
+            "template": str(args.lager_template.relative_to(ROOT)) if args.lager_template.is_relative_to(ROOT) else str(args.lager_template),
+            "template_sha256": before, "template_unchanged": True,
+            "trim_mm": [200, 115], "bleed_mm": 2, "artboard_mm": [204, 119],
+            "trimbox_pt": list(docs[1][0].trimbox), "page_boxes_match_template": True,
+            "volume_ml": 440, "abv_percent": 5.0, "best_before_from_template": "08/2027",
+            "brewery_panel": "Complete original template retained; new artwork ends before x=170 mm",
+            "brewery_panel_pixel_identical_at_dpi": 600,
+            "decoded_barcode": decoded,
+            "source_raster_images": len(source_images), "output_raster_images": len(images),
+            "source_image_pixels_and_position_unchanged": True,
+            "new_lettering": "Outlined vector paths, named SVG groups and PDF artwork layer",
+            "color_space": "Original CMYK template plus RGB SDLCAI artwork; supplier print conversion pending",
+        },
+    }
     (SRC.parent / "verification.json").write_text(json.dumps(report, indent=2) + '\n')
+    # The bundle always contains the current designs, not the superseded concept.
+    files = [SRC.parent / "README.md", SRC.parent / "verification.json", args.lager_template]
+    for name in ("sdlcai-sparkling-water-light", "sdlcai-lager-dark"):
+        files += [OUT / f"{name}.pdf", SRC / f"{name}.svg", SRC / f"{name}-copy.txt", PRE / f"{name}.png"]
+    files += [OUT / "sdlcai-label-design-review.pdf", PRE / "sdlcai-label-design-review.png"]
+    with zipfile.ZipFile(ROOT / "output/sdlcai-label-designs.zip", "w", zipfile.ZIP_DEFLATED) as bundle:
+        for path in files:
+            archive_path = path.relative_to(ROOT) if path.is_relative_to(ROOT) else Path("assets/labels/templates") / path.name
+            bundle.write(path, archive_path)
     print(json.dumps(report, indent=2))
 
 
