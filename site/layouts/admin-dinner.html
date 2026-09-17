@@ -118,7 +118,7 @@
         data-admin-dinner-summary
       >
         <div class="bg-paper p-4">
-          <span class="text-sm font-bold uppercase text-muted"
+          <span class="text-sm font-bold text-muted"
             >Speakers + organizer replies</span
           ><strong
             class="mt-2 block font-headline text-4xl"
@@ -127,7 +127,7 @@
           >
         </div>
         <div class="bg-paper p-4">
-          <span class="text-sm font-bold uppercase text-muted">Attending</span
+          <span class="text-sm font-bold text-muted">Attending</span
           ><strong
             class="mt-2 block font-headline text-4xl"
             data-admin-dinner-count="attending"
@@ -135,8 +135,7 @@
           >
         </div>
         <div class="bg-paper p-4">
-          <span class="text-sm font-bold uppercase text-muted"
-            >Not attending</span
+          <span class="text-sm font-bold text-muted">Not Attending</span
           ><strong
             class="mt-2 block font-headline text-4xl"
             data-admin-dinner-count="not_attending"
@@ -144,14 +143,53 @@
           >
         </div>
         <div class="bg-paper p-4">
-          <span class="text-sm font-bold uppercase text-muted"
-            >Speakers awaiting reply</span
+          <span class="text-sm font-bold text-muted"
+            >Speakers Awaiting Reply</span
           ><strong
             class="mt-2 block font-headline text-4xl"
             data-admin-dinner-count="pending"
             >0</strong
           >
         </div>
+      </div>
+
+      <div
+        class="flex flex-wrap gap-2"
+        role="group"
+        aria-label="Filter dinner responses by status"
+      >
+        <button
+          type="button"
+          data-admin-dinner-filter="all"
+          aria-pressed="true"
+          class="border border-ink px-4 py-3 text-sm font-bold transition hover:bg-ink hover:text-paper aria-pressed:bg-ink aria-pressed:text-paper"
+        >
+          All
+        </button>
+        <button
+          type="button"
+          data-admin-dinner-filter="attending"
+          aria-pressed="false"
+          class="border border-ink px-4 py-3 text-sm font-bold transition hover:bg-ink hover:text-paper aria-pressed:bg-ink aria-pressed:text-paper"
+        >
+          Attending
+        </button>
+        <button
+          type="button"
+          data-admin-dinner-filter="not_attending"
+          aria-pressed="false"
+          class="border border-ink px-4 py-3 text-sm font-bold transition hover:bg-ink hover:text-paper aria-pressed:bg-ink aria-pressed:text-paper"
+        >
+          Not Attending
+        </button>
+        <button
+          type="button"
+          data-admin-dinner-filter="pending"
+          aria-pressed="false"
+          class="border border-ink px-4 py-3 text-sm font-bold transition hover:bg-ink hover:text-paper aria-pressed:bg-ink aria-pressed:text-paper"
+        >
+          Awaiting Reply
+        </button>
       </div>
 
       <p

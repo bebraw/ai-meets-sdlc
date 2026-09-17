@@ -1159,6 +1159,47 @@ function initAdminSpeakerDinner() {
   const purgeButton = document.querySelector<HTMLButtonElement>(
     "[data-admin-dinner-purge]",
   );
+  const filterButtons = document.querySelectorAll<HTMLButtonElement>(
+    "[data-admin-dinner-filter]",
+  );
+  let activeFilter = "all";
+  let loadedSpeakers: SpeakerDinnerAdminItem[] = [];
+  let loadedOrganizers: DinnerAdminResponse[] = [];
+
+  function renderFilteredResponses() {
+    const matches = (guest: DinnerAdminResponse) =>
+      activeFilter === "all" ||
+      (guest.response?.attendance ?? "pending") === activeFilter;
+    renderResponses(
+      root,
+      loadedSpeakers.filter(matches),
+      activeFilter === "all"
+        ? "No speakers are available."
+        : "No speakers match this status.",
+    );
+    if (organizersRoot)
+      renderResponses(
+        organizersRoot,
+        loadedOrganizers.filter(matches),
+        activeFilter === "all"
+          ? "No organizer replies yet. Share the RSVP link above to collect them."
+          : activeFilter === "pending"
+            ? "Awaiting Reply applies to speakers only. Check organizer names against your organizer list for missing replies."
+            : "No organizer replies match this status.",
+      );
+  }
+
+  for (const button of filterButtons) {
+    button.addEventListener("click", () => {
+      activeFilter = button.dataset.adminDinnerFilter ?? "all";
+      for (const filter of filterButtons)
+        filter.setAttribute(
+          "aria-pressed",
+          String(filter.dataset.adminDinnerFilter === activeFilter),
+        );
+      renderFilteredResponses();
+    });
+  }
 
   function setStatus(message: string) {
     if (status) status.textContent = message;
@@ -1242,10 +1283,10 @@ function initAdminSpeakerDinner() {
       const state = speaker.response
         ? speaker.response.attendance === "attending"
           ? "Attending"
-          : "Not attending"
-        : "Awaiting reply";
+          : "Not Attending"
+        : "Awaiting Reply";
       titleGroup.appendChild(
-        createElement("p", "text-xs font-bold uppercase text-paper/60", state),
+        createElement("p", "text-xs font-bold text-paper/60", state),
       );
       titleGroup.appendChild(
         createElement(
@@ -1261,11 +1302,7 @@ function initAdminSpeakerDinner() {
         "dl",
         "grid content-start gap-x-8 gap-y-5 p-5 text-sm sm:grid-cols-2",
       );
-      addDinnerField(
-        details,
-        "Attendance",
-        speaker.response?.attendance.replace("_", " ") ?? "Pending",
-      );
+      addDinnerField(details, "Attendance", state);
       addDinnerField(details, "Meal", speaker.response?.meal_preference ?? "");
       addDinnerField(
         details,
@@ -1329,13 +1366,9 @@ function initAdminSpeakerDinner() {
       const organizers = Array.isArray(payload.shared_responses)
         ? payload.shared_responses
         : [];
-      renderResponses(root, speakers, "No speakers are available.");
-      if (organizersRoot)
-        renderResponses(
-          organizersRoot,
-          organizers,
-          "No organizer replies yet. Share the RSVP link above to collect them.",
-        );
+      loadedSpeakers = speakers;
+      loadedOrganizers = organizers;
+      renderFilteredResponses();
       updateSummary(speakers, organizers);
       updateInviteState(
         Boolean(payload.shared_invite_active),
