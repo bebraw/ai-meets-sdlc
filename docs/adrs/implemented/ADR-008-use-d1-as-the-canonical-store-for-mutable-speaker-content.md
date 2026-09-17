@@ -1,5 +1,7 @@
 # ADR-008: Use D1 as the Canonical Store for Mutable Speaker Content
 
+**Amended by:** [ADR-009](./ADR-009-send-daily-speaker-review-digests-with-scoped-approval-links.md) for scoped approval links using the same publication transaction.
+
 **Status:** Implemented
 
 **Date:** 2026-08-26

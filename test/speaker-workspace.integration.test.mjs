@@ -139,6 +139,13 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   });
   t.after(() => worker.stop());
 
+  const unavailableEmailReview = await worker.fetch(
+    `${origin}/speaker-review/not-a-valid-token`,
+  );
+  assert.equal(unavailableEmailReview.status, 404);
+  assert.equal(unavailableEmailReview.headers.get("cache-control"), "no-store");
+  assert.match(await unavailableEmailReview.text(), /Review link unavailable/u);
+
   const speakerPageResponse = await worker.fetch(`${origin}/speaker/`);
   const speakerPage = await speakerPageResponse.text();
   assert.equal(speakerPageResponse.status, 200);

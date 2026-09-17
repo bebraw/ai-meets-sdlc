@@ -27,16 +27,17 @@ No accepted-only ADRs are currently pending implementation.
 
 ## Implemented ADRs
 
-| ADR                                                                                           | Status      | Summary                                                                                      |
-| --------------------------------------------------------------------------------------------- | ----------- | -------------------------------------------------------------------------------------------- |
-| [ADR-001](./implemented/ADR-001-use-a-moderated-self-service-workspace-for-speakers.md)       | Implemented | Give speakers a moderated workspace while keeping immutable identity and assignment fields.  |
-| [ADR-002](./implemented/ADR-002-provide-promotion-assets-and-staged-video-submissions.md)     | Implemented | Give speakers stable promotion assets and privately moderated Stream video uploads.          |
-| [ADR-003](./implemented/ADR-003-keep-speaker-contacts-private-and-use-transactional-email.md) | Implemented | Keep encrypted speaker contacts in D1 and scope application email to event communication.    |
-| [ADR-004](./implemented/ADR-004-render-social-graphics-on-demand-at-the-edge.md)              | Implemented | Render and cache content-addressed social graphics with Browser Rendering and R2.            |
-| [ADR-005](./implemented/ADR-005-keep-google-workspace-for-inbound-email.md)                   | Implemented | Keep Google Workspace for replies while Cloudflare sends transactional application messages. |
-| [ADR-006](./implemented/ADR-006-use-speaker-initiated-magic-link-access.md)                   | Implemented | Let mapped speakers request short-lived, single-use magic links.                             |
-| [ADR-007](./implemented/ADR-007-allow-organizer-authored-speaker-revisions.md)                | Implemented | Let organizers prefill or approve speaker content through the shared revision workflow.      |
-| [ADR-008](./implemented/ADR-008-use-d1-as-the-canonical-store-for-mutable-speaker-content.md) | Implemented | Publish mutable speaker content from versioned D1 records while Git retains event structure. |
+| ADR                                                                                              | Status      | Summary                                                                                      |
+| ------------------------------------------------------------------------------------------------ | ----------- | -------------------------------------------------------------------------------------------- |
+| [ADR-001](./implemented/ADR-001-use-a-moderated-self-service-workspace-for-speakers.md)          | Implemented | Give speakers a moderated workspace while keeping immutable identity and assignment fields.  |
+| [ADR-002](./implemented/ADR-002-provide-promotion-assets-and-staged-video-submissions.md)        | Implemented | Give speakers stable promotion assets and privately moderated Stream video uploads.          |
+| [ADR-003](./implemented/ADR-003-keep-speaker-contacts-private-and-use-transactional-email.md)    | Implemented | Keep encrypted speaker contacts in D1 and scope application email to event communication.    |
+| [ADR-004](./implemented/ADR-004-render-social-graphics-on-demand-at-the-edge.md)                 | Implemented | Render and cache content-addressed social graphics with Browser Rendering and R2.            |
+| [ADR-005](./implemented/ADR-005-keep-google-workspace-for-inbound-email.md)                      | Implemented | Keep Google Workspace for replies while Cloudflare sends transactional application messages. |
+| [ADR-006](./implemented/ADR-006-use-speaker-initiated-magic-link-access.md)                      | Implemented | Let mapped speakers request short-lived, single-use magic links.                             |
+| [ADR-007](./implemented/ADR-007-allow-organizer-authored-speaker-revisions.md)                   | Implemented | Let organizers prefill or approve speaker content through the shared revision workflow.      |
+| [ADR-008](./implemented/ADR-008-use-d1-as-the-canonical-store-for-mutable-speaker-content.md)    | Implemented | Publish mutable speaker content from versioned D1 records while Git retains event structure. |
+| [ADR-009](./implemented/ADR-009-send-daily-speaker-review-digests-with-scoped-approval-links.md) | Implemented | Send daily review digests with expiring approval links and explicit confirmation.            |
 
 ## Creating a New ADR
 

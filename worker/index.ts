@@ -68,6 +68,12 @@ import { backupSpeakerReceipts } from "./receipt-backups.ts";
 import { handleEventFeed } from "./event-feed.ts";
 import { handleVolunteersRequest } from "./volunteers.ts";
 import { handleScheduleOrder, readScheduleOrder } from "./schedule-order.ts";
+import { handleSpeakerEmailReview } from "./speaker-email-review.ts";
+import {
+  sendSpeakerReviewDigest,
+  purgeSpeakerReviewDigests,
+  speakerReviewDigestCron,
+} from "./speaker-review-digest.ts";
 
 export default {
   async fetch(
@@ -76,6 +82,8 @@ export default {
     ctx: ExecutionContext,
   ): Promise<Response> {
     const url = new URL(request.url);
+    const emailReview = await handleSpeakerEmailReview(request, env);
+    if (emailReview) return emailReview;
     if (
       url.pathname === "/event.json" ||
       url.pathname === "/event.schema.json"
@@ -453,10 +461,17 @@ export default {
   },
 
   async scheduled(
-    _event: ScheduledController,
+    event: ScheduledController,
     env: Env,
     ctx: ExecutionContext,
   ): Promise<void> {
+    if (event.cron === speakerReviewDigestCron) {
+      ctx.waitUntil(
+        sendSpeakerReviewDigest(env, new Date(event.scheduledTime)),
+      );
+      return;
+    }
+    // The hourly digest must not repeat the existing daily backups and cleanup.
     if (env.INTEREST_BACKUPS) {
       ctx.waitUntil(backupInterests(env));
       ctx.waitUntil(backupPosterProposals(env));
@@ -469,5 +484,6 @@ export default {
     }
 
     ctx.waitUntil(purgeExpiredSpeakerWorkspaceData(env));
+    ctx.waitUntil(purgeSpeakerReviewDigests(env));
   },
 } satisfies ExportedHandler<Env>;

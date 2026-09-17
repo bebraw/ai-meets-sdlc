@@ -182,6 +182,41 @@ from D1. Sponsor data records the package tier and whether the contract includes
 between-talk placement; validation requires Epic and Tech sponsors to receive
 that placement and excludes Brand and Location sponsors.
 
+## Daily speaker review digest
+
+At 09:00 Europe/Helsinki, the Worker emails `info@sdlcai.org` a digest of
+submitted speaker profile and talk changes awaiting review. It includes current
+and proposed text (long fields are excerpted), with a private **Review and
+approve** link for each revision. Drafts, approved revisions, and the private
+organizer test speaker are excluded. Pending work is repeated daily until
+reviewed; an empty review queue sends no email.
+
+The email link opens `/speaker-review/<token>` with every changed field in full.
+No admin sign-in is needed. **Approve and publish changes** submits an explicit
+same-origin POST and publishes through the same version-checked D1 transaction
+as admin approval. GET/HEAD requests never publish or consume the link, so mail
+scanners cannot approve by following URLs. A link grants only approval of that
+revision, expires after seven days, and stops working when the revision is
+reviewed or its content changes. Concurrent published edits require reconciliation
+in `/admin/speakers/`; requesting changes also uses the existing admin workflow.
+Email approvals are recorded as `email:info@sdlcai.org` in the revision audit.
+
+Apply `0017_create_speaker_review_digests.sql` before deploying. No new service
+bindings or secrets are needed: the feature uses D1, the existing `EMAIL`
+binding, and purpose-specific hashes derived from `EMAIL_ENCRYPTION_KEY`.
+Google Workspace continues to receive inbound mail; approval by email reply is
+not supported. These private links should not be forwarded.
+
+`SPEAKER_REVIEW_DIGEST_ENABLED` enables both digests and email approval links.
+The hourly `0 * * * *` trigger checks Helsinki local time, so 09:00 follows DST.
+A D1 date claim and 30-minute lease prevent overlapping sends; failed runs can
+retry on later hours, at most four attempts per day. A completed or empty day's
+digest is never resent. As with other external email sends, a provider accepting
+a message immediately before a process failure can cause a duplicate on retry.
+Daily maintenance at `17 2 * * *` still runs independently, deleting expired
+approval hashes and delivery records older than 30 days. Email bodies and raw
+approval tokens are not stored in delivery records or application logs.
+
 ## Schedule editor
 
 At `/admin/schedule/`, drag talks within or between sessions, then select

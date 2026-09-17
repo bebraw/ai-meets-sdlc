@@ -1,5 +1,7 @@
 # ADR-001: Use a Moderated Self-Service Workspace for Speakers
 
+**Amended by:** [ADR-009](./ADR-009-send-daily-speaker-review-digests-with-scoped-approval-links.md) for organizer digest and email approval access.
+
 **Status:** Implemented
 
 **Date:** 2026-08-26
