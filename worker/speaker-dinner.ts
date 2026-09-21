@@ -579,7 +579,7 @@ export async function handleSpeakerDinnerPurge(
 
   const results = await deleteSpeakerDinnerData(env);
   const deleted = results.reduce(
-    (total, result) => total + result.meta.changes,
+    (total, result) => total + result.results.length,
     0,
   );
 
@@ -962,9 +962,13 @@ export async function purgeSpeakerDinnerData(env: Env): Promise<void> {
 
 function deleteSpeakerDinnerData(env: Env) {
   return env.INTERESTS.batch([
-    env.INTERESTS.prepare("DELETE FROM speaker_dinner_shared_responses"),
-    env.INTERESTS.prepare("DELETE FROM speaker_dinner_shared_invites"),
-    env.INTERESTS.prepare("DELETE FROM speaker_dinner_responses"),
+    env.INTERESTS.prepare(
+      "DELETE FROM speaker_dinner_shared_responses RETURNING 1",
+    ),
+    env.INTERESTS.prepare(
+      "DELETE FROM speaker_dinner_shared_invites RETURNING 1",
+    ),
+    env.INTERESTS.prepare("DELETE FROM speaker_dinner_responses RETURNING 1"),
   ]);
 }
 

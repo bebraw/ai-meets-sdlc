@@ -176,7 +176,7 @@ export async function updateSpeakerWorkspace(
       )
       .run();
 
-    if (result.meta.changes !== 1) return staleCanonicalResponse();
+    if (!result.meta.changes) return staleCanonicalResponse();
   } else {
     const result = await env
       .INTERESTS!.prepare(
@@ -207,7 +207,7 @@ export async function updateSpeakerWorkspace(
       )
       .run();
 
-    if (result.meta.changes !== 1) return staleCanonicalResponse();
+    if (!result.meta.changes) return staleCanonicalResponse();
   }
 
   return json({

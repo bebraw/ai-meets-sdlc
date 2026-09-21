@@ -310,3 +310,35 @@ with attending guests included in the caterer CSV as “added by admin”. The f
 records the administrator’s confirmation that the guest agreed to the processing.
 Manual additions remain available until dinner data retention ends and use the
 existing dinner cleanup and backup exclusions; no additional migration is needed.
+
+### Organizer digests
+
+The hourly Worker cron also sends these transactional emails to `info@sdlcai.org`:
+
+- **Poster proposals:** daily from 09:00 Europe/Helsinki, listing submitted,
+  shortlisted and waitlisted proposals until a final decision is recorded. The
+  email includes proposal titles, presenter names and a link to `/admin/posters/`.
+  It shows the oldest 50 pending proposals and the total pending count.
+- **Data modifications:** Mondays from 09:00 Europe/Helsinki (with catch-up on
+  later days), summarizing additions, updates and deletions since the previous
+  completed digest. It covers registration interests, posters, speaker contacts,
+  published speaker/talk content, content/photo revisions, videos, presentation
+  and dinner responses, travel receipts, volunteers and programme order.
+  Counts include automated cleanup and repeated writes; private field values,
+  authentication activity, email delivery records and repository changes are
+  excluded. Tracking begins when migration `0018` is applied; it cannot reconstruct
+  earlier changes.
+
+Empty digests send no email. `POSTER_REVIEW_DIGEST_ENABLED` and
+`DATA_CHANGE_DIGEST_ENABLED` independently control delivery. The existing speaker
+review digest remains separate. Apply D1 migrations before deploying the Worker
+(the normal `npm run deploy` does this).
+
+Delivery records in `organizer_digests` prevent ordinary duplicate cron deliveries
+and allow up to four attempts per period, with a 30-minute lease between attempts.
+Weekly retries keep their original change cutoff; later changes carry into the
+next digest, including after a failed week. As with the speaker digest, a crash
+between provider acceptance and recording success can result in a duplicate.
+`organizer_data_changes` stores only table names, operations and timestamps, not
+copies of personal data. Adding another application table requires adding its
+tracking triggers to a migration and its display label to the digest.

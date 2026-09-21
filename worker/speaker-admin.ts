@@ -405,7 +405,8 @@ export async function saveAdminSpeakerContent(
         ),
     ]);
 
-    if (results[0]?.meta.changes !== 1 || results[2]?.meta.changes !== 1) {
+    // D1 counts audit-trigger writes too; these statements target unique keys.
+    if (!results[0]?.meta.changes || !results[2]?.meta.changes) {
       return staleCanonicalResponse();
     }
 
@@ -454,7 +455,8 @@ export async function saveAdminSpeakerContent(
         ),
     ]);
 
-    if (results[1]?.meta.changes !== 1) return staleCanonicalResponse();
+    // D1 counts audit-trigger writes too; these statements target unique keys.
+    if (!results[1]?.meta.changes) return staleCanonicalResponse();
   }
 
   return json({

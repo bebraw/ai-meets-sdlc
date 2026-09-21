@@ -340,7 +340,8 @@ async function uploadSpeakerPhoto(
         ).bind(speakerId, photoRevisionId, r2Key, contentHash, now),
       ]);
 
-      if (results[1]?.meta.changes !== 1 || results[2]?.meta.changes !== 1) {
+      // D1 counts audit-trigger writes too; these statements target unique keys.
+      if (!results[1]?.meta.changes || !results[2]?.meta.changes) {
         throw new Error("Canonical speaker photo could not be published.");
       }
     } else {
@@ -536,7 +537,8 @@ async function reviewSpeakerPhoto(
       ),
     ]);
 
-    if (results[1]?.meta.changes !== 1 || results[2]?.meta.changes !== 1) {
+    // D1 counts audit-trigger writes too; these statements target unique keys.
+    if (!results[1]?.meta.changes || !results[2]?.meta.changes) {
       return photoJson(
         { error: "The canonical portrait changed. Reload and try again." },
         409,

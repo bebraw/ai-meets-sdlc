@@ -201,7 +201,8 @@ export async function reviewSpeakerRevision(
         ),
     ]);
 
-    if (results[0]?.meta.changes !== 1 || results[1]?.meta.changes !== 1) {
+    // D1 counts audit-trigger writes too; these statements target unique keys.
+    if (!results[0]?.meta.changes || !results[1]?.meta.changes) {
       return staleCanonicalResponse();
     }
   } else {
@@ -255,7 +256,8 @@ export async function reviewSpeakerRevision(
         ),
     ]);
 
-    if (results[0]?.meta.changes !== 1 || results[1]?.meta.changes !== 1) {
+    // D1 counts audit-trigger writes too; these statements target unique keys.
+    if (!results[0]?.meta.changes || !results[1]?.meta.changes) {
       return staleCanonicalResponse();
     }
   }

@@ -1,4 +1,8 @@
 import {
+  sendPosterReviewDigest,
+  sendDataChangeDigest,
+} from "./organizer-digests.ts";
+import {
   isSpeakerDinnerPath,
   readSpeakerDinnerAdminItems,
   readSpeakerDinnerSharedAdminItems,
@@ -478,6 +482,8 @@ export default {
     ctx: ExecutionContext,
   ): Promise<void> {
     if (event.cron === speakerReviewDigestCron) {
+      ctx.waitUntil(sendPosterReviewDigest(env, new Date(event.scheduledTime)));
+      ctx.waitUntil(sendDataChangeDigest(env, new Date(event.scheduledTime)));
       ctx.waitUntil(
         sendSpeakerReviewDigest(env, new Date(event.scheduledTime)),
       );

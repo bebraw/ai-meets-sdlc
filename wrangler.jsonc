@@ -49,6 +49,8 @@
   "vars": {
     // Daily pending speaker reviews at 09:00 Europe/Helsinki, with hourly retries.
     "SPEAKER_REVIEW_DIGEST_ENABLED": "true",
+    "POSTER_REVIEW_DIGEST_ENABLED": "true",
+    "DATA_CHANGE_DIGEST_ENABLED": "true",
     // Poster proposals close at 23:59 EEST on 27 September 2026.
     "POSTER_PROPOSAL_DEADLINE": "2026-09-27T20:59:59Z",
     // Speaker dinner responses close at 23:59 EEST on 5 October 2026.

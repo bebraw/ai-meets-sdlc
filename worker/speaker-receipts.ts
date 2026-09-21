@@ -421,7 +421,8 @@ async function upload(
         maxReceiptsPerSpeaker,
       )
       .run();
-    saved = result.meta.changes === 1;
+    // D1 includes the digest audit trigger in its affected-row count.
+    saved = result.meta.changes > 0;
     if (!saved)
       return json(
         {
