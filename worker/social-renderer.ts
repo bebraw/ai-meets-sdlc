@@ -25,6 +25,7 @@ import {
   withScheduleVersion,
   type ScheduleOrder,
 } from "./schedule-order.ts";
+import { parsePromotionManifestSource } from "./speaker-promotion-contract.ts";
 
 const manifestPath = "/assets/social/manifest.json";
 const speakerPromotionManifestPath = "/assets/social/speakers.json";
@@ -33,28 +34,6 @@ const immutableCacheControl = "public, max-age=31536000, immutable";
 const pageTimeoutMilliseconds = 20_000;
 const socialCache = (caches as CacheStorage & { readonly default: Cache })
   .default;
-
-interface PromotionManifestSource {
-  schemaVersion: number;
-  speakers: Array<{
-    id: string;
-    name: string;
-    photo: string;
-    talks: Array<{
-      assets: Array<{
-        height: number;
-        path: string;
-        presetId: string;
-        version: string;
-        width: number;
-      }>;
-      id: string;
-      slideId: string;
-      title: string;
-    }>;
-  }>;
-  version: string;
-}
 
 export async function handleSpeakerPromotionManifestRequest(
   request: Request,
@@ -85,11 +64,7 @@ export async function handleSpeakerPromotionManifestRequest(
       throw new Error(`Promotion manifest returned ${sourceResponse.status}.`);
     }
 
-    const source = (await sourceResponse.json()) as PromotionManifestSource;
-
-    if (source.schemaVersion !== 1 || !Array.isArray(source.speakers)) {
-      throw new Error("Promotion manifest has an invalid contract.");
-    }
+    const source = parsePromotionManifestSource(await sourceResponse.json());
 
     const bySpeaker = new Map(
       records.map((record) => [record.speakerId, record]),
@@ -123,9 +98,16 @@ export async function handleSpeakerPromotionManifestRequest(
                   talk.assets.map(async (promotionAsset) => {
                     const asset = assets.get(promotionAsset.path);
 
-                    if (!asset) {
+                    if (
+                      !asset ||
+                      asset.version !== promotionAsset.version ||
+                      asset.slideId !== talk.slideId ||
+                      asset.presetId !== promotionAsset.presetId ||
+                      asset.width !== promotionAsset.width ||
+                      asset.height !== promotionAsset.height
+                    ) {
                       throw new Error(
-                        `Unknown promotion asset: ${promotionAsset.path}`,
+                        `Promotion asset does not match render manifest: ${promotionAsset.path}`,
                       );
                     }
 

@@ -8,6 +8,7 @@ import {
   matchSocialRenderAsset,
   parseSocialRenderManifest,
 } from "../worker/social-render-contract.ts";
+import { parsePromotionManifestSource } from "../worker/speaker-promotion-contract.ts";
 
 const deck = (firstTitle = "First talk") => `<!doctype html>
 <html><head><link rel="stylesheet" href="/tailwind-test.css"><script src="/assets/slides.js"></script></head>
@@ -182,6 +183,31 @@ test("social render versions only invalidate affected slides", async (t) => {
 
   const savedSpeakerManifest = JSON.parse(
     await readFile(path.join(buildDir, "assets/social/speakers.json"), "utf8"),
+  );
+  assert.equal(
+    parsePromotionManifestSource(savedSpeakerManifest).speakers.length,
+    2,
+  );
+
+  const malformedAsset = structuredClone(savedSpeakerManifest);
+  malformedAsset.speakers[0].talks[0].assets[0].width = "1600";
+  assert.throws(
+    () => parsePromotionManifestSource(malformedAsset),
+    /invalid contract/u,
+  );
+
+  const duplicateSpeaker = structuredClone(savedSpeakerManifest);
+  duplicateSpeaker.speakers.push(structuredClone(duplicateSpeaker.speakers[0]));
+  assert.throws(
+    () => parsePromotionManifestSource(duplicateSpeaker),
+    /duplicate speaker IDs/u,
+  );
+
+  const mismatchedSlide = structuredClone(savedSpeakerManifest);
+  mismatchedSlide.speakers[0].talks[0].slideId = "talk-other";
+  assert.throws(
+    () => parsePromotionManifestSource(mismatchedSlide),
+    /invalid talk references/u,
   );
   assert.equal(savedSpeakerManifest.schemaVersion, 1);
   assert.equal(savedSpeakerManifest.speakers.length, 2);
