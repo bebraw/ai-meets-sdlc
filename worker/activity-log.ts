@@ -208,7 +208,11 @@ export async function handleActivityList(
   }
   const url = new URL(request.url);
   const before = Number(url.searchParams.get("before"));
-  const actor = url.searchParams.get("actor");
+  // Older rendered pages may submit the label because the HTML builder removed
+  // the default option's empty value attribute.
+  const actorParam = url.searchParams.get("actor");
+  const actor =
+    actorParam === "Everyone" || actorParam === "all" ? null : actorParam;
   const speaker = url.searchParams.get("speaker")?.trim() ?? "";
   if (
     (actor && actor !== "speaker" && actor !== "admin") ||

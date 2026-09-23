@@ -26,7 +26,7 @@ if (root) {
     const speaker = String(data.get("speaker") ?? "")
       .trim()
       .toLowerCase();
-    if (actor) params.set("actor", actor);
+    if (actor === "speaker" || actor === "admin") params.set("actor", actor);
     if (speaker) params.set("speaker", speaker);
     if (append && nextBefore) params.set("before", String(nextBefore));
     status.textContent = "Loading activity…";
