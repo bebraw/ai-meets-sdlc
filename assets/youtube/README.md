@@ -22,8 +22,7 @@ PROGRAM — ESPOO LOCAL TIME (UTC+3)
 13:30 Views from industry  
 15:00 Afternoon break  
 15:30 Academia  
-17:15 Closing panel  
-17:45 Wrap-up
+17:00 Wrap-up
 
 The program is subject to change. See the latest schedule and speaker details on the event website.
 
