@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { verifyWebhookSignature } from "../worker/speaker-videos.ts";
+import {
+  handleStreamWebhookRequest,
+  verifyWebhookSignature,
+} from "../worker/speaker-videos.ts";
 
 test("Stream webhook verification binds timestamp and exact body bytes", async () => {
   const secret = "local-stream-webhook-secret";
@@ -35,6 +38,36 @@ test("Stream webhook verification binds timestamp and exact body bytes", async (
     await verifyWebhookSignature(body, header, "wrong-secret", timestamp),
     false,
   );
+});
+
+test("signed Stream webhook bodies require a valid UID and status object", async () => {
+  const secret = "local-stream-webhook-secret";
+  const timestamp = Math.floor(Date.now() / 1_000);
+  const env = {
+    STREAM_WEBHOOK_SECRET: secret,
+    INTERESTS: {
+      prepare: () => ({ bind: () => ({ first: async () => null }) }),
+    },
+  };
+
+  async function send(payload) {
+    const body = new TextEncoder().encode(JSON.stringify(payload));
+    return handleStreamWebhookRequest(
+      new Request("https://sdlcai.org/api/stream/webhook", {
+        method: "POST",
+        headers: {
+          "webhook-signature": `time=${timestamp},sig1=${await sign(timestamp, body, secret)}`,
+        },
+        body,
+      }),
+      env,
+    );
+  }
+
+  const uid = "0123456789abcdef0123456789abcdef";
+  assert.equal((await send({ uid, status: "ready" })).status, 400);
+  assert.equal((await send({ uid: "short", status: {} })).status, 400);
+  assert.equal((await send({ uid, status: { state: "ready" } })).status, 204);
 });
 
 async function sign(timestamp, body, secret) {

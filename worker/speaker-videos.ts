@@ -1,3 +1,5 @@
+import * as v from "valibot";
+
 interface SpeakerVideoRow {
   created_at: string;
   duration_seconds: number | null;
@@ -29,20 +31,20 @@ interface SpeakerVideoRow {
   upload_expires_at: string;
 }
 
-interface StreamWebhookPayload {
-  creator?: unknown;
-  duration?: unknown;
-  meta?: unknown;
-  readyToStream?: unknown;
-  status?: unknown;
-  uid?: unknown;
-}
-
-interface StreamWebhookStatus {
-  errReasonCode?: unknown;
-  errorReasonCode?: unknown;
-  state?: unknown;
-}
+const streamWebhookStatusSchema = v.object({
+  errReasonCode: v.optional(v.unknown()),
+  errorReasonCode: v.optional(v.unknown()),
+  state: v.optional(v.string()),
+});
+const streamWebhookSchema = v.object({
+  creator: v.optional(v.unknown()),
+  duration: v.optional(v.unknown()),
+  meta: v.optional(v.unknown()),
+  readyToStream: v.optional(v.unknown()),
+  status: streamWebhookStatusSchema,
+  uid: v.pipe(v.string(), v.regex(/^[A-Za-z0-9_-]{16,64}$/u)),
+});
+type StreamWebhookStatus = v.InferOutput<typeof streamWebhookStatusSchema>;
 
 interface VideoPermissionInput {
   mayCaption: boolean;
@@ -84,25 +86,19 @@ export async function handleStreamWebhookRequest(
     return videoJson({ error: "Webhook signature was not accepted." }, 401);
   }
 
-  let payload: StreamWebhookPayload;
+  let payload: v.InferOutput<typeof streamWebhookSchema>;
 
   try {
-    payload = JSON.parse(
-      new TextDecoder().decode(body),
-    ) as StreamWebhookPayload;
+    payload = v.parse(
+      streamWebhookSchema,
+      JSON.parse(new TextDecoder().decode(body)),
+    );
   } catch {
     return videoJson({ error: "Webhook body is invalid." }, 400);
   }
 
-  const uid = typeof payload.uid === "string" ? payload.uid : "";
-  const status = isRecord(payload.status)
-    ? (payload.status as StreamWebhookStatus)
-    : null;
-  const streamState = typeof status?.state === "string" ? status.state : "";
-
-  if (!/^[A-Za-z0-9_-]{16,64}$/u.test(uid) || !status) {
-    return videoJson({ error: "Webhook body is invalid." }, 400);
-  }
+  const { uid, status } = payload;
+  const streamState = status.state ?? "";
 
   const row = await env.INTERESTS.prepare(
     `SELECT
