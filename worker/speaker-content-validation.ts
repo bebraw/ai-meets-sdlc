@@ -7,6 +7,26 @@ import {
   type SpeakerProfileContent,
   type SpeakerTalkContent,
 } from "./canonical-content.ts";
+import * as v from "valibot";
+import {
+  speakerStoredRevisionSchema,
+  type SpeakerWorkspaceContent,
+} from "./speaker-content-schema.ts";
+
+export function parseStoredSpeakerWorkspaceContent(
+  contentJson: string,
+  assignedTalkIds: readonly string[],
+): SpeakerWorkspaceContent | null {
+  const parsed = v.safeParse(
+    speakerStoredRevisionSchema,
+    JSON.parse(contentJson),
+  );
+
+  return parsed.success
+    ? (validateSpeakerWorkspaceContent(parsed.output, assignedTalkIds)
+        .content ?? null)
+    : null;
+}
 
 export const socialFields = [
   "website",

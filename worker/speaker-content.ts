@@ -8,6 +8,7 @@ import {
   staleCanonicalResponse,
 } from "./speaker-workspace-utils.ts";
 import {
+  parseStoredSpeakerWorkspaceContent,
   validateSpeakerWorkspaceContent,
   socialFields,
 } from "./speaker-content-validation.ts";
@@ -251,14 +252,13 @@ async function buildWorkspacePayload(
 
   if (revision) {
     try {
-      const parsed = JSON.parse(revision.content_json) as unknown;
-      const validated = validateSpeakerWorkspaceContent(
-        parsed,
+      const validated = parseStoredSpeakerWorkspaceContent(
+        revision.content_json,
         canonical.talks.map(({ id }) => id),
       );
 
-      if (validated.content) {
-        content = validated.content;
+      if (validated) {
+        content = validated;
       }
     } catch {
       console.error("Invalid stored speaker revision", {
@@ -297,11 +297,10 @@ export function serializeAdminRevision(
   let proposed: SpeakerWorkspaceContent | null = null;
 
   try {
-    const validation = validateSpeakerWorkspaceContent(
-      JSON.parse(revision.content_json) as unknown,
+    proposed = parseStoredSpeakerWorkspaceContent(
+      revision.content_json,
       canonical.talks.map(({ id }) => id),
     );
-    proposed = validation.content ?? null;
   } catch {
     proposed = null;
   }

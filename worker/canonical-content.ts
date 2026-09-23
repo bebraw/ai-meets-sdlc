@@ -1,29 +1,18 @@
 import scheduleData from "../site/data/schedule.json" with { type: "json" };
 import speakersData from "../site/data/speakers.json" with { type: "json" };
 import { marked } from "marked";
+import * as v from "valibot";
+import {
+  speakerWorkspaceContentSchema,
+  type SpeakerTalkContent,
+  type SpeakerWorkspaceContent,
+} from "./speaker-content-schema.ts";
 
-export interface SpeakerProfileContent {
-  bio: string;
-  devto: string;
-  github: string;
-  linkedin: string;
-  name: string;
-  role: string;
-  scholar: string;
-  website: string;
-  x: string;
-}
-
-export interface SpeakerTalkContent {
-  abstract: string;
-  id: string;
-  title: string;
-}
-
-export interface SpeakerWorkspaceContent {
-  profile: SpeakerProfileContent;
-  talks: SpeakerTalkContent[];
-}
+export type {
+  SpeakerProfileContent,
+  SpeakerTalkContent,
+  SpeakerWorkspaceContent,
+} from "./speaker-content-schema.ts";
 
 export interface CanonicalSpeakerRecord {
   content: SpeakerWorkspaceContent;
@@ -277,9 +266,15 @@ function parseCanonicalSpeakerRow(
     throw new Error(`Unknown canonical speaker row: ${row.speaker_id}`);
   }
 
-  const parsed: unknown = JSON.parse(row.content_json);
+  const parsed = v.safeParse(
+    speakerWorkspaceContentSchema,
+    JSON.parse(row.content_json),
+  );
 
-  if (!isSpeakerWorkspaceContent(parsed, bundled.content.talks)) {
+  if (
+    !parsed.success ||
+    !hasAssignedTalks(parsed.output.talks, bundled.content.talks)
+  ) {
     throw new Error(`Invalid canonical content for ${row.speaker_id}.`);
   }
 
@@ -296,7 +291,7 @@ function parseCanonicalSpeakerRow(
   }
 
   return {
-    content: parsed,
+    content: parsed.output,
     contentVersion: row.content_version,
     lastContentRevisionId: row.last_content_revision_id,
     lastPhotoRevisionId: row.last_photo_revision_id,
@@ -311,61 +306,17 @@ function parseCanonicalSpeakerRow(
   };
 }
 
-function isSpeakerWorkspaceContent(
-  value: unknown,
+function hasAssignedTalks(
+  talks: readonly SpeakerTalkContent[],
   bundledTalksForSpeaker: readonly SpeakerTalkContent[],
-): value is SpeakerWorkspaceContent {
-  if (
-    !isRecord(value) ||
-    !isRecord(value.profile) ||
-    !Array.isArray(value.talks)
-  ) {
-    return false;
-  }
-
-  const profile = value.profile;
-  const profileFields = [
-    "bio",
-    "devto",
-    "github",
-    "linkedin",
-    "name",
-    "role",
-    "scholar",
-    "website",
-    "x",
-  ];
-
-  if (profileFields.some((field) => typeof profile[field] !== "string")) {
-    return false;
-  }
-
+): boolean {
   const expectedTalkIds = bundledTalksForSpeaker.map(({ id }) => id).sort();
-  const talkIds: string[] = [];
-
-  for (const talk of value.talks) {
-    if (
-      !isRecord(talk) ||
-      typeof talk.id !== "string" ||
-      typeof talk.title !== "string" ||
-      typeof talk.abstract !== "string"
-    ) {
-      return false;
-    }
-
-    talkIds.push(talk.id);
-  }
-
-  talkIds.sort();
+  const talkIds = talks.map(({ id }) => id).sort();
 
   return (
     talkIds.length === expectedTalkIds.length &&
     talkIds.every((id, index) => id === expectedTalkIds[index])
   );
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
 function base64UrlEncode(bytes: Uint8Array): string {

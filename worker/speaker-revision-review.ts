@@ -10,7 +10,7 @@ import {
   hashCanonicalContent,
   type SpeakerWorkspaceContent,
 } from "./canonical-content.ts";
-import { validateSpeakerWorkspaceContent } from "./speaker-content-validation.ts";
+import { parseStoredSpeakerWorkspaceContent } from "./speaker-content-validation.ts";
 import { type SpeakerRevisionRow } from "./speaker-workspace-types.ts";
 import { sha256Hex } from "./form-utils.ts";
 
@@ -124,13 +124,13 @@ export async function reviewSpeakerRevision(
   let proposed: SpeakerWorkspaceContent;
 
   try {
-    const validation = validateSpeakerWorkspaceContent(
-      JSON.parse(revision.content_json) as unknown,
+    const validation = parseStoredSpeakerWorkspaceContent(
+      revision.content_json,
       canonical.talks.map(({ id }) => id),
     );
 
-    if (!validation.content) throw new Error("Invalid revision content");
-    proposed = validation.content;
+    if (!validation) throw new Error("Invalid revision content");
+    proposed = validation;
   } catch {
     return json(
       { error: "That revision is invalid and cannot be published." },

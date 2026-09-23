@@ -4,7 +4,7 @@ import {
   workspaceOnlySpeakerIds,
 } from "./canonical-content.ts";
 import { getChangedFields } from "./speaker-content.ts";
-import { validateSpeakerWorkspaceContent } from "./speaker-content-validation.ts";
+import { parseStoredSpeakerWorkspaceContent } from "./speaker-content-validation.ts";
 import {
   createToken,
   hashToken,
@@ -96,10 +96,10 @@ export async function sendSpeakerReviewDigest(
         );
       let proposed;
       try {
-        proposed = validateSpeakerWorkspaceContent(
-          JSON.parse(revision.content_json) as unknown,
+        proposed = parseStoredSpeakerWorkspaceContent(
+          revision.content_json,
           record.content.talks.map((talk) => talk.id),
-        ).content;
+        );
       } catch {
         /* Invalid stored content is flagged for admin attention below. */
       }

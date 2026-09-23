@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { validateSpeakerWorkspaceContent } from "../worker/speaker-workspace.ts";
+import { parseStoredSpeakerWorkspaceContent } from "../worker/speaker-content-validation.ts";
 
 function validContent() {
   return {
@@ -70,4 +71,42 @@ test("speaker content validation rejects unsafe Markdown and social URLs", () =>
   );
   assert.equal(result.errors["profile.github"], "Enter a complete HTTPS URL.");
   assert.equal(result.content, undefined);
+});
+
+test("stored speaker content rejects malformed fields and changed talk assignments", () => {
+  const malformed = validContent();
+  malformed.profile.name = 42;
+
+  assert.equal(
+    parseStoredSpeakerWorkspaceContent(JSON.stringify(malformed), [
+      "assigned-talk",
+    ]),
+    null,
+  );
+
+  const reassigned = validContent();
+  reassigned.talks[0].id = "somebody-elses-talk";
+
+  assert.equal(
+    parseStoredSpeakerWorkspaceContent(JSON.stringify(reassigned), [
+      "assigned-talk",
+    ]),
+    null,
+  );
+
+  assert.equal(
+    parseStoredSpeakerWorkspaceContent(JSON.stringify(validContent()), [
+      "assigned-talk",
+    ])?.profile.name,
+    "Example Speaker",
+  );
+
+  const withoutOptionalSocial = validContent();
+  delete withoutOptionalSocial.profile.github;
+  assert.equal(
+    parseStoredSpeakerWorkspaceContent(JSON.stringify(withoutOptionalSocial), [
+      "assigned-talk",
+    ])?.profile.github,
+    "",
+  );
 });

@@ -3,7 +3,7 @@ import {
   hashCanonicalContent,
 } from "./canonical-content.ts";
 import { getChangedFields } from "./speaker-content.ts";
-import { validateSpeakerWorkspaceContent } from "./speaker-content-validation.ts";
+import { parseStoredSpeakerWorkspaceContent } from "./speaker-content-validation.ts";
 import { reviewSpeakerRevision } from "./speaker-revision-review.ts";
 import { insertActivity } from "./activity-log.ts";
 import { speakerReviewTokenPurpose } from "./speaker-review-digest.ts";
@@ -99,10 +99,10 @@ export async function handleSpeakerEmailReview(
         409,
       );
     }
-    const proposed = validateSpeakerWorkspaceContent(
-      JSON.parse(revision.content_json) as unknown,
+    const proposed = parseStoredSpeakerWorkspaceContent(
+      revision.content_json,
       canonical.content.talks.map((talk) => talk.id),
-    ).content;
+    );
     if (!proposed)
       return fail(
         "This revision needs attention",
