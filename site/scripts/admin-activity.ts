@@ -32,7 +32,7 @@ if (root) {
     status.textContent = "Loading activity…";
     more.disabled = true;
     try {
-      const response = await fetch(`/api/admin/activity?${params}`, {
+      const response = await fetch(`/api/admin/change-history?${params}`, {
         cache: "no-store",
       });
       if (!response.ok) throw new Error("Activity could not be loaded.");

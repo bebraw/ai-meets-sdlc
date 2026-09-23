@@ -169,7 +169,10 @@ const innerHandler = {
       if (unauthorizedResponse) return unauthorizedResponse;
     }
 
-    if (url.pathname === "/api/admin/activity") {
+    if (
+      url.pathname === "/api/admin/change-history" ||
+      url.pathname === "/api/admin/activity"
+    ) {
       return handleActivityList(request, env);
     }
 
