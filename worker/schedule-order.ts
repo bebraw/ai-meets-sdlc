@@ -1,4 +1,5 @@
 import seed from "../site/data/schedule.json" with { type: "json" };
+import * as v from "valibot";
 import { withAdminSecurityHeaders } from "./admin-auth.ts";
 import {
   getCanonicalTalks,
@@ -11,10 +12,10 @@ import {
   sha256Hex,
 } from "./form-utils.ts";
 
-export interface ScheduleGroup {
-  id: string;
-  talkIds: string[];
-}
+const scheduleGroupsSchema = v.array(
+  v.object({ id: v.string(), talkIds: v.array(v.string()) }),
+);
+export type ScheduleGroup = v.InferOutput<typeof scheduleGroupsSchema>[number];
 export interface ScheduleOrder {
   groups: ScheduleGroup[];
   revision: number;
@@ -26,26 +27,20 @@ export const seedGroups: ScheduleGroup[] = scheduleSessions.map((item) => ({
   talkIds: (item.talks ?? []).map((talk) => talk.id),
 }));
 
-export function validateScheduleGroups(
-  value: unknown,
-): value is ScheduleGroup[] {
-  if (!Array.isArray(value) || value.length !== seedGroups.length) return false;
+export function parseScheduleGroups(value: unknown): ScheduleGroup[] | null {
+  const parsed = v.safeParse(scheduleGroupsSchema, value);
+  if (!parsed.success || parsed.output.length !== seedGroups.length)
+    return null;
   const expectedTalks = new Set(seedGroups.flatMap((group) => group.talkIds));
   const seen = new Set<string>();
-  for (const [index, group] of value.entries()) {
-    if (
-      !group ||
-      group.id !== seedGroups[index]?.id ||
-      !Array.isArray(group.talkIds)
-    )
-      return false;
+  for (const [index, group] of parsed.output.entries()) {
+    if (group.id !== seedGroups[index]?.id) return null;
     for (const id of group.talkIds) {
-      if (typeof id !== "string" || !expectedTalks.has(id) || seen.has(id))
-        return false;
+      if (!expectedTalks.has(id) || seen.has(id)) return null;
       seen.add(id);
     }
   }
-  return seen.size === expectedTalks.size;
+  return seen.size === expectedTalks.size ? parsed.output : null;
 }
 
 export async function readScheduleOrder(env: Env): Promise<ScheduleOrder> {
@@ -53,12 +48,8 @@ export async function readScheduleOrder(env: Env): Promise<ScheduleOrder> {
     "SELECT groups_json, revision, updated_at FROM schedule_order WHERE id = 1",
   ).first<{ groups_json: string; revision: number; updated_at: string }>();
   if (!row) throw new Error("Missing schedule order");
-  const groups: unknown = JSON.parse(row.groups_json);
-  if (
-    !validateScheduleGroups(groups) ||
-    !Number.isSafeInteger(row.revision) ||
-    row.revision < 1
-  )
+  const groups = parseScheduleGroups(JSON.parse(row.groups_json));
+  if (!groups || !Number.isSafeInteger(row.revision) || row.revision < 1)
     throw new Error("Invalid schedule order");
   return { groups, revision: row.revision, updatedAt: row.updated_at };
 }
@@ -137,18 +128,15 @@ async function handle(request: Request, env: Env): Promise<Response> {
   if (forbidden) return forbidden;
   const form = await readFormDataWithinLimit(request, 32 * 1024);
   if (form instanceof Response) return form;
-  let groups: unknown;
+  let submittedGroups: unknown;
   try {
-    groups = JSON.parse(String(form.get("groups")));
+    submittedGroups = JSON.parse(String(form.get("groups")));
   } catch {
     return jsonResponse({ error: "Invalid schedule." }, 400);
   }
+  const groups = parseScheduleGroups(submittedGroups);
   const revision = Number(form.get("revision"));
-  if (
-    !validateScheduleGroups(groups) ||
-    !Number.isSafeInteger(revision) ||
-    revision < 1
-  ) {
+  if (!groups || !Number.isSafeInteger(revision) || revision < 1) {
     return jsonResponse(
       {
         error:

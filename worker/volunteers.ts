@@ -1,3 +1,4 @@
+import * as v from "valibot";
 import { withAdminSecurityHeaders } from "./admin-auth.ts";
 import {
   decryptTextWithKey,
@@ -11,11 +12,12 @@ import {
   requireAdminAction,
 } from "./form-utils.ts";
 
-interface VolunteerDetails {
-  name: string;
-  email: string;
-  task: string;
-}
+const volunteerDetailsSchema = v.object({
+  name: v.string(),
+  email: v.string(),
+  task: v.string(),
+});
+type VolunteerDetails = v.InferOutput<typeof volunteerDetailsSchema>;
 
 interface VolunteerRow {
   volunteer_id: string;
@@ -65,8 +67,15 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
     const key = await importAesKey(env.EMAIL_ENCRYPTION_KEY);
     const volunteers = await Promise.all(
       results.map(async (row) => {
-        const details: VolunteerDetails = JSON.parse(
-          await decryptTextWithKey(row.details_ciphertext, row.details_iv, key),
+        const details = v.parse(
+          volunteerDetailsSchema,
+          JSON.parse(
+            await decryptTextWithKey(
+              row.details_ciphertext,
+              row.details_iv,
+              key,
+            ),
+          ),
         );
         return { id: row.volunteer_id, revision: row.revision, ...details };
       }),

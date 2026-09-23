@@ -1,3 +1,4 @@
+import * as v from "valibot";
 import {
   readCanonicalSpeaker,
   readCanonicalSpeakers,
@@ -16,17 +17,18 @@ interface ReceiptRow {
   processed_at: string | null;
 }
 
-interface ReceiptDetails {
-  speaker_name: string;
-  filename: string;
-  content_type: string;
-  description: string;
-  amount: string;
-  currency: string;
-  expense_date: string;
-  note: string;
-  organizer_note: string;
-}
+const receiptDetailsSchema = v.object({
+  speaker_name: v.string(),
+  filename: v.string(),
+  content_type: v.string(),
+  description: v.string(),
+  amount: v.string(),
+  currency: v.string(),
+  expense_date: v.string(),
+  note: v.string(),
+  organizer_note: v.string(),
+});
+type ReceiptDetails = v.InferOutput<typeof receiptDetailsSchema>;
 
 const maxFileBytes = 10 * 1024 * 1024;
 const maxReceiptsPerSpeaker = 30;
@@ -493,7 +495,10 @@ async function decryptDetails(
     env,
     `${row.receipt_id}:${row.speaker_id}:details`,
   );
-  return JSON.parse(new TextDecoder().decode(bytes)) as ReceiptDetails;
+  return v.parse(
+    receiptDetailsSchema,
+    JSON.parse(new TextDecoder().decode(bytes)),
+  );
 }
 
 async function importKey(env: Env): Promise<CryptoKey> {
