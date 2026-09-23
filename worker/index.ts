@@ -50,6 +50,7 @@ import {
   backupCanonicalSpeakerContent,
 } from "./backups.ts";
 import {
+  establishAdminSessionForBasicAuth,
   isAdminProtectedPath,
   handleAdminAuthRequest,
   requireAdmin,
@@ -485,7 +486,11 @@ const innerHandler = {
       }
     }
 
-    if (isAdminProtected) return withAdminSecurityHeaders(response);
+    if (isAdminProtected) {
+      return withAdminSecurityHeaders(
+        await establishAdminSessionForBasicAuth(request, env, response),
+      );
+    }
 
     if (isSpeakerDinnerPrivate) {
       return withSpeakerDinnerSecurityHeaders(response);

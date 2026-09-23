@@ -104,6 +104,38 @@ export async function requireAdmin(
   );
 }
 
+export async function establishAdminSessionForBasicAuth(
+  request: Request,
+  env: Env,
+  response: Response,
+): Promise<Response> {
+  const credentials = parseBasicAuth(request.headers.get("authorization"));
+  if (!credentials) return response;
+
+  const adminEnv = env as Env & AdminBindings;
+  if (!hasAdminConfiguration(adminEnv)) return response;
+
+  const session = readCookie(request, adminSessionCookie);
+  if (session && (await verifyAdminSession(session, adminEnv))) return response;
+  if (
+    !(await credentialsMatch(
+      credentials.username,
+      credentials.password,
+      adminEnv,
+    ))
+  ) {
+    return response;
+  }
+
+  const headers = new Headers(response.headers);
+  headers.append("set-cookie", await createAdminSessionCookie(adminEnv));
+  return new Response(response.body, {
+    headers,
+    status: response.status,
+    statusText: response.statusText,
+  });
+}
+
 export function withAdminSecurityHeaders(response: Response): Response {
   const headers = new Headers(response.headers);
   const varyValues = new Set(
