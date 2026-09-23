@@ -35,6 +35,7 @@ const adminActions: Record<string, [string, string]> = {
   ],
   "/api/admin/schedule": ["Schedule order", "saved"],
   "/api/admin/poster-proposals/status": ["Poster decision", "saved"],
+  "/api/admin/interests": ["Interest list", "emptied"],
   "/api/admin/speaker-dinner/invite": ["Dinner invitation", "rotated"],
   "/api/admin/speaker-dinner/shared-invite": ["Dinner invitation", "rotated"],
   "/api/admin/speaker-dinner/guests": ["Dinner guest", "added"],

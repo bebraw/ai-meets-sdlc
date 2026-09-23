@@ -14,6 +14,7 @@ import {
   formatCsvValue,
 } from "./form-utils.ts";
 import { verifyTurnstile } from "./turnstile.ts";
+import { readJsonWithinLimit } from "./speaker-workspace-utils.ts";
 
 interface InterestContact {
   created_at: string;
@@ -23,6 +24,68 @@ interface InterestContact {
 }
 
 const maxInterestBodyBytes = 16 * 1024;
+
+interface InterestListVersion {
+  count: number;
+  max_id: number;
+}
+
+export async function readInterestListVersion(
+  env: Env,
+): Promise<InterestListVersion> {
+  if (!env.INTERESTS) throw new Error("Interest storage is not configured");
+  const row = await env.INTERESTS.prepare(
+    "SELECT COUNT(*) AS count, COALESCE(MAX(id), 0) AS max_id FROM interests",
+  ).first<InterestListVersion>();
+  return row ?? { count: 0, max_id: 0 };
+}
+
+export async function emptyInterestList(
+  request: Request,
+  env: Env,
+): Promise<Response> {
+  if (!env.INTERESTS) {
+    return jsonResponse({ error: "Interest storage is not configured" }, 503);
+  }
+  const body = await readJsonWithinLimit(request, 1024);
+  if (body instanceof Response) return body;
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return jsonResponse({ error: "Submit the confirmation again." }, 400);
+  }
+  const input = body as Record<string, unknown>;
+  const expectedCount = input.expected_count;
+  const expectedMaxId = input.expected_max_id;
+  if (
+    input.confirmation !== "EMPTY" ||
+    !Number.isSafeInteger(expectedCount) ||
+    Number(expectedCount) <= 0 ||
+    !Number.isSafeInteger(expectedMaxId) ||
+    Number(expectedMaxId) <= 0
+  ) {
+    return jsonResponse(
+      { error: "Type EMPTY and refresh the list before clearing it." },
+      400,
+    );
+  }
+  const result = await env.INTERESTS.prepare(
+    `WITH snapshot AS MATERIALIZED (
+       SELECT COUNT(*) AS count, COALESCE(MAX(id), 0) AS max_id FROM interests
+     )
+     DELETE FROM interests
+      WHERE ?1 = (SELECT count FROM snapshot)
+        AND ?2 = (SELECT max_id FROM snapshot)
+     RETURNING id`,
+  )
+    .bind(expectedCount, expectedMaxId)
+    .all<{ id: number }>();
+  if (result.results.length !== expectedCount) {
+    return jsonResponse(
+      { error: "The list changed. Reload it and confirm again." },
+      409,
+    );
+  }
+  return jsonResponse({ ok: true, deleted: result.results.length });
+}
 
 export async function handleInterest(
   request: Request,

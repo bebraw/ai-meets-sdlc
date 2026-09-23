@@ -273,13 +273,14 @@ while the general event slides remain shareable. Protected pages and downloads
 use `Cache-Control: no-store` and
 `X-Robots-Tag: noindex, nofollow, noarchive`.
 
-| Method | Endpoint                             | Purpose                                      |
-| ------ | ------------------------------------ | -------------------------------------------- |
-| `GET`  | `/api/admin/interests`               | Decrypted interest contacts as JSON.         |
-| `GET`  | `/api/admin/interests.csv`           | Decrypted interest contacts as CSV.          |
-| `GET`  | `/api/admin/poster-proposals`        | Decrypted proposals and total count as JSON. |
-| `GET`  | `/api/admin/poster-proposals.csv`    | Decrypted proposals as CSV.                  |
-| `POST` | `/api/admin/poster-proposals/status` | Change one proposal's review status.         |
+| Method   | Endpoint                             | Purpose                                      |
+| -------- | ------------------------------------ | -------------------------------------------- |
+| `GET`    | `/api/admin/interests`               | Decrypted interest contacts as JSON.         |
+| `DELETE` | `/api/admin/interests`               | Empty the active interest list.              |
+| `GET`    | `/api/admin/interests.csv`           | Decrypted interest contacts as CSV.          |
+| `GET`    | `/api/admin/poster-proposals`        | Decrypted proposals and total count as JSON. |
+| `GET`    | `/api/admin/poster-proposals.csv`    | Decrypted proposals as CSV.                  |
+| `POST`   | `/api/admin/poster-proposals/status` | Change one proposal's review status.         |
 
 The status endpoint accepts FormData containing `id` and `status`. Allowed
 statuses are `submitted`, `shortlisted`, `accepted`, `waitlisted`,
@@ -290,6 +291,10 @@ clears `reviewed_at`; every other status sets it to the update time.
 
 CSV exports contain decrypted personal data. Store and share downloaded files
 as confidential event-administration records.
+Emptying the active interest list requires the admin session, a same-origin
+`Origin` header, `x-admin-action: empty-interest-list`, the typed confirmation,
+and the count and maximum ID from the latest list response. Previous R2 backups
+remain available and are not deleted by this action.
 
 ## Data Model
 

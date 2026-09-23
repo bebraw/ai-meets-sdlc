@@ -469,10 +469,38 @@ function initPosterForm() {
 function initAdminInterests() {
   const rowsRoot = document.querySelector("[data-admin-interests]");
   const status = document.querySelector("[data-admin-status]");
+  const reload = document.querySelector<HTMLButtonElement>(
+    "[data-admin-interests-reload]",
+  );
+  const clearForm = document.querySelector<HTMLFormElement>(
+    "[data-admin-interests-clear]",
+  );
+  const confirmation = document.querySelector<HTMLInputElement>(
+    "[data-admin-interests-confirmation]",
+  );
+  const emptyButton = document.querySelector<HTMLButtonElement>(
+    "[data-admin-interests-empty]",
+  );
+  const clearStatus = document.querySelector<HTMLElement>(
+    "[data-admin-interests-clear-status]",
+  );
 
   if (!rowsRoot) return;
 
   const rows = rowsRoot;
+  let version: { count: number; max_id: number } | null = null;
+  let busy = false;
+
+  function updateClearButton() {
+    if (emptyButton) {
+      emptyButton.disabled =
+        busy ||
+        !version ||
+        version.count === 0 ||
+        confirmation?.value !== "EMPTY";
+    }
+    if (reload) reload.disabled = busy;
+  }
 
   function setStatus(message: string) {
     if (status) status.textContent = message;
@@ -520,17 +548,68 @@ function initAdminInterests() {
 
       const payload = (await response.json()) as {
         contacts?: InterestContact[];
+        version?: { count: number; max_id: number };
       };
       const contacts = Array.isArray(payload.contacts) ? payload.contacts : [];
 
       renderRows(contacts);
       setStatus(`${contacts.length} people`);
+      version =
+        payload.version?.count === contacts.length ? payload.version : null;
+      updateClearButton();
     } catch (error) {
       renderRows([]);
       setStatus("Failed to load");
+      version = null;
+      updateClearButton();
       console.error(error);
     }
   }
+
+  reload?.addEventListener("click", () => void loadInterests());
+  confirmation?.addEventListener("input", updateClearButton);
+  clearForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!version || confirmation?.value !== "EMPTY" || busy) return;
+    busy = true;
+    updateClearButton();
+    if (clearStatus) clearStatus.textContent = "Emptying active list…";
+    try {
+      const response = await fetch("/api/admin/interests", {
+        method: "DELETE",
+        headers: {
+          "content-type": "application/json",
+          "x-admin-action": "empty-interest-list",
+        },
+        body: JSON.stringify({
+          confirmation: "EMPTY",
+          expected_count: version.count,
+          expected_max_id: version.max_id,
+        }),
+      });
+      const result = (await response.json()) as {
+        deleted?: number;
+        error?: string;
+      };
+      if (!response.ok)
+        throw new Error(result.error ?? "Could not empty the list.");
+      confirmation.value = "";
+      if (clearStatus) {
+        clearStatus.textContent = `Removed ${result.deleted ?? 0} contacts from the active list.`;
+      }
+      await loadInterests();
+    } catch (error) {
+      confirmation.value = "";
+      if (clearStatus) {
+        clearStatus.textContent =
+          error instanceof Error ? error.message : "Could not empty the list.";
+      }
+      await loadInterests();
+    } finally {
+      busy = false;
+      updateClearButton();
+    }
+  });
 
   void loadInterests();
 }

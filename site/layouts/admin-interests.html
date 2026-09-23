@@ -36,6 +36,13 @@
             href="/api/admin/interests.csv"
             >Export CSV</a
           >
+          <button
+            class="border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper"
+            type="button"
+            data-admin-interests-reload
+          >
+            Reload
+          </button>
           <p
             class="min-h-6 text-sm font-bold uppercase text-muted"
             data-admin-status
@@ -69,6 +76,45 @@
             </tr>
           </tbody>
         </table>
+      </div>
+      <div
+        class="grid gap-5 border border-ink p-5 md:grid-cols-[1fr_auto] md:items-end md:p-7"
+      >
+        <div>
+          <h3 class="font-headline text-2xl font-black uppercase">
+            Empty active list
+          </h3>
+          <p class="mt-2 max-w-2xl leading-7 text-muted">
+            This removes every contact from the active interest list. Earlier
+            backups may still contain these contacts. Export the CSV first if
+            you need a copy.
+          </p>
+        </div>
+        <form class="grid gap-3" data-admin-interests-clear>
+          <label class="grid gap-2 text-sm font-bold uppercase">
+            Type EMPTY to confirm
+            <input
+              class="w-full border border-ink bg-paper px-4 py-3 text-base font-normal normal-case md:w-64"
+              autocomplete="off"
+              spellcheck="false"
+              data-admin-interests-confirmation
+            />
+          </label>
+          <button
+            class="border border-ink bg-ink px-5 py-3 font-bold uppercase text-paper transition hover:bg-paper hover:text-ink disabled:cursor-not-allowed disabled:opacity-40"
+            type="submit"
+            data-admin-interests-empty
+            disabled
+          >
+            Empty interest list
+          </button>
+          <p
+            class="min-h-6 text-sm"
+            role="status"
+            aria-live="polite"
+            data-admin-interests-clear-status
+          ></p>
+        </form>
       </div>
     </div>
   </section>

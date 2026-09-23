@@ -33,6 +33,8 @@ import {
 import { jsonResponse, requireAdminAction } from "./form-utils.ts";
 import {
   readInterestContacts,
+  readInterestListVersion,
+  emptyInterestList,
   formatContactsCsv,
   handleInterest,
 } from "./interests.ts";
@@ -196,13 +198,24 @@ const innerHandler = {
     }
 
     if (url.pathname === "/api/admin/interests") {
+      if (request.method === "DELETE") {
+        const forbiddenResponse = requireAdminAction(
+          request,
+          "empty-interest-list",
+        );
+        if (forbiddenResponse) return forbiddenResponse;
+        return withAdminSecurityHeaders(await emptyInterestList(request, env));
+      }
       if (request.method !== "GET") {
         return jsonResponse({ error: "Method not allowed" }, 405);
       }
 
-      const contacts = await readInterestContacts(env);
+      const [contacts, version] = await Promise.all([
+        readInterestContacts(env),
+        readInterestListVersion(env),
+      ]);
 
-      return jsonResponse({ contacts, count: contacts.length }, 200, {
+      return jsonResponse({ contacts, count: contacts.length, version }, 200, {
         "cache-control": "no-store",
       });
     }
