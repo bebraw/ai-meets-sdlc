@@ -1,31 +1,4 @@
-export interface SocialRenderAsset {
-  height: number;
-  id: string;
-  legacyPath: string;
-  maxBytes: number;
-  path: string;
-  presetId: string;
-  quality: number;
-  slideId: string;
-  slideNumber: number;
-  speakerIds: string[];
-  version: string;
-  width: number;
-}
-
-export interface SocialRenderManifest {
-  assets: SocialRenderAsset[];
-  deckPath: string;
-  renderer: string;
-  schemaVersion: number;
-  version: string;
-}
-
-export interface SocialRenderMatch {
-  asset: SocialRenderAsset;
-  isLegacy: boolean;
-  requestedVersion: string | null;
-}
+import * as v from "valibot";
 
 const digestPattern = /^[a-f0-9]{64}$/u;
 const slideIdPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
@@ -46,49 +19,55 @@ const presetContracts = {
   },
 } as const;
 
-function isPositiveInteger(value: unknown): value is number {
-  return Number.isSafeInteger(value) && Number(value) > 0;
+const socialRenderAssetSchema = v.object({
+  height: v.number(),
+  id: v.string(),
+  legacyPath: v.string(),
+  maxBytes: v.number(),
+  path: v.string(),
+  presetId: v.picklist(["bluesky", "linkedin", "x"]),
+  quality: v.number(),
+  slideId: v.pipe(v.string(), v.regex(slideIdPattern)),
+  slideNumber: v.pipe(v.number(), v.safeInteger(), v.minValue(1)),
+  speakerIds: v.array(v.pipe(v.string(), v.regex(speakerIdPattern))),
+  version: v.pipe(v.string(), v.regex(digestPattern)),
+  width: v.number(),
+});
+const socialRenderManifestSchema = v.object({
+  assets: v.array(socialRenderAssetSchema),
+  deckPath: v.literal("/slides/deck/"),
+  renderer: v.literal("browser-run-v2"),
+  schemaVersion: v.literal(2),
+  version: v.pipe(v.string(), v.regex(digestPattern)),
+});
+export type SocialRenderAsset = v.InferOutput<typeof socialRenderAssetSchema>;
+export type SocialRenderManifest = v.InferOutput<
+  typeof socialRenderManifestSchema
+>;
+
+export interface SocialRenderMatch {
+  asset: SocialRenderAsset;
+  isLegacy: boolean;
+  requestedVersion: string | null;
 }
 
-function isSocialRenderAsset(value: unknown): value is SocialRenderAsset {
-  if (!value || typeof value !== "object") return false;
-
-  const asset = value as Record<string, unknown>;
-  const preset =
-    typeof asset.presetId === "string" && asset.presetId in presetContracts
-      ? presetContracts[asset.presetId as keyof typeof presetContracts]
-      : undefined;
-  const dimensions = preset ? `${preset.width}x${preset.height}` : "";
-  const expectedPath = preset
-    ? `/assets/social/${asset.presetId}/sdlcai-2026-${asset.slideId}-${asset.presetId}-${dimensions}.jpg`
-    : "";
-  const expectedLegacyPath = preset
-    ? `/assets/social/${asset.presetId}/sdlcai-2026-slide-${String(asset.slideNumber).padStart(2, "0")}-${asset.presetId}-${dimensions}.jpg`
-    : "";
-  const speakerIds = Array.isArray(asset.speakerIds) ? asset.speakerIds : null;
+function isSocialRenderAsset(asset: SocialRenderAsset): boolean {
+  const preset = presetContracts[asset.presetId];
+  const dimensions = `${preset.width}x${preset.height}`;
+  const expectedPath = `/assets/social/${asset.presetId}/sdlcai-2026-${asset.slideId}-${asset.presetId}-${dimensions}.jpg`;
+  const expectedLegacyPath = `/assets/social/${asset.presetId}/sdlcai-2026-slide-${String(asset.slideNumber).padStart(2, "0")}-${asset.presetId}-${dimensions}.jpg`;
 
   return (
-    Boolean(preset) &&
     asset.id === `${asset.slideId}:${asset.presetId}` &&
-    typeof asset.slideId === "string" &&
-    slideIdPattern.test(asset.slideId) &&
     asset.path === expectedPath &&
     asset.legacyPath === expectedLegacyPath &&
-    typeof asset.version === "string" &&
-    digestPattern.test(asset.version) &&
-    isPositiveInteger(asset.slideNumber) &&
-    asset.width === preset?.width &&
-    asset.height === preset?.height &&
-    asset.maxBytes === preset?.maxBytes &&
-    asset.quality === preset?.quality &&
-    speakerIds !== null &&
-    speakerIds.every(
-      (speakerId) =>
-        typeof speakerId === "string" && speakerIdPattern.test(speakerId),
-    ) &&
-    speakerIds.every(
+    asset.width === preset.width &&
+    asset.height === preset.height &&
+    asset.maxBytes === preset.maxBytes &&
+    asset.quality === preset.quality &&
+    asset.speakerIds.every(
       (speakerId, index) =>
-        index === 0 || speakerId > String(speakerIds[index - 1]),
+        index === 0 || speakerId > String(asset.speakerIds[index - 1]),
     )
   );
 }
@@ -100,19 +79,11 @@ export function parseSocialRenderManifest(
     throw new Error("Social render manifest is not an object.");
   }
 
-  const manifest = value as Record<string, unknown>;
-
-  if (
-    manifest.schemaVersion !== 2 ||
-    manifest.renderer !== "browser-run-v2" ||
-    manifest.deckPath !== "/slides/deck/" ||
-    typeof manifest.version !== "string" ||
-    !digestPattern.test(manifest.version) ||
-    !Array.isArray(manifest.assets) ||
-    !manifest.assets.every(isSocialRenderAsset)
-  ) {
+  const result = v.safeParse(socialRenderManifestSchema, value);
+  if (!result.success || !result.output.assets.every(isSocialRenderAsset)) {
     throw new Error("Social render manifest has an invalid contract.");
   }
+  const manifest = result.output;
 
   const assetIds = new Set<string>();
   const assetPaths = new Set<string>();
@@ -131,7 +102,7 @@ export function parseSocialRenderManifest(
     assetPaths.add(asset.legacyPath);
   }
 
-  return manifest as unknown as SocialRenderManifest;
+  return manifest;
 }
 
 export function matchSocialRenderAsset(

@@ -106,6 +106,18 @@ test("social render versions only invalidate affected slides", async (t) => {
     () => parseSocialRenderManifest(invalidManifest),
     /invalid contract/u,
   );
+  const invalidShape = structuredClone(initial);
+  invalidShape.assets[0].speakerIds = [42];
+  assert.throws(
+    () => parseSocialRenderManifest(invalidShape),
+    /invalid contract/u,
+  );
+  const duplicatePath = structuredClone(initial);
+  duplicatePath.assets[1] = structuredClone(duplicatePath.assets[0]);
+  assert.throws(
+    () => parseSocialRenderManifest(duplicatePath),
+    /duplicate identifiers/u,
+  );
   assert.deepEqual(
     initial.slides.map(({ id, number }) => ({ id, number })),
     [
