@@ -15,6 +15,7 @@ import {
   readCanonicalSpeaker,
   readCanonicalSpeakers,
 } from "./canonical-content.ts";
+import { insertActivity } from "./activity-log.ts";
 
 type SpeakerDinnerAttendance = "attending" | "not_attending";
 
@@ -262,6 +263,21 @@ export async function handleSpeakerDinnerResponse(
     .run();
 
   if (result.meta.changes === 0) return speakerDinnerInvitationError();
+
+  try {
+    await insertActivity(env, {
+      actorType: "speaker",
+      actorId: invitation.speaker_id,
+      subjectSpeakerId: invitation.speaker_id,
+      category: "Dinner response",
+      action: "saved",
+    });
+  } catch (error) {
+    console.error("activity_log_write_failed", {
+      error: error instanceof Error ? error.message : String(error),
+      category: "Dinner response",
+    });
+  }
 
   return jsonResponse({
     message:

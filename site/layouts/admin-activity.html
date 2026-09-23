@@ -1,0 +1,78 @@
+<BaseLayout
+  &title="(id 'SDLCAI Admin Activity')"
+  &description="(id 'Review speaker and organizer activity.')"
+  &ogDescription="(id 'Private SDLCAI activity log.')"
+  &url="(id 'https://sdlcai.org/admin/activity/')"
+  &ogType="(id 'website')"
+  &robots="(id 'noindex,nofollow,noarchive')"
+>
+  <AdminNavigation></AdminNavigation>
+  <AdminPageHeader
+    &eyebrow="(id 'Admin / Change history')"
+    &title="(id 'Activity log')"
+    &description="(id 'A timeline of speaker sign-ins and successful changes. Times are shown in your local time zone.')"
+  ></AdminPageHeader>
+  <section
+    class="border-b border-ink px-5 py-10 md:px-8 md:py-16"
+    data-admin-activity
+  >
+    <div class="mx-auto max-w-7xl">
+      <form
+        class="grid gap-4 border border-ink bg-paper p-5 md:grid-cols-[1fr_1fr_auto] md:items-end md:p-7"
+        data-activity-filters
+      >
+        <label class="grid gap-2 text-sm font-bold uppercase">
+          Who changed it
+          <select
+            name="actor"
+            class="w-full border border-ink bg-paper px-4 py-3 text-base font-normal normal-case"
+          >
+            <option value="">Everyone</option>
+            <option value="speaker">Speakers</option>
+            <option value="admin">Organizer account</option>
+          </select>
+        </label>
+        <label class="grid gap-2 text-sm font-bold uppercase">
+          Speaker name or ID
+          <input
+            name="speaker"
+            class="w-full border border-ink bg-paper px-4 py-3 text-base font-normal normal-case"
+            placeholder="e.g. Mo Khazali"
+            maxlength="100"
+          />
+        </label>
+        <button
+          type="submit"
+          class="border border-ink bg-ink px-6 py-3 font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
+        >
+          Filter
+        </button>
+      </form>
+      <p
+        class="mt-5 min-h-6 text-sm text-muted"
+        role="status"
+        aria-live="polite"
+        data-activity-status
+      >
+        Loading activity…
+      </p>
+      <ol
+        class="mt-5 grid border-x border-t border-ink"
+        data-activity-list
+      ></ol>
+      <button
+        type="button"
+        class="mt-6 border border-ink px-6 py-3 font-bold uppercase transition hover:bg-ink hover:text-paper"
+        data-activity-more
+        hidden
+      >
+        Older events
+      </button>
+      <noscript
+        ><p class="mt-5">
+          Enable JavaScript to view the activity log.
+        </p></noscript
+      >
+    </div>
+  </section>
+</BaseLayout>

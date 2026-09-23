@@ -383,6 +383,16 @@
           }
         }
       },
+      "activity": {
+        "layout": "admin-activity",
+        "scripts": [{ "name": "admin-activity" }],
+        "context": {
+          "meta": {
+            "title": "SDLCAI Admin Activity",
+            "description": "Review speaker and organizer activity."
+          }
+        }
+      },
       "posters": {
         "layout": "admin-posters",
         "scripts": [{ "name": "index" }],

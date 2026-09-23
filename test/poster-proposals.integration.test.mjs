@@ -407,7 +407,7 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   assert.equal(publicDeckResponse.headers.get("x-robots-tag"), null);
   assert.equal(
     (publicDeckHtml.match(/data-presentation-slide/g) ?? []).length,
-    24,
+    22,
   );
   assert.match(publicDeckHtml, /alt="Wunderdog"/);
   assert.doesNotMatch(publicDeckHtml, /bit\.ly\/4wRkjCa/);
@@ -425,7 +425,7 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
       publicScheduleSlidesHtml.match(/class="presentation-schedule-item"/g) ??
       []
     ).length,
-    13,
+    11,
   );
   assert.match(publicScheduleSlidesHtml, /alt="Aalto University"/);
 
@@ -538,7 +538,7 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
     deckResponse.headers.get("x-robots-tag"),
     "noindex, nofollow, noarchive",
   );
-  assert.equal((deckHtml.match(/data-presentation-slide/g) ?? []).length, 24);
+  assert.equal((deckHtml.match(/data-presentation-slide/g) ?? []).length, 22);
   assert.match(deckHtml, /alt="Wunderdog"/);
   assert.match(deckHtml, /alt="Reaktor"/);
   assert.doesNotMatch(deckHtml, /alt="AIMBITION"/);
@@ -563,7 +563,7 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   assert.equal(
     (scheduleSlidesHtml.match(/class="presentation-schedule-item"/g) ?? [])
       .length,
-    13,
+    11,
   );
   assert.match(scheduleSlidesHtml, /alt="Wunderdog"/);
   assert.match(scheduleSlidesHtml, /alt="AIMBITION"/);

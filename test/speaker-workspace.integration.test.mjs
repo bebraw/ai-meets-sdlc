@@ -929,6 +929,56 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
     "image/webp",
   );
 
+  const hiddenActivity = await worker.fetch(`${origin}/api/admin/activity`);
+  assert.equal(hiddenActivity.status, 401);
+  const activityResponse = await worker.fetch(
+    `${origin}/api/admin/activity?actor=speaker&speaker=Khazali`,
+    { headers: { authorization: adminAuthorization } },
+  );
+  assert.equal(activityResponse.status, 200);
+  assert.equal(activityResponse.headers.get("cache-control"), "no-store");
+  const activity = await activityResponse.json();
+  assert.ok(
+    activity.events.some(
+      (event) =>
+        event.category === "Speaker workspace" && event.action === "signed in",
+    ),
+  );
+  assert.ok(
+    activity.events.some(
+      (event) =>
+        event.category === "Presentation setup" && event.action === "saved",
+    ),
+  );
+  assert.ok(
+    activity.events.some(
+      (event) =>
+        event.category === "Profile and talks" &&
+        event.action === "submitted for review",
+    ),
+  );
+  assert.ok(
+    activity.events.every(
+      (event) =>
+        event.actor_type === "speaker" &&
+        event.actor_id === "mo-khazali" &&
+        event.subject_speaker_id === "mo-khazali",
+    ),
+  );
+  assert.doesNotMatch(JSON.stringify(activity), /slides\.example\.com\/talk/u);
+  const adminActivityResponse = await worker.fetch(
+    `${origin}/api/admin/activity?actor=admin&speaker=mo-khazali`,
+    { headers: { authorization: adminAuthorization } },
+  );
+  const adminActivity = await adminActivityResponse.json();
+  assert.ok(
+    adminActivity.events.some(
+      (event) =>
+        event.actor_id === "speaker-admin" &&
+        event.category === "Speaker photo",
+    ),
+  );
+
   const logoutResponse = await worker.fetch(`${origin}/api/speaker/session`, {
     headers: { cookie, origin },
     method: "DELETE",

@@ -5,6 +5,7 @@ import {
 import { getChangedFields } from "./speaker-content.ts";
 import { validateSpeakerWorkspaceContent } from "./speaker-content-validation.ts";
 import { reviewSpeakerRevision } from "./speaker-revision-review.ts";
+import { insertActivity } from "./activity-log.ts";
 import { speakerReviewTokenPurpose } from "./speaker-review-digest.ts";
 import {
   reviewChangesHtml,
@@ -151,6 +152,20 @@ export async function handleSpeakerEmailReview(
       if (!result.ok) {
         const error = (await result.json()) as { error: string };
         return fail("Approval not completed", error.error, result.status);
+      }
+      try {
+        await insertActivity(env, {
+          actorType: "admin",
+          actorId: "organizer review link",
+          subjectSpeakerId: revision.speaker_id,
+          category: "Speaker revision",
+          action: "approved",
+        });
+      } catch (error) {
+        console.error("activity_log_write_failed", {
+          error: error instanceof Error ? error.message : String(error),
+          category: "Speaker revision",
+        });
       }
       return speakerReviewPage({
         title: "Changes approved",

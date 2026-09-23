@@ -163,7 +163,7 @@ image across deployments.
 
 The deployed Worker serves a protected dashboard at `/admin/`, with focused
 workspaces at `/admin/speakers/`, `/admin/dinner/`, `/admin/receipts/`, `/admin/posters/`,
-`/admin/interests/`, `/admin/volunteers/`, and `/admin/slides/`. Organizers sign in through the
+`/admin/interests/`, `/admin/volunteers/`, `/admin/activity/`, and `/admin/slides/`. Organizers sign in through the
 password-manager-compatible form at `/admin/login/`; a signed, secure cookie
 keeps the browser session active for seven days. HTTP Basic credentials remain
 accepted when supplied proactively by scripts, but unauthenticated browser
@@ -174,6 +174,10 @@ portrait revisions from the speakers workspace, and monitor each speaker's
 private presentation setup and dinner response. Approved changes publish to
 versioned D1 records; Git retains stable IDs, talk ownership, session times,
 and the seed/fallback copy. Published talk order and session placement live in D1.
+The activity log stores the time, actor account, speaker target, and kind of
+successful change without copying submitted values. It starts when migration
+`0019_create_activity_events.sql` and the corresponding Worker are deployed;
+the shared admin account does not identify individual organizers.
 
 The schedule structure and session deck scaffold derive from
 `site/data/seminar.json`, `site/data/schedule.json`, `site/data/speakers.json`,

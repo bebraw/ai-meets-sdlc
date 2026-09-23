@@ -511,6 +511,13 @@ export async function redeemSpeakerInvitation(
         "DELETE FROM speaker_workspace_sessions WHERE expires_at <= ?1",
       )
       .bind(nowIso),
+    env
+      .INTERESTS!.prepare(
+        `INSERT INTO activity_events
+          (occurred_at, actor_type, actor_id, subject_speaker_id, category, action)
+         VALUES (?1, 'speaker', ?2, ?2, 'Speaker workspace', 'signed in')`,
+      )
+      .bind(nowIso, access.speaker_id),
   ]);
 
   const maxAgeSeconds = Math.max(

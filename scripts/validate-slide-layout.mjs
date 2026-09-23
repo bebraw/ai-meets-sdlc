@@ -4,6 +4,7 @@ import { createServer } from "node:http";
 import path from "node:path";
 import { chromium } from "playwright";
 import sponsors from "../site/data/sponsors.json" with { type: "json" };
+import schedule from "../site/data/schedule.json" with { type: "json" };
 
 const buildDir = path.resolve("build");
 const deckRoute = "/slides/deck/";
@@ -298,7 +299,7 @@ async function validateSchedule(page, origin, failures) {
   await waitForPageAssets(page);
 
   const result = await page.evaluate(
-    (expectedSponsors) => {
+    ({ expectedSponsors, expectedRows }) => {
       const errors = [];
       const sheet = document.querySelector(".presentation-schedule-sheet");
       const list = document.querySelector(".presentation-schedule-list");
@@ -326,9 +327,10 @@ async function validateSchedule(page, origin, failures) {
       }
 
       if (
-        document.querySelectorAll(".presentation-schedule-item").length !== 13
+        document.querySelectorAll(".presentation-schedule-item").length !==
+        expectedRows
       ) {
-        errors.push("schedule must contain all 13 program rows");
+        errors.push(`schedule must contain all ${expectedRows} program rows`);
       }
 
       const actualSponsors = [
@@ -382,7 +384,10 @@ async function validateSchedule(page, origin, failures) {
 
       return { errors };
     },
-    sponsors.items.map((sponsor) => sponsor.name).sort(),
+    {
+      expectedSponsors: sponsors.items.map((sponsor) => sponsor.name).sort(),
+      expectedRows: schedule.items.length,
+    },
   );
 
   for (const error of result.errors) {

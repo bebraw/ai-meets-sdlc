@@ -75,12 +75,17 @@ import { handleVolunteersRequest } from "./volunteers.ts";
 import { handleScheduleOrder, readScheduleOrder } from "./schedule-order.ts";
 import { handleSpeakerEmailReview } from "./speaker-email-review.ts";
 import {
+  handleActivityList,
+  recordSuccessfulActivity,
+  shouldRecordActivity,
+} from "./activity-log.ts";
+import {
   sendSpeakerReviewDigest,
   purgeSpeakerReviewDigests,
   speakerReviewDigestCron,
 } from "./speaker-review-digest.ts";
 
-export default {
+const innerHandler = {
   async fetch(
     request: Request,
     env: Env,
@@ -159,6 +164,10 @@ export default {
       const unauthorizedResponse = await requireAdmin(request, env);
 
       if (unauthorizedResponse) return unauthorizedResponse;
+    }
+
+    if (url.pathname === "/api/admin/activity") {
+      return handleActivityList(request, env);
     }
 
     const speakerWorkspaceResponse = await handleSpeakerWorkspaceRequest(
@@ -503,5 +512,34 @@ export default {
 
     ctx.waitUntil(purgeExpiredSpeakerWorkspaceData(env));
     ctx.waitUntil(purgeSpeakerReviewDigests(env));
+  },
+} satisfies ExportedHandler<Env>;
+
+export default {
+  ...innerHandler,
+  async fetch(
+    request: Request,
+    env: Env,
+    ctx: ExecutionContext,
+  ): Promise<Response> {
+    const audit = shouldRecordActivity(request);
+    const bodyRequest =
+      audit &&
+      request.headers.get("content-type")?.startsWith("application/json") &&
+      Number(request.headers.get("content-length") ?? 0) <= 65536
+        ? request.clone()
+        : null;
+    const response = await innerHandler.fetch(request, env, ctx);
+    if (audit) {
+      try {
+        await recordSuccessfulActivity(request, bodyRequest, response, env);
+      } catch (error) {
+        console.error("activity_log_write_failed", {
+          error: error instanceof Error ? error.message : String(error),
+          pathname: new URL(request.url).pathname,
+        });
+      }
+    }
+    return response;
   },
 } satisfies ExportedHandler<Env>;
