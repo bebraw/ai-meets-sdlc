@@ -35,7 +35,13 @@ if (root) {
       const response = await fetch(`/api/admin/change-history?${params}`, {
         cache: "no-store",
       });
-      if (!response.ok) throw new Error("Activity could not be loaded.");
+      if (!response.ok) {
+        throw new Error(
+          response.status === 401
+            ? "Your admin session has expired. Reload to sign in again."
+            : `Activity could not be loaded (HTTP ${response.status}).`,
+        );
+      }
       const result = (await response.json()) as {
         events: ActivityEvent[];
         next_before: number | null;

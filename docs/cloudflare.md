@@ -113,8 +113,8 @@ the hosted runner cannot elevate to root to install their OS dependencies.
 
 The GitHub Actions workflow in `.github/workflows/quality.yml` runs the complete
 `quality:gate` on pull requests and pushes to `main`. Its Ubuntu runner installs
-Chromium and WebKit with `--with-deps` before running layout, slide, and
-accessibility checks. For local checks, install browsers with
+Chromium and WebKit with `--with-deps` before running the admin activity browser
+check, layout, slide, and accessibility checks. For local checks, install browsers with
 `npm run layout:install-browsers`, then run `npm run quality:gate`.
 The validators support Playwright's bundled Chromium as well as system Chrome
 and `LAYOUT_BROWSER_PATH`.
