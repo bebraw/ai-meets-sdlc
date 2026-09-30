@@ -2,6 +2,7 @@ export {};
 
 interface AdminSpeakerContent {
   profile: {
+    company: string;
     bio: string;
     devto: string;
     github: string;
@@ -730,6 +731,16 @@ function renderContentEditor(speaker: AdminSpeakerItem): HTMLElement {
       value: content.profile.role,
     }),
   );
+  profileGrid.appendChild(
+    createEditorField({
+      fields,
+      label: "Company (optional, shown on speaker badge)",
+      maxLength: 200,
+      name: "profile.company",
+      speakerId: speaker.speaker_id,
+      value: content.profile.company ?? "",
+    }),
+  );
   const bioField = createEditorField({
     fields,
     label: "Bio",
@@ -980,6 +991,7 @@ function readEditorContent(
   return {
     profile: {
       bio: value("profile.bio"),
+      company: value("profile.company"),
       devto: value("profile.devto"),
       github: value("profile.github"),
       linkedin: value("profile.linkedin"),

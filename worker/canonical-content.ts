@@ -45,6 +45,7 @@ interface CanonicalSpeakerRow {
 }
 
 interface BundledSpeaker {
+  company?: string;
   bio: string;
   devto?: string;
   github?: string;
@@ -100,6 +101,7 @@ const bundledContent = new Map(
           scholar: speaker.scholar ?? "",
           website: speaker.website ?? "",
           x: speaker.x ?? "",
+          company: speaker.company ?? "",
         },
         talks: (
           speaker.workspaceTalks ??
@@ -208,9 +210,14 @@ export function renderCanonicalMarkdown(markdown: string): string {
 export async function hashCanonicalContent(
   content: SpeakerWorkspaceContent,
 ): Promise<string> {
+  // An absent/empty optional company must not invalidate pre-existing drafts.
+  const { company, ...legacyProfile } = content.profile;
+  const hashContent = company
+    ? content
+    : { ...content, profile: legacyProfile };
   const digest = await crypto.subtle.digest(
     "SHA-256",
-    new TextEncoder().encode(JSON.stringify(content)),
+    new TextEncoder().encode(JSON.stringify(hashContent)),
   );
 
   return base64UrlEncode(new Uint8Array(digest));

@@ -64,6 +64,13 @@ export function validateSpeakerWorkspaceContent(
   const profileValue = value.profile;
   const name = validateText(profileValue.name, "profile.name", 2, 120, errors);
   const role = validateText(profileValue.role, "profile.role", 2, 160, errors);
+  const company = validateText(
+    profileValue.company === undefined ? "" : profileValue.company,
+    "profile.company",
+    0,
+    200,
+    errors,
+  );
   const bio = validateText(profileValue.bio, "profile.bio", 40, 2_000, errors);
 
   if (bio) validateMarkdown(bio, "profile.bio", errors);
@@ -78,6 +85,7 @@ export function validateSpeakerWorkspaceContent(
     scholar: "",
     website: "",
     x: "",
+    company,
   } satisfies SpeakerProfileContent;
 
   for (const field of socialFields) {

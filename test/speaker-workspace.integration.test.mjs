@@ -365,6 +365,7 @@ test("speaker invitation sessions, revisions, and automatic publishing stay gove
 
   const proposed = structuredClone(workspace.content);
   proposed.profile.name = "Mo Javad Khazali";
+  proposed.profile.company = "Société 日本";
   proposed.talks[0].title = "AI migrations you can verify";
 
   const wrongOrigin = await speakerFetch(worker, cookie, {
@@ -690,6 +691,7 @@ test("speaker invitation sessions, revisions, and automatic publishing stay gove
 
   const organizerContent = structuredClone(mappedSpeaker.canonical);
   organizerContent.profile.role = "Co-founder and CEO at Coldtea.ai";
+  organizerContent.profile.company = "Coldtea.ai";
   organizerContent.talks[0].title = "AI product engineering in practice";
   organizerContent.talks[0].abstract =
     "An organizer-updated description about **AI product engineering**, published through the speaker editor.";
@@ -775,6 +777,7 @@ test("speaker invitation sessions, revisions, and automatic publishing stay gove
     ({ speaker_id }) => speaker_id === mappedSpeaker.speaker_id,
   );
   assert.equal(publishedSpeaker.canonical_version, 2);
+  assert.equal(publishedSpeaker.canonical.profile.company, "Coldtea.ai");
   assert.equal(
     publishedSpeaker.canonical.profile.role,
     "Co-founder and CEO at Coldtea.ai",

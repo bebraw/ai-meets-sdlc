@@ -10,6 +10,7 @@ export const speakerProfileContentSchema = v.object({
   scholar: v.string(),
   website: v.string(),
   x: v.string(),
+  company: v.optional(v.string(), ""),
 });
 
 export const speakerTalkContentSchema = v.object({
@@ -34,6 +35,7 @@ export const speakerStoredRevisionSchema = v.object({
     scholar: v.optional(v.string()),
     website: v.optional(v.string()),
     x: v.optional(v.string()),
+    company: v.optional(v.string()),
   }),
   talks: v.array(speakerTalkContentSchema),
 });

@@ -25,6 +25,7 @@
             "type": "string",
             "minLength": 1
           },
+          "company": { "type": "string", "maxLength": 200 },
           "role": {
             "type": "string",
             "minLength": 1

@@ -3,6 +3,7 @@ export {};
 import { loadSpeakerReceipts } from "./receipts";
 
 interface WorkspaceProfile {
+  company: string;
   bio: string;
   devto: string;
   github: string;
@@ -1133,6 +1134,7 @@ function readFormContent(): WorkspaceContent {
     [
       "name",
       "role",
+      "company",
       "bio",
       "website",
       "linkedin",

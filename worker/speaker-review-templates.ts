@@ -20,10 +20,12 @@ export function reviewFieldLabel(field: string): string {
   const name = field.replace(/^profile\./u, "");
   return (
     (
-      { bio: "Biography", name: "Speaker name", role: "Role" } as Record<
-        string,
-        string
-      >
+      {
+        bio: "Biography",
+        name: "Speaker name",
+        role: "Role",
+        company: "Company",
+      } as Record<string, string>
     )[name] ?? `${name.charAt(0).toUpperCase()}${name.slice(1)} link`
   );
 }

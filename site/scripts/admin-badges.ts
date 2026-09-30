@@ -508,7 +508,7 @@ function setup(root: HTMLElement): void {
         speakers: {
           speaker_id: string;
           workspace_only: boolean;
-          canonical: { profile: { name: string } };
+          canonical: { profile: { name: string; company?: string } };
           contact: { email?: string } | null;
         }[];
       }>("/api/admin/speakers", "");
@@ -518,7 +518,7 @@ function setup(root: HTMLElement): void {
           make(
             p.speaker_id,
             p.canonical.profile.name,
-            "",
+            p.canonical.profile.company ?? "",
             p.contact?.email ?? "",
             "speaker",
           ),

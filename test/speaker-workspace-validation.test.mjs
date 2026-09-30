@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { hashCanonicalContent } from "../worker/canonical-content.ts";
 
 import { validateSpeakerWorkspaceContent } from "../worker/speaker-workspace.ts";
 import { parseStoredSpeakerWorkspaceContent } from "../worker/speaker-content-validation.ts";
@@ -109,4 +110,44 @@ test("stored speaker content rejects malformed fields and changed talk assignmen
     ])?.profile.github,
     "",
   );
+});
+
+test("speaker company is optional, trimmed, and supports Unicode", () => {
+  for (const company of [undefined, "", "  ", "  Société 日本  "]) {
+    const input = validContent();
+    input.profile.company = company;
+    const result = validateSpeakerWorkspaceContent(input, ["assigned-talk"]);
+    assert.deepEqual(result.errors, {});
+    assert.equal(result.content.profile.company, company?.trim() ?? "");
+    assert.equal(
+      parseStoredSpeakerWorkspaceContent(JSON.stringify(result.content), [
+        "assigned-talk",
+      ]).profile.company,
+      company?.trim() ?? "",
+    );
+  }
+  for (const company of [null, 42, "x".repeat(201)]) {
+    const input = validContent();
+    input.profile.company = company;
+    const result = validateSpeakerWorkspaceContent(input, ["assigned-talk"]);
+    assert.ok(result.errors["profile.company"]);
+    assert.equal(result.content, undefined);
+  }
+});
+
+test("empty company preserves legacy content hashes and populated company changes them", async () => {
+  const content = validateSpeakerWorkspaceContent(validContent(), [
+    "assigned-talk",
+  ]).content;
+  const legacy = structuredClone(content);
+  delete legacy.profile.company;
+  const legacyHash = Buffer.from(
+    await crypto.subtle.digest(
+      "SHA-256",
+      new TextEncoder().encode(JSON.stringify(legacy)),
+    ),
+  ).toString("base64url");
+  assert.equal(await hashCanonicalContent(content), legacyHash);
+  content.profile.company = "Example Company";
+  assert.notEqual(await hashCanonicalContent(content), legacyHash);
 });

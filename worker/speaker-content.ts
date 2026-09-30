@@ -371,7 +371,13 @@ export function getChangedFields(
 ): Array<{ before: string; field: string; value: string }> {
   const changes: Array<{ before: string; field: string; value: string }> = [];
 
-  for (const field of ["name", "role", "bio", ...socialFields] as const) {
+  for (const field of [
+    "name",
+    "role",
+    "company",
+    "bio",
+    ...socialFields,
+  ] as const) {
     if (canonical.profile[field] !== proposed.profile[field]) {
       changes.push({
         before: canonical.profile[field],
