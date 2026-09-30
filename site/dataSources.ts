@@ -1,3 +1,4 @@
+import organizerSeed from "./data/organizers.json" with { type: "json" };
 import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { raw } from "gustwind/htmlisp";
@@ -35,6 +36,7 @@ function init() {
     announcementItem: (match) =>
       getAnnouncementItem(announcementItemsBySlug, match.slug),
     seminar: () => seminar,
+    organizerItems: () => organizerSeed.filter((person) => person.visible),
     scheduleItems: () => scheduleItems,
     slideDeckItems: () => slideDeckItems,
     socialExportPresets: () => socialExportPresets,

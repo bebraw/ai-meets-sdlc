@@ -21,6 +21,8 @@ const speakerActions: Record<string, [string, string]> = {
 };
 
 const adminActions: Record<string, [string, string]> = {
+  "/api/admin/organizers": ["Organizers", "updated"],
+  "/api/admin/badges": ["Badges", "saved"],
   "/api/admin/speakers/contact": ["Speaker contact", "saved"],
   "/api/admin/speakers/content": ["Profile and talks", "saved"],
   "/api/admin/speakers/review": ["Speaker revision", "reviewed"],

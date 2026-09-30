@@ -515,44 +515,15 @@
         </div>
         <div>
           <div
+            data-organizers
             class="grid max-w-xs grid-cols-2 gap-px border border-paper bg-paper sm:max-w-sm sm:grid-cols-3 min-[700px]:max-w-none"
           >
-            <OrganizerCard
-              &name="(id 'Juho Vepsäläinen')"
-              &src="(id '/assets/organizers/juho.webp')"
-            ></OrganizerCard>
-            <OrganizerCard
-              &name="(id 'Eemeli Aro')"
-              &src="(id '/assets/organizers/eemeli.webp')"
-            ></OrganizerCard>
-            <OrganizerCard
-              &name="(id 'Harri Määttä')"
-              &src="(id '/assets/organizers/harri.webp')"
-            ></OrganizerCard>
-            <OrganizerCard
-              &name="(id 'Toni Ristola')"
-              &src="(id '/assets/organizers/toni.webp')"
-            ></OrganizerCard>
-            <OrganizerCard
-              &name="(id 'Tuuli Tiilikainen')"
-              &src="(id '/assets/organizers/tuuli.webp')"
-            ></OrganizerCard>
-            <OrganizerCard
-              &name="(id 'Juha-Matti Santala')"
-              &src="(id '/assets/organizers/juhis.webp')"
-            ></OrganizerCard>
-            <OrganizerCard
-              &name="(id 'Emilia Hjelm')"
-              &src="(id '/assets/organizers/emilia.webp')"
-            ></OrganizerCard>
-            <OrganizerCard
-              &name="(id 'Jussi Kinnula')"
-              &src="(id '/assets/organizers/jussi.webp')"
-            ></OrganizerCard>
-            <OrganizerCard
-              &name="(id 'Elsa Nyrhinen')"
-              &src="(id '/assets/organizers/elsa.webp')"
-            ></OrganizerCard>
+            <noop &foreach="organizerItems as organizer">
+              <OrganizerCard
+                &name="organizer.name"
+                &src="organizer.photo"
+              ></OrganizerCard>
+            </noop>
           </div>
         </div>
       </div>

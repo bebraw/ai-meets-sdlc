@@ -24,7 +24,7 @@
     "social:manifest": "node scripts/generate-social-render-manifest.mjs",
     "slides:check": "node scripts/validate-slide-layout.mjs",
     "quality:build": "npm test && npm run validate",
-    "quality:gate": "npm run quality:build && npm run activity:browser-check && npm run layout:check && npm run slides:check && npm run a11y:check",
+    "quality:gate": "npm run quality:build && npm run activity:browser-check && npm run badges:browser-check && npm run layout:check && npm run slides:check && npm run a11y:check",
     "start": "gustwind --develop --port 3000",
     "serve": "gustwind --serve --port 3000 --input ./build",
     "test": "npm run worker:build && node --test",
@@ -35,7 +35,8 @@
     "worker:dev": "npm run dev:env && npm run worker:build && wrangler dev",
     "deploy": "npm run quality:build && npm run db:migrate:remote && wrangler deploy",
     "event:build": "node scripts/generate-event-feed.mjs",
-    "email:export": "node scripts/export-email-assets.mjs"
+    "email:export": "node scripts/export-email-assets.mjs",
+    "badges:browser-check": "node scripts/validate-badges.mjs"
   },
   "engines": {
     "node": "24.x"

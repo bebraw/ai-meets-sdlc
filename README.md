@@ -356,3 +356,35 @@ between provider acceptance and recording success can result in a duplicate.
 `organizer_data_changes` stores only table names, operations and timestamps, not
 copies of personal data. Adding another application table requires adding its
 tracking triggers to a migration and its display label to the digest.
+
+## Organizers and badge printing
+
+Apply `0020_create_organizers_and_badges.sql` before deploying this version.
+`/admin/organizers/` is the canonical organizer editor: homepage visibility and
+attending/badge inclusion are independent. The existing nine homepage organizers
+are seeded once, visible on the homepage, with badge inclusion off until selected.
+
+At `/admin/badges/`, import UTF-8 Tito and Webropol CSVs separately, check column
+mapping (use the attendee email), and append their rows. Refresh speakers,
+selected organizers, or volunteers from the site. Source refresh replaces badge
+text from that source, preserves inclusion choices, and removes obsolete source
+records. Exclude non-attending volunteers and resolve matching emails before
+printing. Names can contain manual line breaks. Save the encrypted shared list
+for later correction and reprints, or download/restore a JSON draft backup.
+To clear stored attendees, remove their badges and save the resulting list.
+
+Printer settings start at 100 mm diameter with one badge per PDF page. Adjust
+bleed, safe margin, top clearance, readable font sizes, trim guide, and repeated
+front/back pages as needed. Print buttons recheck layout and font coverage and
+block unresolved problems. Custom TTF/OTF fonts are tab-local and must be loaded
+again after a reload. The bundled Noto Sans is licensed under the SIL Open Font
+License; its source and license are in `assets/badges/`.
+
+Use 100% print scale, enable background graphics, disable headers/footers, and
+confirm dimensions and duplex order with the printer. Browser PDFs use RGB, not
+CMYK/PDF-X. Print a physical proof before the full run.
+
+Run `npm run badges:browser-check` after a build to test imports, duplicate
+handling, long/Unicode names, saved lists, source selection, responsive layout,
+and actual print pagination. Test proof files are temporary files under `/tmp/`.
+See [ADR-011](docs/adrs/implemented/ADR-011-manage-organizers-and-validated-badge-printing.md).

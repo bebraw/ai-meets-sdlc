@@ -1,3 +1,5 @@
+import { handleOrganizers, applyOrganizers } from "./organizers.ts";
+import { handleBadgeWorkspace } from "./badge-workspace.ts";
 import {
   sendPosterReviewDigest,
   sendDataChangeDigest,
@@ -192,6 +194,11 @@ const innerHandler = {
     ) {
       return handleVolunteersRequest(request, env);
     }
+
+    if (url.pathname === "/api/admin/organizers")
+      return handleOrganizers(request, env);
+    if (url.pathname === "/api/admin/badges")
+      return handleBadgeWorkspace(request, env);
 
     const adminSlideRedirect = getAdminSlideRedirect(url);
 
@@ -489,6 +496,17 @@ const innerHandler = {
       }
     }
 
+    if (url.pathname === "/" && response.ok && request.method !== "HEAD") {
+      try {
+        response = await applyOrganizers(response.clone(), env);
+      } catch {
+        response = new Response(response.body, {
+          status: response.status,
+          headers: response.headers,
+        });
+        response.headers.set("cache-control", "no-store");
+      }
+    }
     if (isAdminProtected) {
       return withAdminSecurityHeaders(
         await establishAdminSessionForBasicAuth(request, env, response),

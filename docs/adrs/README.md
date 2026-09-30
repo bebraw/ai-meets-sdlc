@@ -41,6 +41,8 @@ No accepted-only ADRs are currently pending implementation.
 
 | [ADR-010](./implemented/ADR-010-auto-approve-speaker-changes.md) | Implemented | Auto-approve new speaker edits and validated media while retaining drafts and revision history. |
 
+| [ADR-011](./implemented/ADR-011-manage-organizers-and-validated-badge-printing.md) | Implemented | Manage the public organizer roster and privately persist badge lists with measured print preflight. |
+
 ## Creating a New ADR
 
 1. Copy [`ADR-000-template.md`](./proposed/ADR-000-template.md).

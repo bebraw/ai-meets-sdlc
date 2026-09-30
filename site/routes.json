@@ -11,6 +11,9 @@
       },
       "homeSponsorTiers": {
         "operation": "homeSponsorTiers"
+      },
+      "organizerItems": {
+        "operation": "organizerItems"
       }
     },
     "context": {
@@ -414,6 +417,26 @@
             "description": "Inspect and export the SDLCAI 2026 registration interest list.",
             "ogEyebrow": "Admin interest list",
             "ogDescription": "Inspect the SDLCAI 2026 registration interest list."
+          }
+        }
+      },
+      "organizers": {
+        "layout": "admin-organizers",
+        "scripts": [{ "name": "admin-organizers" }],
+        "context": {
+          "meta": {
+            "title": "SDLCAI Admin Organizers",
+            "description": "Manage SDLCAI organizers."
+          }
+        }
+      },
+      "badges": {
+        "layout": "admin-badges",
+        "scripts": [{ "name": "admin-badges" }],
+        "context": {
+          "meta": {
+            "title": "SDLCAI Admin Badges",
+            "description": "Manage SDLCAI badges."
           }
         }
       }
