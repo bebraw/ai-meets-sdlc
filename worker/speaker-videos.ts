@@ -59,7 +59,7 @@ const directUploadLifetimeMilliseconds = 30 * 60 * 1000;
 const maxWebhookBodyBytes = 64 * 1024;
 const webhookTimestampToleranceSeconds = 5 * 60;
 const permissionText =
-  "I confirm that I created or control this video and grant Toska Osuuskunta permission to use it for SDLCAI promotion according to the options selected here. I understand that the upload remains private until organizer review and that I can contact info@sdlcai.org to withdraw permission for future use.";
+  "I confirm that I created or control this video and grant Toska Osuuskunta permission to use it for SDLCAI promotion according to the options selected here. I understand that the video is automatically approved for use after processing and that I can contact info@sdlcai.org to withdraw permission for future use.";
 
 export async function handleStreamWebhookRequest(
   request: Request,
@@ -162,7 +162,7 @@ export async function handleStreamWebhookRequest(
   const now = new Date().toISOString();
   const durationAccepted =
     isReady && duration >= 0.1 && duration <= maxVideoDurationSeconds;
-  const nextState = durationAccepted ? "ready" : "error";
+  const nextState = durationAccepted ? "approved" : "error";
   const errorCode = durationAccepted
     ? null
     : duration !== null && duration > maxVideoDurationSeconds
@@ -175,6 +175,8 @@ export async function handleStreamWebhookRequest(
             stream_state = ?3,
             duration_seconds = ?4,
             error_code = ?5,
+            reviewed_at = CASE WHEN ?2 = 'approved' THEN ?6 ELSE NULL END,
+            reviewed_by = CASE WHEN ?2 = 'approved' THEN 'automatic' ELSE NULL END,
             updated_at = ?6
       WHERE stream_uid = ?1
         AND state IN ('upload_pending', 'processing')`,
@@ -314,7 +316,7 @@ async function createSpeakerVideoUpload(
     return videoJson(
       {
         error:
-          "Promotion upload requires permission to publish the reviewed video. You can still decline optional editing choices.",
+          "Promotion upload requires permission to publish the video. You can still decline optional editing choices.",
       },
       400,
     );

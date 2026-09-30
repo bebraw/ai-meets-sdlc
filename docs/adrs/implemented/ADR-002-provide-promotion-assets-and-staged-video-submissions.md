@@ -1,5 +1,6 @@
 # ADR-002: Provide Promotion Assets and Staged Video Submissions
 
+Amended by [ADR-010](./ADR-010-auto-approve-speaker-changes.md): new speaker submissions are automatically approved.
 **Status:** Implemented
 
 **Date:** 2026-08-26

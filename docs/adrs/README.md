@@ -39,6 +39,8 @@ No accepted-only ADRs are currently pending implementation.
 | [ADR-008](./implemented/ADR-008-use-d1-as-the-canonical-store-for-mutable-speaker-content.md)    | Implemented | Publish mutable speaker content from versioned D1 records while Git retains event structure. |
 | [ADR-009](./implemented/ADR-009-send-daily-speaker-review-digests-with-scoped-approval-links.md) | Implemented | Send daily review digests with expiring approval links and explicit confirmation.            |
 
+| [ADR-010](./implemented/ADR-010-auto-approve-speaker-changes.md) | Implemented | Auto-approve new speaker edits and validated media while retaining drafts and revision history. |
+
 ## Creating a New ADR
 
 1. Copy [`ADR-000-template.md`](./proposed/ADR-000-template.md).

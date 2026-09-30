@@ -186,6 +186,16 @@ from D1. Sponsor data records the package tier and whether the contract includes
 between-talk placement; validation requires Epic and Tech sponsors to receive
 that placement and excludes Brand and Location sponsors.
 
+## Speaker publishing
+
+Trusted speakers can save drafts or publish profile and talk changes immediately.
+Validated photo uploads publish automatically, and processed videos are automatically
+approved for promotional use within their recorded permissions. Authentication,
+validation, stale-edit protection, revision history, and activity logging remain in place.
+Existing pending submissions still use organizer review; new publications bypass the queue.
+
+See [ADR-010](docs/adrs/implemented/ADR-010-auto-approve-speaker-changes.md).
+
 ## Daily speaker review digest
 
 At 09:00 Europe/Helsinki, the Worker emails `info@sdlcai.org` a digest of

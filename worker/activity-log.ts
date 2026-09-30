@@ -88,7 +88,7 @@ export async function recordSuccessfulActivity(
         : ["Speaker video", "preview created"]);
     const action =
       path === "/api/speaker/workspace" && body.action === "submit"
-        ? "submitted for review"
+        ? "published"
         : category === "Travel receipt"
           ? request.method === "DELETE"
             ? "deleted"

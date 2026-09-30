@@ -263,13 +263,8 @@ async function uploadSpeakerPhoto(
   const contentHash = await sha256(outputBytes);
   const now = new Date().toISOString();
   const previous = await env.INTERESTS.prepare(
-    source === "admin"
-      ? `SELECT r2_key
-           FROM speaker_photo_revisions
-          WHERE speaker_id = ?1 AND state IN ('submitted', 'approved')`
-      : `SELECT r2_key
-           FROM speaker_photo_revisions
-          WHERE speaker_id = ?1 AND state = 'submitted'`,
+    `SELECT r2_key FROM speaker_photo_revisions
+      WHERE speaker_id = ?1 AND state IN ('submitted', 'approved')`,
   )
     .bind(speakerId)
     .all<{ r2_key: string }>();
@@ -280,103 +275,69 @@ async function uploadSpeakerPhoto(
   });
 
   try {
-    if (source === "admin") {
-      const results = await env.INTERESTS.batch([
-        env.INTERESTS.prepare(
-          `UPDATE speaker_photo_revisions
-              SET state = 'rejected',
-                  reviewed_at = ?2,
-                  reviewed_by = 'admin',
-                  review_note = 'Superseded by an organizer upload.',
-                  updated_at = ?2
-            WHERE speaker_id = ?1
-              AND state IN ('submitted', 'approved')
-              AND EXISTS (
-                SELECT 1 FROM canonical_speaker_content
-                 WHERE speaker_id = ?1
-              )`,
-        ).bind(speakerId, now),
-        env.INTERESTS.prepare(
-          `INSERT INTO speaker_photo_revisions (
-             photo_revision_id,
-             speaker_id,
-             r2_key,
-             content_hash,
-             byte_size,
-             width,
-             height,
-             state,
-             reviewed_at,
-             reviewed_by,
-             review_note,
-             created_at,
-             updated_at
-           )
-           SELECT ?1, ?2, ?3, ?4, ?5, 400, 400, 'approved', ?6, 'admin',
-                  'Uploaded by the organizer.', ?6, ?6
-             FROM canonical_speaker_content
-            WHERE speaker_id = ?2`,
-        ).bind(
-          photoRevisionId,
-          speakerId,
-          r2Key,
-          contentHash,
-          outputBytes.byteLength,
-          now,
-        ),
-        env.INTERESTS.prepare(
-          `UPDATE canonical_speaker_content
-              SET photo_r2_key = ?3,
-                  photo_content_hash = ?4,
-                  photo_version = photo_version + 1,
-                  last_photo_revision_id = ?2,
-                  updated_at = ?5,
-                  updated_by = 'admin'
-            WHERE speaker_id = ?1
-              AND EXISTS (
-                SELECT 1 FROM speaker_photo_revisions
-                 WHERE photo_revision_id = ?2 AND state = 'approved'
-              )`,
-        ).bind(speakerId, photoRevisionId, r2Key, contentHash, now),
-      ]);
+    const results = await env.INTERESTS.batch([
+      env.INTERESTS.prepare(
+        `UPDATE speaker_photo_revisions
+            SET state = 'rejected',
+                reviewed_at = ?2,
+                reviewed_by = ?3,
+                review_note = 'Replaced by a newer upload.',
+                updated_at = ?2
+          WHERE speaker_id = ?1
+            AND state IN ('submitted', 'approved')
+            AND EXISTS (
+              SELECT 1 FROM canonical_speaker_content
+               WHERE speaker_id = ?1
+            )`,
+      ).bind(speakerId, now, source),
+      env.INTERESTS.prepare(
+        `INSERT INTO speaker_photo_revisions (
+           photo_revision_id,
+           speaker_id,
+           r2_key,
+           content_hash,
+           byte_size,
+           width,
+           height,
+           state,
+           reviewed_at,
+           reviewed_by,
+           review_note,
+           created_at,
+           updated_at
+         )
+         SELECT ?1, ?2, ?3, ?4, ?5, 400, 400, 'approved', ?6, ?7,
+                NULL, ?6, ?6
+           FROM canonical_speaker_content
+          WHERE speaker_id = ?2`,
+      ).bind(
+        photoRevisionId,
+        speakerId,
+        r2Key,
+        contentHash,
+        outputBytes.byteLength,
+        now,
+        source,
+      ),
+      env.INTERESTS.prepare(
+        `UPDATE canonical_speaker_content
+            SET photo_r2_key = ?3,
+                photo_content_hash = ?4,
+                photo_version = photo_version + 1,
+                last_photo_revision_id = ?2,
+                updated_at = ?5,
+                updated_by = ?6
+          WHERE speaker_id = ?1
+            AND EXISTS (
+              SELECT 1 FROM speaker_photo_revisions
+               WHERE photo_revision_id = ?2 AND state = 'approved'
+            )`,
+      ).bind(speakerId, photoRevisionId, r2Key, contentHash, now, source),
+    ]);
 
-      // D1 counts audit-trigger writes too; these statements target unique keys.
-      if (!results[1]?.meta.changes || !results[2]?.meta.changes) {
-        throw new Error("Canonical speaker photo could not be published.");
-      }
-    } else {
-      await env.INTERESTS.batch([
-        env.INTERESTS.prepare(
-          `UPDATE speaker_photo_revisions
-              SET state = 'rejected',
-                  reviewed_at = ?2,
-                  reviewed_by = 'speaker',
-                  review_note = 'Replaced by a newer upload.',
-                  updated_at = ?2
-            WHERE speaker_id = ?1 AND state = 'submitted'`,
-        ).bind(speakerId, now),
-        env.INTERESTS.prepare(
-          `INSERT INTO speaker_photo_revisions (
-             photo_revision_id,
-             speaker_id,
-             r2_key,
-             content_hash,
-             byte_size,
-             width,
-             height,
-             state,
-             created_at,
-             updated_at
-           ) VALUES (?1, ?2, ?3, ?4, ?5, 400, 400, 'submitted', ?6, ?6)`,
-        ).bind(
-          photoRevisionId,
-          speakerId,
-          r2Key,
-          contentHash,
-          outputBytes.byteLength,
-          now,
-        ),
-      ]);
+    // D1 counts audit-trigger writes too; these statements target unique keys.
+    if (!results[1]?.meta.changes || !results[2]?.meta.changes) {
+      throw new Error("Canonical speaker photo could not be published.");
     }
   } catch (error) {
     await env.SPEAKER_UPLOADS.delete(r2Key);
@@ -389,10 +350,7 @@ async function uploadSpeakerPhoto(
 
   return photoJson(
     {
-      message:
-        source === "admin"
-          ? "Photo processed, approved, and published."
-          : "Photo processed and submitted for organizer review.",
+      message: "Photo processed, approved, and published.",
       photo: serializePhoto(
         {
           byte_size: outputBytes.byteLength,
@@ -401,10 +359,10 @@ async function uploadSpeakerPhoto(
           height: photoSize,
           photo_revision_id: photoRevisionId,
           r2_key: r2Key,
-          review_note: source === "admin" ? "Uploaded by the organizer." : null,
-          reviewed_at: source === "admin" ? now : null,
+          review_note: null,
+          reviewed_at: now,
           speaker_id: speakerId,
-          state: source === "admin" ? "approved" : "submitted",
+          state: "approved",
           updated_at: now,
           width: photoSize,
         },

@@ -151,10 +151,13 @@ export async function updateSpeakerWorkspace(
   const revisionId = draft?.revision_id ?? crypto.randomUUID();
   const contentJson = JSON.stringify(validation.content);
 
+  const statements: D1PreparedStatement[] = [];
+
   if (draft) {
-    const result = await env
-      .INTERESTS!.prepare(
-        `UPDATE speaker_content_revisions
+    statements.push(
+      env
+        .INTERESTS!.prepare(
+          `UPDATE speaker_content_revisions
           SET content_json = ?2,
               state = ?3,
               submitted_at = CASE WHEN ?3 = 'submitted' THEN ?4 ELSE NULL END,
@@ -166,22 +169,21 @@ export async function updateSpeakerWorkspace(
             SELECT 1 FROM canonical_speaker_content
              WHERE speaker_id = ?6 AND content_version = ?5
           )`,
-      )
-      .bind(
-        revisionId,
-        contentJson,
-        action === "submit" ? "submitted" : "draft",
-        now,
-        baseContentVersion,
-        session.speaker_id,
-      )
-      .run();
-
-    if (!result.meta.changes) return staleCanonicalResponse();
+        )
+        .bind(
+          revisionId,
+          contentJson,
+          action === "submit" ? "submitted" : "draft",
+          now,
+          baseContentVersion,
+          session.speaker_id,
+        ),
+    );
   } else {
-    const result = await env
-      .INTERESTS!.prepare(
-        `INSERT INTO speaker_content_revisions (
+    statements.push(
+      env
+        .INTERESTS!.prepare(
+          `INSERT INTO speaker_content_revisions (
          revision_id,
          speaker_id,
          base_content_hash,
@@ -195,28 +197,72 @@ export async function updateSpeakerWorkspace(
        SELECT ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?8
          FROM canonical_speaker_content
         WHERE speaker_id = ?2 AND content_version = ?4`,
-      )
-      .bind(
-        revisionId,
-        session.speaker_id,
-        canonicalHash,
-        baseContentVersion,
-        contentJson,
-        action === "submit" ? "submitted" : "draft",
-        action === "submit" ? now : null,
-        now,
-      )
-      .run();
+        )
+        .bind(
+          revisionId,
+          session.speaker_id,
+          canonicalHash,
+          baseContentVersion,
+          contentJson,
+          action === "submit" ? "submitted" : "draft",
+          action === "submit" ? now : null,
+          now,
+        ),
+    );
+  }
 
-    if (!result.meta.changes) return staleCanonicalResponse();
+  if (action === "submit") {
+    statements.push(
+      env
+        .INTERESTS!.prepare(
+          `UPDATE canonical_speaker_content
+            SET content_json = ?4,
+                content_version = content_version + 1,
+                last_content_revision_id = ?1,
+                updated_at = ?5,
+                updated_by = 'speaker'
+          WHERE speaker_id = ?2 AND content_version = ?3
+            AND EXISTS (
+              SELECT 1 FROM speaker_content_revisions
+               WHERE revision_id = ?1 AND speaker_id = ?2
+                 AND state = 'submitted' AND content_json = ?4
+                 AND base_content_version = ?3
+            )`,
+        )
+        .bind(
+          revisionId,
+          session.speaker_id,
+          baseContentVersion,
+          contentJson,
+          now,
+        ),
+      env
+        .INTERESTS!.prepare(
+          `UPDATE speaker_content_revisions
+            SET state = 'approved', reviewed_at = ?4,
+                reviewed_by = 'speaker',
+                review_note = 'Automatically approved on speaker publication.',
+                updated_at = ?4
+          WHERE revision_id = ?1 AND speaker_id = ?2 AND state = 'submitted'
+            AND EXISTS (
+              SELECT 1 FROM canonical_speaker_content
+               WHERE speaker_id = ?2 AND content_version = ?3 + 1
+                 AND last_content_revision_id = ?1
+            )`,
+        )
+        .bind(revisionId, session.speaker_id, baseContentVersion, now),
+    );
+  }
+
+  // Keep submission, publication, and approval in one D1 transaction.
+  const results = await env.INTERESTS!.batch(statements);
+  if (results.some((result) => !result.meta.changes)) {
+    return staleCanonicalResponse();
   }
 
   return json({
     ...(await buildWorkspacePayload(session.speaker_id, env)),
-    message:
-      action === "submit"
-        ? "Changes submitted for organizer review."
-        : "Draft saved.",
+    message: action === "submit" ? "Changes published." : "Draft saved.",
   });
 }
 

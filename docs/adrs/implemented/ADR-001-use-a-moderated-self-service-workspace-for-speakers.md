@@ -1,5 +1,6 @@
 # ADR-001: Use a Moderated Self-Service Workspace for Speakers
 
+Amended by [ADR-010](./ADR-010-auto-approve-speaker-changes.md): new speaker submissions are automatically approved.
 **Amended by:** [ADR-009](./ADR-009-send-daily-speaker-review-digests-with-scoped-approval-links.md) for organizer digest and email approval access.
 
 **Status:** Implemented

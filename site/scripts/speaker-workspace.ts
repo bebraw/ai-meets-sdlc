@@ -132,7 +132,7 @@ interface SpeakerVideosResponse {
 }
 
 const videoPermissionText =
-  "I confirm that I created or control this video and grant Toska Osuuskunta permission to use it for SDLCAI promotion according to the options selected here. I understand that the upload remains private until organizer review and that I can contact info@sdlcai.org to withdraw permission for future use.";
+  "I confirm that I created or control this video and grant Toska Osuuskunta permission to use it for SDLCAI promotion according to the options selected here. I understand that the video is automatically approved for use after processing and that I can contact info@sdlcai.org to withdraw permission for future use.";
 
 const loading = document.querySelector<HTMLElement>("[data-speaker-loading]");
 const loginPanel = document.querySelector<HTMLElement>("[data-speaker-login]");
@@ -458,7 +458,7 @@ form?.addEventListener("submit", async (event) => {
 
   clearErrors();
   setBusy(true);
-  setStatus(action === "submit" ? "Submitting…" : "Saving…");
+  setStatus(action === "submit" ? "Publishing…" : "Saving…");
 
   const response = await requestJson<WorkspaceResponse>(
     "/api/speaker/workspace",

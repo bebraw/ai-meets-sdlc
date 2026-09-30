@@ -15,7 +15,7 @@ const adminAuthorization = `Basic ${Buffer.from(
   "speaker-admin:local-test-password",
 ).toString("base64")}`;
 
-test("speaker invitation sessions, revisions, and organizer review stay governed", async (t) => {
+test("speaker invitation sessions, revisions, and automatic publishing stay governed", async (t) => {
   const persistenceDirectory = await mkdtemp(
     path.join(tmpdir(), "sdlcai-speaker-workspace-test-"),
   );
@@ -345,10 +345,15 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   );
   const photoUpload = await photoUploadResponse.json();
   assert.equal(photoUploadResponse.status, 201);
-  assert.equal(photoUpload.photo.state, "submitted");
+  assert.equal(photoUpload.photo.state, "approved");
   assert.equal(photoUpload.photo.width, 400);
   assert.equal(photoUpload.photo.height, 400);
   assert.ok(photoUpload.photo.byte_size < 250 * 1024);
+  const autoPublishedPhoto = await worker.fetch(
+    `${origin}/media/speakers/mo-khazali/${photoUpload.photo.content_hash}.webp`,
+  );
+  assert.equal(autoPublishedPhoto.status, 200);
+  assert.equal(autoPublishedPhoto.headers.get("content-type"), "image/webp");
 
   const stagedPhotoResponse = await worker.fetch(
     `${origin}/api/speaker/photo/image`,
@@ -382,7 +387,12 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   });
   const submittedWorkspace = await submitResponse.json();
   assert.equal(submitResponse.status, 200);
-  assert.equal(submittedWorkspace.revision.state, "submitted");
+  assert.equal(submittedWorkspace.revision, null);
+  assert.equal(submittedWorkspace.canonical_version, 2);
+  assert.deepEqual(submittedWorkspace.canonical, proposed);
+  assert.match(submittedWorkspace.message, /published/u);
+  const publicAfterSubmit = await worker.fetch(`${origin}/speakers/`);
+  assert.match(await publicAfterSubmit.text(), /AI migrations you can verify/u);
 
   const blockedResponse = await speakerFetch(worker, cookie, {
     action: "save",
@@ -446,9 +456,9 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   );
   assert.equal(speaker.contact.email, "speaker@example.com");
   assert.ok(speaker.contact.email_confirmed_at);
-  assert.equal(speaker.revision.state, "submitted");
-  assert.equal(speaker.photo.state, "submitted");
-  assert.equal(speaker.videos[0].state, "ready");
+  assert.equal(speaker.revision.state, "approved");
+  assert.equal(speaker.photo.state, "approved");
+  assert.equal(speaker.videos[0].state, "approved");
   assert.equal(speaker.videos[0].duration_seconds, 91.4);
   assert.equal(speaker.workspace_only, false);
   assert.equal(
@@ -509,7 +519,7 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   );
   assert.deepEqual(
     speaker.revision.changed_fields.map(({ field }) => field),
-    ["profile.name", "talks.mo-khazali-industry-perspective.title"],
+    [],
   );
 
   const archiveResponse = await worker.fetch(
@@ -617,7 +627,7 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
       method: "POST",
     },
   );
-  assert.equal(approvedPhotoResponse.status, 200);
+  assert.equal(approvedPhotoResponse.status, 409);
 
   const approvedVideoResponse = await worker.fetch(
     `${origin}/api/admin/speakers/videos/review`,
@@ -636,38 +646,47 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
       method: "POST",
     },
   );
-  assert.equal(approvedVideoResponse.status, 200);
+  assert.equal(approvedVideoResponse.status, 409);
 
   const rejectedResponse = await review(worker, {
     decision: "reject",
     review_note: "Please use the name shown on your conference badge.",
     revision_id: speaker.revision.revision_id,
   });
-  assert.equal(rejectedResponse.status, 200);
+  assert.equal(rejectedResponse.status, 409);
 
-  const returnedDraftResponse = await speakerFetch(worker, cookie);
-  const returnedDraft = await returnedDraftResponse.json();
-  assert.equal(returnedDraft.revision.state, "draft");
-  assert.equal(returnedDraft.content.profile.name, "Mo Javad Khazali");
+  // The speaker can immediately start another draft after publishing.
+  const nextDraftResponse = await speakerFetch(worker, cookie, {
+    action: "save",
+    base_content_version: 2,
+    content: workspace.content,
+  });
+  const nextDraft = await nextDraftResponse.json();
+  assert.equal(nextDraftResponse.status, 200);
+  assert.equal(nextDraft.revision.state, "draft");
+  assert.deepEqual(nextDraft.canonical, proposed);
 
   const resubmittedResponse = await speakerFetch(worker, cookie, {
     action: "submit",
+    base_content_version: 2,
     content: workspace.content,
   });
   const resubmitted = await resubmittedResponse.json();
   assert.equal(resubmittedResponse.status, 200);
-  assert.equal(resubmitted.revision.state, "submitted");
+  assert.equal(resubmitted.revision, null);
+  assert.equal(resubmitted.canonical_version, 3);
+  assert.deepEqual(resubmitted.canonical, workspace.content);
 
-  const approvedResponse = await review(worker, {
-    decision: "approve",
-    review_note: "Ready to apply.",
-    revision_id: resubmitted.revision.revision_id,
+  // Publishing also works without an existing draft.
+  const directPublishResponse = await speakerFetch(worker, cookie, {
+    action: "submit",
+    base_content_version: 3,
+    content: workspace.content,
   });
-  assert.equal(approvedResponse.status, 200);
-
-  const afterApprovalResponse = await speakerFetch(worker, cookie);
-  const afterApproval = await afterApprovalResponse.json();
-  assert.equal(afterApproval.revision, null);
+  const directPublish = await directPublishResponse.json();
+  assert.equal(directPublishResponse.status, 200);
+  assert.equal(directPublish.canonical_version, 4);
+  assert.equal(directPublish.revision, null);
 
   const organizerContent = structuredClone(mappedSpeaker.canonical);
   organizerContent.profile.role = "Co-founder and CEO at Coldtea.ai";
@@ -953,8 +972,7 @@ test("speaker invitation sessions, revisions, and organizer review stay governed
   assert.ok(
     activity.events.some(
       (event) =>
-        event.category === "Profile and talks" &&
-        event.action === "submitted for review",
+        event.category === "Profile and talks" && event.action === "published",
     ),
   );
   assert.ok(
