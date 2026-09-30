@@ -833,9 +833,20 @@ async function main() {
 
     validationCount += await validateMobileSafari(serverPort, failures);
   } finally {
-    browser.kill();
+    // Chromium can still write profile files after SIGTERM. Wait for it to
+    // close before deleting the profile, and tolerate delayed child cleanup.
+    if (browser.exitCode === null && browser.signalCode === null) {
+      const closed = new Promise((resolve) => browser.once("close", resolve));
+      browser.kill();
+      await closed;
+    }
     server.close();
-    await rm(userDataDir, { recursive: true, force: true });
+    await rm(userDataDir, {
+      recursive: true,
+      force: true,
+      maxRetries: 5,
+      retryDelay: 100,
+    });
   }
 
   if (failures.length > 0) {
