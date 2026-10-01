@@ -46,6 +46,14 @@ try {
   });
   await page.goto(`${origin}/admin/badges/`);
   await page.getByText("Saved badge list loaded.", { exact: true }).waitFor();
+  const previousProof = page.getByRole("button", {
+    name: "← Previous",
+    exact: true,
+  });
+  const nextProof = page.getByRole("button", { name: "Next →", exact: true });
+  const proofNavigation = page.getByRole("group", { name: "Proof navigation" });
+  assert.ok(await previousProof.isDisabled());
+  assert.ok(await nextProof.isDisabled());
   // Run the real browser font/shaping and circle-bound checks on adversarial names.
   const layouts = await page.evaluate(async () => {
     const { loadBadgeFont, renderBadge } =
@@ -86,25 +94,48 @@ try {
     assert.deepEqual(row.issues, [], row.name);
   assert.ok(layouts.at(-2).issues.some((x) => x.includes("minimum size")));
   assert.ok(layouts.at(-1).issues.some((x) => x.includes("Font lacks")));
-  await page
-    .getByLabel("CSV file")
-    .setInputFiles({
-      name: "tito.csv",
-      mimeType: "text/csv",
-      buffer: Buffer.from(
-        "Ticket Full Name,Ticket Company Name,Ticket Email\nŁukasz Żółć,Aalto,one@example.test\nNguyễn Thị Minh Khai,Research,two@example.test",
-      ),
-    });
+  await page.getByLabel("CSV file").setInputFiles({
+    name: "tito.csv",
+    mimeType: "text/csv",
+    buffer: Buffer.from(
+      "Ticket Full Name,Ticket Company Name,Ticket Email\nŁukasz Żółć,Aalto,one@example.test\nNguyễn Thị Minh Khai,Research,two@example.test",
+    ),
+  });
   await page.getByRole("button", { name: "Append CSV rows" }).click();
+  assert.equal(
+    await proofNavigation.getByRole("status").textContent(),
+    "1 / 2",
+  );
+  await nextProof.click();
+  assert.equal(
+    await proofNavigation.getByRole("status").textContent(),
+    "2 / 2",
+  );
+  assert.ok(
+    (await page.locator(".badge-preview").textContent()).includes("Nguyễn"),
+  );
+  await nextProof.press("ArrowRight");
+  assert.equal(
+    await proofNavigation.getByRole("status").textContent(),
+    "1 / 2",
+  );
+  await previousProof.click();
+  assert.equal(
+    await proofNavigation.getByRole("status").textContent(),
+    "2 / 2",
+  );
+  await previousProof.press("ArrowLeft");
+  assert.equal(
+    await proofNavigation.getByRole("status").textContent(),
+    "1 / 2",
+  );
   await page.getByRole("button", { name: "Check all included badges" }).click();
   await page.getByText(/2 badges passed layout and duplicate checks/).waitFor();
-  await page
-    .getByLabel("CSV file")
-    .setInputFiles({
-      name: "webropol.csv",
-      mimeType: "text/csv",
-      buffer: Buffer.from("name,company,email\nDuplicate,,ONE@example.test"),
-    });
+  await page.getByLabel("CSV file").setInputFiles({
+    name: "webropol.csv",
+    mimeType: "text/csv",
+    buffer: Buffer.from("name,company,email\nDuplicate,,ONE@example.test"),
+  });
   await page.getByRole("button", { name: "Append CSV rows" }).click();
   await page.getByRole("button", { name: "Check all included badges" }).click();
   await page.getByText(/2 badges need attention/).waitFor();

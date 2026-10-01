@@ -56,9 +56,36 @@ function setup(root: HTMLElement): void {
     "Select a person to inspect their badge.",
     "text-sm leading-6",
   );
+  const proofNavigation = el(
+    "div",
+    "",
+    "flex flex-wrap items-center gap-3 my-4",
+  );
+  proofNavigation.setAttribute("role", "group");
+  proofNavigation.setAttribute("aria-label", "Proof navigation");
+  const previousProof = button("← Previous", () => moveProof(-1));
+  const nextProof = button("Next →", () => moveProof(1));
+  const proofPosition = el("span", "", "text-sm font-bold");
+  proofPosition.setAttribute("role", "status");
+  append(proofNavigation, previousProof, proofPosition, nextProof);
+  proof.tabIndex = 0;
+  proof.setAttribute("aria-label", "Print proof");
+  proof.addEventListener("keydown", (event) => {
+    if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey)
+      return;
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+    event.preventDefault();
+    moveProof(event.key === "ArrowLeft" ? -1 : 1);
+  });
   append(
     proof,
     el("h2", "Print proof", "font-headline text-3xl uppercase"),
+    proofNavigation,
+    el(
+      "p",
+      "Use ← / → while focused here to browse all badges.",
+      "text-xs text-muted",
+    ),
     preview,
     previewStatus,
   );
@@ -92,6 +119,7 @@ function setup(root: HTMLElement): void {
       )
         n.disabled = value;
     });
+    updateProofNavigation();
   }
   async function work(action: () => Promise<void>) {
     if (busy) return;
@@ -104,12 +132,36 @@ function setup(root: HTMLElement): void {
       locked(false);
     }
   }
+  function updateProofNavigation() {
+    const index = workspace.people.findIndex((p) => p.id === selected);
+    proofPosition.textContent = workspace.people.length
+      ? `${Math.max(0, index) + 1} / ${workspace.people.length}`
+      : "0 / 0";
+    previousProof.disabled = nextProof.disabled =
+      busy || workspace.people.length < 2;
+  }
+  function moveProof(step: number) {
+    if (busy || workspace.people.length < 2) return;
+    const index = Math.max(
+      0,
+      workspace.people.findIndex((p) => p.id === selected),
+    );
+    selected =
+      workspace.people[
+        (index + step + workspace.people.length) % workspace.people.length
+      ]!.id;
+    showPreview();
+  }
   function showPreview() {
     const person =
       workspace.people.find((p) => p.id === selected) ?? workspace.people[0];
     preview.replaceChildren();
-    if (!person || !font) return;
-    selected = person.id;
+    selected = person?.id ?? "";
+    updateProofNavigation();
+    if (!person || !font) {
+      previewStatus.textContent = "Select a person to inspect their badge.";
+      return;
+    }
     const result = renderBadge(person, workspace.settings, font);
     append(preview, result.svg);
     previewStatus.textContent = result.issues.length
