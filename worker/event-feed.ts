@@ -10,6 +10,7 @@ import {
   type EventFeed,
 } from "./event-feed-data.ts";
 import { readScheduleOrder, type ScheduleOrder } from "./schedule-order.ts";
+import { formatSpeakerName } from "../site/scripts/speaker-name.ts";
 
 export async function applyFeedContent(
   seed: EventFeed,
@@ -26,7 +27,7 @@ export async function applyFeedContent(
     if (updatedAt > feed.updatedAt) feed.updatedAt = updatedAt;
     return {
       ...speaker,
-      name: plainText(record.content.profile.name),
+      name: plainText(formatSpeakerName(record.content.profile)),
       summary: plainText(record.content.profile.bio),
     };
   });

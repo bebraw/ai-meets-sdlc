@@ -540,6 +540,9 @@ async function validateSpeakers(speakers) {
       allowedFields: [
         "id",
         "name",
+        "company",
+        "honorific",
+        "credentials",
         "role",
         "photo",
         "website",
@@ -568,6 +571,20 @@ async function validateSpeakers(speakers) {
 
     if (isNonEmptyString(speaker.bio)) {
       validateSafeMarkdown(speaker.bio, `${speakerPath}.bio`);
+    }
+
+    for (const [field, maxLength] of [
+      ["honorific", 40],
+      ["credentials", 80],
+    ]) {
+      if (
+        typeof speaker[field] === "string" &&
+        speaker[field].length > maxLength
+      ) {
+        errors.push(
+          `${speakerPath}.${field} must use at most ${maxLength} characters.`,
+        );
+      }
     }
 
     if (

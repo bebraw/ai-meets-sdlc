@@ -46,6 +46,8 @@ interface CanonicalSpeakerRow {
 
 interface BundledSpeaker {
   company?: string;
+  honorific?: string;
+  credentials?: string;
   bio: string;
   devto?: string;
   github?: string;
@@ -102,6 +104,8 @@ const bundledContent = new Map(
           website: speaker.website ?? "",
           x: speaker.x ?? "",
           company: speaker.company ?? "",
+          honorific: speaker.honorific ?? "",
+          credentials: speaker.credentials ?? "",
         },
         talks: (
           speaker.workspaceTalks ??
@@ -210,11 +214,17 @@ export function renderCanonicalMarkdown(markdown: string): string {
 export async function hashCanonicalContent(
   content: SpeakerWorkspaceContent,
 ): Promise<string> {
-  // An absent/empty optional company must not invalidate pre-existing drafts.
-  const { company, ...legacyProfile } = content.profile;
-  const hashContent = company
-    ? content
-    : { ...content, profile: legacyProfile };
+  // Empty optional fields must not invalidate pre-existing drafts.
+  const { company, honorific, credentials, ...legacyProfile } = content.profile;
+  const hashContent = {
+    ...content,
+    profile: {
+      ...legacyProfile,
+      ...(company ? { company } : {}),
+      ...(honorific ? { honorific } : {}),
+      ...(credentials ? { credentials } : {}),
+    },
+  };
   const digest = await crypto.subtle.digest(
     "SHA-256",
     new TextEncoder().encode(JSON.stringify(hashContent)),

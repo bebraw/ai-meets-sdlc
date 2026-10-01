@@ -8,6 +8,8 @@ interface AdminSpeakerContent {
     github: string;
     linkedin: string;
     name: string;
+    honorific: string;
+    credentials: string;
     role: string;
     scholar: string;
     website: string;
@@ -712,12 +714,32 @@ function renderContentEditor(speaker: AdminSpeakerItem): HTMLElement {
   profileGrid.appendChild(
     createEditorField({
       fields,
-      label: "Name",
+      label: "Name (without titles, shown on badge)",
       maxLength: 120,
       minLength: 2,
       name: "profile.name",
       speakerId: speaker.speaker_id,
       value: content.profile.name,
+    }),
+  );
+  profileGrid.appendChild(
+    createEditorField({
+      fields,
+      label: "Title / honorific (optional, before name; omitted from badges)",
+      maxLength: 40,
+      name: "profile.honorific",
+      speakerId: speaker.speaker_id,
+      value: content.profile.honorific,
+    }),
+  );
+  profileGrid.appendChild(
+    createEditorField({
+      fields,
+      label: "Credentials (optional, after name; omitted from badges)",
+      maxLength: 80,
+      name: "profile.credentials",
+      speakerId: speaker.speaker_id,
+      value: content.profile.credentials,
     }),
   );
   profileGrid.appendChild(
@@ -996,6 +1018,8 @@ function readEditorContent(
       github: value("profile.github"),
       linkedin: value("profile.linkedin"),
       name: value("profile.name"),
+      honorific: value("profile.honorific"),
+      credentials: value("profile.credentials"),
       role: value("profile.role"),
       scholar: value("profile.scholar"),
       website: value("profile.website"),

@@ -4,6 +4,7 @@ import seminar from "../site/data/seminar.json" with { type: "json" };
 import schedule from "../site/data/schedule.json" with { type: "json" };
 import speakers from "../site/data/speakers.json" with { type: "json" };
 import schema from "../site/data/event.schema.json" with { type: "json" };
+import { formatSpeakerName } from "../site/scripts/speaker-name.ts";
 import {
   plainText,
   reviseFeed,
@@ -32,6 +33,7 @@ const sourceFiles = [
   "site/components/ScheduleRow.html",
   "scripts/generate-event-feed.mjs",
   "worker/event-feed-data.ts",
+  "site/scripts/speaker-name.ts",
 ];
 const updatedAt = new Date(
   Math.max(
@@ -80,7 +82,7 @@ const publicSpeakers = speakers.items
       throw new Error(`No published speaker destination for ${speaker.id}`);
     return {
       id: speaker.id,
-      name: plainText(speaker.name),
+      name: plainText(formatSpeakerName(speaker)),
       summary: plainText(speaker.bio),
       url: new URL(attr(link, "href"), origin).href,
     };

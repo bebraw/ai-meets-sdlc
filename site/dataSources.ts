@@ -8,6 +8,7 @@ import seminarData from "./data/seminar.json" with { type: "json" };
 import speakersData from "./data/speakers.json" with { type: "json" };
 import sponsorsData from "./data/sponsors.json" with { type: "json" };
 import { socialRenderPresets } from "../scripts/social-render-presets.mjs";
+import { formatSpeakerName } from "./scripts/speaker-name.ts";
 
 function init() {
   const announcementItems = getAnnouncementItems();
@@ -49,7 +50,7 @@ function init() {
       scheduleItems.flatMap((item) =>
         (item.talks ?? []).flatMap((talk) =>
           talk.speakers.map((speaker) => {
-            const speakerAnchor = getSpeakerAnchor(speaker.name);
+            const speakerAnchor = getSpeakerAnchor(speaker.displayName);
 
             return {
               ...speaker,
@@ -454,7 +455,7 @@ function getScheduleItems(speakersById) {
           throw new Error(`Unknown speaker id: ${speakerId}`);
         }
 
-        const speakerAnchor = getSpeakerAnchor(speaker.name);
+        const speakerAnchor = getSpeakerAnchor(speaker.displayName);
 
         return {
           ...speaker,
@@ -486,6 +487,7 @@ function getSpeakersById() {
       speaker.id,
       {
         ...speaker,
+        displayName: formatSpeakerName(speaker),
         bioHtml: raw(renderDescriptionMarkdown(speaker.bio)),
       },
     ]),

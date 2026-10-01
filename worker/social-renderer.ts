@@ -26,6 +26,7 @@ import {
   type ScheduleOrder,
 } from "./schedule-order.ts";
 import { parsePromotionManifestSource } from "./speaker-promotion-contract.ts";
+import { formatSpeakerName } from "../site/scripts/speaker-name.ts";
 
 const manifestPath = "/assets/social/manifest.json";
 const speakerPromotionManifestPath = "/assets/social/speakers.json";
@@ -81,7 +82,7 @@ export async function handleSpeakerPromotionManifestRequest(
 
         return {
           ...speaker,
-          name: canonical.content.profile.name,
+          name: formatSpeakerName(canonical.content.profile),
           photo: getCanonicalPhotoUrl(canonical),
           talks: await Promise.all(
             speaker.talks.map(async (talk) => {

@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { formatSpeakerName } from "../site/scripts/speaker-name.ts";
 import {
   socialRenderContract,
   socialRenderManifestPath,
@@ -325,7 +326,7 @@ export function buildSpeakerPromotionManifest({ assets, schedule, speakers }) {
     return [
       {
         id: speaker.id,
-        name: speaker.name,
+        name: formatSpeakerName(speaker),
         photo: speaker.photo,
         talks,
       },

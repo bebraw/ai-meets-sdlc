@@ -4,6 +4,7 @@ import { hashCanonicalContent } from "../worker/canonical-content.ts";
 
 import { validateSpeakerWorkspaceContent } from "../worker/speaker-workspace.ts";
 import { parseStoredSpeakerWorkspaceContent } from "../worker/speaker-content-validation.ts";
+import { getChangedFields } from "../worker/speaker-content.ts";
 
 function validContent() {
   return {
@@ -135,12 +136,14 @@ test("speaker company is optional, trimmed, and supports Unicode", () => {
   }
 });
 
-test("empty company preserves legacy content hashes and populated company changes them", async () => {
+test("empty optional profile fields preserve legacy content hashes and populated fields change them", async () => {
   const content = validateSpeakerWorkspaceContent(validContent(), [
     "assigned-talk",
   ]).content;
   const legacy = structuredClone(content);
   delete legacy.profile.company;
+  delete legacy.profile.honorific;
+  delete legacy.profile.credentials;
   const legacyHash = Buffer.from(
     await crypto.subtle.digest(
       "SHA-256",
@@ -148,6 +151,53 @@ test("empty company preserves legacy content hashes and populated company change
     ),
   ).toString("base64url");
   assert.equal(await hashCanonicalContent(content), legacyHash);
-  content.profile.company = "Example Company";
-  assert.notEqual(await hashCanonicalContent(content), legacyHash);
+  for (const [field, value] of [
+    ["company", "Example Company"],
+    ["honorific", "Md"],
+    ["credentials", "PhD"],
+  ]) {
+    const updated = structuredClone(content);
+    updated.profile[field] = value;
+    assert.notEqual(await hashCanonicalContent(updated), legacyHash);
+  }
+});
+
+test("speaker titles and credentials are optional, validated, stored, and included in review changes", () => {
+  const canonical = validateSpeakerWorkspaceContent(validContent(), [
+    "assigned-talk",
+  ]).content;
+  assert.equal(canonical.profile.honorific, "");
+  assert.equal(canonical.profile.credentials, "");
+  const input = validContent();
+  input.profile.honorific = "  Md  ";
+  input.profile.credentials = "  PhD, FBCS  ";
+  const result = validateSpeakerWorkspaceContent(input, ["assigned-talk"]);
+  assert.deepEqual(result.errors, {});
+  assert.equal(result.content.profile.name, "Example Speaker");
+  assert.equal(result.content.profile.honorific, "Md");
+  assert.equal(result.content.profile.credentials, "PhD, FBCS");
+  assert.deepEqual(
+    parseStoredSpeakerWorkspaceContent(JSON.stringify(result.content), [
+      "assigned-talk",
+    ]),
+    result.content,
+  );
+  assert.deepEqual(
+    getChangedFields(canonical, result.content).map(({ field }) => field),
+    ["profile.honorific", "profile.credentials"],
+  );
+  for (const [field, max] of [
+    ["honorific", 40],
+    ["credentials", 80],
+  ]) {
+    for (const invalid of [null, 42, "x".repeat(max + 1)]) {
+      const malformed = validContent();
+      malformed.profile[field] = invalid;
+      const validation = validateSpeakerWorkspaceContent(malformed, [
+        "assigned-talk",
+      ]);
+      assert.ok(validation.errors[`profile.${field}`]);
+      assert.equal(validation.content, undefined);
+    }
+  }
 });

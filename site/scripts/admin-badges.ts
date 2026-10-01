@@ -571,6 +571,7 @@ function setup(root: HTMLElement): void {
         .map((p) =>
           make(
             p.speaker_id,
+            // Badges use the plain name, without honorifics or credentials.
             p.canonical.profile.name,
             p.canonical.profile.company ?? "",
             p.contact?.email ?? "",

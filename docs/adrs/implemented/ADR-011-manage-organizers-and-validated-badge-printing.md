@@ -17,6 +17,8 @@ CSV import happens in the browser. Tito name/company/email columns are recognize
 
 Source refreshes replace that source's badge text, preserve existing inclusion choices, and remove records no longer in the source. Speakers exclude workspace-only test accounts. Organizers include only selected attendees. Volunteers use the organizer color and can be individually excluded. Badge-only edits do not alter the original source records.
 
+Speaker names are stored separately from optional honorifics and credentials. Public pages, slides and promotion assets format the full name; speaker badge imports use only the plain name and optional company. Existing saved badge text updates when organizers refresh speakers, and remains editable for individual exceptions.
+
 ## Print contract
 
 Default output is one 100 mm square page per circular badge, with a 5 mm circular safe inset and a 14 mm top exclusion. White/black denotes attendees, black/white speakers, and orange (#f58220)/black organizers. Printer controls cover diameter, bleed, safe inset, top clearance, name sizes, company size, a circular trim guide, and consecutive identical front/back pages.

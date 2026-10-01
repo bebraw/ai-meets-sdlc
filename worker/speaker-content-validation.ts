@@ -63,6 +63,20 @@ export function validateSpeakerWorkspaceContent(
 
   const profileValue = value.profile;
   const name = validateText(profileValue.name, "profile.name", 2, 120, errors);
+  const honorific = validateText(
+    profileValue.honorific === undefined ? "" : profileValue.honorific,
+    "profile.honorific",
+    0,
+    40,
+    errors,
+  );
+  const credentials = validateText(
+    profileValue.credentials === undefined ? "" : profileValue.credentials,
+    "profile.credentials",
+    0,
+    80,
+    errors,
+  );
   const role = validateText(profileValue.role, "profile.role", 2, 160, errors);
   const company = validateText(
     profileValue.company === undefined ? "" : profileValue.company,
@@ -86,6 +100,8 @@ export function validateSpeakerWorkspaceContent(
     website: "",
     x: "",
     company,
+    honorific,
+    credentials,
   } satisfies SpeakerProfileContent;
 
   for (const field of socialFields) {

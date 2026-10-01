@@ -23,6 +23,8 @@ export function reviewFieldLabel(field: string): string {
       {
         bio: "Biography",
         name: "Speaker name",
+        honorific: "Title / honorific",
+        credentials: "Credentials",
         role: "Role",
         company: "Company",
       } as Record<string, string>

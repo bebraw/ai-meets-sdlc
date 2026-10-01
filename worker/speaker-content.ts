@@ -373,6 +373,8 @@ export function getChangedFields(
 
   for (const field of [
     "name",
+    "honorific",
+    "credentials",
     "role",
     "company",
     "bio",

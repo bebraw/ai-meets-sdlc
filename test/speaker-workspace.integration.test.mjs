@@ -151,6 +151,8 @@ test("speaker invitation sessions, revisions, and automatic publishing stay gove
   assert.equal(speakerPageResponse.status, 200);
   assert.equal(speakerPageResponse.headers.get("cache-control"), "no-store");
   assert.match(speakerPage, /data-speaker-login-form/u);
+  assert.match(speakerPage, /name="profile.honorific"/u);
+  assert.match(speakerPage, /name="profile.credentials"/u);
   assert.match(speakerPage, /data-action="speaker-login-v1"/u);
   assert.match(speakerPage, /data-speaker-dinner-form/u);
   assert.match(speakerPage, /data-speaker-presentation-form/u);
@@ -365,6 +367,8 @@ test("speaker invitation sessions, revisions, and automatic publishing stay gove
 
   const proposed = structuredClone(workspace.content);
   proposed.profile.name = "Mo Javad Khazali";
+  proposed.profile.honorific = "Md";
+  proposed.profile.credentials = "PhD";
   proposed.profile.company = "Société 日本";
   proposed.talks[0].title = "AI migrations you can verify";
 
@@ -393,7 +397,23 @@ test("speaker invitation sessions, revisions, and automatic publishing stay gove
   assert.deepEqual(submittedWorkspace.canonical, proposed);
   assert.match(submittedWorkspace.message, /published/u);
   const publicAfterSubmit = await worker.fetch(`${origin}/speakers/`);
-  assert.match(await publicAfterSubmit.text(), /AI migrations you can verify/u);
+  const publicAfterSubmitHtml = await publicAfterSubmit.text();
+  assert.match(publicAfterSubmitHtml, /AI migrations you can verify/u);
+  assert.match(publicAfterSubmitHtml, /Md Mo Javad Khazali, PhD/u);
+  for (const route of ["/schedule/", "/slides/deck/", "/slides/schedule/"]) {
+    const response = await worker.fetch(`${origin}${route}`);
+    assert.equal(response.status, 200);
+    assert.match(await response.text(), /Md Mo Javad Khazali, PhD/u);
+  }
+  for (const route of ["/event.json", "/assets/social/speakers.json"]) {
+    const response = await worker.fetch(`${origin}${route}`);
+    assert.equal(response.status, 200);
+    const data = await response.json();
+    assert.equal(
+      data.speakers.find(({ id }) => id === "mo-khazali").name,
+      "Md Mo Javad Khazali, PhD",
+    );
+  }
 
   const blockedResponse = await speakerFetch(worker, cookie, {
     action: "save",

@@ -33,6 +33,8 @@ async function fixture(t) {
       .map((s) => s.trim())
       .filter(Boolean))
       await db.prepare(sql).run();
+  // Digest scenarios start after migration-generated change events.
+  await db.prepare("DELETE FROM organizer_data_changes").run();
   const messages = [];
   const env = {
     INTERESTS: db,

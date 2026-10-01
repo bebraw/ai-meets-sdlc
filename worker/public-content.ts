@@ -9,6 +9,7 @@ import {
 } from "./canonical-content";
 import { applyScheduleToResponse } from "./schedule-html.ts";
 import type { ScheduleOrder } from "./schedule-order.ts";
+import { formatSpeakerName } from "../site/scripts/speaker-name.ts";
 
 const canonicalHtmlCacheControl =
   "public, max-age=60, s-maxage=300, stale-while-revalidate=86400";
@@ -56,7 +57,8 @@ export async function applyCanonicalContentToResponse(
     .on("[data-canonical-speaker-name]", {
       element(element) {
         const record = getSpeakerForElement(element, speakers);
-        if (record) element.setInnerContent(record.content.profile.name);
+        if (record)
+          element.setInnerContent(formatSpeakerName(record.content.profile));
       },
     })
     .on("[data-canonical-speaker-role]", {

@@ -1,6 +1,7 @@
 export {};
 
 import { loadSpeakerReceipts } from "./receipts";
+import { formatSpeakerName } from "./speaker-name.ts";
 
 interface WorkspaceProfile {
   company: string;
@@ -9,6 +10,8 @@ interface WorkspaceProfile {
   github: string;
   linkedin: string;
   name: string;
+  honorific: string;
+  credentials: string;
   role: string;
   scholar: string;
   website: string;
@@ -241,7 +244,7 @@ function renderWorkspace(data: WorkspaceResponse): void {
   workspace?.removeAttribute("hidden");
   logoutButton?.removeAttribute("hidden");
 
-  setText("[data-speaker-name]", data.content.profile.name);
+  setText("[data-speaker-name]", formatSpeakerName(data.content.profile));
   setText(
     "[data-speaker-revision]",
     data.revision?.state === "submitted"
@@ -1133,6 +1136,8 @@ function readFormContent(): WorkspaceContent {
   const profile = Object.fromEntries(
     [
       "name",
+      "honorific",
+      "credentials",
       "role",
       "company",
       "bio",

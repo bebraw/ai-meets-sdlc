@@ -149,8 +149,57 @@ try {
   await page.reload();
   await page.getByText("Saved badge list loaded.", { exact: true }).waitFor();
   assert.equal(await page.getByRole("article").count(), 3);
+  await page.goto(`${origin}/admin/speakers/`);
+  await page.getByText(/Loaded \d+ speakers\./).waitFor();
+  const speakerEditor = page.locator("[data-admin-speakers] > article").first();
+  await speakerEditor
+    .getByText("Edit speaker details", { exact: true })
+    .click();
+  await speakerEditor.locator('[name="profile.honorific"]').fill("Md");
+  await speakerEditor.locator('[name="profile.credentials"]').fill("PhD");
+  await speakerEditor
+    .getByRole("button", { name: "Approve & publish", exact: true })
+    .click();
+  await page
+    .getByText("Organizer edit approved and published.", { exact: true })
+    .waitFor();
+  await speakerEditor
+    .getByText("Edit speaker details", { exact: true })
+    .click();
+  assert.equal(
+    await speakerEditor.locator('[name="profile.name"]').inputValue(),
+    "Mo Khazali",
+  );
+  assert.equal(
+    await speakerEditor.locator('[name="profile.honorific"]').inputValue(),
+    "Md",
+  );
+  assert.equal(
+    await speakerEditor.locator('[name="profile.credentials"]').inputValue(),
+    "PhD",
+  );
+  await page.setViewportSize({ width: 390, height: 844 });
+  assert.ok(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+    "Speaker editor mobile horizontal overflow",
+  );
+  await speakerEditor
+    .locator('[name="profile.honorific"]')
+    .scrollIntoViewIfNeeded();
+  await page.screenshot({ path: "/tmp/sdlcai-speaker-titles-mobile.png" });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(`${origin}/admin/badges/`);
+  await page.getByText("Saved badge list loaded.", { exact: true }).waitFor();
   await page.getByRole("button", { name: "Refresh speakers" }).click();
   await page.getByText(/speakers refreshed/).waitFor();
+  const badgeNames = await page
+    .locator("article textarea")
+    .evaluateAll((inputs) => inputs.map((input) => input.value));
+  assert.ok(badgeNames.includes("Muhammad Waseem"));
+  assert.ok(badgeNames.includes("Mo Khazali"));
+  assert.ok(!badgeNames.some((name) => /\b(?:Dr|Md|PhD)\b/u.test(name)));
   await page.getByRole("button", { name: "Check all included badges" }).click();
   await page.getByText(/badges passed layout and duplicate checks/).waitFor();
   // Inspect the exact print DOM without opening a native print dialog.
@@ -158,6 +207,19 @@ try {
     window.print = () => {
       window.__printed = true;
     };
+  });
+  await page
+    .getByRole("button", { name: "Print / save PDF — speaker", exact: true })
+    .click();
+  await page.waitForFunction(() => window.__printed);
+  const speakerPrint = (
+    await page.locator(".badge-print-root text").allTextContents()
+  ).join(" ");
+  assert.match(speakerPrint, /Muhammad Waseem/u);
+  assert.match(speakerPrint, /Mo Khazali/u);
+  assert.doesNotMatch(speakerPrint, /\b(?:Dr|Md|PhD)\b/u);
+  await page.evaluate(() => {
+    window.__printed = false;
   });
   await page
     .getByRole("button", { name: "Print / save PDF — attendee", exact: true })
