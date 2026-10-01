@@ -32,6 +32,11 @@ export type BadgePerson = v.InferOutput<typeof badgePersonSchema>;
 export type BadgeRole = BadgePerson["role"];
 export type BadgeSettings = v.InferOutput<typeof badgeSettingsSchema>;
 export type BadgeWorkspace = v.InferOutput<typeof badgeWorkspaceSchema>;
+export function badgeCompany(email: string, company: string): string {
+  return !company.trim() && email.trim().toLowerCase().endsWith("aalto.fi")
+    ? "Aalto University"
+    : company;
+}
 export const defaultSettings: BadgeSettings = {
   diameter: 100,
   bleed: 0,
@@ -50,6 +55,8 @@ export function parseWorkspace(value: unknown): BadgeWorkspace {
     data.people.some((p) => !p.id)
   )
     throw new Error("Badge IDs must be unique.");
+  for (const person of data.people)
+    person.company = badgeCompany(person.email, person.company);
   return data;
 }
 export function duplicateIds(people: BadgePerson[]): Set<string> {
@@ -157,7 +164,7 @@ export function importCsv(
     return {
       id: crypto.randomUUID(),
       name,
-      company,
+      company: badgeCompany(email, company),
       email,
       source: `${source} / row ${record.row}`,
       role: "attendee",

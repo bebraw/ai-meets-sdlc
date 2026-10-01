@@ -3,6 +3,7 @@ import "./index.ts";
 import { el, button, field, api, message } from "./admin-toolkit.ts";
 import {
   defaultSettings,
+  badgeCompany,
   parseWorkspace,
   parseCsv,
   importCsv,
@@ -171,7 +172,8 @@ function setup(root: HTMLElement): void {
       include.input.className = "h-5 w-5";
       const edit = () => {
         person.name = name.value;
-        person.company = company.input.value;
+        person.company = badgeCompany(email.input.value, company.input.value);
+        company.input.value = person.company;
         if (person.email !== email.input.value)
           person.duplicateReviewed = false;
         person.email = email.input.value;
@@ -479,7 +481,7 @@ function setup(root: HTMLElement): void {
     ): BadgePerson => ({
       id: `${kind}:${id}`,
       name,
-      company,
+      company: badgeCompany(email, company),
       email,
       role,
       source: kind,
