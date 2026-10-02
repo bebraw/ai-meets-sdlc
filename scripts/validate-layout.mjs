@@ -5,6 +5,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { spawn } from "node:child_process";
 import { chromium } from "playwright";
+import { closeBrowserServer, runBrowserCheck } from "./layout-browser.mjs";
 
 const buildDir = path.resolve("build");
 const routes = [
@@ -162,17 +163,26 @@ function getFreePort() {
 
 async function runWithConcurrency(items, concurrency, worker) {
   let nextIndex = 0;
+  let failure;
 
-  await Promise.all(
+  await Promise.allSettled(
     Array.from({ length: Math.min(concurrency, items.length) }, async () => {
-      while (nextIndex < items.length) {
+      while (!failure && nextIndex < items.length) {
         const item = items[nextIndex];
         nextIndex += 1;
 
-        await worker(item);
+        try {
+          await worker(item);
+        } catch (error) {
+          failure ??= error;
+        }
       }
     }),
   );
+
+  if (failure) {
+    throw failure;
+  }
 }
 
 class CdpSession {
@@ -698,7 +708,7 @@ function createPlaywrightSessionAdapter(page) {
 
 async function validateMobileSafari(serverPort, failures) {
   const { webkit, devices } = await import("playwright");
-  const browser = await webkit.launch();
+  const browserServer = await webkit.launchServer();
   const baseDevice = devices["iPhone 15"];
   let validationCount = 0;
   const jobs = routes.flatMap((route) =>
@@ -706,48 +716,54 @@ async function validateMobileSafari(serverPort, failures) {
   );
 
   try {
+    const browser = await webkit.connect(browserServer.wsEndpoint(), {
+      timeout: 30000,
+    });
     await runWithConcurrency(
       jobs,
       validationConcurrency,
       async ({ route, viewport }) => {
-        const context = await browser.newContext({
-          ...baseDevice,
-          viewport: {
-            width: viewport.width,
-            height: viewport.height,
-          },
-          isMobile: true,
-          hasTouch: true,
-        });
-        const page = await context.newPage();
+        let context;
         const url = `http://127.0.0.1:${serverPort}${route}`;
 
-        try {
-          await page.goto(url, { waitUntil: "load" });
-          validationCount += 1;
-
-          const session = createPlaywrightSessionAdapter(page);
-          const pageFailures = [
-            ...(await evaluateLayout(session)),
-            ...(await evaluatePageLayout(session)),
-          ];
-
-          for (const failure of pageFailures) {
-            failures.push({
-              browser: "mobile-safari-webkit",
-              route,
-              viewport: viewport.name,
-              size: `${viewport.width}x${viewport.height}`,
-              ...failure,
+        await runBrowserCheck({
+          label: `mobile-safari-webkit ${route} ${viewport.name} (${viewport.width}x${viewport.height})`,
+          run: async () => {
+            context = await browser.newContext({
+              ...baseDevice,
+              viewport: {
+                width: viewport.width,
+                height: viewport.height,
+              },
+              isMobile: true,
+              hasTouch: true,
             });
-          }
-        } finally {
-          await context.close();
-        }
+            const page = await context.newPage();
+            await page.goto(url, { waitUntil: "load" });
+
+            const session = createPlaywrightSessionAdapter(page);
+            const pageFailures = [
+              ...(await evaluateLayout(session)),
+              ...(await evaluatePageLayout(session)),
+            ];
+
+            validationCount += 1;
+            for (const failure of pageFailures) {
+              failures.push({
+                browser: "mobile-safari-webkit",
+                route,
+                viewport: viewport.name,
+                size: `${viewport.width}x${viewport.height}`,
+                ...failure,
+              });
+            }
+          },
+          close: () => context?.close(),
+        });
       },
     );
   } finally {
-    await browser.close();
+    await closeBrowserServer(browserServer);
   }
 
   return validationCount;
@@ -795,6 +811,15 @@ async function main() {
   const chromiumJobs = routes.flatMap((route) =>
     getRouteViewports(route).map((viewport) => ({ route, viewport })),
   );
+  const closeChromium = async () => {
+    // Wait for the process before starting another engine or removing its
+    // profile. Keeping Chromium alive adds memory pressure to WebKit jobs.
+    if (browser.exitCode === null && browser.signalCode === null) {
+      const closed = new Promise((resolve) => browser.once("close", resolve));
+      browser.kill();
+      await closed;
+    }
+  };
 
   try {
     await Promise.race([
@@ -840,15 +865,10 @@ async function main() {
       },
     );
 
+    await closeChromium();
     validationCount += await validateMobileSafari(serverPort, failures);
   } finally {
-    // Chromium can still write profile files after SIGTERM. Wait for it to
-    // close before deleting the profile, and tolerate delayed child cleanup.
-    if (browser.exitCode === null && browser.signalCode === null) {
-      const closed = new Promise((resolve) => browser.once("close", resolve));
-      browser.kill();
-      await closed;
-    }
+    await closeChromium();
     server.close();
     await rm(userDataDir, {
       recursive: true,

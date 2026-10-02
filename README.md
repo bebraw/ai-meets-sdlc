@@ -104,6 +104,13 @@ accessibility guard for non-inline touch targets smaller than 24 by 24 CSS
 pixels. `a11y:check` runs axe-core against every generated route at mobile and
 desktop widths. `quality:gate` includes both checks.
 
+The layout checker closes Chromium before starting Mobile Safari/WebKit to
+reduce memory pressure. Each WebKit check has a 35-second deadline, including
+navigation and font/layout evaluation, followed by up to 5 seconds for context
+cleanup. Failures report the route and viewport and preserve the original error
+if cleanup also stalls. Browser shutdown falls back to terminating the
+validation-owned process after 5 seconds.
+
 ## Worker Development
 
 Copy `.env.example` to `.env`, set local `EMAIL_ENCRYPTION_KEY`,
