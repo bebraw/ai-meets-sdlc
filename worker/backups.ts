@@ -4,6 +4,44 @@ interface BackupManifest {
   rows_hash?: string;
 }
 
+export async function backupAttendees(env: Env): Promise<void> {
+  // One D1 batch captures the roster and arrival ledger in a consistent snapshot.
+  // Access credentials are deliberately excluded from recovery exports.
+  const results = await env.INTERESTS.batch([
+    env.INTERESTS.prepare("SELECT * FROM attendee_roster WHERE id = 1"),
+    env.INTERESTS.prepare(
+      "SELECT * FROM attendee_arrivals ORDER BY attendee_id",
+    ),
+    env.INTERESTS.prepare(
+      "SELECT * FROM attendee_arrival_events ORDER BY event_id",
+    ),
+  ]);
+  const rows = {
+    roster: results[0]!.results,
+    arrivals: results[1]!.results,
+    history: results[2]!.results,
+  };
+  const rowsHash = await sha256Hex(JSON.stringify(rows));
+  const latest = await env.INTEREST_BACKUPS.get("attendees/latest.json");
+  if (latest?.customMetadata?.rows_hash === rowsHash) return;
+  const exportedAt = new Date().toISOString();
+  const key = `attendees/snapshots/${rowsHash}.json`;
+  const options = {
+    httpMetadata: { contentType: "application/json" },
+    customMetadata: { rows_hash: rowsHash },
+  };
+  await env.INTEREST_BACKUPS.put(
+    key,
+    JSON.stringify({ exported_at: exportedAt, rows }),
+    options,
+  );
+  await env.INTEREST_BACKUPS.put(
+    "attendees/latest.json",
+    JSON.stringify({ key, exported_at: exportedAt, rows_hash: rowsHash }),
+    options,
+  );
+}
+
 export async function backupInterests(env: Env): Promise<void> {
   const { results } = await env.INTERESTS.prepare(
     "SELECT * FROM interests ORDER BY created_at ASC",

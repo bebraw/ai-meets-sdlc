@@ -6,6 +6,7 @@ interface Volunteer {
   name: string;
   email: string;
   task: string;
+  badge?: boolean;
 }
 
 const root = document.querySelector<HTMLElement>("[data-admin-volunteers]");
@@ -30,6 +31,7 @@ function setup(root: HTMLElement): void {
   const name = form.elements.namedItem("name") as HTMLInputElement;
   const email = form.elements.namedItem("email") as HTMLInputElement;
   const task = form.elements.namedItem("task") as HTMLTextAreaElement;
+  const badge = form.elements.namedItem("badge") as HTMLInputElement;
   let volunteers: Volunteer[] = [];
   let editing: Volunteer | null = null;
   let busy = false;
@@ -75,6 +77,11 @@ function setup(root: HTMLElement): void {
       assignment.className =
         "whitespace-pre-wrap break-words border-t border-ink/20 pt-4 leading-7";
       assignment.textContent = volunteer.task || "No task assigned yet.";
+      const inclusion = document.createElement("p");
+      inclusion.className = "text-sm font-bold";
+      inclusion.textContent = volunteer.badge
+        ? "Included in badge run"
+        : "Excluded from badge run";
       const actions = document.createElement("div");
       actions.className = "flex flex-wrap gap-3";
       const edit = button("Edit");
@@ -91,6 +98,7 @@ function setup(root: HTMLElement): void {
         name.value = volunteer.name;
         email.value = volunteer.email;
         task.value = volunteer.task;
+        badge.checked = volunteer.badge ?? true;
         heading.textContent = "Edit volunteer";
         save.textContent = "Save changes";
         cancel.hidden = false;
@@ -126,7 +134,7 @@ function setup(root: HTMLElement): void {
       });
       actions.appendChild(edit);
       actions.appendChild(remove);
-      for (const child of [title, contact, assignment, actions])
+      for (const child of [title, contact, inclusion, assignment, actions])
         card.appendChild(child);
       list.appendChild(card);
     }
@@ -158,6 +166,7 @@ function setup(root: HTMLElement): void {
       name: name.value,
       email: email.value,
       task: task.value,
+      badge: String(badge.checked),
     });
     if (editing) body.set("revision", String(editing.revision));
     setBusy(true);

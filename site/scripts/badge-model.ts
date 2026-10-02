@@ -25,7 +25,8 @@ export const badgeSettingsSchema = v.object({
   doubleSided: v.boolean(),
 });
 export const badgeWorkspaceSchema = v.object({
-  people: v.pipe(v.array(badgePersonSchema), v.maxLength(2000)),
+  // Live badge runs combine bounded registration imports with other sources.
+  people: v.array(badgePersonSchema),
   settings: badgeSettingsSchema,
 });
 export type BadgePerson = v.InferOutput<typeof badgePersonSchema>;

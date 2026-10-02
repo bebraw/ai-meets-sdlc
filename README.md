@@ -177,7 +177,8 @@ image across deployments.
 
 The deployed Worker serves a protected dashboard at `/admin/`, with focused
 workspaces at `/admin/speakers/`, `/admin/dinner/`, `/admin/receipts/`, `/admin/posters/`,
-`/admin/interests/`, `/admin/volunteers/`, `/admin/activity/`, `/admin/qa/`, and `/admin/slides/`. Organizers sign in through the
+`/admin/interests/`, `/admin/volunteers/`, `/admin/activity/`, `/admin/qa/`,
+`/admin/attendees/`, and `/admin/slides/`. Organizers sign in through the
 password-manager-compatible form at `/admin/login/`; a signed, secure cookie
 keeps the browser session active for seven days. HTTP Basic credentials remain
 accepted when supplied proactively by scripts, but unauthenticated browser
@@ -417,6 +418,56 @@ between provider acceptance and recording success can result in a duplicate.
 copies of personal data. Adding another application table requires adding its
 tracking triggers to a migration and its display label to the digest.
 
+## Attendee management and registration desk
+
+Apply `0023_create_attendee_registration.sql` before deploying. At
+`/admin/attendees/`, import Tito and Webropol CSVs separately using the same
+column-mapping workflow previously used by badges. Map individual ticket codes and attendee
+emails, preview the rows, then import. A ticket code identifies a registration
+within its source; without a code, attendee email is the identity. Keep the
+same identity columns on subsequent imports. Correcting a ticket code or an
+email-only identity also updates its import key while keeping the attendee ID.
+Re-imports update matching
+registrations, retain their IDs, arrival records and badge choices, and leave
+omitted registrations in place. Ticket status accepts active/valid/confirmed/
+paid/complete/completed/issued/registered/assigned and cancelled/canceled/void/
+voided/refunded/expired/deleted. Unknown mapped statuses reject the import.
+If no status column is mapped, all imported rows are active; filter inactive
+tickets out of the source export first.
+
+Create a named staff link for each person handling registration. The link opens
+`/registration/access/` and requires **Open registration desk** to sign in. Links
+remain reusable until revoked; the HttpOnly browser session lasts 14 days.
+Revocation ends every session for that link. Registration staff can search by
+name/email or look up an exact ticket code and mark an active registration as
+arrived. They cannot edit attendees, import data, undo arrivals, print badges,
+or open organizer tools. Q&A and registration links grant separate access.
+
+Arrival writes are atomic, reject repeat/stale submissions, record the staff
+link and time, and compare the roster revision shown to staff with the current
+registration list. Changes require staff to reload and verify the ticket again.
+Writes recheck registration changes and revoked access inside SQL.
+Organizers can edit attendee details, cancel tickets, choose badge inclusion,
+and undo mistakes. A cancelled ticket cannot be checked in. The desk refreshes
+every 15 seconds while visible; an open edit form pauses refreshes. The list is
+a copy of the imported export: it does not check live provider payment/refund
+status or update Tito/Webropol. Refresh the export before opening registration.
+
+The badge studio automatically loads active, badge-selected registrations from
+the current list. Arrival is independent of badge inclusion. Imports, attendee
+corrections and inclusion choices belong in `/admin/attendees/`.
+
+Names, companies, emails and ticket codes are encrypted in the D1 roster.
+Arrival history stores record IDs, actor IDs, action and time without contact
+details. Daily R2 backups include the encrypted roster, arrivals and history,
+and omit staff credentials. **Download attendee list** exports a private JSON
+copy with contact details for event use. Retention cleanup must remove attendee
+data from the D1 roster, related badge copies, downloaded files and R2 backups.
+No new bindings, secrets or dependencies are needed.
+
+Run `npm run attendees:browser-check` after a build for imports, scoped staff
+sign-in, ticket lookup, arrival tracking, automatic badge loading, revocation and layout.
+
 ## Organizers and badge printing
 
 Apply `0020_create_organizers_and_badges.sql` before deploying this version.
@@ -424,14 +475,26 @@ Apply `0020_create_organizers_and_badges.sql` before deploying this version.
 attending/badge inclusion are independent. The existing nine homepage organizers
 are seeded once, visible on the homepage, with badge inclusion off until selected.
 
-At `/admin/badges/`, import UTF-8 Tito and Webropol CSVs separately, check column
-mapping (use the attendee email), and append their rows. Refresh speakers,
-selected organizers, or volunteers from the site. Source refresh replaces badge
-text from that source, preserves inclusion choices, and removes obsolete source
-records. Exclude non-attending volunteers and resolve matching emails before
-printing. Names can contain manual line breaks. Save the encrypted shared list
-for later correction and reprints, or download/restore a JSON draft backup.
-To clear stored attendees, remove their badges and save the resulting list.
+At `/admin/badges/`, preview and generate badges from the current attendee and
+team records. Active, badge-selected attendees, public speakers, selected
+organizers, and attending volunteers load automatically. Manage names, contact
+details and inclusion in their own workspaces; volunteer inclusion is controlled
+in `/admin/volunteers/`. Badge-only name/company adjustments allow line breaks
+without editing registration data. Save print settings and these adjustments
+for reprints. A source correction invalidates outdated text and duplicate
+confirmations. Matching emails still require explicit review before printing.
+
+Earlier saved badge lists remain encrypted and downloadable. Unmatched earlier
+CSV/manual rows remain available for printing until represented by a registration;
+a cancelled or excluded current registration cannot revive its earlier badge.
+Import those registrations in Attendees to move them into the current roster.
+Use **Retire earlier badge**, then **Save print settings**, for obsolete earlier
+rows, including rows without emails. **Restore retired earlier badges** clears
+these choices without changing current registrations or team inclusion.
+The badge studio has no CSV import, manual person creation, or roster editing.
+The 2,000-person limit applies to the attendee roster; the combined badge run
+includes additional team and earlier records. Print preferences are bounded by
+request and encrypted storage size rather than a combined record count.
 
 Printer settings start at 100 mm diameter with one badge per PDF page. Adjust
 bleed, safe margin, top clearance, readable font sizes, trim guide, and repeated
@@ -444,7 +507,7 @@ Use 100% print scale, enable background graphics, disable headers/footers, and
 confirm dimensions and duplex order with the printer. Browser PDFs use RGB, not
 CMYK/PDF-X. Print a physical proof before the full run.
 
-Run `npm run badges:browser-check` after a build to test imports, duplicate
-handling, long/Unicode names, saved lists, source selection, responsive layout,
+Run `npm run badges:browser-check` after a build to test live records, duplicate
+handling, long/Unicode names, print preferences, source updates, responsive layout,
 and actual print pagination. Test proof files are temporary files under `/tmp/`.
 See [ADR-011](docs/adrs/implemented/ADR-011-manage-organizers-and-validated-badge-printing.md).

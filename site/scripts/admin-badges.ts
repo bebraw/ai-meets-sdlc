@@ -3,18 +3,20 @@ import "./index.ts";
 import { el, button, field, api, message } from "./admin-toolkit.ts";
 import {
   defaultSettings,
-  badgeCompany,
   parseWorkspace,
-  parseCsv,
-  importCsv,
   duplicateIds,
   type BadgePerson,
   type BadgeRole,
   type BadgeWorkspace,
-  type CsvRecord,
 } from "./badge-model.ts";
+import {
+  applyPrintPreferences,
+  parsePrintPreferences,
+  isLegacyBadgeId,
+  type PrintPreferences,
+  type BadgeStudioData,
+} from "./badge-studio-model.ts";
 import { loadBadgeFont, renderBadge, type BadgeFont } from "./badge-layout.ts";
-import type { Organizer } from "../../worker/organizers.ts";
 const root = document.querySelector<HTMLElement>("[data-admin-badges]");
 if (root) setup(root);
 function setup(root: HTMLElement): void {
@@ -29,12 +31,13 @@ function setup(root: HTMLElement): void {
   let selected = "";
   let font: BadgeFont | undefined;
   const layoutIssues = new Map<string, string[]>();
-  let records: CsvRecord[] = [];
-  let csvName = "CSV";
-  let csvText = "";
+  let sourcePeople: BadgePerson[] = [];
+  let signatures: Record<string, string> = {};
+  let legacyWorkspace: BadgeWorkspace | null = null;
+  let retiredLegacyIds: string[] = [];
   const status = el(
     "p",
-    "Loading saved badges and print font…",
+    "Loading people, print settings, and font…",
     "border border-ink p-4 font-bold",
   );
   status.setAttribute("role", "status");
@@ -106,7 +109,7 @@ function setup(root: HTMLElement): void {
     printRoot.removeAttribute("data-ready");
     printRoot.replaceChildren();
     status.textContent =
-      "Unsaved changes. Save the list before leaving this page.";
+      "Unsaved print settings or badge text. Save before leaving this page.";
   }
   function locked(value: boolean) {
     busy = value;
@@ -186,7 +189,7 @@ function setup(root: HTMLElement): void {
       const actions = el("div", "", "grid content-start gap-3");
       const nameLabel = el(
         "label",
-        "Name (line breaks allowed)",
+        "Badge name (line breaks allowed)",
         "grid gap-2 text-sm font-bold",
       );
       const name = el(
@@ -198,72 +201,59 @@ function setup(root: HTMLElement): void {
       name.rows = 2;
       name.maxLength = 300;
       append(nameLabel, name);
-      const company = field("Company", person.company);
+      const company = field("Badge company", person.company);
       company.input.maxLength = 300;
-      const email = field(
-        "Attendee email — never printed",
-        person.email,
-        "email",
-      );
-      email.input.maxLength = 254;
-      const roleLabel = el(
-        "label",
-        "Badge type",
-        "grid gap-2 text-sm font-bold",
-      );
-      const role = el("select", "", "border border-ink bg-paper p-2");
-      for (const r of ["attendee", "speaker", "organizer"] as const) {
-        const o = el("option", r);
-        o.value = r;
-        append(role, o);
-      }
-      role.value = person.role;
-      append(roleLabel, role);
-      const include = field("Include in print run", "", "checkbox");
-      include.input.checked = person.included;
-      include.input.className = "h-5 w-5";
       const edit = () => {
         person.name = name.value;
-        person.company = badgeCompany(email.input.value, company.input.value);
-        company.input.value = person.company;
-        if (person.email !== email.input.value)
-          person.duplicateReviewed = false;
-        person.email = email.input.value;
-        person.role = role.value as BadgeRole;
-        person.included = include.input.checked;
+        person.company = company.input.value;
         selected = person.id;
         invalidate();
         showPreview();
-        count.textContent = `${workspace.people.filter((p) => p.included).length} included / ${workspace.people.length} total`;
       };
-      [name, company.input, email.input, role, include.input].forEach((n) =>
-        n.addEventListener("change", () => {
-          edit();
-        }),
-      );
+      [name, company.input].forEach((n) => n.addEventListener("change", edit));
       append(
         main,
         nameLabel,
         company.label,
-        email.label,
-        el("p", person.source, "text-xs text-muted break-words"),
+        el(
+          "p",
+          `${person.role} · ${person.source}`,
+          "text-xs text-muted break-words",
+        ),
       );
       append(
         actions,
-        include.label,
-        roleLabel,
         button("Preview", () => {
           selected = person.id;
           showPreview();
           preview.scrollIntoView({ block: "center", behavior: "smooth" });
         }),
-        button("Remove badge", () => {
-          workspace.people = workspace.people.filter((p) => p.id !== person.id);
+        button("Reset badge text", () => {
+          const original = sourcePeople.find((p) => p.id === person.id);
+          if (!original) return;
+          person.name = original.name;
+          person.company = original.company;
           invalidate();
           renderList();
           showPreview();
         }),
       );
+      if (isLegacyBadgeId(person.id))
+        append(
+          actions,
+          button("Retire earlier badge", () => {
+            if (busy) return;
+            retiredLegacyIds.push(person.id);
+            workspace.people = workspace.people.filter(
+              (p) => p.id !== person.id,
+            );
+            invalidate();
+            renderList();
+            showPreview();
+            status.textContent =
+              "Earlier badge retired from this run. Save print settings to keep this choice.";
+          }),
+        );
       const issues = layoutIssues.get(person.id);
       if (issues?.length)
         append(
@@ -279,7 +269,7 @@ function setup(root: HTMLElement): void {
           actions,
           el(
             "p",
-            "Matching email: exclude the extra badge, or explicitly keep both people.",
+            "Matching email: review the attendee and team records, or confirm that both people need a badge.",
             "font-bold text-sm",
           ),
           button("Keep this duplicate", () => {
@@ -297,9 +287,10 @@ function setup(root: HTMLElement): void {
         list,
         el(
           "p",
-          "No matching badges. Import a CSV or add people from the site.",
+          "No matching badges. Manage people in Attendees, Speakers, Organizers, or Volunteers.",
         ),
       );
+    locked(busy);
   }
   const settingsPanel = el("details", "", "border border-ink p-5");
   append(
@@ -386,264 +377,73 @@ function setup(root: HTMLElement): void {
     );
     append(settingsPanel, custom.label);
   }
-  const importPanel = el("section", "", "border border-ink p-5 grid gap-4");
-  append(
-    importPanel,
-    el("h2", "01 / Import attendees", "font-headline text-2xl uppercase"),
-    el(
-      "p",
-      "Import Tito and Webropol separately. Review mappings before appending rows. Map the attendee email, not the ticket purchaser’s address.",
-      "text-sm leading-6",
-    ),
-  );
-  const file = field("CSV file (UTF-8, up to 2 MB)", "", "file");
-  file.input.accept = ".csv,text/csv";
-  const delimiterLabel = el(
-    "label",
-    "Delimiter",
-    "grid gap-2 text-sm font-bold",
-  );
-  const delimiter = el("select", "", "border border-ink bg-paper p-2");
-  for (const [label, value] of [
-    ["Comma", ","],
-    ["Semicolon", ";"],
-    ["Tab", "\t"],
-  ]) {
-    const o = el("option", label);
-    o.value = value!;
-    append(delimiter, o);
-  }
-  append(delimiterLabel, delimiter);
-  const mapping = el("div", "", "grid gap-3 sm:grid-cols-2");
-  const columns = new Map<string, HTMLSelectElement>();
-  function mapCsv() {
-    records = [];
-    mapping.replaceChildren();
-    columns.clear();
-    if (!csvText) return;
-    records = parseCsv(csvText, delimiter.value);
-    const aliases: Record<string, string[]> = {
-      name: ["name", "full name", "ticket full name", "nimi"],
-      company: [
-        "company",
-        "company name",
-        "ticket company name",
-        "organisaatio",
-        "yritys",
-      ],
-      email: [
-        "email",
-        "email address",
-        "ticket email",
-        "ticket email address",
-        "sähköposti",
-      ],
-      first: ["first name", "ticket first name", "etunimi"],
-      last: ["last name", "ticket last name", "sukunimi"],
-    };
-    for (const key of ["name", "company", "email", "first", "last"]) {
-      const label = el(
-        "label",
-        key === "email" ? "Attendee email" : key === "name" ? "Full name" : key,
-        "grid gap-2 text-sm font-bold",
-      );
-      const select = el("select", "", "min-w-0 border border-ink bg-paper p-2");
-      const empty = el("option", "Not mapped");
-      empty.value = "-1";
-      append(select, empty);
-      records[0]!.cells.forEach((header, index) => {
-        const o = el("option", header || `Column ${index + 1}`);
-        o.value = String(index);
-        append(select, o);
-      });
-      const index = records[0]!.cells.findIndex((h) =>
-        aliases[key]!.includes(h.trim().toLowerCase()),
-      );
-      select.value = String(index);
-      columns.set(key, select);
-      append(label, select);
-      append(mapping, label);
-    }
-    status.textContent = `${records.length - 1} CSV rows read. Check column mappings before import.`;
-  }
-  file.input.addEventListener(
-    "change",
-    () =>
-      void work(async () => {
-        records = [];
-        csvText = "";
-        mapping.replaceChildren();
-        columns.clear();
-        const f = file.input.files?.[0];
-        if (!f) return;
-        if (f.size > 2 * 1024 * 1024) throw new Error("CSV exceeds 2 MB.");
-        csvName = f.name.slice(0, 150);
-        csvText = new TextDecoder("utf-8", { fatal: true }).decode(
-          await f.arrayBuffer(),
-        );
-        mapCsv();
-      }),
-  );
-  delimiter.addEventListener("change", () => {
-    try {
-      mapCsv();
-    } catch (error) {
-      status.textContent = message(error);
-    }
-  });
-  append(
-    importPanel,
-    file.label,
-    delimiterLabel,
-    mapping,
-    button("Append CSV rows", () => {
-      try {
-        const get = (key: string) => Number(columns.get(key)?.value ?? -1);
-        const people = importCsv(
-          records,
-          {
-            name: get("name"),
-            company: get("company"),
-            email: get("email"),
-            first: get("first"),
-            last: get("last"),
-          },
-          csvName,
-        );
-        if (workspace.people.length + people.length > 2000)
-          throw new Error("Maximum 2,000 badges per workspace.");
-        workspace.people.push(...people);
-        invalidate();
-        renderList();
-        showPreview();
-        status.textContent = `${people.length} rows appended. Matching emails must be reviewed before printing.`;
-      } catch (error) {
-        status.textContent = message(error);
-      }
-    }),
-  );
-  async function source(kind: "speakers" | "organizers" | "volunteers") {
-    let people: BadgePerson[] = [];
-    const make = (
-      id: string,
-      name: string,
-      company: string,
-      email: string,
-      role: BadgeRole,
-    ): BadgePerson => ({
-      id: `${kind}:${id}`,
-      name,
-      company: badgeCompany(email, company),
-      email,
-      role,
-      source: kind,
-      included: true,
-      duplicateReviewed: false,
-    });
-    if (kind === "organizers") {
-      const data = await api<{ organizers: Organizer[] }>(
-        "/api/admin/organizers",
-        "",
-      );
-      people = data.organizers
-        .filter((p) => p.badge)
-        .map((p) => make(p.id, p.name, p.company, "", "organizer"));
-    }
-    if (kind === "volunteers") {
-      const data = await api<{
-        volunteers: { id: string; name: string; email: string }[];
-      }>("/api/admin/volunteers", "");
-      people = data.volunteers.map((p) =>
-        make(p.id, p.name, "", p.email, "organizer"),
-      );
-    }
-    if (kind === "speakers") {
-      const data = await api<{
-        speakers: {
-          speaker_id: string;
-          workspace_only: boolean;
-          canonical: { profile: { name: string; company?: string } };
-          contact: { email?: string } | null;
-        }[];
-      }>("/api/admin/speakers", "");
-      people = data.speakers
-        .filter((p) => !p.workspace_only)
-        .map((p) =>
-          make(
-            p.speaker_id,
-            // Badges use the plain name, without honorifics or credentials.
-            p.canonical.profile.name,
-            p.canonical.profile.company ?? "",
-            p.contact?.email ?? "",
-            "speaker",
-          ),
-        );
-    }
-    const existing = new Map(workspace.people.map((p) => [p.id, p]));
-    const refreshed = [
-      ...workspace.people.filter((p) => !p.id.startsWith(`${kind}:`)),
-      ...people.map((p) => ({
-        ...p,
-        included: existing.get(p.id)?.included ?? true,
-      })),
-    ];
-    if (refreshed.length > 2000)
-      throw new Error("Maximum 2,000 badges per workspace.");
-    workspace.people = refreshed;
-    invalidate();
-    renderList();
-    showPreview();
-    status.textContent = `${kind} refreshed. Badge text now matches the source; people no longer selected there were removed.`;
-  }
   const sources = el("section", "", "grid gap-3 border border-ink p-5");
   append(
     sources,
-    el("h2", "02 / Add the team", "font-headline text-2xl uppercase"),
+    el("h2", "People for this badge run", "font-headline text-2xl uppercase"),
     el(
       "p",
-      "Refresh replaces badge text for that source. Organizers include only people marked as attending. Volunteers use orange organizer badges; exclude anyone who will not attend.",
+      "Active attendees selected for badges, public speakers, attending organizers, and selected volunteers load automatically. Edit people and attendance in their own workspaces; text adjustments here affect only the printed badge.",
       "text-sm leading-6",
     ),
   );
-  for (const kind of ["speakers", "organizers", "volunteers"] as const)
-    append(
-      sources,
-      button(`Refresh ${kind}`, () => {
-        if (
-          workspace.people.some((p) => p.id.startsWith(`${kind}:`)) &&
-          !confirm(`Replace badge edits from ${kind} with current source data?`)
-        )
-          return;
-        void work(() => source(kind));
-      }),
-    );
-  append(
-    sources,
-    button("Add a manual badge", () => {
-      if (workspace.people.length >= 2000) {
-        status.textContent = "Maximum 2,000 badges per workspace.";
-        return;
-      }
-      workspace.people.push({
-        id: crypto.randomUUID(),
-        name: "",
-        company: "",
-        email: "",
-        role: "attendee",
-        source: "Manual",
-        included: true,
-        duplicateReviewed: false,
-      });
-      selected = workspace.people.at(-1)!.id;
-      invalidate();
-      renderList();
-      showPreview();
-    }),
+  const links = el(
+    "div",
+    "",
+    "flex flex-wrap gap-4 text-sm font-bold underline",
   );
+  for (const label of ["Attendees", "Speakers", "Organizers", "Volunteers"]) {
+    const link = el("a", `Manage ${label.toLowerCase()}`);
+    link.href = `/admin/${label.toLowerCase()}/`;
+    append(links, link);
+  }
+  const legacyNotice = el("div", "", "grid gap-3 text-sm");
+  append(sources, links, legacyNotice);
+  function preferences(): PrintPreferences {
+    const originals = new Map(sourcePeople.map((p) => [p.id, p]));
+    return parsePrintPreferences({
+      settings: workspace.settings,
+      retiredLegacyIds,
+      overrides: workspace.people
+        .filter((p) => {
+          const original = originals.get(p.id);
+          return (
+            original &&
+            (p.name !== original.name ||
+              p.company !== original.company ||
+              p.duplicateReviewed !== original.duplicateReviewed)
+          );
+        })
+        .map((p) => ({
+          id: p.id,
+          signature: signatures[p.id],
+          name: p.name,
+          company: p.company,
+          duplicateReviewed: p.duplicateReviewed,
+        })),
+    });
+  }
+  async function refreshBeforePrint(): Promise<boolean> {
+    const current = await api<BadgeStudioData>("/api/admin/badges", "");
+    const changed =
+      JSON.stringify(current.signatures) !== JSON.stringify(signatures);
+    if (!changed) return true;
+    const draft = preferences();
+    sourcePeople = current.people;
+    signatures = current.signatures;
+    workspace.people = applyPrintPreferences(sourcePeople, draft, signatures);
+    layoutIssues.clear();
+    renderList();
+    showPreview();
+    status.textContent =
+      "People changed since this preview. Review the updated badges, then check or print again.";
+    return false;
+  }
   async function check(role: BadgeRole | "all", print: boolean) {
     printRoot.removeAttribute("data-ready");
     printRoot.replaceChildren();
     if (!font) throw new Error("The badge font has not loaded.");
+    if (!(await refreshBeforePrint())) return;
     const people = workspace.people.filter(
       (p) => p.included && (role === "all" || p.role === role),
     );
@@ -694,7 +494,7 @@ function setup(root: HTMLElement): void {
   const output = el("section", "", "grid gap-3 border border-ink p-5");
   append(
     output,
-    el("h2", "03 / Preflight & print", "font-headline text-2xl uppercase"),
+    el("h2", "Check & print", "font-headline text-2xl uppercase"),
     button(
       "Check all included badges",
       () => void work(() => check("all", false)),
@@ -708,75 +508,95 @@ function setup(root: HTMLElement): void {
         () => void work(() => check(role, true)),
       ),
     );
-  const save = button(
-    "Save badge list",
-    () =>
-      void work(async () => {
-        if (!loaded) throw new Error("Load the saved workspace before saving.");
-        const result = await api<{ revision: number }>(
-          "/api/admin/badges",
-          "manage-badges",
-          "PUT",
-          { revision, workspace },
-        );
-        revision = result.revision;
-        dirty = false;
-        status.textContent = "Badge list and printer settings saved.";
-      }),
-  );
-  function download() {
-    const blob = new Blob([JSON.stringify(workspace, null, 2)], {
-      type: "application/json",
-    });
-    const url = URL.createObjectURL(blob);
-    const link = el("a");
-    link.href = url;
-    link.download = "sdlcai-badge-draft.json";
-    link.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-  }
-  async function load() {
-    const result = await api<{ revision: number; workspace: BadgeWorkspace }>(
+  async function savePreferences() {
+    if (!loaded) throw new Error("Load the saved workspace before saving.");
+    const result = await api<{ revision: number }>(
       "/api/admin/badges",
-      "",
+      "manage-badges",
+      "PUT",
+      { revision, preferences: preferences() },
     );
-    workspace = parseWorkspace(result.workspace);
+    revision = result.revision;
+    await load();
+    status.textContent = "Print settings and badge text saved.";
+  }
+  const save = button("Save print settings", () => void work(savePreferences));
+  async function load() {
+    const result = await api<BadgeStudioData>("/api/admin/badges", "");
+    sourcePeople = result.people;
+    signatures = result.signatures;
+    const saved = parsePrintPreferences(result.preferences);
+    retiredLegacyIds = saved.retiredLegacyIds;
+    workspace = parseWorkspace({
+      people: applyPrintPreferences(sourcePeople, saved, signatures),
+      settings: saved.settings,
+    });
+    legacyWorkspace = result.legacyWorkspace;
     revision = result.revision;
     loaded = true;
     dirty = false;
     printRoot.removeAttribute("data-ready");
+    printRoot.replaceChildren();
+    legacyNotice.replaceChildren();
+    if (legacyWorkspace) {
+      append(
+        legacyNotice,
+        el(
+          "p",
+          `${result.legacyCount} earlier badge rows available · ${retiredLegacyIds.length} retired. Import their registration data in Attendees, or retire obsolete rows. The original list stays downloadable.`,
+        ),
+        button("Download earlier badge list", () => {
+          const url = URL.createObjectURL(
+            new Blob([JSON.stringify(legacyWorkspace, null, 2)], {
+              type: "application/json",
+            }),
+          );
+          const link = el("a");
+          link.href = url;
+          link.download = "sdlcai-earlier-badge-list.json";
+          link.click();
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }),
+      );
+      if (retiredLegacyIds.length)
+        append(
+          legacyNotice,
+          button(
+            "Restore retired earlier badges",
+            () =>
+              void work(async () => {
+                const result = await api<{ revision: number }>(
+                  "/api/admin/badges",
+                  "manage-badges",
+                  "PUT",
+                  {
+                    revision,
+                    preferences: { ...preferences(), retiredLegacyIds: [] },
+                  },
+                );
+                revision = result.revision;
+                await load();
+                status.textContent =
+                  "Earlier badge retirement choices cleared. Current registration and team choices still apply.";
+              }),
+          ),
+        );
+    }
     renderSettings();
     renderList();
     showPreview();
-    status.textContent = "Saved badge list loaded.";
+    status.textContent =
+      "Badge studio ready. People are loaded from attendee and team records.";
   }
-  const restore = field("Restore a downloaded draft", "", "file");
-  restore.input.accept = ".json";
-  restore.input.addEventListener(
-    "change",
-    () =>
-      void work(async () => {
-        const f = restore.input.files?.[0];
-        if (!f) return;
-        if (f.size > 1800 * 1024) throw new Error("Draft is too large.");
-        const data = parseWorkspace(JSON.parse(await f.text()));
-        if (!confirm("Replace this tab’s badge list with the draft?")) return;
-        workspace = data;
-        invalidate();
-        renderSettings();
-        renderList();
-        showPreview();
-      }),
-  );
   append(
     toolbar,
     save,
-    button("Reload saved list", () => {
-      if (!dirty || confirm("Discard unsaved badge edits?")) void work(load);
+    button("Reload people and settings", () => {
+      if (!dirty || confirm("Discard unsaved print settings and badge text?"))
+        void work(load);
     }),
-    button("Download draft backup", download),
   );
-  append(controls, importPanel, sources, settingsPanel, output, restore.label);
+  append(controls, sources, settingsPanel, output);
   append(stage, controls, proof);
   append(root, status, toolbar, stage, count, filter.label, list);
   window.addEventListener("afterprint", () => {

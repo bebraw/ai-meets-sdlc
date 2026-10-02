@@ -1,6 +1,11 @@
 import * as v from "valibot";
 import { withAdminSecurityHeaders } from "./admin-auth.ts";
 import {
+  parseWorkspace,
+  type BadgeWorkspace,
+} from "../site/scripts/badge-model.ts";
+import { isRecord } from "./speaker-workspace-utils.ts";
+import {
   decryptTextWithKey,
   encryptText,
   importAesKey,
@@ -16,6 +21,7 @@ const volunteerDetailsSchema = v.object({
   name: v.string(),
   email: v.string(),
   task: v.string(),
+  badge: v.optional(v.boolean()),
 });
 type VolunteerDetails = v.InferOutput<typeof volunteerDetailsSchema>;
 
@@ -24,6 +30,52 @@ interface VolunteerRow {
   details_ciphertext: string;
   details_iv: string;
   revision: number;
+}
+
+export async function readVolunteers(
+  env: Env,
+  previousBadges?: BadgeWorkspace | null,
+) {
+  const { results } = await env.INTERESTS.prepare(
+    "SELECT volunteer_id, details_ciphertext, details_iv, revision FROM volunteers ORDER BY created_at, volunteer_id",
+  ).all<VolunteerRow>();
+  const key = await importAesKey(env.EMAIL_ENCRYPTION_KEY!);
+  const volunteers = await Promise.all(
+    results.map(async (row) => ({
+      id: row.volunteer_id,
+      revision: row.revision,
+      ...v.parse(
+        volunteerDetailsSchema,
+        JSON.parse(
+          await decryptTextWithKey(row.details_ciphertext, row.details_iv, key),
+        ),
+      ),
+    })),
+  );
+  let legacy = previousBadges;
+  if (legacy === undefined && volunteers.some((p) => p.badge === undefined)) {
+    const row = await env.INTERESTS.prepare(
+      "SELECT ciphertext, iv FROM badge_workspace WHERE id = 1",
+    ).first<{ ciphertext: string | null; iv: string | null }>();
+    if (row?.ciphertext && row.iv) {
+      const value: unknown = JSON.parse(
+        await decryptTextWithKey(row.ciphertext, row.iv, key),
+      );
+      legacy =
+        isRecord(value) && value.version === 2
+          ? value.legacyWorkspace == null
+            ? null
+            : parseWorkspace(value.legacyWorkspace)
+          : parseWorkspace(value);
+    }
+  }
+  const choices = new Map(legacy?.people.map((p) => [p.id, p.included]));
+  return volunteers
+    .map((p) => ({
+      ...p,
+      badge: p.badge ?? choices.get(`volunteers:${p.id}`) ?? true,
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name));
 }
 
 // Called only after the Worker's shared admin authentication guard.
@@ -61,27 +113,7 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
   }
 
   if (request.method === "GET") {
-    const { results } = await env.INTERESTS.prepare(
-      "SELECT volunteer_id, details_ciphertext, details_iv, revision FROM volunteers ORDER BY created_at, volunteer_id",
-    ).all<VolunteerRow>();
-    const key = await importAesKey(env.EMAIL_ENCRYPTION_KEY);
-    const volunteers = await Promise.all(
-      results.map(async (row) => {
-        const details = v.parse(
-          volunteerDetailsSchema,
-          JSON.parse(
-            await decryptTextWithKey(
-              row.details_ciphertext,
-              row.details_iv,
-              key,
-            ),
-          ),
-        );
-        return { id: row.volunteer_id, revision: row.revision, ...details };
-      }),
-    );
-    volunteers.sort((a, b) => a.name.localeCompare(b.name));
-    return jsonResponse({ volunteers });
+    return jsonResponse({ volunteers: await readVolunteers(env) });
   }
 
   const forbidden = requireAdminAction(request, "manage-volunteers");
@@ -109,7 +141,35 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
     name: normalizeFormText(form.get("name")),
     email: normalizeEmail(form.get("email")),
     task: normalizeFormText(form.get("task")),
+    ...(form.has("badge") ? { badge: form.get("badge") === "true" } : {}),
   };
+  if (id && !form.has("badge")) {
+    const previous = await env.INTERESTS.prepare(
+      "SELECT volunteer_id, details_ciphertext, details_iv, revision FROM volunteers WHERE volunteer_id = ? AND revision = ?",
+    )
+      .bind(id, revision)
+      .first<VolunteerRow>();
+    if (!previous) return conflict();
+    const saved = v.parse(
+      volunteerDetailsSchema,
+      JSON.parse(
+        await decryptTextWithKey(
+          previous.details_ciphertext,
+          previous.details_iv,
+          await importAesKey(env.EMAIL_ENCRYPTION_KEY),
+        ),
+      ),
+    );
+    if (saved.badge !== undefined) details.badge = saved.badge;
+  }
+  if (
+    form.has("badge") &&
+    !["true", "false"].includes(String(form.get("badge")))
+  )
+    return jsonResponse(
+      { error: "Choose whether this volunteer needs a badge." },
+      400,
+    );
   if (!details.name || details.name.length > 200) {
     return jsonResponse(
       { error: "Enter a name of up to 200 characters." },

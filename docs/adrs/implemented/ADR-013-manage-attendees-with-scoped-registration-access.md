@@ -1,0 +1,103 @@
+# ADR-013: Manage attendees with scoped registration access
+
+**Status:** Implemented
+**Date:** 2026-10-02
+**Amends:** [ADR-011](./ADR-011-manage-organizers-and-validated-badge-printing.md)
+
+## Context
+
+The badge import workflow already combines Tito and Webropol exports. The event
+also needs a shared registration list, ticket lookup, and arrival tracking.
+Registration staff need easy sign-in without access to other organizer tools.
+Q&A already establishes reusable, named, revocable staff links.
+
+## Decision
+
+Add `/admin/attendees/` using the badge workspace's CSV mapping and list design.
+Store up to 2,000 attendees in one encrypted, revisioned D1 roster. Import uses
+the source plus individual ticket code, or attendee email when no code exists,
+as its stable identity. Refreshes update matching details without removing
+omitted rows or changing stable IDs and badge choices. Reject ambiguous
+identities and unknown mapped ticket statuses. Organizers can correct details,
+cancel registrations and select badge inclusion. Identity corrections update the
+source key while preserving record IDs; subsequent imports use the corrected key.
+
+Keep arrivals outside the encrypted roster, indexed by random attendee ID.
+Writes compare the arrival revision and the roster revision displayed to staff,
+verify current staff
+access again inside SQL, and reject cancelled registrations. Database triggers
+record successful arrival/undo actions atomically, with time and actor IDs but
+no attendee values. Only organizers can undo an arrival. This separation keeps
+refreshes from overwriting arrival history and avoids a global roster write
+for each check-in.
+
+Registration grants follow Q&A's interaction pattern, with separate
+purpose-specific hashes, tables and cookies. Each link opens a fragment-token
+access page and requires an explicit sign-in POST. Tokens are removed from
+browser history before rendering and are never placed in server request URLs.
+The reusable link remains valid until revoked; a hashed browser session lasts
+14 days. Revocation removes every session for that link. Staff can read the
+roster and mark arrivals at `/registration/`, without access to admin, badges,
+Q&A moderation, attendee editing or imports. Every mutation checks origin and
+an explicit action header. Private responses use no-store caching.
+
+Simplify `/admin/badges/` to preview, layout checks and print generation. It
+loads active, badge-selected attendees, public speakers, selected organizers and
+attending volunteers directly from their canonical workspaces. Imports, contact
+editing and badge inclusion live in those workspaces. Arrival status does not
+control badge inclusion. Remove CSV imports, manual person creation, roster
+editing and source refresh buttons from the badge studio.
+
+The encrypted badge store now saves printer settings and name/company output
+adjustments, with optimistic revisions. Each text adjustment or duplicate
+confirmation carries a source fingerprint; source corrections invalidate stale
+print preferences instead of overriding canonical data. Recheck current people
+before generation and require review when records have changed.
+
+Read the earlier snapshot format and preserve it encrypted and downloadable.
+Unmatched earlier CSV/manual rows remain printable; current registration emails
+suppress their earlier copies even when cancelled or excluded. Source-backed
+earlier rows use current canonical data. Older volunteer exclusion choices are
+honored until explicitly set in the volunteer workspace. No migration of private
+attendee data is implicit. A saved, reversible retirement list excludes obsolete
+earlier rows, including rows without email; it cannot exclude canonical people.
+The original snapshot remains downloadable. Keep the 2,000-attendee roster bound
+without applying that bound to the combined live badge sources; preference
+writes remain byte-limited.
+
+Daily deduplicated R2 backups capture the encrypted roster and arrival ledger
+in one D1 batch; access credentials are excluded. The weekly modification
+digest counts roster and arrival writes without including private values.
+
+## Consequences
+
+No new bindings, services, dependencies or secrets are needed. Apply migration
+0023 before deployment. The attendee roster is an imported snapshot; it cannot
+verify provider refunds or cancellations that have happened since the export.
+Organizers must refresh provider exports before registration opens.
+
+Use individual ticket codes for multiple tickets sharing an email. Keep the
+same identity mapping on subsequent imports. Entries from separate sources
+remain separate, even when an email matches; the badge studio's existing
+duplicate review identifies overlapping printing records. Cancel omitted
+registrations explicitly instead of treating their omission as cancellation.
+
+The roster is decrypted for authenticated list reads; this is appropriate for
+the bounded event list but would need a different query model for larger
+events. Multiple desks see changes on a 15-second refresh; writes always check
+current state. Staff devices need connectivity to confirm an arrival. Retention
+cleanup must cover the roster, badge copies, downloads and encrypted backups.
+
+## Validation
+
+Unit checks cover CSV validation and source refresh identities. Local Worker
+integration checks exercise authentication, origin verification, encrypted
+storage, concurrent imports/arrivals, cancellation, undo history, reusable links,
+sign-out, revocation and separation from Q&A/admin access. The browser check
+covers the complete import-to-registration-to-badge flow, live badge sources,
+print preference persistence, stale-source review, actual PDF output, mobile
+layout and accessibility. Integration tests also cover compatibility with earlier
+badge snapshots, retirement/restore, full-capacity combined lists, stale ticket
+confirmations and source corrections invalidating print adjustments. Browser
+coverage rejects malformed UTF-8 CSV uploads instead of accepting replacement
+characters.

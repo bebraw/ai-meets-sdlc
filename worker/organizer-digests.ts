@@ -86,6 +86,8 @@ export async function sendPosterReviewDigest(
 }
 
 const dataLabels: Record<string, string> = {
+  attendee_roster: "Attendee registrations",
+  attendee_arrivals: "Attendee arrivals",
   interests: "Registration interests",
   poster_proposals: "Poster proposals",
   speaker_contacts: "Speaker contacts",

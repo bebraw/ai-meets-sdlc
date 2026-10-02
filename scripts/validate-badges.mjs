@@ -2,9 +2,12 @@ import assert from "node:assert/strict";
 import { access, readFile } from "node:fs/promises";
 import { chromium } from "playwright";
 import ts from "typescript";
+import { encryptText } from "../worker/form-utils.ts";
+import { defaultSettings } from "../site/scripts/badge-model.ts";
 import {
   createReceiptFixture,
   receiptAdmin,
+  receiptOrigin as apiOrigin,
 } from "../test/helpers/receipt-fixture.mjs";
 const fixture = await createReceiptFixture();
 let browser;
@@ -44,16 +47,132 @@ try {
       }).outputText,
     });
   });
+  const send = async (method, body) => {
+    const response = await fixture.worker.fetch(
+      `${apiOrigin}/api/admin/attendees`,
+      {
+        method,
+        headers: {
+          authorization: receiptAdmin,
+          origin: apiOrigin,
+          "content-type": "application/json",
+          "x-admin-action": "manage-attendees",
+        },
+        ...(body ? { body: JSON.stringify(body) } : {}),
+      },
+    );
+    assert.equal(response.status, 200);
+    return response.json();
+  };
+  const earlier = {
+    id: "earlier-no-email",
+    name: "Earlier manual person",
+    email: "",
+    company: "",
+    role: "attendee",
+    source: "Manual",
+    included: true,
+    duplicateReviewed: false,
+  };
+  const encrypted = await encryptText(
+    JSON.stringify({ people: [earlier], settings: defaultSettings }),
+    "isolated-receipt-test-encryption",
+  );
+  await fixture.runSql(
+    `UPDATE badge_workspace SET ciphertext = '${encrypted.ciphertext}', iv = '${encrypted.iv}' WHERE id = 1`,
+  );
+  const inputs = [
+    {
+      name: "Łukasz Żółć",
+      company: "Aalto",
+      email: "one@example.test",
+      ticketCode: "ONE",
+      status: "active",
+      badge: true,
+    },
+    {
+      name: "Nguyễn Thị Minh Khai",
+      company: "Research",
+      email: "two@example.test",
+      ticketCode: "TWO",
+      status: "active",
+      badge: true,
+    },
+  ];
+  await send("POST", { revision: 0, source: "tito", attendees: inputs });
+  const ready =
+    "Badge studio ready. People are loaded from attendee and team records.";
   await page.goto(`${origin}/admin/badges/`);
-  await page.getByText("Saved badge list loaded.", { exact: true }).waitFor();
+  await page.getByText(ready, { exact: true }).waitFor();
+  assert.equal(await page.getByLabel("CSV file").count(), 0);
+  assert.equal(
+    await page.getByRole("button", { name: "Add a manual badge" }).count(),
+    0,
+  );
+  assert.equal(await page.getByLabel("Include in print run").count(), 0);
+  const earlierCard = page
+    .getByRole("article")
+    .filter({ hasText: "attendee · Manual" });
+  assert.equal(await earlierCard.count(), 1);
+  assert.equal(
+    await page
+      .getByRole("article")
+      .filter({ hasText: "attendee · attendees" })
+      .getByRole("button", { name: "Retire earlier badge" })
+      .count(),
+    0,
+  );
+  await earlierCard
+    .getByRole("button", { name: "Retire earlier badge", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Save print settings", exact: true })
+    .click();
+  await page
+    .getByText("Print settings and badge text saved.", { exact: true })
+    .waitFor();
+  await page.reload();
+  await page.getByText(ready, { exact: true }).waitFor();
+  assert.equal(
+    await earlierCard.count(),
+    0,
+    "Retirement survives reload without a matching email",
+  );
+  await page
+    .getByRole("button", {
+      name: "Restore retired earlier badges",
+      exact: true,
+    })
+    .click();
+  await page
+    .getByText(
+      "Earlier badge retirement choices cleared. Current registration and team choices still apply.",
+      { exact: true },
+    )
+    .waitFor();
+  assert.equal(await earlierCard.count(), 1);
+  await earlierCard
+    .getByRole("button", { name: "Retire earlier badge", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Save print settings", exact: true })
+    .click();
+  await page
+    .getByText("Print settings and badge text saved.", { exact: true })
+    .waitFor();
   const previousProof = page.getByRole("button", {
     name: "← Previous",
     exact: true,
   });
   const nextProof = page.getByRole("button", { name: "Next →", exact: true });
   const proofNavigation = page.getByRole("group", { name: "Proof navigation" });
-  assert.ok(await previousProof.isDisabled());
-  assert.ok(await nextProof.isDisabled());
+  const total = await page.getByRole("article").count();
+  assert.ok(
+    total > 2,
+    "Speakers are loaded automatically alongside registrations",
+  );
+  assert.ok(await previousProof.isEnabled());
+  assert.ok(await nextProof.isEnabled());
   // Run the real browser font/shaping and circle-bound checks on adversarial names.
   const layouts = await page.evaluate(async () => {
     const { loadBadgeFont, renderBadge } =
@@ -94,61 +213,85 @@ try {
     assert.deepEqual(row.issues, [], row.name);
   assert.ok(layouts.at(-2).issues.some((x) => x.includes("minimum size")));
   assert.ok(layouts.at(-1).issues.some((x) => x.includes("Font lacks")));
-  await page.getByLabel("CSV file").setInputFiles({
-    name: "tito.csv",
-    mimeType: "text/csv",
-    buffer: Buffer.from(
-      "Ticket Full Name,Ticket Company Name,Ticket Email\nŁukasz Żółć,Aalto,one@example.test\nNguyễn Thị Minh Khai,Research,two@example.test",
-    ),
-  });
-  await page.getByRole("button", { name: "Append CSV rows" }).click();
   assert.equal(
     await proofNavigation.getByRole("status").textContent(),
-    "1 / 2",
+    `1 / ${total}`,
   );
   await nextProof.click();
   assert.equal(
     await proofNavigation.getByRole("status").textContent(),
-    "2 / 2",
+    `2 / ${total}`,
   );
   assert.ok(
     (await page.locator(".badge-preview").textContent()).includes("Nguyễn"),
   );
-  await nextProof.press("ArrowRight");
+  await previousProof.press("ArrowLeft");
   assert.equal(
     await proofNavigation.getByRole("status").textContent(),
-    "1 / 2",
+    `1 / ${total}`,
   );
   await previousProof.click();
   assert.equal(
     await proofNavigation.getByRole("status").textContent(),
-    "2 / 2",
+    `${total} / ${total}`,
   );
-  await previousProof.press("ArrowLeft");
+  await nextProof.press("ArrowRight");
   assert.equal(
     await proofNavigation.getByRole("status").textContent(),
-    "1 / 2",
+    `1 / ${total}`,
   );
   await page.getByRole("button", { name: "Check all included badges" }).click();
-  await page.getByText(/2 badges passed layout and duplicate checks/).waitFor();
-  await page.getByLabel("CSV file").setInputFiles({
-    name: "webropol.csv",
-    mimeType: "text/csv",
-    buffer: Buffer.from("name,company,email\nDuplicate,,ONE@example.test"),
+  await page
+    .getByText(new RegExp(`${total} badges passed layout and duplicate checks`))
+    .waitFor();
+  const firstBadge = page.getByRole("article").first();
+  await firstBadge.getByLabel("Badge name").fill("Łukasz\nŻółć");
+  await firstBadge.getByLabel("Badge name").press("Tab");
+  await page.getByRole("button", { name: "Save print settings" }).click();
+  await page.getByText("Print settings and badge text saved.").waitFor();
+  await page.reload();
+  await page.getByText(ready, { exact: true }).waitFor();
+  assert.equal(
+    await page
+      .getByRole("article")
+      .first()
+      .getByLabel("Badge name")
+      .inputValue(),
+    "Łukasz\nŻółć",
+  );
+  let roster = await send("GET");
+  await send("POST", {
+    revision: roster.revision,
+    source: "webropol",
+    attendees: [{ ...inputs[0], name: "Duplicate", ticketCode: "DUPLICATE" }],
   });
-  await page.getByRole("button", { name: "Append CSV rows" }).click();
+  await page.getByRole("button", { name: "Check all included badges" }).click();
+  await page
+    .getByText(
+      "People changed since this preview. Review the updated badges, then check or print again.",
+      { exact: true },
+    )
+    .waitFor();
   await page.getByRole("button", { name: "Check all included badges" }).click();
   await page.getByText(/2 badges need attention/).waitFor();
+  roster = await send("GET");
+  const duplicate = roster.attendees.find((p) => p.source === "webropol");
+  await send("PUT", {
+    revision: roster.revision,
+    id: duplicate.id,
+    attendee: { ...duplicate, badge: false },
+  });
+  await page.getByRole("button", { name: "Check all included badges" }).click();
   await page
-    .getByRole("article")
-    .last()
-    .getByLabel("Include in print run")
-    .uncheck();
-  await page.getByRole("button", { name: "Save badge list" }).click();
-  await page.getByText("Badge list and printer settings saved.").waitFor();
-  await page.reload();
-  await page.getByText("Saved badge list loaded.", { exact: true }).waitFor();
-  assert.equal(await page.getByRole("article").count(), 3);
+    .getByText(
+      "People changed since this preview. Review the updated badges, then check or print again.",
+      { exact: true },
+    )
+    .waitFor();
+  await page.getByRole("button", { name: "Check all included badges" }).click();
+  await page
+    .getByText(new RegExp(`${total} badges passed layout and duplicate checks`))
+    .waitFor();
   await page.goto(`${origin}/admin/speakers/`);
   await page.getByText(/Loaded \d+ speakers\./).waitFor();
   const speakerEditor = page.locator("[data-admin-speakers] > article").first();
@@ -191,9 +334,8 @@ try {
   await page.screenshot({ path: "/tmp/sdlcai-speaker-titles-mobile.png" });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(`${origin}/admin/badges/`);
-  await page.getByText("Saved badge list loaded.", { exact: true }).waitFor();
-  await page.getByRole("button", { name: "Refresh speakers" }).click();
-  await page.getByText(/speakers refreshed/).waitFor();
+  await page.getByText(ready, { exact: true }).waitFor();
+
   const badgeNames = await page
     .locator("article textarea")
     .evaluateAll((inputs) => inputs.map((input) => input.value));
@@ -327,16 +469,66 @@ try {
     .click();
   await page.getByText("Organizer saved. Homepage changes are live.").waitFor();
   await page.goto(`${origin}/admin/badges/`);
-  await page.getByText("Saved badge list loaded.", { exact: true }).waitFor();
-  await page.getByRole("button", { name: "Refresh organizers" }).click();
-  await page.getByText(/organizers refreshed/).waitFor();
+  await page.getByText(ready, { exact: true }).waitFor();
+
   assert.equal(
     await page.getByRole("article").filter({ hasText: "organizers" }).count(),
     1,
   );
+  const attendeeCard = page
+    .getByRole("article")
+    .filter({ hasText: "attendee · attendees" })
+    .first();
+  await attendeeCard.getByLabel("Badge name").fill("張偉");
+  await attendeeCard.getByLabel("Badge name").press("Tab");
+  await page.evaluate(() => {
+    window.__printed = false;
+    window.print = () => {
+      window.__printed = true;
+    };
+  });
+  await page
+    .getByRole("button", { name: "Print / save PDF — attendee", exact: true })
+    .click();
+  await page
+    .getByText(/Font lacks/)
+    .first()
+    .waitFor();
+  assert.equal(await page.evaluate(() => window.__printed), false);
+  await attendeeCard.getByRole("button", { name: "Reset badge text" }).click();
+  roster = await send("GET");
+  const cancelled = roster.attendees.find((p) => p.ticketCode === "ONE");
+  await send("PUT", {
+    revision: roster.revision,
+    id: cancelled.id,
+    attendee: { ...cancelled, status: "cancelled" },
+  });
+  await page
+    .getByRole("button", { name: "Print / save PDF — attendee", exact: true })
+    .click();
+  await page
+    .getByText(
+      "People changed since this preview. Review the updated badges, then check or print again.",
+      { exact: true },
+    )
+    .waitFor();
+  assert.equal(
+    await page.evaluate(() => window.__printed),
+    false,
+    "A source change must be reviewed before printing",
+  );
+  await page
+    .getByRole("button", { name: "Print / save PDF — attendee", exact: true })
+    .click();
+  await page.waitForFunction(() => window.__printed);
+  assert.equal(await page.locator(".badge-print-sheet").count(), 1);
+  assert.doesNotMatch(
+    (await page.locator(".badge-print-root text").allTextContents()).join(" "),
+    /Łukasz/,
+  );
   assert.deepEqual(errors, []);
   console.log(
-    "Badge browser checks passed: Unicode, overflow, imports, duplicates, encrypted persistence, sources, print pagination, and mobile layout.",
+    "Badge browser checks passed: Unicode, overflow, live records, duplicates, print preferences, source corrections, print pagination, and mobile layout.",
   );
   console.log(JSON.stringify(layouts));
 } finally {

@@ -3,6 +3,7 @@ import { handleQaRequest } from "./qa.ts";
 export { QaRoom } from "./qa-room.ts";
 export { QaUpdates } from "./qa-updates.ts";
 import { handleBadgeWorkspace } from "./badge-workspace.ts";
+import { handleAttendeesRequest } from "./attendees.ts";
 import {
   sendPosterReviewDigest,
   sendDataChangeDigest,
@@ -53,6 +54,7 @@ import {
   backupInterests,
   backupPosterProposals,
   backupCanonicalSpeakerContent,
+  backupAttendees,
 } from "./backups.ts";
 import {
   establishAdminSessionForBasicAuth,
@@ -173,6 +175,9 @@ const innerHandler = {
 
       if (unauthorizedResponse) return unauthorizedResponse;
     }
+
+    const attendeeResponse = await handleAttendeesRequest(request, env);
+    if (attendeeResponse) return attendeeResponse;
 
     const qaResponse = await handleQaRequest(request, env);
     if (qaResponse) return qaResponse;
@@ -548,6 +553,7 @@ const innerHandler = {
       ctx.waitUntil(backupInterests(env));
       ctx.waitUntil(backupPosterProposals(env));
       ctx.waitUntil(backupCanonicalSpeakerContent(env));
+      ctx.waitUntil(backupAttendees(env));
       ctx.waitUntil(backupSpeakerReceipts(env));
     }
 

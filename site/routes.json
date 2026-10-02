@@ -440,6 +440,16 @@
           }
         }
       },
+      "attendees": {
+        "layout": "admin-attendees",
+        "scripts": [{ "name": "admin-attendees" }],
+        "context": {
+          "meta": {
+            "title": "SDLCAI Admin Attendees",
+            "description": "Manage registrations, arrival records, and registration staff access."
+          }
+        }
+      },
       "qa": {
         "layout": "admin-qa",
         "scripts": [{ "name": "index" }, { "name": "qa" }],
@@ -452,6 +462,28 @@
         "dataSources": {
           "seminar": {
             "operation": "seminar"
+          }
+        }
+      }
+    }
+  },
+  "registration": {
+    "layout": "registration",
+    "scripts": [{ "name": "admin-attendees" }],
+    "context": {
+      "meta": {
+        "title": "SDLCAI Registration Desk",
+        "description": "Verify registrations and mark attendee arrivals."
+      }
+    },
+    "routes": {
+      "access": {
+        "layout": "registration-access",
+        "scripts": [{ "name": "admin-attendees" }],
+        "context": {
+          "meta": {
+            "title": "SDLCAI Registration Staff Access",
+            "description": "Private access for registration staff."
           }
         }
       }

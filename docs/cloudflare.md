@@ -111,6 +111,30 @@ room's questions from `/admin/qa/` before clearing it if an event record is
 needed. Archiving preserves its questions, votes, and staff audit; clearing
 deletes questions and votes and pauses the room, while retaining the audit.
 
+## Attendee registration
+
+Migration `0023_create_attendee_registration.sql` adds the encrypted attendee
+roster, separate arrival state and audit, and scoped registration staff grants
+and sessions. Apply it before deploying the Worker. The feature uses the
+existing D1, R2 backup bucket and `EMAIL_ENCRYPTION_KEY`; no new binding or secret
+is needed. Keep the encryption key stable while stored lists and staff links
+are in use.
+
+Manage imports and staff links at `/admin/attendees/`. Staff sign in through
+`/registration/access/` and use `/registration/`; their credentials do not
+authorize admin or Q&A access. `PUBLIC_SITE_ORIGIN` sets the shared-link origin.
+Tokens travel in URL fragments and are redeemed only through an explicit
+same-origin POST. Revoke links after the event to end their sessions on every
+device.
+
+The daily job writes deduplicated attendee backups under `attendees/` in the
+existing R2 bucket, with a manifest at `attendees/latest.json`. Snapshots contain
+the encrypted roster and arrival metadata, including action history, without
+staff credentials. Attendee JSON downloads from the admin workspace contain
+private contact details. Review retention across D1, badge copies, R2 and local
+downloads after event follow-up. Ticket verification uses imported data; refresh
+exports to capture current cancellations and refunds.
+
 ## Production Provisioning
 
 The repository includes `.node-version` with Node 24 because Gustwind requires

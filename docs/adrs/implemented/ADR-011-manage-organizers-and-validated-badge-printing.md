@@ -2,6 +2,7 @@
 
 - Status: Implemented
 - Date: 2026-09-30
+- Amended by: [ADR-013](./ADR-013-manage-attendees-with-scoped-registration-access.md), moving roster management into Attendees and reducing the badge studio to preview, print preferences, and generation.
 
 ## Context and trigger
 

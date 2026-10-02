@@ -26,6 +26,7 @@ test("volunteers stay admin-only and support encrypted CRUD with stale edit prot
     name: "Test Volunteer",
     email: "volunteer@example.test",
     task: "Welcome desk",
+    badge: "false",
   };
 
   assert.equal((await worker.fetch(endpoint)).status, 401);
@@ -67,6 +68,7 @@ test("volunteers stay admin-only and support encrypted CRUD with stale edit prot
     { ...details, name: " " },
     { ...details, email: "invalid" },
     { ...details, task: "x".repeat(2001) },
+    { ...details, badge: "invalid" },
   ]) {
     assert.equal((await send("", "POST", invalid)).status, 400);
   }
@@ -89,8 +91,9 @@ test("volunteers stay admin-only and support encrypted CRUD with stale edit prot
   const listing = await send();
   assert.equal(listing.headers.get("cache-control"), "no-store");
   assert.deepEqual((await listing.json()).volunteers, [volunteer]);
+  const { badge: _badge, ...oldClientDetails } = details;
   const updated = await send(path, "PUT", {
-    ...details,
+    ...oldClientDetails,
     name: "Updated Volunteer",
     task: "",
     revision: "1",
@@ -105,6 +108,11 @@ test("volunteers stay admin-only and support encrypted CRUD with stale edit prot
   const saved = (await (await send()).json()).volunteers[0];
   assert.equal(saved.name, "Updated Volunteer");
   assert.equal(saved.task, "");
+  assert.equal(
+    saved.badge,
+    false,
+    "Older clients preserve the volunteer badge choice",
+  );
   assert.equal((await send(path, "DELETE", { revision: "2" })).status, 200);
   assert.deepEqual((await (await send()).json()).volunteers, []);
   assert.equal(
