@@ -43,6 +43,8 @@ No accepted-only ADRs are currently pending implementation.
 
 | [ADR-011](./implemented/ADR-011-manage-organizers-and-validated-badge-printing.md) | Implemented | Manage the public organizer roster and privately persist badge lists with measured print preflight. |
 
+| [ADR-012](./implemented/ADR-012-integrate-event-qa-with-revocable-staff-links.md) | Implemented | Integrate persistent Q&A rooms with moderated questions and reusable, revocable staff access. |
+
 ## Creating a New ADR
 
 1. Copy [`ADR-000-template.md`](./proposed/ADR-000-template.md).

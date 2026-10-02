@@ -24,6 +24,15 @@
   "browser": {
     "binding": "SOCIAL_BROWSER",
   },
+  "durable_objects": {
+    "bindings": [
+      { "name": "QA_ROOMS", "class_name": "QaRoom" },
+      { "name": "QA_UPDATES", "class_name": "QaUpdates" },
+    ],
+  },
+  "migrations": [
+    { "tag": "qa-v1", "new_sqlite_classes": ["QaRoom", "QaUpdates"] },
+  ],
   "images": {
     "binding": "IMAGES",
   },

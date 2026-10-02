@@ -1,4 +1,7 @@
 import { handleOrganizers, applyOrganizers } from "./organizers.ts";
+import { handleQaRequest } from "./qa.ts";
+export { QaRoom } from "./qa-room.ts";
+export { QaUpdates } from "./qa-updates.ts";
 import { handleBadgeWorkspace } from "./badge-workspace.ts";
 import {
   sendPosterReviewDigest,
@@ -170,6 +173,9 @@ const innerHandler = {
 
       if (unauthorizedResponse) return unauthorizedResponse;
     }
+
+    const qaResponse = await handleQaRequest(request, env);
+    if (qaResponse) return qaResponse;
 
     if (
       url.pathname === "/api/admin/change-history" ||

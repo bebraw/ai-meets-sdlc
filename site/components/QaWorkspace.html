@@ -1,0 +1,41 @@
+<BaseLayout
+  &title="title"
+  &description="description"
+  &ogDescription="description"
+  &url="url"
+  &ogType="(id 'website')"
+  &robots="(id 'noindex,nofollow,noarchive')"
+>
+  <section class="border-b border-ink">
+    <div class="mx-auto grid max-w-7xl gap-5 px-5 py-10 md:px-8 md:py-14">
+      <div>
+        <p
+          class="font-headline text-sm font-black uppercase text-muted"
+          &children="eyebrow"
+        ></p>
+        <h1
+          class="mt-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl"
+          &children="heading"
+        ></h1>
+      </div>
+      <p
+        class="max-w-3xl text-xl leading-8 text-muted"
+        &children="description"
+      ></p>
+      <p
+        class="text-sm text-muted"
+        role="status"
+        aria-live="polite"
+        data-qa-connection
+      ></p>
+    </div>
+  </section>
+  <section class="border-b border-ink">
+    <div
+      class="mx-auto min-w-0 max-w-7xl px-5 py-8 md:px-8 md:py-12"
+      data-qa-content
+    >
+      <p class="text-muted">The live Q&A will appear here on the event site.</p>
+    </div>
+  </section>
+</BaseLayout>

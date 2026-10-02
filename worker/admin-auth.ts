@@ -104,6 +104,19 @@ export async function requireAdmin(
   );
 }
 
+// QA staff views may also be operated by an already signed-in administrator.
+// This only checks credentials; it does not broaden the protected admin routes.
+export async function hasAdminSession(
+  request: Request,
+  env: Env,
+): Promise<boolean> {
+  const adminEnv = env as Env & AdminBindings;
+  return (
+    hasAdminConfiguration(adminEnv) &&
+    (await isAdminAuthorized(request, adminEnv))
+  );
+}
+
 export async function establishAdminSessionForBasicAuth(
   request: Request,
   env: Env,

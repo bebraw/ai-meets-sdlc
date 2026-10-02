@@ -13,25 +13,27 @@ for daily backup export.
 
 `wrangler.jsonc` expects these bindings:
 
-| Binding                    | Type           | Purpose                                                                           |
-| -------------------------- | -------------- | --------------------------------------------------------------------------------- |
-| `ASSETS`                   | Workers Assets | Serves the Gustwind build output from `build/`.                                   |
-| `INTERESTS`                | D1             | Stores encrypted forms, speaker workflows, and canonical mutable speaker content. |
-| `INTEREST_BACKUPS`         | R2             | Stores change-aware JSON backups for forms and canonical speaker content.         |
-| `SOCIAL_EXPORTS`           | R2             | Stores immutable, content-addressed social JPEGs.                                 |
-| `SOCIAL_BROWSER`           | Browser        | Renders a social JPEG when its R2 object does not exist.                          |
-| `SPEAKER_UPLOADS`          | R2             | Stores private reviewed 400x400 speaker WebP derivatives.                         |
-| `IMAGES`                   | Images         | Decodes, crops, strips metadata, and re-encodes portraits.                        |
-| `STREAM`                   | Stream         | Creates private one-time topic-video uploads and previews.                        |
-| `EMAIL`                    | Email Sending  | Sends one separately addressed speaker message at a time.                         |
-| `ADMIN_USERNAME`           | Secret         | Username for the form and scripted Basic auth protecting `/admin/`.               |
-| `ADMIN_PASSWORD`           | Secret         | Password for admin sign-in and signing browser sessions.                          |
-| `TURNSTILE_SITE_KEY`       | Worker var     | Public Turnstile widget site key injected into HTML.                              |
-| `TURNSTILE_HOSTNAMES`      | Worker var     | Comma-separated hostnames accepted from Siteverify.                               |
-| `TURNSTILE_SECRET_KEY`     | Secret         | Server-side Turnstile verification key.                                           |
-| `EMAIL_ENCRYPTION_KEY`     | Secret         | Key material for encryption and keyed fingerprints.                               |
-| `STREAM_WEBHOOK_SECRET`    | Secret         | Verifies the exact bytes of Stream processing webhooks.                           |
-| `POSTER_PROPOSAL_DEADLINE` | Worker var     | ISO timestamp after which public proposals return `410`.                          |
+| Binding                    | Type            | Purpose                                                                           |
+| -------------------------- | --------------- | --------------------------------------------------------------------------------- |
+| `ASSETS`                   | Workers Assets  | Serves the Gustwind build output from `build/`.                                   |
+| `INTERESTS`                | D1              | Stores encrypted forms, speaker workflows, and canonical mutable speaker content. |
+| `QA_ROOMS`                 | Durable Objects | Stores each QA room's questions, votes, status, active question, and staff audit. |
+| `QA_UPDATES`               | Durable Objects | Streams event-wide change notifications without question or credential data.      |
+| `INTEREST_BACKUPS`         | R2              | Stores change-aware JSON backups for forms and canonical speaker content.         |
+| `SOCIAL_EXPORTS`           | R2              | Stores immutable, content-addressed social JPEGs.                                 |
+| `SOCIAL_BROWSER`           | Browser         | Renders a social JPEG when its R2 object does not exist.                          |
+| `SPEAKER_UPLOADS`          | R2              | Stores private reviewed 400x400 speaker WebP derivatives.                         |
+| `IMAGES`                   | Images          | Decodes, crops, strips metadata, and re-encodes portraits.                        |
+| `STREAM`                   | Stream          | Creates private one-time topic-video uploads and previews.                        |
+| `EMAIL`                    | Email Sending   | Sends one separately addressed speaker message at a time.                         |
+| `ADMIN_USERNAME`           | Secret          | Username for the form and scripted Basic auth protecting `/admin/`.               |
+| `ADMIN_PASSWORD`           | Secret          | Password for admin sign-in and signing browser sessions.                          |
+| `TURNSTILE_SITE_KEY`       | Worker var      | Public Turnstile widget site key injected into HTML.                              |
+| `TURNSTILE_HOSTNAMES`      | Worker var      | Comma-separated hostnames accepted from Siteverify.                               |
+| `TURNSTILE_SECRET_KEY`     | Secret          | Server-side Turnstile verification key.                                           |
+| `EMAIL_ENCRYPTION_KEY`     | Secret          | Key material for encryption and keyed fingerprints.                               |
+| `STREAM_WEBHOOK_SECRET`    | Secret          | Verifies the exact bytes of Stream processing webhooks.                           |
+| `POSTER_PROPOSAL_DEADLINE` | Worker var      | ISO timestamp after which public proposals return `410`.                          |
 
 The production poster deadline is `2026-09-27T20:59:59Z`, which is 23:59 EEST
 on 27 September 2026. Acceptance is rolling; the deadline only controls when
@@ -76,6 +78,38 @@ The poster page is at `/posters/`. Test successful submission, duplicate
 submission, required-field validation, Turnstile gating, admin status changes,
 and both CSV downloads through the Worker rather than the static development
 server.
+
+## Q&A storage and access
+
+Q&A needs the Worker runtime, including in local development; the static
+Gustwind server only serves page shells. D1 migration `0022` stores registered
+rooms, the active-room selection, encrypted reusable staff links, and hashed
+browser sessions. Questions and votes are persisted separately in one
+SQLite-backed `QaRoom` Durable Object per registered room.
+
+The `qa-v1` Wrangler migration creates `QaRoom` and `QaUpdates` with
+`new_sqlite_classes`. Keep this migration in the configuration after the initial
+deployment. Preserve class names, binding names, and registered `object_name`
+values so future deployments continue using the same storage. No manual object
+creation is necessary: the Worker resolves objects through the bindings.
+
+The existing `EMAIL_ENCRYPTION_KEY` must remain stable while links are active;
+it encrypts the admin-retrievable links and derives their verification hashes,
+staff session hashes, and signed participant cookies. Links have no automatic
+expiry. An admin revokes them after the event at `/admin/qa/`, which also removes
+all associated staff sessions. Never put link tokens in Worker vars or logs.
+The token travels in a URL fragment and is redeemed only through an explicit
+same-origin POST.
+
+`npm run deploy` applies pending D1 migrations before deploying the Worker and
+its Durable Object migration. The feature starts with no active room and all
+rooms paused. Select and open a room in the admin workspace after deployment.
+`PUBLIC_SITE_ORIGIN` controls the origin of shared access links.
+
+Existing scheduled D1/R2 backups do not back up QA room storage. Export each
+room's questions from `/admin/qa/` before clearing it if an event record is
+needed. Archiving preserves its questions, votes, and staff audit; clearing
+deletes questions and votes and pauses the room, while retaining the audit.
 
 ## Production Provisioning
 

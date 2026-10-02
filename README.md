@@ -25,6 +25,8 @@ deployed as a Cloudflare Worker with static assets. The production domain is
   dark feed graphics for Bluesky, X, and Facebook. Re-export with
   `npm run social:export`.
 - `worker/index.ts`: public/admin request routing and scheduled job orchestration.
+- `worker/qa*.ts`: audience questions, persistent session rooms, and revocable
+  moderator/MC access.
 - `worker/interests.ts`, `worker/poster-proposals.ts`, `worker/speaker-dinner.ts`:
   form handlers, validation, storage, and exports for each workflow.
 - `worker/backups.ts`, `worker/receipt-backups.ts`: scheduled metadata backups
@@ -163,7 +165,7 @@ image across deployments.
 
 The deployed Worker serves a protected dashboard at `/admin/`, with focused
 workspaces at `/admin/speakers/`, `/admin/dinner/`, `/admin/receipts/`, `/admin/posters/`,
-`/admin/interests/`, `/admin/volunteers/`, `/admin/activity/`, and `/admin/slides/`. Organizers sign in through the
+`/admin/interests/`, `/admin/volunteers/`, `/admin/activity/`, `/admin/qa/`, and `/admin/slides/`. Organizers sign in through the
 password-manager-compatible form at `/admin/login/`; a signed, secure cookie
 keeps the browser session active for seven days. HTTP Basic credentials remain
 accepted when supplied proactively by scripts, but unauthenticated browser
@@ -185,6 +187,52 @@ and `site/data/sponsors.json`; the Worker resolves mutable speaker and talk copy
 from D1. Sponsor data records the package tier and whether the contract includes
 between-talk placement; validation requires Epic and Tech sponsors to receive
 that placement and excludes Brand and Location sponsors.
+
+## Audience Q&A
+
+`/qa/` lets attendees submit questions without a name or sign-in and vote once
+per question from their browser. New questions are visible only to their author
+and moderators until approved. Moderators can approve, edit, hide, or add
+questions; MCs select one approved question for `/qa/screen/` and mark it
+answered. `/qa/present/` provides a read-only approved queue. Live updates use
+server-sent notifications, with polling on connection failures. Forms also work
+without JavaScript; refresh manually for new questions.
+
+Manage the event at `/admin/qa/`:
+
+1. Choose **Make active** for a session and **Open questions**. Four session rooms
+   are seeded; additional rooms can be created. Every room starts paused, and
+   the audience entry starts closed.
+2. Create a named **Moderator** or **MC** access link and copy it to that person.
+   Links work on multiple devices and after sign-out, and stay valid until
+   explicitly revoked. Signing in creates a 14-day browser session; the same
+   link can create another session whenever needed.
+3. Share `https://sdlcai.org/qa/` with attendees and open `/qa/screen/` on the
+   projector. Switch the active room between sessions; questions and votes stay
+   in their original room. Attendee drafts survive a switch and require an
+   explicit review before moving to the new session.
+4. After the event, close audience entry, export questions if wanted, archive
+   rooms, and **Revoke access** on each staff link. Revocation invalidates the
+   link and every browser session created through it. Archiving retains data;
+   clearing a room requires typing `CLEAR` and deletes its questions and votes.
+
+The anonymous participant cookie lasts 18 hours. It identifies a browser,
+not a person: clearing cookies or changing browsers can allow another vote.
+No raw IP addresses or attendee contact details are stored in QA room data.
+Staff action history is available through the protected
+`/api/admin/qa/history?room=<room-id>` endpoint.
+
+Apply `0022_create_qa_rooms_and_access.sql` before deploying. `wrangler.jsonc`
+adds the SQLite Durable Object classes `QaRoom` and `QaUpdates`; Wrangler applies
+their `qa-v1` migration on deployment. The existing `EMAIL_ENCRYPTION_KEY` secures
+staff access and participant cookies. No additional secrets or dependencies are
+needed. Room contents live in Durable Object storage and are not included in
+the site's existing D1/R2 backup job; use the per-room CSV export for an event
+record. See [ADR-012](docs/adrs/implemented/ADR-012-integrate-event-qa-with-revocable-staff-links.md).
+
+Run `npm run qa:browser-check` after a build for the complete audience,
+moderator, MC, projector, access-revocation, and native-form flow. It uses an
+isolated local Worker and is included in `quality:gate`.
 
 ## Speaker publishing
 

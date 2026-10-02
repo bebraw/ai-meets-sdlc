@@ -439,6 +439,21 @@
             "description": "Manage SDLCAI badges."
           }
         }
+      },
+      "qa": {
+        "layout": "admin-qa",
+        "scripts": [{ "name": "index" }, { "name": "qa" }],
+        "context": {
+          "meta": {
+            "title": "SDLCAI Admin QA",
+            "description": "Manage QA rooms and staff access."
+          }
+        },
+        "dataSources": {
+          "seminar": {
+            "operation": "seminar"
+          }
+        }
       }
     }
   },
@@ -543,6 +558,98 @@
         "description": "The requested SDLCAI page could not be found.",
         "ogEyebrow": "404",
         "ogDescription": "The requested SDLCAI page could not be found."
+      }
+    }
+  },
+  "qa": {
+    "layout": "qa",
+    "scripts": [{ "name": "index" }, { "name": "qa" }],
+    "context": {
+      "meta": {
+        "title": "SDLCAI Q&A",
+        "description": "Ask the speakers and vote for audience questions."
+      }
+    },
+    "routes": {
+      "moderate": {
+        "layout": "qa-moderate",
+        "scripts": [{ "name": "index" }, { "name": "qa" }],
+        "context": {
+          "meta": {
+            "title": "SDLCAI QA Moderate",
+            "description": "Live SDLCAI audience questions."
+          }
+        },
+        "dataSources": {
+          "seminar": {
+            "operation": "seminar"
+          }
+        }
+      },
+      "mc": {
+        "layout": "qa-mc",
+        "scripts": [{ "name": "index" }, { "name": "qa" }],
+        "context": {
+          "meta": {
+            "title": "SDLCAI QA MC",
+            "description": "Live SDLCAI audience questions."
+          }
+        },
+        "dataSources": {
+          "seminar": {
+            "operation": "seminar"
+          }
+        }
+      },
+      "screen": {
+        "layout": "qa-screen",
+        "scripts": [{ "name": "index" }, { "name": "qa" }],
+        "context": {
+          "meta": {
+            "title": "SDLCAI QA Screen",
+            "description": "Live SDLCAI audience questions."
+          }
+        },
+        "dataSources": {
+          "seminar": {
+            "operation": "seminar"
+          }
+        }
+      },
+      "present": {
+        "layout": "qa-present",
+        "scripts": [{ "name": "index" }, { "name": "qa" }],
+        "context": {
+          "meta": {
+            "title": "SDLCAI QA Present",
+            "description": "Live SDLCAI audience questions."
+          }
+        },
+        "dataSources": {
+          "seminar": {
+            "operation": "seminar"
+          }
+        }
+      },
+      "access": {
+        "layout": "qa-access",
+        "scripts": [{ "name": "index" }, { "name": "qa" }],
+        "context": {
+          "meta": {
+            "title": "SDLCAI QA Access",
+            "description": "Live SDLCAI audience questions."
+          }
+        },
+        "dataSources": {
+          "seminar": {
+            "operation": "seminar"
+          }
+        }
+      }
+    },
+    "dataSources": {
+      "seminar": {
+        "operation": "seminar"
       }
     }
   }

@@ -252,6 +252,7 @@ async function createPage(browserPort) {
 
   const target = await response.json();
   const session = new CdpSession(target.webSocketDebuggerUrl);
+  session.targetId = target.id;
   await session.send("Page.enable");
   await session.send("Runtime.enable");
   await session.send("DOM.enable");
@@ -826,7 +827,15 @@ async function main() {
             });
           }
         } finally {
-          session.close();
+          // Closing CDP alone leaves the tab and renderer alive for every
+          // viewport. Release them before the next job and WebKit checks.
+          try {
+            await fetch(
+              `http://127.0.0.1:${browserPort}/json/close/${session.targetId}`,
+            );
+          } finally {
+            session.close();
+          }
         }
       },
     );
