@@ -92,7 +92,8 @@ const tickets = home.find((node) => attr(node, "id") === "tickets");
 const ticketLink = elements(tickets).find(
   (node) => node.tagName === "a" && attr(node, "href") === "/checkout/",
 );
-if (!ticketLink) throw new Error("Public registration link is missing");
+if (!ticketLink) throw new Error("Public ticket information link is missing");
+const soldOut = attr(tickets, "data-registration-status") === "sold-out";
 const feed = await reviseFeed({
   schemaVersion: 1,
   revision: "",
@@ -115,10 +116,10 @@ const feed = await reviseFeed({
   sessions,
   actions: [
     {
-      id: "registration",
+      id: soldOut ? "ticket-information" : "registration",
       label: textContent(ticketLink),
       url: new URL(attr(ticketLink, "href"), origin).href,
-      kind: "registration",
+      kind: soldOut ? "information" : "registration",
     },
   ],
 });

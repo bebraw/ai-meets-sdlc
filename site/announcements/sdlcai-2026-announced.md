@@ -9,6 +9,8 @@ eyebrow: Official announcement
 
 We are launching SDLCAI, a one-day seminar on how AI is changing the software development lifecycle, on 13 October 2026 at Marsio, Aalto University, Espoo.
 
+**Update, 2 October 2026:** The seminar is sold out and ticket sales are closed. You can still [watch the seminar live on YouTube](https://youtube.com/live/d7POyy6dYFI).
+
 The ICT industry has gone through multiple major changes during its history. We moved from mainframes and punch cards to personal and mobile computing, and each shift changed how software was built. The broad introduction of artificial intelligence, especially large language models (LLMs), represents yet another change in how teams approach the [software development lifecycle (SDLC)](https://en.wikipedia.org/wiki/Systems_development_life_cycle).
 
 It is on this framing that the idea for SDLCAI seminar was born. It is a spiritual successor to our earlier [Future Frontend conference](https://futurefrontend.com/) but with a more focused framing around the issues facing the software industry now. The event is called a seminar for a reason since the purpose is to bring together especially local practitioners while connecting academic and industrial views on the topic.

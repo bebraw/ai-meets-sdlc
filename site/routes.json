@@ -55,10 +55,10 @@
     },
     "context": {
       "meta": {
-        "title": "SDLCAI Checkout",
-        "description": "Checkout for SDLCAI, a one-day seminar on AI across the software development lifecycle.",
-        "ogEyebrow": "Checkout",
-        "ogDescription": "Reserve a seat for SDLCAI 2026 at Aalto University."
+        "title": "SDLCAI / Sold out",
+        "description": "SDLCAI 2026 is sold out and ticket sales are closed. Watch the seminar live on YouTube.",
+        "ogEyebrow": "Sold out",
+        "ogDescription": "All in-person tickets have been sold. Join the SDLCAI livestream on 13 October 2026."
       }
     }
   },

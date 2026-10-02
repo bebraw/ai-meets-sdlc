@@ -78,7 +78,7 @@
     "TURNSTILE_SITE_KEY": "0x4AAAAAADGyYOoRrI5BgaNQ",
     // Hostnames accepted from Turnstile's server-side validation response.
     "TURNSTILE_HOSTNAMES": "sdlcai.org,www.sdlcai.org",
-    // Set to "true" only if the legacy registration interest form is needed.
+    // Legacy interest form flag; the sold-out homepage has no signup form.
     "SHOW_INTEREST_FORM": "",
   },
   "d1_databases": [
