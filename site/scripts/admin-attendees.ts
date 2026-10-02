@@ -118,7 +118,11 @@ function setupList(root: HTMLElement) {
   };
   let loaded = false;
   let busy = false;
-  let editing = false;
+  const drafts = new Map<
+    string,
+    { form: HTMLFormElement; revision: number; original: string }
+  >();
+  let signOut: HTMLButtonElement | undefined;
   const status = el(
     "p",
     "Loading registrations…",
@@ -173,18 +177,17 @@ function setupList(root: HTMLElement) {
         setTimeout(() => URL.revokeObjectURL(url), 1000);
       }),
     );
-  } else
-    append(
-      toolbar,
-      button(
-        "Sign out",
-        () =>
-          void work(async () => {
-            await api("/api/registration/session", action, "DELETE");
-            location.assign("/registration/access/");
-          }),
-      ),
+  } else {
+    signOut = button(
+      "Sign out",
+      () =>
+        void work(async () => {
+          await api("/api/registration/session", action, "DELETE");
+          location.assign("/registration/access/");
+        }),
     );
+    append(toolbar, signOut);
+  }
   append(root, status, toolbar);
   if (admin) {
     const panels = el("div", "", "my-8 grid gap-6 lg:grid-cols-2");
@@ -217,19 +220,35 @@ function setupList(root: HTMLElement) {
         input.disabled = value || !loaded;
     });
     reload.disabled = value;
+    if (signOut) signOut.disabled = value;
+  }
+  function editSource(person: Attendee): string {
+    return JSON.stringify([
+      person.source,
+      person.sourceKey,
+      person.name,
+      person.company,
+      person.email,
+      person.ticketCode,
+      person.status,
+      person.badge,
+    ]);
   }
   async function load() {
     const next = await api<AttendeeList>(endpoint, action);
     const changed = !loaded || JSON.stringify(next) !== JSON.stringify(data);
+    for (const person of next.attendees) {
+      const draft = drafts.get(person.id);
+      // Only advance a draft past unrelated writes; changed attendee details
+      // must still fail the server's revision check rather than be overwritten.
+      if (draft && draft.original === editSource(person))
+        draft.revision = next.revision;
+    }
     data = next;
     loaded = true;
-    if (changed || editing) {
-      editing = false;
-      render();
-    }
+    if (changed) render();
   }
   function render() {
-    editing = false;
     counts.textContent = `${data.attendees.filter((p) => p.arrivedAt).length} arrived / ${data.attendees.filter((p) => p.status === "active").length} active · ${data.attendees.length} total`;
     const term = search.input.value.trim().toLowerCase();
     const visible = data.attendees.filter((p) => {
@@ -251,14 +270,27 @@ function setupList(root: HTMLElement) {
       lookup.input.value === "ticket" && !term
         ? "Enter the complete ticket code, or paste it from a scanner."
         : `${visible.length} matching registration${visible.length === 1 ? "" : "s"}${lookup.input.value === "ticket" && visible.length > 1 ? ". Multiple matches: verify the attendee and registration source." : "."}`;
+    const displayed = visible.slice(0, 100);
+    const displayedIds = new Set(displayed.map((person) => person.id));
+    const hiddenEdits = [...drafts.keys()].filter(
+      (id) => !displayedIds.has(id),
+    ).length;
+    if (hiddenEdits)
+      results.textContent += ` ${hiddenEdits} unfinished edit${hiddenEdits === 1 ? " is" : "s are"} hidden. Adjust the filters to continue editing.`;
     list.replaceChildren();
-    for (const person of visible.slice(0, 100)) {
+    for (const person of displayed) {
       const card = el(
         "article",
         "",
         "grid min-w-0 gap-4 border border-ink p-4 md:grid-cols-[1fr_auto]",
       );
       card.dataset.attendeeId = person.id;
+      const draft = drafts.get(person.id);
+      if (draft) {
+        append(card, draft.form);
+        append(list, card);
+        continue;
+      }
       const details = el("div", "", "min-w-0 break-words");
       append(
         details,
@@ -329,6 +361,7 @@ function setupList(root: HTMLElement) {
           "border border-ink p-5",
         ),
       );
+    lock(busy);
   }
   async function arrive(person: Attendee, command: "arrived" | "undo") {
     await work(async () => {
@@ -351,8 +384,12 @@ function setupList(root: HTMLElement) {
     });
   }
   function edit(card: HTMLElement, person: Attendee) {
-    editing = true;
     const form = el("form", "", "grid gap-3 md:col-span-2");
+    const draft = {
+      form,
+      revision: data.revision,
+      original: editSource(person),
+    };
     const fields = {
       name: field("Name", person.name),
       company: field("Company", person.company),
@@ -380,8 +417,12 @@ function setupList(root: HTMLElement) {
       ticketState.label,
       badge.label,
       save,
-      button("Cancel editing", render),
+      button("Cancel editing", () => {
+        drafts.delete(person.id);
+        render();
+      }),
     );
+    drafts.set(person.id, draft);
     card.replaceChildren(form);
     fields.name.input.focus();
     form.addEventListener("submit", (event) => {
@@ -389,7 +430,7 @@ function setupList(root: HTMLElement) {
       void work(async () => {
         await api(endpoint, action, "PUT", {
           id: person.id,
-          revision: data.revision,
+          revision: draft.revision,
           attendee: {
             name: fields.name.input.value,
             company: fields.company.input.value,
@@ -399,6 +440,8 @@ function setupList(root: HTMLElement) {
             badge: badge.input.checked,
           },
         });
+        drafts.delete(person.id);
+        render();
         await load();
         status.textContent = "Attendee saved.";
       });
@@ -671,6 +714,7 @@ function setupList(root: HTMLElement) {
         }
         append(grantsRoot, card);
       }
+      lock(busy);
     }
     append(
       panel,
@@ -702,24 +746,19 @@ function setupList(root: HTMLElement) {
       });
     return panel;
   }
-  lock(true);
-  void load()
-    .then(() => {
-      status.textContent =
-        "Registrations loaded. Changes and arrivals are saved immediately.";
-      lock(false);
-    })
-    .catch((error: unknown) => {
-      status.textContent = message(error);
-    });
+  void work(async () => {
+    await load();
+    status.textContent =
+      "Registrations loaded. Changes and arrivals are saved immediately.";
+  });
   setInterval(() => {
-    if (busy || editing || document.hidden || !loaded) return;
+    if (busy || drafts.size || document.hidden || !loaded) return;
     void work(async () => {
       await load();
     });
   }, 15000);
   window.addEventListener("beforeunload", (event) => {
-    if (!editing) return;
+    if (!drafts.size) return;
     event.preventDefault();
     event.returnValue = "";
   });

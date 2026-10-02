@@ -61,7 +61,12 @@ earlier rows use current canonical data. Older volunteer exclusion choices are
 honored until explicitly set in the volunteer workspace. No migration of private
 attendee data is implicit. A saved, reversible retirement list excludes obsolete
 earlier rows, including rows without email; it cannot exclude canonical people.
-The original snapshot remains downloadable. Keep the 2,000-attendee roster bound
+Earlier CSV/manual exclusions become retirement choices; restoring them makes
+them printable without changing the original snapshot. The third saved format
+records that conversion so subsequent reads do not reapply earlier exclusions.
+Both earlier snapshot and print-preference formats remain readable, including
+their volunteer inclusion choices. The original snapshot remains downloadable.
+Keep the 2,000-attendee roster bound
 without applying that bound to the combined live badge sources; preference
 writes remain byte-limited.
 
@@ -84,7 +89,11 @@ registrations explicitly instead of treating their omission as cancellation.
 
 The roster is decrypted for authenticated list reads; this is appropriate for
 the bounded event list but would need a different query model for larger
-events. Multiple desks see changes on a 15-second refresh; writes always check
+events. Unfinished attendee edit forms survive filters and list reloads, including
+when hidden. Reloads advance draft revisions only when the edited attendee's
+source details are unchanged; concurrent corrections still reject a stale save.
+Initial read failures keep retry and sign-out usable. Multiple desks see changes
+on a 15-second refresh; writes always check
 current state. Staff devices need connectivity to confirm an arrival. Retention
 cleanup must cover the roster, badge copies, downloads and encrypted backups.
 

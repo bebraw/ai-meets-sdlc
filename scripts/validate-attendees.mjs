@@ -37,13 +37,30 @@ try {
     page.setDefaultTimeout(10_000);
     page.on("pageerror", (error) => errors.push(error.message));
   }
+  const outage = "Temporary registration outage";
+  const failRoster = (route) =>
+    route.fulfill({
+      status: 503,
+      contentType: "application/json",
+      body: JSON.stringify({ error: outage }),
+    });
+  await admin.route("**/api/admin/attendees", failRoster);
   await admin.goto(`${origin}/admin/attendees/`);
-  await admin
-    .getByText(
-      "Registrations loaded. Changes and arrivals are saved immediately.",
-      { exact: true },
-    )
-    .waitFor();
+  await admin.getByText(outage, { exact: true }).waitFor();
+  const reload = admin.getByRole("button", {
+    name: "Reload registrations",
+    exact: true,
+  });
+  assert.equal(await reload.isEnabled(), true);
+  assert.equal(
+    await admin
+      .getByRole("button", { name: "Import registrations" })
+      .isDisabled(),
+    true,
+  );
+  await admin.unroute("**/api/admin/attendees", failRoster);
+  await reload.click();
+  await admin.getByText("Registrations updated.", { exact: true }).waitFor();
   await admin.getByLabel("CSV file (UTF-8, up to 2 MB)").setInputFiles({
     name: "invalid-encoding.csv",
     mimeType: "text/csv",
@@ -100,11 +117,119 @@ try {
   await first
     .getByRole("button", { name: "Edit attendee", exact: true })
     .click();
-  await admin.getByLabel("Include in badge run").uncheck();
-  await admin
+  await first
+    .getByLabel("Company", { exact: true })
+    .fill("First draft company");
+  await admin.getByLabel("Find an attendee").fill("李");
+  assert.equal(await first.count(), 0);
+  await admin.getByText(/1 unfinished edit is hidden/).waitFor();
+  assert.equal(
+    await admin.evaluate(
+      () =>
+        !window.dispatchEvent(new Event("beforeunload", { cancelable: true })),
+    ),
+    true,
+    "A filtered-out draft must still guard navigation",
+  );
+  const secondId = await admin
+    .locator("[data-attendee-id]")
+    .getAttribute("data-attendee-id");
+  const second = admin.locator(`[data-attendee-id="${secondId}"]`);
+  await second
+    .getByRole("button", { name: "Edit attendee", exact: true })
+    .click();
+  await second
+    .getByLabel("Company", { exact: true })
+    .fill("Second draft company");
+  await admin.getByLabel("Show registrations").selectOption("arrived");
+  assert.equal(
+    await admin.getByRole("button", { name: "Save attendee" }).count(),
+    0,
+  );
+  await admin.getByText(/2 unfinished edits are hidden/).waitFor();
+  await admin.getByLabel("Show registrations").selectOption("all");
+  await admin.getByLabel("Find an attendee").fill("");
+  assert.equal(
+    await first.getByLabel("Company", { exact: true }).inputValue(),
+    "First draft company",
+  );
+  assert.equal(
+    await second.getByLabel("Company", { exact: true }).inputValue(),
+    "Second draft company",
+  );
+  await second
+    .getByRole("button", { name: "Cancel editing", exact: true })
+    .click();
+  assert.equal(
+    await first.getByLabel("Company", { exact: true }).inputValue(),
+    "First draft company",
+  );
+  await second
+    .getByRole("button", { name: "Edit attendee", exact: true })
+    .click();
+  await second
+    .getByLabel("Company", { exact: true })
+    .fill("Second draft company");
+  await first.getByLabel("Include in badge run").uncheck();
+  await first
     .getByRole("button", { name: "Save attendee", exact: true })
     .click();
   await admin.getByText("Attendee saved.", { exact: true }).waitFor();
+  assert.equal(
+    await second.getByLabel("Company", { exact: true }).inputValue(),
+    "Second draft company",
+  );
+  await second
+    .getByRole("button", { name: "Save attendee", exact: true })
+    .click();
+  await second.getByRole("heading", { name: "李 小明", exact: true }).waitFor();
+  await first
+    .getByRole("button", { name: "Edit attendee", exact: true })
+    .click();
+  await first
+    .getByLabel("Company", { exact: true })
+    .fill("Conflicting draft company");
+  await admin.evaluate(
+    async (id) => {
+      const data = await (await fetch("/api/admin/attendees")).json();
+      const person = data.attendees.find((person) => person.id === id);
+      const response = await fetch("/api/admin/attendees", {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+          "x-admin-action": "manage-attendees",
+        },
+        body: JSON.stringify({
+          revision: data.revision,
+          id,
+          attendee: { ...person, company: "Company changed elsewhere" },
+        }),
+      });
+      if (!response.ok)
+        throw new Error("Unable to create concurrent attendee edit");
+    },
+    await first.getAttribute("data-attendee-id"),
+  );
+  await reload.click();
+  await admin.getByText("Registrations updated.", { exact: true }).waitFor();
+  await first
+    .getByRole("button", { name: "Save attendee", exact: true })
+    .click();
+  await admin
+    .getByText("The attendee list changed. Reload before saving again.", {
+      exact: true,
+    })
+    .waitFor();
+  assert.equal(
+    await first.getByLabel("Company", { exact: true }).inputValue(),
+    "Conflicting draft company",
+  );
+  await first
+    .getByRole("button", { name: "Cancel editing", exact: true })
+    .click();
+  await first
+    .getByText("Company changed elsewhere · zoe@example.test", { exact: true })
+    .waitFor();
   await admin
     .getByLabel("Staff name", { exact: true })
     .fill("Front desk browser");
@@ -123,6 +248,29 @@ try {
     (await staff.getByLabel("Staff access token").inputValue()).length,
     43,
   );
+  await staff.route("**/api/registration/attendees", failRoster);
+  await staff
+    .getByRole("button", { name: "Open registration desk", exact: true })
+    .click();
+  await staff.waitForURL("**/registration/");
+  await staff.getByText(outage, { exact: true }).waitFor();
+  assert.equal(
+    await staff
+      .getByRole("button", { name: "Reload registrations", exact: true })
+      .isEnabled(),
+    true,
+  );
+  assert.equal(
+    await staff
+      .getByRole("button", { name: "Sign out", exact: true })
+      .isEnabled(),
+    true,
+  );
+  assert.equal(await staff.getByLabel("Find an attendee").isDisabled(), true);
+  await staff.getByRole("button", { name: "Sign out", exact: true }).click();
+  await staff.waitForURL("**/registration/access/");
+  await staff.unroute("**/api/registration/attendees", failRoster);
+  await staff.goto(`${origin}/registration/access/${new URL(link).hash}`);
   await staff
     .getByRole("button", { name: "Open registration desk", exact: true })
     .click();
@@ -368,7 +516,7 @@ try {
     .waitFor();
   assert.deepEqual(errors, []);
   console.log(
-    "Attendee browser check passed: CSV import, source refresh, scoped staff access, exact ticket lookup, arrivals, cancellation, undo, badge seeding, sign-out/reuse, revocation, mobile layout and accessibility.",
+    "Attendee browser check passed: load recovery, preserved edit drafts, concurrent corrections, CSV import, source refresh, scoped staff access, exact ticket lookup, arrivals, cancellation, undo, badge seeding, sign-out/reuse, revocation, mobile layout and accessibility.",
   );
 } finally {
   await browser?.close();

@@ -49,8 +49,8 @@ async function readSavedStudio(env: Env): Promise<SavedStudio> {
   const value: unknown = JSON.parse(
     await decryptText(row.ciphertext, row.iv, env.EMAIL_ENCRYPTION_KEY!),
   );
-  if (isRecord(value) && value.version === 2)
-    return {
+  if (isRecord(value) && (value.version === 2 || value.version === 3)) {
+    const saved = {
       revision: row.revision,
       preferences: parsePrintPreferences(value.preferences),
       legacyWorkspace:
@@ -58,8 +58,11 @@ async function readSavedStudio(env: Env): Promise<SavedStudio> {
           ? null
           : parseWorkspace(value.legacyWorkspace),
     };
+    if (value.version === 2) retireEarlierExclusions(saved);
+    return saved;
+  }
   const legacyWorkspace = parseWorkspace(value);
-  return {
+  const saved = {
     revision: row.revision,
     preferences: {
       settings: legacyWorkspace.settings,
@@ -68,6 +71,18 @@ async function readSavedStudio(env: Env): Promise<SavedStudio> {
     },
     legacyWorkspace,
   };
+  retireEarlierExclusions(saved);
+  return saved;
+}
+function retireEarlierExclusions(saved: SavedStudio): void {
+  saved.preferences.retiredLegacyIds = [
+    ...new Set([
+      ...saved.preferences.retiredLegacyIds,
+      ...(saved.legacyWorkspace?.people
+        .filter((person) => isLegacyBadgeId(person.id) && !person.included)
+        .map((person) => person.id) ?? []),
+    ]),
+  ];
 }
 async function readStudio(
   env: Env,
@@ -153,7 +168,9 @@ async function readStudio(
         !saved.preferences.retiredLegacyIds.includes(p.id) &&
         (!p.email || !currentEmails.has(p.email.trim().toLowerCase())),
     ) ?? [];
-  people.push(...legacyPeople);
+  // The original snapshot stays intact. Retirement now owns legacy inclusion,
+  // so restoring an earlier exclusion makes that badge printable again.
+  people.push(...legacyPeople.map((person) => ({ ...person, included: true })));
   parseWorkspace({ people, settings: saved.preferences.settings });
   const signatures = Object.fromEntries(
     await Promise.all(
@@ -248,7 +265,7 @@ async function handle(request: Request, env: Env): Promise<Response> {
       409,
     );
   const value = JSON.stringify({
-    version: 2,
+    version: 3,
     preferences,
     legacyWorkspace: saved.legacyWorkspace,
   });

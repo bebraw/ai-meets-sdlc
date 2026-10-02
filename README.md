@@ -449,7 +449,10 @@ registration list. Changes require staff to reload and verify the ticket again.
 Writes recheck registration changes and revoked access inside SQL.
 Organizers can edit attendee details, cancel tickets, choose badge inclusion,
 and undo mistakes. A cancelled ticket cannot be checked in. The desk refreshes
-every 15 seconds while visible; an open edit form pauses refreshes. The list is
+every 15 seconds while visible; unfinished edits pause refreshes. Edit drafts
+survive filtering, reloads and saves to other attendees. Corrections to the same
+attendee still require resolving a stale draft before saving. Retry and sign-out
+remain available if the initial list cannot load. The list is
 a copy of the imported export: it does not check live provider payment/refund
 status or update Tito/Webropol. Refresh the export before opening registration.
 
@@ -491,6 +494,9 @@ Import those registrations in Attendees to move them into the current roster.
 Use **Retire earlier badge**, then **Save print settings**, for obsolete earlier
 rows, including rows without emails. **Restore retired earlier badges** clears
 these choices without changing current registrations or team inclusion.
+Earlier exclusions become retirement choices too, so restoring an excluded
+CSV/manual badge makes it printable even without an email or ticket code.
+The original snapshot keeps its earlier inclusion choices for downloads.
 The badge studio has no CSV import, manual person creation, or roster editing.
 The 2,000-person limit applies to the attendee roster; the combined badge run
 includes additional team and earlier records. Print preferences are bounded by

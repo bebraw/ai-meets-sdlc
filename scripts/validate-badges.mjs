@@ -71,7 +71,7 @@ try {
     company: "",
     role: "attendee",
     source: "Manual",
-    included: true,
+    included: false,
     duplicateReviewed: false,
   };
   const encrypted = await encryptText(
@@ -113,7 +113,44 @@ try {
   const earlierCard = page
     .getByRole("article")
     .filter({ hasText: "attendee · Manual" });
+  assert.equal(
+    await earlierCard.count(),
+    0,
+    "Earlier exclusions start retired",
+  );
+  await page
+    .getByRole("button", {
+      name: "Restore retired earlier badges",
+      exact: true,
+    })
+    .click();
+  await page
+    .getByText(
+      "Earlier badge retirement choices cleared. Current registration and team choices still apply.",
+      { exact: true },
+    )
+    .waitFor();
   assert.equal(await earlierCard.count(), 1);
+  await page.evaluate(() => {
+    window.print = () => {
+      window.__printed = true;
+    };
+  });
+  await page
+    .getByRole("button", { name: "Print / save PDF — attendee", exact: true })
+    .click();
+  await page.waitForFunction(() => window.__printed);
+  assert.equal(await page.locator(".badge-print-sheet").count(), 3);
+  assert.ok(
+    (await page.locator(".badge-print-root text").allTextContents())
+      .join(" ")
+      .includes(earlier.name),
+    "A restored earlier exclusion is printable",
+  );
+  await page.evaluate(() => {
+    window.dispatchEvent(new Event("afterprint"));
+    window.__printed = false;
+  });
   assert.equal(
     await page
       .getByRole("article")

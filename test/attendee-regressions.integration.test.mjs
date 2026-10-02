@@ -5,7 +5,7 @@ import {
   receiptAdmin,
   receiptOrigin as origin,
 } from "./helpers/receipt-fixture.mjs";
-import { encryptText } from "../worker/form-utils.ts";
+import { decryptText, encryptText } from "../worker/form-utils.ts";
 import { defaultSettings } from "../site/scripts/badge-model.ts";
 
 function requests(worker) {
@@ -303,4 +303,154 @@ test("the full attendee roster prints alongside earlier badges and team, and leg
     (await (await send("/api/admin/attendees")).json()).attendees.length,
     2000,
   );
+});
+
+test("both earlier badge formats preserve exclusions as restorable retirements without changing volunteer choices or the original snapshot", async (t) => {
+  const fixture = await createReceiptFixture();
+  t.after(() => fixture.dispose());
+  const send = requests(fixture.worker);
+  const response = await fixture.worker.fetch(
+    `${origin}/api/admin/volunteers`,
+    {
+      method: "POST",
+      headers: {
+        authorization: receiptAdmin,
+        origin,
+        "x-admin-action": "manage-volunteers",
+      },
+      body: new URLSearchParams({
+        name: "Earlier excluded volunteer",
+        email: "earlier-volunteer@example.test",
+        task: "Registration",
+      }),
+    },
+  );
+  assert.equal(response.status, 201);
+  const { volunteer } = await response.json();
+  const excluded = {
+    id: "earlier-excluded-no-email",
+    name: "Earlier excluded person",
+    email: "",
+    company: "",
+    source: "Manual",
+    role: "attendee",
+    included: false,
+    duplicateReviewed: false,
+  };
+  const available = { ...excluded, id: "earlier-available", included: true };
+  const legacyWorkspace = {
+    settings: defaultSettings,
+    people: [
+      excluded,
+      available,
+      {
+        ...excluded,
+        id: `volunteers:${volunteer.id}`,
+        name: volunteer.name,
+        email: volunteer.email,
+        source: "volunteers",
+        role: "organizer",
+      },
+    ],
+  };
+  for (const version of [1, 2]) {
+    const encrypted = await encryptText(
+      JSON.stringify(
+        version === 1
+          ? legacyWorkspace
+          : {
+              version: 2,
+              legacyWorkspace,
+              preferences: {
+                settings: defaultSettings,
+                overrides: [],
+                retiredLegacyIds: [available.id],
+              },
+            },
+      ),
+      "isolated-receipt-test-encryption",
+    );
+    await fixture.runSql(
+      `UPDATE badge_workspace SET revision = 0, ciphertext = '${encrypted.ciphertext}', iv = '${encrypted.iv}' WHERE id = 1`,
+    );
+    let studio = await (await send("/api/admin/badges")).json();
+    assert.ok(studio.preferences.retiredLegacyIds.includes(excluded.id));
+    assert.equal(
+      studio.people.some((person) => person.id === excluded.id),
+      false,
+    );
+    assert.equal(
+      studio.preferences.retiredLegacyIds.includes(available.id),
+      version === 2,
+    );
+    assert.deepEqual(studio.legacyWorkspace, legacyWorkspace);
+    assert.equal(
+      (
+        await send("/api/admin/badges", "PUT", {
+          revision: studio.revision,
+          preferences: studio.preferences,
+        })
+      ).status,
+      200,
+    );
+    studio = await (await send("/api/admin/badges")).json();
+    assert.ok(studio.preferences.retiredLegacyIds.includes(excluded.id));
+    assert.equal(
+      (
+        await send("/api/admin/badges", "PUT", {
+          revision: studio.revision,
+          preferences: { ...studio.preferences, retiredLegacyIds: [] },
+        })
+      ).status,
+      200,
+    );
+    studio = await (await send("/api/admin/badges")).json();
+    assert.equal(
+      studio.people.find((person) => person.id === excluded.id).included,
+      true,
+    );
+    assert.deepEqual(studio.preferences.retiredLegacyIds, []);
+    assert.deepEqual(studio.legacyWorkspace, legacyWorkspace);
+    assert.equal(
+      studio.people.some(
+        (person) => person.id === `volunteers:${volunteer.id}`,
+      ),
+      false,
+    );
+    const volunteerListing = await fixture.worker.fetch(
+      `${origin}/api/admin/volunteers`,
+      { headers: { authorization: receiptAdmin } },
+    );
+    assert.equal(volunteerListing.status, 200);
+    assert.equal((await volunteerListing.json()).volunteers[0].badge, false);
+    const [saved] = await fixture.runSql(
+      "SELECT ciphertext, iv FROM badge_workspace WHERE id = 1",
+    );
+    const value = JSON.parse(
+      await decryptText(
+        saved.ciphertext,
+        saved.iv,
+        "isolated-receipt-test-encryption",
+      ),
+    );
+    assert.equal(value.version, 3);
+    assert.deepEqual(value.legacyWorkspace, legacyWorkspace);
+    assert.equal(
+      (
+        await send("/api/admin/badges", "PUT", {
+          revision: studio.revision,
+          preferences: {
+            ...studio.preferences,
+            retiredLegacyIds: [excluded.id],
+          },
+        })
+      ).status,
+      200,
+    );
+    studio = await (await send("/api/admin/badges")).json();
+    assert.equal(
+      studio.people.some((person) => person.id === excluded.id),
+      false,
+    );
+  }
 });

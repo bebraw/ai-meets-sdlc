@@ -62,7 +62,7 @@ export async function readVolunteers(
         await decryptTextWithKey(row.ciphertext, row.iv, key),
       );
       legacy =
-        isRecord(value) && value.version === 2
+        isRecord(value) && (value.version === 2 || value.version === 3)
           ? value.legacyWorkspace == null
             ? null
             : parseWorkspace(value.legacyWorkspace)
