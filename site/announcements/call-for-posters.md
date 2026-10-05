@@ -1,15 +1,18 @@
 ---
 title: Call for posters at SDLCAI 2026
 subtitle: Put your work on the wall at Marsio
-summary: We invite applied and academic poster proposals about AI across the software development lifecycle for SDLCAI on 13 October 2026.
+summary: The call for posters has closed. The poster session takes place on 13 October 2026 at Marsio.
 date: 2026-08-18
+updated: 2026-10-05
 author: Juho Vepsäläinen
 eyebrow: Call for posters
 ---
 
-We are opening a call for posters for SDLCAI 2026. We plan to display between five and ten posters during the seminar at Marsio, Aalto University, on 13 October.
+**Update, 5 October 2026:** The call for posters has closed.
 
-**[Submit your poster proposal by 27 September 2026.](/posters/#submit)** We review proposals as they arrive and make acceptance decisions on a rolling basis, so the call may close early if all available spaces have been allocated.
+We opened a call for posters for SDLCAI 2026, with space for between five and ten posters during the seminar at Marsio, Aalto University, on 13 October.
+
+The submission deadline was 27 September 2026. We reviewed proposals as they arrived and made acceptance decisions on a rolling basis.
 
 ## What we are looking for
 
@@ -29,8 +32,6 @@ Each accepted poster includes one SDLCAI event ticket for its designated present
 
 ## How selection works
 
-We select proposals for their relevance to SDLCAI, specificity, learning value, and contribution to a balanced mix of academic and industry perspectives. Acceptance is rolling: proposals are reviewed as they arrive, and a poster space may be offered before the submission deadline.
+We selected proposals for their relevance to SDLCAI, specificity, learning value, and contribution to a balanced mix of academic and industry perspectives. Acceptance was rolling: proposals were reviewed as they arrived, and a poster space could be offered before the submission deadline.
 
-The final deadline is 27 September 2026. Because only 5–10 spaces are available, applying early is encouraged.
-
-**[Read the full brief and submit your proposal](/posters/#submit)**
+**[Practical information for accepted presenters](/posters/#brief)**
