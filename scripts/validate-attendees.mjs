@@ -673,9 +673,138 @@ try {
     .getByRole("heading", { name: "Actual Webropol", exact: true })
     .waitFor();
   assert.equal(await cateringCount("Active registrations"), "3");
+  await admin
+    .getByLabel("Import attendee type", { exact: true })
+    .selectOption("sponsor");
+  await admin.getByLabel("CSV file (UTF-8, up to 2 MB)").setInputFiles({
+    name: "tito-sponsors.csv",
+    mimeType: "text/csv",
+    buffer: Buffer.from(
+      "Ticket Full Name,Ticket Email,Ticket Company Name,Ticket Reference,Void Status,What kind of food restrictions do you have?\nSponsor Zoë,sponsor@example.test,Sponsor Company,SP-1,,Vegan and gluten free",
+    ),
+  });
+  await admin
+    .getByText(
+      "CSV loaded. Review column mappings and preview before importing.",
+      { exact: true },
+    )
+    .waitFor();
+  assert.equal(
+    await admin.getByLabel("Registration source", { exact: true }).inputValue(),
+    "tito",
+  );
+  await admin
+    .getByRole("button", { name: "Preview import", exact: true })
+    .click();
+  await admin
+    .getByText(/Sponsor Zoë · sponsor@example.test · SP-1 · sponsor · active/)
+    .waitFor();
+  await admin
+    .getByRole("button", { name: "Import registrations", exact: true })
+    .click();
+  await admin
+    .getByText(
+      "1 registrations imported. Existing arrival records preserved.",
+      { exact: true },
+    )
+    .waitFor();
+  assert.equal(await cateringCount("Active registrations"), "4");
+  await admin
+    .getByLabel("Registration type", { exact: true })
+    .selectOption("sponsor");
+  assert.equal(await admin.locator("[data-attendee-id]").count(), 1);
+  const sponsorCard = admin.locator("[data-attendee-id]");
+  const sponsorId = await sponsorCard.getAttribute("data-attendee-id");
+  await sponsorCard
+    .getByText("SPONSOR · TITO · Ticket SP-1", { exact: true })
+    .waitFor();
+  await sponsorCard
+    .getByText("Diet: Vegan and gluten free", { exact: true })
+    .waitFor();
+  assert.equal(
+    await cateringCount("Active registrations"),
+    "4",
+    "Type filters do not change catering totals",
+  );
+  await sponsorCard
+    .getByRole("button", { name: "Edit attendee", exact: true })
+    .click();
+  assert.equal(
+    await sponsorCard.getByLabel("Attendee type", { exact: true }).inputValue(),
+    "sponsor",
+  );
+  await sponsorCard
+    .getByLabel("Attendee type", { exact: true })
+    .selectOption("attendee");
+  await sponsorCard
+    .getByRole("button", { name: "Save attendee", exact: true })
+    .click();
+  await admin.getByText("Attendee saved.", { exact: true }).waitFor();
+  assert.equal(await admin.locator("[data-attendee-id]").count(), 0);
+  await admin
+    .getByLabel("Registration type", { exact: true })
+    .selectOption("all");
+  const restoredSponsor = admin.locator(`[data-attendee-id="${sponsorId}"]`);
+  await restoredSponsor
+    .getByRole("button", { name: "Edit attendee", exact: true })
+    .click();
+  await restoredSponsor
+    .getByLabel("Attendee type", { exact: true })
+    .selectOption("sponsor");
+  await restoredSponsor
+    .getByRole("button", { name: "Save attendee", exact: true })
+    .click();
+  await restoredSponsor
+    .getByText("SPONSOR · TITO · Ticket SP-1", { exact: true })
+    .waitFor();
+  await admin.goto(`${origin}/admin/badges/`);
+  await admin
+    .getByText(
+      "Badge studio ready. People are loaded from attendee and team records.",
+      { exact: true },
+    )
+    .waitFor();
+  await admin.getByLabel("Find a badge", { exact: true }).fill("sponsor");
+  const sponsorBadge = admin
+    .getByRole("article")
+    .filter({ hasText: "sponsor · attendees" });
+  assert.equal(await sponsorBadge.count(), 1);
+  await sponsorBadge
+    .getByRole("button", { name: "Preview", exact: true })
+    .click();
+  await admin
+    .locator(".badge-preview")
+    .screenshot({ path: "/private/tmp/sdlcai-sponsor-badge.png" });
+  await admin.evaluate(() => {
+    window.print = () => {
+      window.__sponsorPrinted = true;
+    };
+  });
+  await admin
+    .getByRole("button", { name: "Print / save PDF — sponsor", exact: true })
+    .click();
+  await admin.waitForFunction(() => window.__sponsorPrinted);
+  assert.equal(await admin.locator(".badge-print-sheet").count(), 1);
+  const printedBadge = admin.locator(".badge-print-sheet svg");
+  assert.equal(
+    await printedBadge.locator("rect").getAttribute("fill"),
+    "#64c4bc",
+  );
+  assert.ok(
+    (await printedBadge.locator("text").allTextContents()).includes("SPONSOR"),
+  );
+  const sponsorPdf = await admin.pdf({
+    path: "/private/tmp/sdlcai-sponsor-badge.pdf",
+    preferCSSPageSize: true,
+    printBackground: true,
+  });
+  assert.equal(
+    [...sponsorPdf.toString("latin1").matchAll(/\/Type \/Page\b/g)].length,
+    1,
+  );
   assert.deepEqual(errors, []);
   console.log(
-    "Attendee browser check passed: Tito/Webropol diet imports, catering groups, copy/download, multiline diet edits, filter-independent totals, organizer-only diets, load recovery, preserved edit drafts, concurrent corrections, source refresh, scoped staff access, exact ticket lookup, arrivals, cancellation, undo, badge seeding, sign-out/reuse, revocation, mobile layout and accessibility.",
+    "Attendee browser check passed: Tito/Webropol diet imports, separate sponsor imports, type filtering/editing, sponsor badges/PDF output, catering groups, copy/download, multiline diet edits, filter-independent totals, organizer-only diets, load recovery, preserved edit drafts, concurrent corrections, source refresh, scoped staff access, exact ticket lookup, arrivals, cancellation, undo, badge seeding, sign-out/reuse, revocation, mobile layout and accessibility.",
   );
 } finally {
   await browser?.close();

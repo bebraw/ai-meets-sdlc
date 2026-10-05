@@ -176,7 +176,9 @@ function setup(root: HTMLElement): void {
     const term = filter.input.value.toLocaleLowerCase();
     count.textContent = `${workspace.people.filter((p) => p.included).length} included / ${workspace.people.length} total · ${duplicate.size} unresolved duplicate rows`;
     const visible = workspace.people.filter((p) =>
-      `${p.name} ${p.email} ${p.source}`.toLocaleLowerCase().includes(term),
+      `${p.name} ${p.email} ${p.source} ${p.role}`
+        .toLocaleLowerCase()
+        .includes(term),
     );
     list.replaceChildren();
     for (const person of visible) {
@@ -383,7 +385,7 @@ function setup(root: HTMLElement): void {
     el("h2", "People for this badge run", "font-headline text-2xl uppercase"),
     el(
       "p",
-      "Active attendees selected for badges, public speakers, attending organizers, and selected volunteers load automatically. Edit people and attendance in their own workspaces; text adjustments here affect only the printed badge.",
+      "Active attendees and sponsors selected for badges, public speakers, attending organizers, and selected volunteers load automatically. Edit people and attendance in their own workspaces; text adjustments here affect only the printed badge.",
       "text-sm leading-6",
     ),
   );
@@ -500,7 +502,13 @@ function setup(root: HTMLElement): void {
       () => void work(() => check("all", false)),
     ),
   );
-  for (const role of ["all", "attendee", "speaker", "organizer"] as const)
+  for (const role of [
+    "all",
+    "attendee",
+    "speaker",
+    "organizer",
+    "sponsor",
+  ] as const)
     append(
       output,
       button(

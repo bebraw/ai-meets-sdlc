@@ -19,6 +19,37 @@ const mapping = {
   first: -1,
   last: -1,
 };
+test("sponsor Tito imports keep diets and ticket identities, and default refreshes preserve types", () => {
+  const prepared = prepareAttendeeCsv(
+    "Ticket Full Name,Ticket Email,Ticket Reference,Void Status,What kind of food restrictions do you have?\nSponsor Zoë,sponsor@example.test,SP-1,,Vegan and gluten free",
+  );
+  const detected = detectAttendeeMapping(prepared.records[0].cells);
+  const rows = importAttendeeCsv(prepared.records, detected, "sponsor");
+  assert.equal(rows[0].type, "sponsor");
+  assert.equal(rows[0].diet, "Vegan and gluten free");
+  const roster = mergeAttendeeImport([], "tito", rows);
+  assert.equal(roster[0].source, "tito");
+  assert.equal(roster[0].type, "sponsor");
+  const refresh = importAttendeeCsv(prepared.records, detected);
+  const refreshed = mergeAttendeeImport(roster, "tito", refresh);
+  assert.equal(refreshed[0].id, roster[0].id);
+  assert.equal(refreshed[0].type, "sponsor");
+  assert.equal(mergeAttendeeImport([], "tito", refresh)[0].type, "attendee");
+  assert.equal(
+    mergeAttendeeImport(
+      refreshed,
+      "tito",
+      importAttendeeCsv(prepared.records, detected, "attendee"),
+    )[0].type,
+    "attendee",
+  );
+  const { type, ...legacy } = roster[0];
+  assert.equal(parseAttendeeRoster([legacy])[0].type, "attendee");
+  assert.throws(() =>
+    mergeAttendeeImport(roster, "tito", [{ ...rows[0], type: "unknown" }]),
+  );
+});
+
 test("attendee imports retain Unicode, reject unknown status and require individual registration identities", () => {
   const rows = importAttendeeCsv(
     parseCsv(

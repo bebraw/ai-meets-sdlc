@@ -425,7 +425,7 @@ try {
     section.style.cssText =
       "display:flex;gap:10px;background:#ddd;padding:10px;width:max-content";
     const colors = [];
-    for (const role of ["attendee", "speaker", "organizer"]) {
+    for (const role of ["attendee", "speaker", "organizer", "sponsor"]) {
       const result = renderBadge(
         {
           name: "María Fernanda de los Ángeles García López",
@@ -442,7 +442,7 @@ try {
     document.body.appendChild(section);
     return colors;
   });
-  assert.deepEqual(svgColors, ["#ffffff", "#000000", "#f58220"]);
+  assert.deepEqual(svgColors, ["#ffffff", "#000000", "#f58220", "#64c4bc"]);
   await page
     .locator("#badge-role-proofs")
     .screenshot({ path: "/tmp/sdlcai-badge-roles.png" });

@@ -108,7 +108,9 @@ export function renderBadge(
       ? "#000000"
       : person.role === "organizer"
         ? "#f58220"
-        : "#ffffff";
+        : person.role === "sponsor"
+          ? "#64c4bc"
+          : "#ffffff";
   const root = svg("svg", {
     viewBox: `0 0 ${page} ${page}`,
     width: `${page}mm`,

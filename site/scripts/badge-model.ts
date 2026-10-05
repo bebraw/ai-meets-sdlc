@@ -1,6 +1,11 @@
 import * as v from "valibot";
 const text = (max: number) => v.pipe(v.string(), v.maxLength(max));
-export const badgeRoleSchema = v.picklist(["attendee", "speaker", "organizer"]);
+export const badgeRoleSchema = v.picklist([
+  "attendee",
+  "speaker",
+  "organizer",
+  "sponsor",
+]);
 export const badgePersonSchema = v.object({
   id: text(100),
   name: text(300),

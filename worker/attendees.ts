@@ -276,6 +276,7 @@ async function handle(
       people[index] = {
         ...people[index]!,
         ...attendee,
+        type: attendee.type ?? people[index]!.type,
         sourceKey: attendeeSourceKey(attendee),
       };
       people = parseAttendeeRoster(people);

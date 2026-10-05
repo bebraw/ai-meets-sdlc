@@ -18,6 +18,7 @@ import {
   type AttendeeInput,
   type AttendeeList,
   type AttendeeMapping,
+  type AttendeeType,
   type RegistrationGrant,
 } from "./attendee-model.ts";
 import { createAttendeeCateringPanel } from "./attendee-catering.ts";
@@ -148,8 +149,17 @@ function setupList(root: HTMLElement) {
     ["Arrived", "arrived"],
     ["Cancelled", "cancelled"],
   ]);
-  const filters = el("div", "", "my-5 grid gap-4 md:grid-cols-[2fr_1fr_1fr]");
-  append(filters, search.label, lookup.label, state.label);
+  const attendeeType = selectField("Registration type", [
+    ["All types", "all"],
+    ["Attendee", "attendee"],
+    ["Sponsor", "sponsor"],
+  ]);
+  const filters = el(
+    "div",
+    "",
+    "my-5 grid gap-4 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr]",
+  );
+  append(filters, search.label, lookup.label, state.label, attendeeType.label);
   const list = el("div", "", "grid gap-3");
   const results = el("p", "", "my-3 text-sm font-bold");
   results.setAttribute("role", "status");
@@ -201,7 +211,12 @@ function setupList(root: HTMLElement) {
     if (catering) append(root, catering.panel);
   }
   append(root, counts, filters, results, list);
-  for (const input of [search.input, lookup.input, state.input])
+  for (const input of [
+    search.input,
+    lookup.input,
+    state.input,
+    attendeeType.input,
+  ])
     input.addEventListener("input", render);
   async function work(task: () => Promise<void>) {
     if (busy) return;
@@ -239,6 +254,7 @@ function setupList(root: HTMLElement) {
       person.ticketCode,
       person.status,
       person.badge,
+      person.type,
       person.diet,
     ]);
   }
@@ -267,6 +283,8 @@ function setupList(root: HTMLElement) {
           : `${p.name} ${p.email} ${p.ticketCode}`.toLowerCase().includes(term);
       return (
         matches &&
+        (attendeeType.input.value === "all" ||
+          p.type === attendeeType.input.value) &&
         (state.input.value === "all" ||
           (state.input.value === "waiting" &&
             p.status === "active" &&
@@ -311,7 +329,7 @@ function setupList(root: HTMLElement) {
         ),
         el(
           "p",
-          `${person.source.toUpperCase()} · ${person.ticketCode ? `Ticket ${person.ticketCode}` : "No ticket code"}`,
+          `${person.type.toUpperCase()} · ${person.source.toUpperCase()} · ${person.ticketCode ? `Ticket ${person.ticketCode}` : "No ticket code"}`,
           "mt-2 text-sm font-bold",
         ),
       );
@@ -445,6 +463,11 @@ function setupList(root: HTMLElement) {
       ["Cancelled", "cancelled"],
     ]);
     ticketState.input.value = person.status;
+    const type = selectField("Attendee type", [
+      ["Attendee", "attendee"],
+      ["Sponsor", "sponsor"],
+    ]);
+    type.input.value = person.type;
     const badge = field("Include in badge run", "", "checkbox");
     badge.input.checked = person.badge;
     badge.input.className = "h-5 w-5";
@@ -453,6 +476,7 @@ function setupList(root: HTMLElement) {
     append(
       form,
       ticketState.label,
+      type.label,
       badge.label,
       save,
       button("Cancel editing", () => {
@@ -476,6 +500,7 @@ function setupList(root: HTMLElement) {
             ticketCode: fields.ticketCode.input.value,
             status: ticketState.input.value,
             badge: badge.input.checked,
+            type: type.input.value,
             diet: fields.diet.input.value,
           },
         });
@@ -497,7 +522,7 @@ function setupList(root: HTMLElement) {
       el("h2", "01 / Import attendees", "font-headline text-2xl uppercase"),
       el(
         "p",
-        "Import Tito and Webropol separately. Map the attendee email, individual ticket code, and dietary response. Refreshes preserve arrivals and badge choices; missing rows stay in the list. An unmapped diet column keeps earlier dietary responses.",
+        "Import Tito and Webropol separately. Choose Sponsor for a separate Tito sponsor export. Map the attendee email, individual ticket code, and dietary response. Refreshes preserve arrivals and badge choices; missing rows stay in the list. An unmapped diet column keeps earlier dietary responses.",
         "text-sm leading-6",
       ),
     );
@@ -506,6 +531,11 @@ function setupList(root: HTMLElement) {
     const source = selectField("Registration source", [
       ["Tito", "tito"],
       ["Webropol", "webropol"],
+    ]);
+    const type = selectField("Import attendee type", [
+      ["Keep existing types; new rows are attendees", ""],
+      ["Attendee", "attendee"],
+      ["Sponsor", "sponsor"],
     ]);
     const delimiter = selectField("Delimiter", [
       ["Detect automatically", "auto"],
@@ -572,7 +602,11 @@ function setupList(root: HTMLElement) {
         diet: -1,
       };
       for (const [key, input] of columns) mapping[key] = Number(input.value);
-      const imported = importAttendeeCsv(records, mapping);
+      const imported = importAttendeeCsv(
+        records,
+        mapping,
+        type.input.value ? (type.input.value as AttendeeType) : undefined,
+      );
       mergeAttendeeImport(
         data.attendees,
         source.input.value as "tito" | "webropol",
@@ -628,7 +662,7 @@ function setupList(root: HTMLElement) {
             preview,
             el(
               "p",
-              `${person.name} · ${person.email} · ${person.ticketCode || "No ticket code"} · ${person.status} · Diet: ${person.diet ?? "Not mapped"}`,
+              `${person.name} · ${person.email} · ${person.ticketCode || "No ticket code"} · ${person.type ?? "Keep existing type / new attendee"} · ${person.status} · Diet: ${person.diet ?? "Not mapped"}`,
             ),
           );
       } catch (error) {
@@ -653,6 +687,7 @@ function setupList(root: HTMLElement) {
       panel,
       file.label,
       source.label,
+      type.label,
       delimiter.label,
       formatNote,
       mappingRoot,

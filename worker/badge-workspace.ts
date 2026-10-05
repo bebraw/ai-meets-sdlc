@@ -136,9 +136,7 @@ async function readStudio(
   const people = [
     ...roster.people
       .filter((p) => p.status === "active" && p.badge)
-      .map((p) =>
-        make("attendees", p.id, p.name, p.company, p.email, "attendee"),
-      ),
+      .map((p) => make("attendees", p.id, p.name, p.company, p.email, p.type)),
     ...speakers.map((p) =>
       make(
         "speakers",

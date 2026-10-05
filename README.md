@@ -474,6 +474,14 @@ voided/refunded/expired/deleted. Unknown mapped statuses reject the import.
 If no status column is mapped, all imported rows are active; filter inactive
 tickets out of the source export first.
 
+For a separate Tito sponsor CSV, choose **Tito** as the registration source and
+**Sponsor** under **Import attendee type**. Map names, companies, ticket codes,
+emails and food restrictions as usual. Sponsors share the registration and
+catering flows. The default import type keeps existing types and treats new rows
+as attendees; selecting **Attendee** or **Sponsor** explicitly updates the type
+of matching rows too. Organizers can also change **Attendee type** in the editor.
+Earlier rosters without a type are treated as attendees. No migration is needed.
+
 Create a named staff link for each person handling registration. The link opens
 `/registration/access/` and requires **Open registration desk** to sign in. Links
 remain reusable until revoked; the HttpOnly browser session lasts 14 days.
@@ -547,6 +555,11 @@ front/back pages as needed. Print buttons recheck layout and font coverage and
 block unresolved problems. Custom TTF/OTF fonts are tab-local and must be loaded
 again after a reload. The bundled Noto Sans is licensed under the SIL Open Font
 License; its source and license are in `assets/badges/`.
+
+Sponsor badges have a teal background and a **SPONSOR** label. They are included
+in the full badge run and can be generated separately with
+**Print / save PDF — sponsor**. Attendees use white, speakers black, and
+organizers and volunteers orange.
 
 Use 100% print scale, enable background graphics, disable headers/footers, and
 confirm dimensions and duplex order with the printer. Browser PDFs use RGB, not

@@ -40,6 +40,15 @@ regardless of filters or arrivals. Cancelled registrations are excluded; speaker
 volunteers and guests outside the attendee roster need a separate headcount.
 Diet responses are omitted from registration staff API responses.
 
+Model sponsors as an attendee type within the same encrypted roster and Tito
+source. The import type selector can classify a separate sponsor CSV or update
+matching registrations; its default preserves existing types and creates new
+rows as attendees. Editors can correct types, and both organizer and desk lists
+show and filter them. Existing untyped records default to attendees. Sponsors
+retain the same ticket identity, arrival history, dietary response and badge
+inclusion rules. Catering includes active sponsors. Badges inherit this type,
+use teal with a SPONSOR label, and support a separate sponsor print run.
+
 Keep arrivals outside the encrypted roster, indexed by random attendee ID.
 Writes compare the arrival revision and the roster revision displayed to staff,
 verify current staff

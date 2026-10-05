@@ -7,6 +7,8 @@ import {
 } from "./badge-model.ts";
 
 const text = (max: number) => v.pipe(v.string(), v.maxLength(max));
+export const attendeeTypeSchema = v.picklist(["attendee", "sponsor"]);
+export type AttendeeType = v.InferOutput<typeof attendeeTypeSchema>;
 export const attendeeInputSchema = v.object({
   name: text(300),
   company: text(300),
@@ -14,10 +16,12 @@ export const attendeeInputSchema = v.object({
   ticketCode: text(100),
   status: v.picklist(["active", "cancelled"]),
   badge: v.boolean(),
+  type: v.optional(attendeeTypeSchema),
   diet: v.optional(text(2000)),
 });
 export type AttendeeInput = v.InferOutput<typeof attendeeInputSchema>;
 export interface AttendeeRecord extends AttendeeInput {
+  type: AttendeeType;
   id: string;
   source: "tito" | "webropol";
   sourceKey: string;
@@ -66,6 +70,7 @@ export function parseAttendeeRoster(value: unknown): AttendeeRecord[] {
       v.array(
         v.object({
           ...attendeeInputSchema.entries,
+          type: v.optional(attendeeTypeSchema, "attendee"),
           id: v.pipe(text(100), v.minLength(1)),
           source: v.picklist(["tito", "webropol"]),
           sourceKey: v.pipe(text(400), v.minLength(1)),
@@ -91,6 +96,7 @@ export function parseAttendeeRoster(value: unknown): AttendeeRecord[] {
   return records.map((record) => ({
     ...record,
     ...parseAttendeeInput(record),
+    type: record.type,
   }));
 }
 export function mergeAttendeeImport(
@@ -114,16 +120,23 @@ export function mergeAttendeeImport(
       (p) => p.source === source && p.sourceKey === sourceKey,
     );
     if (index >= 0) {
-      // Unmapped diets, badge choices, and arrival records survive a source refresh.
-      const { diet, ...details } = input;
+      // Unmapped diets/types, badge choices, and arrivals survive a source refresh.
+      const { diet, type, ...details } = input;
       result[index] = {
         ...result[index]!,
         ...details,
         ...(diet === undefined ? {} : { diet }),
+        type: type ?? result[index]!.type,
         badge: result[index]!.badge,
       };
     } else
-      result.push({ ...input, id: crypto.randomUUID(), source, sourceKey });
+      result.push({
+        ...input,
+        type: input.type ?? "attendee",
+        id: crypto.randomUUID(),
+        source,
+        sourceKey,
+      });
   }
   return parseAttendeeRoster(result);
 }
@@ -292,6 +305,7 @@ export function prepareAttendeeCsv(
 export function importAttendeeCsv(
   records: CsvRecord[],
   mapping: AttendeeMapping,
+  type?: AttendeeType,
 ): AttendeeInput[] {
   const people = importCsv(records, mapping, "Registration");
   return people.map((person, index) => {
@@ -345,6 +359,7 @@ export function importAttendeeCsv(
             : (record.cells[mapping.ticketCode] ?? ""),
         status: cancelled.includes(rawStatus) ? "cancelled" : "active",
         badge: true,
+        ...(type === undefined ? {} : { type }),
         ...(mapping.diet !== undefined && mapping.diet >= 0
           ? { diet: record.cells[mapping.diet] ?? "" }
           : {}),
