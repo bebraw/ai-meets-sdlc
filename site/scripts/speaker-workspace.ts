@@ -58,6 +58,7 @@ interface SpeakerDinnerResponseData {
 }
 
 interface SpeakerDinnerResponse {
+  attendance_source?: "admin" | "speaker";
   closed: boolean;
   consent_text: string;
   deadline: string;
@@ -758,7 +759,11 @@ function renderDinner(data: SpeakerDinnerResponse): void {
       }
     }
     setDinnerStatus(
-      `Dinner responses closed on ${formatWorkspaceDate(data.deadline)}.`,
+      `${data.attendance_source === "admin" ? "Attendance recorded by an organizer. " : ""}Dinner responses closed on ${formatWorkspaceDate(data.deadline)}.`,
+    );
+  } else if (data.attendance_source === "admin") {
+    setDinnerStatus(
+      "Attendance recorded by an organizer. Saving this form will replace that attendance setting.",
     );
   } else if (data.responded_at) {
     setDinnerStatus(`Last saved ${formatWorkspaceDate(data.responded_at)}.`);

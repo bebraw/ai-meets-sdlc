@@ -43,6 +43,7 @@ const adminActions: Record<string, [string, string]> = {
   "/api/admin/speaker-dinner/invite": ["Dinner invitation", "rotated"],
   "/api/admin/speaker-dinner/shared-invite": ["Dinner invitation", "rotated"],
   "/api/admin/speaker-dinner/guests": ["Dinner guest", "added"],
+  "/api/admin/speaker-dinner/attendance": ["Dinner attendance", "updated"],
   "/api/admin/speaker-dinner/purge": ["Dinner data", "purged"],
 };
 

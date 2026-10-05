@@ -47,6 +47,21 @@ deadline and retention window. Existing personal dinner links continue to see
 the same record. Unmapped shared-link responses remain available only as a
 legacy path until their retention deadline.
 
+Organizers can record a speaker's dinner attendance at `/admin/dinner/`, including
+after the RSVP deadline and until the retention deadline. An encrypted attendance
+setting takes precedence over the original response while preserving that
+response, its food notes, consent and speaker reply timestamp. Clearing the
+setting restores the speaker's original response, or awaiting reply if none
+exists. Manual attendance does not fabricate a speaker response or dietary
+details. Each speaker card links to these controls from the speaker admin page.
+
+Dinner summaries, the caterer CSV, speaker admin and both speaker access paths
+use the same effective attendance and identify organizer settings. A later
+speaker save replaces the setting with the new response. Revision checks reject
+stale organizer saves, including when a speaker replies concurrently. Attendance
+changes appear in the private activity log without food values. Migration 0024
+adds the encrypted setting and dinner revision to the existing retained record.
+
 Changing a speaker's assigned email revokes existing sessions and outstanding
 magic links for that speaker. Saving the same email does not unnecessarily sign
 the speaker out.

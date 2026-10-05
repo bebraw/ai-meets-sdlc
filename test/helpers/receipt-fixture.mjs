@@ -10,7 +10,7 @@ export const receiptOrigin = "https://sdlcai.org";
 export const receiptAdmin = `Basic ${Buffer.from("receipts-admin:local-receipts-test").toString("base64")}`;
 const keyMaterial = "isolated-receipt-test-encryption";
 
-export async function createReceiptFixture() {
+export async function createReceiptFixture({ vars = {} } = {}) {
   const directory = await mkdtemp(path.join(tmpdir(), "sdlcai-receipts-test-"));
   const cli = path.resolve("node_modules/.bin/wrangler");
   const runSql = async (sql) => {
@@ -82,6 +82,7 @@ export async function createReceiptFixture() {
         SPEAKER_WORKSPACE_ACCESS_UNTIL: "2099-10-31T21:59:59Z",
         TURNSTILE_SITE_KEY: "",
         SHOW_INTEREST_FORM: "",
+        ...vars,
       },
     });
     const cookies = new Map();

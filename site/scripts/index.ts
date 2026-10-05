@@ -64,6 +64,8 @@ type SpeakerDinnerResponse = {
 };
 
 type SpeakerDinnerAdminItem = {
+  attendance_override: "attending" | "not_attending" | null;
+  dinner_revision: number;
   expires_at: string | null;
   invited: boolean;
   name: string;
@@ -79,6 +81,7 @@ type DinnerAdminResponse = Pick<
 >;
 
 type SpeakerDinnerStatus = {
+  attendance_source?: "admin" | "speaker";
   closed: boolean;
   deadline: string;
   name: string;
@@ -1117,7 +1120,11 @@ function initSpeakerDinnerForm() {
         }
       }
       setStatus(
-        "The response deadline has passed. Your saved response is shown above.",
+        `${payload.attendance_source === "admin" ? "Attendance recorded by an organizer. " : ""}The response deadline has passed. Your saved response is shown above.`,
+      );
+    } else if (payload.attendance_source === "admin") {
+      setStatus(
+        "Attendance recorded by an organizer. Saving this form will replace that attendance setting.",
       );
     } else if (payload.responded_at) {
       setStatus("Your saved response is ready to update.");
@@ -1244,6 +1251,8 @@ function initAdminSpeakerDinner() {
   let activeFilter = "all";
   let loadedSpeakers: SpeakerDinnerAdminItem[] = [];
   let loadedOrganizers: DinnerAdminResponse[] = [];
+  let attendanceSaving = false;
+  let followSpeakerAnchor = true;
 
   function renderFilteredResponses() {
     const matches = (guest: DinnerAdminResponse) =>
@@ -1270,6 +1279,7 @@ function initAdminSpeakerDinner() {
 
   for (const button of filterButtons) {
     button.addEventListener("click", () => {
+      if (attendanceSaving) return;
       activeFilter = button.dataset.adminDinnerFilter ?? "all";
       for (const filter of filterButtons)
         filter.setAttribute(
@@ -1420,6 +1430,13 @@ function initAdminSpeakerDinner() {
         "article",
         "grid min-w-0 grid-cols-1 border border-ink bg-paper lg:grid-cols-[minmax(16rem,0.6fr)_minmax(0,1fr)]",
       );
+      const isSpeaker = (
+        guest: DinnerAdminResponse,
+      ): guest is SpeakerDinnerAdminItem => "speaker_id" in guest;
+      if (isSpeaker(speaker)) {
+        article.id = `speaker-${speaker.speaker_id}`;
+        article.dataset.dinnerSpeakerId = speaker.speaker_id;
+      }
       const header = createElement("header", "bg-ink p-5 text-paper");
       const titleGroup = createElement("div");
       const state = speaker.response
@@ -1456,13 +1473,124 @@ function initAdminSpeakerDinner() {
         "Cross-contamination",
         speaker.response?.cross_contamination ?? "",
       );
-      addDinnerField(details, "Responded", speaker.responded_at ?? "");
+      addDinnerField(
+        details,
+        isSpeaker(speaker) ? "Speaker replied" : "Responded",
+        speaker.responded_at ?? "",
+      );
+      if (isSpeaker(speaker))
+        addDinnerField(
+          details,
+          "Attendance recorded by",
+          speaker.attendance_override
+            ? "Organizer"
+            : speaker.responded_at
+              ? "Speaker"
+              : "Awaiting reply",
+        );
       addDinnerField(details, "Last updated", speaker.updated_at ?? "");
 
       article.appendChild(header);
       article.appendChild(details);
+      if (isSpeaker(speaker)) article.appendChild(attendanceForm(speaker));
       target.appendChild(article);
     }
+  }
+
+  function lockAttendance(value: boolean) {
+    attendanceSaving = value;
+    for (const control of root.querySelectorAll("button,select"))
+      if (
+        control instanceof HTMLButtonElement ||
+        control instanceof HTMLSelectElement
+      )
+        control.disabled = value;
+    for (const filter of filterButtons) filter.disabled = value;
+    if (refreshButton) refreshButton.disabled = value;
+  }
+
+  function attendanceForm(speaker: SpeakerDinnerAdminItem): HTMLFormElement {
+    const form = createElement(
+      "form",
+      "grid gap-3 border-t border-ink p-5 lg:col-span-2 sm:grid-cols-[1fr_auto] sm:items-end",
+    );
+    const label = createElement("label", "grid gap-2 text-sm font-bold");
+    label.appendChild(
+      createElement("span", "", `Attendance for ${speaker.name}`),
+    );
+    const select = createElement(
+      "select",
+      "min-w-0 w-full border border-ink bg-paper px-3 py-3 font-normal",
+    );
+    for (const [value, text] of [
+      ["", "Use speaker response"],
+      ["attending", "Attending — recorded by organizer"],
+      ["not_attending", "Not attending — recorded by organizer"],
+    ]) {
+      const option = createElement("option", "", text);
+      option.value = value!;
+      select.appendChild(option);
+    }
+    select.value = speaker.attendance_override ?? "";
+    label.appendChild(select);
+    const save = createElement(
+      "button",
+      "border border-ink px-4 py-3 text-sm font-bold uppercase hover:bg-ink hover:text-paper disabled:opacity-50",
+      "Save attendance",
+    );
+    save.type = "submit";
+    select.disabled = attendanceSaving;
+    save.disabled = attendanceSaving;
+    form.appendChild(label);
+    form.appendChild(save);
+    if (speaker.response?.attendance === "attending" && !speaker.responded_at)
+      form.appendChild(
+        createElement(
+          "p",
+          "text-sm text-muted sm:col-span-2",
+          "Dietary details have not been supplied by the speaker.",
+        ),
+      );
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (attendanceSaving) return;
+      lockAttendance(true);
+      setStatus(`Saving dinner attendance for ${speaker.name}…`);
+      try {
+        const response = await fetch("/api/admin/speaker-dinner/attendance", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+            "x-admin-action": "manage-speaker-dinner-attendance",
+          },
+          body: JSON.stringify({
+            speaker_id: speaker.speaker_id,
+            revision: speaker.dinner_revision,
+            attendance: select.value || null,
+          }),
+        });
+        const payload = (await response.json()) as FormResponse;
+        if (!response.ok || payload.error)
+          throw new Error(payload.error || "Could not save dinner attendance.");
+        await loadSpeakers(`Dinner attendance saved for ${speaker.name}.`);
+      } catch (error) {
+        setStatus(
+          error instanceof Error
+            ? error.message
+            : "Could not save dinner attendance.",
+        );
+      } finally {
+        lockAttendance(false);
+        const updated = document.getElementById(
+          `speaker-${speaker.speaker_id}`,
+        );
+        (
+          updated?.querySelector<HTMLButtonElement>('button[type="submit"]') ??
+          refreshButton
+        )?.focus();
+      }
+    });
+    return form;
   }
 
   function updateInviteState(active: boolean, url: string | null = null) {
@@ -1511,6 +1639,13 @@ function initAdminSpeakerDinner() {
       loadedSpeakers = speakers;
       loadedOrganizers = organizers;
       renderFilteredResponses();
+      if (followSpeakerAnchor) {
+        followSpeakerAnchor = false;
+        if (location.hash.startsWith("#speaker-"))
+          document
+            .getElementById(location.hash.slice(1))
+            ?.scrollIntoView({ block: "center" });
+      }
       updateSummary(speakers, organizers);
       updateInviteState(
         Boolean(payload.shared_invite_active),
@@ -1521,7 +1656,7 @@ function initAdminSpeakerDinner() {
       ).length;
       setStatus(
         successMessage ||
-          `${responseCount} of ${speakers.length} speakers have replied. ${organizers.length} other ${organizers.length === 1 ? "guest" : "guests"}.`,
+          `${responseCount} of ${speakers.length} speakers have attendance recorded. ${organizers.length} other ${organizers.length === 1 ? "guest" : "guests"}.`,
       );
     } catch (error) {
       root.replaceChildren(

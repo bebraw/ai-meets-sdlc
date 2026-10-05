@@ -43,6 +43,9 @@ export interface SpeakerDinnerResponseData {
 }
 
 export interface SpeakerDinnerRow {
+  attendance_override_ciphertext: string | null;
+  attendance_override_iv: string | null;
+  dinner_revision: number;
   consent_text: string | null;
   expires_at: string;
   responded_at: string | null;

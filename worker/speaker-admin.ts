@@ -111,7 +111,10 @@ export async function getAdminSpeakers(env: Env): Promise<Response> {
          consent_text,
          expires_at,
          responded_at,
-         updated_at
+         updated_at,
+         attendance_override_ciphertext,
+         attendance_override_iv,
+         dinner_revision
        FROM speaker_dinner_responses`,
       )
       .all<SpeakerDinnerRow>(),
@@ -226,6 +229,9 @@ export async function getAdminSpeakers(env: Env): Promise<Response> {
           : null,
         dinner: dinnerRow
           ? {
+              attendance_source: dinnerRow.attendance_override_ciphertext
+                ? "admin"
+                : "speaker",
               expires_at: dinnerRow.expires_at,
               responded_at: dinnerRow.responded_at,
               response: dinner,

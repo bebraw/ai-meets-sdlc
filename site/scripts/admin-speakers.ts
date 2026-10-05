@@ -43,6 +43,7 @@ interface AdminSpeakerItem {
     updated_at: string;
   } | null;
   dinner: {
+    attendance_source: "admin" | "speaker";
     expires_at: string;
     responded_at: string | null;
     response: {
@@ -614,10 +615,7 @@ function renderSummary(speakers: AdminSpeakerItem[]): void {
     "submitted",
     speakers.filter(({ revision }) => revision?.state === "submitted").length,
   );
-  setCount(
-    "dinner",
-    speakers.filter(({ dinner }) => dinner?.responded_at).length,
-  );
+  setCount("dinner", speakers.filter(({ dinner }) => dinner?.response).length);
   setCount(
     "presentation",
     speakers.filter(({ presentation }) => presentation?.responded_at).length,
@@ -1482,6 +1480,21 @@ function renderDinner(speaker: AdminSpeakerItem): HTMLElement {
   section.appendChild(heading);
 
   const response = speaker.dinner?.response;
+  const manage = node(
+    "a",
+    "w-fit border border-paper/50 px-3 py-2 text-xs font-bold uppercase",
+    "Manage dinner attendance →",
+  );
+  manage.href = `/admin/dinner/#speaker-${speaker.speaker_id}`;
+  section.appendChild(manage);
+  if (speaker.dinner?.attendance_source === "admin")
+    section.appendChild(
+      node(
+        "p",
+        "text-sm text-paper/60",
+        "Attendance recorded by an organizer.",
+      ),
+    );
 
   if (!response) {
     section.appendChild(

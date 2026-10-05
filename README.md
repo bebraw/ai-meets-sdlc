@@ -194,6 +194,16 @@ successful change without copying submitted values. It starts when migration
 `0019_create_activity_events.sql` and the corresponding Worker are deployed;
 the shared admin account does not identify individual organizers.
 
+At `/admin/dinner/`, select a speaker's attendance and choose **Save attendance**
+to record plans on their behalf. **Use speaker response** restores their original
+reply, or awaiting reply when none exists. Food notes and the original reply are
+preserved; totals and the caterer CSV use the recorded attendance. A later speaker
+save replaces the organizer setting. These controls remain available after the
+RSVP deadline until dinner data retention ends. Apply migration
+`0024_add_speaker_dinner_attendance_controls.sql` before deployment; the normal
+`npm run deploy` command applies it. `npm run dinner:browser-check` validates the
+workflow, mobile layout and accessibility with an isolated local database.
+
 The schedule structure and session deck scaffold derive from
 `site/data/seminar.json`, `site/data/schedule.json`, `site/data/speakers.json`,
 and `site/data/sponsors.json`; the Worker resolves mutable speaker and talk copy

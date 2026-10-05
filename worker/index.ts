@@ -23,6 +23,7 @@ import {
   handleSpeakerDinnerSharedStatus,
   handleSpeakerDinnerSharedResponse,
   handleAdminDinnerGuest,
+  handleAdminSpeakerDinnerAttendance,
   shouldPurgeSpeakerDinnerData,
   purgeSpeakerDinnerData,
 } from "./speaker-dinner.ts";
@@ -342,6 +343,19 @@ const innerHandler = {
             "content-type": "text/csv; charset=utf-8",
           },
         }),
+      );
+    }
+
+    if (url.pathname === "/api/admin/speaker-dinner/attendance") {
+      if (request.method !== "POST")
+        return jsonResponse({ error: "Method not allowed" }, 405);
+      const forbiddenResponse = requireAdminAction(
+        request,
+        "manage-speaker-dinner-attendance",
+      );
+      if (forbiddenResponse) return forbiddenResponse;
+      return withAdminSecurityHeaders(
+        await handleAdminSpeakerDinnerAttendance(request, env),
       );
     }
 

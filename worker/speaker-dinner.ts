@@ -16,6 +16,11 @@ import {
   readCanonicalSpeakers,
 } from "./canonical-content.ts";
 import { insertActivity } from "./activity-log.ts";
+import {
+  applyDinnerAttendance,
+  type DinnerAttendanceRow,
+} from "./speaker-dinner-attendance.ts";
+import { isRecord, readJsonWithinLimit } from "./speaker-workspace-utils.ts";
 
 type SpeakerDinnerAttendance = "attending" | "not_attending";
 
@@ -35,7 +40,7 @@ interface SpeakerDinnerResponseData {
   meal_preference: SpeakerDinnerMealPreference;
 }
 
-interface SpeakerDinnerRow {
+interface SpeakerDinnerRow extends DinnerAttendanceRow {
   consent_text: string | null;
   created_at: string;
   expires_at: string;
@@ -48,6 +53,8 @@ interface SpeakerDinnerRow {
 }
 
 interface SpeakerDinnerAdminItem {
+  attendance_override: SpeakerDinnerAttendance | null;
+  dinner_revision: number;
   expires_at: string | null;
   invited: boolean;
   name: string;
@@ -201,6 +208,9 @@ export async function handleSpeakerDinnerStatus(
     name: speaker.content.profile.name,
     response,
     responded_at: invitation.responded_at,
+    attendance_source: invitation.attendance_override_ciphertext
+      ? "admin"
+      : "speaker",
   });
 }
 
@@ -248,7 +258,10 @@ export async function handleSpeakerDinnerResponse(
         response_iv = ?,
         consent_text = ?,
         responded_at = ?,
-        updated_at = ?
+        updated_at = ?,
+        attendance_override_ciphertext = NULL,
+        attendance_override_iv = NULL,
+        dinner_revision = dinner_revision + 1
     WHERE speaker_id = ? AND token_hash = ?`,
   )
     .bind(
@@ -286,6 +299,93 @@ export async function handleSpeakerDinnerResponse(
     responded_at: respondedAt,
     response: responseData,
   });
+}
+
+export async function handleAdminSpeakerDinnerAttendance(
+  request: Request,
+  env: Env,
+): Promise<Response> {
+  const configurationError = getSpeakerDinnerConfigurationError(env);
+  if (configurationError) return configurationError;
+  const configuration = getSpeakerDinnerConfiguration(env)!;
+  if (Date.now() > configuration.retention)
+    return jsonResponse({ error: "Dinner data retention has ended." }, 410);
+  const body = await readJsonWithinLimit(request, 4096);
+  if (body instanceof Response) return body;
+  if (
+    !isRecord(body) ||
+    typeof body.speaker_id !== "string" ||
+    !Number.isSafeInteger(body.revision) ||
+    Number(body.revision) < 0 ||
+    (body.attendance !== null &&
+      body.attendance !== "attending" &&
+      body.attendance !== "not_attending")
+  )
+    return jsonResponse(
+      {
+        error: "Choose a speaker's dinner attendance and reload before saving.",
+      },
+      400,
+    );
+  const speaker = await readCanonicalSpeaker(env, body.speaker_id);
+  if (!speaker)
+    return jsonResponse({ error: "Choose a current SDLCAI speaker." }, 400);
+  const row = await env.INTERESTS.prepare(
+    "SELECT dinner_revision FROM speaker_dinner_responses WHERE speaker_id = ?",
+  )
+    .bind(speaker.speakerId)
+    .first<{ dinner_revision: number }>();
+  const conflict = () =>
+    jsonResponse(
+      {
+        error:
+          "Dinner attendance changed. Refresh the list before saving again.",
+      },
+      409,
+    );
+  if ((row?.dinner_revision ?? 0) !== body.revision) return conflict();
+  if (!row && body.attendance === null) return jsonResponse({ ok: true });
+  const encrypted =
+    body.attendance === null
+      ? null
+      : await encryptText(
+          JSON.stringify(body.attendance),
+          env.EMAIL_ENCRYPTION_KEY,
+        );
+  const now = new Date().toISOString();
+  const result = row
+    ? await env.INTERESTS.prepare(
+        `UPDATE speaker_dinner_responses SET attendance_override_ciphertext = ?,
+       attendance_override_iv = ?, updated_at = ?, dinner_revision = dinner_revision + 1
+       WHERE speaker_id = ? AND dinner_revision = ?`,
+      )
+        .bind(
+          encrypted?.ciphertext ?? null,
+          encrypted?.iv ?? null,
+          now,
+          speaker.speakerId,
+          body.revision,
+        )
+        .run()
+    : await env.INTERESTS.prepare(
+        `INSERT INTO speaker_dinner_responses (speaker_id, token_hash, created_at,
+       expires_at, updated_at, attendance_override_ciphertext, attendance_override_iv, dinner_revision)
+       VALUES (?, ?, ?, ?, ?, ?, ?, 1) ON CONFLICT(speaker_id) DO NOTHING`,
+      )
+        .bind(
+          speaker.speakerId,
+          await hashSpeakerDinnerToken(
+            generateSpeakerDinnerToken(),
+            env.EMAIL_ENCRYPTION_KEY,
+          ),
+          now,
+          new Date(configuration.retention).toISOString(),
+          now,
+          encrypted?.ciphertext ?? null,
+          encrypted?.iv ?? null,
+        )
+        .run();
+  return result.meta.changes ? jsonResponse({ ok: true }) : conflict();
 }
 
 export async function handleSpeakerDinnerSharedInvite(
@@ -628,7 +728,10 @@ async function readSpeakerDinnerInvitation(
       created_at,
       expires_at,
       responded_at,
-      updated_at
+      updated_at,
+      attendance_override_ciphertext,
+      attendance_override_iv,
+      dinner_revision
     FROM speaker_dinner_responses
     WHERE token_hash = ? AND expires_at > ?`,
   )
@@ -709,7 +812,10 @@ export async function readSpeakerDinnerAdminItems(
       created_at,
       expires_at,
       responded_at,
-      updated_at
+      updated_at,
+      attendance_override_ciphertext,
+      attendance_override_iv,
+      dinner_revision
     FROM speaker_dinner_responses
     ORDER BY speaker_id ASC`,
   ).all<SpeakerDinnerRow>();
@@ -720,12 +826,19 @@ export async function readSpeakerDinnerAdminItems(
     canonicalRecords.map(async (speaker) => {
       const row = rowBySpeakerId.get(speaker.speakerId);
 
+      const response = row
+        ? await decryptSpeakerDinnerResponse(row, env)
+        : null;
       return {
+        attendance_override: row?.attendance_override_ciphertext
+          ? response!.attendance
+          : null,
+        dinner_revision: row?.dinner_revision ?? 0,
         expires_at: row?.expires_at ?? null,
         invited: Boolean(row),
         name: speaker.content.profile.name,
         responded_at: row?.responded_at ?? null,
-        response: row ? await decryptSpeakerDinnerResponse(row, env) : null,
+        response,
         speaker_id: speaker.speakerId,
         updated_at: row?.updated_at ?? null,
       };
@@ -822,7 +935,8 @@ async function decryptSpeakerDinnerResponse(
   row: SpeakerDinnerRow,
   env: Env,
 ): Promise<SpeakerDinnerResponseData | null> {
-  if (row.response_ciphertext === null && row.response_iv === null) return null;
+  if (row.response_ciphertext === null && row.response_iv === null)
+    return applyDinnerAttendance(row, null, env);
 
   if (row.response_ciphertext === null || row.response_iv === null) {
     throw new Error("Encrypted speaker dinner response is incomplete");
@@ -839,7 +953,7 @@ async function decryptSpeakerDinnerResponse(
     throw new Error("Encrypted speaker dinner response is invalid");
   }
 
-  return candidate;
+  return applyDinnerAttendance(row, candidate, env);
 }
 
 function isSpeakerDinnerResponseData(
@@ -1013,7 +1127,9 @@ export function formatSpeakerDinnerCsv(
       .filter((speaker) => speaker.response?.attendance === "attending")
       .map((speaker) => [
         speaker.name,
-        "personalized speaker link",
+        speaker.attendance_override
+          ? "attendance set by admin"
+          : "speaker response",
         speaker.response?.meal_preference ?? "",
         speaker.response?.food_requirements ?? "",
         speaker.response?.cross_contamination ?? "",

@@ -1,3 +1,4 @@
+import { applyDinnerAttendance } from "./speaker-dinner-attendance.ts";
 import {
   getConfigurationError,
   json,
@@ -265,7 +266,10 @@ export async function getSpeakerDinner(
        consent_text,
        expires_at,
        responded_at,
-       updated_at
+       updated_at,
+       attendance_override_ciphertext,
+       attendance_override_iv,
+       dinner_revision
      FROM speaker_dinner_responses
     WHERE speaker_id = ?1
     LIMIT 1`,
@@ -293,6 +297,9 @@ export async function getSpeakerDinner(
     consent_text: speakerDinnerConsentText,
     deadline: new Date(configuration.deadline).toISOString(),
     responded_at: row?.responded_at ?? null,
+    attendance_source: row?.attendance_override_ciphertext
+      ? "admin"
+      : "speaker",
     response,
   });
 }
@@ -345,15 +352,19 @@ export async function updateSpeakerDinner(
        created_at,
        expires_at,
        responded_at,
-       updated_at
-     ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?6, ?6)
+       updated_at,
+       dinner_revision
+     ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?6, ?6, 1)
      ON CONFLICT (speaker_id) DO UPDATE SET
        response_ciphertext = excluded.response_ciphertext,
        response_iv = excluded.response_iv,
        consent_text = excluded.consent_text,
        expires_at = excluded.expires_at,
        responded_at = excluded.responded_at,
-       updated_at = excluded.updated_at`,
+       updated_at = excluded.updated_at,
+       attendance_override_ciphertext = NULL,
+       attendance_override_iv = NULL,
+       dinner_revision = speaker_dinner_responses.dinner_revision + 1`,
     )
     .bind(
       speakerId,
@@ -445,7 +456,8 @@ export async function decryptSpeakerDinnerResponse(
   row: SpeakerDinnerRow,
   env: Env,
 ): Promise<SpeakerDinnerResponseData | null> {
-  if (row.response_ciphertext === null && row.response_iv === null) return null;
+  if (row.response_ciphertext === null && row.response_iv === null)
+    return applyDinnerAttendance(row, null, env);
 
   if (row.response_ciphertext === null || row.response_iv === null) {
     throw new Error("Encrypted speaker dinner response is incomplete");
@@ -462,7 +474,7 @@ export async function decryptSpeakerDinnerResponse(
     throw new Error("Encrypted speaker dinner response is invalid");
   }
 
-  return candidate;
+  return applyDinnerAttendance(row, candidate, env);
 }
 
 function isSpeakerDinnerResponseData(
