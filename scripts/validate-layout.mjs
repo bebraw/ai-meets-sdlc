@@ -16,6 +16,7 @@ const routes = [
   "/admin/login/",
   "/admin/dinner/",
   "/admin/discussion-tables/",
+  "/admin/music/",
   "/admin/receipts/",
   "/admin/interests/",
   "/admin/posters/",

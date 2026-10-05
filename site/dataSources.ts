@@ -5,6 +5,7 @@ import { raw } from "gustwind/htmlisp";
 import { Renderer, marked } from "marked";
 import schedule from "./data/schedule.json" with { type: "json" };
 import discussionTables from "./data/discussion-tables.json" with { type: "json" };
+import music from "./data/music.json" with { type: "json" };
 import seminarData from "./data/seminar.json" with { type: "json" };
 import speakersData from "./data/speakers.json" with { type: "json" };
 import sponsorsData from "./data/sponsors.json" with { type: "json" };
@@ -43,6 +44,23 @@ function init() {
         ...topic,
         number: String(index + 1).padStart(2, "0"),
       })),
+    musicCatalog: () => ({
+      summary: `${music.tracks.length} proposals / ${formatMusicTime(music.tracks.reduce((total, track) => total + track.seconds, 0))} total`,
+      starterSummary: `The calm starter set has ${music.tracks.filter((track) => track.starter).length} tracks (${formatMusicTime(music.tracks.filter((track) => track.starter).reduce((total, track) => total + track.seconds, 0))}). It combines quiet ambient and soft piano; you can change its order in your shortlist.`,
+      sourceNote: `Track names, recordings, and durations checked against Spotify on ${formatDisplayDate(music.verifiedOn)}. Listening links open in a new tab.`,
+    }),
+    musicTrackItems: () =>
+      music.tracks.map((track) => ({
+        ...track,
+        groupLabel: {
+          ambient: "Quiet ambient",
+          piano: "Soft piano",
+          pulse: "Gentle pulse",
+        }[track.group],
+        duration: formatMusicTime(track.seconds),
+        spotifyLabel: `Listen to ${track.title} by ${track.artist} on Spotify (opens in a new tab)`,
+        selectionLabel: `Add ${track.title} by ${track.artist} to shortlist`,
+      })),
     organizerItems: () => organizerSeed.filter((person) => person.visible),
     scheduleItems: () => scheduleItems,
     slideDeckItems: () => slideDeckItems,
@@ -77,6 +95,10 @@ function init() {
         ),
       ),
   };
+}
+
+function formatMusicTime(seconds) {
+  return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
 }
 
 function getAnnouncementItems() {

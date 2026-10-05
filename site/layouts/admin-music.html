@@ -1,0 +1,231 @@
+<BaseLayout
+  &title="(id 'SDLCAI Break Music')"
+  &description="(id 'Choose background music for the SDLCAI 2026 breaks and prepare a Spotify playlist for the venue.')"
+  &ogDescription="(id 'Instrumental background music suggestions and a venue playlist shortlist.')"
+  &url="(id 'https://sdlcai.org/admin/music/')"
+  &ogType="(id 'website')"
+  &robots="(id 'noindex,nofollow,noarchive')"
+>
+  <AdminNavigation></AdminNavigation>
+  <AdminPageHeader
+    &eyebrow="(id 'Admin / Event day')"
+    &title="(id 'Break music')"
+    &description="(id 'Listen to the proposals, pick your tracks, and hand an ordered list to the venue for their Spotify playlist.')"
+  ></AdminPageHeader>
+
+  <section class="border-b border-ink">
+    <div
+      class="mx-auto grid max-w-7xl gap-6 px-5 py-8 md:px-8 md:py-10 lg:grid-cols-[1fr_22rem] lg:gap-12"
+    >
+      <div>
+        <h2
+          class="font-headline text-3xl font-black uppercase leading-none md:text-4xl"
+        >
+          Leave room to talk
+        </h2>
+        <p class="mt-4 max-w-2xl text-lg leading-7 text-muted">
+          Instrumental ambient and soft piano keep the breaks conversational.
+          Electronic textures and repeating patterns give a subtle nod to the
+          seminar's technology theme, with piano adding warmth.
+        </p>
+      </div>
+      <p class="border-l-2 border-ink pl-5 text-base leading-7 text-muted">
+        Start with the calm set. Add gentle-pulse tracks if you want more
+        movement. Audition at low volume, and ask the venue to pause the music
+        for announcements and talks.
+      </p>
+    </div>
+  </section>
+
+  <section class="border-b border-ink" data-admin-music>
+    <div
+      class="mx-auto grid max-w-7xl items-start gap-10 px-5 py-10 md:px-8 md:py-14 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-12"
+    >
+      <aside
+        class="min-w-0 border border-ink p-5 md:p-6 lg:sticky lg:top-6 lg:col-start-2 lg:row-start-1"
+        aria-labelledby="music-shortlist-heading"
+      >
+        <p class="text-sm font-bold uppercase text-muted">Venue handoff</p>
+        <h2
+          id="music-shortlist-heading"
+          class="mt-3 font-headline text-3xl font-black uppercase leading-none"
+        >
+          Your shortlist
+        </h2>
+        <p class="mt-4 text-lg font-bold" data-music-summary aria-live="polite">
+          0 tracks / 0:00
+        </p>
+        <p class="mt-2 text-sm leading-6 text-muted" data-music-storage>
+          Saved automatically in this browser.
+        </p>
+        <p
+          class="mt-5 border-t border-ink/20 pt-5 leading-7 text-muted"
+          data-music-empty
+        >
+          Select tracks below, or add the calm starter set.
+        </p>
+        <ol
+          class="mt-5 grid max-h-[32rem] gap-4 overflow-y-auto"
+          data-music-shortlist
+          aria-label="Selected tracks in playlist order"
+        ></ol>
+        <div class="mt-6 grid gap-3">
+          <button
+            class="min-h-11 border border-ink bg-ink px-4 py-3 text-sm font-bold uppercase text-paper transition hover:bg-paper hover:text-ink disabled:cursor-not-allowed disabled:opacity-40"
+            type="button"
+            data-music-copy
+            disabled
+          >
+            Copy venue list
+          </button>
+          <button
+            class="min-h-11 border border-ink px-4 py-3 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper disabled:cursor-not-allowed disabled:opacity-40"
+            type="button"
+            data-music-download
+            disabled
+          >
+            Download venue list
+          </button>
+          <button
+            class="min-h-11 px-4 py-2 text-sm font-bold underline underline-offset-4 disabled:cursor-not-allowed disabled:opacity-40"
+            type="button"
+            data-music-clear
+            disabled
+          >
+            Clear selection
+          </button>
+        </div>
+        <p class="mt-3 text-sm leading-6 text-muted">
+          The list includes track names, durations, and Spotify links in your
+          chosen order.
+        </p>
+        <p class="mt-3 text-sm leading-6" role="status" data-music-status></p>
+        <div class="mt-4" data-music-copy-fallback hidden>
+          <label class="block text-sm font-bold" for="music-handoff"
+            >Venue list (select and copy)</label
+          >
+          <textarea
+            id="music-handoff"
+            class="mt-2 min-h-48 w-full border border-ink bg-paper p-3 text-sm leading-6"
+            readonly
+            data-music-handoff
+          ></textarea>
+        </div>
+      </aside>
+
+      <div class="min-w-0 lg:col-start-1 lg:row-start-1">
+        <div class="flex flex-wrap items-end justify-between gap-5">
+          <div>
+            <p
+              class="text-sm font-bold uppercase text-muted"
+              &children="musicCatalog.summary"
+            ></p>
+            <h2
+              class="mt-3 font-headline text-4xl font-black uppercase leading-none md:text-5xl"
+            >
+              Track proposals
+            </h2>
+          </div>
+          <button
+            class="min-h-11 border border-ink px-4 py-3 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper disabled:cursor-not-allowed disabled:opacity-40"
+            type="button"
+            data-music-starter
+            disabled
+          >
+            Add calm starter set
+          </button>
+        </div>
+        <p
+          class="mt-4 text-base leading-7 text-muted"
+          &children="musicCatalog.starterSummary"
+        ></p>
+        <noscript
+          ><p class="mt-4 border border-ink p-4 leading-7">
+            Enable JavaScript to save and export a shortlist. You can still open
+            every proposal in Spotify.
+          </p></noscript
+        >
+        <div
+          class="my-6 flex flex-wrap items-end justify-between gap-3"
+          data-music-filter-controls
+          hidden
+        >
+          <div class="grid gap-2">
+            <label class="text-sm font-bold uppercase" for="music-group"
+              >Show</label
+            >
+            <select
+              id="music-group"
+              class="min-h-11 max-w-full border border-ink bg-paper px-3 py-2"
+              data-music-filter
+            >
+              <option value="all">All proposals</option>
+              <option value="ambient">Quiet ambient</option>
+              <option value="piano">Soft piano</option>
+              <option value="pulse">Gentle pulse</option>
+            </select>
+          </div>
+          <p
+            class="text-sm leading-6 text-muted"
+            data-music-visible
+            aria-live="polite"
+          ></p>
+        </div>
+        <div class="mt-6 border-t border-ink">
+          <noop &foreach="musicTrackItems as track">
+            <article
+              class="min-w-0 border-b border-ink py-6"
+              &data-music-track="track.id"
+              &data-music-group="track.group"
+            >
+              <div
+                class="flex flex-wrap items-center justify-between gap-3 text-sm font-bold uppercase text-muted"
+              >
+                <span &children="track.groupLabel"></span>
+                <span &children="track.duration"></span>
+              </div>
+              <h3
+                class="mt-3 break-words text-2xl font-bold leading-8"
+                &children="track.title"
+              ></h3>
+              <p class="mt-1 text-lg leading-7" &children="track.artist"></p>
+              <p
+                class="mt-3 max-w-xl text-base leading-7 text-muted"
+                &children="track.note"
+              ></p>
+              <div
+                class="mt-4 flex flex-wrap items-center justify-between gap-4"
+              >
+                <a
+                  class="inline-flex min-h-11 items-center font-bold underline underline-offset-4"
+                  &href="track.spotifyUrl"
+                  &aria-label="track.spotifyLabel"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Listen on Spotify</a
+                >
+                <label
+                  class="inline-flex min-h-11 cursor-pointer items-center gap-3 border border-ink px-4 py-2 text-sm font-bold uppercase"
+                >
+                  <input
+                    class="h-5 w-5 accent-ink"
+                    type="checkbox"
+                    &value="track.id"
+                    &aria-label="track.selectionLabel"
+                    data-music-pick
+                    disabled
+                  />
+                  <span>Add to shortlist</span>
+                </label>
+              </div>
+            </article>
+          </noop>
+        </div>
+        <p
+          class="mt-5 text-sm leading-6 text-muted"
+          &children="musicCatalog.sourceNote"
+        ></p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

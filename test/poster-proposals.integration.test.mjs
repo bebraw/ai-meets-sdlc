@@ -201,6 +201,19 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
     `${origin}/admin/login/?next=%2Fadmin%2Fspeakers%2F`,
   );
 
+  const unauthorizedMusicResponse = await worker.fetch(
+    `${origin}/admin/music/`,
+    {
+      headers: { accept: "text/html" },
+      redirect: "manual",
+    },
+  );
+  assert.equal(unauthorizedMusicResponse.status, 303);
+  assert.equal(
+    unauthorizedMusicResponse.headers.get("location"),
+    `${origin}/admin/login/?next=%2Fadmin%2Fmusic%2F`,
+  );
+
   const loginPageResponse = await worker.fetch(
     `${origin}/admin/login/?next=%2Fadmin%2Fspeakers%2F%3Fview%3Dreview`,
     { headers: { accept: "text/html" } },
@@ -338,6 +351,11 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   }
 
   const adminPages = [
+    {
+      pathname: "/admin/music/",
+      includes: [/data-admin-music/, /data-music-track/, /Listen on Spotify/],
+      excludes: [/data-admin-poster-proposals/, /data-admin-interests/],
+    },
     {
       pathname: "/admin/discussion-tables/",
       includes: [

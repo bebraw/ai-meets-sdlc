@@ -1,0 +1,165 @@
+{
+  "verifiedOn": "2026-10-05",
+  "tracks": [
+    {
+      "id": "eno-ascent",
+      "title": "An Ending (Ascent) - Remastered 2019",
+      "artist": "Brian Eno",
+      "seconds": 264,
+      "spotifyUrl": "https://open.spotify.com/track/4ZknuVR2jOpMOcfwWpsuEr",
+      "group": "ambient",
+      "note": "Floating synth layers. A spacious opening for arrivals or the first coffee break.",
+      "starter": true
+    },
+    {
+      "id": "marconi-weightless",
+      "title": "Weightless Part 1",
+      "artist": "Marconi Union",
+      "seconds": 486,
+      "spotifyUrl": "https://open.spotify.com/track/2UZZtkoLOg7IHxeTAdPFvd",
+      "group": "ambient",
+      "note": "Slowly shifting electronic textures with a soft pulse. A good foundation for conversation.",
+      "starter": true
+    },
+    {
+      "id": "hopkins-abandon",
+      "title": "Abandon Window",
+      "artist": "Jon Hopkins",
+      "seconds": 297,
+      "spotifyUrl": "https://open.spotify.com/track/5YZ1S9UfTHUxuIF3eTIGGf",
+      "group": "ambient",
+      "note": "Piano dissolving into electronic atmosphere. A quiet bridge between the human and technical sides of the day.",
+      "starter": true
+    },
+    {
+      "id": "loscil-endless",
+      "title": "Endless Falls",
+      "artist": "Loscil",
+      "seconds": 475,
+      "spotifyUrl": "https://open.spotify.com/track/1tzXb0kRm7DA45EUen0TqM",
+      "group": "ambient",
+      "note": "Rain, sustained tones, and unhurried movement. Suits a room full of small-group discussions.",
+      "starter": true
+    },
+    {
+      "id": "eno-airports-one",
+      "title": "1/1 - Remastered 2004",
+      "artist": "Brian Eno",
+      "seconds": 1041,
+      "spotifyUrl": "https://open.spotify.com/track/3bCmDqflFBHijgJfvtqev5",
+      "group": "ambient",
+      "note": "Long, sparse piano loops from Music for Airports. Useful when you want fewer track changes during a break.",
+      "starter": false
+    },
+    {
+      "id": "eno-airports-two",
+      "title": "2/2 - Remastered 2004",
+      "artist": "Brian Eno",
+      "seconds": 578,
+      "spotifyUrl": "https://open.spotify.com/track/3QpN3dazIcMNqru0L1qLMt",
+      "group": "ambient",
+      "note": "Slow synth tones and plenty of space. Another restrained option for longer breaks.",
+      "starter": false
+    },
+    {
+      "id": "frahm-ambre",
+      "title": "Ambre",
+      "artist": "Nils Frahm",
+      "seconds": 227,
+      "spotifyUrl": "https://open.spotify.com/track/71BqXMUdoiYHohiDlMihIR",
+      "group": "piano",
+      "note": "Intimate, repeating piano phrases. Adds warmth between the more electronic selections.",
+      "starter": true
+    },
+    {
+      "id": "hopkins-memory",
+      "title": "Small Memory",
+      "artist": "Jon Hopkins",
+      "seconds": 100,
+      "spotifyUrl": "https://open.spotify.com/track/5sWFhWNyWU55TDmGSXQMpM",
+      "group": "piano",
+      "note": "A short, delicate piano interlude. Works as a gentle change of texture.",
+      "starter": true
+    },
+    {
+      "id": "aphex-avril",
+      "title": "Avril 14th",
+      "artist": "Aphex Twin",
+      "seconds": 125,
+      "spotifyUrl": "https://open.spotify.com/track/2MZSXhq4XDJWu6coGoXX1V",
+      "group": "piano",
+      "note": "Understated acoustic piano from an electronic music pioneer. A subtle fit with the technology theme.",
+      "starter": true
+    },
+    {
+      "id": "arnalds-saman",
+      "title": "saman",
+      "artist": "Ólafur Arnalds",
+      "seconds": 131,
+      "spotifyUrl": "https://open.spotify.com/track/5RqKo9P4DLA0bVyY70cWkr",
+      "group": "piano",
+      "note": "A brief, spacious piano piece. Keeps the room feeling calm without demanding attention.",
+      "starter": true
+    },
+    {
+      "id": "budd-pearl",
+      "title": "The Pearl - 2005 Digital Remaster",
+      "artist": "Harold Budd, Brian Eno",
+      "seconds": 194,
+      "spotifyUrl": "https://open.spotify.com/track/4dUIwKF5cQ4efJELwG8cpm",
+      "group": "piano",
+      "note": "Soft piano suspended in ambient processing. An easy match for the quieter tracks.",
+      "starter": true
+    },
+    {
+      "id": "budd-october",
+      "title": "Late October - 2005 Digital Remaster",
+      "artist": "Harold Budd, Brian Eno",
+      "seconds": 284,
+      "spotifyUrl": "https://open.spotify.com/track/2Ef5Vgw0ShuKGoNfO6Nrof",
+      "group": "piano",
+      "note": "Unhurried piano and a hazy electronic backdrop. A warm alternative for the autumn setting.",
+      "starter": true
+    },
+    {
+      "id": "air-kyoto",
+      "title": "Alone in Kyoto",
+      "artist": "Air",
+      "seconds": 291,
+      "spotifyUrl": "https://open.spotify.com/track/40UlFC0dIxv7lAEJaPZLnm",
+      "group": "pulse",
+      "note": "Gentle instrumental electronics with a clear melody. Adds some movement while staying relaxed.",
+      "starter": false
+    },
+    {
+      "id": "helios-morning",
+      "title": "Bless This Morning Year",
+      "artist": "Helios",
+      "seconds": 361,
+      "spotifyUrl": "https://open.spotify.com/track/6knzYloG0x3MroAhnLVLGe",
+      "group": "pulse",
+      "note": "Warm textures and a light beat. Try this for lunch or a busier coffee break.",
+      "starter": false
+    },
+    {
+      "id": "tycho-adrift",
+      "title": "Adrift",
+      "artist": "Tycho",
+      "seconds": 362,
+      "spotifyUrl": "https://open.spotify.com/track/3DERgYjztCL6oME2fvRl6z",
+      "group": "pulse",
+      "note": "A steady electronic groove with an airy sound. More rhythmic than the calm starter set.",
+      "starter": false
+    },
+    {
+      "id": "tycho-walk",
+      "title": "A Walk",
+      "artist": "Tycho",
+      "seconds": 316,
+      "spotifyUrl": "https://open.spotify.com/track/0sQNqu37YQQSI3K0ueswyA",
+      "group": "pulse",
+      "note": "Bright synths and a distinct beat. Use sparingly if the room needs a little more energy.",
+      "starter": false
+    }
+  ]
+}

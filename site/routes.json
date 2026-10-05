@@ -458,6 +458,21 @@
           }
         }
       },
+      "music": {
+        "layout": "admin-music",
+        "scripts": [{ "name": "admin-music" }],
+        "dataSources": {
+          "seminar": { "operation": "seminar" },
+          "musicCatalog": { "operation": "musicCatalog" },
+          "musicTrackItems": { "operation": "musicTrackItems" }
+        },
+        "context": {
+          "meta": {
+            "title": "SDLCAI Break Music",
+            "description": "Choose background music for the breaks and prepare a venue playlist."
+          }
+        }
+      },
       "attendees": {
         "layout": "admin-attendees",
         "scripts": [{ "name": "admin-attendees" }],
