@@ -353,7 +353,12 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   const adminPages = [
     {
       pathname: "/admin/music/",
-      includes: [/data-admin-music/, /data-music-track/, /Listen on Spotify/],
+      includes: [
+        /data-admin-music/,
+        /data-music-track/,
+        /Listen on YouTube Music/,
+        /Listen on Spotify/,
+      ],
       excludes: [/data-admin-poster-proposals/, /data-admin-interests/],
     },
     {

@@ -83,16 +83,31 @@ function setup(root: HTMLElement): void {
     chosen.forEach((track, index) => {
       const item = document.createElement("li");
       item.className = "border-t border-ink/20 pt-4";
-      const title = document.createElement("a");
-      title.className =
-        "block break-words font-bold leading-6 underline underline-offset-4";
+      const title = document.createElement("p");
+      title.className = "break-words font-bold leading-6";
       title.textContent = `${index + 1}. ${track.title}`;
-      title.href = track.spotifyUrl;
-      title.target = "_blank";
-      title.rel = "noopener noreferrer";
       const detail = document.createElement("p");
       detail.className = "mt-1 text-sm leading-6 text-muted";
       detail.textContent = `${track.artist} / ${formatMusicDuration(track.seconds)}`;
+      const links = document.createElement("div");
+      links.className = "mt-1 flex flex-wrap gap-x-4 gap-y-1";
+      for (const [service, url] of [
+        ["YouTube Music", track.youtubeMusicUrl],
+        ["Spotify", track.spotifyUrl],
+      ] as const) {
+        const link = document.createElement("a");
+        link.className =
+          "inline-flex min-h-11 items-center text-sm font-bold underline underline-offset-4";
+        link.textContent = service;
+        link.href = url;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.setAttribute(
+          "aria-label",
+          `Listen to ${track.title} by ${track.artist} on ${service} (opens in a new tab)`,
+        );
+        links.appendChild(link);
+      }
       const actions = document.createElement("div");
       actions.className = "mt-2 flex flex-wrap gap-2";
       for (const [direction, label] of [
@@ -143,6 +158,7 @@ function setup(root: HTMLElement): void {
       actions.appendChild(remove);
       item.appendChild(title);
       item.appendChild(detail);
+      item.appendChild(links);
       item.appendChild(actions);
       shortlist.appendChild(item);
     });

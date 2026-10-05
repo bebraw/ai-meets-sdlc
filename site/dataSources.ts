@@ -47,7 +47,7 @@ function init() {
     musicCatalog: () => ({
       summary: `${music.tracks.length} proposals / ${formatMusicTime(music.tracks.reduce((total, track) => total + track.seconds, 0))} total`,
       starterSummary: `The calm starter set has ${music.tracks.filter((track) => track.starter).length} tracks (${formatMusicTime(music.tracks.filter((track) => track.starter).reduce((total, track) => total + track.seconds, 0))}). It combines quiet ambient and soft piano; you can change its order in your shortlist.`,
-      sourceNote: `Track names, recordings, and durations checked against Spotify on ${formatDisplayDate(music.verifiedOn)}. Listening links open in a new tab.`,
+      sourceNote: `Track names, recordings, and durations checked against Spotify on ${formatDisplayDate(music.verifiedOn)}. YouTube Music links use official artist and label releases; remasters can differ. Listening links open in a new tab.`,
     }),
     musicTrackItems: () =>
       music.tracks.map((track) => ({
@@ -59,6 +59,7 @@ function init() {
         }[track.group],
         duration: formatMusicTime(track.seconds),
         spotifyLabel: `Listen to ${track.title} by ${track.artist} on Spotify (opens in a new tab)`,
+        youtubeMusicLabel: `Listen to ${track.title} by ${track.artist} on YouTube Music (opens in a new tab)`,
         selectionLabel: `Add ${track.title} by ${track.artist} to shortlist`,
       })),
     organizerItems: () => organizerSeed.filter((person) => person.visible),

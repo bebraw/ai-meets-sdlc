@@ -1,6 +1,6 @@
 <BaseLayout
   &title="(id 'SDLCAI Break Music')"
-  &description="(id 'Choose background music for the SDLCAI 2026 breaks and prepare a Spotify playlist for the venue.')"
+  &description="(id 'Choose background music for the SDLCAI 2026 breaks on YouTube Music or Spotify and prepare a playlist for the venue.')"
   &ogDescription="(id 'Instrumental background music suggestions and a venue playlist shortlist.')"
   &url="(id 'https://sdlcai.org/admin/music/')"
   &ogType="(id 'website')"
@@ -10,7 +10,7 @@
   <AdminPageHeader
     &eyebrow="(id 'Admin / Event day')"
     &title="(id 'Break music')"
-    &description="(id 'Listen to the proposals, pick your tracks, and hand an ordered list to the venue for their Spotify playlist.')"
+    &description="(id 'Listen on YouTube Music or Spotify, pick your tracks, and hand an ordered list to the venue for their playlist.')"
   ></AdminPageHeader>
 
   <section class="border-b border-ink">
@@ -96,8 +96,8 @@
           </button>
         </div>
         <p class="mt-3 text-sm leading-6 text-muted">
-          The list includes track names, durations, and Spotify links in your
-          chosen order.
+          The list includes track names, durations, and links to YouTube Music
+          and Spotify in your chosen order.
         </p>
         <p class="mt-3 text-sm leading-6" role="status" data-music-status></p>
         <div class="mt-4" data-music-copy-fallback hidden>
@@ -142,7 +142,7 @@
         <noscript
           ><p class="mt-4 border border-ink p-4 leading-7">
             Enable JavaScript to save and export a shortlist. You can still open
-            every proposal in Spotify.
+            every proposal on YouTube Music or Spotify.
           </p></noscript
         >
         <div
@@ -196,14 +196,24 @@
               <div
                 class="mt-4 flex flex-wrap items-center justify-between gap-4"
               >
-                <a
-                  class="inline-flex min-h-11 items-center font-bold underline underline-offset-4"
-                  &href="track.spotifyUrl"
-                  &aria-label="track.spotifyLabel"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  >Listen on Spotify</a
-                >
+                <div class="flex flex-wrap gap-x-5 gap-y-2">
+                  <a
+                    class="inline-flex min-h-11 items-center font-bold underline underline-offset-4"
+                    &href="track.youtubeMusicUrl"
+                    &aria-label="track.youtubeMusicLabel"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Listen on YouTube Music</a
+                  >
+                  <a
+                    class="inline-flex min-h-11 items-center font-bold underline underline-offset-4"
+                    &href="track.spotifyUrl"
+                    &aria-label="track.spotifyLabel"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Listen on Spotify</a
+                  >
+                </div>
                 <label
                   class="inline-flex min-h-11 cursor-pointer items-center gap-3 border border-ink px-4 py-2 text-sm font-bold uppercase"
                 >

@@ -32,13 +32,16 @@ test("venue handoff uses playlist order, exact links, and total duration", () =>
   assert.ok(
     text.indexOf("1. Tycho - A Walk (5:16)") < text.indexOf("2. Brian Eno"),
   );
-  assert.ok(text.includes(chosen[0].spotifyUrl));
-  assert.ok(text.includes(chosen[1].spotifyUrl));
+  for (const track of chosen) {
+    assert.ok(text.includes(`YouTube Music: ${track.youtubeMusicUrl}`));
+    assert.ok(text.includes(`Spotify: ${track.spotifyUrl}`));
+  }
+  assert.match(text, /Create a playlist on YouTube Music or Spotify/);
   assert.match(text, /Pause for announcements and talks/);
   assert.equal(formatMusicDuration(3601), "60:01");
 });
 
-test("music catalog has unique IDs, direct Spotify tracks, and a calm starter set", () => {
+test("music catalog has unique IDs, direct listening links, and a calm starter set", () => {
   assert.equal(
     new Set(music.tracks.map((track) => track.id)).size,
     music.tracks.length,
@@ -47,11 +50,19 @@ test("music catalog has unique IDs, direct Spotify tracks, and a calm starter se
     new Set(music.tracks.map((track) => track.spotifyUrl)).size,
     music.tracks.length,
   );
+  assert.equal(
+    new Set(music.tracks.map((track) => track.youtubeMusicUrl)).size,
+    music.tracks.length,
+  );
   for (const track of music.tracks) {
     assert.match(track.id, /^[a-z0-9-]+$/);
     assert.match(
       track.spotifyUrl,
       /^https:\/\/open\.spotify\.com\/track\/[A-Za-z0-9]{22}$/,
+    );
+    assert.match(
+      track.youtubeMusicUrl,
+      /^https:\/\/music\.youtube\.com\/watch\?v=[A-Za-z0-9_-]{11}$/,
     );
     assert.ok(Number.isInteger(track.seconds) && track.seconds > 0);
     assert.ok(["ambient", "piano", "pulse"].includes(track.group));

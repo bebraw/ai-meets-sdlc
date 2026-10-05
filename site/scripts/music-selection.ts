@@ -4,6 +4,7 @@ export interface MusicTrack {
   artist: string;
   seconds: number;
   spotifyUrl: string;
+  youtubeMusicUrl: string;
   group: string;
   note: string;
   starter: boolean;
@@ -35,11 +36,12 @@ export function musicHandoff(tracks: readonly MusicTrack[]): string {
     "",
     "Instrumental ambient, soft piano, and gentle electronics for the breaks.",
     "Keep the volume low enough for easy conversation. Pause for announcements and talks.",
-    "Create a Spotify playlist in the order below. Repeat as needed across the breaks.",
+    "Create a playlist on YouTube Music or Spotify in the order below. Repeat as needed across the breaks.",
     "",
     ...tracks.flatMap((track, index) => [
       `${index + 1}. ${track.artist} - ${track.title} (${formatMusicDuration(track.seconds)})`,
-      track.spotifyUrl,
+      `YouTube Music: ${track.youtubeMusicUrl}`,
+      `Spotify: ${track.spotifyUrl}`,
       "",
     ]),
   ].join("\n");
