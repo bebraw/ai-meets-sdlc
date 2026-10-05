@@ -1,0 +1,128 @@
+<BaseLayout
+  &title="(id 'SDLCAI Discussion Tables')"
+  &description="(id 'Print A4 discussion-table signs for SDLCAI 2026.')"
+  &ogDescription="(id 'Eight themed discussion-table signs and printing instructions.')"
+  &url="(id 'https://sdlcai.org/admin/discussion-tables/')"
+  &ogType="(id 'website')"
+  &robots="(id 'noindex,nofollow,noarchive')"
+>
+  <AdminNavigation></AdminNavigation>
+  <AdminPageHeader
+    &eyebrow="(id 'Admin / Event day')"
+    &title="(id 'Discussion tables')"
+    &description="(id 'Eight topics for informal conversations at the standing tables. Each sign includes a question to get the discussion started.')"
+  ></AdminPageHeader>
+
+  <section class="border-b border-ink">
+    <div
+      class="mx-auto grid max-w-7xl gap-10 px-5 py-10 md:px-8 lg:grid-cols-[1fr_15rem]"
+    >
+      <div class="min-w-0">
+        <p class="font-headline text-sm font-black uppercase text-muted">
+          Print pack / 8 pages
+        </p>
+        <h2
+          class="mt-3 font-headline text-4xl font-black uppercase leading-none md:text-5xl"
+        >
+          One A4 sheet per table
+        </h2>
+        <p class="mt-5 max-w-2xl text-lg leading-7 text-muted">
+          Black-on-white signs with large topic labels, two readable sides, and
+          dashed fold guides. Print the full pack or select individual pages in
+          your PDF viewer.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a
+            class="inline-flex min-h-11 items-center border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
+            href="/assets/slides/sdlcai-2026-discussion-tables.pdf"
+            download="sdlcai-2026-discussion-tables.pdf"
+            >Download A4 PDF</a
+          >
+          <a
+            class="inline-flex min-h-11 items-center border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper"
+            href="/assets/slides/sdlcai-2026-discussion-tables.pdf"
+            target="_blank"
+            rel="noopener"
+            >Preview PDF</a
+          >
+        </div>
+        <ol class="mt-8 grid max-w-2xl gap-3 text-base leading-7 text-muted">
+          <li>
+            <strong class="text-ink">1. Print.</strong> A4 portrait,
+            single-sided, at 100% / actual size.
+          </li>
+          <li>
+            <strong class="text-ink">2. Fold.</strong> Fold along both dashed
+            lines, 99 mm and 198 mm from the top.
+          </li>
+          <li>
+            <strong class="text-ink">3. Stand.</strong> Use the third panel as
+            the base and tape the open edge underneath.
+          </li>
+        </ol>
+      </div>
+      <figure class="w-full max-w-48 justify-self-start lg:justify-self-end">
+        <div
+          class="grid aspect-[210/297] grid-rows-3 border border-ink bg-paper"
+          aria-hidden="true"
+        >
+          <div
+            class="grid rotate-180 place-content-center border-t border-dashed border-ink px-4 text-center font-headline text-2xl font-black uppercase leading-none"
+          >
+            AI<br />governance
+          </div>
+          <div
+            class="grid place-content-center border-b border-dashed border-ink px-4 text-center font-headline text-2xl font-black uppercase leading-none"
+          >
+            AI<br />governance
+          </div>
+          <div
+            class="grid place-content-center px-4 text-center text-xs font-bold uppercase text-muted"
+          >
+            Base
+          </div>
+        </div>
+        <figcaption class="mt-3 text-sm leading-6 text-muted">
+          Two labelled faces and a base. Fold into a triangular table tent.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section
+    class="border-b border-ink"
+    aria-labelledby="discussion-topics-heading"
+  >
+    <div class="mx-auto max-w-7xl px-5 py-10 md:px-8 md:py-14">
+      <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
+        <h2
+          id="discussion-topics-heading"
+          class="font-headline text-4xl font-black uppercase leading-none md:text-5xl"
+        >
+          Table topics
+        </h2>
+        <p class="text-sm leading-6 text-muted">
+          Table numbers match the PDF page numbers.
+        </p>
+      </div>
+      <div class="grid gap-px border border-ink bg-ink md:grid-cols-2">
+        <noop &foreach="discussionTableItems as topic">
+          <article class="min-w-0 bg-paper p-5 md:p-7" data-discussion-topic>
+            <p class="text-sm font-bold uppercase text-muted">
+              Table <span &children="topic.number"></span>
+            </p>
+            <h3
+              class="mt-4 font-headline text-3xl font-black uppercase leading-none md:text-4xl"
+              &children="topic.title"
+            ></h3>
+            <p class="mt-5 text-xl leading-8" &children="topic.prompt"></p>
+            <p
+              class="mt-6 border-t border-ink/20 pt-4 text-sm leading-6 text-muted"
+              &children="topic.programConnection"
+            ></p>
+          </article>
+        </noop>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

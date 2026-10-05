@@ -1,0 +1,86 @@
+{
+  "topics": [
+    {
+      "id": "ai-governance",
+      "title": "AI governance",
+      "titleLines": ["AI", "governance"],
+      "prompt": "Who decides what AI can do, and how do we keep it accountable?",
+      "programConnection": "Regulated AI adoption and AI factory fundamentals: boundaries, accountability, and costs.",
+      "sourceTalkIds": [
+        "driving-ai-adoption-regulated-environment",
+        "ai-factory-fundamentals"
+      ]
+    },
+    {
+      "id": "ai-adoption",
+      "title": "AI adoption",
+      "titleLines": ["AI", "adoption"],
+      "prompt": "What helps teams turn AI experiments into everyday practice?",
+      "programConnection": "Leaders using AI themselves, shared practices at Elisa, and culture across the SDLC.",
+      "sourceTalkIds": [
+        "jenni-kylmakoski-industry-perspective",
+        "driving-ai-adoption-regulated-environment",
+        "mo-khazali-industry-perspective"
+      ]
+    },
+    {
+      "id": "coding-agents",
+      "title": "Coding agents",
+      "titleLines": ["Coding", "agents"],
+      "prompt": "What should agents do on their own, and where do humans step in?",
+      "programConnection": "Zero-trust harnesses for coding agents and human review in production workflows.",
+      "sourceTalkIds": [
+        "ohans-emmanuel-industry-perspective",
+        "non-engineers-vibe-code-production"
+      ]
+    },
+    {
+      "id": "quality-and-testing",
+      "title": "Quality & testing",
+      "titleLines": ["Quality", "& testing"],
+      "prompt": "How do we verify AI-written code and measure what improves?",
+      "programConnection": "Independent verification, production feedback, and quality built into the whole SDLC.",
+      "sourceTalkIds": [
+        "ohans-emmanuel-industry-perspective",
+        "ai-factory-fundamentals",
+        "mo-khazali-industry-perspective"
+      ]
+    },
+    {
+      "id": "requirements-and-discovery",
+      "title": "Requirements & discovery",
+      "titleLines": ["Requirements", "& discovery"],
+      "prompt": "Can AI help us build the right thing before we build it?",
+      "programConnection": "Agentic probes for stakeholder validation, customer value, and requirements work.",
+      "sourceTalkIds": [
+        "agentic-discovery",
+        "mo-khazali-industry-perspective",
+        "genai-software-engineering"
+      ]
+    },
+    {
+      "id": "architecture-and-maintenance",
+      "title": "Architecture & maintenance",
+      "titleLines": ["Architecture", "& maintenance"],
+      "prompt": "How do we keep AI-built systems understandable and maintainable?",
+      "programConnection": "Architecture, refactoring, long-term maintenance, and engineering fundamentals.",
+      "sourceTalkIds": ["genai-software-engineering", "ai-factory-fundamentals"]
+    },
+    {
+      "id": "ai-and-user-interfaces",
+      "title": "AI & user interfaces",
+      "titleLines": ["AI & user", "interfaces"],
+      "prompt": "How should interfaces change when AI joins the workflow?",
+      "programConnection": "Generative UI for task-oriented users: usability, strengths, and limitations.",
+      "sourceTalkIds": ["joongi-shin-ui-perspective"]
+    },
+    {
+      "id": "coding-beyond-engineers",
+      "title": "Coding beyond engineers",
+      "titleLines": ["Coding beyond", "engineers"],
+      "prompt": "What changes when PMs, designers, and support teams can ship code?",
+      "programConnection": "Non-engineers contributing to epilot's production codebase, with engineers reviewing and merging.",
+      "sourceTalkIds": ["non-engineers-vibe-code-production"]
+    }
+  ]
+}

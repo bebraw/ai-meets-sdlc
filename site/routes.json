@@ -440,6 +440,24 @@
           }
         }
       },
+      "discussion-tables": {
+        "layout": "admin-discussion-tables",
+        "scripts": [{ "name": "index" }],
+        "dataSources": {
+          "seminar": {
+            "operation": "seminar"
+          },
+          "discussionTableItems": {
+            "operation": "discussionTableItems"
+          }
+        },
+        "context": {
+          "meta": {
+            "title": "SDLCAI Discussion Tables",
+            "description": "Print A4 discussion-table signs for SDLCAI 2026."
+          }
+        }
+      },
       "attendees": {
         "layout": "admin-attendees",
         "scripts": [{ "name": "admin-attendees" }],

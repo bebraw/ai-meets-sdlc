@@ -296,8 +296,12 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   // A browser can cache Basic credentials for /admin/ without sending them to
   // /assets/slides/. The login redirect must establish a path-wide session or
   // the protected asset and login page will keep redirecting to each other.
-  for (const extension of ["svg", "pdf"]) {
-    const assetPath = `/assets/slides/sdlcai-2026-screen-ad.${extension}`;
+  for (const filename of [
+    "sdlcai-2026-screen-ad.svg",
+    "sdlcai-2026-screen-ad.pdf",
+    "sdlcai-2026-discussion-tables.pdf",
+  ]) {
+    const assetPath = `/assets/slides/${filename}`;
     const assetRedirect = await worker.fetch(`${origin}${assetPath}`, {
       redirect: "manual",
     });
@@ -325,11 +329,23 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
     assert.equal(assetResponse.headers.get("location"), null);
     assert.match(
       assetResponse.headers.get("content-type") ?? "",
-      extension === "svg" ? /^image\/svg\+xml/u : /^application\/pdf/u,
+      filename.endsWith(".svg") ? /^image\/svg\+xml/u : /^application\/pdf/u,
     );
+    assert.equal(assetResponse.headers.get("cache-control"), "no-store");
+    if (filename.endsWith(".pdf")) {
+      assert.equal((await assetResponse.text()).slice(0, 5), "%PDF-");
+    }
   }
 
   const adminPages = [
+    {
+      pathname: "/admin/discussion-tables/",
+      includes: [
+        /data-discussion-topic/,
+        /href="\/assets\/slides\/sdlcai-2026-discussion-tables\.pdf"/,
+      ],
+      excludes: [/data-admin-poster-proposals/],
+    },
     {
       pathname: "/admin/",
       includes: [/href="\/admin\/speakers\/"/, /href="\/admin\/posters\/"/],

@@ -1,5 +1,6 @@
 import { access, readdir, readFile, stat } from "node:fs/promises";
 import path from "node:path";
+import { createHash } from "node:crypto";
 import {
   socialRenderContract,
   socialRenderManifestPath,
@@ -75,6 +76,7 @@ for (const pathname of [
   "/admin/volunteers/",
   "/admin/organizers/",
   "/admin/badges/",
+  "/admin/discussion-tables/",
   "/admin/attendees/",
   "/registration/",
   "/registration/access/",
@@ -227,6 +229,31 @@ verifySpeakerPromotionManifest(
   socialRenderManifest,
   failures,
 );
+
+const discussionTableManifest = JSON.parse(
+  await readFile("assets/slides/discussion-tables-manifest.json", "utf8"),
+);
+for (const [source, expectedHash] of Object.entries(
+  discussionTableManifest.sources,
+)) {
+  const hash = createHash("sha256")
+    .update(await readFile(source))
+    .digest("hex");
+  if (hash !== expectedHash) {
+    failures.push(
+      `${source}: discussion-table PDF is stale; run npm run tables:export`,
+    );
+  }
+}
+const discussionTablePdf = await readFile(
+  path.join(buildDir, discussionTableManifest.pdf),
+);
+if (
+  createHash("sha256").update(discussionTablePdf).digest("hex") !==
+  discussionTableManifest.sha256
+) {
+  failures.push("Discussion-table PDF differs from the verified print export.");
+}
 
 if (failures.length > 0) {
   console.error(failures.join("\n"));

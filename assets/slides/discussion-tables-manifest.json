@@ -1,0 +1,12 @@
+{
+  "pageCount": 8,
+  "pdf": "assets/slides/sdlcai-2026-discussion-tables.pdf",
+  "sha256": "15663ffcb35c023c47c4a137e6ef61c86b7106c3946e3e7c24d90b4fe9e7d7ff",
+  "sources": {
+    "site/data/discussion-tables.json": "946b22c42f6d0067916d7d070201e9a4c9a80ef742e6a712a64173ec2ac88426",
+    "scripts/export-discussion-tables.py": "a908205982a627a6c17b2de65e91c4c69d8a17c3440eae79dee7b9cc81934b16",
+    "assets/fonts/FinlandicaHeadline-Black.woff2": "8298aa158ae58dfc158c8a4d45bb716028dea167ab45e913279db882f5392bb9",
+    "assets/fonts/FinlandicaText-Regular.woff2": "55488a608932885926fb4779c0d9dabe9533249c824f8e3cf396d840843f423a",
+    "assets/fonts/FinlandicaText-Bold.woff2": "6f9c759a3eec0508d8d60a217d63d6e56821aadbd3d173502bb2ff69ebe8c671"
+  }
+}

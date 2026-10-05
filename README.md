@@ -201,6 +201,22 @@ from D1. Sponsor data records the package tier and whether the contract includes
 between-talk placement; validation requires Epic and Tech sponsors to receive
 that placement and excludes Brand and Location sponsors.
 
+## Discussion tables
+
+At `/admin/discussion-tables/`, organizers can review eight program-based topics
+and download an eight-page A4 PDF for the standing tables. Each page has two
+oppositely oriented labels and a base panel. Print A4 portrait, single-sided,
+at actual size, fold on the two dashed lines (99 and 198 mm), and tape the
+open edge underneath to form a standing triangular tent.
+
+Topic titles, starter questions, and program connections live in
+`site/data/discussion-tables.json`. After editing them, regenerate with
+`npm run tables:export` (requires [uv](https://docs.astral.sh/uv/)). The export
+script installs its declared Python dependencies in an isolated environment and
+uses the site's Finlandica fonts. It writes `output/pdf/sdlcai-2026-discussion-tables.pdf`
+and the protected copy under `/assets/slides/`. The normal build uses the committed
+PDF without Python or a browser; build verification detects stale source or PDF files.
+
 ## Audience Q&A
 
 `/qa/` lets attendees submit questions without a name or sign-in and vote once

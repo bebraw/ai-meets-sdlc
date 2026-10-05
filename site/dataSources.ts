@@ -4,6 +4,7 @@ import path from "node:path";
 import { raw } from "gustwind/htmlisp";
 import { Renderer, marked } from "marked";
 import schedule from "./data/schedule.json" with { type: "json" };
+import discussionTables from "./data/discussion-tables.json" with { type: "json" };
 import seminarData from "./data/seminar.json" with { type: "json" };
 import speakersData from "./data/speakers.json" with { type: "json" };
 import sponsorsData from "./data/sponsors.json" with { type: "json" };
@@ -37,6 +38,11 @@ function init() {
     announcementItem: (match) =>
       getAnnouncementItem(announcementItemsBySlug, match.slug),
     seminar: () => seminar,
+    discussionTableItems: () =>
+      discussionTables.topics.map((topic, index) => ({
+        ...topic,
+        number: String(index + 1).padStart(2, "0"),
+      })),
     organizerItems: () => organizerSeed.filter((person) => person.visible),
     scheduleItems: () => scheduleItems,
     slideDeckItems: () => slideDeckItems,
