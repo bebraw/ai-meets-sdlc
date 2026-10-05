@@ -1,7 +1,7 @@
 <BaseLayout
   &title="(id 'SDLCAI')"
-  &description="(id 'SDLCAI is sold out. Watch the one-day seminar on AI and software development live on YouTube on 13 October 2026.')"
-  &ogDescription="(id 'Sold out in person. Join the SDLCAI livestream on 13 October 2026 from Marsio, Aalto University, Espoo.')"
+  &description="(id 'A one-day seminar on AI across the software development lifecycle. 13 October 2026 at Marsio, Aalto University, with a YouTube livestream.')"
+  &ogDescription="(id 'AI meets SDLC. 13 October 2026 at Marsio, Aalto University, Espoo. Watch live on YouTube.')"
   &url="(id 'https://sdlcai.org')"
   &ogType="(id 'website')"
   &eventSchema="(id 'true')"
@@ -46,26 +46,31 @@
             </p>
           </div>
         </div>
-        <div class="mt-6 grid justify-items-start gap-3">
-          <p class="border border-ink px-4 py-2 text-base font-bold uppercase">
-            Sold out / Ticket sales closed
-          </p>
-          <a
-            class="inline-flex min-h-11 items-center border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
-            href="https://youtube.com/live/d7POyy6dYFI"
-            >Watch live on YouTube</a
-          >
-          <p class="text-sm font-bold leading-6">
-            All in-person tickets have been sold.
-          </p>
+        <div
+          id="tickets"
+          data-registration-status="sold-out"
+          class="mt-6 grid justify-items-start gap-4"
+        >
           <p class="text-base leading-7 text-muted">
-            Already joining us at Marsio?
+            In-person tickets are sold out.
             <a
               class="text-ink underline underline-offset-4 hover:no-underline"
-              href="/schedule/"
-              >See the seminar program</a
-            >.
+              href="/checkout/"
+              >Ticket information</a
+            >
           </p>
+          <div class="flex flex-wrap gap-3">
+            <a
+              class="inline-flex min-h-11 items-center border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
+              href="https://youtube.com/live/d7POyy6dYFI"
+              >Watch live on YouTube</a
+            >
+            <a
+              class="inline-flex min-h-11 items-center border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper"
+              href="/schedule/"
+              >See the program</a
+            >
+          </div>
         </div>
       </div>
 
@@ -162,79 +167,6 @@
           </a>
         </article>
       </aside>
-    </div>
-  </section>
-
-  <section
-    id="tickets"
-    class="border-b border-ink"
-    data-registration-status="sold-out"
-  >
-    <div
-      class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-[0.9fr_1.3fr] md:px-8"
-    >
-      <div class="min-w-0">
-        <p class="font-headline text-sm font-black uppercase text-muted">
-          Attendance
-        </p>
-        <SectionHeading
-          &title="(id 'Sold out')"
-          &href="(id '#tickets')"
-          &ariaLabel="(id 'Link to tickets section')"
-          &className="(id 'mt-3 flex min-w-0 items-start gap-3 font-headline text-4xl font-black uppercase leading-none sm:text-5xl md:text-6xl xl:text-7xl')"
-          &anchorClassName="(id 'mt-[0.06em] inline-flex min-h-6 min-w-6 shrink-0 items-center justify-center text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink')"
-        ></SectionHeading>
-        <p class="mt-6 max-w-xl text-xl leading-8">
-          All in-person tickets for SDLCAI 2026 have been sold and ticket sales
-          are closed. You can follow the seminar live on YouTube.
-        </p>
-      </div>
-      <div
-        class="grid min-w-0 border border-ink bg-paper shadow-[12px_12px_0_var(--color-ink)]"
-      >
-        <div class="border-b border-ink p-5">
-          <p class="font-headline text-sm font-black uppercase text-muted">
-            Ticket
-          </p>
-          <p
-            class="mt-3 font-headline text-5xl font-black uppercase leading-none"
-          >
-            Sold out
-          </p>
-        </div>
-        <div class="grid gap-px bg-ink sm:grid-cols-4">
-          <div class="bg-paper p-5">
-            <p class="text-xs font-bold uppercase text-muted">Status</p>
-            <p class="mt-8 text-lg font-bold leading-6">Ticket sales closed</p>
-          </div>
-          <div class="bg-paper p-5">
-            <p class="text-xs font-bold uppercase text-muted">Date</p>
-            <p class="mt-8 text-lg font-bold leading-6">13 October 2026</p>
-          </div>
-          <div class="bg-paper p-5">
-            <p class="text-xs font-bold uppercase text-muted">Includes</p>
-            <p class="mt-8 text-lg font-bold leading-6">
-              Talks, posters, panel, lunch, and an afterparty
-            </p>
-          </div>
-          <div class="bg-paper p-5">
-            <p class="text-xs font-bold uppercase text-muted">Venue</p>
-            <p class="mt-8 text-lg font-bold leading-6">Marsio, Aalto</p>
-          </div>
-        </div>
-        <div class="p-5">
-          <a
-            class="inline-flex border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
-            href="/checkout/"
-            >Ticket sales closed</a
-          >
-          <a
-            class="mt-3 inline-flex min-h-11 items-center border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper"
-            href="https://youtube.com/live/d7POyy6dYFI"
-            >Watch live on YouTube</a
-          >
-        </div>
-      </div>
     </div>
   </section>
 

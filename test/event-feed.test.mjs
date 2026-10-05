@@ -25,7 +25,7 @@ test("built feed resolves real fragments and excludes private content", async ()
     ["https://www.sdlcai.org/checkout/"],
   );
   assert.equal(seed.actions[0].kind, "information");
-  assert.equal(seed.actions[0].label, "Ticket sales closed");
+  assert.equal(seed.actions[0].label, "Ticket information");
   assert.ok(!seed.actions.some((action) => action.kind === "registration"));
   assert.equal(
     seed.sessions.find((session) => session.id === "agentic-discovery").summary,

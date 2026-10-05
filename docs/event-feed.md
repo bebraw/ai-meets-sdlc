@@ -14,7 +14,7 @@ aliases when changing an existing destination where practical.
 
 The seminar, schedule and speaker source data supply the feed. The rendered home
 page supplies the event description and public ticket action. When the tickets
-section is marked `data-registration-status="sold-out"`, that action uses kind
+notice is marked `data-registration-status="sold-out"`, that action uses kind
 `information` and links to the closed-sales notice instead of offering registration. Schedule
 blocks with talks supply topic labels and summaries. Individual talk times are
 omitted because only block times are published. Current placeholder abstracts
