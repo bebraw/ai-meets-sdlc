@@ -5,6 +5,7 @@ import {
   socialRenderContract,
   socialRenderManifestPath,
   socialRenderPresets,
+  slideRenderPresets,
   speakerPromotionManifestPath,
 } from "./social-render-presets.mjs";
 
@@ -294,7 +295,7 @@ function formatBytes(value) {
 function verifySocialRenderManifest(manifest, deckHtml, libraryHtml, errors) {
   const slideCount = (deckHtml.match(/data-presentation-slide/gu) ?? []).length;
   const expectedPresetIds = new Set(
-    socialRenderPresets.map((preset) => preset.id),
+    slideRenderPresets.map((preset) => preset.id),
   );
   const assetIds = new Set();
   const assetPaths = new Set();
@@ -322,16 +323,17 @@ function verifySocialRenderManifest(manifest, deckHtml, libraryHtml, errors) {
 
   if (
     !Array.isArray(manifest.assets) ||
-    manifest.assets.length !== slideCount * socialRenderPresets.length
+    manifest.assets.length !== slideCount * slideRenderPresets.length
   ) {
     errors.push(
-      `Social render manifest must contain ${slideCount * socialRenderPresets.length} assets.`,
+      `Social render manifest must contain ${slideCount * slideRenderPresets.length} assets.`,
     );
     return;
   }
 
   for (const asset of manifest.assets) {
     const expectedDimensions = `${asset.width}x${asset.height}`;
+    const extension = asset.presetId === "video" ? "png" : "jpg";
 
     if (assetIds.has(asset.id))
       errors.push(`Duplicate social asset id: ${asset.id}`);
@@ -352,7 +354,7 @@ function verifySocialRenderManifest(manifest, deckHtml, libraryHtml, errors) {
 
     if (
       asset.path !==
-      `/assets/social/${asset.presetId}/sdlcai-2026-${asset.slideId}-${asset.presetId}-${expectedDimensions}.jpg`
+      `/assets/social/${asset.presetId}/sdlcai-2026-${asset.slideId}-${asset.presetId}-${expectedDimensions}.${extension}`
     ) {
       errors.push(`Social asset ${asset.id} has an unexpected stable path.`);
     }

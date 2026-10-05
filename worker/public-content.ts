@@ -10,6 +10,7 @@ import {
 import { applyScheduleToResponse } from "./schedule-html.ts";
 import type { ScheduleOrder } from "./schedule-order.ts";
 import { formatSpeakerName } from "../site/scripts/speaker-name.ts";
+import { getSlideTitleClassName } from "../site/scripts/slide-title.ts";
 
 const canonicalHtmlCacheControl =
   "public, max-age=60, s-maxage=300, stale-while-revalidate=86400";
@@ -101,7 +102,16 @@ export async function applyCanonicalContentToResponse(
       element(element) {
         const talkId = element.getAttribute("data-canonical-talk-id");
         const talk = talkId ? talks.get(talkId) : null;
-        if (talk) element.setInnerContent(talk.title);
+        if (talk) {
+          element.setInnerContent(talk.title);
+          if (
+            element
+              .getAttribute("class")
+              ?.split(/\s+/u)
+              .includes("presentation-talk-title")
+          )
+            element.setAttribute("class", getSlideTitleClassName(talk.title));
+        }
       },
     })
     .on("[data-canonical-talk-abstract]", {

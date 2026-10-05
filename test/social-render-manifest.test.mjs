@@ -90,7 +90,12 @@ test("social render versions only invalidate affected slides", async (t) => {
   t.after(() => rm(buildDir, { force: true, recursive: true }));
 
   const initial = await buildFixtureManifest(buildDir);
-  assert.equal(initial.assets.length, 6);
+  assert.equal(initial.assets.length, 8);
+  const video = initial.assets.find((asset) => asset.id === "talk-first:video");
+  assert.equal(video.width, 3840);
+  assert.equal(video.height, 2160);
+  assert.equal(video.quality, undefined);
+  assert.match(video.path, /\.png$/u);
   assert.equal(initial.schemaVersion, 2);
   assert.deepEqual(initial.assets[0].speakerIds, ["first-speaker"]);
   const parsedManifest = parseSocialRenderManifest(initial);
@@ -132,6 +137,15 @@ test("social render versions only invalidate affected slides", async (t) => {
     deck("Updated talk"),
   );
   const afterCopyChange = await buildFixtureManifest(buildDir);
+  assert.notEqual(
+    afterCopyChange.assets.find((asset) => asset.id === video.id).version,
+    video.version,
+  );
+  assert.equal(
+    afterCopyChange.assets.find((asset) => asset.id === "talk-second:video")
+      .version,
+    initial.assets.find((asset) => asset.id === "talk-second:video").version,
+  );
   const initialVersions = versionsBySlide(initial);
   const copyVersions = versionsBySlide(afterCopyChange);
 

@@ -1,6 +1,20 @@
-export const socialRenderContract = "browser-run-v2";
+export const socialRenderContract = "browser-run-v3";
 export const socialRenderManifestPath = "assets/social/manifest.json";
 export const speakerPromotionManifestPath = "assets/social/speakers.json";
+
+export const videoRenderPreset = {
+  id: "video",
+  label: "4K PNG",
+  width: 3840,
+  height: 2160,
+  viewportWidth: 1920,
+  viewportHeight: 1080,
+  deviceScaleFactor: 2,
+  format: "png",
+  omitSlideCounter: true,
+  contract: "video-png-v1",
+  maxBytes: 40 * 1024 * 1024,
+};
 
 export const socialRenderPresets = [
   {
@@ -31,3 +45,5 @@ export const socialRenderPresets = [
     note: "16:9 / under 1 MB",
   },
 ];
+
+export const slideRenderPresets = [...socialRenderPresets, videoRenderPreset];

@@ -17,6 +17,12 @@ const presetContracts = {
     quality: 92,
     width: 1600,
   },
+  video: {
+    height: 2160,
+    maxBytes: 40 * 1024 * 1024,
+    quality: undefined,
+    width: 3840,
+  },
 } as const;
 
 const socialRenderAssetSchema = v.object({
@@ -25,8 +31,8 @@ const socialRenderAssetSchema = v.object({
   legacyPath: v.string(),
   maxBytes: v.number(),
   path: v.string(),
-  presetId: v.picklist(["bluesky", "linkedin", "x"]),
-  quality: v.number(),
+  presetId: v.picklist(["bluesky", "linkedin", "x", "video"]),
+  quality: v.optional(v.number()),
   slideId: v.pipe(v.string(), v.regex(slideIdPattern)),
   slideNumber: v.pipe(v.number(), v.safeInteger(), v.minValue(1)),
   speakerIds: v.array(v.pipe(v.string(), v.regex(speakerIdPattern))),
@@ -36,7 +42,7 @@ const socialRenderAssetSchema = v.object({
 const socialRenderManifestSchema = v.object({
   assets: v.array(socialRenderAssetSchema),
   deckPath: v.literal("/slides/deck/"),
-  renderer: v.literal("browser-run-v2"),
+  renderer: v.literal("browser-run-v3"),
   schemaVersion: v.literal(2),
   version: v.pipe(v.string(), v.regex(digestPattern)),
 });
@@ -54,8 +60,9 @@ export interface SocialRenderMatch {
 function isSocialRenderAsset(asset: SocialRenderAsset): boolean {
   const preset = presetContracts[asset.presetId];
   const dimensions = `${preset.width}x${preset.height}`;
-  const expectedPath = `/assets/social/${asset.presetId}/sdlcai-2026-${asset.slideId}-${asset.presetId}-${dimensions}.jpg`;
-  const expectedLegacyPath = `/assets/social/${asset.presetId}/sdlcai-2026-slide-${String(asset.slideNumber).padStart(2, "0")}-${asset.presetId}-${dimensions}.jpg`;
+  const extension = asset.presetId === "video" ? "png" : "jpg";
+  const expectedPath = `/assets/social/${asset.presetId}/sdlcai-2026-${asset.slideId}-${asset.presetId}-${dimensions}.${extension}`;
+  const expectedLegacyPath = `/assets/social/${asset.presetId}/sdlcai-2026-slide-${String(asset.slideNumber).padStart(2, "0")}-${asset.presetId}-${dimensions}.${extension}`;
 
   return (
     asset.id === `${asset.slideId}:${asset.presetId}` &&

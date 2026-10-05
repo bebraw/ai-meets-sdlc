@@ -10,6 +10,7 @@ import seminarData from "./data/seminar.json" with { type: "json" };
 import speakersData from "./data/speakers.json" with { type: "json" };
 import sponsorsData from "./data/sponsors.json" with { type: "json" };
 import { socialRenderPresets } from "../scripts/social-render-presets.mjs";
+import { getSlideTitleClassName } from "./scripts/slide-title.ts";
 import { formatSpeakerName } from "./scripts/speaker-name.ts";
 
 function init() {
@@ -450,6 +451,8 @@ function getSlideDeckItems(scheduleItems, seminar, socialExportPresets) {
       thumbnailAlt,
       thumbnailSrc: `/assets/social/linkedin/sdlcai-2026-${item.id}-linkedin-1200x627.jpg`,
       publicHref: `/slides/deck/?slideId=${item.id}`,
+      videoHref: `/assets/social/video/sdlcai-2026-${item.id}-video-3840x2160.png`,
+      videoAriaLabel: `Download slide ${number} as a 4K PNG without the slide counter`,
       socialExports: socialExportPresets.map((preset) => {
         const dimensions = preset.dimensions.replaceAll(" ", "");
 
@@ -463,14 +466,6 @@ function getSlideDeckItems(scheduleItems, seminar, socialExportPresets) {
       className: `presentation-slide${index === 0 ? " is-active" : ""}`,
     };
   });
-}
-
-function getSlideTitleClassName(title) {
-  if (title.length > 115) return "presentation-talk-title is-dense";
-  if (title.length > 74) return "presentation-talk-title is-long";
-  if (title.length > 38) return "presentation-talk-title is-medium";
-
-  return "presentation-talk-title is-short";
 }
 
 function getScheduleItems(speakersById) {

@@ -1,0 +1,51 @@
+<div
+  class="grid gap-5 border border-[#f6f4ef]/50 bg-[#f6f4ef] p-5 text-[#080808] md:grid-cols-[1fr_auto] md:items-center md:p-6"
+  data-video-download
+>
+  <div class="grid gap-2">
+    <p class="font-headline text-3xl font-black uppercase leading-none">
+      Slides for production
+    </p>
+    <p class="text-sm leading-6">
+      All slides in one ZIP. 3840 x 2160 PNGs, in deck order, without slide
+      counters. Download individual PNGs from the
+      <a class="underline" href="/slides/#slide-downloads">slide library</a>.
+    </p>
+    <p
+      class="text-sm font-bold"
+      id="video-download-status"
+      data-video-download-status
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+    >
+      The first download can take a few minutes. Keep this page open while the
+      slides are prepared.
+    </p>
+    <noscript
+      ><p class="text-sm">
+        Enable JavaScript to download the ZIP, or use the individual PNG links
+        in the <a class="underline" href="/slides/">slide library</a>.
+      </p></noscript
+    >
+  </div>
+  <div class="flex flex-wrap items-center gap-3">
+    <button
+      type="button"
+      class="min-h-12 border border-[#080808] bg-[#080808] px-5 py-3 text-sm font-bold uppercase text-[#f6f4ef] transition hover:bg-[#f6f4ef] hover:text-[#080808] disabled:cursor-wait disabled:opacity-60"
+      data-video-download-start
+      aria-describedby="video-download-status"
+      hidden
+    >
+      Download all PNGs — 4K
+    </button>
+    <button
+      type="button"
+      class="min-h-12 border border-[#080808] px-4 py-3 text-sm font-bold uppercase transition hover:bg-[#080808] hover:text-[#f6f4ef]"
+      data-video-download-cancel
+      hidden
+    >
+      Cancel
+    </button>
+  </div>
+</div>

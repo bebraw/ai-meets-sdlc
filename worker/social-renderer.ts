@@ -22,11 +22,19 @@ import {
 } from "./public-content";
 import {
   readScheduleOrder,
+  scheduleSlideIds,
   withScheduleVersion,
   type ScheduleOrder,
 } from "./schedule-order.ts";
 import { parsePromotionManifestSource } from "./speaker-promotion-contract.ts";
 import { formatSpeakerName } from "../site/scripts/speaker-name.ts";
+import { sha256Hex } from "./form-utils.ts";
+import {
+  is4kPng,
+  videoExportManifestPath,
+  videoRenderCss,
+  type VideoExportManifest,
+} from "../site/scripts/video-export-contract.ts";
 
 const manifestPath = "/assets/social/manifest.json";
 const speakerPromotionManifestPath = "/assets/social/speakers.json";
@@ -174,9 +182,16 @@ export async function handleSocialRenderRequest(
 ): Promise<Response | null> {
   const url = new URL(request.url);
 
+  if (url.pathname === videoExportManifestPath)
+    return handleVideoExportManifest(request, env);
+
   if (
     !url.pathname.startsWith("/assets/social/") ||
-    !url.pathname.endsWith(".jpg")
+    !(
+      url.pathname.endsWith(".jpg") ||
+      (url.pathname.startsWith("/assets/social/video/") &&
+        url.pathname.endsWith(".png"))
+    )
   ) {
     return null;
   }
@@ -254,7 +269,11 @@ export async function handleSocialRenderRequest(
   try {
     storedObject = await env.SOCIAL_EXPORTS.get(objectKey);
 
-    if (!storedObject && requestedVersion !== effectiveVersion) {
+    if (
+      !storedObject &&
+      requestedVersion !== effectiveVersion &&
+      asset.presetId !== "video"
+    ) {
       storedObject = await env.SOCIAL_EXPORTS.get(
         getLegacyObjectKey(asset, requestedVersion),
       );
@@ -270,13 +289,18 @@ export async function handleSocialRenderRequest(
   }
 
   if (storedObject) {
-    const response = responseFromObject(storedObject);
+    const response = responseFromObject(storedObject, asset);
     cacheResponse(ctx, cacheKey, response.clone(), asset);
 
     return responseForMethod(response, request.method);
   }
 
   if (requestedVersion !== effectiveVersion) {
+    if (asset.presetId === "video" && url.searchParams.get("snapshot") === "1")
+      return new Response("The slides changed. Please restart the download.", {
+        status: 409,
+        headers: { "cache-control": "no-store" },
+      });
     return versionRedirect(request, asset, effectiveVersion);
   }
 
@@ -296,10 +320,10 @@ export async function handleSocialRenderRequest(
       },
       httpMetadata: {
         cacheControl: immutableCacheControl,
-        contentType: "image/jpeg",
+        contentType: imageContentType(asset),
       },
     });
-    const response = imageResponse(image, stored.httpEtag);
+    const response = imageResponse(image, stored.httpEtag, asset);
 
     cacheResponse(ctx, cacheKey, response.clone(), asset);
     console.log("social_render_generated", {
@@ -316,6 +340,60 @@ export async function handleSocialRenderRequest(
       version: effectiveVersion,
     });
 
+    return unavailableResponse();
+  }
+}
+
+async function handleVideoExportManifest(
+  request: Request,
+  env: Env,
+): Promise<Response> {
+  if (request.method !== "GET" && request.method !== "HEAD")
+    return new Response("Method not allowed.", {
+      status: 405,
+      headers: { allow: "GET, HEAD", "cache-control": "no-store" },
+    });
+  try {
+    const [manifest, records, schedule] = await Promise.all([
+      readManifest(env),
+      readPublicCanonicalSpeakers(env),
+      readScheduleOrder(env),
+    ]);
+    const bySlide = new Map(
+      manifest.assets
+        .filter((asset) => asset.presetId === "video")
+        .map((asset) => [asset.slideId, asset]),
+    );
+    const assets = await Promise.all(
+      scheduleSlideIds(schedule).map(async (slideId, index) => {
+        const asset = bySlide.get(slideId);
+        if (!asset) throw new Error(`Missing video export for ${slideId}.`);
+        return {
+          slideId,
+          path: asset.path,
+          version: await scheduleAssetVersion(asset, records, schedule),
+          filename: `${String(index + 1).padStart(2, "0")}-${slideId}.png`,
+        };
+      }),
+    );
+    const version = await sha256Hex(JSON.stringify(assets));
+    const body: VideoExportManifest = {
+      filename: `sdlcai-2026-session-slides-4k-${version.slice(0, 12)}.zip`,
+      assets,
+    };
+    return new Response(
+      request.method === "HEAD" ? null : JSON.stringify(body),
+      {
+        headers: {
+          "cache-control": "no-store",
+          "content-type": "application/json; charset=utf-8",
+        },
+      },
+    );
+  } catch (error) {
+    console.error("video_export_manifest_error", {
+      error: getErrorMessage(error),
+    });
     return unavailableResponse();
   }
 }
@@ -388,6 +466,8 @@ function getCacheKey(
 }
 
 function getObjectKey(asset: SocialRenderAsset, version: string): string {
+  if (asset.presetId === "video")
+    return `social/video/v1/${version}/${asset.slideId}.png`;
   return `social/v2/${version}/${asset.slideId}-${asset.presetId}.jpg`;
 }
 
@@ -395,22 +475,33 @@ function getLegacyObjectKey(asset: SocialRenderAsset, version: string): string {
   return `social/v1/${version}/${asset.slideId}-${asset.presetId}.jpg`;
 }
 
-function responseFromObject(object: R2ObjectBody): Response {
+function imageContentType(asset: SocialRenderAsset): string {
+  return asset.presetId === "video" ? "image/png" : "image/jpeg";
+}
+
+function responseFromObject(
+  object: R2ObjectBody,
+  asset: SocialRenderAsset,
+): Response {
   const headers = new Headers();
   object.writeHttpMetadata(headers);
   headers.set("cache-control", immutableCacheControl);
-  headers.set("content-type", "image/jpeg");
+  headers.set("content-type", imageContentType(asset));
   headers.set("etag", object.httpEtag);
 
   return new Response(object.body, { headers });
 }
 
-function imageResponse(image: Uint8Array<ArrayBuffer>, etag: string): Response {
+function imageResponse(
+  image: Uint8Array<ArrayBuffer>,
+  etag: string,
+  asset: SocialRenderAsset,
+): Response {
   return new Response(image, {
     headers: {
       "cache-control": immutableCacheControl,
       "content-length": String(image.byteLength),
-      "content-type": "image/jpeg",
+      "content-type": imageContentType(asset),
       etag,
     },
   });
@@ -439,7 +530,17 @@ async function renderSocialAsset(
     browser = await puppeteer.launch(env.SOCIAL_BROWSER);
     const page = await browser.newPage();
     page.setDefaultTimeout(pageTimeoutMilliseconds);
-    await page.setViewport({ width: asset.width, height: asset.height });
+    const isVideo = asset.presetId === "video";
+    const scale = isVideo ? 2 : 1;
+    await page.setViewport({
+      width: asset.width / scale,
+      height: asset.height / scale,
+      deviceScaleFactor: scale,
+    });
+    if (isVideo)
+      await page.emulateMediaFeatures([
+        { name: "prefers-reduced-motion", value: "reduce" },
+      ]);
     await page.setRequestInterception(true);
     page.on("request", (interceptedRequest) => {
       void respondWithRenderAsset(
@@ -453,6 +554,7 @@ async function renderSocialAsset(
     const deckUrl = new URL(manifest.deckPath, renderOrigin);
     deckUrl.searchParams.set("slideId", asset.slideId);
     await page.goto(deckUrl.href, { waitUntil: "domcontentloaded" });
+    if (isVideo) await page.addStyleTag({ content: videoRenderCss });
     await page.evaluate(async () => {
       await document.fonts.ready;
       const activeImages = [
@@ -481,20 +583,27 @@ async function renderSocialAsset(
 
     if (
       !bounds ||
-      Math.abs(bounds.width - asset.width) > 1 ||
-      Math.abs(bounds.height - asset.height) > 1
+      Math.abs(bounds.width - asset.width / scale) > 1 ||
+      Math.abs(bounds.height - asset.height / scale) > 1
     ) {
       throw new Error(
         `Slide rendered at ${bounds?.width ?? 0}x${bounds?.height ?? 0}; expected ${asset.width}x${asset.height}.`,
       );
     }
 
-    const screenshot = await slide.screenshot({
-      type: "jpeg",
-      quality: asset.quality,
-    });
+    const screenshot = await slide.screenshot(
+      isVideo
+        ? { type: "png" }
+        : {
+            type: "jpeg",
+            quality: asset.quality ?? 92,
+          },
+    );
     const image = new Uint8Array(new ArrayBuffer(screenshot.byteLength));
     image.set(screenshot);
+
+    if (isVideo && !is4kPng(image))
+      throw new Error("Video export is not a 3840x2160 PNG.");
 
     if (image.byteLength > asset.maxBytes) {
       throw new Error(

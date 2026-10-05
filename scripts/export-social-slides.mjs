@@ -6,12 +6,20 @@ import { chromium } from "playwright";
 import {
   socialRenderManifestPath,
   socialRenderPresets,
+  videoRenderPreset,
 } from "./social-render-presets.mjs";
+import {
+  videoRenderCss,
+  is4kPng,
+} from "../site/scripts/video-export-contract.ts";
 
 const buildDir = path.resolve("build");
 const outputDir = path.join(buildDir, "assets/social");
 const deckRoute = "/slides/deck/";
 const pageTimeoutMs = 15_000;
+const presets = process.argv.includes("--video")
+  ? [videoRenderPreset]
+  : socialRenderPresets;
 const browserCandidates = [
   process.env.LAYOUT_BROWSER_PATH,
   "/Applications/Chromium.app/Contents/MacOS/Chromium",
@@ -108,7 +116,11 @@ async function exportPreset(browser, origin, preset, manifest) {
   await mkdir(presetDir, { recursive: true });
 
   const context = await browser.newContext({
-    viewport: { width: preset.width, height: preset.height },
+    viewport: {
+      width: preset.viewportWidth ?? preset.width,
+      height: preset.viewportHeight ?? preset.height,
+    },
+    deviceScaleFactor: preset.deviceScaleFactor ?? 1,
     colorScheme: "dark",
     reducedMotion: "reduce",
   });
@@ -119,6 +131,8 @@ async function exportPreset(browser, origin, preset, manifest) {
     await page.goto(`${origin}${deckRoute}?slide=1`, {
       waitUntil: "domcontentloaded",
     });
+    if (preset.omitSlideCounter)
+      await page.addStyleTag({ content: videoRenderCss });
     await waitForActiveAssets(page);
 
     const slideCount = await page.locator("[data-presentation-slide]").count();
@@ -132,8 +146,8 @@ async function exportPreset(browser, origin, preset, manifest) {
 
       if (
         !bounds ||
-        Math.abs(bounds.width - preset.width) > 1 ||
-        Math.abs(bounds.height - preset.height) > 1
+        Math.abs(bounds.width - (preset.viewportWidth ?? preset.width)) > 1 ||
+        Math.abs(bounds.height - (preset.viewportHeight ?? preset.height)) > 1
       ) {
         throw new Error(
           `${preset.id} slide ${number} rendered at ${bounds?.width ?? 0}x${bounds?.height ?? 0}, expected ${preset.width}x${preset.height}`,
@@ -152,12 +166,22 @@ async function exportPreset(browser, origin, preset, manifest) {
       const outputPath = path.join(buildDir, asset.path.replace(/^\//u, ""));
       await mkdir(path.dirname(outputPath), { recursive: true });
 
-      await slide.screenshot({
-        path: outputPath,
-        type: "jpeg",
-        quality: preset.quality,
-        animations: "disabled",
-      });
+      await slide.screenshot(
+        preset.format === "png"
+          ? {
+              path: outputPath,
+              type: "png",
+              animations: "disabled",
+            }
+          : {
+              path: outputPath,
+              type: "jpeg",
+              quality: preset.quality,
+              animations: "disabled",
+            },
+      );
+      if (preset.format === "png" && !is4kPng(await readFile(outputPath)))
+        throw new Error(`${outputPath} is not a 3840x2160 PNG.`);
 
       const outputBytes = (await stat(outputPath)).size;
       totalBytes += outputBytes;
@@ -204,9 +228,7 @@ async function main() {
 
   try {
     const results = await Promise.all(
-      socialRenderPresets.map((preset) =>
-        exportPreset(browser, origin, preset, manifest),
-      ),
+      presets.map((preset) => exportPreset(browser, origin, preset, manifest)),
     );
     const fileCount = results.reduce(
       (total, result) => total + result.slideCount,
@@ -218,7 +240,7 @@ async function main() {
     );
 
     console.log(
-      `Exported ${fileCount} social slide images (${Math.round(totalBytes / 1024)} KB).`,
+      `Exported ${fileCount} ${presets[0].id === "video" ? "4K PNG" : "social"} slide images (${Math.round(totalBytes / 1024)} KB).`,
     );
   } finally {
     await browser.close();

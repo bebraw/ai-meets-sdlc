@@ -84,7 +84,7 @@
   },
   "slides": {
     "layout": "public-slides",
-    "scripts": [{ "name": "index" }],
+    "scripts": [{ "name": "index" }, { "name": "video-download" }],
     "dataSources": {
       "seminar": {
         "operation": "seminar"
@@ -171,7 +171,7 @@
   },
   "admin-slides": {
     "layout": "slides",
-    "scripts": [{ "name": "index" }],
+    "scripts": [{ "name": "index" }, { "name": "video-download" }],
     "dataSources": {
       "seminar": {
         "operation": "seminar"

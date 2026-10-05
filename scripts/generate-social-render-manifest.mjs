@@ -7,6 +7,7 @@ import {
   socialRenderContract,
   socialRenderManifestPath,
   socialRenderPresets,
+  slideRenderPresets,
   speakerPromotionManifestPath,
 } from "./social-render-presets.mjs";
 
@@ -189,10 +190,11 @@ export async function buildSocialRenderManifest({
 
     slides.push({ id, number, speakerIds, version: slideVersion });
 
-    for (const preset of socialRenderPresets) {
+    for (const preset of slideRenderPresets) {
       const dimensions = `${preset.width}x${preset.height}`;
-      const pathname = `/assets/social/${preset.id}/sdlcai-2026-${id}-${preset.id}-${dimensions}.jpg`;
-      const legacyPath = `/assets/social/${preset.id}/sdlcai-2026-slide-${String(number).padStart(2, "0")}-${preset.id}-${dimensions}.jpg`;
+      const extension = preset.format ?? "jpg";
+      const pathname = `/assets/social/${preset.id}/sdlcai-2026-${id}-${preset.id}-${dimensions}.${extension}`;
+      const legacyPath = `/assets/social/${preset.id}/sdlcai-2026-slide-${String(number).padStart(2, "0")}-${preset.id}-${dimensions}.${extension}`;
       const version = digest(
         JSON.stringify({
           contract: socialRenderContract,
@@ -239,7 +241,7 @@ export async function buildSocialRenderManifest({
     version: digest(
       JSON.stringify(assets.map(({ id, version }) => ({ id, version }))),
     ),
-    presets: socialRenderPresets,
+    presets: slideRenderPresets,
     slides,
     assets,
   };
@@ -256,7 +258,7 @@ export async function buildSocialRenderManifest({
     speakerPromotionManifestPath,
   );
 
-  for (const preset of socialRenderPresets) {
+  for (const preset of slideRenderPresets) {
     await rm(path.join(resolvedBuildDir, "assets/social", preset.id), {
       force: true,
       recursive: true,
@@ -277,6 +279,8 @@ export function buildSpeakerPromotionManifest({ assets, schedule, speakers }) {
   const talkAssets = new Map();
 
   for (const asset of assets) {
+    if (!socialRenderPresets.some((preset) => preset.id === asset.presetId))
+      continue;
     const existing = talkAssets.get(asset.slideId) ?? [];
     existing.push({
       height: asset.height,

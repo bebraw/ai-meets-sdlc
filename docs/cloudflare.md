@@ -309,6 +309,25 @@ while a shared style or font change invalidates every affected preset. Old R2
 objects remain readable by their already-shared versioned URLs until an
 explicit lifecycle policy removes them.
 
+The same Browser Rendering binding, R2 bucket, and Cache API also serve 4K PNGs
+under `/assets/social/video/`. They render at a 1920 x 1080 viewport with a
+device scale factor of two, disable animation, and hide only the slide counter.
+PNG dimensions are verified before storage; video objects use the separate
+`social/video/v1/<version>/<slide-id>.png` prefix and `image/png` metadata.
+
+`/assets/social/video/manifest.json` returns an uncached snapshot of the current
+schedule order and each PNG's effective canonical version. The download UI
+fetches these pinned images sequentially and streams their bytes into a ZIP
+in the user's browser, without recompressing already-compressed PNGs. It shows
+progress, supports cancellation, and retries temporary render failures twice.
+A `snapshot=1` PNG request returns `409` if its old version is uncached and
+cannot be rendered from the current content, so an archive cannot silently
+combine revisions. Cached old PNG versions can still complete the snapshot.
+Individual stable PNG links redirect to the current version, allowing a later
+title correction to be downloaded independently.
+Canonical talk-title updates also recalculate the deck's title-density class,
+so replacing a short placeholder with a long title uses the appropriate sizing.
+
 For a fully local visual check after `npm run build`, use:
 
 ```bash

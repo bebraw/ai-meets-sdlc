@@ -27,7 +27,8 @@
       </div>
       <div class="grid content-end gap-6 border-y border-[#f6f4ef]/50 py-6">
         <p class="max-w-3xl text-xl leading-8 text-[#f6f4ef]/70">
-          Present the event deck or download slides for social media.
+          Present the event deck or download slides for video production and
+          social media.
         </p>
         <div class="flex flex-wrap gap-3">
           <a
@@ -52,6 +53,7 @@
 
   <section class="border-b border-[#f6f4ef]/40 bg-[#080808] text-[#f6f4ef]">
     <div class="mx-auto max-w-7xl px-5 py-10 md:px-8 md:py-14">
+      <div class="mb-8"><VideoDownload></VideoDownload></div>
       <div
         class="grid gap-px border border-[#f6f4ef]/40 bg-[#f6f4ef]/40 md:grid-cols-3"
       >
@@ -75,7 +77,7 @@
     </div>
   </section>
 
-  <section class="bg-[#080808] text-[#f6f4ef]">
+  <section class="bg-[#080808] text-[#f6f4ef]" id="slide-downloads">
     <div class="mx-auto max-w-7xl px-5 py-12 md:px-8 md:py-20">
       <div class="grid gap-8 lg:grid-cols-2">
         <noop &foreach="slideDeckItems as slideItem">
@@ -137,6 +139,15 @@
                   </a>
                 </noop>
               </div>
+              <a
+                class="flex min-h-12 flex-wrap items-center justify-between gap-2 border border-[#f6f4ef]/50 px-4 py-3 text-sm font-bold uppercase transition hover:bg-[#f6f4ef] hover:text-[#080808]"
+                &href="slideItem.videoHref"
+                &aria-label="slideItem.videoAriaLabel"
+                download
+              >
+                <span>Download PNG</span>
+                <span>4K / 3840 x 2160</span>
+              </a>
               <p class="text-sm leading-6 text-[#f6f4ef]/55">
                 Suggested alt text:
                 <span
