@@ -1,4 +1,4 @@
-import { buildVideoArchive } from "./video-archive.ts";
+import { buildVideoArchive, checkVideoExportSession } from "./video-archive.ts";
 import {
   parseVideoExportManifest,
   videoExportManifestPath,
@@ -32,6 +32,7 @@ for (const root of document.querySelectorAll<HTMLElement>(
         cache: "no-store",
         signal: AbortSignal.any([signal, AbortSignal.timeout(30_000)]),
       });
+      await checkVideoExportSession(response);
       if (!response.ok)
         throw new Error(
           "Slides are temporarily unavailable. Please try again.",

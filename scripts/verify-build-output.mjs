@@ -62,13 +62,10 @@ const fontSubsetCharacters = new Set(
   ),
 );
 
-for (const pathname of ["/slides/", "/slides/deck/", "/slides/schedule/"]) {
-  if (!sitemap.includes(`<loc>https://sdlcai.org${pathname}</loc>`)) {
-    failures.push(`sitemap.xml: missing public slide route ${pathname}`);
-  }
-}
-
 for (const pathname of [
+  "/slides/",
+  "/slides/deck/",
+  "/slides/schedule/",
   "/admin/",
   "/admin/login/",
   "/admin/speakers/",

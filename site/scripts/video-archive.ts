@@ -1,6 +1,19 @@
 import { Zip, ZipPassThrough } from "fflate";
 import { is4kPng, type VideoExportManifest } from "./video-export-contract.ts";
 
+export async function checkVideoExportSession(
+  response: Response,
+): Promise<void> {
+  if (
+    response.status === 401 ||
+    response.status === 403 ||
+    (response.redirected && new URL(response.url).pathname === "/admin/login/")
+  ) {
+    await response.body?.cancel();
+    throw new Error("Sign in again, then restart the download.");
+  }
+}
+
 // PNGs are already compressed. Store them in the ZIP without recompressing or
 // buffering another full copy of each image in JavaScript.
 export async function buildVideoArchive(
@@ -24,6 +37,7 @@ export async function buildVideoArchive(
       url.searchParams.set("v", asset.version);
       url.searchParams.set("snapshot", "1");
       const response = await fetchSlide(url, signal);
+      await checkVideoExportSession(response);
       if (
         response.status === 409 ||
         new URL(response.url).searchParams.get("v") !== asset.version

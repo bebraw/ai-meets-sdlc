@@ -22,6 +22,11 @@ export function isAdminProtectedPath(pathname: string): boolean {
     pathname === "/admin/" ||
     (pathname.startsWith("/admin/") && pathname !== adminLoginPath) ||
     pathname.startsWith("/api/admin/") ||
+    pathname === "/slides" ||
+    pathname.startsWith("/slides/") ||
+    pathname === "/assets/social/manifest.json" ||
+    pathname === "/assets/social/video" ||
+    pathname.startsWith("/assets/social/video/") ||
     pathname === "/assets/slides" ||
     pathname.startsWith("/assets/slides/")
   );

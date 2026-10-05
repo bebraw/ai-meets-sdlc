@@ -168,10 +168,10 @@ EMAIL_ENCRYPTION_KEY=... npm run --silent interests:export -- --input backup.jso
 EMAIL_ENCRYPTION_KEY=... npm run --silent interests:export -- --remote --format json
 ```
 
-The public slide library is available at `/slides/`, with a keyboard/swipe deck
+The organizer-only slide library is available at `/slides/`, with a keyboard/swipe deck
 at `/slides/deck/` and a screen schedule at `/slides/schedule/`. It includes
 per-slide LinkedIn, X, and Bluesky downloads generated from the same event data.
-The public library and admin slides page also offer **Download all PNGs — 4K**.
+The library and admin slides page also offer **Download all PNGs — 4K**.
 It prepares a ZIP of all slides in current deck order, numbered for production,
 at 3840 x 2160 with the slide counter hidden. Individual **Download PNG** links
 in the library allow a corrected talk slide to be delivered separately later.
@@ -179,7 +179,11 @@ The download shows progress and can be cancelled; its versioned snapshot either
 completes consistently or asks for a restart if uncached slides change midway.
 Stable filenames are based on slide IDs rather than schedule order. Each stable
 URL redirects to a SHA-256-versioned URL, so unchanged inputs reuse the same
-image across deployments.
+image across deployments. All library, deck, screen schedule, 4K PNG, and render
+manifest requests require organizer authentication. Social JPEGs and the speaker
+promotion manifest require an active speaker or organizer session; speakers
+access them from their workspace after sign-in. Authentication runs before
+Cache API and R2 reads, and external responses use `no-store`.
 For local PNG review, run `npm run build && npm run slides:export:video`.
 Then `npm run slides:video-check` checks a real full-deck ZIP in Chromium and WebKit,
 including retries, cancellation, changed-content recovery, and mobile controls.

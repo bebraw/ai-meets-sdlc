@@ -69,7 +69,7 @@ test("schedule saves are atomic, admin-only, and shared by public pages, slides,
     400,
   );
   const oldManifest = await (
-    await worker.fetch(`${origin}/assets/social/speakers.json`)
+    await worker.fetch(`${origin}/assets/social/speakers.json`, { headers })
   ).json();
   const saved = await save(groups, before.revision);
   assert.equal(saved.status, 200);
@@ -137,7 +137,7 @@ test("schedule saves are atomic, admin-only, and shared by public pages, slides,
     morning.id,
   ]);
   const newManifest = await (
-    await worker.fetch(`${origin}/assets/social/speakers.json`)
+    await worker.fetch(`${origin}/assets/social/speakers.json`, { headers })
   ).json();
   assert.notEqual(oldManifest.version, newManifest.version);
   const speakerPage = await worker.fetch(`${origin}/speakers/`);
@@ -150,7 +150,7 @@ test("schedule saves are atomic, admin-only, and shared by public pages, slides,
     ),
     "Industry perspectives",
   );
-  const library = await worker.fetch(`${origin}/slides/`);
+  const library = await worker.fetch(`${origin}/slides/`, { headers });
   const libraryIds = walk(parse(await library.text()))
     .map((node) => attr(node, "data-runtime-slide"))
     .filter(Boolean);

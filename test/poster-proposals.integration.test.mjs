@@ -424,49 +424,56 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
       assert.doesNotMatch(html, pattern);
   }
 
-  const publicSlidesResponse = await worker.fetch(`${origin}/slides/`, {
-    headers: { accept: "text/html" },
+  const slideLibraryResponse = await worker.fetch(`${origin}/slides/`, {
+    headers: { accept: "text/html", cookie: adminCookie },
   });
-  const publicSlidesHtml = await publicSlidesResponse.text();
+  const slideLibraryHtml = await slideLibraryResponse.text();
 
-  assert.equal(publicSlidesResponse.status, 200);
-  assert.equal(publicSlidesResponse.headers.get("x-robots-tag"), null);
-  assert.match(publicSlidesHtml, /Slide library/i);
+  assert.equal(slideLibraryResponse.status, 200);
+  assert.equal(
+    slideLibraryResponse.headers.get("x-robots-tag"),
+    "noindex, nofollow, noarchive",
+  );
+  assert.match(slideLibraryHtml, /Slide library/i);
   assert.match(
-    publicSlidesHtml,
+    slideLibraryHtml,
     /\/assets\/social\/linkedin\/sdlcai-2026-event-linkedin-1200x627\.jpg/,
   );
 
-  const publicDeckResponse = await worker.fetch(`${origin}/slides/deck/`, {
-    headers: { accept: "text/html" },
+  const slideDeckResponse = await worker.fetch(`${origin}/slides/deck/`, {
+    headers: { accept: "text/html", cookie: adminCookie },
   });
-  const publicDeckHtml = await publicDeckResponse.text();
+  const slideDeckHtml = await slideDeckResponse.text();
 
-  assert.equal(publicDeckResponse.status, 200);
-  assert.equal(publicDeckResponse.headers.get("x-robots-tag"), null);
+  assert.equal(slideDeckResponse.status, 200);
   assert.equal(
-    (publicDeckHtml.match(/data-presentation-slide/g) ?? []).length,
+    slideDeckResponse.headers.get("x-robots-tag"),
+    "noindex, nofollow, noarchive",
+  );
+  assert.equal(
+    (slideDeckHtml.match(/data-presentation-slide/g) ?? []).length,
     22,
   );
-  assert.match(publicDeckHtml, /alt="Wunderdog"/);
-  assert.doesNotMatch(publicDeckHtml, /bit\.ly\/4wRkjCa/);
+  assert.match(slideDeckHtml, /alt="Wunderdog"/);
+  assert.doesNotMatch(slideDeckHtml, /bit\.ly\/4wRkjCa/);
 
-  const publicScheduleSlidesResponse = await worker.fetch(
+  const screenScheduleResponse = await worker.fetch(
     `${origin}/slides/schedule/`,
-    { headers: { accept: "text/html" } },
+    { headers: { accept: "text/html", cookie: adminCookie } },
   );
-  const publicScheduleSlidesHtml = await publicScheduleSlidesResponse.text();
+  const screenScheduleHtml = await screenScheduleResponse.text();
 
-  assert.equal(publicScheduleSlidesResponse.status, 200);
-  assert.equal(publicScheduleSlidesResponse.headers.get("x-robots-tag"), null);
+  assert.equal(screenScheduleResponse.status, 200);
   assert.equal(
-    (
-      publicScheduleSlidesHtml.match(/class="presentation-schedule-item"/g) ??
-      []
-    ).length,
+    screenScheduleResponse.headers.get("x-robots-tag"),
+    "noindex, nofollow, noarchive",
+  );
+  assert.equal(
+    (screenScheduleHtml.match(/class="presentation-schedule-item"/g) ?? [])
+      .length,
     11,
   );
-  assert.match(publicScheduleSlidesHtml, /alt="Aalto University"/);
+  assert.match(screenScheduleHtml, /alt="Aalto University"/);
 
   for (const socialExportPath of [
     "/assets/social/linkedin/sdlcai-2026-event-linkedin-1200x627.jpg",
@@ -475,7 +482,7 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   ]) {
     const socialExportResponse = await worker.fetch(
       `${origin}${socialExportPath}`,
-      { redirect: "manual" },
+      { headers: { cookie: adminCookie }, redirect: "manual" },
     );
 
     assert.equal(socialExportResponse.status, 307);
@@ -489,7 +496,7 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
 
   const legacySocialResponse = await worker.fetch(
     `${origin}/assets/social/linkedin/sdlcai-2026-slide-01-linkedin-1200x627.jpg`,
-    { redirect: "manual" },
+    { headers: { cookie: adminCookie }, redirect: "manual" },
   );
   assert.equal(legacySocialResponse.status, 307);
   assert.match(

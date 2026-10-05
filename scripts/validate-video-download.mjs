@@ -43,8 +43,19 @@ const types = {
   ".webp": "image/webp",
   ".woff2": "font/woff2",
 };
+let expiredVideoSession;
 const server = createServer(async (request, response) => {
   const url = new URL(request.url, "http://localhost");
+  if (
+    (expiredVideoSession === "manifest" &&
+      url.pathname === videoExportManifestPath) ||
+    (expiredVideoSession === "slide" &&
+      url.pathname.startsWith("/assets/social/video/") &&
+      url.pathname.endsWith(".png"))
+  ) {
+    response.writeHead(303, { location: "/admin/login/" }).end();
+    return;
+  }
   let file = path.join(buildDir, decodeURIComponent(url.pathname));
   if (!file.startsWith(`${buildDir}/`)) {
     response.writeHead(404).end();
@@ -141,7 +152,31 @@ async function checkDownload(browser, engine) {
     );
     assert.equal(await cancel.isVisible(), false);
 
+    await page.unroute(`**${videoExportManifestPath}`);
+    // WebKit cannot mock redirect statuses through route.fulfill; use HTTP.
+    expiredVideoSession = "manifest";
+    await start.click();
+    await page.waitForFunction(() =>
+      document
+        .querySelector("[data-video-download-status]")
+        .textContent.includes("Sign in again"),
+    );
+    assert.equal(await start.isEnabled(), true);
+    expiredVideoSession = undefined;
+    await page.route(`**${videoExportManifestPath}`, (route) =>
+      route.fulfill({ json: exportManifest }),
+    );
     await page.unroute("**/assets/social/video/*.png?*");
+    expiredVideoSession = "slide";
+    await start.click();
+    await page.waitForFunction(() =>
+      document
+        .querySelector("[data-video-download-status]")
+        .textContent.includes("Sign in again"),
+    );
+    assert.equal(await start.isEnabled(), true);
+    expiredVideoSession = undefined;
+
     await page.route("**/assets/social/video/*.png?*", (route) =>
       route.fulfill({ status: 409, body: "Changed" }),
     );
@@ -187,9 +222,10 @@ async function checkDownload(browser, engine) {
     });
     assert.deepEqual(errors, []);
     console.log(
-      `${engine} video browser check passed: ${assets.length} real 4K PNGs in order, ZIP integrity, transient retry, edit recovery, cancellation, public/admin controls, and mobile layout.`,
+      `${engine} video browser check passed: ${assets.length} real 4K PNGs in order, ZIP integrity, transient retry, session expiry, edit recovery, cancellation, library/admin controls, and mobile layout.`,
     );
   } finally {
+    expiredVideoSession = undefined;
     await browser.close();
   }
 }

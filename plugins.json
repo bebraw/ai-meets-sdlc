@@ -56,6 +56,9 @@
           "/404/",
           "/admin/",
           "/registration/",
+          "/slides/",
+          "/slides/deck/",
+          "/slides/schedule/",
           "/admin-slides/",
           "/admin-slide-deck/",
           "/admin-slide-schedule/"

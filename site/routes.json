@@ -31,17 +31,14 @@
     "dataSources": {
       "seminar": {
         "operation": "seminar"
-      },
-      "sponsorAvailability": {
-        "operation": "sponsorAvailability"
       }
     },
     "context": {
       "meta": {
-        "title": "SDLCAI For Sponsors",
-        "description": "Sponsorship opportunities for SDLCAI, a one-day seminar on AI across the software development lifecycle.",
-        "ogEyebrow": "For sponsors",
-        "ogDescription": "Sponsor a focused AI and software development lifecycle seminar at Aalto University."
+        "title": "SDLCAI Sponsors",
+        "description": "Sponsorship recruitment for SDLCAI 2026 has closed. Sponsor benefits and practical information for our event partners.",
+        "ogEyebrow": "Our sponsors",
+        "ogDescription": "Thank you to the sponsors supporting SDLCAI 2026 at Aalto University."
       }
     }
   },
@@ -83,7 +80,7 @@
     }
   },
   "slides": {
-    "layout": "public-slides",
+    "layout": "slide-library",
     "scripts": [{ "name": "index" }, { "name": "video-download" }],
     "dataSources": {
       "seminar": {
@@ -99,9 +96,10 @@
     "context": {
       "meta": {
         "title": "SDLCAI Slide Library",
-        "description": "Public presentation slides and social media exports for SDLCAI 2026.",
+        "description": "Organizer presentation slides and production exports for SDLCAI 2026.",
         "ogEyebrow": "Slide library",
-        "ogDescription": "Explore the SDLCAI 2026 schedule deck and download presentation slides for social media."
+        "ogDescription": "Organizer access to the SDLCAI 2026 schedule deck and slide downloads.",
+        "robots": "noindex,nofollow,noarchive"
       }
     },
     "routes": {
@@ -122,9 +120,10 @@
         "context": {
           "meta": {
             "title": "SDLCAI Session Slides",
-            "description": "Public session and talk slides for SDLCAI 2026.",
+            "description": "Organizer session and talk slides for SDLCAI 2026.",
             "ogEyebrow": "Session slides",
-            "ogDescription": "Browse the SDLCAI 2026 session and talk title slides."
+            "ogDescription": "Browse the SDLCAI 2026 session and talk title slides.",
+            "robots": "noindex,nofollow,noarchive"
           }
         }
       },
@@ -144,9 +143,10 @@
         "context": {
           "meta": {
             "title": "SDLCAI Daily Schedule Slide",
-            "description": "Public screen and print schedule for SDLCAI 2026.",
+            "description": "Organizer screen and print schedule for SDLCAI 2026.",
             "ogEyebrow": "Schedule slide",
-            "ogDescription": "View the screen-ready SDLCAI 2026 daily schedule."
+            "ogDescription": "View the screen-ready SDLCAI 2026 daily schedule.",
+            "robots": "noindex,nofollow,noarchive"
           }
         }
       }

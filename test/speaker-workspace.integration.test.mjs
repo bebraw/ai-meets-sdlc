@@ -401,12 +401,16 @@ test("speaker invitation sessions, revisions, and automatic publishing stay gove
   assert.match(publicAfterSubmitHtml, /AI migrations you can verify/u);
   assert.match(publicAfterSubmitHtml, /Md Mo Javad Khazali, PhD/u);
   for (const route of ["/schedule/", "/slides/deck/", "/slides/schedule/"]) {
-    const response = await worker.fetch(`${origin}${route}`);
+    const response = await worker.fetch(`${origin}${route}`, {
+      headers: { authorization: adminAuthorization },
+    });
     assert.equal(response.status, 200);
     assert.match(await response.text(), /Md Mo Javad Khazali, PhD/u);
   }
   for (const route of ["/event.json", "/assets/social/speakers.json"]) {
-    const response = await worker.fetch(`${origin}${route}`);
+    const response = await worker.fetch(`${origin}${route}`, {
+      headers: { cookie },
+    });
     assert.equal(response.status, 200);
     const data = await response.json();
     assert.equal(
@@ -721,14 +725,14 @@ test("speaker invitation sessions, revisions, and automatic publishing stay gove
     "/assets/social/linkedin/sdlcai-2026-talk-mo-khazali-industry-perspective-linkedin-1200x627.jpg";
   const beforePromotionResponse = await worker.fetch(
     `${origin}${promotionPath}`,
-    { redirect: "manual" },
+    { headers: { cookie }, redirect: "manual" },
   );
   const beforePromotionLocation =
     beforePromotionResponse.headers.get("location");
   assert.equal(beforePromotionResponse.status, 307);
   const unrelatedBeforeResponse = await worker.fetch(
     `${origin}${unrelatedPromotionPath}`,
-    { redirect: "manual" },
+    { headers: { cookie }, redirect: "manual" },
   );
   const unrelatedBeforeLocation =
     unrelatedBeforeResponse.headers.get("location");
@@ -872,7 +876,7 @@ test("speaker invitation sessions, revisions, and automatic publishing stay gove
 
   const afterPromotionResponse = await worker.fetch(
     `${origin}${promotionPath}`,
-    { redirect: "manual" },
+    { headers: { cookie }, redirect: "manual" },
   );
   assert.equal(afterPromotionResponse.status, 307);
   assert.notEqual(
@@ -881,7 +885,7 @@ test("speaker invitation sessions, revisions, and automatic publishing stay gove
   );
   const unrelatedAfterResponse = await worker.fetch(
     `${origin}${unrelatedPromotionPath}`,
-    { redirect: "manual" },
+    { headers: { cookie }, redirect: "manual" },
   );
   assert.equal(
     unrelatedAfterResponse.headers.get("location"),
@@ -890,6 +894,7 @@ test("speaker invitation sessions, revisions, and automatic publishing stay gove
 
   const promotionManifestResponse = await worker.fetch(
     `${origin}/assets/social/speakers.json`,
+    { headers: { cookie } },
   );
   const promotionManifest = await promotionManifestResponse.json();
   const promotionSpeaker = promotionManifest.speakers.find(

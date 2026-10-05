@@ -79,6 +79,10 @@ import {
   handleSocialRenderRequest,
   handleSpeakerPromotionManifestRequest,
 } from "./social-renderer.ts";
+import {
+  isSpeakerSlideExportPath,
+  requireSlideExportAccess,
+} from "./slide-export-auth.ts";
 import { readPublicCanonicalSpeakers } from "./canonical-content.ts";
 import { backupSpeakerReceipts } from "./receipt-backups.ts";
 import { handleEventFeed } from "./event-feed.ts";
@@ -112,6 +116,7 @@ const innerHandler = {
       return handleEventFeed(request, env);
     }
     const isAdminProtected = isAdminProtectedPath(url.pathname);
+    const isSpeakerSlideExport = isSpeakerSlideExportPath(url.pathname);
     const isSpeakerDinnerPrivate = isSpeakerDinnerPath(url.pathname);
     const isSpeakerWorkspacePrivate = isSpeakerWorkspacePath(url.pathname);
 
@@ -132,19 +137,6 @@ const innerHandler = {
         headers: { "cache-control": "no-store", "retry-after": "60" },
       });
     }
-
-    const socialRenderResponse = await handleSocialRenderRequest(
-      request,
-      env,
-      ctx,
-    );
-
-    if (socialRenderResponse) return socialRenderResponse;
-
-    const promotionManifestResponse =
-      await handleSpeakerPromotionManifestRequest(request, env);
-
-    if (promotionManifestResponse) return promotionManifestResponse;
 
     if (isInternalAdminSlidesPath(url.pathname)) {
       return new Response("Not found.", {
@@ -176,6 +168,26 @@ const innerHandler = {
 
       if (unauthorizedResponse) return unauthorizedResponse;
     }
+
+    if (isSpeakerSlideExport) {
+      const unauthorizedResponse = await requireSlideExportAccess(request, env);
+      if (unauthorizedResponse) return unauthorizedResponse;
+    }
+
+    const socialRenderResponse = await handleSocialRenderRequest(
+      request,
+      env,
+      ctx,
+    );
+
+    if (socialRenderResponse)
+      return withAdminSecurityHeaders(socialRenderResponse);
+
+    const promotionManifestResponse =
+      await handleSpeakerPromotionManifestRequest(request, env);
+
+    if (promotionManifestResponse)
+      return withAdminSecurityHeaders(promotionManifestResponse);
 
     const attendeeResponse = await handleAttendeesRequest(request, env);
     if (attendeeResponse) return attendeeResponse;

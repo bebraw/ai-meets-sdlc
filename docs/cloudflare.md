@@ -277,9 +277,14 @@ request plus `x-admin-action: save-speaker-content` or
 portrait derivatives publish atomically to the speaker's versioned canonical
 D1 record. Stable IDs, assignments, and schedule placement remain in Git.
 
-The data-driven slide library, session deck, and screen schedule are public at
-`/slides/`, `/slides/deck/`, and `/slides/schedule/`. Generated social exports
-under `/assets/social/` are public as well.
+The data-driven slide library, session deck, and screen schedule at `/slides/`,
+`/slides/deck/`, and `/slides/schedule/` require organizer authentication. The
+4K PNGs under `/assets/social/video/` and full render manifest also require
+organizer access. Generated social JPEGs and `/assets/social/speakers.json`
+accept either organizer credentials or an active speaker workspace session.
+Speakers access their graphics from their workspace after sign-in. These checks
+run before the renderer, Cache API, R2, or static assets can respond. Private
+slide routes are excluded from the sitemap and public navigation.
 
 ### Social render cache
 
@@ -301,13 +306,16 @@ browser network requests. The intercepted deck and approved portrait requests
 are resolved from the same canonical D1 snapshot used to calculate the render
 version.
 
-Versioned responses use `Cache-Control: public, max-age=31536000, immutable`.
+Internal render-cache responses use
+`Cache-Control: public, max-age=31536000, immutable`. After authentication,
+responses sent to browsers use `Cache-Control: no-store`, vary on authorization
+and cookie, and include `X-Robots-Tag: noindex, nofollow, noarchive`.
 The Cache API avoids repeated reads within a Cloudflare location; R2 prevents a
 new browser render after a cold request in another location. A change limited
 to one talk or speaker image invalidates only slides that contain that input,
 while a shared style or font change invalidates every affected preset. Old R2
-objects remain readable by their already-shared versioned URLs until an
-explicit lifecycle policy removes them.
+objects remain available to authenticated users at their versioned URLs until
+an explicit lifecycle policy removes them.
 
 The same Browser Rendering binding, R2 bucket, and Cache API also serve 4K PNGs
 under `/assets/social/video/`. They render at a 1920 x 1080 viewport with a
@@ -345,8 +353,8 @@ cookie that expires after seven days. Changing either credential invalidates
 all existing admin sessions. HTTP Basic credentials remain accepted when a
 script supplies them proactively, but the Worker does not send a Basic auth
 challenge. Every `/api/admin/` route and all `/assets/slides/` downloads accept
-the same admin session. This keeps the Aalto-exclusive registration ad private
-while the general event slides remain shareable. Protected pages and downloads
+the same admin session. The slide library, deck, screen schedule, and production
+exports also use this protection. Protected pages and downloads
 use `Cache-Control: no-store` and
 `X-Robots-Tag: noindex, nofollow, noarchive`.
 
@@ -507,7 +515,8 @@ For production rollout:
 6. After the next scheduled trigger, confirm the
    `poster-proposals/latest.json` manifest and its referenced dated object exist
    in R2.
-7. Request one stable path from `/slides/`, follow its version redirect, verify
+7. While signed in as an organizer, request one stable path from `/slides/`,
+   follow its version redirect, verify
    the response is a JPEG, and confirm the corresponding `social/v2/` object
    exists in `ai-meets-sdlc-social-exports`.
 8. Assign one controlled speaker email in `/admin/speakers/`, request a sign-in

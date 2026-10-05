@@ -15,8 +15,11 @@ test("4K export snapshots follow the live deck and invalidate a later corrected 
   const fixture = await createReceiptFixture();
   t.after(() => fixture.dispose());
   const { worker, runSql } = fixture;
+  const headers = { authorization: receiptAdmin };
   const read = async () => {
-    const response = await worker.fetch(`${origin}${videoExportManifestPath}`);
+    const response = await worker.fetch(`${origin}${videoExportManifestPath}`, {
+      headers,
+    });
     assert.equal(response.status, 200);
     assert.equal(response.headers.get("cache-control"), "no-store");
     return parseVideoExportManifest(await response.json());
@@ -30,6 +33,7 @@ test("4K export snapshots follow the live deck and invalidate a later corrected 
     (asset) => asset.slideId === "talk-mo-khazali-industry-perspective",
   );
   const stable = await worker.fetch(`${origin}${changed.path}`, {
+    headers,
     redirect: "manual",
   });
   assert.equal(stable.status, 307);
@@ -40,6 +44,7 @@ test("4K export snapshots follow the live deck and invalidate a later corrected 
   assert.equal(
     (
       await worker.fetch(`${origin}${videoExportManifestPath}`, {
+        headers,
         method: "HEAD",
       })
     ).status,
@@ -48,6 +53,7 @@ test("4K export snapshots follow the live deck and invalidate a later corrected 
   assert.equal(
     (
       await worker.fetch(`${origin}${videoExportManifestPath}`, {
+        headers,
         method: "POST",
       })
     ).status,
@@ -60,7 +66,7 @@ test("4K export snapshots follow the live deck and invalidate a later corrected 
     `UPDATE canonical_speaker_content SET content_json = json_set(content_json, '$.talks[0].title', '${correctedTitle}'), content_version = content_version + 1 WHERE speaker_id = 'ohans-emmanuel';`,
   );
   const deck = parse(
-    await (await worker.fetch(`${origin}/slides/deck/`)).text(),
+    await (await worker.fetch(`${origin}/slides/deck/`, { headers })).text(),
   );
   const walk = (node) => [node, ...(node.childNodes ?? []).flatMap(walk)];
   const title = walk(deck).find(
@@ -89,7 +95,7 @@ test("4K export snapshots follow the live deck and invalidate a later corrected 
   );
   const stale = await worker.fetch(
     `${origin}${changed.path}?v=${changed.version}&snapshot=1`,
-    { redirect: "manual" },
+    { headers, redirect: "manual" },
   );
   assert.equal(stale.status, 409);
 

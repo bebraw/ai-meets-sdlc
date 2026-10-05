@@ -1,6 +1,9 @@
 # ADR-002: Provide Promotion Assets and Staged Video Submissions
 
 Amended by [ADR-010](./ADR-010-auto-approve-speaker-changes.md): new speaker submissions are automatically approved.
+Amended on 2026-10-05: the full slide library requires organizer login; social
+JPEGs and the promotion manifest require speaker or organizer login.
+
 **Status:** Implemented
 
 **Date:** 2026-08-26
@@ -63,7 +66,7 @@ proxying large uploads through the application Worker.
 
 **Positive:**
 
-- Speakers do not have to locate assets in the public slide library or decode
+- Speakers do not have to locate assets in the organizer slide library or decode
   slide-number-based filenames.
 - Stable manifest keys survive schedule reordering.
 - Video bytes bypass the Worker, avoiding Worker request-size and execution-time
@@ -88,8 +91,7 @@ proxying large uploads through the application Worker.
 ### Ask speakers to download assets from the public slide library
 
 Rejected as the primary workflow because it is organized around the full deck,
-not the authenticated speaker and their assigned talk. The public library may
-remain available as a secondary route.
+not the authenticated speaker and their assigned talk. The library is available to organizers as a secondary route.
 
 ### Upload videos through the application Worker into R2
 

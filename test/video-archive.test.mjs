@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { unzipSync } from "fflate";
-import { buildVideoArchive } from "../site/scripts/video-archive.ts";
+import {
+  buildVideoArchive,
+  checkVideoExportSession,
+} from "../site/scripts/video-archive.ts";
 import { parseVideoExportManifest } from "../site/scripts/video-export-contract.ts";
 
 const manifest = {
@@ -116,4 +119,27 @@ test("export manifests reject foreign paths, duplicate slides, and unsafe archiv
     edit(invalid);
     assert.throws(() => parseVideoExportManifest(invalid), /Invalid/u);
   }
+});
+
+test("expired sessions request sign-in before parsing HTML or comparing snapshot versions", async (t) => {
+  for (const status of [401, 403]) {
+    const response = new Response("Sign in", { status });
+    await assert.rejects(checkVideoExportSession(response), /Sign in again/u);
+    assert.equal(response.bodyUsed, true);
+  }
+  mockBrowser(t, async () => {
+    const response = new Response("<html>Sign in</html>");
+    Object.defineProperties(response, {
+      redirected: { value: true },
+      url: {
+        value:
+          "https://sdlcai.org/admin/login/?next=%2Fassets%2Fsocial%2Fvideo",
+      },
+    });
+    return response;
+  });
+  await assert.rejects(
+    buildVideoArchive(manifest, new AbortController().signal, () => {}),
+    /Sign in again/u,
+  );
 });
