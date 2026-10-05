@@ -68,6 +68,72 @@
       "starter": false
     },
     {
+      "id": "yoshimura-green",
+      "title": "GREEN",
+      "artist": "Hiroshi Yoshimura",
+      "seconds": 314,
+      "spotifyUrl": "https://open.spotify.com/track/7kMkCy1ieRxHbTVcne2eN5",
+      "youtubeMusicUrl": "https://music.youtube.com/watch?v=TO8kwMJuSvU",
+      "group": "ambient",
+      "note": "From GREEN (1986). Warm FM-synth patterns offer a relaxed backdrop for arrivals and coffee breaks.",
+      "starter": false
+    },
+    {
+      "id": "yoshimura-feel",
+      "title": "FEEL",
+      "artist": "Hiroshi Yoshimura",
+      "seconds": 267,
+      "spotifyUrl": "https://open.spotify.com/track/2PD0LlTSuho5bqqJvrROqm",
+      "youtubeMusicUrl": "https://music.youtube.com/watch?v=xOQjZ-PFE1o",
+      "group": "ambient",
+      "note": "From GREEN (1986). A gentle electronic melody adds a little movement while keeping the room calm.",
+      "starter": false
+    },
+    {
+      "id": "yoshimura-water-copy",
+      "title": "Water Copy",
+      "artist": "Hiroshi Yoshimura",
+      "seconds": 371,
+      "spotifyUrl": "https://open.spotify.com/track/48MPwRtt4PRuC0gUZgkI48",
+      "youtubeMusicUrl": "https://music.youtube.com/watch?v=ZtHnvtwozWw",
+      "group": "ambient",
+      "note": "From Music for Nine Post Cards (1982). Sparse, repeating keyboard motifs leave space for conversation.",
+      "starter": false
+    },
+    {
+      "id": "yoshimura-clouds",
+      "title": "Clouds",
+      "artist": "Hiroshi Yoshimura",
+      "seconds": 354,
+      "spotifyUrl": "https://open.spotify.com/track/0S9lwd7JF9878QQ6tuuIQg",
+      "youtubeMusicUrl": "https://music.youtube.com/watch?v=szuKWSgbZV4",
+      "group": "ambient",
+      "note": "From Music for Nine Post Cards (1982). Soft, unhurried keyboard tones suit a quiet pause between sessions.",
+      "starter": false
+    },
+    {
+      "id": "yoshimura-time-after-time",
+      "title": "Time after time",
+      "artist": "Hiroshi Yoshimura",
+      "seconds": 664,
+      "spotifyUrl": "https://open.spotify.com/track/3QLjojWFdM4wbvEqWDWKmh",
+      "youtubeMusicUrl": "https://music.youtube.com/watch?v=2z2nzne8fFQ",
+      "group": "ambient",
+      "note": "From Surround (1986). An eleven-minute environmental piece offers a continuous backdrop for a longer break.",
+      "starter": false
+    },
+    {
+      "id": "yoshimura-something-blue",
+      "title": "Something blue",
+      "artist": "Hiroshi Yoshimura",
+      "seconds": 345,
+      "spotifyUrl": "https://open.spotify.com/track/2TFFRyPHLMp9b5d6SPBHRG",
+      "youtubeMusicUrl": "https://music.youtube.com/watch?v=qgmpzBN7qvE",
+      "group": "ambient",
+      "note": "From Surround (1986), written for shared living spaces. Spacious electronic tones make a gentle option for mingling.",
+      "starter": false
+    },
+    {
       "id": "frahm-ambre",
       "title": "Ambre",
       "artist": "Nils Frahm",
