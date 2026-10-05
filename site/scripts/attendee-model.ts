@@ -1,5 +1,10 @@
 import * as v from "valibot";
-import { badgeCompany, importCsv, type CsvRecord } from "./badge-model.ts";
+import {
+  badgeCompany,
+  importCsv,
+  parseCsv,
+  type CsvRecord,
+} from "./badge-model.ts";
 
 const text = (max: number) => v.pipe(v.string(), v.maxLength(max));
 export const attendeeInputSchema = v.object({
@@ -9,6 +14,7 @@ export const attendeeInputSchema = v.object({
   ticketCode: text(100),
   status: v.picklist(["active", "cancelled"]),
   badge: v.boolean(),
+  diet: v.optional(text(2000)),
 });
 export type AttendeeInput = v.InferOutput<typeof attendeeInputSchema>;
 export interface AttendeeRecord extends AttendeeInput {
@@ -39,6 +45,7 @@ export function parseAttendeeInput(value: unknown): AttendeeInput {
   input.company = input.company.trim().normalize("NFC");
   input.email = input.email.trim().toLowerCase();
   input.ticketCode = input.ticketCode.trim();
+  if (input.diet !== undefined) input.diet = input.diet.trim().normalize("NFC");
   if (!input.name || (!input.ticketCode && !input.email))
     throw new Error(
       "Each attendee needs a name and a ticket code or attendee email.",
@@ -107,10 +114,12 @@ export function mergeAttendeeImport(
       (p) => p.source === source && p.sourceKey === sourceKey,
     );
     if (index >= 0) {
-      // Badge choices and arrival records survive a source refresh.
+      // Unmapped diets, badge choices, and arrival records survive a source refresh.
+      const { diet, ...details } = input;
       result[index] = {
         ...result[index]!,
-        ...input,
+        ...details,
+        ...(diet === undefined ? {} : { diet }),
         badge: result[index]!.badge,
       };
     } else
@@ -126,6 +135,159 @@ export interface AttendeeMapping {
   last: number;
   ticketCode: number;
   status: number;
+  diet?: number;
+}
+
+export const attendeeColumnAliases = {
+  name: ["name", "full name", "ticket full name", "nimi"],
+  company: [
+    "company",
+    "company name",
+    "ticket company name",
+    "organisaatio",
+    "yritys",
+  ],
+  email: [
+    "email",
+    "email address",
+    "ticket email",
+    "ticket email address",
+    "sähköposti",
+  ],
+  first: ["first name", "ticket first name", "etunimi"],
+  last: ["last name", "ticket last name", "sukunimi"],
+  ticketCode: [
+    "ticket code",
+    "ticket reference",
+    "reference",
+    "ticket id",
+    "ticket number",
+    "barcode",
+  ],
+  status: [
+    "status",
+    "ticket status",
+    "registration status",
+    "void status",
+    "tila",
+  ],
+  diet: [
+    "diet",
+    "dietary requirements",
+    "dietary restrictions",
+    "food restrictions",
+    "food allergies",
+    "allergies",
+    "special diet",
+    "ruokarajoitteet",
+    "ruokarajoitukset",
+    "erityisruokavalio",
+    "what kind of food restrictions do you have?",
+  ],
+} satisfies Record<keyof AttendeeMapping, string[]>;
+
+export function detectAttendeeMapping(
+  header: string[],
+): Required<AttendeeMapping> {
+  const mapping: Required<AttendeeMapping> = {
+    name: -1,
+    company: -1,
+    email: -1,
+    first: -1,
+    last: -1,
+    ticketCode: -1,
+    status: -1,
+    diet: -1,
+  };
+  for (const key of Object.keys(
+    attendeeColumnAliases,
+  ) as (keyof AttendeeMapping)[])
+    mapping[key] = header.reduce(
+      (found, label, index) =>
+        attendeeColumnAliases[key].includes(label.trim().toLowerCase())
+          ? index
+          : found,
+      -1,
+    );
+  return mapping;
+}
+
+/** Keep original line numbers while removing Webropol metadata and merging its two header rows. */
+export function prepareAttendeeCsv(
+  csv: string,
+  delimiter = "auto",
+): {
+  records: CsvRecord[];
+  delimiter: string;
+  ignoredRows: number;
+} {
+  const choices = delimiter === "auto" ? [",", ";", "\t"] : [delimiter];
+  let best:
+    | {
+        records: CsvRecord[];
+        delimiter: string;
+        ignoredRows: number;
+        score: number;
+      }
+    | undefined;
+  let failure: unknown;
+  for (const separator of choices) {
+    try {
+      const records = parseCsv(csv, separator, 2021);
+      const headerIndex = records.slice(0, 20).findIndex((record) => {
+        const mapping = detectAttendeeMapping(record.cells);
+        return mapping.name >= 0 || (mapping.first >= 0 && mapping.last >= 0);
+      });
+      const start = Math.max(0, headerIndex);
+      let header = records[start]!;
+      let next = start + 1;
+      const continuation = records[next];
+      const allAliases = new Set(Object.values(attendeeColumnAliases).flat());
+      if (
+        headerIndex >= 0 &&
+        continuation &&
+        continuation.cells.length === header.cells.length &&
+        continuation.cells.every(
+          (cell) =>
+            !cell.trim() ||
+            cell.trim() === "-" ||
+            allAliases.has(cell.trim().toLowerCase()),
+        ) &&
+        Object.values(detectAttendeeMapping(continuation.cells)).filter(
+          (index) => index >= 0,
+        ).length >= 2
+      ) {
+        header = {
+          row: continuation.row,
+          cells: header.cells.map((cell, index) => {
+            const extra = continuation.cells[index]?.trim();
+            return extra && extra !== "-" ? extra : cell;
+          }),
+        };
+        next++;
+      }
+      const recognized = Object.values(
+        detectAttendeeMapping(header.cells),
+      ).filter((index) => index >= 0).length;
+      const score = recognized * 1000 + header.cells.length;
+      if (!best || score > best.score)
+        best = {
+          records: [header, ...records.slice(next)],
+          delimiter: separator,
+          ignoredRows: next - 1,
+          score,
+        };
+    } catch (error) {
+      failure = error;
+    }
+  }
+  if (!best)
+    throw failure instanceof Error ? failure : new Error("Unable to read CSV.");
+  return {
+    records: best.records,
+    delimiter: best.delimiter,
+    ignoredRows: best.ignoredRows,
+  };
 }
 export function importAttendeeCsv(
   records: CsvRecord[],
@@ -134,10 +296,17 @@ export function importAttendeeCsv(
   const people = importCsv(records, mapping, "Registration");
   return people.map((person, index) => {
     const record = records[index + 1]!;
-    const rawStatus =
+    let rawStatus =
       mapping.status < 0
         ? "active"
         : (record.cells[mapping.status] ?? "").trim().toLowerCase();
+    if (
+      records[0]?.cells[mapping.status]?.trim().toLowerCase() === "void status"
+    ) {
+      if (["", "false", "no", "not void", "not voided"].includes(rawStatus))
+        rawStatus = "active";
+      else if (["true", "yes"].includes(rawStatus)) rawStatus = "voided";
+    }
     const active = [
       "active",
       "valid",
@@ -148,6 +317,9 @@ export function importAttendeeCsv(
       "issued",
       "registered",
       "assigned",
+      "ilmoittautunut",
+      "vahvistettu",
+      "maksettu",
     ];
     const cancelled = [
       "cancelled",
@@ -157,6 +329,8 @@ export function importAttendeeCsv(
       "refunded",
       "expired",
       "deleted",
+      "peruttu",
+      "peruutettu",
     ];
     if (!active.includes(rawStatus) && !cancelled.includes(rawStatus))
       throw new Error(
@@ -171,6 +345,9 @@ export function importAttendeeCsv(
             : (record.cells[mapping.ticketCode] ?? ""),
         status: cancelled.includes(rawStatus) ? "cancelled" : "active",
         badge: true,
+        ...(mapping.diet !== undefined && mapping.diet >= 0
+          ? { diet: record.cells[mapping.diet] ?? "" }
+          : {}),
       });
     } catch (error) {
       throw new Error(

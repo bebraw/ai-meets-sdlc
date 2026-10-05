@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { Miniflare } from "miniflare";
 import { backupAttendees } from "../worker/backups.ts";
-import { encryptText } from "../worker/form-utils.ts";
+import { decryptText, encryptText } from "../worker/form-utils.ts";
 
 test("attendee backups preserve encrypted roster and arrival history, omit credentials, and deduplicate snapshots", async (t) => {
   const mf = new Miniflare({
@@ -30,10 +30,11 @@ test("attendee backups preserve encrypted roster and arrival history, omit crede
     .map((s) => s.trim())
     .filter(Boolean))
     await db.prepare(sql).run();
-  const encrypted = await encryptText(
-    "Private contact details",
-    "attendee-backup-test-key",
-  );
+  const key = "attendee-backup-test-key";
+  const privateRoster = JSON.stringify([
+    { name: "Private contact details", diet: "Private allergy response" },
+  ]);
+  const encrypted = await encryptText(privateRoster, key);
   await db
     .prepare(
       "UPDATE attendee_roster SET ciphertext = ?, iv = ?, revision = 1 WHERE id = 1",
@@ -69,10 +70,18 @@ test("attendee backups preserve encrypted roster and arrival history, omit crede
   );
   const snapshot = await (await bucket.get(second.key)).json();
   assert.equal(snapshot.rows.roster[0].ciphertext, encrypted.ciphertext);
+  assert.equal(
+    await decryptText(
+      snapshot.rows.roster[0].ciphertext,
+      snapshot.rows.roster[0].iv,
+      key,
+    ),
+    privateRoster,
+  );
   assert.equal(snapshot.rows.arrivals[0].attendee_id, "attendee-id");
   assert.equal(snapshot.rows.history[0].action, "arrived");
   assert.doesNotMatch(
     JSON.stringify(snapshot),
-    /Private contact|Private staff label|private-token/,
+    /Private contact|Private allergy response|Private staff label|private-token/,
   );
 });

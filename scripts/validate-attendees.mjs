@@ -30,6 +30,9 @@ try {
   const staffContext = await browser.newContext({
     viewport: { width: 390, height: 844 },
   });
+  await adminContext.grantPermissions(["clipboard-read", "clipboard-write"], {
+    origin,
+  });
   const admin = await adminContext.newPage(),
     staff = await staffContext.newPage();
   const errors = [];
@@ -77,7 +80,7 @@ try {
     .waitFor();
   assert.equal(await admin.locator("[data-attendee-id]").count(), 0);
   const csv =
-    "Name,Email,Company,Reference,Status\nZoë Åström,zoe@example.test,Example Ltd,ABC-123,valid\n李 小明,li@example.test,,ABC-124,cancelled\nAlexandria Verylonglastname,alex@example.test,A Long Company Name,ABC-125,confirmed";
+    'Name;Email;Company;Reference;Status;Diet\nZoë Åström;zoe@example.test;Example Ltd;ABC-123;valid;"Vegan and gluten free\nplease"\n李 小明;li@example.test;;ABC-124;cancelled;Dairy free\nAlexandria Verylonglastname;alex@example.test;A Long Company Name;ABC-125;confirmed;Allergic to raw apple';
   await admin.getByLabel("CSV file (UTF-8, up to 2 MB)").setInputFiles({
     name: "tito.csv",
     mimeType: "text/csv",
@@ -93,6 +96,13 @@ try {
     await admin.getByLabel("Ticket code", { exact: true }).inputValue(),
     "3",
   );
+  assert.equal(
+    await admin
+      .getByLabel("Dietary requirements column", { exact: true })
+      .inputValue(),
+    "5",
+  );
+  await admin.getByText(/Detected semicolon delimiter/).waitFor();
   await admin
     .getByRole("button", { name: "Preview import", exact: true })
     .click();
@@ -108,6 +118,70 @@ try {
       { exact: true },
     )
     .waitFor();
+  const catering = admin.locator("[data-attendee-catering]");
+  const cateringCount = (label) =>
+    catering
+      .locator("dl")
+      .first()
+      .locator("div")
+      .filter({ has: admin.getByText(label, { exact: true }) })
+      .locator("dd")
+      .textContent();
+  assert.equal(await cateringCount("Active registrations"), "2");
+  assert.equal(await cateringCount("Requirements reported"), "2");
+  assert.equal(await catering.locator('[data-diet-review="true"]').count(), 1);
+  await catering
+    .getByRole("button", { name: "Copy catering summary", exact: true })
+    .click();
+  await catering
+    .getByText("Catering summary copied.", { exact: true })
+    .waitFor();
+  const copiedReport = await admin.evaluate(() =>
+    navigator.clipboard.readText(),
+  );
+  assert.match(copiedReport, /Active registrations: 2/);
+  assert.match(copiedReport, /1 x Vegan and gluten free\nplease/);
+  assert.match(copiedReport, /1 x Allergic to raw apple/);
+  assert.doesNotMatch(
+    copiedReport,
+    /Dairy free|zoe@example|Zoë Åström|ABC-123/,
+  );
+  await admin.evaluate(() =>
+    Object.defineProperty(navigator, "clipboard", {
+      value: undefined,
+      configurable: true,
+    }),
+  );
+  await catering
+    .getByRole("button", { name: "Copy catering summary", exact: true })
+    .click();
+  const copyFallback = catering.getByLabel(
+    "Catering summary (select and copy)",
+    { exact: true },
+  );
+  await copyFallback.waitFor({ state: "visible" });
+  assert.match(await copyFallback.inputValue(), /Active registrations: 2/);
+  await admin.evaluate(() => Reflect.deleteProperty(navigator, "clipboard"));
+  const downloadPromise = admin.waitForEvent("download");
+  await catering
+    .getByRole("button", { name: "Download catering summary", exact: true })
+    .click();
+  const reportDownload = await downloadPromise;
+  assert.equal(
+    reportDownload.suggestedFilename(),
+    "sdlcai-2026-attendee-catering-summary.txt",
+  );
+  assert.match(
+    await readFile(await reportDownload.path(), "utf8"),
+    /Allergic to raw apple/,
+  );
+  await catering
+    .getByRole("button", { name: "Copy catering summary", exact: true })
+    .click();
+  await catering
+    .getByText("Catering summary copied.", { exact: true })
+    .waitFor();
+  assert.equal(await copyFallback.isVisible(), false);
   const firstMatch = admin.locator("[data-attendee-id]").filter({
     has: admin.getByRole("heading", { name: "Zoë Åström", exact: true }),
   });
@@ -117,10 +191,21 @@ try {
   await first
     .getByRole("button", { name: "Edit attendee", exact: true })
     .click();
+  assert.equal(
+    await first
+      .getByLabel("Dietary requirements (original response)", { exact: true })
+      .inputValue(),
+    "Vegan and gluten free\nplease",
+  );
   await first
     .getByLabel("Company", { exact: true })
     .fill("First draft company");
   await admin.getByLabel("Find an attendee").fill("李");
+  assert.equal(
+    await cateringCount("Active registrations"),
+    "2",
+    "Catering counts must ignore list filters",
+  );
   assert.equal(await first.count(), 0);
   await admin.getByText(/1 unfinished edit is hidden/).waitFor();
   assert.equal(
@@ -175,6 +260,15 @@ try {
     .getByRole("button", { name: "Save attendee", exact: true })
     .click();
   await admin.getByText("Attendee saved.", { exact: true }).waitFor();
+  assert.equal(
+    (
+      await (
+        await adminContext.request.get(`${origin}/api/admin/attendees`)
+      ).json()
+    ).attendees.find((person) => person.email === "zoe@example.test").diet,
+    "Vegan and gluten free\nplease",
+    "Unrelated edits preserve multiline diet responses",
+  );
   assert.equal(
     await second.getByLabel("Company", { exact: true }).inputValue(),
     "Second draft company",
@@ -288,6 +382,13 @@ try {
   assert.equal(
     await staff.getByRole("button", { name: "Import registrations" }).count(),
     0,
+  );
+  assert.equal(await staff.locator("[data-attendee-catering]").count(), 0);
+  const deskData = await (
+    await staffContext.request.get(`${origin}/api/registration/attendees`)
+  ).json();
+  assert.ok(
+    deskData.attendees.every((person) => !Object.hasOwn(person, "diet")),
   );
   await staff.getByLabel("Search by", { exact: true }).selectOption("ticket");
   await staff.getByLabel("Find an attendee").fill("abc");
@@ -432,6 +533,14 @@ try {
     path: "/private/tmp/sdlcai-attendees-admin.png",
     fullPage: true,
   });
+  await catering.screenshot({
+    path: "/private/tmp/sdlcai-attendee-catering.png",
+  });
+  await admin.setViewportSize({ width: 390, height: 844 });
+  await catering.screenshot({
+    path: "/private/tmp/sdlcai-attendee-catering-mobile.png",
+  });
+  await admin.setViewportSize({ width: 1440, height: 1000 });
   await staff.setViewportSize({ width: 390, height: 844 });
   await staff.screenshot({
     path: "/private/tmp/sdlcai-registration-mobile.png",
@@ -514,9 +623,59 @@ try {
       { exact: true },
     )
     .waitFor();
+  const webropolCsv = [
+    ";Tapahtuman nimi;SDLCAI 2026;;;;;;;;;",
+    "#;Ilm.aika;Etunimi;Sukunimi;Sähköposti;Matkapuhelin;;Tila;-;;;",
+    "-;-;-;-;-;-;-;-;Etunimi;Sukunimi;Sähköposti;Ruokarajoitteet",
+    "1;;Booker;Name;booker@example.test;;;Ilmoittautunut;Actual;Webropol;actual@example.test;Laktoositon",
+  ].join("\n");
+  await admin.getByLabel("CSV file (UTF-8, up to 2 MB)").setInputFiles({
+    name: "webropol.csv",
+    mimeType: "text/csv",
+    buffer: Buffer.from(webropolCsv),
+  });
+  await admin
+    .getByText(
+      "CSV loaded. Review column mappings and preview before importing.",
+      { exact: true },
+    )
+    .waitFor();
+  assert.equal(
+    await admin.getByLabel("Registration source", { exact: true }).inputValue(),
+    "webropol",
+  );
+  assert.equal(
+    await admin
+      .getByLabel("Dietary requirements column", { exact: true })
+      .inputValue(),
+    "11",
+  );
+  assert.equal(
+    await admin.getByLabel("Attendee email", { exact: true }).inputValue(),
+    "10",
+  );
+  await admin
+    .getByRole("button", { name: "Preview import", exact: true })
+    .click();
+  await admin
+    .getByText("1 registrations · 0 cancelled", { exact: true })
+    .waitFor();
+  await admin
+    .getByRole("button", { name: "Import registrations", exact: true })
+    .click();
+  await admin
+    .getByText(
+      "1 registrations imported. Existing arrival records preserved.",
+      { exact: true },
+    )
+    .waitFor();
+  await admin
+    .getByRole("heading", { name: "Actual Webropol", exact: true })
+    .waitFor();
+  assert.equal(await cateringCount("Active registrations"), "3");
   assert.deepEqual(errors, []);
   console.log(
-    "Attendee browser check passed: load recovery, preserved edit drafts, concurrent corrections, CSV import, source refresh, scoped staff access, exact ticket lookup, arrivals, cancellation, undo, badge seeding, sign-out/reuse, revocation, mobile layout and accessibility.",
+    "Attendee browser check passed: Tito/Webropol diet imports, catering groups, copy/download, multiline diet edits, filter-independent totals, organizer-only diets, load recovery, preserved edit drafts, concurrent corrections, source refresh, scoped staff access, exact ticket lookup, arrivals, cancellation, undo, badge seeding, sign-out/reuse, revocation, mobile layout and accessibility.",
   );
 } finally {
   await browser?.close();

@@ -70,8 +70,10 @@ async function readList(
     role: actor.role,
     attendees: roster.people.map((person) => {
       const arrival = byId.get(person.id);
+      // Dietary responses belong to the organizer catering workflow, not desk access.
+      const { diet: _diet, ...registrationPerson } = person;
       return {
-        ...person,
+        ...(actor.role === "admin" ? person : registrationPerson),
         arrivedAt: arrival?.arrived_at ?? null,
         arrivedBy: arrival?.arrived_at ? arrival.actor : null,
         arrivalRevision: arrival?.revision ?? 0,

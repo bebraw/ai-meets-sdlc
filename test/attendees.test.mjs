@@ -5,6 +5,9 @@ import { redeemRegistrationGrant } from "../worker/registration-auth.ts";
 import {
   importAttendeeCsv,
   mergeAttendeeImport,
+  detectAttendeeMapping,
+  parseAttendeeRoster,
+  prepareAttendeeCsv,
 } from "../site/scripts/attendee-model.ts";
 
 const mapping = {
@@ -64,6 +67,89 @@ test("attendee imports retain Unicode, reject unknown status and require individ
         mapping,
       ),
     /expected 4 columns/,
+  );
+});
+
+test("Tito semicolon exports detect the final diet column and interpret blank Void Status as active", () => {
+  const prepared = prepareAttendeeCsv(
+    '\uFEFFTicket Full Name;Ticket Email;Ticket Reference;Void Status;What kind of food restrictions do you have?\r\nZoë Åström;zoe@example.test;ABC-123;;"Vegan and gluten free\nplease"\r\nLee;lee@example.test;ABC-124;true;None',
+  );
+  assert.equal(prepared.delimiter, ";");
+  assert.equal(prepared.ignoredRows, 0);
+  const detected = detectAttendeeMapping(prepared.records[0].cells);
+  assert.equal(detected.diet, 4);
+  const rows = importAttendeeCsv(prepared.records, detected);
+  assert.equal(rows[0].status, "active");
+  assert.equal(rows[0].diet, "Vegan and gluten free\nplease");
+  assert.equal(rows[1].status, "cancelled");
+  assert.equal(prepared.records[2].row, 4);
+});
+
+test("Webropol metadata and split headers use the attendee identity and original CSV line numbers", () => {
+  const csv = [
+    ";Tapahtuman nimi;SDLCAI 2026;;;;;;;;;",
+    ";Paikka;Marsio;;;;;;;;;",
+    "#;Ilm.aika;Etunimi;Sukunimi;Sähköposti;Matkapuhelin;;Tila;-;;;",
+    "-;-;-;-;-;-;-;-;Etunimi;Sukunimi;Sähköposti;Ruokarajoitteet",
+    "1;;Booker;Surname;booker@example.test;;;Ilmoittautunut;Actual;Attendee;actual@example.test;Laktoositon",
+    "2;;Booker;Surname;booker@example.test;;;Peruutettu;Other;Attendee;other@example.test;Ei sianlihaa",
+  ].join("\n");
+  const prepared = prepareAttendeeCsv(csv);
+  assert.equal(prepared.delimiter, ";");
+  assert.equal(prepared.ignoredRows, 3);
+  const detected = detectAttendeeMapping(prepared.records[0].cells);
+  assert.equal(detected.first, 8);
+  assert.equal(detected.last, 9);
+  assert.equal(detected.email, 10);
+  assert.equal(detected.diet, 11);
+  assert.equal(detected.status, 7);
+  const rows = importAttendeeCsv(prepared.records, detected);
+  assert.equal(rows[0].name, "Actual Attendee");
+  assert.equal(rows[0].email, "actual@example.test");
+  assert.equal(rows[0].diet, "Laktoositon");
+  assert.equal(rows[1].status, "cancelled");
+  assert.equal(prepared.records[1].row, 5);
+  assert.throws(
+    () =>
+      importAttendeeCsv(
+        prepared.records.map((row, index) =>
+          index === 1
+            ? {
+                ...row,
+                cells: [
+                  ...row.cells.slice(0, 7),
+                  "Unknown",
+                  ...row.cells.slice(8),
+                ],
+              }
+            : row,
+        ),
+        detected,
+      ),
+    /Row 5: unknown ticket status/,
+  );
+});
+
+test("unmapped refreshes preserve diets, mapped blanks clear them, and legacy rosters remain readable", () => {
+  const csv = prepareAttendeeCsv(
+    "Name,Email,Reference,Status,Diet\nPerson,p@example.test,CODE,valid,vegan",
+  );
+  const detected = detectAttendeeMapping(csv.records[0].cells);
+  const mapped = importAttendeeCsv(csv.records, detected);
+  const roster = mergeAttendeeImport([], "tito", mapped);
+  const unmapped = importAttendeeCsv(csv.records, { ...detected, diet: -1 });
+  assert.equal(Object.hasOwn(unmapped[0], "diet"), false);
+  assert.equal(mergeAttendeeImport(roster, "tito", unmapped)[0].diet, "vegan");
+  assert.equal(
+    mergeAttendeeImport(roster, "tito", [{ ...mapped[0], diet: "" }])[0].diet,
+    "",
+  );
+  const { diet, ...legacy } = roster[0];
+  assert.equal(parseAttendeeRoster([legacy])[0].diet, undefined);
+  assert.throws(() =>
+    mergeAttendeeImport(roster, "tito", [
+      { ...mapped[0], diet: "x".repeat(2001) },
+    ]),
   );
 });
 test("source refresh preserves identities and badge decisions and does not remove omitted registrations", () => {

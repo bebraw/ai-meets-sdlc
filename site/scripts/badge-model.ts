@@ -78,7 +78,11 @@ export interface CsvRecord {
   row: number;
   cells: string[];
 }
-export function parseCsv(input: string, delimiter: string): CsvRecord[] {
+export function parseCsv(
+  input: string,
+  delimiter: string,
+  maxRecords = 2001,
+): CsvRecord[] {
   if (![",", ";", "\t"].includes(delimiter))
     throw new Error("Choose a CSV delimiter.");
   const source = input.replace(/^\uFEFF/u, "").replace(/\r\n?/gu, "\n");
@@ -125,7 +129,8 @@ export function parseCsv(input: string, delimiter: string): CsvRecord[] {
   if (quoted) throw new Error(`Unclosed quote starting on line ${start}.`);
   if (cell || cells.length || closed) finish();
   if (!records.length) throw new Error("CSV is empty.");
-  if (records.length > 2001) throw new Error("Import at most 2,000 rows.");
+  if (records.length > maxRecords)
+    throw new Error("Import at most 2,000 rows.");
   return records;
 }
 export function importCsv(

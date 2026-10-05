@@ -22,6 +22,24 @@ identities and unknown mapped ticket statuses. Organizers can correct details,
 cancel registrations and select badge inclusion. Identity corrections update the
 source key while preserving record IDs; subsequent imports use the corrected key.
 
+Capture an optional original dietary response in the encrypted roster. Detect
+comma, semicolon and tab exports, Tito's food-restriction question and blank
+active Void Status, and Webropol's metadata, two header rows and Finnish status
+labels. Prefer attendee fields over repeated registrant fields. An unmapped
+diet column preserves existing responses on refresh; a mapped blank replaces
+the earlier response. Existing rosters without diets remain readable.
+
+The organizer attendee page groups active registrations for catering, keeping
+combined requirements together and original wording available. Classify common
+English and Finnish diet labels; flag specific allergy details, unrecognized
+wording and alternatives for review. Distinguish missing answers from explicit
+no restrictions. Category counts overlap; combined groups count each response
+once. Copy or download a text summary containing counts and original responses
+without attaching attendee identities. The full roster determines totals,
+regardless of filters or arrivals. Cancelled registrations are excluded; speakers,
+volunteers and guests outside the attendee roster need a separate headcount.
+Diet responses are omitted from registration staff API responses.
+
 Keep arrivals outside the encrypted roster, indexed by random attendee ID.
 Writes compare the arrival revision and the roster revision displayed to staff,
 verify current staff
@@ -110,3 +128,10 @@ badge snapshots, retirement/restore, full-capacity combined lists, stale ticket
 confirmations and source corrections invalidating print adjustments. Browser
 coverage rejects malformed UTF-8 CSV uploads instead of accepting replacement
 characters.
+Diet checks cover both export layouts, Unicode and multiline responses, combined
+requirements, review flags, missing versus explicit no restrictions, cancelled
+exclusions, unmapped refreshes and legacy compatibility. Worker checks verify
+encrypted storage, organizer-only responses and backup preservation. Browser
+checks exercise automatic mapping, filtering-independent catering totals,
+multiline diet editing, summary copy (including clipboard fallback), text download
+and mobile accessibility.

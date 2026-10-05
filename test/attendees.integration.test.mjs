@@ -39,6 +39,7 @@ test("encrypted attendees support scoped staff links, concurrent arrivals, sourc
     ticketCode: "SECRET-123",
     status: "active",
     badge: true,
+    diet: "Allergic to raw apple; vegan and gluten free",
   };
   assert.equal((await send(rosterPath, "GET", undefined, {})).status, 401);
   assert.equal(
@@ -80,6 +81,14 @@ test("encrypted attendees support scoped staff links, concurrent arrivals, sourc
   let list = await getList();
   const person = list.attendees[0];
   assert.equal(person.arrivalRevision, 0);
+  assert.equal(person.diet, input.diet);
+  const overlongDiet = await send(rosterPath, "POST", {
+    source: "tito",
+    revision: list.revision,
+    attendees: [{ ...input, diet: "x".repeat(2001) }],
+  });
+  assert.equal(overlongDiet.status, 400);
+  assert.equal((await getList()).revision, list.revision);
   const badImport = await send(rosterPath, "POST", {
     source: "tito",
     revision: list.revision,
@@ -99,7 +108,7 @@ test("encrypted attendees support scoped staff links, concurrent arrivals, sourc
   );
   assert.doesNotMatch(
     JSON.stringify(raw),
-    /Private Zoë|private@example|SECRET-123|Private Company/,
+    /Private Zoë|private@example|SECRET-123|Private Company|Allergic to raw apple/,
   );
   assert.doesNotMatch(
     JSON.stringify(await runSql("SELECT * FROM registration_access_grants")),
@@ -130,6 +139,11 @@ test("encrypted attendees support scoped staff links, concurrent arrivals, sourc
     (await send(rosterPath, "GET", undefined, credentials[0])).status,
     401,
   );
+  const deskList = await (
+    await send("/api/registration/attendees", "GET", undefined, credentials[0])
+  ).json();
+  assert.equal(Object.hasOwn(deskList.attendees[0], "diet"), false);
+  assert.doesNotMatch(JSON.stringify(deskList), /Allergic to raw apple/);
   assert.equal(
     (
       await send(
@@ -205,6 +219,7 @@ test("encrypted attendees support scoped staff links, concurrent arrivals, sourc
   assert.equal(list.attendees[0].id, person.id);
   assert.equal(list.attendees[0].arrivedAt, arrivedAt);
   assert.equal(list.attendees[0].name, "Corrected name");
+  assert.equal(list.attendees[0].diet, input.diet);
   assert.equal(
     (
       await send(arrivalsPath, "POST", {
@@ -231,10 +246,15 @@ test("encrypted attendees support scoped staff links, concurrent arrivals, sourc
       await send(rosterPath, "PUT", {
         revision: list.revision,
         id: person.id,
-        attendee: input,
+        attendee: (({ diet, ...legacy }) => legacy)(input),
       })
     ).status,
     200,
+  );
+  assert.equal(
+    (await getList()).attendees[0].diet,
+    input.diet,
+    "Editing from an older client must preserve dietary responses",
   );
   assert.equal(
     (

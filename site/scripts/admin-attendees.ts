@@ -7,16 +7,20 @@ import {
   field,
   message,
 } from "./admin-toolkit.ts";
-import { parseCsv, type CsvRecord } from "./badge-model.ts";
+import type { CsvRecord } from "./badge-model.ts";
 import {
+  attendeeColumnAliases,
+  detectAttendeeMapping,
   importAttendeeCsv,
   mergeAttendeeImport,
+  prepareAttendeeCsv,
   type Attendee,
   type AttendeeInput,
   type AttendeeList,
   type AttendeeMapping,
   type RegistrationGrant,
 } from "./attendee-model.ts";
+import { createAttendeeCateringPanel } from "./attendee-catering.ts";
 
 const action = "manage-attendees";
 async function api<T>(
@@ -123,6 +127,7 @@ function setupList(root: HTMLElement) {
     { form: HTMLFormElement; revision: number; original: string }
   >();
   let signOut: HTMLButtonElement | undefined;
+  const catering = admin ? createAttendeeCateringPanel() : undefined;
   const status = el(
     "p",
     "Loading registrations…",
@@ -193,6 +198,7 @@ function setupList(root: HTMLElement) {
     const panels = el("div", "", "my-8 grid gap-6 lg:grid-cols-2");
     append(panels, importPanel(), accessPanel());
     append(root, panels);
+    if (catering) append(root, catering.panel);
   }
   append(root, counts, filters, results, list);
   for (const input of [search.input, lookup.input, state.input])
@@ -211,11 +217,12 @@ function setupList(root: HTMLElement) {
     }
   }
   function lock(value: boolean) {
-    root.querySelectorAll("input,button,select").forEach((input) => {
+    root.querySelectorAll("input,button,select,textarea").forEach((input) => {
       if (
         input instanceof HTMLInputElement ||
         input instanceof HTMLButtonElement ||
-        input instanceof HTMLSelectElement
+        input instanceof HTMLSelectElement ||
+        input instanceof HTMLTextAreaElement
       )
         input.disabled = value || !loaded;
     });
@@ -232,6 +239,7 @@ function setupList(root: HTMLElement) {
       person.ticketCode,
       person.status,
       person.badge,
+      person.diet,
     ]);
   }
   async function load() {
@@ -249,6 +257,7 @@ function setupList(root: HTMLElement) {
     if (changed) render();
   }
   function render() {
+    catering?.render(data.attendees);
     counts.textContent = `${data.attendees.filter((p) => p.arrivedAt).length} arrived / ${data.attendees.filter((p) => p.status === "active").length} active · ${data.attendees.length} total`;
     const term = search.input.value.trim().toLowerCase();
     const visible = data.attendees.filter((p) => {
@@ -306,6 +315,15 @@ function setupList(root: HTMLElement) {
           "mt-2 text-sm font-bold",
         ),
       );
+      if (admin)
+        append(
+          details,
+          el(
+            "p",
+            `Diet: ${person.diet || "No answer / not imported"}`,
+            "mt-2 whitespace-pre-wrap text-sm leading-6",
+          ),
+        );
       const attendance = person.arrivedAt
         ? `Arrived ${new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Helsinki", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }).format(new Date(person.arrivedAt))} · ${person.arrivedBy ?? "Staff"}`
         : "Not arrived";
@@ -390,16 +408,36 @@ function setupList(root: HTMLElement) {
       revision: data.revision,
       original: editSource(person),
     };
+    const dietLabel = el("label", "", "grid gap-2 text-sm font-bold");
+    const dietInput = el(
+      "textarea",
+      "",
+      "w-full border border-ink bg-paper p-3 font-normal leading-6",
+    );
+    dietInput.value = person.diet ?? "";
+    dietInput.rows = 3;
+    append(
+      dietLabel,
+      el("span", "Dietary requirements (original response)"),
+      dietInput,
+    );
     const fields = {
       name: field("Name", person.name),
       company: field("Company", person.company),
       email: field("Attendee email", person.email, "email"),
       ticketCode: field("Ticket code", person.ticketCode),
+      diet: { label: dietLabel, input: dietInput },
     };
     fields.name.input.required = true;
     for (const [key, value] of Object.entries(fields)) {
       value.input.maxLength =
-        key === "email" ? 254 : key === "ticketCode" ? 100 : 300;
+        key === "diet"
+          ? 2000
+          : key === "email"
+            ? 254
+            : key === "ticketCode"
+              ? 100
+              : 300;
       append(form, value.label);
     }
     const ticketState = selectField("Ticket status", [
@@ -438,6 +476,7 @@ function setupList(root: HTMLElement) {
             ticketCode: fields.ticketCode.input.value,
             status: ticketState.input.value,
             badge: badge.input.checked,
+            diet: fields.diet.input.value,
           },
         });
         drafts.delete(person.id);
@@ -458,7 +497,7 @@ function setupList(root: HTMLElement) {
       el("h2", "01 / Import attendees", "font-headline text-2xl uppercase"),
       el(
         "p",
-        "Import Tito and Webropol separately. Map the attendee email and individual ticket code. Refreshes preserve arrivals and badge choices; missing rows stay in the list.",
+        "Import Tito and Webropol separately. Map the attendee email, individual ticket code, and dietary response. Refreshes preserve arrivals and badge choices; missing rows stay in the list. An unmapped diet column keeps earlier dietary responses.",
         "text-sm leading-6",
       ),
     );
@@ -469,43 +508,17 @@ function setupList(root: HTMLElement) {
       ["Webropol", "webropol"],
     ]);
     const delimiter = selectField("Delimiter", [
+      ["Detect automatically", "auto"],
       ["Comma", ","],
       ["Semicolon", ";"],
       ["Tab", "\t"],
     ]);
     const mappingRoot = el("div", "", "grid gap-3 sm:grid-cols-2");
     const preview = el("div", "", "grid gap-2 text-sm break-words");
+    const formatNote = el("p", "", "text-sm leading-6 text-muted");
     const columns = new Map<keyof AttendeeMapping, HTMLSelectElement>();
     let csv = "";
     let records: CsvRecord[] = [];
-    const aliases: Record<keyof AttendeeMapping, string[]> = {
-      name: ["name", "full name", "ticket full name", "nimi"],
-      company: [
-        "company",
-        "company name",
-        "ticket company name",
-        "organisaatio",
-        "yritys",
-      ],
-      email: [
-        "email",
-        "email address",
-        "ticket email",
-        "ticket email address",
-        "sähköposti",
-      ],
-      first: ["first name", "ticket first name", "etunimi"],
-      last: ["last name", "ticket last name", "sukunimi"],
-      ticketCode: [
-        "ticket code",
-        "ticket reference",
-        "reference",
-        "ticket id",
-        "ticket number",
-        "barcode",
-      ],
-      status: ["status", "ticket status", "registration status"],
-    };
     const labels: Record<keyof AttendeeMapping, string> = {
       name: "Full name",
       company: "Company",
@@ -514,15 +527,22 @@ function setupList(root: HTMLElement) {
       last: "Last name",
       ticketCode: "Ticket code",
       status: "Ticket status",
+      diet: "Dietary requirements column",
     };
     function parseFile() {
       records = [];
       columns.clear();
       mappingRoot.replaceChildren();
       preview.replaceChildren();
+      formatNote.textContent = "";
       if (!csv) return;
-      records = parseCsv(csv, delimiter.input.value);
-      for (const key of Object.keys(aliases) as (keyof AttendeeMapping)[]) {
+      const prepared = prepareAttendeeCsv(csv, delimiter.input.value);
+      records = prepared.records;
+      const detected = detectAttendeeMapping(records[0]!.cells);
+      formatNote.textContent = `Detected ${prepared.delimiter === ";" ? "semicolon" : prepared.delimiter === "\t" ? "tab" : "comma"} delimiter.${prepared.ignoredRows ? ` Skipped ${prepared.ignoredRows} introductory/header rows; column labels use CSV line ${records[0]!.row}.` : ""} Review the detected columns below.`;
+      for (const key of Object.keys(
+        attendeeColumnAliases,
+      ) as (keyof AttendeeMapping)[]) {
         const select = selectField(labels[key], [
           [
             key === "status"
@@ -535,11 +555,7 @@ function setupList(root: HTMLElement) {
             String(i),
           ]),
         ]);
-        select.input.value = String(
-          records[0]!.cells.findIndex((label) =>
-            aliases[key].includes(label.trim().toLowerCase()),
-          ),
-        );
+        select.input.value = String(detected[key]);
         columns.set(key, select.input);
         append(mappingRoot, select.label);
       }
@@ -553,6 +569,7 @@ function setupList(root: HTMLElement) {
         last: -1,
         ticketCode: -1,
         status: -1,
+        diet: -1,
       };
       for (const [key, input] of columns) mapping[key] = Number(input.value);
       const imported = importAttendeeCsv(records, mapping);
@@ -571,6 +588,8 @@ function setupList(root: HTMLElement) {
           parseFile();
           const selected = file.input.files?.[0];
           if (!selected) return;
+          if (/webropol/iu.test(selected.name)) source.input.value = "webropol";
+          else if (/tito/iu.test(selected.name)) source.input.value = "tito";
           if (selected.size > 2 * 1024 * 1024)
             throw new Error("CSV must be under 2 MB.");
           try {
@@ -609,7 +628,7 @@ function setupList(root: HTMLElement) {
             preview,
             el(
               "p",
-              `${person.name} · ${person.email} · ${person.ticketCode || "No ticket code"} · ${person.status}`,
+              `${person.name} · ${person.email} · ${person.ticketCode || "No ticket code"} · ${person.status} · Diet: ${person.diet ?? "Not mapped"}`,
             ),
           );
       } catch (error) {
@@ -635,6 +654,7 @@ function setupList(root: HTMLElement) {
       file.label,
       source.label,
       delimiter.label,
+      formatNote,
       mappingRoot,
       el(
         "p",
