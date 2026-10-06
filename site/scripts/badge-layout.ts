@@ -97,6 +97,28 @@ export function renderBadge(
   font: BadgeFont,
   preview = true,
 ): { svg: SVGSVGElement; issues: string[] } {
+  return renderBadgeArtwork(person, settings, font, preview, false);
+}
+export function renderSpareAttendeeBadge(
+  settings: BadgeSettings,
+  font: BadgeFont,
+  preview = true,
+): { svg: SVGSVGElement; issues: string[] } {
+  return renderBadgeArtwork(
+    { name: "", company: "", role: "attendee" },
+    settings,
+    font,
+    preview,
+    true,
+  );
+}
+function renderBadgeArtwork(
+  person: Pick<BadgePerson, "name" | "company" | "role">,
+  settings: BadgeSettings,
+  font: BadgeFont,
+  preview: boolean,
+  spare: boolean,
+): { svg: SVGSVGElement; issues: string[] } {
   const d = settings.diameter,
     b = settings.bleed,
     r = d / 2 - settings.safe;
@@ -116,7 +138,9 @@ export function renderBadge(
     width: `${page}mm`,
     height: `${page}mm`,
     role: "img",
-    "aria-label": `${person.role} badge for ${person.name}`,
+    "aria-label": spare
+      ? "Spare attendee badge"
+      : `${person.role} badge for ${person.name}`,
   });
   append(root, svg("rect", { width: page, height: page, fill: background }));
   const content = svg("g", { transform: `translate(${b} ${b})`, fill: color });
@@ -125,7 +149,7 @@ export function renderBadge(
     `${person.name} ${person.company} ${person.role.toUpperCase()}`.normalize(
       "NFC",
     );
-  if (!person.name.trim()) issues.push("Name is required.");
+  if (!spare && !person.name.trim()) issues.push("Name is required.");
   if (
     /[\u0000-\u0009\u000b-\u001f\u007f\u202a-\u202e\u2066-\u2069]/u.test(text)
   )

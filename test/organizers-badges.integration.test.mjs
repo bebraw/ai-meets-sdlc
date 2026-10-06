@@ -145,6 +145,7 @@ test("organizers seed the homepage while badge selection stays private; badges l
     revision: 0,
     preferences: {
       settings: defaultSettings,
+      spareAttendeeBadges: 13,
       retiredLegacyIds: [],
       overrides: [
         {

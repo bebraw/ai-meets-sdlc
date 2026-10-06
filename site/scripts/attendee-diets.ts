@@ -54,10 +54,14 @@ const patterns: Partial<Record<DietCategory, RegExp>> = {
 
 export function classifyDiet(raw: string | undefined): DietClassification {
   const text = normalize(raw ?? "");
-  if (!text || /^(?:[-.]+|n\/?a|not provided|not specified)$/u.test(text))
+  if (
+    !text ||
+    /^(?:[-.]+|n\/?a|not provided|not specified)$/u.test(text) ||
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/u.test(text)
+  )
     return { response: "missing", categories: [], needsReview: false };
   if (
-    /^(?:none|no|ei|no (?:food |dietary )?restrictions|no allergies|ei (?:ruokarajoitteita|rajoitteita|erityisruokavaliota|allergioita))[.!]?$/u.test(
+    /^(?:none|no|ei|no (?:food |dietary )?restrictions|no allergies|ei (?:ruokarajoitteita|rajoitteita|erityisruokavaliota|allergioita)(?: ollenkaan)?)[.!]?$/u.test(
       text,
     )
   )
@@ -68,14 +72,17 @@ export function classifyDiet(raw: string | undefined): DietClassification {
   const negated =
     /\b(?:not|non|no)[ -]+(?:vegan|vegetarian|pescatarian|halal)\b/gu;
   const matchable = text.replace(negated, "");
-  let remainder = matchable;
+  const recognized = new Array<boolean>(matchable.length).fill(false);
   for (const { id } of dietCategories) {
     const pattern = patterns[id];
     if (!pattern) continue;
-    // Match the original response so overlapping phrases retain both requirements.
-    if (new RegExp(pattern.source, "u").test(matchable)) {
+    // Match the original response so overlapping phrases retain both requirements
+    // without leaving fragments of a recognized phrase for manual review.
+    const matches = [...matchable.matchAll(new RegExp(pattern.source, "gu"))];
+    if (matches.length) {
       categories.push(id);
-      remainder = remainder.replace(pattern, " ");
+      for (const match of matches)
+        recognized.fill(true, match.index, match.index + match[0].length);
     }
   }
   if (
@@ -83,10 +90,15 @@ export function classifyDiet(raw: string | undefined): DietClassification {
     !/\b(?:no allergies|ei allergioita)\b/u.test(text)
   )
     categories.push("allergy");
-  const alternative = /\b(?:or|tai|if|prefers?|preferably)\b|\//u.test(text);
+  const alternative = /\b(?:or|tai|if|prefers?|preferably)\b|\//u.test(
+    text.replace(/\bno fish or seafood\b/gu, " "),
+  );
   if (categories.includes("vegan") && categories.includes("vegetarian"))
     categories.splice(categories.indexOf("vegetarian"), 1);
-  remainder = remainder
+  const remainder = matchable
+    .split("")
+    .map((char, index) => (recognized[index] ? " " : char))
+    .join("")
     .replace(/\b(?:and|ja|please|ruokavalio|diet|that's all)\b/gu, " ")
     .replace(/[\s.,;:+&()/-]/gu, "");
   return {

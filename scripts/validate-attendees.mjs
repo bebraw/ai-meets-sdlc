@@ -827,6 +827,15 @@ try {
     .getByText("1 registrations · 0 cancelled", { exact: true })
     .waitFor();
   await admin.getByText(skippedTicketNote, { exact: true }).waitFor();
+  assert.equal(
+    await admin
+      .getByRole("link", {
+        name: "Prepare 1 spare attendee badge →",
+        exact: true,
+      })
+      .getAttribute("href"),
+    "/admin/badges/?spares=1",
+  );
   await admin
     .getByRole("button", { name: "Import registrations", exact: true })
     .click();

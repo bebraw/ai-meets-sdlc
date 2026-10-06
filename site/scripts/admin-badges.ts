@@ -13,10 +13,17 @@ import {
   applyPrintPreferences,
   parsePrintPreferences,
   isLegacyBadgeId,
+  maxSpareAttendeeBadges,
+  requestedSpareAttendeeBadges,
   type PrintPreferences,
   type BadgeStudioData,
 } from "./badge-studio-model.ts";
-import { loadBadgeFont, renderBadge, type BadgeFont } from "./badge-layout.ts";
+import {
+  loadBadgeFont,
+  renderBadge,
+  renderSpareAttendeeBadge,
+  type BadgeFont,
+} from "./badge-layout.ts";
 const root = document.querySelector<HTMLElement>("[data-admin-badges]");
 if (root) setup(root);
 function setup(root: HTMLElement): void {
@@ -29,6 +36,10 @@ function setup(root: HTMLElement): void {
   let dirty = false;
   let busy = false;
   let selected = "";
+  let previewingSpare = false;
+  let spareAttendeeBadges = 0;
+  const requestedSpares = requestedSpareAttendeeBadges(location.search);
+  let requestedSparesApplied = false;
   let font: BadgeFont | undefined;
   const layoutIssues = new Map<string, string[]>();
   let sourcePeople: BadgePerson[] = [];
@@ -137,30 +148,52 @@ function setup(root: HTMLElement): void {
   }
   function updateProofNavigation() {
     const index = workspace.people.findIndex((p) => p.id === selected);
-    proofPosition.textContent = workspace.people.length
-      ? `${Math.max(0, index) + 1} / ${workspace.people.length}`
-      : "0 / 0";
+    proofPosition.textContent = previewingSpare
+      ? "Spare attendee badge"
+      : workspace.people.length
+        ? `${Math.max(0, index) + 1} / ${workspace.people.length}`
+        : "0 / 0";
     previousProof.disabled = nextProof.disabled =
-      busy || workspace.people.length < 2;
+      busy ||
+      !workspace.people.length ||
+      (!previewingSpare && workspace.people.length < 2);
   }
   function moveProof(step: number) {
-    if (busy || workspace.people.length < 2) return;
-    const index = Math.max(
-      0,
-      workspace.people.findIndex((p) => p.id === selected),
-    );
+    if (
+      busy ||
+      !workspace.people.length ||
+      (!previewingSpare && workspace.people.length < 2)
+    )
+      return;
+    const index = previewingSpare
+      ? step > 0
+        ? -1
+        : 0
+      : Math.max(
+          0,
+          workspace.people.findIndex((p) => p.id === selected),
+        );
     selected =
       workspace.people[
         (index + step + workspace.people.length) % workspace.people.length
       ]!.id;
     showPreview();
   }
-  function showPreview() {
+  function showPreview(spare = false) {
+    previewingSpare = spare;
     const person =
       workspace.people.find((p) => p.id === selected) ?? workspace.people[0];
     preview.replaceChildren();
     selected = person?.id ?? "";
     updateProofNavigation();
+    if (spare && font) {
+      const result = renderSpareAttendeeBadge(workspace.settings, font);
+      append(preview, result.svg);
+      previewStatus.textContent = result.issues.length
+        ? result.issues.join(" ")
+        : "Spare attendee badge: blank name and company areas for writing at the desk.";
+      return;
+    }
     if (!person || !font) {
       previewStatus.textContent = "Select a person to inspect their badge.";
       return;
@@ -174,7 +207,7 @@ function setup(root: HTMLElement): void {
   function renderList() {
     const duplicate = duplicateIds(workspace.people);
     const term = filter.input.value.toLocaleLowerCase();
-    count.textContent = `${workspace.people.filter((p) => p.included).length} included / ${workspace.people.length} total · ${duplicate.size} unresolved duplicate rows`;
+    count.textContent = `${workspace.people.filter((p) => p.included).length} included / ${workspace.people.length} total · ${spareAttendeeBadges} spare attendee badges · ${duplicate.size} unresolved duplicate rows`;
     const visible = workspace.people.filter((p) =>
       `${p.name} ${p.email} ${p.source} ${p.role}`
         .toLocaleLowerCase()
@@ -329,7 +362,7 @@ function setup(root: HTMLElement): void {
         }
         workspace.settings[key] = Number(f.input.value);
         invalidate();
-        showPreview();
+        showPreview(previewingSpare);
       });
       append(fields, f.label);
     }
@@ -343,7 +376,7 @@ function setup(root: HTMLElement): void {
       f.input.addEventListener("change", () => {
         workspace.settings[key] = f.input.checked;
         invalidate();
-        showPreview();
+        showPreview(previewingSpare);
       });
       append(fields, f.label);
     }
@@ -401,10 +434,39 @@ function setup(root: HTMLElement): void {
   }
   const legacyNotice = el("div", "", "grid gap-3 text-sm");
   append(sources, links, legacyNotice);
+  const spares = el("section", "", "grid gap-3 border border-ink p-5");
+  const spareCount = field("Spare attendee badges", "0", "number");
+  spareCount.input.min = "0";
+  spareCount.input.max = String(maxSpareAttendeeBadges);
+  spareCount.input.step = "1";
+  spareCount.input.required = true;
+  spareCount.input.addEventListener("change", () => {
+    if (!spareCount.input.checkValidity() || !spareCount.input.value) {
+      spareCount.input.reportValidity();
+      spareCount.input.value = String(spareAttendeeBadges);
+      return;
+    }
+    spareAttendeeBadges = Number(spareCount.input.value);
+    invalidate();
+    renderList();
+    showPreview(true);
+  });
+  append(
+    spares,
+    el("h2", "Spare attendee badges", "font-headline text-2xl uppercase"),
+    el(
+      "p",
+      "Blank name and company areas for unassigned Tito tickets and walk-ins. Choose a total that covers those tickets plus any extras. Spares are included in attendee and full print runs, and can also be printed on their own. Save print settings to keep the count for reprints.",
+      "text-sm leading-6",
+    ),
+    spareCount.label,
+    button("Preview spare badge", () => showPreview(true)),
+  );
   function preferences(): PrintPreferences {
     const originals = new Map(sourcePeople.map((p) => [p.id, p]));
     return parsePrintPreferences({
       settings: workspace.settings,
+      spareAttendeeBadges,
       retiredLegacyIds,
       overrides: workspace.people
         .filter((p) => {
@@ -441,20 +503,32 @@ function setup(root: HTMLElement): void {
       "People changed since this preview. Review the updated badges, then check or print again.";
     return false;
   }
-  async function check(role: BadgeRole | "all", print: boolean) {
+  async function check(role: BadgeRole | "all" | "spares", print: boolean) {
     printRoot.removeAttribute("data-ready");
     printRoot.replaceChildren();
     if (!font) throw new Error("The badge font has not loaded.");
-    if (!(await refreshBeforePrint())) return;
+    if (role !== "spares" && !(await refreshBeforePrint())) return;
     const people = workspace.people.filter(
       (p) => p.included && (role === "all" || p.role === role),
     );
-    if (!people.length)
-      throw new Error("No badges selected for this print run.");
+    const spareCount =
+      role === "all" || role === "attendee" || role === "spares"
+        ? spareAttendeeBadges
+        : 0;
+    const total = people.length + spareCount;
+    if (!total) throw new Error("No badges selected for this print run.");
     const duplicates = duplicateIds(workspace.people);
     layoutIssues.clear();
     const errors: string[] = [];
     const sheets: HTMLElement[] = [];
+    function addSheet(svg: SVGSVGElement, spare = false) {
+      const sheet = el("section", "", "badge-print-sheet");
+      if (spare) sheet.dataset.spareBadge = "";
+      append(sheet, svg);
+      sheets.push(sheet);
+      if (workspace.settings.doubleSided)
+        sheets.push(sheet.cloneNode(true) as HTMLElement);
+    }
     for (let i = 0; i < people.length; i++) {
       const person = people[i]!;
       const rendered = renderBadge(person, workspace.settings, font, false);
@@ -465,15 +539,22 @@ function setup(root: HTMLElement): void {
         errors.push(
           `${person.name || "Unnamed badge"}: ${rendered.issues.join(" ")}`,
         );
-      const sheet = el("section", "", "badge-print-sheet");
-      append(sheet, rendered.svg);
-      sheets.push(sheet);
-      if (workspace.settings.doubleSided)
-        sheets.push(sheet.cloneNode(true) as HTMLElement);
+      addSheet(rendered.svg);
       if (i % 50 === 0) {
         status.textContent = `Checking badge ${i + 1} of ${people.length}…`;
         await new Promise((resolve) => setTimeout(resolve, 0));
       }
+    }
+    if (spareCount) {
+      const rendered = renderSpareAttendeeBadge(
+        workspace.settings,
+        font,
+        false,
+      );
+      if (rendered.issues.length)
+        errors.push(`Spare attendee badges: ${rendered.issues.join(" ")}`);
+      for (let i = 0; i < spareCount; i++)
+        addSheet(rendered.svg.cloneNode(true) as SVGSVGElement, true);
     }
     renderList();
     if (errors.length) {
@@ -482,7 +563,7 @@ function setup(root: HTMLElement): void {
     }
     const size = workspace.settings.diameter + 2 * workspace.settings.bleed;
     pageStyle.textContent = `@media print{@page{size:${size}mm ${size}mm;margin:0}.badge-print-sheet{width:${size}mm;height:${size}mm}}`;
-    status.textContent = `${people.length} badges passed layout and duplicate checks. ${sheets.length} PDF pages at ${size} × ${size} mm.${dirty ? " Save to keep these edits." : ""}`;
+    status.textContent = `${total} badges passed layout and duplicate checks. ${sheets.length} PDF pages at ${size} × ${size} mm.${spareCount ? ` Includes ${spareCount} spare attendee badges.` : ""}${dirty ? " Save to keep these edits." : ""}`;
     if (print) {
       append(printRoot, ...sheets);
       await document.fonts.ready;
@@ -508,6 +589,7 @@ function setup(root: HTMLElement): void {
     "speaker",
     "organizer",
     "sponsor",
+    "spares",
   ] as const)
     append(
       output,
@@ -534,6 +616,7 @@ function setup(root: HTMLElement): void {
     sourcePeople = result.people;
     signatures = result.signatures;
     const saved = parsePrintPreferences(result.preferences);
+    spareAttendeeBadges = saved.spareAttendeeBadges;
     retiredLegacyIds = saved.retiredLegacyIds;
     workspace = parseWorkspace({
       people: applyPrintPreferences(sourcePeople, saved, signatures),
@@ -543,6 +626,17 @@ function setup(root: HTMLElement): void {
     revision = result.revision;
     loaded = true;
     dirty = false;
+    if (!requestedSparesApplied && requestedSpares !== undefined) {
+      if (requestedSpares > spareAttendeeBadges) {
+        spareAttendeeBadges = requestedSpares;
+        dirty = true;
+      }
+      requestedSparesApplied = true;
+      const url = new URL(location.href);
+      url.searchParams.delete("spares");
+      history.replaceState(null, "", url);
+    }
+    spareCount.input.value = String(spareAttendeeBadges);
     printRoot.removeAttribute("data-ready");
     printRoot.replaceChildren();
     legacyNotice.replaceChildren();
@@ -593,8 +687,9 @@ function setup(root: HTMLElement): void {
     renderSettings();
     renderList();
     showPreview();
-    status.textContent =
-      "Badge studio ready. People are loaded from attendee and team records.";
+    status.textContent = dirty
+      ? `${spareAttendeeBadges} spare attendee badges prepared. Adjust the count and save print settings to keep it.`
+      : "Badge studio ready. People are loaded from attendee and team records.";
   }
   append(
     toolbar,
@@ -604,7 +699,7 @@ function setup(root: HTMLElement): void {
         void work(load);
     }),
   );
-  append(controls, sources, settingsPanel, output);
+  append(controls, sources, spares, settingsPanel, output);
   append(stage, controls, proof);
   append(root, status, toolbar, stage, count, filter.label, list);
   window.addEventListener("afterprint", () => {

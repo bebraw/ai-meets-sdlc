@@ -42,6 +42,7 @@ async function readSavedStudio(env: Env): Promise<SavedStudio> {
       preferences: {
         settings: { ...defaultSettings },
         overrides: [],
+        spareAttendeeBadges: 0,
         retiredLegacyIds: [],
       },
       legacyWorkspace: null,
@@ -67,6 +68,7 @@ async function readSavedStudio(env: Env): Promise<SavedStudio> {
     preferences: {
       settings: legacyWorkspace.settings,
       overrides: [],
+      spareAttendeeBadges: 0,
       retiredLegacyIds: [],
     },
     legacyWorkspace,

@@ -16,6 +16,12 @@ test("diet classification keeps combinations, alternatives, and specific allergy
     ["Can’t eat pork.", ["no-pork"], false],
     ["Ei sianlihaa", ["no-pork"], false],
     ["I don't eat fish, that's all", ["no-fish"], false],
+    ["No fish or seafood", ["no-fish", "no-seafood"], false],
+    [
+      "No fish or seafood, or vegetarian",
+      ["vegetarian", "no-fish", "no-seafood"],
+      true,
+    ],
     ["Low lactose, no raw celery", ["low-lactose"], true],
     ["Low lactose/lactose free", ["lactose-free", "low-lactose"], true],
     [
@@ -63,9 +69,33 @@ test("diet classification keeps combinations, alternatives, and specific allergy
     "No restrictions",
     "Ei",
     "Ei ruokarajoitteita",
+    "Ei ruokarajoitteita ollenkaan",
     "No allergies.",
   ])
     assert.equal(classifyDiet(response).response, "none", response);
+});
+
+test("email-only diet answers count as missing and stay out of catering exports", () => {
+  const summary = summarizeAttendeeDiets([
+    { status: "active", diet: "  attendee@example.test  " },
+    { status: "active", diet: "Vegan; contact attendee@example.test" },
+  ]);
+  assert.equal(summary.active, 2);
+  assert.equal(summary.missing, 1);
+  assert.equal(summary.requirements, 1);
+  assert.equal(
+    summary.needsReview,
+    1,
+    "Notes containing real requirements still need review",
+  );
+  const text = cateringSummaryText(
+    summarizeAttendeeDiets([
+      { status: "active", diet: "attendee@example.test" },
+    ]),
+    "Test date",
+  );
+  assert.doesNotMatch(text, /attendee@example\.test/u);
+  assert.match(text, /No answer \/ placeholder: 1/u);
 });
 
 test("catering totals reconcile active registrations and retain distinct combined meal requirements", () => {

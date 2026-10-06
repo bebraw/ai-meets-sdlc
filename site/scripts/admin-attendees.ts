@@ -723,7 +723,16 @@ function setupList(root: HTMLElement) {
           ),
         );
         const skipped = skippedTicketNote(imported);
-        if (skipped) append(preview, el("p", skipped));
+        if (skipped) {
+          const count = records.length - 1 - imported.length;
+          const spares = el(
+            "a",
+            `Prepare ${count} spare attendee badge${count === 1 ? "" : "s"} →`,
+            "font-bold underline",
+          );
+          spares.href = `/admin/badges/?spares=${count}`;
+          append(preview, el("p", skipped), spares);
+        }
         for (const person of imported.slice(0, 5))
           append(
             preview,

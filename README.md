@@ -549,6 +549,12 @@ Earlier exclusions become retirement choices too, so restoring an excluded
 CSV/manual badge makes it printable even without an email or ticket code.
 The original snapshot keeps its earlier inclusion choices for downloads.
 The badge studio has no CSV import, manual person creation, or roster editing.
+Set **Spare attendee badges** to cover unassigned Tito tickets and walk-ins.
+These badges have the attendee logo and role with blank name/company areas.
+The count is saved with print settings, included in attendee and full runs, and
+can be printed separately with **Print / save PDF — spares**. The Tito import
+preview links to Badge studio with the skipped-ticket count prefilled; increase
+it to include additional spares.
 The 2,000-person limit applies to the attendee roster; the combined badge run
 includes additional team and earlier records. Print preferences are bounded by
 request and encrypted storage size rather than a combined record count.
@@ -569,7 +575,7 @@ Use 100% print scale, enable background graphics, disable headers/footers, and
 confirm dimensions and duplex order with the printer. Browser PDFs use RGB, not
 CMYK/PDF-X. Print a physical proof before the full run.
 
-Run `npm run badges:browser-check` after a build to test live records, duplicate
+Run `npm run badges:browser-check` after a build to test spare badges, live records, duplicate
 handling, long/Unicode names, print preferences, source updates, responsive layout,
 and actual print pagination. Test proof files are temporary files under `/tmp/`.
 See [ADR-011](docs/adrs/implemented/ADR-011-manage-organizers-and-validated-badge-printing.md).

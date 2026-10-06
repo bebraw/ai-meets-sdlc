@@ -9,7 +9,34 @@ import {
   parseWorkspace,
 } from "../site/scripts/badge-model.ts";
 import { fontCoverage } from "../site/scripts/badge-layout.ts";
+import {
+  parsePrintPreferences,
+  requestedSpareAttendeeBadges,
+} from "../site/scripts/badge-studio-model.ts";
 const mapping = { name: 0, company: 1, email: 2, first: -1, last: -1 };
+test("spare badge preferences accept whole counts and keep older saved runs compatible", () => {
+  const oldPreferences = { settings: defaultSettings, overrides: [] };
+  assert.equal(parsePrintPreferences(oldPreferences).spareAttendeeBadges, 0);
+  assert.equal(
+    parsePrintPreferences({ ...oldPreferences, spareAttendeeBadges: 13 })
+      .spareAttendeeBadges,
+    13,
+  );
+  for (const count of [-1, 0.5, 2001, Infinity, "13"])
+    assert.throws(() =>
+      parsePrintPreferences({ ...oldPreferences, spareAttendeeBadges: count }),
+    );
+  assert.equal(requestedSpareAttendeeBadges("?spares=13"), 13);
+  assert.equal(requestedSpareAttendeeBadges("?spares=0"), 0);
+  for (const search of [
+    "",
+    "?spares=-1",
+    "?spares=0.5",
+    "?spares=2001",
+    "?spares=",
+  ])
+    assert.equal(requestedSpareAttendeeBadges(search), undefined);
+});
 test("CSV preserves quoted Unicode names, multiline fields, BOM, delimiters, and source rows", () => {
   const records = parseCsv(
     '\uFEFFTicket Full Name,Ticket Company Name,Ticket Email\r\n"Määttä, Zoë","Research\r\nLab",zoe@example.test\r\n',
