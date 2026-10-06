@@ -29,12 +29,12 @@ export function createAttendeeCateringPanel(
     ),
     el(
       "p",
-      "Active Tito and Webropol registrations plus speakers and mapped dinner guests. Cancelled registrations are excluded. This summary uses the complete list, regardless of the search filters below.",
+      "Active Tito and Webropol registrations, accepted poster presenters and volunteers, plus speakers and mapped dinner guests. Cancelled registrations are excluded. This summary uses the complete list, regardless of the search filters below.",
       "mt-3 max-w-3xl leading-7 text-muted",
     ),
     el(
       "p",
-      "Speaker dietary responses come from dinner registration. Dinner attendance does not determine daytime attendance. Exact email or unique name matches count a person once; review the dinner mappings below for organizers and other guests. Volunteers and guests without a mapped response still need to be added separately.",
+      "Speaker dietary responses come from dinner registration. Dinner attendance does not determine daytime attendance. Exact email or unique name matches count a person once; Poster presenters are attendees and volunteers are organizers. Their dinner responses are matched to registrations below; review aliases and ambiguous matches before exporting.",
       "mt-2 max-w-3xl text-sm leading-6 text-muted",
     ),
   );
@@ -62,11 +62,11 @@ export function createAttendeeCateringPanel(
   const mappingsRoot = el("details", "", "mt-8 border-t border-ink/20 pt-5");
   const mappingTitle = el(
     "summary",
-    "Dinner mappings",
+    "Catering mappings",
     "cursor-pointer font-bold uppercase",
   );
   const mappingRows = el("div", "", "mt-4 grid gap-3 lg:grid-cols-2");
-  const save = button("Save dinner mappings", () => {
+  const save = button("Save catering mappings", () => {
     if (!cateringData || !draftRevision || saving) return;
     const base = new Map(
       cateringData.mappings
@@ -92,7 +92,7 @@ export function createAttendeeCateringPanel(
         draftRevision = undefined;
         mappingSignature = "";
         render(attendees, cateringData, loadError);
-        status.textContent = "Dinner mappings saved.";
+        status.textContent = "Catering mappings saved.";
       })
       .catch((error: unknown) => {
         status.textContent = message(error);
@@ -114,7 +114,7 @@ export function createAttendeeCateringPanel(
     mappingTitle,
     el(
       "p",
-      "Use Automatic for exact matches. Map a dinner name to an organizer or existing attendee when it differs. Choose Additional person only when they need their own meal. Saved links survive attendee reimports; unmatched or ambiguous responses are not counted until mapped.",
+      "Use Automatic for exact matches. Match poster presenters and volunteers to an imported registration when needed; these links also apply at check-in. Map dinner aliases to an organizer or existing attendee. Choose Additional person only when they need their own meal. Saved links survive attendee reimports; unmatched or ambiguous responses are not counted until mapped.",
       "mt-3 max-w-3xl text-sm leading-6 text-muted",
     ),
     mappingRows,
@@ -195,7 +195,7 @@ export function createAttendeeCateringPanel(
       content.replaceChildren(
         el(
           "p",
-          error || "Loading speaker and dinner responses…",
+          error || "Loading registration and dinner sources…",
           "font-bold leading-7",
         ),
       );
@@ -231,18 +231,31 @@ export function createAttendeeCateringPanel(
           "aria-label",
           `Catering mapping for ${row.source.name}`,
         );
+        const member =
+          row.source.kind === "poster-presenter" ||
+          row.source.kind === "volunteer";
         const options: [string, string][] = [
           ["Automatic", ""],
           ["Additional person", "separate"],
-          ["Exclude from daytime catering", "exclude"],
-          ...data.organizers.map((person): [string, string] => [
-            `Organizer: ${person.name}`,
-            `organizer:${person.id}`,
-          ]),
+          ...(!member
+            ? [["Exclude from daytime catering", "exclude"] as [string, string]]
+            : []),
+          ...(!member ? data.organizers : []).map(
+            (person): [string, string] => [
+              `Organizer: ${person.name}`,
+              `organizer:${person.id}`,
+            ],
+          ),
           ...people
-            .filter((person) => person.status === "active")
+            .filter(
+              (person) =>
+                person.status === "active" &&
+                (!member ||
+                  person.source === "tito" ||
+                  person.source === "webropol"),
+            )
             .map((person): [string, string] => [
-              `Attendee: ${person.name} · ${person.ticketCode || person.email}`,
+              ` ${person.type === "organizer" ? "Organizer" : "Attendee"}: ${person.name} · ${person.ticketCode || person.email}`.trim(),
               `attendee:${person.id}`,
             ]),
         ];
@@ -274,14 +287,16 @@ export function createAttendeeCateringPanel(
           el("p", row.label, "mt-1 text-sm leading-6"),
           el(
             "p",
-            `Dinner diet: ${row.source.diet || "No dietary answer"}`,
+            member
+              ? `Diet from dinner: ${row.source.registrationId ? combined.attendeeDiets[row.source.registrationId] || "No dietary answer" : "Match registration first"}`
+              : `Dinner diet: ${row.source.diet || "No dietary answer"}`,
             "mt-2 whitespace-pre-wrap text-sm leading-6 text-muted",
           ),
           label,
         );
         append(mappingRows, card);
       }
-      mappingTitle.textContent = `Dinner mappings · ${combined.pending} to review`;
+      mappingTitle.textContent = `Catering mappings · ${combined.pending} to review`;
     }
     updateControls();
     content.replaceChildren();
@@ -322,14 +337,14 @@ export function createAttendeeCateringPanel(
         content,
         el(
           "p",
-          `${combined.pending} dinner response${combined.pending === 1 ? " needs" : "s need"} mapping and ${combined.pending === 1 ? "is" : "are"} not included in the headcount. Review Dinner mappings below.`,
+          `${combined.pending} catering source${combined.pending === 1 ? " needs" : "s need"} mapping and ${combined.pending === 1 ? "is" : "are"} not included in the headcount. Review Catering mappings below.`,
           "mt-4 border-l-2 border-ink pl-4 font-bold leading-7",
         ),
       );
     appendDietDetails(
       content,
       summary,
-      "No people included in catering yet. Import registrations or review dinner mappings.",
+      "No people included in catering yet. Import registrations or review catering mappings.",
     );
   }
   return {

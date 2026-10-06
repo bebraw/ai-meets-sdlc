@@ -1,5 +1,8 @@
 import { withAdminSecurityHeaders } from "./admin-auth.ts";
-import { readAttendeeRoster } from "./attendees.ts";
+import {
+  readEventAttendeeRoster,
+  reconcileEventArrivals,
+} from "./event-attendees.ts";
 import { workspaceOnlySpeakerIds } from "./canonical-content.ts";
 import { readOrganizers } from "./organizers.ts";
 import {
@@ -43,7 +46,7 @@ async function readCatering(env: Env) {
           email_ciphertext: string;
           email_iv: string;
         }>(),
-      readAttendeeRoster(env),
+      readEventAttendeeRoster(env),
     ]);
   if (!row) throw new Error("Missing catering migration");
   const emails = new Map(
@@ -62,6 +65,15 @@ async function readCatering(env: Env) {
   );
   const retained = Date.now() < Date.parse(env.SPEAKER_DINNER_RETENTION_UNTIL);
   const sources: CateringSource[] = [
+    ...roster.members.map(
+      (member): CateringSource => ({
+        id: member.id,
+        name: member.name,
+        email: member.email,
+        kind: member.source === "poster" ? "poster-presenter" : "volunteer",
+        registrationId: roster.memberTargets.get(member.id) ?? null,
+      }),
+    ),
     ...speakers
       .filter(
         (speaker) =>
@@ -161,7 +173,7 @@ async function handle(request: Request, env: Env): Promise<Response> {
     mappings = parseCateringMappings(body.mappings);
   } catch {
     return jsonResponse(
-      { error: "Choose valid dinner mappings without duplicate responses." },
+      { error: "Choose valid catering mappings without duplicate sources." },
       400,
     );
   }
@@ -182,16 +194,54 @@ async function handle(request: Request, env: Env): Promise<Response> {
     return jsonResponse(
       {
         error:
-          "A mapped person is no longer available. Reload and review the dinner mappings.",
+          "A mapped person is no longer available. Reload and review the catering mappings.",
       },
       400,
+    );
+  const members = new Set(
+    data.sources
+      .filter(
+        (source) =>
+          source.kind === "poster-presenter" || source.kind === "volunteer",
+      )
+      .map((source) => source.id),
+  );
+  if (
+    mappings.some(
+      (item) =>
+        members.has(item.sourceId) &&
+        item.target !== "separate" &&
+        !roster.people.some(
+          (person) =>
+            (person.source === "tito" || person.source === "webropol") &&
+            `attendee:${person.id}` === item.target,
+        ),
+    )
+  )
+    return jsonResponse(
+      {
+        error:
+          "Match a poster presenter or volunteer to an imported registration, or choose Additional person.",
+      },
+      400,
+    );
+  const registrationLinksChanged =
+    JSON.stringify(
+      data.mappings
+        .filter((item) => members.has(item.sourceId))
+        .sort((a, b) => a.sourceId.localeCompare(b.sourceId)),
+    ) !==
+    JSON.stringify(
+      mappings
+        .filter((item) => members.has(item.sourceId))
+        .sort((a, b) => a.sourceId.localeCompare(b.sourceId)),
     );
   const encrypted = await encryptText(
     JSON.stringify(mappings),
     env.EMAIL_ENCRYPTION_KEY,
   );
   const result = await env.INTERESTS.prepare(
-    "UPDATE attendee_roster SET catering_ciphertext = ?, catering_iv = ?, catering_revision = catering_revision + 1, updated_at = ? WHERE id = 1 AND catering_revision = ? AND revision = ?",
+    `UPDATE attendee_roster SET catering_ciphertext = ?, catering_iv = ?, catering_revision = catering_revision + 1, revision = revision + ${registrationLinksChanged ? 1 : 0}, updated_at = ? WHERE id = 1 AND catering_revision = ? AND revision = ?`,
   )
     .bind(
       encrypted.ciphertext,
@@ -201,6 +251,8 @@ async function handle(request: Request, env: Env): Promise<Response> {
       roster.revision,
     )
     .run();
+  if (result.meta.changes && registrationLinksChanged)
+    await reconcileEventArrivals(env);
   return result.meta.changes
     ? jsonResponse({ revision: data.revision + 1 })
     : conflict();

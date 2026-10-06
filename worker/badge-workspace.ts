@@ -21,7 +21,7 @@ import {
   type PrintPreferences,
   type BadgeStudioData,
 } from "../site/scripts/badge-studio-model.ts";
-import { readAttendeeRoster } from "./attendees.ts";
+import { readEventAttendeeRoster } from "./event-attendees.ts";
 import { readOrganizers } from "./organizers.ts";
 import { readVolunteers } from "./volunteers.ts";
 import { readPublicCanonicalSpeakers } from "./canonical-content.ts";
@@ -90,7 +90,7 @@ async function readStudio(
 ): Promise<BadgeStudioData> {
   const [roster, speakers, contacts, organizers, volunteers] =
     await Promise.all([
-      readAttendeeRoster(env),
+      readEventAttendeeRoster(env),
       readPublicCanonicalSpeakers(env),
       env.INTERESTS.prepare(
         "SELECT speaker_id, email_ciphertext, email_iv FROM speaker_contacts",
@@ -135,7 +135,9 @@ async function readStudio(
   });
   const people = [
     ...roster.people
-      .filter((p) => p.status === "active" && p.badge)
+      .filter(
+        (p) => p.status === "active" && p.badge && p.source !== "volunteer",
+      )
       .map((p) => make("attendees", p.id, p.name, p.company, p.email, p.type)),
     ...speakers.map((p) =>
       make(

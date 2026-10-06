@@ -120,6 +120,16 @@ existing D1, R2 backup bucket and `EMAIL_ENCRYPTION_KEY`; no new binding or secr
 is needed. Keep the encryption key stable while stored lists and staff links
 are in use.
 
+Migration `0025` stores encrypted catering identity mappings. Migration `0026`
+invalidates stale check-in confirmations when volunteers or accepted posters
+change, and preserves arrival audit links when generated entries gain ticket
+identities. Apply both before deploying the expanded registration workflow.
+Accepted poster presenters join the registration list as attendees; volunteers
+join as organizers. Their current workspace records remain authoritative.
+Poster dietary requirements come from matched or explicitly linked dinner
+responses in the admin catering view; registration desk responses omit diets,
+proposal details and volunteer tasks.
+
 Manage imports and staff links at `/admin/attendees/`. Staff sign in through
 `/registration/access/` and use `/registration/`; their credentials do not
 authorize admin or Q&A access. `PUBLIC_SITE_ORIGIN` sets the shared-link origin.

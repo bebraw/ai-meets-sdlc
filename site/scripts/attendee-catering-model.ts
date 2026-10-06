@@ -7,7 +7,8 @@ export interface CateringSource {
   id: string;
   name: string;
   email?: string;
-  kind: "speaker" | "dinner-guest";
+  kind: "speaker" | "dinner-guest" | "poster-presenter" | "volunteer";
+  registrationId?: string | null;
   diet?: string | undefined;
 }
 export interface CateringMapping {
@@ -40,7 +41,7 @@ export function parseCateringMappings(value: unknown): CateringMapping[] {
     value,
   );
   if (new Set(mappings.map((item) => item.sourceId)).size !== mappings.length)
-    throw new Error("Each dinner response can only be mapped once.");
+    throw new Error("Each catering source can only be mapped once.");
   return mappings;
 }
 
@@ -69,6 +70,7 @@ export interface CateringRoster {
   people: { status: "active" | "cancelled"; diet?: string | undefined }[];
   additional: number;
   pending: number;
+  attendeeDiets: Record<string, string | undefined>;
   rows: { source: CateringSource; target: string | null; label: string }[];
 }
 
@@ -81,9 +83,14 @@ export function buildCateringRoster(
     data.mappings.map((item) => [item.sourceId, item.target]),
   );
   const speakers = data.sources.filter((source) => source.kind === "speaker");
+  const members = data.sources.filter(
+    (source) =>
+      source.kind === "poster-presenter" || source.kind === "volunteer",
+  );
   const targets = new Map<string, { name: string; email?: string }>([
     ...active.map((person) => [`attendee:${person.id}`, person] as const),
     ...speakers.map((source) => [source.id, source] as const),
+    ...members.map((source) => [source.id, source] as const),
     ...data.organizers.map(
       (person) => [`organizer:${person.id}`, person] as const,
     ),
@@ -108,6 +115,12 @@ export function buildCateringRoster(
     const person = targets.get(target);
     if (!person) return null;
     if (target.startsWith("attendee:")) return target;
+    const member = members.find((source) => source.id === target);
+    if (member)
+      return member.registrationId &&
+        targets.has(`attendee:${member.registrationId}`)
+        ? `attendee:${member.registrationId}`
+        : null;
     const matches = matchingAttendees(person);
     if (matches.length > 1) return null;
     return matches[0] ? `attendee:${matches[0].id}` : target;
@@ -124,7 +137,11 @@ export function buildCateringRoster(
       });
       continue;
     }
-    if (mapping === "separate") target = source.id;
+    if (source.kind === "poster-presenter" || source.kind === "volunteer")
+      target = source.registrationId
+        ? resolve(`attendee:${source.registrationId}`)
+        : null;
+    else if (mapping === "separate") target = source.id;
     else if (mapping) target = resolve(mapping);
     else if (source.kind === "speaker") target = resolve(source.id);
     else {
@@ -141,11 +158,13 @@ export function buildCateringRoster(
         if (mappings.get(id) === "exclude") continue;
         const linked = mappings.get(id);
         candidates.push(
-          linked === "separate"
-            ? id
-            : linked
-              ? (resolve(linked) ?? "")
-              : (resolve(id) ?? ""),
+          members.some((source) => source.id === id)
+            ? (resolve(id) ?? "")
+            : linked === "separate"
+              ? id
+              : linked
+                ? (resolve(linked) ?? "")
+                : (resolve(id) ?? ""),
         );
       }
       const unique = new Set(candidates);
@@ -166,16 +185,27 @@ export function buildCateringRoster(
     rows.push({
       source,
       target,
-      label: target.startsWith("attendee:")
-        ? `Already counted as attendee: ${person!.name}`
-        : target.startsWith("organizer:")
-          ? `Organizer: ${person!.name}`
-          : source.kind === "speaker" || target.startsWith("speaker:")
-            ? "Speaker included"
-            : "Additional guest included",
+      label:
+        source.kind === "poster-presenter"
+          ? `Attendee included (poster presenter): ${person!.name}`
+          : source.kind === "volunteer"
+            ? `Organizer included (volunteer): ${person!.name}`
+            : target.startsWith("attendee:")
+              ? `Already counted as attendee: ${person!.name}`
+              : target.startsWith("organizer:")
+                ? `Organizer: ${person!.name}`
+                : source.kind === "speaker" || target.startsWith("speaker:")
+                  ? "Speaker included"
+                  : "Additional guest included",
     });
   }
   return {
+    attendeeDiets: Object.fromEntries(
+      active.map((person) => [
+        person.id,
+        combineDiets(diets.get(`attendee:${person.id}`) ?? []),
+      ]),
+    ),
     people: [
       ...attendees
         .filter((person) => person.status === "cancelled")

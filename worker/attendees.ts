@@ -1,10 +1,10 @@
-import { withAdminSecurityHeaders } from "./admin-auth.ts";
+import { readAttendeeRoster } from "./attendee-roster.ts";
 import {
-  decryptText,
-  encryptText,
-  jsonResponse,
-  requireAdminAction,
-} from "./form-utils.ts";
+  readEventAttendeeRoster,
+  reconcileEventArrivals,
+} from "./event-attendees.ts";
+import { withAdminSecurityHeaders } from "./admin-auth.ts";
+import { encryptText, jsonResponse, requireAdminAction } from "./form-utils.ts";
 import { isRecord, readJsonWithinLimit } from "./speaker-workspace-utils.ts";
 import {
   mergeAttendeeImport,
@@ -24,35 +24,13 @@ import {
   type RegistrationActor,
 } from "./registration-auth.ts";
 
-export async function readAttendeeRoster(
-  env: Env,
-): Promise<{ revision: number; people: AttendeeRecord[] }> {
-  const row = await env.INTERESTS.prepare(
-    "SELECT revision, ciphertext, iv FROM attendee_roster WHERE id = 1",
-  ).first<{ revision: number; ciphertext: string | null; iv: string | null }>();
-  if (!row) throw new Error("Missing attendee migration");
-  return {
-    revision: row.revision,
-    people:
-      row.ciphertext && row.iv
-        ? parseAttendeeRoster(
-            JSON.parse(
-              await decryptText(
-                row.ciphertext,
-                row.iv,
-                env.EMAIL_ENCRYPTION_KEY!,
-              ),
-            ),
-          )
-        : [],
-  };
-}
+export { readAttendeeRoster } from "./attendee-roster.ts";
 async function readList(
   env: Env,
   actor: RegistrationActor,
 ): Promise<AttendeeList> {
   const [roster, arrivals] = await Promise.all([
-    readAttendeeRoster(env),
+    readEventAttendeeRoster(env),
     env.INTERESTS.prepare(
       `SELECT a.attendee_id, a.arrived_at, a.revision,
       COALESCE(g.label, a.arrived_by) AS actor FROM attendee_arrivals a
@@ -68,8 +46,14 @@ async function readList(
   return {
     revision: roster.revision,
     role: actor.role,
+    pendingRegistrations: roster.pending,
     attendees: roster.people.map((person) => {
-      const arrival = byId.get(person.id);
+      const records = (roster.aliases.get(person.id) ?? [person.id])
+        .map((id) => byId.get(id))
+        .filter((row) => row !== undefined);
+      const arrival =
+        records.find((row) => row.arrived_at) ??
+        records.sort((a, b) => b.revision - a.revision)[0];
       // Dietary responses belong to the organizer catering workflow, not desk access.
       const { diet: _diet, ...registrationPerson } = person;
       return {
@@ -77,6 +61,7 @@ async function readList(
         arrivedAt: arrival?.arrived_at ?? null,
         arrivedBy: arrival?.arrived_at ? arrival.actor : null,
         arrivalRevision: arrival?.revision ?? 0,
+        arrivalId: arrival?.attendee_id ?? person.id,
       };
     }),
   };
@@ -100,6 +85,7 @@ async function saveRoster(
       revision,
     )
     .run();
+  if (result.meta.changes) await reconcileEventArrivals(env);
   return result.meta.changes
     ? jsonResponse({ revision: revision + 1 })
     : jsonResponse(
@@ -322,7 +308,7 @@ async function markArrival(
     );
   if (body.action === "undo" && actor.role !== "admin")
     return jsonResponse({ error: "Only organizers can undo an arrival." }, 403);
-  const roster = await readAttendeeRoster(env);
+  const roster = await readEventAttendeeRoster(env);
   if (roster.revision !== body.rosterRevision)
     return jsonResponse(
       {
@@ -340,37 +326,70 @@ async function markArrival(
       },
       409,
     );
+  const aliases = roster.aliases.get(person.id) ?? [person.id];
+  const arrivalId =
+    typeof body.arrivalId === "string" ? body.arrivalId : person.id;
+  if (!aliases.includes(arrivalId))
+    return jsonResponse(
+      {
+        error:
+          "The registration identity changed. Reload before confirming arrival.",
+      },
+      409,
+    );
   const now = new Date().toISOString();
   const result = await env.INTERESTS.prepare(
     `INSERT INTO attendee_arrivals (attendee_id, arrived_at, arrived_by, revision)
     SELECT ?1, ?2, ?3, 1 WHERE ?4 = 0 AND ?2 IS NOT NULL
+      AND NOT EXISTS (SELECT 1 FROM attendee_arrivals WHERE attendee_id IN (SELECT value FROM json_each(?8)) AND arrived_at IS NOT NULL)
       AND EXISTS (SELECT 1 FROM attendee_roster WHERE id = 1 AND revision = ?5)
       AND (?6 IS NULL OR EXISTS (SELECT 1 FROM registration_staff_sessions s JOIN registration_access_grants g ON g.id = s.grant_id WHERE s.token_hash = ?6 AND s.expires_at > ?7 AND g.revoked_at IS NULL))
     ON CONFLICT(attendee_id) DO NOTHING`,
   ).bind(
-    person.id,
+    arrivalId,
     body.action === "arrived" ? now : null,
     actor.id,
     body.revision,
     body.rosterRevision,
     actor.sessionHash,
     now,
+    JSON.stringify(aliases),
   );
   const update = env.INTERESTS.prepare(
     `UPDATE attendee_arrivals SET arrived_at = ?1, arrived_by = ?2, revision = revision + 1
     WHERE attendee_id = ?3 AND revision = ?4 AND ((?1 IS NULL AND arrived_at IS NOT NULL) OR (?1 IS NOT NULL AND arrived_at IS NULL))
       AND EXISTS (SELECT 1 FROM attendee_roster WHERE id = 1 AND revision = ?5)
+      AND (?1 IS NULL OR NOT EXISTS (SELECT 1 FROM attendee_arrivals WHERE attendee_id IN (SELECT value FROM json_each(?8)) AND attendee_id != ?3 AND arrived_at IS NOT NULL))
       AND (?6 IS NULL OR EXISTS (SELECT 1 FROM registration_staff_sessions s JOIN registration_access_grants g ON g.id = s.grant_id WHERE s.token_hash = ?6 AND s.expires_at > ?7 AND g.revoked_at IS NULL))`,
   ).bind(
     body.action === "arrived" ? now : null,
     actor.id,
-    person.id,
+    arrivalId,
     body.revision,
     body.rosterRevision,
     actor.sessionHash,
     now,
+    JSON.stringify(aliases),
   );
-  const write = body.revision === 0 ? await result.run() : await update.run();
+  const undo = env.INTERESTS.prepare(
+    `WITH current AS MATERIALIZED (SELECT 1 FROM attendee_arrivals WHERE attendee_id = ?1 AND revision = ?2 AND arrived_at IS NOT NULL)
+    UPDATE attendee_arrivals SET arrived_at = NULL, arrived_by = ?3, revision = revision + 1
+    WHERE attendee_id IN (SELECT value FROM json_each(?4)) AND arrived_at IS NOT NULL
+      AND EXISTS (SELECT 1 FROM current)
+      AND EXISTS (SELECT 1 FROM attendee_roster WHERE id = 1 AND revision = ?5)`,
+  ).bind(
+    arrivalId,
+    body.revision,
+    actor.id,
+    JSON.stringify(aliases),
+    body.rosterRevision,
+  );
+  const write =
+    body.action === "undo"
+      ? await undo.run()
+      : body.revision === 0
+        ? await result.run()
+        : await update.run();
   return write.meta.changes
     ? jsonResponse({ ok: true })
     : jsonResponse(

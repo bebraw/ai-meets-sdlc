@@ -7,7 +7,11 @@ import {
 } from "./badge-model.ts";
 
 const text = (max: number) => v.pipe(v.string(), v.maxLength(max));
-export const attendeeTypeSchema = v.picklist(["attendee", "sponsor"]);
+export const attendeeTypeSchema = v.picklist([
+  "attendee",
+  "sponsor",
+  "organizer",
+]);
 export type AttendeeType = v.InferOutput<typeof attendeeTypeSchema>;
 export const attendeeInputSchema = v.object({
   name: text(300),
@@ -23,18 +27,20 @@ export type AttendeeInput = v.InferOutput<typeof attendeeInputSchema>;
 export interface AttendeeRecord extends AttendeeInput {
   type: AttendeeType;
   id: string;
-  source: "tito" | "webropol";
+  source: "tito" | "webropol" | "poster" | "volunteer";
   sourceKey: string;
 }
 export interface Attendee extends AttendeeRecord {
   arrivedAt: string | null;
   arrivedBy: string | null;
   arrivalRevision: number;
+  arrivalId?: string;
 }
 export interface AttendeeList {
   revision: number;
   attendees: Attendee[];
   role: "admin" | "registration";
+  pendingRegistrations?: number;
 }
 export interface RegistrationGrant {
   id: string;
@@ -101,7 +107,7 @@ export function parseAttendeeRoster(value: unknown): AttendeeRecord[] {
 }
 export function mergeAttendeeImport(
   current: AttendeeRecord[],
-  source: AttendeeRecord["source"],
+  source: "tito" | "webropol",
   rows: AttendeeInput[],
 ): AttendeeRecord[] {
   if (!rows.length || rows.length > 2000)

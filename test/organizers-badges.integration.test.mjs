@@ -245,7 +245,7 @@ test("organizers seed the homepage while badge selection stays private; badges l
   assert.equal(
     (
       await send("attendees", "POST", {
-        revision: 0,
+        revision: (await (await send("attendees")).json()).revision,
         source: "tito",
         attendees: [attendee],
       })

@@ -6,7 +6,13 @@ import {
   receiptAdmin,
 } from "../test/helpers/receipt-fixture.mjs";
 
-const fixture = await createReceiptFixture();
+const fixture = await createReceiptFixture({
+  vars: {
+    POSTER_PROPOSAL_DEADLINE: "2099-09-27T20:59:59Z",
+    SPEAKER_DINNER_RETENTION_UNTIL: "2099-10-26T21:59:59Z",
+    TURNSTILE_SECRET_KEY: "",
+  },
+});
 let browser;
 try {
   let executablePath;
@@ -529,7 +535,7 @@ try {
   assert.equal(guestSave.status, 200);
   await reload.click();
   await admin.getByText("Registrations updated.", { exact: true }).waitFor();
-  await catering.getByText(/1 dinner response needs mapping/).waitFor();
+  await catering.getByText(/1 catering source needs mapping/).waitFor();
   await catering.locator("summary").click();
   const mapping = catering.getByLabel(
     "Catering mapping for Organizer browser alias",
@@ -551,9 +557,11 @@ try {
     true,
   );
   await catering
-    .getByRole("button", { name: "Save dinner mappings", exact: true })
+    .getByRole("button", { name: "Save catering mappings", exact: true })
     .click();
-  await catering.getByText("Dinner mappings saved.", { exact: true }).waitFor();
+  await catering
+    .getByText("Catering mappings saved.", { exact: true })
+    .waitFor();
   assert.equal(
     await cateringCount("Catering headcount"),
     String(speakerHeadcount + 3),
@@ -912,9 +920,168 @@ try {
     [...sponsorPdf.toString("latin1").matchAll(/\/Type \/Page\b/g)].length,
     1,
   );
+  // Canonical poster and volunteer entries need no CSV import.
+  const posterForm = {
+    name: "Poster Browser Presenter",
+    email: "poster-browser@example.test",
+    organization: "Poster Lab",
+    title: "Browser-tested poster",
+    abstract:
+      "This poster covers attendee registration, safe event check-in, and dietary requirements provided through dinner registration.",
+    terms: "yes",
+    consent: "yes",
+  };
+  const proposalResponse = await adminContext.request.post(
+    `${origin}/api/poster-proposals`,
+    { form: posterForm },
+  );
+  assert.equal(proposalResponse.status(), 201, await proposalResponse.text());
+  const proposalId = (
+    await fixture.runSql(
+      "SELECT id FROM poster_proposals ORDER BY id DESC LIMIT 1",
+    )
+  )[0].id;
+  await fixture.runSql(
+    `UPDATE poster_proposals SET status = 'accepted' WHERE id = ${proposalId}`,
+  );
+  const volunteerResponse = await adminContext.request.post(
+    `${origin}/api/admin/volunteers`,
+    {
+      headers: { origin, "x-admin-action": "manage-volunteers" },
+      form: {
+        name: "Browser Volunteer",
+        email: "browser-volunteer@example.test",
+        task: "Private desk task",
+        badge: "false",
+      },
+    },
+  );
+  assert.equal(volunteerResponse.status(), 201, await volunteerResponse.text());
+  const canonicalVolunteer = (await volunteerResponse.json()).volunteer;
+  const dinnerResponse = await adminContext.request.post(
+    `${origin}/api/admin/speaker-dinner/guests`,
+    {
+      headers: { origin, "x-admin-action": "add-dinner-guest" },
+      form: {
+        name: posterForm.name,
+        attendance: "attending",
+        meal_preference: "vegan",
+        food_requirements: "Sesame allergy",
+        cross_contamination: "yes",
+        consent: "yes",
+      },
+    },
+  );
+  assert.equal(dinnerResponse.status(), 200, await dinnerResponse.text());
+  await admin.goto(`${origin}/admin/attendees/`);
+  await admin
+    .getByText(
+      "Registrations loaded. Changes and arrivals are saved immediately.",
+      { exact: true },
+    )
+    .waitFor();
+  const posterCard = admin.locator(`[data-attendee-id="poster-${proposalId}"]`);
+  const volunteerCard = admin.locator(
+    `[data-attendee-id="volunteer-${canonicalVolunteer.id}"]`,
+  );
+  await posterCard
+    .getByText("ATTENDEE · POSTER · No ticket code", { exact: true })
+    .waitFor();
+  await posterCard
+    .getByText(/Diet: vegan; Sesame allergy; Cross-contamination/)
+    .waitFor();
+  assert.equal(
+    await posterCard
+      .getByRole("button", { name: "Edit attendee", exact: true })
+      .count(),
+    0,
+  );
+  assert.equal(
+    await posterCard
+      .getByRole("link", { name: "Manage poster proposal", exact: true })
+      .count(),
+    1,
+  );
+  await volunteerCard
+    .getByText("ORGANIZER · VOLUNTEER · No ticket code", { exact: true })
+    .waitFor();
+  await admin
+    .getByLabel("Registration type", { exact: true })
+    .selectOption("organizer");
+  assert.equal(await admin.locator("[data-attendee-id]").count(), 1);
+  await volunteerCard
+    .getByRole("button", { name: "Mark arrived", exact: true })
+    .click();
+  await volunteerCard.getByText(/Arrived/).waitFor();
+  await admin
+    .getByLabel("Registration type", { exact: true })
+    .selectOption("attendee");
+  await posterCard
+    .getByRole("button", { name: "Mark arrived", exact: true })
+    .click();
+  await posterCard.getByText(/Arrived/).waitFor();
+  const grantResponse = await adminContext.request.post(
+    `${origin}/api/admin/attendees/access`,
+    {
+      headers: { origin, "x-admin-action": "manage-attendees" },
+      data: { action: "create", label: "Canonical source desk" },
+    },
+  );
+  const canonicalGrant = (await grantResponse.json()).grants.find(
+    (grant) => grant.label === "Canonical source desk",
+  );
+  await staff.goto(
+    `${origin}/registration/access/${new URL(canonicalGrant.link).hash}`,
+  );
+  await staff
+    .getByRole("button", { name: "Open registration desk", exact: true })
+    .click();
+  await staff.waitForURL("**/registration/");
+  await staff
+    .getByLabel("Registration type", { exact: true })
+    .selectOption("organizer");
+  await staff
+    .locator(`[data-attendee-id="volunteer-${canonicalVolunteer.id}"]`)
+    .getByText(/Arrived/)
+    .waitFor();
+  assert.equal(
+    await staff.getByText(/Sesame allergy|Private desk task|Diet:/).count(),
+    0,
+  );
+  await staff.addScriptTag({ content: axeSource });
+  assert.deepEqual(
+    await staff.evaluate(async () =>
+      (
+        await window.axe.run(document, {
+          runOnly: {
+            type: "tag",
+            values: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"],
+          },
+          rules: { "target-size": { enabled: false } },
+        })
+      ).violations.map((item) => item.id),
+    ),
+    [],
+  );
+  await staff.screenshot({
+    path: "/private/tmp/sdlcai-canonical-registration-mobile.png",
+    fullPage: true,
+  });
+  await admin
+    .getByLabel("Registration type", { exact: true })
+    .selectOption("all");
+  await catering.locator("summary").click();
+  await catering
+    .locator(`[data-catering-source="poster:${proposalId}"]`)
+    .getByText(/Diet from dinner: vegan; Sesame allergy/)
+    .waitFor();
+  await admin.screenshot({
+    path: "/private/tmp/sdlcai-canonical-attendees.png",
+    fullPage: true,
+  });
   assert.deepEqual(errors, []);
   console.log(
-    "Attendee browser check passed: Tito/Webropol diet imports, separate sponsor imports, type filtering/editing, sponsor badges/PDF output, catering groups, copy/download, multiline diet edits, filter-independent totals, organizer-only diets, load recovery, preserved edit drafts, concurrent corrections, source refresh, scoped staff access, exact ticket lookup, arrivals, cancellation, undo, badge seeding, sign-out/reuse, revocation, mobile layout and accessibility.",
+    "Attendee browser check passed: canonical poster and volunteer registration/check-in, organizer roles, poster dinner restrictions, Tito/Webropol diet imports, separate sponsor imports, type filtering/editing, sponsor badges/PDF output, catering groups, copy/download, multiline diet edits, filter-independent totals, organizer-only diets, load recovery, preserved edit drafts, concurrent corrections, source refresh, scoped staff access, exact ticket lookup, arrivals, cancellation, undo, badge seeding, sign-out/reuse, revocation, mobile layout and accessibility.",
   );
 } finally {
   await browser?.close();

@@ -22,7 +22,10 @@ import {
   type RegistrationGrant,
 } from "./attendee-model.ts";
 import { createAttendeeCateringPanel } from "./attendee-catering.ts";
-import type { CateringData } from "./attendee-catering-model.ts";
+import {
+  buildCateringRoster,
+  type CateringData,
+} from "./attendee-catering-model.ts";
 
 const action = "manage-attendees";
 async function api<T>(
@@ -166,6 +169,7 @@ function setupList(root: HTMLElement) {
     ["All types", "all"],
     ["Attendee", "attendee"],
     ["Sponsor", "sponsor"],
+    ["Organizer", "organizer"],
   ]);
   const filters = el(
     "div",
@@ -304,7 +308,11 @@ function setupList(root: HTMLElement) {
   }
   function render() {
     catering?.render(data.attendees, cateringData, cateringError);
-    counts.textContent = `${data.attendees.filter((p) => p.arrivedAt).length} arrived / ${data.attendees.filter((p) => p.status === "active").length} active · ${data.attendees.length} total`;
+    const dinnerDiets =
+      admin && cateringData
+        ? buildCateringRoster(data.attendees, cateringData).attendeeDiets
+        : {};
+    counts.textContent = `${data.attendees.filter((p) => p.arrivedAt).length} arrived / ${data.attendees.filter((p) => p.status === "active").length} active · ${data.attendees.length} total${data.pendingRegistrations ? ` · ${data.pendingRegistrations} source matches need organizer review` : ""}`;
     const term = search.input.value.trim().toLowerCase();
     const visible = data.attendees.filter((p) => {
       const matches =
@@ -368,7 +376,7 @@ function setupList(root: HTMLElement) {
           details,
           el(
             "p",
-            `Diet: ${person.diet || "No answer / not imported"}`,
+            `Diet: ${dinnerDiets[person.id] || person.diet || "No answer / not imported"}`,
             "mt-2 whitespace-pre-wrap text-sm leading-6",
           ),
         );
@@ -399,10 +407,25 @@ function setupList(root: HTMLElement) {
             controls,
             button("Undo arrival", () => void arrive(person, "undo")),
           );
-        append(
-          controls,
-          button("Edit attendee", () => edit(card, person)),
-        );
+        if (person.source === "tito" || person.source === "webropol")
+          append(
+            controls,
+            button("Edit attendee", () => edit(card, person)),
+          );
+        else {
+          const link = el(
+            "a",
+            person.source === "poster"
+              ? "Manage poster proposal"
+              : "Manage volunteer",
+            buttonClass,
+          );
+          link.href =
+            person.source === "poster"
+              ? "/admin/posters/"
+              : "/admin/volunteers/";
+          append(controls, link);
+        }
       }
       append(card, details, controls);
       append(list, card);
@@ -436,6 +459,7 @@ function setupList(root: HTMLElement) {
           id: person.id,
           revision: person.arrivalRevision,
           rosterRevision: data.revision,
+          arrivalId: person.arrivalId,
           action: command,
         });
       } catch (error) {
@@ -496,6 +520,7 @@ function setupList(root: HTMLElement) {
     const type = selectField("Attendee type", [
       ["Attendee", "attendee"],
       ["Sponsor", "sponsor"],
+      ["Organizer", "organizer"],
     ]);
     type.input.value = person.type;
     const badge = field("Include in badge run", "", "checkbox");
@@ -552,7 +577,7 @@ function setupList(root: HTMLElement) {
       el("h2", "01 / Import attendees", "font-headline text-2xl uppercase"),
       el(
         "p",
-        "Import Tito and Webropol separately. Choose Sponsor for a separate Tito sponsor export. Map the attendee email, individual ticket code, and dietary response. Refreshes preserve arrivals and badge choices; missing rows stay in the list. An unmapped diet column keeps earlier dietary responses.",
+        "Accepted poster presenters and volunteers join this list automatically. Import Tito and Webropol separately. Choose Sponsor for a separate Tito sponsor export. Map the attendee email, individual ticket code, and dietary response. Refreshes preserve arrivals and badge choices; missing rows stay in the list. An unmapped diet column keeps earlier dietary responses.",
         "text-sm leading-6",
       ),
     );
@@ -566,6 +591,7 @@ function setupList(root: HTMLElement) {
       ["Keep existing types; new rows are attendees", ""],
       ["Attendee", "attendee"],
       ["Sponsor", "sponsor"],
+      ["Organizer", "organizer"],
     ]);
     const delimiter = selectField("Delimiter", [
       ["Detect automatically", "auto"],
@@ -638,7 +664,9 @@ function setupList(root: HTMLElement) {
         type.input.value ? (type.input.value as AttendeeType) : undefined,
       );
       mergeAttendeeImport(
-        data.attendees,
+        data.attendees.filter(
+          (person) => person.source === "tito" || person.source === "webropol",
+        ),
         source.input.value as "tito" | "webropol",
         imported,
       );

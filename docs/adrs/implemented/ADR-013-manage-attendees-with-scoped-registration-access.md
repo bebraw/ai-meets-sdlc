@@ -47,14 +47,36 @@ Shared dinner responses can match public speakers, organizers or active
 attendees. Provide persistent mappings for aliases, an explicit additional-person
 choice and daytime exclusions. Ambiguous and unmatched responses are marked as
 pending and excluded from the headcount until mapped. Multiple responses mapped
-to one organizer count once; preserve all supplied restrictions. Volunteers and
-guests without a matched or mapped response still need a separate headcount.
+to one organizer count once; preserve all supplied restrictions. Other guests
+without a matched or mapped response still need a separate headcount.
 Copy/download reports include the combined headcount and pending-mapping count.
 Store only identity links in encrypted, separately revisioned roster columns;
 read diets live so dinner updates, purge and retention apply to this view too.
 Reject saves against changed source snapshots or mapping revisions. Disable
 exports when catering sources are unavailable or mapping changes are unsaved.
 Diet responses are omitted from registration staff API responses.
+
+Include accepted poster presenters as attendees and all volunteers as organizers
+in the admin roster, scoped desk list and catering headcount. Build these entries
+live from their canonical workspaces, rather than copying them into imported
+Tito/Webropol data. Repeated proposals and matching tickets share one entry;
+volunteer membership takes the organizer role. Match normalized email first,
+then a unique name. Ambiguous matches need an explicit registration link in
+Catering mappings or an explicit separate-person choice. These identity links
+apply to both registration and catering. Managed entries link to their source
+workspace for editing. Badge selection does not control registration or meals.
+Poster presenters' dinner meal preferences, restrictions and contamination
+concerns join their entry through canonical names or explicit dinner aliases,
+including when their imported ticket name differs. Dinner attendance does not
+change their daytime attendance. Existing cancellations remain cancelled.
+Preserve arrival history through source IDs when a ticket is imported later;
+reject repeated arrivals across those identities. Removing a canonical source
+removes its generated entry while retaining independent ticket registrations.
+Migration 0026 increments the roster revision on relevant canonical changes,
+so outstanding check-in confirmations fail when a volunteer or accepted poster
+changes. Registration identity mapping changes also advance that revision;
+dinner-only dietary mappings leave it unchanged. Desk responses omit dinner
+data, proposal details and volunteer tasks.
 
 Reuse the same diet classification, combined groups, review flags and original
 response rendering on `/admin/dinner/`. Dinner totals include only attending
@@ -130,7 +152,7 @@ digest counts roster and arrival writes without including private values.
 ## Consequences
 
 No new bindings, services, dependencies or secrets are needed. Apply migration
-0023 and 0025 before deployment. The attendee roster is an imported snapshot; it cannot
+0023, 0025 and 0026 before deployment. Imported tickets are snapshots; they cannot
 verify provider refunds or cancellations that have happened since the export.
 Organizers must refresh provider exports before registration opens.
 
