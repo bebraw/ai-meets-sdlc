@@ -630,7 +630,7 @@
     overflow-wrap: break-word;
     font-family: "Finlandica Headline", Georgia, serif;
     font-weight: 900;
-    line-height: 0.84;
+    line-height: 1.04;
     text-wrap: balance;
   }
 
@@ -645,13 +645,11 @@
   .presentation-talk-title.is-long {
     max-width: 23ch;
     font-size: clamp(3rem, 4.65vw, 5.4rem);
-    line-height: 0.9;
   }
 
   .presentation-talk-title.is-dense {
     max-width: 28ch;
     font-size: clamp(2.25rem, 3.55vw, 4.2rem);
-    line-height: 0.94;
   }
 
   .presentation-talk-speakers {

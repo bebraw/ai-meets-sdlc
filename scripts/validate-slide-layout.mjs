@@ -1,10 +1,12 @@
 import { createReadStream } from "node:fs";
 import { stat } from "node:fs/promises";
 import { createServer } from "node:http";
+import os from "node:os";
 import path from "node:path";
 import { chromium } from "playwright";
 import sponsors from "../site/data/sponsors.json" with { type: "json" };
 import schedule from "../site/data/schedule.json" with { type: "json" };
+import { getSlideTitleClassName } from "../site/scripts/slide-title.ts";
 
 const buildDir = path.resolve("build");
 const deckRoute = "/slides/deck/";
@@ -103,6 +105,68 @@ async function waitForPageAssets(page) {
         ),
     );
   });
+}
+
+// Element boxes can fit even when a descender touches the next line's capitals.
+// Measure the actual wrapped lines with the loaded font, including glyph ink.
+function inspectTalkTitle(title) {
+  const errors = [];
+  const style = getComputedStyle(title);
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+  context.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+  const lines = [];
+  const walker = document.createTreeWalker(title, NodeFilter.SHOW_TEXT);
+
+  while (walker.nextNode()) {
+    const node = walker.currentNode;
+    for (let index = 0; index < node.textContent.length; index += 1) {
+      const range = document.createRange();
+      range.setStart(node, index);
+      range.setEnd(node, index + 1);
+      const rect = range.getBoundingClientRect();
+      if (rect.width === 0) continue;
+      let line = lines.find((item) => Math.abs(item.top - rect.top) < 1);
+      if (!line) {
+        line = { top: rect.top, text: "" };
+        lines.push(line);
+      }
+      line.text += node.textContent[index];
+    }
+  }
+
+  lines.sort((a, b) => a.top - b.top);
+  for (let index = 1; index < lines.length; index += 1) {
+    const previous = lines[index - 1];
+    const current = lines[index];
+    const descent = context.measureText(previous.text).actualBoundingBoxDescent;
+    const ascent = context.measureText(current.text).actualBoundingBoxAscent;
+    const gap = current.top - previous.top - descent - ascent;
+    if (gap < 1) {
+      errors.push(
+        `talk title lines ${index} and ${index + 1} have no clear ink gap (${gap.toFixed(1)}px)`,
+      );
+    }
+  }
+
+  const titleRect = title.getBoundingClientRect();
+  const slide = title.closest("[data-presentation-slide]");
+  const headerRect = slide
+    .querySelector(".presentation-header")
+    .getBoundingClientRect();
+  const footerRect = slide
+    .querySelector(".presentation-footer")
+    .getBoundingClientRect();
+  if (
+    titleRect.top < headerRect.bottom - 2 ||
+    titleRect.bottom > footerRect.top + 2
+  ) {
+    errors.push("talk title crosses the header or sponsor footer");
+  }
+  if (title.scrollWidth > title.clientWidth + 2) {
+    errors.push("talk title overflows horizontally");
+  }
+  return { errors, lineCount: lines.length };
 }
 
 async function validateDeck(page, origin, viewport, failures) {
@@ -275,6 +339,21 @@ async function validateDeck(page, origin, viewport, failures) {
       });
     }
 
+    const title = page.locator(
+      ".presentation-slide.is-active .presentation-talk-title",
+    );
+    if (await title.count()) {
+      const { errors } = await title.evaluate(inspectTalkTitle);
+      for (const error of errors) {
+        failures.push({
+          route: deckRoute,
+          slide: result.number,
+          viewport: viewport.name,
+          error,
+        });
+      }
+    }
+
     if (index < slideCount - 1) {
       const nextSlideNumber = String(index + 2);
       await page.keyboard.press("ArrowRight");
@@ -290,6 +369,44 @@ async function validateDeck(page, origin, viewport, failures) {
   }
 
   return slideCount;
+}
+
+async function validateUpdatedTitle(page, origin, viewport, failures) {
+  // Workspace titles override the repository defaults at runtime. Keep the
+  // reported title as a fixture without changing the speaker's source data.
+  const text = "Medical Breakthroughs and Scientific Discoveries";
+  const slideId = await page
+    .locator(".presentation-talk-title")
+    .first()
+    .evaluate(
+      (title) => title.closest("[data-presentation-slide]").dataset.slideId,
+    );
+  await page.goto(`${origin}${deckRoute}?slideId=${slideId}`);
+  await waitForPageAssets(page);
+  const title = page.locator(
+    ".presentation-slide.is-active .presentation-talk-title",
+  );
+  await title.evaluate(
+    (element, fixture) => {
+      element.textContent = fixture.text;
+      element.className = fixture.className;
+    },
+    { text, className: getSlideTitleClassName(text) },
+  );
+  const result = await title.evaluate(inspectTalkTitle);
+  await page.screenshot({
+    path: path.join(os.tmpdir(), `sdlcai-updated-title-${viewport.name}.png`),
+  });
+  if (result.lineCount < 2)
+    result.errors.push("title fixture must wrap onto multiple lines");
+  for (const error of result.errors) {
+    failures.push({
+      route: deckRoute,
+      slide: "updated-title",
+      viewport: viewport.name,
+      error,
+    });
+  }
 }
 
 async function validateSchedule(page, origin, failures) {
@@ -414,6 +531,7 @@ async function main() {
 
       try {
         checkedSlides += await validateDeck(page, origin, viewport, failures);
+        await validateUpdatedTitle(page, origin, viewport, failures);
       } finally {
         await context.close();
       }
@@ -445,7 +563,7 @@ async function main() {
   }
 
   console.log(
-    `Validated ${checkedSlides} deck renders and the complete daily schedule.`,
+    `Validated ${checkedSlides} deck renders, ${deckViewports.length} updated-title renders, and the complete daily schedule.`,
   );
 }
 
