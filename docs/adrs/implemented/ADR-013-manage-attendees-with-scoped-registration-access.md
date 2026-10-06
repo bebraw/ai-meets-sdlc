@@ -56,6 +56,16 @@ Reject saves against changed source snapshots or mapping revisions. Disable
 exports when catering sources are unavailable or mapping changes are unsaved.
 Diet responses are omitted from registration staff API responses.
 
+Reuse the same diet classification, combined groups, review flags and original
+response rendering on `/admin/dinner/`. Dinner totals include only attending
+speaker and guest responses, including attendance recorded by organizers, and
+match the individual caterer CSV. Show structured meal preferences and separate
+counts for cross-contamination concerns and unsure answers. Filters do not alter
+the totals. Copy/download summaries use the dinner date and omit identities;
+keep missing dietary answers distinct from explicit no restrictions. Failed
+loads disable export until refreshed. Both catering views share the response
+adapter, group renderer and requirement export text.
+
 Model sponsors as an attendee type within the same encrypted roster and Tito
 source. The import type selector can classify a separate sponsor CSV or update
 matching registrations; its default preserves existing types and creates new

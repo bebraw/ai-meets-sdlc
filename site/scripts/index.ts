@@ -1253,6 +1253,22 @@ function initAdminSpeakerDinner() {
   let loadedOrganizers: DinnerAdminResponse[] = [];
   let attendanceSaving = false;
   let followSpeakerAnchor = true;
+  const cateringRoot = document.querySelector<HTMLElement>(
+    "[data-admin-dinner-catering]",
+  );
+  const catering = cateringRoot
+    ? import("./dinner-catering.ts")
+        .then(({ createDinnerCateringPanel }) => {
+          const panel = createDinnerCateringPanel();
+          cateringRoot.replaceChildren(panel.panel);
+          return panel;
+        })
+        .catch(() => {
+          cateringRoot.textContent =
+            "Catering summary could not load. Refresh the page to try again.";
+          return undefined;
+        })
+    : Promise.resolve(undefined);
 
   function renderFilteredResponses() {
     const matches = (guest: DinnerAdminResponse) =>
@@ -1499,6 +1515,7 @@ function initAdminSpeakerDinner() {
 
   function lockAttendance(value: boolean) {
     attendanceSaving = value;
+    void catering.then((panel) => panel?.setBusy(value));
     for (const control of root.querySelectorAll("button,select"))
       if (
         control instanceof HTMLButtonElement ||
@@ -1614,6 +1631,8 @@ function initAdminSpeakerDinner() {
   }
 
   async function loadSpeakers(successMessage?: string) {
+    const dinnerCatering = await catering;
+    dinnerCatering?.setBusy(true);
     refreshButton?.setAttribute("disabled", "true");
     if (!successMessage) setStatus("Loading dinner responses...");
 
@@ -1647,6 +1666,7 @@ function initAdminSpeakerDinner() {
             ?.scrollIntoView({ block: "center" });
       }
       updateSummary(speakers, organizers);
+      dinnerCatering?.render([...speakers, ...organizers]);
       updateInviteState(
         Boolean(payload.shared_invite_active),
         payload.shared_invite_url,
@@ -1659,6 +1679,11 @@ function initAdminSpeakerDinner() {
           `${responseCount} of ${speakers.length} speakers have attendance recorded. ${organizers.length} other ${organizers.length === 1 ? "guest" : "guests"}.`,
       );
     } catch (error) {
+      dinnerCatering?.unavailable(
+        error instanceof Error
+          ? error.message
+          : "Dinner responses could not load.",
+      );
       root.replaceChildren(
         createElement(
           "p",
@@ -1670,6 +1695,7 @@ function initAdminSpeakerDinner() {
       if (createInviteButton) createInviteButton.disabled = true;
       setStatus("Failed to load");
     } finally {
+      dinnerCatering?.setBusy(attendanceSaving);
       refreshButton?.removeAttribute("disabled");
     }
   }

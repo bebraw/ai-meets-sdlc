@@ -1,6 +1,7 @@
 import * as v from "valibot";
 import { classifyDiet } from "./attendee-diets.ts";
 import type { AttendeeRecord } from "./attendee-model.ts";
+export { dinnerDiet } from "./dinner-diets.ts";
 
 export interface CateringSource {
   id: string;
@@ -41,38 +42,6 @@ export function parseCateringMappings(value: unknown): CateringMapping[] {
   if (new Set(mappings.map((item) => item.sourceId)).size !== mappings.length)
     throw new Error("Each dinner response can only be mapped once.");
   return mappings;
-}
-
-interface DinnerDiet {
-  meal_preference: "" | "omnivore" | "vegetarian" | "vegan" | "other";
-  food_requirements: string;
-  cross_contamination: "" | "yes" | "no" | "unsure";
-}
-
-/** Dinner attendance is independent of daytime catering. Keep the original food notes. */
-export function dinnerDiet(response: DinnerDiet | null): string | undefined {
-  if (!response) return undefined;
-  const parts: string[] = [];
-  if (["vegan", "vegetarian"].includes(response.meal_preference))
-    parts.push(response.meal_preference);
-  const requirements = response.food_requirements.trim();
-  if (requirements && classifyDiet(requirements).response === "requirements")
-    parts.push(requirements);
-  if (response.cross_contamination === "yes")
-    parts.push("Cross-contamination is a concern.");
-  if (response.cross_contamination === "unsure")
-    parts.push("Cross-contamination: unsure.");
-  if (parts.length) return parts.join("; ");
-  if (response.meal_preference === "other")
-    return requirements || "Other meal preference; details not supplied.";
-  if (
-    response.meal_preference === "omnivore" &&
-    response.cross_contamination === "no"
-  )
-    return classifyDiet(requirements).response === "none"
-      ? requirements
-      : "No restrictions";
-  return requirements || undefined;
 }
 
 const nameKey = (value: string) =>

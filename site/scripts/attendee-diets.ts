@@ -210,6 +210,12 @@ export function cateringSummaryText(
     "Counts include active registrations, speakers, and mapped dinner guests, regardless of arrivals or dinner attendance. Blank answers and placeholders are not confirmation of no restrictions.",
     "Speaker dinner diets and mapped organizer/guest responses are included. Exact email or unique name matches count once. Volunteers and other guests without a mapped response must be added separately.",
     "",
+    ...dietRequirementsText(summary),
+  ].join("\n");
+}
+
+export function dietRequirementsText(summary: CateringSummary): string[] {
+  return [
     "REQUIREMENT COUNTS",
     "Counts overlap: one person may have several requirements. Do not add these counts to calculate meals.",
     "Recognized categories can include alternatives. Check REVIEW groups before choosing meals.",
@@ -229,5 +235,5 @@ export function cateringSummaryText(
       "",
     ]),
     ...(summary.groups.length ? [] : ["No dietary requirements reported.", ""]),
-  ].join("\n");
+  ];
 }
