@@ -212,6 +212,25 @@ async function main() {
               timeout: pageTimeoutMs,
             });
             debug("loaded", route, viewport.name, `${Date.now() - started}ms`);
+            // Hydration can enable controls while their disabled opacity is
+            // still transitioning. Audit their settled appearance, including
+            // the fonts and finite animations that affect rendered contrast.
+            await withTimeout(
+              page.evaluate(async () => {
+                await document.fonts.ready;
+                const animations = document
+                  .getAnimations()
+                  .filter(
+                    (animation) =>
+                      animation.effect?.getTiming().iterations !== Infinity,
+                  );
+                await Promise.allSettled(
+                  animations.map((animation) => animation.finished),
+                );
+              }),
+              pageTimeoutMs,
+              `Timed out waiting for rendering at ${route} on ${viewport.name}`,
+            );
             await page.addScriptTag({ content: axeSource });
             debug(
               "injected axe",
