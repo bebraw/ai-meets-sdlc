@@ -133,10 +133,10 @@ test("catering export includes original notes and coverage without attaching reg
   );
   assert.match(text, /Active registrations: 1/);
   assert.match(text, /Cancelled registrations excluded: 1/);
-  assert.match(text, /1 registration - Allergy declared \[REVIEW\]/);
+  assert.match(text, /1 person - Allergy declared \[REVIEW\]/);
   assert.match(text, /1 x Allergic to raw apple, pear, kiwi & banana/);
   assert.match(text, /Counts overlap/);
-  assert.match(text, /Speakers, volunteers/);
+  assert.match(text, /Speaker dinner diets and mapped organizer/);
   assert.doesNotMatch(
     text,
     /Private Name|private@example|SECRET|Cancelled person's allergy/,

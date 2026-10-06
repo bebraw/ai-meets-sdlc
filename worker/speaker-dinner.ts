@@ -85,6 +85,7 @@ interface SpeakerDinnerSharedResponseRow {
 }
 
 interface SpeakerDinnerSharedAdminItem {
+  response_id: string;
   source?: "admin";
   name: string;
   responded_at: string;
@@ -921,6 +922,7 @@ async function decryptSpeakerDinnerSharedResponse(
   }
 
   return {
+    response_id: row.response_id,
     name,
     responded_at: row.responded_at,
     response: candidate,

@@ -128,6 +128,18 @@ try {
       .locator("dd")
       .textContent();
   assert.equal(await cateringCount("Active registrations"), "2");
+  const sourceResponse = await adminContext.request.get(
+    `${origin}/api/admin/attendees/catering`,
+  );
+  assert.equal(sourceResponse.status(), 200);
+  const sourceData = await sourceResponse.json();
+  const speakerHeadcount = sourceData.sources.filter(
+    (source) => source.kind === "speaker",
+  ).length;
+  assert.equal(
+    await cateringCount("Catering headcount"),
+    String(speakerHeadcount + 2),
+  );
   assert.equal(await cateringCount("Requirements reported"), "2");
   assert.equal(await catering.locator('[data-diet-review="true"]').count(), 1);
   await catering
@@ -490,7 +502,95 @@ try {
     .getByText("Arrival undone for Zoë Åström.", { exact: true })
     .waitFor();
 
+  // A dinner alias is linked to an organizer without adding a registration row.
+  const dinnerForm = new URLSearchParams();
+  for (const [key, value] of Object.entries({
+    name: "Organizer browser alias",
+    attendance: "attending",
+    meal_preference: "vegetarian",
+    food_requirements: "Gluten free",
+    cross_contamination: "no",
+    consent: "yes",
+  }))
+    dinnerForm.set(key, value);
+  const guestSave = await fixture.worker.fetch(
+    "https://sdlcai.org/api/admin/speaker-dinner/guests",
+    {
+      method: "POST",
+      headers: {
+        authorization: receiptAdmin,
+        origin: "https://sdlcai.org",
+        "x-admin-action": "add-dinner-guest",
+        "content-type": "application/x-www-form-urlencoded",
+      },
+      body: dinnerForm.toString(),
+    },
+  );
+  assert.equal(guestSave.status, 200);
+  await reload.click();
+  await admin.getByText("Registrations updated.", { exact: true }).waitFor();
+  await catering.getByText(/1 dinner response needs mapping/).waitFor();
+  await catering.locator("summary").click();
+  const mapping = catering.getByLabel(
+    "Catering mapping for Organizer browser alias",
+    { exact: true },
+  );
+  const organizerId = sourceData.organizers[0].id;
+  await mapping.selectOption(`organizer:${organizerId}`);
+  assert.equal(
+    await catering
+      .getByRole("button", { name: "Copy catering summary", exact: true })
+      .isDisabled(),
+    true,
+  );
+  assert.equal(
+    await admin.evaluate(
+      () =>
+        !window.dispatchEvent(new Event("beforeunload", { cancelable: true })),
+    ),
+    true,
+  );
+  await catering
+    .getByRole("button", { name: "Save dinner mappings", exact: true })
+    .click();
+  await catering.getByText("Dinner mappings saved.", { exact: true }).waitFor();
+  assert.equal(
+    await cateringCount("Catering headcount"),
+    String(speakerHeadcount + 3),
+  );
+  await admin.reload();
+  await admin.getByText(/Registrations loaded/).waitFor();
+  await catering.locator("summary").click();
+  assert.equal(await mapping.inputValue(), `organizer:${organizerId}`);
+  assert.equal(
+    await cateringCount("Catering headcount"),
+    String(speakerHeadcount + 3),
+  );
+  await catering.locator("summary").click();
+  const failCatering = (route) =>
+    route.fulfill({
+      status: 503,
+      contentType: "application/json",
+      body: JSON.stringify({ error: "Temporary catering outage" }),
+    });
+  await admin.route("**/api/admin/attendees/catering", failCatering);
+  await reload.click();
+  await catering
+    .getByText("Temporary catering outage", { exact: true })
+    .waitFor();
+  assert.equal(
+    await catering
+      .getByRole("button", { name: "Download catering summary", exact: true })
+      .isDisabled(),
+    true,
+  );
+  assert.equal(await admin.locator("[data-attendee-id]").count(), 3);
+  await admin.unroute("**/api/admin/attendees/catering", failCatering);
+  await reload.click();
+  await admin.getByText("Registrations updated.", { exact: true }).waitFor();
+
   const axeSource = await readFile("node_modules/axe-core/axe.min.js", "utf8");
+  await catering.locator("summary").click();
   for (const page of [admin, staff]) {
     for (const viewport of [
       { width: 390, height: 844 },
@@ -529,6 +629,16 @@ try {
       assert.deepEqual(violations, [], `Accessibility at ${page.url()}`);
     }
   }
+  await catering
+    .locator("[data-catering-source]")
+    .filter({
+      has: admin.getByRole("heading", {
+        name: "Organizer browser alias",
+        exact: true,
+      }),
+    })
+    .screenshot({ path: "/private/tmp/sdlcai-catering-organizer-mapping.png" });
+  await catering.locator("summary").click();
   await admin.screenshot({
     path: "/private/tmp/sdlcai-attendees-admin.png",
     fullPage: true,

@@ -4,6 +4,7 @@ export { QaRoom } from "./qa-room.ts";
 export { QaUpdates } from "./qa-updates.ts";
 import { handleBadgeWorkspace } from "./badge-workspace.ts";
 import { handleAttendeesRequest } from "./attendees.ts";
+import { handleAttendeeCatering } from "./attendee-catering.ts";
 import {
   sendPosterReviewDigest,
   sendDataChangeDigest,
@@ -191,6 +192,8 @@ const innerHandler = {
 
     const attendeeResponse = await handleAttendeesRequest(request, env);
     if (attendeeResponse) return attendeeResponse;
+    if (url.pathname === "/api/admin/attendees/catering")
+      return handleAttendeeCatering(request, env);
 
     const qaResponse = await handleQaRequest(request, env);
     if (qaResponse) return qaResponse;

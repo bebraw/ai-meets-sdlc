@@ -22,6 +22,7 @@ import {
   type RegistrationGrant,
 } from "./attendee-model.ts";
 import { createAttendeeCateringPanel } from "./attendee-catering.ts";
+import type { CateringData } from "./attendee-catering-model.ts";
 
 const action = "manage-attendees";
 async function api<T>(
@@ -128,7 +129,19 @@ function setupList(root: HTMLElement) {
     { form: HTMLFormElement; revision: number; original: string }
   >();
   let signOut: HTMLButtonElement | undefined;
-  const catering = admin ? createAttendeeCateringPanel() : undefined;
+  let cateringData: CateringData | undefined;
+  let cateringError = "";
+  const catering = admin
+    ? createAttendeeCateringPanel(async (mappings, revision, version) => {
+        await api(
+          "/api/admin/attendees/catering",
+          "manage-attendee-catering",
+          "PUT",
+          { mappings, revision, version },
+        );
+        await load();
+      })
+    : undefined;
   const status = el(
     "p",
     "Loading registrations…",
@@ -243,6 +256,7 @@ function setupList(root: HTMLElement) {
     });
     reload.disabled = value;
     if (signOut) signOut.disabled = value;
+    catering?.setBusy(value || !loaded);
   }
   function editSource(person: Attendee): string {
     return JSON.stringify([
@@ -259,8 +273,24 @@ function setupList(root: HTMLElement) {
     ]);
   }
   async function load() {
-    const next = await api<AttendeeList>(endpoint, action);
-    const changed = !loaded || JSON.stringify(next) !== JSON.stringify(data);
+    const [next, nextCatering] = await Promise.all([
+      api<AttendeeList>(endpoint, action),
+      admin
+        ? api<CateringData>(
+            "/api/admin/attendees/catering",
+            "manage-attendee-catering",
+          ).catch((error: unknown) => {
+            cateringError = message(error);
+            return undefined;
+          })
+        : undefined,
+    ]);
+    const changed =
+      !loaded ||
+      JSON.stringify([next, nextCatering]) !==
+        JSON.stringify([data, cateringData]);
+    cateringData = nextCatering;
+    if (nextCatering) cateringError = "";
     for (const person of next.attendees) {
       const draft = drafts.get(person.id);
       // Only advance a draft past unrelated writes; changed attendee details
@@ -273,7 +303,7 @@ function setupList(root: HTMLElement) {
     if (changed) render();
   }
   function render() {
-    catering?.render(data.attendees);
+    catering?.render(data.attendees, cateringData, cateringError);
     counts.textContent = `${data.attendees.filter((p) => p.arrivedAt).length} arrived / ${data.attendees.filter((p) => p.status === "active").length} active · ${data.attendees.length} total`;
     const term = search.input.value.trim().toLowerCase();
     const visible = data.attendees.filter((p) => {
@@ -807,13 +837,20 @@ function setupList(root: HTMLElement) {
       "Registrations loaded. Changes and arrivals are saved immediately.";
   });
   setInterval(() => {
-    if (busy || drafts.size || document.hidden || !loaded) return;
+    if (
+      busy ||
+      drafts.size ||
+      catering?.hasDrafts() ||
+      document.hidden ||
+      !loaded
+    )
+      return;
     void work(async () => {
       await load();
     });
   }, 15000);
   window.addEventListener("beforeunload", (event) => {
-    if (!drafts.size) return;
+    if (!drafts.size && !catering?.hasDrafts()) return;
     event.preventDefault();
     event.returnValue = "";
   });

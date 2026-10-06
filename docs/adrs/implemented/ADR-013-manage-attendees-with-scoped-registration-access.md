@@ -36,8 +36,24 @@ wording and alternatives for review. Distinguish missing answers from explicit
 no restrictions. Category counts overlap; combined groups count each response
 once. Copy or download a text summary containing counts and original responses
 without attaching attendee identities. The full roster determines totals,
-regardless of filters or arrivals. Cancelled registrations are excluded; speakers,
-volunteers and guests outside the attendee roster need a separate headcount.
+regardless of filters or arrivals. Cancelled registrations are excluded. Include
+public speakers automatically and read their meal preferences, food requirements
+and cross-contamination concerns from live dinner responses. Dinner attendance
+does not determine daytime catering attendance; private test speakers are not
+added automatically. Combine dietary responses with exact email or unique name
+matches to active registrations, without modifying the imported roster.
+
+Shared dinner responses can match public speakers, organizers or active
+attendees. Provide persistent mappings for aliases, an explicit additional-person
+choice and daytime exclusions. Ambiguous and unmatched responses are marked as
+pending and excluded from the headcount until mapped. Multiple responses mapped
+to one organizer count once; preserve all supplied restrictions. Volunteers and
+guests without a matched or mapped response still need a separate headcount.
+Copy/download reports include the combined headcount and pending-mapping count.
+Store only identity links in encrypted, separately revisioned roster columns;
+read diets live so dinner updates, purge and retention apply to this view too.
+Reject saves against changed source snapshots or mapping revisions. Disable
+exports when catering sources are unavailable or mapping changes are unsaved.
 Diet responses are omitted from registration staff API responses.
 
 Model sponsors as an attendee type within the same encrypted roster and Tito
@@ -104,7 +120,7 @@ digest counts roster and arrival writes without including private values.
 ## Consequences
 
 No new bindings, services, dependencies or secrets are needed. Apply migration
-0023 before deployment. The attendee roster is an imported snapshot; it cannot
+0023 and 0025 before deployment. The attendee roster is an imported snapshot; it cannot
 verify provider refunds or cancellations that have happened since the export.
 Organizers must refresh provider exports before registration opens.
 
