@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import { access, readFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import path from "node:path";
 import { chromium } from "playwright";
 import {
   createReceiptFixture,
@@ -645,23 +647,25 @@ try {
         exact: true,
       }),
     })
-    .screenshot({ path: "/private/tmp/sdlcai-catering-organizer-mapping.png" });
+    .screenshot({
+      path: path.join(tmpdir(), "sdlcai-catering-organizer-mapping.png"),
+    });
   await catering.locator("summary").click();
   await admin.screenshot({
-    path: "/private/tmp/sdlcai-attendees-admin.png",
+    path: path.join(tmpdir(), "sdlcai-attendees-admin.png"),
     fullPage: true,
   });
   await catering.screenshot({
-    path: "/private/tmp/sdlcai-attendee-catering.png",
+    path: path.join(tmpdir(), "sdlcai-attendee-catering.png"),
   });
   await admin.setViewportSize({ width: 390, height: 844 });
   await catering.screenshot({
-    path: "/private/tmp/sdlcai-attendee-catering-mobile.png",
+    path: path.join(tmpdir(), "sdlcai-attendee-catering-mobile.png"),
   });
   await admin.setViewportSize({ width: 1440, height: 1000 });
   await staff.setViewportSize({ width: 390, height: 844 });
   await staff.screenshot({
-    path: "/private/tmp/sdlcai-registration-mobile.png",
+    path: path.join(tmpdir(), "sdlcai-registration-mobile.png"),
     fullPage: true,
   });
   await admin.goto(`${origin}/admin/badges/`);
@@ -898,7 +902,7 @@ try {
     .click();
   await admin
     .locator(".badge-preview")
-    .screenshot({ path: "/private/tmp/sdlcai-sponsor-badge.png" });
+    .screenshot({ path: path.join(tmpdir(), "sdlcai-sponsor-badge.png") });
   await admin.evaluate(() => {
     window.print = () => {
       window.__sponsorPrinted = true;
@@ -918,7 +922,7 @@ try {
     (await printedBadge.locator("text").allTextContents()).includes("SPONSOR"),
   );
   const sponsorPdf = await admin.pdf({
-    path: "/private/tmp/sdlcai-sponsor-badge.pdf",
+    path: path.join(tmpdir(), "sdlcai-sponsor-badge.pdf"),
     preferCSSPageSize: true,
     printBackground: true,
   });
@@ -1070,7 +1074,7 @@ try {
     [],
   );
   await staff.screenshot({
-    path: "/private/tmp/sdlcai-canonical-registration-mobile.png",
+    path: path.join(tmpdir(), "sdlcai-canonical-registration-mobile.png"),
     fullPage: true,
   });
   await admin
@@ -1082,7 +1086,7 @@ try {
     .getByText(/Diet from dinner: vegan; Sesame allergy/)
     .waitFor();
   await admin.screenshot({
-    path: "/private/tmp/sdlcai-canonical-attendees.png",
+    path: path.join(tmpdir(), "sdlcai-canonical-attendees.png"),
     fullPage: true,
   });
   assert.deepEqual(errors, []);

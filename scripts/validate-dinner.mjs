@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import { access, readFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import path from "node:path";
 import { chromium } from "playwright";
 import {
   createReceiptFixture,
@@ -333,10 +335,10 @@ try {
     );
     assert.deepEqual(violations, []);
     await mo.screenshot({
-      path: `/private/tmp/sdlcai-dinner-${viewport.width}.png`,
+      path: path.join(tmpdir(), `sdlcai-dinner-${viewport.width}.png`),
     });
     await catering.screenshot({
-      path: `/private/tmp/sdlcai-dinner-catering-${viewport.width}.png`,
+      path: path.join(tmpdir(), `sdlcai-dinner-catering-${viewport.width}.png`),
     });
   }
   await page.goto(origin + "/admin/speakers/");

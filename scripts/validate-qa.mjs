@@ -185,10 +185,12 @@ try {
   await mc.getByRole("button", { name: "Put on screen", exact: true }).click();
   await screen.getByText(question, { exact: true }).waitFor();
   await attendee.screenshot({
-    path: "/private/tmp/sdlcai-qa-mobile.png",
+    path: path.join(tmpdir(), "sdlcai-qa-mobile.png"),
     fullPage: true,
   });
-  await screen.screenshot({ path: "/private/tmp/sdlcai-qa-screen.png" });
+  await screen.screenshot({
+    path: path.join(tmpdir(), "sdlcai-qa-screen.png"),
+  });
   // A saved POST must get a fresh submission identity even if its follow-up
   // HTML refresh fails, so the next question is not mistaken for a retry.
   await attendee.route("**/qa/", (route) =>
