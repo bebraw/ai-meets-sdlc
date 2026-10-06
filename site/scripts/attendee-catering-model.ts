@@ -1,5 +1,5 @@
 import * as v from "valibot";
-import { classifyDiet } from "./attendee-diets.ts";
+import { classifyDiet, summarizeAttendeeDiets } from "./attendee-diets.ts";
 import type { AttendeeRecord } from "./attendee-model.ts";
 export { dinnerDiet } from "./dinner-diets.ts";
 
@@ -19,6 +19,7 @@ export interface CateringData {
   revision: number;
   version: string;
   mappings: CateringMapping[];
+  reservedMeals?: number;
   sources: CateringSource[];
   organizers: { id: string; name: string }[];
 }
@@ -43,6 +44,29 @@ export function parseCateringMappings(value: unknown): CateringMapping[] {
   if (new Set(mappings.map((item) => item.sourceId)).size !== mappings.length)
     throw new Error("Each catering source can only be mapped once.");
   return mappings;
+}
+export const maxReservedMeals = 2000;
+const reservedMealsSchema = v.pipe(
+  v.number(),
+  v.integer(),
+  v.minValue(0),
+  v.maxValue(maxReservedMeals),
+);
+export function parseCateringPreferences(value: unknown): {
+  mappings: CateringMapping[];
+  reservedMeals: number;
+} {
+  const saved = v.parse(
+    v.object({
+      mappings: v.unknown(),
+      reservedMeals: v.optional(reservedMealsSchema, 0),
+    }),
+    value,
+  );
+  return {
+    mappings: parseCateringMappings(saved.mappings),
+    reservedMeals: saved.reservedMeals,
+  };
 }
 
 const nameKey = (value: string) =>
@@ -72,6 +96,18 @@ export interface CateringRoster {
   pending: number;
   attendeeDiets: Record<string, string | undefined>;
   rows: { source: CateringSource; target: string | null; label: string }[];
+}
+export function summarizeCateringPlan(
+  roster: CateringRoster,
+  reservedMeals = 0,
+) {
+  const reserve = v.parse(reservedMealsSchema, reservedMeals);
+  const summary = summarizeAttendeeDiets(roster.people);
+  return {
+    ...summary,
+    active: summary.active + reserve,
+    missing: summary.missing + reserve,
+  };
 }
 
 export function buildCateringRoster(

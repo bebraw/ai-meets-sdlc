@@ -1098,6 +1098,65 @@ try {
     path: path.join(tmpdir(), "sdlcai-canonical-attendees.png"),
     fullPage: true,
   });
+  const headcountBeforeReserve = Number(
+    await cateringCount("Catering headcount"),
+  );
+  const registrationsBeforeReserve = await cateringCount(
+    "Active registrations",
+  );
+  const reserve = catering.getByLabel("Reserved meals", { exact: true });
+  await reserve.fill("13");
+  assert.equal(
+    await catering
+      .getByRole("button", { name: "Copy catering summary", exact: true })
+      .isDisabled(),
+    true,
+  );
+  await reload.click();
+  await admin.getByText("Registrations updated.", { exact: true }).waitFor();
+  assert.equal(
+    await reserve.inputValue(),
+    "13",
+    "Reload preserves the unsaved meal reserve",
+  );
+  await catering
+    .getByRole("button", { name: "Save reserved meals", exact: true })
+    .click();
+  await catering.getByText("Reserved meals saved.", { exact: true }).waitFor();
+  assert.equal(
+    await cateringCount("Catering headcount"),
+    String(headcountBeforeReserve + 13),
+  );
+  assert.equal(
+    await cateringCount("Active registrations"),
+    registrationsBeforeReserve,
+  );
+  await admin.reload();
+  await admin.getByText(/Registrations loaded/).waitFor();
+  assert.equal(await reserve.inputValue(), "13");
+  assert.equal(
+    await cateringCount("Catering headcount"),
+    String(headcountBeforeReserve + 13),
+  );
+  await catering
+    .getByRole("button", { name: "Copy catering summary", exact: true })
+    .click();
+  await catering
+    .getByText("Catering summary copied.", { exact: true })
+    .waitFor();
+  assert.match(
+    await admin.evaluate(() => navigator.clipboard.readText()),
+    /Reserved meals for unassigned tickets and other guests: 13/u,
+  );
+  await reserve.fill("0");
+  await catering
+    .getByRole("button", { name: "Save reserved meals", exact: true })
+    .click();
+  await catering.getByText("Reserved meals saved.", { exact: true }).waitFor();
+  assert.equal(
+    await cateringCount("Catering headcount"),
+    String(headcountBeforeReserve),
+  );
   assert.deepEqual(errors, []);
   console.log(
     "Attendee browser check passed: canonical poster and volunteer registration/check-in, organizer roles, poster dinner restrictions, Tito/Webropol diet imports, separate sponsor imports, type filtering/editing, sponsor badges/PDF output, catering groups, copy/download, multiline diet edits, filter-independent totals, organizer-only diets, load recovery, preserved edit drafts, concurrent corrections, source refresh, scoped staff access, exact ticket lookup, arrivals, cancellation, undo, badge seeding, sign-out/reuse, revocation, mobile layout and accessibility.",

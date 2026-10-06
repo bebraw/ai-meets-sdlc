@@ -1,12 +1,11 @@
-import { append, button, el, message } from "./admin-toolkit.ts";
-import {
-  cateringSummaryText,
-  summarizeAttendeeDiets,
-} from "./attendee-diets.ts";
+import { append, button, el, field, message } from "./admin-toolkit.ts";
+import { cateringSummaryText } from "./attendee-diets.ts";
 import type { Attendee } from "./attendee-model.ts";
 import { appendDietDetails } from "./catering-summary.ts";
 import {
   buildCateringRoster,
+  maxReservedMeals,
+  summarizeCateringPlan,
   type CateringData,
   type CateringMapping,
 } from "./attendee-catering-model.ts";
@@ -16,6 +15,7 @@ export function createAttendeeCateringPanel(
     mappings: CateringMapping[],
     revision: number,
     version: string,
+    reservedMeals: number,
   ) => Promise<void>,
 ) {
   const panel = el("section", "", "my-8 border border-ink p-5 md:p-7");
@@ -58,7 +58,30 @@ export function createAttendeeCateringPanel(
   let saving = false;
   let mappingSignature = "";
   const drafts = new Map<string, string>();
+  let reservedDraft: string | undefined;
   let draftRevision: { revision: number; version: string } | undefined;
+  const reservePanel = el(
+    "div",
+    "",
+    "mt-6 grid gap-3 border border-ink/40 p-4",
+  );
+  const reserve = field("Reserved meals", "0", "number");
+  reserve.input.min = "0";
+  reserve.input.max = String(maxReservedMeals);
+  reserve.input.step = "1";
+  reserve.input.required = true;
+  reserve.input.disabled = true;
+  reserve.input.addEventListener("input", () => {
+    if (!cateringData) return;
+    draftRevision ??= {
+      revision: cateringData.revision,
+      version: cateringData.version,
+    };
+    reservedDraft = reserve.input.value;
+    status.textContent =
+      "Meal reserve changes are unsaved. Save or discard them before exporting.";
+    updateControls();
+  });
   const mappingsRoot = el("details", "", "mt-8 border-t border-ink/20 pt-5");
   const mappingTitle = el(
     "summary",
@@ -68,6 +91,10 @@ export function createAttendeeCateringPanel(
   const mappingRows = el("div", "", "mt-4 grid gap-3 lg:grid-cols-2");
   const save = button("Save catering mappings", () => {
     if (!cateringData || !draftRevision || saving) return;
+    if (!reserve.input.checkValidity()) {
+      reserve.input.reportValidity();
+      return;
+    }
     const base = new Map(
       cateringData.mappings
         .filter((item) =>
@@ -80,19 +107,27 @@ export function createAttendeeCateringPanel(
       else base.delete(sourceId);
     }
     const revision = draftRevision;
+    const reservedMeals = Number(
+      reservedDraft ?? cateringData.reservedMeals ?? 0,
+    );
+    const reserveChanged = reservedDraft !== undefined;
     saving = true;
     updateControls();
     void saveMappings(
       [...base].map(([sourceId, target]) => ({ sourceId, target })),
       revision.revision,
       revision.version,
+      reservedMeals,
     )
       .then(() => {
         drafts.clear();
+        reservedDraft = undefined;
         draftRevision = undefined;
         mappingSignature = "";
         render(attendees, cateringData, loadError);
-        status.textContent = "Catering mappings saved.";
+        status.textContent = reserveChanged
+          ? "Reserved meals saved."
+          : "Catering mappings saved.";
       })
       .catch((error: unknown) => {
         status.textContent = message(error);
@@ -104,11 +139,31 @@ export function createAttendeeCateringPanel(
   });
   const discard = button("Discard mapping changes", () => {
     drafts.clear();
-    draftRevision = undefined;
+    if (reservedDraft === undefined) draftRevision = undefined;
     mappingSignature = "";
     render(attendees, cateringData, loadError);
     status.textContent = "Unsaved mapping changes discarded.";
   });
+  const saveReserve = button("Save reserved meals", () => save.click());
+  const discardReserve = button("Discard reserved meal changes", () => {
+    reservedDraft = undefined;
+    if (!drafts.size) draftRevision = undefined;
+    render(attendees, cateringData, loadError);
+    status.textContent = "Unsaved meal reserve changes discarded.";
+  });
+  const reserveActions = el("div", "", "flex flex-wrap gap-3");
+  append(reserveActions, saveReserve, discardReserve);
+  append(
+    reservePanel,
+    el("h3", "Meal reserve", "text-lg font-bold uppercase"),
+    el(
+      "p",
+      "Reserve meals for unassigned tickets or additional guests. These meals have no dietary answers. Reduce the reserve as ticket holders join the named attendee list. Spare badge quantity is managed separately in Badge studio.",
+      "max-w-3xl text-sm leading-6 text-muted",
+    ),
+    reserve.label,
+    reserveActions,
+  );
   append(
     mappingsRoot,
     mappingTitle,
@@ -125,7 +180,7 @@ export function createAttendeeCateringPanel(
   const roster = () => buildCateringRoster(attendees, cateringData!);
   const report = () =>
     cateringSummaryText(
-      summarizeAttendeeDiets(roster().people),
+      summarizeCateringPlan(roster(), cateringData?.reservedMeals ?? 0),
       new Intl.DateTimeFormat("en-GB", {
         timeZone: "Europe/Helsinki",
         dateStyle: "medium",
@@ -136,6 +191,7 @@ export function createAttendeeCateringPanel(
           .length,
         additional: roster().additional,
         pending: roster().pending,
+        reservedMeals: cateringData?.reservedMeals ?? 0,
       },
     );
   const copy = button("Copy catering summary", () => {
@@ -171,13 +227,31 @@ export function createAttendeeCateringPanel(
   copy.disabled = true;
   download.disabled = true;
   append(actions, copy, download);
-  append(panel, content, mappingsRoot, actions, status, fallback);
+  append(panel, reservePanel, content, mappingsRoot, actions, status, fallback);
 
   function updateControls(): void {
+    reserve.input.disabled = locked || saving || !cateringData;
     copy.disabled = download.disabled =
-      locked || saving || !cateringData || drafts.size > 0;
-    save.disabled = discard.disabled =
-      locked || saving || !drafts.size || !cateringData;
+      locked ||
+      saving ||
+      !cateringData ||
+      drafts.size > 0 ||
+      reservedDraft !== undefined;
+    save.disabled =
+      locked ||
+      saving ||
+      (!drafts.size && reservedDraft === undefined) ||
+      !cateringData ||
+      !reserve.input.checkValidity();
+    discard.disabled = locked || saving || !drafts.size || !cateringData;
+    saveReserve.disabled =
+      locked ||
+      saving ||
+      !cateringData ||
+      reservedDraft === undefined ||
+      !reserve.input.checkValidity();
+    discardReserve.disabled =
+      locked || saving || !cateringData || reservedDraft === undefined;
     mappingRows.querySelectorAll("select").forEach((select) => {
       select.disabled = locked || saving || !cateringData;
     });
@@ -200,13 +274,16 @@ export function createAttendeeCateringPanel(
         ),
       );
       mappingsRoot.hidden = true;
+      reservePanel.hidden = true;
       fallback.hidden = true;
       return;
     }
     mappingsRoot.hidden = false;
+    reservePanel.hidden = false;
+    reserve.input.value = reservedDraft ?? String(data.reservedMeals ?? 0);
     if (!fallback.hidden) text.value = report();
     const combined = roster();
-    const summary = summarizeAttendeeDiets(combined.people);
+    const summary = summarizeCateringPlan(combined, data.reservedMeals ?? 0);
     const signature = JSON.stringify([people, data]);
     if (signature !== mappingSignature) {
       mappingSignature = signature;
@@ -328,7 +405,7 @@ export function createAttendeeCateringPanel(
       content,
       el(
         "p",
-        `${people.filter((person) => person.status === "active").length} active registrations + ${combined.additional} additional speakers, organizers, and guests.`,
+        `${people.filter((person) => person.status === "active").length} active registrations + ${combined.additional} additional speakers, organizers, and guests${data.reservedMeals ? ` + ${data.reservedMeals} reserved meals` : ""}.`,
         "mt-4 text-sm leading-6",
       ),
     );
@@ -354,6 +431,6 @@ export function createAttendeeCateringPanel(
       locked = value;
       updateControls();
     },
-    hasDrafts: () => drafts.size > 0 || saving,
+    hasDrafts: () => drafts.size > 0 || reservedDraft !== undefined || saving,
   };
 }

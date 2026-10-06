@@ -5,7 +5,10 @@ import {
   receiptAdmin,
   receiptOrigin as origin,
 } from "./helpers/receipt-fixture.mjs";
-import { buildCateringRoster } from "../site/scripts/attendee-catering-model.ts";
+import {
+  buildCateringRoster,
+  summarizeCateringPlan,
+} from "../site/scripts/attendee-catering-model.ts";
 import { summarizeAttendeeDiets } from "../site/scripts/attendee-diets.ts";
 
 test("catering reads live speaker diets, stores encrypted organizer links, survives refreshes and rejects stale or unauthorized saves", async (t) => {
@@ -42,6 +45,7 @@ test("catering reads live speaker diets, stores encrypted organizer links, survi
   const roster = async () =>
     (await (await send("/api/admin/attendees")).json()).attendees;
   const initial = await read();
+  assert.equal(initial.reservedMeals, 0);
   assert.ok(initial.sources.length > 1);
   assert.ok(initial.sources.every((source) => source.kind === "speaker"));
   assert.equal(
@@ -149,7 +153,14 @@ test("catering reads live speaker diets, stores encrypted organizer links, survi
     revision: current.revision,
     version: current.version,
     mappings,
+    reservedMeals: 13,
   };
+  for (const count of [-1, 0.5, 2001, null, "13"])
+    assert.equal(
+      (await send(cateringPath, "PUT", { ...body, reservedMeals: count }))
+        .status,
+      400,
+    );
   assert.equal(
     (
       await send(cateringPath, "PUT", body, {
@@ -183,13 +194,23 @@ test("catering reads live speaker diets, stores encrypted organizer links, survi
   current = await read();
   assert.deepEqual(current.mappings, mappings);
   assert.equal(current.revision, 1);
+  assert.equal(current.reservedMeals, 13);
   combined = buildCateringRoster(await roster(), current);
   assert.equal(summarizeAttendeeDiets(combined.people).active, sources + 1);
   assert.equal(combined.pending, 0);
+  assert.equal(
+    summarizeCateringPlan(combined, current.reservedMeals).active,
+    sources + 14,
+  );
+  assert.equal(
+    summarizeCateringPlan(combined, current.reservedMeals).missing,
+    summarizeAttendeeDiets(combined.people).missing + 13,
+  );
   const stored = (
     await runSql("SELECT * FROM attendee_roster WHERE id = 1")
   )[0];
   assert.ok(stored.catering_ciphertext);
+  assert.equal(stored.catering_reserved_meals, 13);
   assert.equal(
     stored.revision,
     1,
@@ -199,6 +220,19 @@ test("catering reads live speaker diets, stores encrypted organizer links, survi
     JSON.stringify(stored),
     /Organizer dinner alias|Lactose free|Private nut allergy|organizer:|dinner-guest:/,
   );
+  assert.equal(
+    (
+      await send(cateringPath, "PUT", {
+        revision: current.revision,
+        version: current.version,
+        mappings,
+      })
+    ).status,
+    200,
+    "Older clients preserve the reserve when only saving mappings",
+  );
+  current = await read();
+  assert.equal(current.reservedMeals, 13);
 
   assert.equal(
     (
@@ -226,6 +260,11 @@ test("catering reads live speaker diets, stores encrypted organizer links, survi
     current.mappings,
     mappings,
     "Reimports preserve dinner links",
+  );
+  assert.equal(
+    current.reservedMeals,
+    13,
+    "Meal reserves survive registration reimports",
   );
   assert.match(
     buildCateringRoster(await roster(), current).people.find((person) =>

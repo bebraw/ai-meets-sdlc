@@ -20,6 +20,7 @@ import { isRecord, readJsonWithinLimit } from "./speaker-workspace-utils.ts";
 import {
   dinnerDiet,
   parseCateringMappings,
+  parseCateringPreferences,
   type CateringData,
   type CateringSource,
 } from "../site/scripts/attendee-catering-model.ts";
@@ -28,11 +29,12 @@ async function readCatering(env: Env) {
   const [row, speakers, guests, organizers, contacts, roster] =
     await Promise.all([
       env.INTERESTS.prepare(
-        "SELECT catering_revision, catering_ciphertext, catering_iv FROM attendee_roster WHERE id = 1",
+        "SELECT catering_revision, catering_ciphertext, catering_iv, catering_reserved_meals FROM attendee_roster WHERE id = 1",
       ).first<{
         catering_revision: number;
         catering_ciphertext: string | null;
         catering_iv: string | null;
+        catering_reserved_meals: number;
       }>(),
       readSpeakerDinnerAdminItems(env),
       readSpeakerDinnerSharedAdminItems(env),
@@ -108,6 +110,7 @@ async function readCatering(env: Env) {
     version: await sha256Hex(
       JSON.stringify({ sources, organizers: people, attendees: roster.people }),
     ),
+    reservedMeals: row.catering_reserved_meals,
     mappings:
       row.catering_ciphertext && row.catering_iv
         ? parseCateringMappings(
@@ -168,15 +171,25 @@ async function handle(request: Request, env: Env): Promise<Response> {
     );
   if (body.revision !== data.revision || body.version !== data.version)
     return conflict();
-  let mappings;
+  let preferences;
   try {
-    mappings = parseCateringMappings(body.mappings);
+    preferences = parseCateringPreferences({
+      mappings: body.mappings,
+      reservedMeals:
+        body.reservedMeals === undefined
+          ? data.reservedMeals
+          : body.reservedMeals,
+    });
   } catch {
     return jsonResponse(
-      { error: "Choose valid catering mappings without duplicate sources." },
+      {
+        error:
+          "Choose valid catering mappings and a whole meal reserve from 0 to 2,000.",
+      },
       400,
     );
   }
+  const { mappings } = preferences;
   const sources = new Set(data.sources.map((source) => source.id));
   const targets = new Set([
     "exclude",
@@ -241,11 +254,12 @@ async function handle(request: Request, env: Env): Promise<Response> {
     env.EMAIL_ENCRYPTION_KEY,
   );
   const result = await env.INTERESTS.prepare(
-    `UPDATE attendee_roster SET catering_ciphertext = ?, catering_iv = ?, catering_revision = catering_revision + 1, revision = revision + ${registrationLinksChanged ? 1 : 0}, updated_at = ? WHERE id = 1 AND catering_revision = ? AND revision = ?`,
+    `UPDATE attendee_roster SET catering_ciphertext = ?, catering_iv = ?, catering_reserved_meals = ?, catering_revision = catering_revision + 1, revision = revision + ${registrationLinksChanged ? 1 : 0}, updated_at = ? WHERE id = 1 AND catering_revision = ? AND revision = ?`,
   )
     .bind(
       encrypted.ciphertext,
       encrypted.iv,
+      preferences.reservedMeals,
       new Date().toISOString(),
       data.revision,
       roster.revision,

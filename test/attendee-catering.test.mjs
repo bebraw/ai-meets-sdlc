@@ -4,6 +4,8 @@ import {
   buildCateringRoster,
   dinnerDiet,
   parseCateringMappings,
+  parseCateringPreferences,
+  summarizeCateringPlan,
 } from "../site/scripts/attendee-catering-model.ts";
 import {
   cateringSummaryText,
@@ -39,6 +41,38 @@ const data = (sources, mappings = [], organizers = []) => ({
   organizers,
 });
 const counts = (result) => summarizeAttendeeDiets(result.people);
+
+test("reserved meals increase planning totals without inventing attendees or dietary answers", () => {
+  const mappings = [{ sourceId: "speaker:one", target: "separate" }];
+  assert.deepEqual(parseCateringPreferences({ mappings }), {
+    mappings,
+    reservedMeals: 0,
+  });
+  const preferences = parseCateringPreferences({ mappings, reservedMeals: 13 });
+  assert.equal(preferences.reservedMeals, 13);
+  for (const count of [-1, 0.5, 2001, null, "13"])
+    assert.throws(() =>
+      parseCateringPreferences({ mappings, reservedMeals: count }),
+    );
+  const roster = buildCateringRoster([person], data([speaker]));
+  const planned = summarizeCateringPlan(roster, 13);
+  assert.equal(planned.active, 15);
+  assert.equal(planned.missing, 13);
+  assert.equal(planned.requirements, 2);
+  assert.equal(planned.noRestrictions, 0);
+  assert.equal(roster.people.length, 2);
+  assert.equal(roster.additional, 1);
+  assert.match(
+    cateringSummaryText(planned, "Test date", {
+      registrations: 1,
+      additional: 1,
+      pending: 0,
+      reservedMeals: 13,
+    }),
+    /Reserved meals for unassigned tickets and other guests: 13/u,
+  );
+  assert.equal(summarizeCateringPlan(roster, 0).active, 2);
+});
 
 test("speakers join daytime catering even without an RSVP; dinner diets retain meal and contamination details", () => {
   const result = buildCateringRoster(

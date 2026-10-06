@@ -21,16 +21,15 @@ test("attendee backups preserve encrypted roster and arrival history, omit crede
       "CREATE TABLE organizer_data_changes (table_name TEXT, operation TEXT)",
     )
     .run();
-  const migration =
-    (await readFile(
-      "migrations/0023_create_attendee_registration.sql",
-      "utf8",
-    )) +
-    "\n" +
-    (await readFile(
-      "migrations/0025_add_attendee_catering_mappings.sql",
-      "utf8",
-    ));
+  const migration = (
+    await Promise.all(
+      [
+        "0023_create_attendee_registration.sql",
+        "0025_add_attendee_catering_mappings.sql",
+        "0027_add_catering_meal_reserve.sql",
+      ].map((file) => readFile(`migrations/${file}`, "utf8")),
+    )
+  ).join("\n");
   for (const sql of migration
     .split(/;\s*\n/u)
     .map((s) => s.trim())
@@ -47,7 +46,7 @@ test("attendee backups preserve encrypted roster and arrival history, omit crede
   const encryptedMappings = await encryptText(mappings, key);
   await db
     .prepare(
-      "UPDATE attendee_roster SET ciphertext = ?, iv = ?, revision = 1, catering_ciphertext = ?, catering_iv = ?, catering_revision = 1 WHERE id = 1",
+      "UPDATE attendee_roster SET ciphertext = ?, iv = ?, revision = 1, catering_ciphertext = ?, catering_iv = ?, catering_revision = 1, catering_reserved_meals = 13 WHERE id = 1",
     )
     .bind(
       encrypted.ciphertext,
@@ -95,6 +94,7 @@ test("attendee backups preserve encrypted roster and arrival history, omit crede
   );
   assert.equal(snapshot.rows.arrivals[0].attendee_id, "attendee-id");
   assert.equal(snapshot.rows.roster[0].catering_revision, 1);
+  assert.equal(snapshot.rows.roster[0].catering_reserved_meals, 13);
   assert.equal(
     await decryptText(
       snapshot.rows.roster[0].catering_ciphertext,

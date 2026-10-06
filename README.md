@@ -511,6 +511,14 @@ The badge studio automatically loads active, badge-selected registrations from
 the current list. Arrival is independent of badge inclusion. Imports, attendee
 corrections and inclusion choices belong in `/admin/attendees/`.
 
+Use **Reserved meals** in the catering summary for unassigned tickets and other
+guests who need meals but have no named registration. Save the reserve before
+copying or downloading the summary. It increases the catering headcount and
+missing-diet total without creating attendees or badges. Reduce it as those
+people join the named list. The reserve is saved with catering settings
+and survives reimports; spare badge quantity is a separate print preference.
+Apply `0027_add_catering_meal_reserve.sql` before deploying this version.
+
 Names, companies, emails and ticket codes are encrypted in the D1 roster.
 Arrival history stores record IDs, actor IDs, action and time without contact
 details. Daily R2 backups include the encrypted roster, arrivals and history,
