@@ -116,6 +116,112 @@ test("Tito semicolon exports detect the final diet column and interpret blank Vo
   assert.equal(prepared.records[2].row, 4);
 });
 
+test("Tito imports skip unassigned tickets without using the purchaser's details", () => {
+  const prepared = prepareAttendeeCsv(
+    [
+      "Registration Name,Registration Email,Ticket Full Name,Ticket First Name,Ticket Last Name,Ticket Email,Ticket Company Name,Void Status,Ticket Reference,What kind of food restrictions do you have?",
+      "Purchaser,purchaser@example.test,,,,,,,UNASSIGNED,",
+      'Purchaser,purchaser@example.test,Zoë Åström,Zoë,Åström,zoe@example.test,"Example, Ltd",,ASSIGNED,"Vegan\nand gluten free"',
+      "Purchaser,purchaser@example.test,Lee,Lee,,lee@example.test,,true,CANCELLED,Dairy free",
+    ].join("\n"),
+  );
+  const detected = detectAttendeeMapping(prepared.records[0].cells);
+  const rows = importAttendeeCsv(prepared.records, detected, "sponsor", "tito");
+  assert.equal(rows.length, 2);
+  assert.equal(rows[0].name, "Zoë Åström");
+  assert.equal(rows[0].email, "zoe@example.test");
+  assert.equal(rows[0].ticketCode, "ASSIGNED");
+  assert.equal(rows[0].company, "Example, Ltd");
+  assert.equal(rows[0].diet, "Vegan\nand gluten free");
+  assert.equal(rows[0].status, "active");
+  assert.equal(rows[0].type, "sponsor");
+  assert.equal(rows[1].ticketCode, "CANCELLED");
+  assert.equal(rows[1].status, "cancelled");
+  assert.equal(rows[1].diet, "Dairy free");
+  const roster = mergeAttendeeImport([], "tito", rows);
+  assert.equal(roster.length, 2);
+  const assigned = prepared.records.map((record, index) =>
+    index === 1
+      ? {
+          ...record,
+          cells: [
+            "Purchaser",
+            "purchaser@example.test",
+            "New Attendee",
+            "New",
+            "Attendee",
+            "new@example.test",
+            "",
+            "",
+            "UNASSIGNED",
+            "Nut allergy",
+          ],
+        }
+      : record,
+  );
+  const refreshed = mergeAttendeeImport(
+    roster,
+    "tito",
+    importAttendeeCsv(assigned, detected, "sponsor", "tito"),
+  );
+  assert.equal(refreshed.length, 3);
+  assert.equal(refreshed[0].id, roster[0].id);
+  assert.equal(refreshed[1].id, roster[1].id);
+  assert.equal(refreshed[2].ticketCode, "UNASSIGNED");
+  assert.equal(refreshed[2].name, "New Attendee");
+  assert.equal(refreshed[2].diet, "Nut allergy");
+  assert.throws(
+    () => importAttendeeCsv(prepared.records, detected, undefined, "webropol"),
+    /Row 2: name is missing/,
+  );
+});
+
+test("skipping unassigned Tito tickets keeps malformed rows and unknown statuses visible", () => {
+  const header = "Ticket Full Name,Ticket Email,Ticket Reference,Void Status";
+  const importRow = (row, selected = {}) => {
+    const prepared = prepareAttendeeCsv(`${header}\n${row}`);
+    return importAttendeeCsv(
+      prepared.records,
+      { ...detectAttendeeMapping(prepared.records[0].cells), ...selected },
+      undefined,
+      "tito",
+    );
+  };
+  assert.throws(() => importRow(",,UNASSIGNED,"), /No assigned attendees/);
+  assert.throws(() => importRow(",,UNASSIGNED"), /expected 4 columns/);
+  assert.throws(
+    () => importRow(",,UNASSIGNED,pending"),
+    /unknown ticket status/,
+  );
+  assert.throws(() => importRow(",,CANCELLED,true"), /name is missing/);
+  assert.throws(
+    () => importRow(",person@example.test,TICKET,"),
+    /name is missing/,
+  );
+  assert.throws(
+    () => importRow("Person,,TICKET,", { name: -1 }),
+    /Map a full name/,
+  );
+  assert.throws(() => importRow(",,TICKET,", { email: -1 }), /name is missing/);
+  assert.throws(() => importRow(",,,false"), /name is missing/);
+  const invalidAfterUnassigned = prepareAttendeeCsv(
+    `${header}\n,,UNASSIGNED,\nPerson,person@example.test,ASSIGNED,pending`,
+  );
+  assert.throws(
+    () =>
+      importAttendeeCsv(
+        invalidAfterUnassigned.records,
+        detectAttendeeMapping(invalidAfterUnassigned.records[0].cells),
+        undefined,
+        "tito",
+      ),
+    /Row 3: unknown ticket status/,
+  );
+  const rows = importRow("Person,,TICKET,");
+  assert.equal(rows[0].ticketCode, "TICKET");
+  assert.equal(rows[0].email, "");
+});
+
 test("Webropol metadata and split headers use the attendee identity and original CSV line numbers", () => {
   const csv = [
     ";Tapahtuman nimi;SDLCAI 2026;;;;;;;;;",

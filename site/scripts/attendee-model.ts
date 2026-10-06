@@ -308,54 +308,84 @@ export function prepareAttendeeCsv(
     ignoredRows: best.ignoredRows,
   };
 }
+function importTicketStatus(
+  header: CsvRecord,
+  record: CsvRecord,
+  column: number,
+): AttendeeInput["status"] {
+  let rawStatus =
+    column < 0 ? "active" : (record.cells[column] ?? "").trim().toLowerCase();
+  if (header.cells[column]?.trim().toLowerCase() === "void status") {
+    if (["", "false", "no", "not void", "not voided"].includes(rawStatus))
+      rawStatus = "active";
+    else if (["true", "yes"].includes(rawStatus)) rawStatus = "voided";
+  }
+  const active = [
+    "active",
+    "valid",
+    "confirmed",
+    "paid",
+    "complete",
+    "completed",
+    "issued",
+    "registered",
+    "assigned",
+    "ilmoittautunut",
+    "vahvistettu",
+    "maksettu",
+  ];
+  const cancelled = [
+    "cancelled",
+    "canceled",
+    "void",
+    "voided",
+    "refunded",
+    "expired",
+    "deleted",
+    "peruttu",
+    "peruutettu",
+  ];
+  if (active.includes(rawStatus)) return "active";
+  if (cancelled.includes(rawStatus)) return "cancelled";
+  throw new Error(
+    `Row ${record.row}: unknown ticket status. Map a valid status column or remove inactive tickets before importing.`,
+  );
+}
+
 export function importAttendeeCsv(
   records: CsvRecord[],
   mapping: AttendeeMapping,
   type?: AttendeeType,
+  source?: "tito" | "webropol",
 ): AttendeeInput[] {
-  const people = importCsv(records, mapping, "Registration");
-  return people.map((person, index) => {
-    const record = records[index + 1]!;
-    let rawStatus =
-      mapping.status < 0
-        ? "active"
-        : (record.cells[mapping.status] ?? "").trim().toLowerCase();
+  const header = records[0]!;
+  const assignedRecords = records.filter((record, index) => {
+    // Tito includes purchased tickets whose attendee details are not assigned yet.
+    // Keep malformed and cancelled rows for validation; a cancellation must not
+    // silently leave an existing registration active during a refresh.
     if (
-      records[0]?.cells[mapping.status]?.trim().toLowerCase() === "void status"
-    ) {
-      if (["", "false", "no", "not void", "not voided"].includes(rawStatus))
-        rawStatus = "active";
-      else if (["true", "yes"].includes(rawStatus)) rawStatus = "voided";
-    }
-    const active = [
-      "active",
-      "valid",
-      "confirmed",
-      "paid",
-      "complete",
-      "completed",
-      "issued",
-      "registered",
-      "assigned",
-      "ilmoittautunut",
-      "vahvistettu",
-      "maksettu",
-    ];
-    const cancelled = [
-      "cancelled",
-      "canceled",
-      "void",
-      "voided",
-      "refunded",
-      "expired",
-      "deleted",
-      "peruttu",
-      "peruutettu",
-    ];
-    if (!active.includes(rawStatus) && !cancelled.includes(rawStatus))
-      throw new Error(
-        `Row ${record.row}: unknown ticket status. Map a valid status column or remove inactive tickets before importing.`,
-      );
+      index === 0 ||
+      source !== "tito" ||
+      mapping.ticketCode < 0 ||
+      mapping.email < 0 ||
+      (mapping.name < 0 && (mapping.first < 0 || mapping.last < 0)) ||
+      record.cells.length !== header.cells.length ||
+      !record.cells[mapping.ticketCode]?.trim() ||
+      [mapping.name, mapping.first, mapping.last, mapping.email].some(
+        (column) => column >= 0 && record.cells[column]?.trim(),
+      )
+    )
+      return true;
+    return importTicketStatus(header, record, mapping.status) !== "active";
+  });
+  const people = importCsv(assignedRecords, mapping, "Registration");
+  if (records.length > 1 && !people.length)
+    throw new Error(
+      "No assigned attendees in this CSV. Assign attendee details in Tito and export again.",
+    );
+  return people.map((person, index) => {
+    const record = assignedRecords[index + 1]!;
+    const status = importTicketStatus(header, record, mapping.status);
     try {
       return parseAttendeeInput({
         ...person,
@@ -363,7 +393,7 @@ export function importAttendeeCsv(
           mapping.ticketCode < 0
             ? ""
             : (record.cells[mapping.ticketCode] ?? ""),
-        status: cancelled.includes(rawStatus) ? "cancelled" : "active",
+        status,
         badge: true,
         ...(type === undefined ? {} : { type }),
         ...(mapping.diet !== undefined && mapping.diet >= 0

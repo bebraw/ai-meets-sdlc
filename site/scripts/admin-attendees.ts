@@ -662,6 +662,7 @@ function setupList(root: HTMLElement) {
         records,
         mapping,
         type.input.value ? (type.input.value as AttendeeType) : undefined,
+        source.input.value as "tito" | "webropol",
       );
       mergeAttendeeImport(
         data.attendees.filter(
@@ -671,6 +672,12 @@ function setupList(root: HTMLElement) {
         imported,
       );
       return imported;
+    }
+    function skippedTicketNote(imported: AttendeeInput[]): string {
+      const skipped = records.length - 1 - imported.length;
+      return skipped > 0
+        ? `${skipped} unassigned Tito ticket${skipped === 1 ? "" : "s"} skipped. Assign attendee details in Tito and re-import.`
+        : "";
     }
     file.input.addEventListener(
       "change",
@@ -715,6 +722,8 @@ function setupList(root: HTMLElement) {
             "font-bold",
           ),
         );
+        const skipped = skippedTicketNote(imported);
+        if (skipped) append(preview, el("p", skipped));
         for (const person of imported.slice(0, 5))
           append(
             preview,
@@ -732,13 +741,14 @@ function setupList(root: HTMLElement) {
       () =>
         void work(async () => {
           const imported = rows();
+          const skipped = skippedTicketNote(imported);
           await api(endpoint, action, "POST", {
             revision: data.revision,
             source: source.input.value,
             attendees: imported,
           });
           await load();
-          status.textContent = `${imported.length} registrations imported. Existing arrival records preserved.`;
+          status.textContent = `${imported.length} registrations imported. Existing arrival records preserved.${skipped ? ` ${skipped}` : ""}`;
         }),
     );
     append(
@@ -751,7 +761,7 @@ function setupList(root: HTMLElement) {
       mappingRoot,
       el(
         "p",
-        "Without ticket codes, matching uses attendee email within the selected source. Filter cancelled or refunded tickets out first if your CSV has no status column.",
+        "Without ticket codes, matching uses attendee email within the selected source. Unassigned Tito tickets are skipped; assign attendee details in Tito and re-import. Filter cancelled or refunded tickets out first if your CSV has no status column.",
         "text-sm leading-6",
       ),
       previewRows,

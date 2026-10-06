@@ -7,3 +7,4 @@ build/
 .env.*
 !.env.example
 .dev.vars
+/tito-sample.csv

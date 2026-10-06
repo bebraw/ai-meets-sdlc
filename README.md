@@ -463,7 +463,11 @@ Apply `0023_create_attendee_registration.sql` before deploying. At
 `/admin/attendees/`, import Tito and Webropol CSVs separately using the same
 column-mapping workflow previously used by badges. Map individual ticket codes and attendee
 emails, preview the rows, then import. A ticket code identifies a registration
-within its source; without a code, attendee email is the identity. Keep the
+within its source; without a code, attendee email is the identity. Selecting
+Tito skips active, unassigned tickets with a ticket code but no attendee name or
+email. Map both attendee names and emails; purchaser details
+are not used as a fallback. The preview and import result report skipped tickets.
+Assign their attendee details in Tito and re-import to add them later. Keep the
 same identity columns on subsequent imports. Correcting a ticket code or an
 email-only identity also updates its import key while keeping the attendee ID.
 Re-imports update matching

@@ -798,7 +798,7 @@ try {
     name: "tito-sponsors.csv",
     mimeType: "text/csv",
     buffer: Buffer.from(
-      "Ticket Full Name,Ticket Email,Ticket Company Name,Ticket Reference,Void Status,What kind of food restrictions do you have?\nSponsor Zoë,sponsor@example.test,Sponsor Company,SP-1,,Vegan and gluten free",
+      "Ticket Full Name,Ticket Email,Ticket Company Name,Ticket Reference,Void Status,What kind of food restrictions do you have?\n,,,SP-UNASSIGNED,,\nSponsor Zoë,sponsor@example.test,Sponsor Company,SP-1,,Vegan and gluten free",
     ),
   });
   await admin
@@ -817,12 +817,18 @@ try {
   await admin
     .getByText(/Sponsor Zoë · sponsor@example.test · SP-1 · sponsor · active/)
     .waitFor();
+  const skippedTicketNote =
+    "1 unassigned Tito ticket skipped. Assign attendee details in Tito and re-import.";
+  await admin
+    .getByText("1 registrations · 0 cancelled", { exact: true })
+    .waitFor();
+  await admin.getByText(skippedTicketNote, { exact: true }).waitFor();
   await admin
     .getByRole("button", { name: "Import registrations", exact: true })
     .click();
   await admin
     .getByText(
-      "1 registrations imported. Existing arrival records preserved.",
+      `1 registrations imported. Existing arrival records preserved. ${skippedTicketNote}`,
       { exact: true },
     )
     .waitFor();
