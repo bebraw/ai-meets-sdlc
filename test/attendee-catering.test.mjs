@@ -12,6 +12,10 @@ import {
   summarizeAttendeeDiets,
 } from "../site/scripts/attendee-diets.ts";
 import { mergeAttendeeImport } from "../site/scripts/attendee-model.ts";
+import {
+  parseDietReviews,
+  reviewUsesDinnerData,
+} from "../site/scripts/attendee-diet-reviews.ts";
 
 const person = {
   id: "a-1",
@@ -72,6 +76,134 @@ test("reserved meals increase planning totals without inventing attendees or die
     /Reserved meals for unassigned tickets and other guests: 13/u,
   );
   assert.equal(summarizeCateringPlan(roster, 0).active, 2);
+});
+
+test("manual reviews categorize each person independently, preserve originals and export preparation notes", () => {
+  const attendees = [
+    person,
+    { ...person, id: "a-2", name: "Second", email: "second@example.test" },
+  ].map((item) => ({ ...item, diet: "Lactose" }));
+  const initial = buildCateringRoster(attendees, data([]));
+  const reviews = initial.people.map((item, index) => ({
+    personId: item.id,
+    sourceSignature: item.sourceSignature,
+    status: index ? "clarify" : "reviewed",
+    categories: index ? [] : ["lactose-free"],
+    note: index ? "Confirm intended restriction" : "Serve a lactose-free meal",
+  }));
+  const reviewed = buildCateringRoster(attendees, { ...data([]), reviews });
+  const summary = counts(reviewed);
+  assert.equal(summary.active, 2);
+  assert.equal(summary.needsReview, 1);
+  assert.equal(summary.counts.find(({ id }) => id === "lactose-free").count, 1);
+  assert.equal(reviewed.people[0].diet, "Lactose");
+  const report = cateringSummaryText(summary, "Test date");
+  assert.match(report, /Serve a lactose-free meal/);
+  assert.match(report, /Confirm intended restriction/);
+  assert.match(report, /1 x Lactose/);
+  assert.doesNotMatch(report, /one@example|second@example|Attendee|a-1/);
+});
+
+test("changed dietary sources or mappings reopen reviews without applying stale categories", () => {
+  const sourceData = data([speaker]);
+  const original = buildCateringRoster([person], sourceData).people[0];
+  const review = {
+    personId: original.id,
+    sourceSignature: original.sourceSignature,
+    status: "reviewed",
+    categories: ["dairy-free"],
+    note: "Previous preparation instructions",
+  };
+  const reimported = buildCateringRoster([{ ...person, diet: "Vegan" }], {
+    ...sourceData,
+    reviews: [review],
+  });
+  assert.equal(reimported.people[0].review, undefined);
+  assert.deepEqual(reimported.people[0].staleReview, review);
+  assert.equal(counts(reimported).needsReview, 1);
+  assert.equal(
+    counts(reimported).counts.find(({ id }) => id === "dairy-free").count,
+    0,
+  );
+  assert.doesNotMatch(
+    cateringSummaryText(counts(reimported), "Test"),
+    /Previous preparation instructions/,
+  );
+  const linked = buildCateringRoster([person], {
+    ...sourceData,
+    mappings: [{ sourceId: speaker.id, target: "attendee:a-1" }],
+    reviews: [review],
+  });
+  assert.equal(linked.people[0].staleReview.personId, original.id);
+});
+
+test("explicit missing and no-restrictions reviews update totals without changing headcount", () => {
+  const initial = buildCateringRoster([person], data([])).people[0];
+  for (const [status, expected] of [
+    ["none", "noRestrictions"],
+    ["missing", "missing"],
+  ]) {
+    const reviewed = buildCateringRoster([person], {
+      ...data([]),
+      reviews: [
+        {
+          personId: initial.id,
+          sourceSignature: initial.sourceSignature,
+          status,
+          categories: [],
+          note: "",
+        },
+      ],
+    });
+    const summary = counts(reviewed);
+    assert.equal(summary.active, 1);
+    assert.equal(summary[expected], 1);
+    assert.equal(summary.requirements, 0);
+    assert.equal(summary.needsReview, 0);
+    assert.equal(person.diet, "Gluten free");
+  }
+});
+
+test("dietary review validation rejects duplicates and conflicting decisions", () => {
+  const review = {
+    personId: "attendee:a-1",
+    sourceSignature: "source",
+    status: "reviewed",
+    categories: ["allergy"],
+    note: "Avoid raw apple",
+  };
+  assert.deepEqual(parseDietReviews([review]), [review]);
+  for (const invalid of [
+    [review, review],
+    [{ ...review, status: "automatic" }],
+    [{ ...review, categories: ["unknown"] }],
+    [{ ...review, categories: ["allergy", "allergy"] }],
+    [{ ...review, status: "none" }],
+    [{ ...review, status: "missing" }],
+    [{ ...review, categories: [], note: "" }],
+    [{ ...review, note: "x".repeat(2001) }],
+  ])
+    assert.throws(() => parseDietReviews(invalid));
+});
+
+test("dietary source snapshots identify dinner data for the existing retention deadline", () => {
+  const review = {
+    sourceSignature: JSON.stringify([
+      ["attendee:a-1", "Gluten free"],
+      ["speaker:one", "Nut allergy"],
+    ]),
+  };
+  assert.equal(reviewUsesDinnerData(review), true);
+  assert.equal(
+    reviewUsesDinnerData({
+      sourceSignature: JSON.stringify([
+        ["attendee:a-1", "Nut allergy"],
+        ["poster:one", ""],
+      ]),
+    }),
+    false,
+  );
+  assert.equal(reviewUsesDinnerData({ sourceSignature: "invalid" }), true);
 });
 
 test("speakers join daytime catering even without an RSVP; dinner diets retain meal and contamination details", () => {

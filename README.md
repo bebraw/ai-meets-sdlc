@@ -519,6 +519,19 @@ people join the named list. The reserve is saved with catering settings
 and survives reimports; spare badge quantity is a separate print preference.
 Apply `0027_add_catering_meal_reserve.sql` before deploying this version.
 
+In **Combined requirements**, open **Review dietary responses** or choose
+**Review people in this group**. Review one person at a time, select all relevant
+categories, and add catering instructions for allergies or food preparation.
+**Save and next** updates the summary and export without editing the original
+response. **Needs clarification** stays in the open queue; **No restrictions**
+and **Missing information** update their respective totals. Use the filters to
+revisit saved decisions. Unsaved reviews block export and navigation until saved
+or discarded. Identical responses can be classified separately per person.
+Reviews are encrypted, admin-only, backed up with the roster, and survive
+unchanged reimports. A changed source answer or mapping invalidates the decision
+until reviewed again. Purging dinner data also clears manual dietary reviews.
+Apply `0028_add_catering_diet_reviews.sql` before deploying this version.
+
 Names, companies, emails and ticket codes are encrypted in the D1 roster.
 Arrival history stores record IDs, actor IDs, action and time without contact
 details. Daily R2 backups include the encrypted roster, arrivals and history,

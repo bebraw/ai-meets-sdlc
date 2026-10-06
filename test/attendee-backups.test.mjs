@@ -27,6 +27,7 @@ test("attendee backups preserve encrypted roster and arrival history, omit crede
         "0023_create_attendee_registration.sql",
         "0025_add_attendee_catering_mappings.sql",
         "0027_add_catering_meal_reserve.sql",
+        "0028_add_catering_diet_reviews.sql",
       ].map((file) => readFile(`migrations/${file}`, "utf8")),
     )
   ).join("\n");
@@ -44,15 +45,21 @@ test("attendee backups preserve encrypted roster and arrival history, omit crede
     { sourceId: "dinner-guest:private", target: "organizer:private" },
   ]);
   const encryptedMappings = await encryptText(mappings, key);
+  const reviews = JSON.stringify([
+    { personId: "attendee:private", note: "Private manual allergy note" },
+  ]);
+  const encryptedReviews = await encryptText(reviews, key);
   await db
     .prepare(
-      "UPDATE attendee_roster SET ciphertext = ?, iv = ?, revision = 1, catering_ciphertext = ?, catering_iv = ?, catering_revision = 1, catering_reserved_meals = 13 WHERE id = 1",
+      "UPDATE attendee_roster SET ciphertext = ?, iv = ?, revision = 1, catering_ciphertext = ?, catering_iv = ?, catering_revision = 1, catering_reserved_meals = 13, catering_reviews_ciphertext = ?, catering_reviews_iv = ? WHERE id = 1",
     )
     .bind(
       encrypted.ciphertext,
       encrypted.iv,
       encryptedMappings.ciphertext,
       encryptedMappings.iv,
+      encryptedReviews.ciphertext,
+      encryptedReviews.iv,
     )
     .run();
   await db
@@ -104,8 +111,16 @@ test("attendee backups preserve encrypted roster and arrival history, omit crede
     mappings,
   );
   assert.equal(snapshot.rows.history[0].action, "arrived");
+  assert.equal(
+    await decryptText(
+      snapshot.rows.roster[0].catering_reviews_ciphertext,
+      snapshot.rows.roster[0].catering_reviews_iv,
+      key,
+    ),
+    reviews,
+  );
   assert.doesNotMatch(
     JSON.stringify(snapshot),
-    /Private contact|Private allergy response|Private staff label|private-token|dinner-guest:private|organizer:private/,
+    /Private contact|Private allergy response|Private manual allergy note|Private staff label|private-token|dinner-guest:private|organizer:private/,
   );
 });

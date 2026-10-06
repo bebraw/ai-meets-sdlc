@@ -136,12 +136,12 @@ function setupList(root: HTMLElement) {
   let cateringError = "";
   const catering = admin
     ? createAttendeeCateringPanel(
-        async (mappings, revision, version, reservedMeals) => {
+        async (mappings, revision, version, reservedMeals, reviews) => {
           await api(
             "/api/admin/attendees/catering",
             "manage-attendee-catering",
             "PUT",
-            { mappings, revision, version, reservedMeals },
+            { mappings, revision, version, reservedMeals, reviews },
           );
           await load();
         },

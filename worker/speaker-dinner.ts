@@ -1095,6 +1095,9 @@ export async function purgeSpeakerDinnerData(env: Env): Promise<void> {
 function deleteSpeakerDinnerData(env: Env) {
   return env.INTERESTS.batch([
     env.INTERESTS.prepare(
+      "UPDATE attendee_roster SET catering_reviews_ciphertext = NULL, catering_reviews_iv = NULL, catering_revision = catering_revision + 1 WHERE id = 1",
+    ),
+    env.INTERESTS.prepare(
       "DELETE FROM speaker_dinner_shared_responses RETURNING 1",
     ),
     env.INTERESTS.prepare(

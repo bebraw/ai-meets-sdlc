@@ -1,3 +1,5 @@
+import type { DietReview } from "./attendee-diet-reviews.ts";
+
 export const dietCategories = [
   { id: "vegan", label: "Vegan" },
   { id: "vegetarian", label: "Vegetarian" },
@@ -116,12 +118,16 @@ export function classifyDiet(raw: string | undefined): DietClassification {
 interface DietPerson {
   status: "active" | "cancelled";
   diet?: string | undefined;
+  review?: DietReview | undefined;
+  staleReview?: DietReview | undefined;
 }
 export interface CateringGroup {
   label: string;
   count: number;
   needsReview: boolean;
   responses: { text: string; count: number }[];
+  notes?: { text: string; count: number }[];
+  reviewed?: boolean;
 }
 export interface CateringSummary {
   active: number;
@@ -154,7 +160,21 @@ export function summarizeAttendeeDiets(
       continue;
     }
     result.active++;
-    const diet = classifyDiet(person.diet);
+    const review = person.review;
+    const diet: DietClassification = review
+      ? {
+          response:
+            review.status === "none"
+              ? "none"
+              : review.status === "missing"
+                ? "missing"
+                : "requirements",
+          categories: review.categories,
+          needsReview: review.status === "clarify",
+        }
+      : classifyDiet(person.diet);
+    if (person.staleReview) diet.needsReview = true;
+    if (diet.needsReview) result.needsReview++;
     if (diet.response === "missing") {
       result.missing++;
       continue;
@@ -164,12 +184,11 @@ export function summarizeAttendeeDiets(
       continue;
     }
     result.requirements++;
-    if (diet.needsReview) result.needsReview++;
     for (const count of result.counts)
       if (diet.categories.includes(count.id)) count.count++;
-    const raw = person.diet!.trim();
+    const raw = person.diet?.trim() || "No original dietary answer";
     // Unknown details and alternatives must never collapse into a generic meal group.
-    const key = `${diet.categories.join("+")}:${diet.needsReview ? normalize(raw) : ""}`;
+    const key = `${diet.categories.join("+")}:${diet.needsReview || review ? normalize(raw) : ""}:${review ? JSON.stringify([review.status, review.note]) : ""}`;
     const group = groups.get(key) ?? {
       label:
         diet.categories
@@ -181,6 +200,7 @@ export function summarizeAttendeeDiets(
       count: 0,
       needsReview: diet.needsReview,
       responses: [],
+      ...(review ? { reviewed: review.status === "reviewed", notes: [] } : {}),
     };
     group.count++;
     const response = group.responses.find(
@@ -188,6 +208,13 @@ export function summarizeAttendeeDiets(
     );
     if (response) response.count++;
     else group.responses.push({ text: raw, count: 1 });
+    if (review?.note.trim()) {
+      const note = group.notes!.find(
+        (item) => item.text === review.note.trim(),
+      );
+      if (note) note.count++;
+      else group.notes!.push({ text: review.note.trim(), count: 1 });
+    }
     groups.set(key, group);
   }
   result.groups = [...groups.values()].sort(
@@ -243,12 +270,15 @@ export function dietRequirementsText(summary: CateringSummary): string[] {
     "",
     "COMBINED REQUIREMENTS AND ORIGINAL RESPONSES",
     "Each person with reported requirements appears in one group below. Keep all requirements together when preparing a meal.",
-    "Responses marked REVIEW contain specific details, alternatives, or wording that needs checking. The original response remains the source for those details.",
+    "Saved classifications determine the groups. Catering instructions supplement the unchanged original responses. Responses marked REVIEW still need checking.",
     "",
     ...summary.groups.flatMap((group) => [
       `${group.count} ${group.count === 1 ? "person" : "people"} - ${group.label}${group.needsReview ? " [REVIEW]" : ""}`,
       ...group.responses.map(
         (response) => `  ${response.count} x ${response.text}`,
+      ),
+      ...(group.notes ?? []).map(
+        (note) => `  Catering instructions (${note.count}): ${note.text}`,
       ),
       "",
     ]),

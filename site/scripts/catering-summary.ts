@@ -1,4 +1,4 @@
-import { append, el } from "./admin-toolkit.ts";
+import { append, button, el } from "./admin-toolkit.ts";
 import type { CateringSummary } from "./attendee-diets.ts";
 
 export function appendDietDetails(
@@ -6,13 +6,14 @@ export function appendDietDetails(
   summary: CateringSummary,
   emptyMessage: string,
   headingLevel: 3 | 4 = 3,
+  review?: { panel: HTMLElement; openResponses: (responses: string[]) => void },
 ): void {
   if (summary.needsReview)
     append(
       content,
       el(
         "p",
-        `${summary.needsReview} person${summary.needsReview === 1 ? " has" : "s have"} specific details or ambiguous wording. Review the marked groups and original responses before sending the summary.`,
+        `${summary.needsReview} person${summary.needsReview === 1 ? " needs" : "s need"} dietary review. Review the marked groups and original responses before sending the summary.`,
         "mt-5 border-l-2 border-ink pl-4 font-bold leading-7",
       ),
     );
@@ -29,6 +30,7 @@ export function appendDietDetails(
     return;
   }
   if (!summary.requirements) {
+    if (review) append(content, review.panel);
     append(
       content,
       el(
@@ -84,6 +86,7 @@ export function appendDietDetails(
       "mt-2 max-w-3xl text-sm leading-6 text-muted",
     ),
   );
+  if (review) append(content, review.panel);
   const groups = el("div", "", "mt-5 grid gap-3 lg:grid-cols-2");
   for (const group of summary.groups) {
     const card = el(
@@ -105,6 +108,8 @@ export function appendDietDetails(
         card,
         el("p", "Review original response", "mt-1 text-sm font-bold uppercase"),
       );
+    else if (group.reviewed)
+      append(card, el("p", "Reviewed", "mt-1 text-sm font-bold uppercase"));
     const responses = el("ul", "", "mt-3 grid gap-2 text-sm leading-6");
     for (const response of group.responses)
       append(
@@ -112,6 +117,22 @@ export function appendDietDetails(
         el("li", `${response.count} x ${response.text}`, "whitespace-pre-wrap"),
       );
     append(card, responses);
+    for (const note of group.notes ?? [])
+      append(
+        card,
+        el(
+          "p",
+          `Catering instructions (${note.count}): ${note.text}`,
+          "mt-3 whitespace-pre-wrap border-t border-ink/20 pt-3 text-sm leading-6",
+        ),
+      );
+    if (review) {
+      const action = button("Review people in this group", () =>
+        review.openResponses(group.responses.map(({ text }) => text)),
+      );
+      action.classList.add("mt-4");
+      append(card, action);
+    }
     append(groups, card);
   }
   append(content, groups);

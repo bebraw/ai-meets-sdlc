@@ -19,22 +19,29 @@ import {
 import { isRecord, readJsonWithinLimit } from "./speaker-workspace-utils.ts";
 import {
   dinnerDiet,
+  buildCateringRoster,
   parseCateringMappings,
   parseCateringPreferences,
   type CateringData,
   type CateringSource,
 } from "../site/scripts/attendee-catering-model.ts";
+import {
+  parseDietReviews,
+  reviewUsesDinnerData,
+} from "../site/scripts/attendee-diet-reviews.ts";
 
 async function readCatering(env: Env) {
   const [row, speakers, guests, organizers, contacts, roster] =
     await Promise.all([
       env.INTERESTS.prepare(
-        "SELECT catering_revision, catering_ciphertext, catering_iv, catering_reserved_meals FROM attendee_roster WHERE id = 1",
+        "SELECT catering_revision, catering_ciphertext, catering_iv, catering_reserved_meals, catering_reviews_ciphertext, catering_reviews_iv FROM attendee_roster WHERE id = 1",
       ).first<{
         catering_revision: number;
         catering_ciphertext: string | null;
         catering_iv: string | null;
         catering_reserved_meals: number;
+        catering_reviews_ciphertext: string | null;
+        catering_reviews_iv: string | null;
       }>(),
       readSpeakerDinnerAdminItems(env),
       readSpeakerDinnerSharedAdminItems(env),
@@ -111,6 +118,18 @@ async function readCatering(env: Env) {
       JSON.stringify({ sources, organizers: people, attendees: roster.people }),
     ),
     reservedMeals: row.catering_reserved_meals,
+    reviews:
+      row.catering_reviews_ciphertext && row.catering_reviews_iv
+        ? parseDietReviews(
+            JSON.parse(
+              await decryptText(
+                row.catering_reviews_ciphertext,
+                row.catering_reviews_iv,
+                env.EMAIL_ENCRYPTION_KEY,
+              ),
+            ),
+          )
+        : [],
     mappings:
       row.catering_ciphertext && row.catering_iv
         ? parseCateringMappings(
@@ -126,6 +145,10 @@ async function readCatering(env: Env) {
     sources,
     organizers: people,
   };
+  if (!retained)
+    data.reviews = (data.reviews ?? []).filter(
+      (review) => !reviewUsesDinnerData(review),
+    );
   return { data, roster };
 }
 
@@ -172,6 +195,7 @@ async function handle(request: Request, env: Env): Promise<Response> {
   if (body.revision !== data.revision || body.version !== data.version)
     return conflict();
   let preferences;
+  let reviews;
   try {
     preferences = parseCateringPreferences({
       mappings: body.mappings,
@@ -180,16 +204,45 @@ async function handle(request: Request, env: Env): Promise<Response> {
           ? data.reservedMeals
           : body.reservedMeals,
     });
+    reviews = parseDietReviews(
+      body.reviews === undefined ? data.reviews : body.reviews,
+    );
   } catch {
     return jsonResponse(
       {
         error:
-          "Choose valid catering mappings and a whole meal reserve from 0 to 2,000.",
+          "Choose valid catering mappings, dietary reviews, and a whole meal reserve from 0 to 2,000.",
       },
       400,
     );
   }
   const { mappings } = preferences;
+  const reviewPeople = buildCateringRoster(roster.people, {
+    ...data,
+    mappings,
+  }).people;
+  for (const review of reviews) {
+    const previous = data.reviews?.find(
+      (item) => item.personId === review.personId,
+    );
+    if (previous && JSON.stringify(previous) === JSON.stringify(review))
+      continue;
+    if (
+      !reviewPeople.some(
+        (person) =>
+          person.status === "active" &&
+          person.id === review.personId &&
+          person.sourceSignature === review.sourceSignature,
+      )
+    )
+      return jsonResponse(
+        {
+          error:
+            "This person's dietary sources changed. Reload and review the current response before saving.",
+        },
+        409,
+      );
+  }
   const sources = new Set(data.sources.map((source) => source.id));
   const targets = new Set([
     "exclude",
@@ -253,13 +306,19 @@ async function handle(request: Request, env: Env): Promise<Response> {
     JSON.stringify(mappings),
     env.EMAIL_ENCRYPTION_KEY,
   );
+  const encryptedReviews = await encryptText(
+    JSON.stringify(reviews),
+    env.EMAIL_ENCRYPTION_KEY,
+  );
   const result = await env.INTERESTS.prepare(
-    `UPDATE attendee_roster SET catering_ciphertext = ?, catering_iv = ?, catering_reserved_meals = ?, catering_revision = catering_revision + 1, revision = revision + ${registrationLinksChanged ? 1 : 0}, updated_at = ? WHERE id = 1 AND catering_revision = ? AND revision = ?`,
+    `UPDATE attendee_roster SET catering_ciphertext = ?, catering_iv = ?, catering_reserved_meals = ?, catering_reviews_ciphertext = ?, catering_reviews_iv = ?, catering_revision = catering_revision + 1, revision = revision + ${registrationLinksChanged ? 1 : 0}, updated_at = ? WHERE id = 1 AND catering_revision = ? AND revision = ?`,
   )
     .bind(
       encrypted.ciphertext,
       encrypted.iv,
       preferences.reservedMeals,
+      encryptedReviews.ciphertext,
+      encryptedReviews.iv,
       new Date().toISOString(),
       data.revision,
       roster.revision,

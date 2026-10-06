@@ -1,6 +1,7 @@
 import * as v from "valibot";
 import { classifyDiet, summarizeAttendeeDiets } from "./attendee-diets.ts";
 import type { AttendeeRecord } from "./attendee-model.ts";
+import type { DietReview } from "./attendee-diet-reviews.ts";
 export { dinnerDiet } from "./dinner-diets.ts";
 
 export interface CateringSource {
@@ -20,6 +21,7 @@ export interface CateringData {
   version: string;
   mappings: CateringMapping[];
   reservedMeals?: number;
+  reviews?: DietReview[];
   sources: CateringSource[];
   organizers: { id: string; name: string }[];
 }
@@ -91,11 +93,20 @@ function combineDiets(values: string[]): string | undefined {
 }
 
 export interface CateringRoster {
-  people: { status: "active" | "cancelled"; diet?: string | undefined }[];
+  people: CateringPerson[];
   additional: number;
   pending: number;
   attendeeDiets: Record<string, string | undefined>;
   rows: { source: CateringSource; target: string | null; label: string }[];
+}
+export interface CateringPerson {
+  id: string;
+  name: string;
+  status: "active" | "cancelled";
+  diet?: string | undefined;
+  sourceSignature: string;
+  review?: DietReview | undefined;
+  staleReview?: DietReview | undefined;
 }
 export function summarizeCateringPlan(
   roster: CateringRoster,
@@ -135,6 +146,12 @@ export function buildCateringRoster(
     active.map((person) => [
       `attendee:${person.id}`,
       person.diet ? [person.diet] : [],
+    ]),
+  );
+  const origins = new Map(
+    active.map((person) => [
+      `attendee:${person.id}`,
+      [[`attendee:${person.id}`, person.diet ?? ""]],
     ]),
   );
   const matchingAttendees = (person: { name: string; email?: string }) => {
@@ -217,6 +234,9 @@ export function buildCateringRoster(
     const responses = diets.get(target) ?? [];
     if (source.diet) responses.push(source.diet);
     diets.set(target, responses);
+    const sourceOrigins = origins.get(target) ?? [];
+    sourceOrigins.push([source.id, source.diet ?? ""]);
+    origins.set(target, sourceOrigins);
     const person = targets.get(target);
     rows.push({
       source,
@@ -245,11 +265,33 @@ export function buildCateringRoster(
     people: [
       ...attendees
         .filter((person) => person.status === "cancelled")
-        .map((person) => ({ status: "cancelled" as const })),
-      ...[...diets.values()].map((values) => ({
-        status: "active" as const,
-        diet: combineDiets(values),
-      })),
+        .map((person) => ({
+          id: `attendee:${person.id}`,
+          name: person.name,
+          status: "cancelled" as const,
+          sourceSignature: "",
+        })),
+      ...[...diets].map(([id, values]): CateringPerson => {
+        const sourceSignature = JSON.stringify(
+          (origins.get(id) ?? []).sort((a, b) => a[0]!.localeCompare(b[0]!)),
+        );
+        const saved = data.reviews?.find((review) => review.personId === id);
+        return {
+          id,
+          name:
+            targets.get(id)?.name ??
+            rows.find((row) => row.target === id)!.source.name,
+          status: "active",
+          diet: combineDiets(values),
+          sourceSignature,
+          review:
+            saved?.sourceSignature === sourceSignature ? saved : undefined,
+          staleReview:
+            saved && saved.sourceSignature !== sourceSignature
+              ? saved
+              : undefined,
+        };
+      }),
     ],
     additional: diets.size - active.length,
     pending: rows.filter(

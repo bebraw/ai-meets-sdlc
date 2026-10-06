@@ -10,6 +10,41 @@ import {
   summarizeCateringPlan,
 } from "../site/scripts/attendee-catering-model.ts";
 import { summarizeAttendeeDiets } from "../site/scripts/attendee-diets.ts";
+import { encryptText } from "../worker/form-utils.ts";
+
+test("expired dinner responses cannot be recovered through saved dietary reviews", async (t) => {
+  const fixture = await createReceiptFixture({
+    vars: {
+      SPEAKER_DINNER_RESPONSE_DEADLINE: "2019-12-01T00:00:00Z",
+      SPEAKER_DINNER_RETENTION_UNTIL: "2020-01-01T00:00:00Z",
+    },
+  });
+  t.after(() => fixture.dispose());
+  const review = {
+    personId: "speaker:mo-khazali",
+    sourceSignature: JSON.stringify([
+      ["speaker:mo-khazali", "Expired private dietary response"],
+    ]),
+    status: "reviewed",
+    categories: ["allergy"],
+    note: "Expired private catering note",
+  };
+  const encrypted = await encryptText(
+    JSON.stringify([review]),
+    "isolated-receipt-test-encryption",
+  );
+  await fixture.runSql(
+    `UPDATE attendee_roster SET catering_reviews_ciphertext = '${encrypted.ciphertext}', catering_reviews_iv = '${encrypted.iv}' WHERE id = 1`,
+  );
+  const response = await fixture.worker.fetch(
+    origin + "/api/admin/attendees/catering",
+    { headers: { authorization: receiptAdmin } },
+  );
+  assert.equal(response.status, 200);
+  const data = await response.json();
+  assert.deepEqual(data.reviews, []);
+  assert.doesNotMatch(JSON.stringify(data), /Expired private/);
+});
 
 test("catering reads live speaker diets, stores encrypted organizer links, survives refreshes and rejects stale or unauthorized saves", async (t) => {
   const fixture = await createReceiptFixture({
@@ -234,6 +269,87 @@ test("catering reads live speaker diets, stores encrypted organizer links, survi
   current = await read();
   assert.equal(current.reservedMeals, 13);
 
+  const reviewedPerson = buildCateringRoster(
+    await roster(),
+    current,
+  ).people.find((person) => person.diet?.includes("Gluten free"));
+  const review = {
+    personId: reviewedPerson.id,
+    sourceSignature: reviewedPerson.sourceSignature,
+    status: "reviewed",
+    categories: ["vegan", "gluten-free", "allergy"],
+    note: "Avoid nuts; prevent cross-contamination",
+  };
+  const reviewBody = {
+    revision: current.revision,
+    version: current.version,
+    mappings,
+    reservedMeals: 13,
+    reviews: [review],
+  };
+  assert.equal(
+    (
+      await send(cateringPath, "PUT", {
+        ...reviewBody,
+        reviews: [{ ...review, personId: "attendee:missing" }],
+      })
+    ).status,
+    409,
+  );
+  assert.equal(
+    (
+      await send(cateringPath, "PUT", {
+        ...reviewBody,
+        reviews: [{ ...review, sourceSignature: "obsolete" }],
+      })
+    ).status,
+    409,
+  );
+  assert.equal(
+    (
+      await send(cateringPath, "PUT", {
+        ...reviewBody,
+        reviews: [{ ...review, status: "none" }],
+      })
+    ).status,
+    400,
+  );
+  assert.equal((await send(cateringPath, "PUT", reviewBody)).status, 200);
+  current = await read();
+  assert.deepEqual(current.reviews, [review]);
+  assert.equal(
+    buildCateringRoster(await roster(), current).people.find(
+      (person) => person.id === review.personId,
+    ).review.note,
+    review.note,
+  );
+  const encryptedReviewRow = (
+    await runSql(
+      "SELECT catering_reviews_ciphertext, catering_reviews_iv FROM attendee_roster WHERE id = 1",
+    )
+  )[0];
+  assert.ok(encryptedReviewRow.catering_reviews_ciphertext);
+  assert.doesNotMatch(
+    JSON.stringify(encryptedReviewRow),
+    /Avoid nuts|Gluten free|personId/,
+  );
+  assert.equal(
+    (
+      await send(cateringPath, "PUT", {
+        revision: current.revision,
+        version: current.version,
+        mappings,
+      })
+    ).status,
+    200,
+  );
+  current = await read();
+  assert.deepEqual(
+    current.reviews,
+    [review],
+    "Old clients preserve manual reviews",
+  );
+
   assert.equal(
     (
       await send("/api/admin/attendees", "POST", {
@@ -260,6 +376,19 @@ test("catering reads live speaker diets, stores encrypted organizer links, survi
     current.mappings,
     mappings,
     "Reimports preserve dinner links",
+  );
+  assert.equal(
+    buildCateringRoster(await roster(), current).people.find(
+      (person) => person.id === review.personId,
+    ).review,
+    undefined,
+  );
+  assert.deepEqual(
+    buildCateringRoster(await roster(), current).people.find(
+      (person) => person.id === review.personId,
+    ).staleReview,
+    review,
+    "Reimported dietary answers require fresh review",
   );
   assert.equal(
     current.reservedMeals,
@@ -355,6 +484,11 @@ test("catering reads live speaker diets, stores encrypted organizer links, survi
   );
   current = await read();
   assert.ok(current.sources.every((source) => source.kind === "speaker"));
+  assert.deepEqual(
+    current.reviews,
+    [],
+    "Purging dinner data also removes retained manual dietary notes",
+  );
   assert.ok(current.sources.every((source) => !source.diet));
   assert.equal(
     summarizeAttendeeDiets(buildCateringRoster(await roster(), current).people)

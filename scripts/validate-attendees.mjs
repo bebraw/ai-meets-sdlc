@@ -538,7 +538,7 @@ try {
   await reload.click();
   await admin.getByText("Registrations updated.", { exact: true }).waitFor();
   await catering.getByText(/1 catering source needs mapping/).waitFor();
-  await catering.locator("summary").click();
+  await catering.locator("[data-catering-mappings] > summary").click();
   const mapping = catering.getByLabel(
     "Catering mapping for Organizer browser alias",
     { exact: true },
@@ -570,13 +570,13 @@ try {
   );
   await admin.reload();
   await admin.getByText(/Registrations loaded/).waitFor();
-  await catering.locator("summary").click();
+  await catering.locator("[data-catering-mappings] > summary").click();
   assert.equal(await mapping.inputValue(), `organizer:${organizerId}`);
   assert.equal(
     await cateringCount("Catering headcount"),
     String(speakerHeadcount + 3),
   );
-  await catering.locator("summary").click();
+  await catering.locator("[data-catering-mappings] > summary").click();
   const failCatering = (route) =>
     route.fulfill({
       status: 503,
@@ -600,7 +600,7 @@ try {
   await admin.getByText("Registrations updated.", { exact: true }).waitFor();
 
   const axeSource = await readFile("node_modules/axe-core/axe.min.js", "utf8");
-  await catering.locator("summary").click();
+  await catering.locator("[data-catering-mappings] > summary").click();
   for (const page of [admin, staff]) {
     for (const viewport of [
       { width: 390, height: 844 },
@@ -650,7 +650,7 @@ try {
     .screenshot({
       path: path.join(tmpdir(), "sdlcai-catering-organizer-mapping.png"),
     });
-  await catering.locator("summary").click();
+  await catering.locator("[data-catering-mappings] > summary").click();
   await admin.screenshot({
     path: path.join(tmpdir(), "sdlcai-attendees-admin.png"),
     fullPage: true,
@@ -1089,7 +1089,7 @@ try {
   await admin
     .getByLabel("Registration type", { exact: true })
     .selectOption("all");
-  await catering.locator("summary").click();
+  await catering.locator("[data-catering-mappings] > summary").click();
   await catering
     .locator(`[data-catering-source="poster:${proposalId}"]`)
     .getByText(/Diet from dinner: vegan; Sesame allergy/)
@@ -1157,6 +1157,209 @@ try {
     await cateringCount("Catering headcount"),
     String(headcountBeforeReserve),
   );
+  // Identical answers receive independent saved decisions, with stale-source recovery.
+  const reviewInputs = ["Alpha", "Beta"].map((name) => ({
+    name: `Review ${name}`,
+    email: `review-${name.toLowerCase()}@example.test`,
+    company: "",
+    ticketCode: "",
+    status: "active",
+    badge: false,
+    diet: "Lactose",
+  }));
+  const importReviewPeople = async (inputs) => {
+    const current = await (
+      await adminContext.request.get(`${origin}/api/admin/attendees`)
+    ).json();
+    const response = await adminContext.request.post(
+      `${origin}/api/admin/attendees`,
+      {
+        headers: { origin, "x-admin-action": "manage-attendees" },
+        data: {
+          source: "webropol",
+          revision: current.revision,
+          attendees: inputs,
+        },
+      },
+    );
+    assert.equal(response.status(), 200);
+  };
+  await importReviewPeople(reviewInputs);
+  await reload.click();
+  await admin.getByText("Registrations updated.", { exact: true }).waitFor();
+  await catering
+    .locator("article")
+    .filter({ has: admin.getByText("2 x Lactose", { exact: true }) })
+    .getByRole("button", { name: "Review people in this group", exact: true })
+    .click();
+  const reviewQueue = catering.locator("[data-diet-review-queue]");
+  await reviewQueue
+    .getByRole("heading", { name: "Review Alpha", exact: true })
+    .waitFor();
+  await reviewQueue.getByLabel("Lactose free", { exact: true }).check();
+  await reviewQueue.getByLabel("Gluten free", { exact: true }).check();
+  const instructions = reviewQueue.getByLabel("Catering instructions", {
+    exact: true,
+  });
+  await instructions.fill("Serve a lactose-free and gluten-free meal");
+  assert.equal(
+    await catering
+      .getByRole("button", { name: "Copy catering summary", exact: true })
+      .isDisabled(),
+    true,
+  );
+  assert.equal(
+    await reviewQueue
+      .getByRole("button", { name: "Next case", exact: true })
+      .isDisabled(),
+    true,
+  );
+  await reload.click();
+  await admin.getByText("Registrations updated.", { exact: true }).waitFor();
+  assert.equal(
+    await instructions.inputValue(),
+    "Serve a lactose-free and gluten-free meal",
+    "Reload preserves review drafts",
+  );
+  const failReviewSave = (route) =>
+    route.fulfill({
+      status: 503,
+      contentType: "application/json",
+      body: JSON.stringify({ error: "Temporary review save failure" }),
+    });
+  await admin.route("**/api/admin/attendees/catering", (route) =>
+    route.request().method() === "PUT"
+      ? failReviewSave(route)
+      : route.continue(),
+  );
+  await reviewQueue
+    .getByRole("button", { name: "Save and next", exact: true })
+    .click();
+  await reviewQueue
+    .getByText("Temporary review save failure", { exact: true })
+    .waitFor();
+  assert.equal(
+    await instructions.inputValue(),
+    "Serve a lactose-free and gluten-free meal",
+  );
+  await admin.unroute("**/api/admin/attendees/catering");
+  await reviewQueue
+    .getByRole("button", { name: "Save and next", exact: true })
+    .click();
+  await reviewQueue
+    .getByRole("heading", { name: "Review Beta", exact: true })
+    .waitFor();
+  await reviewQueue
+    .getByLabel("Review decision", { exact: true })
+    .selectOption("clarify");
+  await instructions.fill("Confirm intended lactose restriction");
+  await reviewQueue
+    .getByRole("button", { name: "Save and next", exact: true })
+    .click();
+  await reviewQueue
+    .getByText("Dietary review saved. Counts and export updated.", {
+      exact: true,
+    })
+    .waitFor();
+  await admin.reload();
+  await admin.getByText(/Registrations loaded/).waitFor();
+  await reviewQueue.locator("summary").click();
+  await reviewQueue
+    .getByLabel("Dietary review filter", { exact: true })
+    .selectOption("reviewed");
+  await reviewQueue
+    .getByRole("heading", { name: "Review Alpha", exact: true })
+    .waitFor();
+  assert.equal(
+    await instructions.inputValue(),
+    "Serve a lactose-free and gluten-free meal",
+  );
+  assert.equal(
+    await reviewQueue.getByLabel("Gluten free", { exact: true }).isChecked(),
+    true,
+  );
+  await catering
+    .getByRole("button", { name: "Copy catering summary", exact: true })
+    .click();
+  await catering
+    .getByText("Catering summary copied.", { exact: true })
+    .waitFor();
+  const reviewedReport = await admin.evaluate(() =>
+    navigator.clipboard.readText(),
+  );
+  assert.match(reviewedReport, /Serve a lactose-free and gluten-free meal/);
+  assert.match(reviewedReport, /Confirm intended lactose restriction/);
+  assert.doesNotMatch(
+    reviewedReport,
+    /Review Alpha|Review Beta|review-alpha@example/,
+  );
+  await reviewQueue
+    .getByLabel("Dietary review filter", { exact: true })
+    .selectOption("clarify");
+  await reviewQueue
+    .getByRole("heading", { name: "Review Beta", exact: true })
+    .waitFor();
+  assert.equal(
+    await reviewQueue
+      .getByLabel("Review decision", { exact: true })
+      .inputValue(),
+    "clarify",
+  );
+  await importReviewPeople([
+    { ...reviewInputs[0], diet: "Vegan" },
+    reviewInputs[1],
+  ]);
+  await reload.click();
+  await admin.getByText("Registrations updated.", { exact: true }).waitFor();
+  await reviewQueue
+    .getByLabel("Dietary review filter", { exact: true })
+    .selectOption("all");
+  await catering
+    .locator("article")
+    .filter({ has: admin.getByText("1 x Vegan", { exact: true }) })
+    .getByRole("button", { name: "Review people in this group", exact: true })
+    .click();
+  await reviewQueue
+    .getByRole("heading", { name: "Review Alpha", exact: true })
+    .waitFor();
+  await reviewQueue
+    .getByText(/previous decision is no longer applied/)
+    .waitFor();
+  assert.equal(await instructions.inputValue(), "");
+  assert.equal(
+    await reviewQueue.getByLabel("Vegan", { exact: true }).isChecked(),
+    true,
+  );
+  for (const viewport of [
+    { width: 390, height: 844 },
+    { width: 1440, height: 1000 },
+  ]) {
+    await admin.setViewportSize(viewport);
+    assert.equal(
+      await admin.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+      true,
+    );
+    await admin.addScriptTag({ content: axeSource });
+    assert.deepEqual(
+      await admin.evaluate(async () =>
+        (
+          await window.axe.run(document, {
+            runOnly: {
+              type: "tag",
+              values: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"],
+            },
+            rules: { "target-size": { enabled: false } },
+          })
+        ).violations.map(({ id }) => id),
+      ),
+      [],
+    );
+    await reviewQueue.screenshot({
+      path: path.join(tmpdir(), `sdlcai-diet-review-${viewport.width}.png`),
+    });
+  }
   assert.deepEqual(errors, []);
   console.log(
     "Attendee browser check passed: canonical poster and volunteer registration/check-in, organizer roles, poster dinner restrictions, Tito/Webropol diet imports, separate sponsor imports, type filtering/editing, sponsor badges/PDF output, catering groups, copy/download, multiline diet edits, filter-independent totals, organizer-only diets, load recovery, preserved edit drafts, concurrent corrections, source refresh, scoped staff access, exact ticket lookup, arrivals, cancellation, undo, badge seeding, sign-out/reuse, revocation, mobile layout and accessibility.",

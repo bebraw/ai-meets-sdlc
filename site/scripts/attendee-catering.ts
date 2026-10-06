@@ -2,6 +2,8 @@ import { append, button, el, field, message } from "./admin-toolkit.ts";
 import { cateringSummaryText } from "./attendee-diets.ts";
 import type { Attendee } from "./attendee-model.ts";
 import { appendDietDetails } from "./catering-summary.ts";
+import { createDietReviewPanel } from "./attendee-diet-review-panel.ts";
+import type { DietReview } from "./attendee-diet-reviews.ts";
 import {
   buildCateringRoster,
   maxReservedMeals,
@@ -16,6 +18,7 @@ export function createAttendeeCateringPanel(
     revision: number,
     version: string,
     reservedMeals: number,
+    reviews: DietReview[],
   ) => Promise<void>,
 ) {
   const panel = el("section", "", "my-8 border border-ink p-5 md:p-7");
@@ -60,6 +63,32 @@ export function createAttendeeCateringPanel(
   const drafts = new Map<string, string>();
   let reservedDraft: string | undefined;
   let draftRevision: { revision: number; version: string } | undefined;
+  const dietReview = createDietReviewPanel(
+    async (review, snapshot) => {
+      if (
+        !cateringData ||
+        locked ||
+        saving ||
+        drafts.size ||
+        reservedDraft !== undefined
+      )
+        throw new Error(
+          "Save or discard catering mapping and meal reserve changes first.",
+        );
+      const reviews = (cateringData.reviews ?? []).filter(
+        (saved) => saved.personId !== review.personId,
+      );
+      reviews.push(review);
+      await saveMappings(
+        cateringData.mappings,
+        snapshot.revision,
+        snapshot.version,
+        cateringData.reservedMeals ?? 0,
+        reviews,
+      );
+    },
+    () => updateControls(),
+  );
   const reservePanel = el(
     "div",
     "",
@@ -83,6 +112,7 @@ export function createAttendeeCateringPanel(
     updateControls();
   });
   const mappingsRoot = el("details", "", "mt-8 border-t border-ink/20 pt-5");
+  mappingsRoot.dataset.cateringMappings = "";
   const mappingTitle = el(
     "summary",
     "Catering mappings",
@@ -118,6 +148,7 @@ export function createAttendeeCateringPanel(
       revision.revision,
       revision.version,
       reservedMeals,
+      cateringData.reviews ?? [],
     )
       .then(() => {
         drafts.clear();
@@ -230,19 +261,29 @@ export function createAttendeeCateringPanel(
   append(panel, reservePanel, content, mappingsRoot, actions, status, fallback);
 
   function updateControls(): void {
-    reserve.input.disabled = locked || saving || !cateringData;
+    const reviewing = dietReview.hasDrafts();
+    dietReview.setBusy(
+      locked ||
+        saving ||
+        !cateringData ||
+        drafts.size > 0 ||
+        reservedDraft !== undefined,
+    );
+    reserve.input.disabled = locked || saving || !cateringData || reviewing;
     copy.disabled = download.disabled =
       locked ||
       saving ||
       !cateringData ||
       drafts.size > 0 ||
       reservedDraft !== undefined;
+    if (reviewing) copy.disabled = download.disabled = true;
     save.disabled =
       locked ||
       saving ||
       (!drafts.size && reservedDraft === undefined) ||
       !cateringData ||
       !reserve.input.checkValidity();
+    if (reviewing) save.disabled = true;
     discard.disabled = locked || saving || !drafts.size || !cateringData;
     saveReserve.disabled =
       locked ||
@@ -253,7 +294,7 @@ export function createAttendeeCateringPanel(
     discardReserve.disabled =
       locked || saving || !cateringData || reservedDraft === undefined;
     mappingRows.querySelectorAll("select").forEach((select) => {
-      select.disabled = locked || saving || !cateringData;
+      select.disabled = locked || saving || !cateringData || reviewing;
     });
   }
   function render(
@@ -283,6 +324,11 @@ export function createAttendeeCateringPanel(
     reserve.input.value = reservedDraft ?? String(data.reservedMeals ?? 0);
     if (!fallback.hidden) text.value = report();
     const combined = roster();
+    dietReview.render(
+      combined.people,
+      { revision: data.revision, version: data.version },
+      locked || saving || drafts.size > 0 || reservedDraft !== undefined,
+    );
     const summary = summarizeCateringPlan(combined, data.reservedMeals ?? 0);
     const signature = JSON.stringify([people, data]);
     if (signature !== mappingSignature) {
@@ -422,6 +468,8 @@ export function createAttendeeCateringPanel(
       content,
       summary,
       "No people included in catering yet. Import registrations or review catering mappings.",
+      3,
+      dietReview,
     );
   }
   return {
@@ -431,6 +479,10 @@ export function createAttendeeCateringPanel(
       locked = value;
       updateControls();
     },
-    hasDrafts: () => drafts.size > 0 || reservedDraft !== undefined || saving,
+    hasDrafts: () =>
+      drafts.size > 0 ||
+      reservedDraft !== undefined ||
+      saving ||
+      dietReview.hasDrafts(),
   };
 }
