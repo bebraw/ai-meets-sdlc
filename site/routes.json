@@ -42,23 +42,6 @@
       }
     }
   },
-  "checkout": {
-    "layout": "checkout",
-    "scripts": [{ "name": "index" }],
-    "dataSources": {
-      "seminar": {
-        "operation": "seminar"
-      }
-    },
-    "context": {
-      "meta": {
-        "title": "SDLCAI / Tickets",
-        "description": "In-person tickets are sold out. Watch SDLCAI live on YouTube on 13 October 2026.",
-        "ogEyebrow": "Tickets",
-        "ogDescription": "In-person tickets are sold out. Watch SDLCAI live on YouTube on 13 October 2026."
-      }
-    }
-  },
   "schedule": {
     "layout": "schedule",
     "scripts": [{ "name": "index" }],

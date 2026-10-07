@@ -6,10 +6,10 @@ The site is built with Gustwind and HTMLisp, styled with Tailwind CSS, and
 deployed as a Cloudflare Worker with static assets. The production domain is
 `sdlcai.org`.
 
-The seminar is sold out. The homepage shows a brief notice with ticket information
-at `/checkout/` and links to the YouTube livestream. Public registration links, the Tito widget,
-and the old interest-signup form are removed; the event feed exposes ticket
-information without a registration action.
+The seminar is sold out. The homepage shows a brief sold-out notice and links to
+the YouTube livestream. The tickets page, public registration links, the Tito
+widget, and the old interest-signup form are removed; the event feed has no
+ticket or registration actions.
 
 ## Requirements
 

@@ -10,12 +10,7 @@ import {
   reviseFeed,
   sessionContent,
 } from "../worker/event-feed-data.ts";
-import {
-  attr,
-  elements,
-  textContent,
-  validateFeed,
-} from "./event-feed-validation.mjs";
+import { attr, elements, validateFeed } from "./event-feed-validation.mjs";
 
 const origin = "https://www.sdlcai.org";
 const home = elements(parse(await readFile("build/index.html", "utf8")));
@@ -28,7 +23,6 @@ const sourceFiles = [
   "site/data/schedule.json",
   "site/data/speakers.json",
   "site/layouts/index.html",
-  "site/layouts/checkout.html",
   "site/dataSources.ts",
   "site/components/ScheduleRow.html",
   "scripts/generate-event-feed.mjs",
@@ -87,13 +81,6 @@ const publicSpeakers = speakers.items
       url: new URL(attr(link, "href"), origin).href,
     };
   });
-// Explicit public section only: never inspect protected slide or lecture material.
-const tickets = home.find((node) => attr(node, "id") === "tickets");
-const ticketLink = elements(tickets).find(
-  (node) => node.tagName === "a" && attr(node, "href") === "/checkout/",
-);
-if (!ticketLink) throw new Error("Public ticket information link is missing");
-const soldOut = attr(tickets, "data-registration-status") === "sold-out";
 const feed = await reviseFeed({
   schemaVersion: 1,
   revision: "",
@@ -114,14 +101,7 @@ const feed = await reviseFeed({
   topics,
   speakers: publicSpeakers,
   sessions,
-  actions: [
-    {
-      id: soldOut ? "ticket-information" : "registration",
-      label: textContent(ticketLink),
-      url: new URL(attr(ticketLink, "href"), origin).href,
-      kind: soldOut ? "information" : "registration",
-    },
-  ],
+  actions: [],
 });
 await validateFeed(feed, schema, "build");
 await writeFile("build/event.json", JSON.stringify(feed, null, 2) + "\n");

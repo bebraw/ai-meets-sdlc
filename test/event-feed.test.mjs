@@ -20,13 +20,7 @@ test("built feed resolves real fragments and excludes private content", async ()
   assert.ok(
     !seed.speakers.some((speaker) => speaker.id === "juho-vepsalainen"),
   );
-  assert.deepEqual(
-    seed.actions.map((action) => action.url),
-    ["https://www.sdlcai.org/checkout/"],
-  );
-  assert.equal(seed.actions[0].kind, "information");
-  assert.equal(seed.actions[0].label, "Ticket information");
-  assert.ok(!seed.actions.some((action) => action.kind === "registration"));
+  assert.deepEqual(seed.actions, []);
   assert.equal(
     seed.sessions.find((session) => session.id === "agentic-discovery").summary,
     null,
@@ -60,7 +54,12 @@ test("validation rejects broken fragments, duplicate IDs, bad references and inv
       feed.updatedAt = "yesterday";
     },
     (feed) => {
-      feed.actions[0].url = "http://example.com";
+      feed.actions.push({
+        id: "invalid-action",
+        label: "Invalid action",
+        url: "http://example.com",
+        kind: "information",
+      });
     },
   ]) {
     const feed = structuredClone(seed);
@@ -74,12 +73,10 @@ test("a changed destination is checked against the element, not HTTP success", a
   try {
     await mkdir(path.join(directory, "schedule"));
     await mkdir(path.join(directory, "speakers"));
-    await mkdir(path.join(directory, "checkout"));
     for (const file of [
       "index.html",
       "schedule/index.html",
       "speakers/index.html",
-      "checkout/index.html",
     ]) {
       await writeFile(
         path.join(directory, file),
