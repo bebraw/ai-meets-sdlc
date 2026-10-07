@@ -9,6 +9,16 @@ export interface DietReview {
   note: string;
 }
 
+export interface DietReviewPerson {
+  id: string;
+  name: string;
+  status: "active" | "cancelled";
+  diet?: string | undefined;
+  sourceSignature: string;
+  review?: DietReview | undefined;
+  staleReview?: DietReview | undefined;
+}
+
 /** A source signature records source IDs and their unchanged original answers. */
 export function reviewUsesDinnerData(review: DietReview): boolean {
   try {

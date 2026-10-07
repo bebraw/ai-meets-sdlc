@@ -6,6 +6,10 @@ import { handleBadgeWorkspace } from "./badge-workspace.ts";
 import { handleAttendeesRequest } from "./attendees.ts";
 import { handleAttendeeCatering } from "./attendee-catering.ts";
 import {
+  handleDinnerDietReview,
+  readDinnerCatering,
+} from "./dinner-catering.ts";
+import {
   sendPosterReviewDigest,
   sendDataChangeDigest,
 } from "./organizer-digests.ts";
@@ -332,6 +336,10 @@ const innerHandler = {
       return withAdminSecurityHeaders(
         jsonResponse({
           count: speakers.length + sharedResponses.length,
+          catering: await readDinnerCatering(env, [
+            ...speakers,
+            ...sharedResponses,
+          ]),
           shared_invite_active: sharedInvite.active,
           shared_invite_url: sharedInvite.invite_url,
           shared_responses: sharedResponses,
@@ -351,13 +359,21 @@ const innerHandler = {
       ]);
 
       return withAdminSecurityHeaders(
-        new Response(formatSpeakerDinnerCsv(speakers, sharedResponses), {
-          headers: {
-            "content-disposition":
-              'attachment; filename="sdlcai-speaker-dinner-caterer.csv"',
-            "content-type": "text/csv; charset=utf-8",
+        new Response(
+          formatSpeakerDinnerCsv(
+            speakers,
+            sharedResponses,
+            (await readDinnerCatering(env, [...speakers, ...sharedResponses]))
+              .reviews,
+          ),
+          {
+            headers: {
+              "content-disposition":
+                'attachment; filename="sdlcai-speaker-dinner-caterer.csv"',
+              "content-type": "text/csv; charset=utf-8",
+            },
           },
-        }),
+        ),
       );
     }
 
@@ -373,6 +389,9 @@ const innerHandler = {
         await handleAdminSpeakerDinnerAttendance(request, env),
       );
     }
+
+    if (url.pathname === "/api/admin/speaker-dinner/diet-review")
+      return handleDinnerDietReview(request, env);
 
     if (url.pathname === "/api/admin/speaker-dinner/invite") {
       if (request.method !== "POST") {

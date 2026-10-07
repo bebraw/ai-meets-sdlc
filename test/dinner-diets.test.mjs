@@ -4,6 +4,7 @@ import {
   dinnerDiet,
   dinnerCateringSummaryText,
   summarizeDinnerDiets,
+  buildDinnerCateringRoster,
 } from "../site/scripts/dinner-diets.ts";
 import { summarizeAttendeeDiets } from "../site/scripts/attendee-diets.ts";
 
@@ -15,6 +16,74 @@ const response = (details = {}) => ({
     cross_contamination: "no",
     ...details,
   },
+});
+
+test("saved dinner classifications use the attendee review groups and invalidate changed originals", () => {
+  const guests = [
+    {
+      ...response({
+        food_requirements: "Lactose",
+        cross_contamination: "unsure",
+      }),
+      name: "Same Name",
+      speaker_id: "example",
+    },
+    {
+      ...response({ food_requirements: "Lactose" }),
+      name: "Same Name",
+      response_id: "guest",
+    },
+    {
+      ...response({ attendance: "not_attending" }),
+      name: "Declined",
+      response_id: "declined",
+    },
+    { response: null, name: "Pending", speaker_id: "pending" },
+  ];
+  const people = buildDinnerCateringRoster(guests);
+  assert.equal(people.length, 2);
+  assert.notEqual(people[0].id, people[1].id);
+  const review = {
+    personId: people[0].id,
+    sourceSignature: people[0].sourceSignature,
+    status: "reviewed",
+    categories: ["vegan", "lactose-free"],
+    note: "Use separate utensils and a lactose-free meal",
+  };
+  const summary = summarizeDinnerDiets(guests, [review]);
+  const shared = summarizeAttendeeDiets(
+    buildDinnerCateringRoster(guests, [review]),
+  );
+  assert.deepEqual(summary.groups, shared.groups);
+  assert.deepEqual(summary.counts, shared.counts);
+  assert.equal(summary.active, 2);
+  assert.equal(
+    summary.needsReview,
+    1,
+    "The other person with the same name remains unreviewed",
+  );
+  assert.equal(summary.crossContaminationUnsure, 1);
+  const text = dinnerCateringSummaryText(summary, "Now");
+  assert.match(text, /Vegan \+ Lactose free/);
+  assert.match(text, /Use separate utensils/);
+  assert.match(text, /vegan; Lactose; Cross-contamination: unsure/);
+  assert.doesNotMatch(text, /Same Name/);
+  for (const change of [
+    { name: "Changed Name" },
+    { response: { ...guests[0].response, meal_preference: "vegetarian" } },
+    { response: { ...guests[0].response, food_requirements: "Gluten free" } },
+    { response: { ...guests[0].response, cross_contamination: "yes" } },
+  ]) {
+    const changed = [{ ...guests[0], ...change }, guests[1]];
+    const stale = buildDinnerCateringRoster(changed, [review])[0];
+    assert.equal(stale.review, undefined);
+    assert.deepEqual(stale.staleReview, review);
+    assert.equal(summarizeDinnerDiets(changed, [review]).needsReview, 2);
+    assert.doesNotMatch(
+      dinnerCateringSummaryText(summarizeDinnerDiets(changed, [review]), "Now"),
+      /Use separate utensils/,
+    );
+  }
 });
 
 test("dinner aggregates attending speakers and guests using the existing combined diet groups", () => {

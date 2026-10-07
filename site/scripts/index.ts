@@ -1,3 +1,5 @@
+import type { DinnerCateringData } from "./dinner-diets.ts";
+
 declare global {
   interface Window {
     onInterestTurnstileExpired?: () => void;
@@ -78,7 +80,7 @@ type SpeakerDinnerAdminItem = {
 type DinnerAdminResponse = Pick<
   SpeakerDinnerAdminItem,
   "name" | "responded_at" | "response" | "updated_at"
->;
+> & { response_id: string };
 
 type SpeakerDinnerStatus = {
   attendance_source?: "admin" | "speaker";
@@ -1256,10 +1258,46 @@ function initAdminSpeakerDinner() {
   const cateringRoot = document.querySelector<HTMLElement>(
     "[data-admin-dinner-catering]",
   );
+  const catererCsv = document.querySelector<HTMLAnchorElement>(
+    "[data-admin-dinner-csv]",
+  );
+  let cateringExportBlocked = true;
+  function updateCateringExport(disabled: boolean) {
+    cateringExportBlocked = disabled;
+    catererCsv?.setAttribute("aria-disabled", String(disabled));
+    catererCsv?.classList.toggle("opacity-50", disabled);
+  }
+  updateCateringExport(true);
+  catererCsv?.addEventListener("click", (event) => {
+    if (!cateringExportBlocked) return;
+    event.preventDefault();
+    setStatus(
+      "Save or discard dietary review changes and refresh dinner responses before exporting.",
+    );
+  });
   const catering = cateringRoot
     ? import("./dinner-catering.ts")
         .then(({ createDinnerCateringPanel }) => {
-          const panel = createDinnerCateringPanel();
+          const panel = createDinnerCateringPanel(async (review, snapshot) => {
+            const response = await fetch(
+              "/api/admin/speaker-dinner/diet-review",
+              {
+                method: "PUT",
+                headers: {
+                  "content-type": "application/json",
+                  "x-admin-action": "review-dinner-diet",
+                },
+                body: JSON.stringify({ ...snapshot, review }),
+              },
+            );
+            const payload = (await response.json()) as DinnerCateringData &
+              FormResponse;
+            if (!response.ok || payload.error)
+              throw new Error(
+                payload.error || "Could not save dietary review.",
+              );
+            return payload;
+          }, updateCateringExport);
           cateringRoot.replaceChildren(panel.panel);
           return panel;
         })
@@ -1271,7 +1309,7 @@ function initAdminSpeakerDinner() {
     : Promise.resolve(undefined);
 
   function renderFilteredResponses() {
-    const matches = (guest: DinnerAdminResponse) =>
+    const matches = (guest: DinnerAdminResponse | SpeakerDinnerAdminItem) =>
       activeFilter === "all" ||
       (guest.response?.attendance ?? "pending") === activeFilter;
     renderResponses(
@@ -1429,7 +1467,7 @@ function initAdminSpeakerDinner() {
 
   function renderResponses(
     target: HTMLElement,
-    responses: DinnerAdminResponse[],
+    responses: (DinnerAdminResponse | SpeakerDinnerAdminItem)[],
     emptyMessage: string,
   ) {
     target.replaceChildren();
@@ -1447,7 +1485,7 @@ function initAdminSpeakerDinner() {
         "grid min-w-0 grid-cols-1 border border-ink bg-paper lg:grid-cols-[minmax(16rem,0.6fr)_minmax(0,1fr)]",
       );
       const isSpeaker = (
-        guest: DinnerAdminResponse,
+        guest: DinnerAdminResponse | SpeakerDinnerAdminItem,
       ): guest is SpeakerDinnerAdminItem => "speaker_id" in guest;
       if (isSpeaker(speaker)) {
         article.id = `speaker-${speaker.speaker_id}`;
@@ -1645,6 +1683,7 @@ function initAdminSpeakerDinner() {
         shared_responses?: DinnerAdminResponse[];
         shared_invite_active?: boolean;
         shared_invite_url?: string | null;
+        catering?: DinnerCateringData;
       };
 
       if (!response.ok || payload.error) {
@@ -1666,7 +1705,10 @@ function initAdminSpeakerDinner() {
             ?.scrollIntoView({ block: "center" });
       }
       updateSummary(speakers, organizers);
-      dinnerCatering?.render([...speakers, ...organizers]);
+      if (payload.catering)
+        dinnerCatering?.render([...speakers, ...organizers], payload.catering);
+      else
+        dinnerCatering?.unavailable("Dinner dietary reviews could not load.");
       updateInviteState(
         Boolean(payload.shared_invite_active),
         payload.shared_invite_url,

@@ -220,6 +220,141 @@ try {
   await catering.getByText("Dinner summary copied.", { exact: true }).waitFor();
   assert.equal(await fallback.isVisible(), false);
 
+  // Reuse the attendee review queue, keeping drafts and original dinner notes.
+  await catering
+    .locator('[data-diet-review="true"]')
+    .getByRole("button", { name: "Review people in this group", exact: true })
+    .click();
+  const reviewQueue = catering.locator("[data-diet-review-queue]");
+  await reviewQueue
+    .getByRole("heading", { name: "Mo Khazali", exact: true })
+    .waitFor();
+  const instructions = reviewQueue.getByLabel("Catering instructions", {
+    exact: true,
+  });
+  await instructions.fill(
+    "Prepare the vegan meal with separate nut-free utensils",
+  );
+  assert.equal(
+    await catering
+      .getByRole("button", { name: "Copy dinner summary", exact: true })
+      .isDisabled(),
+    true,
+  );
+  assert.equal(
+    await page
+      .locator('a[href="/api/admin/speaker-dinner.csv"]')
+      .getAttribute("aria-disabled"),
+    "true",
+  );
+  assert.equal(
+    await reviewQueue
+      .getByRole("button", { name: "Next case", exact: true })
+      .isDisabled(),
+    true,
+  );
+  await page.getByRole("button", { name: "Refresh", exact: true }).click();
+  await mo.getByRole("combobox").waitFor();
+  assert.equal(
+    await instructions.inputValue(),
+    "Prepare the vegan meal with separate nut-free utensils",
+    "Refresh preserves dietary review drafts",
+  );
+  const failReview = (route) =>
+    route.fulfill({
+      status: 503,
+      contentType: "application/json",
+      body: JSON.stringify({ error: "Temporary dietary review failure" }),
+    });
+  await page.route("**/api/admin/speaker-dinner/diet-review", failReview);
+  await reviewQueue
+    .getByRole("button", { name: "Save and next", exact: true })
+    .click();
+  await reviewQueue
+    .getByText("Temporary dietary review failure", { exact: true })
+    .waitFor();
+  assert.equal(
+    await instructions.inputValue(),
+    "Prepare the vegan meal with separate nut-free utensils",
+  );
+  await page.unroute("**/api/admin/speaker-dinner/diet-review", failReview);
+  await reviewQueue
+    .getByRole("button", { name: "Save and next", exact: true })
+    .click();
+  await reviewQueue
+    .getByText("Dietary review saved. Counts and export updated.", {
+      exact: true,
+    })
+    .waitFor();
+  assert.equal(await catering.locator('[data-diet-review="true"]').count(), 0);
+  assert.equal(
+    await page
+      .locator('a[href="/api/admin/speaker-dinner.csv"]')
+      .getAttribute("aria-disabled"),
+    "false",
+  );
+  await catering
+    .getByText(
+      "Catering instructions (1): Prepare the vegan meal with separate nut-free utensils",
+      { exact: true },
+    )
+    .waitFor();
+  await catering
+    .getByRole("button", { name: "Copy dinner summary", exact: true })
+    .click();
+  await catering.getByText("Dinner summary copied.", { exact: true }).waitFor();
+  const reviewedReport = await page.evaluate(() =>
+    navigator.clipboard.readText(),
+  );
+  assert.match(reviewedReport, /Responses needing review: 0/);
+  assert.match(reviewedReport, /separate nut-free utensils/);
+  assert.match(reviewedReport, /Nut allergy; Cross-contamination is a concern/);
+  const reviewedCsv = await (
+    await context.request.get(origin + "/api/admin/speaker-dinner.csv")
+  ).text();
+  assert.match(
+    reviewedCsv,
+    /dietary_group.*dietary_review.*catering_instructions/,
+  );
+  assert.match(
+    reviewedCsv,
+    /Vegan \+ Allergy declared.*Reviewed.*separate nut-free utensils/,
+  );
+  await page.reload();
+  await catering
+    .getByText(
+      "Catering instructions (1): Prepare the vegan meal with separate nut-free utensils",
+      { exact: true },
+    )
+    .waitFor();
+  await catering.locator("[data-diet-review-queue] summary").click();
+  await reviewQueue
+    .getByLabel("Dietary review filter", { exact: true })
+    .selectOption("all");
+  await reviewQueue
+    .getByRole("button", { name: "Next case", exact: true })
+    .click();
+  await reviewQueue
+    .getByRole("heading", { name: "Organizer dinner guest", exact: true })
+    .waitFor();
+  await reviewQueue
+    .getByLabel("Catering instructions", { exact: true })
+    .fill("Serve the vegetarian and gluten-free guest meal");
+  await reviewQueue
+    .getByRole("button", { name: "Save and next", exact: true })
+    .click();
+  await reviewQueue
+    .getByText("Dietary review saved. Counts and export updated.", {
+      exact: true,
+    })
+    .waitFor();
+  await catering
+    .getByText(
+      "Catering instructions (1): Serve the vegetarian and gluten-free guest meal",
+      { exact: true },
+    )
+    .waitFor();
+
   const outage = (route) =>
     route.fulfill({
       status: 503,
@@ -299,6 +434,13 @@ try {
   assert.equal(await cateringCount("Dinner headcount"), "1");
   await save(mo, "attending", "Mo Khazali");
 
+  await reviewQueue.locator("summary").click();
+  await reviewQueue
+    .getByLabel("Dietary review filter", { exact: true })
+    .selectOption("all");
+  await reviewQueue
+    .getByRole("heading", { name: "Mo Khazali", exact: true })
+    .waitFor();
   const axeSource = await readFile("node_modules/axe-core/axe.min.js", "utf8");
   for (const viewport of [
     { width: 390, height: 844 },
@@ -351,7 +493,7 @@ try {
   assert.equal(new URL(page.url()).hash, "#speaker-mo-khazali");
   assert.deepEqual(errors, []);
   console.log(
-    "Dinner browser check passed: shared diet aggregation for attending speakers and guests, meal and contamination counts, combined groups, copy/fallback/download, failed-load recovery, manual attendance, preserved food notes, catering CSV, missing diet details, stale-save rejection, filter-independent totals, persistence, speaker admin link, keyboard focus, mobile layout and accessibility.",
+    "Dinner browser check passed: shared diet aggregation and review queue for speakers and guests, saved categories and catering instructions, draft preservation and export blocking, failed-save recovery, reviewed summaries and sortable CSV, meal and contamination counts, copy/fallback/download, failed-load recovery, manual attendance, preserved food notes, stale attendance rejection, filter-independent totals, persistence, keyboard focus, mobile layout and accessibility.",
   );
 } finally {
   await browser?.close();

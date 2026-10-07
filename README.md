@@ -532,6 +532,15 @@ unchanged reimports. A changed source answer or mapping invalidates the decision
 until reviewed again. Purging dinner data also clears manual dietary reviews.
 Apply `0028_add_catering_diet_reviews.sql` before deploying this version.
 
+The dinner catering summary at `/admin/dinner/` uses the same dietary review
+queue and combined groups for attending speakers and guests. Dinner decisions
+are saved separately from daytime catering decisions, preserve the original
+meal and cross-contamination answers, and are invalidated when the person's
+name or dietary answers change. The **Caterer CSV** adds `dietary_group`,
+`dietary_review`, and `catering_instructions` columns for sorting meals. Dinner
+reviews are encrypted and cleared with dinner data at the retention deadline
+or on purge. Apply `0029_add_dinner_catering_reviews.sql` before deploying.
+
 Names, companies, emails and ticket codes are encrypted in the D1 roster.
 Arrival history stores record IDs, actor IDs, action and time without contact
 details. Daily R2 backups include the encrypted roster, arrivals and history,

@@ -1,12 +1,22 @@
 import { append, button, el } from "./admin-toolkit.ts";
 import { appendDietDetails } from "./catering-summary.ts";
+import { createDietReviewPanel } from "./attendee-diet-review-panel.ts";
+import type { DietReview } from "./attendee-diet-reviews.ts";
 import {
+  buildDinnerCateringRoster,
   dinnerCateringSummaryText,
   summarizeDinnerDiets,
   type DinnerCateringResponse,
+  type DinnerCateringData,
 } from "./dinner-diets.ts";
 
-export function createDinnerCateringPanel() {
+export function createDinnerCateringPanel(
+  saveReview: (
+    review: DietReview,
+    snapshot: { revision: number; version: string },
+  ) => Promise<DinnerCateringData>,
+  exportAvailabilityChanged: (disabled: boolean) => void,
+) {
   const panel = el("section", "", "border border-ink p-5 md:p-7");
   panel.dataset.dinnerCatering = "";
   append(
@@ -41,9 +51,20 @@ export function createDinnerCateringPanel() {
   let guests: readonly DinnerCateringResponse[] = [];
   let loaded = false;
   let busy = false;
+  let cateringData: DinnerCateringData | undefined;
+  const dietReview = createDietReviewPanel(
+    async (review, snapshot) => {
+      if (!loaded || busy || !cateringData)
+        throw new Error("Refresh dinner responses before reviewing diets.");
+      const saved = await saveReview(review, snapshot);
+      render(guests, saved);
+    },
+    () => updateControls(),
+    5,
+  );
   const report = () =>
     dinnerCateringSummaryText(
-      summarizeDinnerDiets(guests),
+      summarizeDinnerDiets(guests, cateringData?.reviews),
       new Intl.DateTimeFormat("en-GB", {
         timeZone: "Europe/Helsinki",
         dateStyle: "medium",
@@ -84,14 +105,26 @@ export function createDinnerCateringPanel() {
   append(actions, copy, download);
   append(panel, content, actions, status, fallback);
   const updateControls = () => {
-    copy.disabled = download.disabled = busy || !loaded;
+    dietReview.setBusy(busy || !loaded || !cateringData);
+    copy.disabled = download.disabled =
+      busy || !loaded || !cateringData || dietReview.hasDrafts();
+    exportAvailabilityChanged(copy.disabled);
   };
   updateControls();
 
-  function render(responses: readonly DinnerCateringResponse[]) {
+  function render(
+    responses: readonly DinnerCateringResponse[],
+    data: DinnerCateringData,
+  ) {
     guests = responses;
+    cateringData = data;
     loaded = true;
-    const summary = summarizeDinnerDiets(guests);
+    dietReview.render(
+      buildDinnerCateringRoster(guests, data.reviews),
+      data,
+      busy,
+    );
+    const summary = summarizeDinnerDiets(guests, data.reviews);
     content.replaceChildren();
     const counts = el(
       "dl",
@@ -164,6 +197,7 @@ export function createDinnerCateringPanel() {
       summary,
       "No guests are currently attending dinner.",
       4,
+      dietReview,
     );
     if (!fallback.hidden) text.value = report();
     updateControls();
@@ -178,6 +212,7 @@ export function createDinnerCateringPanel() {
     unavailable(message: string) {
       loaded = false;
       guests = [];
+      cateringData = undefined;
       content.replaceChildren(
         el(
           "p",

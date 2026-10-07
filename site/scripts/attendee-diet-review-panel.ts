@@ -1,7 +1,10 @@
 import { append, button, el, message } from "./admin-toolkit.ts";
 import { classifyDiet, dietCategories } from "./attendee-diets.ts";
-import { parseDietReviews, type DietReview } from "./attendee-diet-reviews.ts";
-import type { CateringPerson } from "./attendee-catering-model.ts";
+import {
+  parseDietReviews,
+  type DietReview,
+  type DietReviewPerson,
+} from "./attendee-diet-reviews.ts";
 
 type Snapshot = { revision: number; version: string };
 const statusLabels = {
@@ -14,6 +17,7 @@ const statusLabels = {
 export function createDietReviewPanel(
   save: (review: DietReview, snapshot: Snapshot) => Promise<void>,
   changed: () => void,
+  headingLevel: 4 | 5 = 4,
 ) {
   const panel = el("details", "", "mt-5 border border-ink p-4 md:p-5");
   panel.dataset.dietReviewQueue = "";
@@ -45,14 +49,14 @@ export function createDietReviewPanel(
   const editor = el("div", "", "mt-5");
   const feedback = el("p", "", "mt-3 text-sm leading-6");
   feedback.setAttribute("role", "status");
-  let people: CateringPerson[] = [];
+  let people: DietReviewPerson[] = [];
   let snapshot: Snapshot = { revision: 0, version: "" };
   let selected = "";
   let dirty = false;
   let busy = false;
   let saving = false;
   let drawSignature = "";
-  const isOpen = (person: CateringPerson) =>
+  const isOpen = (person: DietReviewPerson) =>
     Boolean(
       person.staleReview ||
       (person.review
@@ -173,7 +177,14 @@ export function createDietReviewPanel(
     const suggested = classifyDiet(person.diet);
     const form = el("form", "", "grid gap-5");
     form.dataset.dietReviewPerson = person.id;
-    append(form, el("h4", person.name, "font-headline text-2xl font-black"));
+    append(
+      form,
+      el(
+        headingLevel === 4 ? "h4" : "h5",
+        person.name,
+        "font-headline text-2xl font-black",
+      ),
+    );
     if (person.staleReview)
       append(
         form,
@@ -345,7 +356,7 @@ export function createDietReviewPanel(
   return {
     panel,
     render(
-      nextPeople: CateringPerson[],
+      nextPeople: DietReviewPerson[],
       nextSnapshot: Snapshot,
       disabled: boolean,
     ) {

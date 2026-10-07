@@ -1,7 +1,7 @@
 import * as v from "valibot";
 import { classifyDiet, summarizeAttendeeDiets } from "./attendee-diets.ts";
 import type { AttendeeRecord } from "./attendee-model.ts";
-import type { DietReview } from "./attendee-diet-reviews.ts";
+import type { DietReview, DietReviewPerson } from "./attendee-diet-reviews.ts";
 export { dinnerDiet } from "./dinner-diets.ts";
 
 export interface CateringSource {
@@ -99,15 +99,7 @@ export interface CateringRoster {
   attendeeDiets: Record<string, string | undefined>;
   rows: { source: CateringSource; target: string | null; label: string }[];
 }
-export interface CateringPerson {
-  id: string;
-  name: string;
-  status: "active" | "cancelled";
-  diet?: string | undefined;
-  sourceSignature: string;
-  review?: DietReview | undefined;
-  staleReview?: DietReview | undefined;
-}
+export type CateringPerson = DietReviewPerson;
 export function summarizeCateringPlan(
   roster: CateringRoster,
   reservedMeals = 0,

@@ -21,6 +21,12 @@ import {
   type DinnerAttendanceRow,
 } from "./speaker-dinner-attendance.ts";
 import { isRecord, readJsonWithinLimit } from "./speaker-workspace-utils.ts";
+import {
+  classifyDiet,
+  dietCategories,
+} from "../site/scripts/attendee-diets.ts";
+import type { DietReview } from "../site/scripts/attendee-diet-reviews.ts";
+import { buildDinnerCateringRoster } from "../site/scripts/dinner-diets.ts";
 
 type SpeakerDinnerAttendance = "attending" | "not_attending";
 
@@ -1095,6 +1101,9 @@ export async function purgeSpeakerDinnerData(env: Env): Promise<void> {
 function deleteSpeakerDinnerData(env: Env) {
   return env.INTERESTS.batch([
     env.INTERESTS.prepare(
+      "UPDATE speaker_dinner_catering SET reviews_ciphertext = NULL, reviews_iv = NULL, revision = revision + 1 WHERE id = 1",
+    ),
+    env.INTERESTS.prepare(
       "UPDATE attendee_roster SET catering_reviews_ciphertext = NULL, catering_reviews_iv = NULL, catering_revision = catering_revision + 1 WHERE id = 1",
     ),
     env.INTERESTS.prepare(
@@ -1119,7 +1128,42 @@ export function isSpeakerDinnerPath(pathname: string): boolean {
 export function formatSpeakerDinnerCsv(
   speakers: SpeakerDinnerAdminItem[],
   sharedResponses: SpeakerDinnerSharedAdminItem[],
+  reviews: readonly DietReview[] = [],
 ): string {
+  const people = buildDinnerCateringRoster(
+    [...speakers, ...sharedResponses],
+    reviews,
+  );
+  const classification = (id: string) => {
+    const person = people.find((person) => person.id === id)!;
+    const automatic = classifyDiet(person.diet);
+    const review = person.review;
+    const response = review
+      ? review.status === "none" || review.status === "missing"
+        ? review.status
+        : "requirements"
+      : automatic.response;
+    const categories = review?.categories ?? automatic.categories;
+    return [
+      response === "none"
+        ? "No restrictions"
+        : response === "missing"
+          ? "Missing information"
+          : categories
+              .map(
+                (id) =>
+                  dietCategories.find((category) => category.id === id)!.label,
+              )
+              .join(" + ") || "Other requirements",
+      person.staleReview ||
+      (review ? review.status === "clarify" : automatic.needsReview)
+        ? "Needs review"
+        : review
+          ? "Reviewed"
+          : "Automatic",
+      review?.note ?? "",
+    ];
+  };
   const rows = [
     [
       "name",
@@ -1127,6 +1171,9 @@ export function formatSpeakerDinnerCsv(
       "meal_preference",
       "food_requirements",
       "cross_contamination_concern",
+      "dietary_group",
+      "dietary_review",
+      "catering_instructions",
     ],
     ...speakers
       .filter((speaker) => speaker.response?.attendance === "attending")
@@ -1138,6 +1185,7 @@ export function formatSpeakerDinnerCsv(
         speaker.response?.meal_preference ?? "",
         speaker.response?.food_requirements ?? "",
         speaker.response?.cross_contamination ?? "",
+        ...classification(`speaker:${speaker.speaker_id}`),
       ]),
     ...sharedResponses
       .filter((item) => item.response.attendance === "attending")
@@ -1147,6 +1195,7 @@ export function formatSpeakerDinnerCsv(
         item.response.meal_preference,
         item.response.food_requirements,
         item.response.cross_contamination,
+        ...classification(`dinner-guest:${item.response_id}`),
       ]),
   ];
 

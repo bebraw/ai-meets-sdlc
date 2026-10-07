@@ -4,6 +4,7 @@ import {
   summarizeAttendeeDiets,
   type CateringSummary,
 } from "./attendee-diets.ts";
+import type { DietReview, DietReviewPerson } from "./attendee-diet-reviews.ts";
 
 export interface DinnerDiet {
   meal_preference: "" | "omnivore" | "vegetarian" | "vegan" | "other";
@@ -39,6 +40,59 @@ export function dinnerDiet(response: DinnerDiet | null): string | undefined {
 
 export interface DinnerCateringResponse {
   response: (DinnerDiet & { attendance: "attending" | "not_attending" }) | null;
+  name?: string;
+  speaker_id?: string;
+  response_id?: string;
+}
+export interface DinnerCateringData {
+  revision: number;
+  version: string;
+  reviews: DietReview[];
+}
+
+function dinnerPersonId(guest: DinnerCateringResponse): string | undefined {
+  return guest.speaker_id
+    ? `speaker:${guest.speaker_id}`
+    : guest.response_id
+      ? `dinner-guest:${guest.response_id}`
+      : undefined;
+}
+
+/** Bind decisions to the person and every original dinner answer. */
+export function buildDinnerCateringRoster(
+  guests: readonly DinnerCateringResponse[],
+  reviews: readonly DietReview[] = [],
+): DietReviewPerson[] {
+  return guests.flatMap((guest) => {
+    if (guest.response?.attendance !== "attending") return [];
+    const id = dinnerPersonId(guest);
+    if (!id || !guest.name) return [];
+    const sourceSignature = JSON.stringify([
+      [
+        id,
+        guest.name,
+        guest.response.attendance,
+        guest.response.meal_preference,
+        guest.response.food_requirements,
+        guest.response.cross_contamination,
+      ],
+    ]);
+    const saved = reviews.find((review) => review.personId === id);
+    return [
+      {
+        id,
+        name: guest.name,
+        status: "active" as const,
+        diet: dinnerDiet(guest.response),
+        sourceSignature,
+        review: saved?.sourceSignature === sourceSignature ? saved : undefined,
+        staleReview:
+          saved && saved.sourceSignature !== sourceSignature
+            ? saved
+            : undefined,
+      },
+    ];
+  });
 }
 export interface DinnerCateringSummary extends CateringSummary {
   notAttending: number;
@@ -50,16 +104,28 @@ export interface DinnerCateringSummary extends CateringSummary {
 
 export function summarizeDinnerDiets(
   guests: readonly DinnerCateringResponse[],
+  reviews: readonly DietReview[] = [],
 ): DinnerCateringSummary {
+  const people = new Map(
+    buildDinnerCateringRoster(guests, reviews).map((person) => [
+      person.id,
+      person,
+    ]),
+  );
   const attending = guests.flatMap((guest) =>
     guest.response?.attendance === "attending" ? [guest.response] : [],
   );
   return {
     ...summarizeAttendeeDiets(
-      attending.map((response) => ({
-        status: "active",
-        diet: dinnerDiet(response),
-      })),
+      guests
+        .filter((guest) => guest.response?.attendance === "attending")
+        .map(
+          (guest) =>
+            people.get(dinnerPersonId(guest) ?? "") ?? {
+              status: "active" as const,
+              diet: dinnerDiet(guest.response),
+            },
+        ),
     ),
     notAttending: guests.filter(
       (guest) => guest.response?.attendance === "not_attending",
