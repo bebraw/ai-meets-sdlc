@@ -64,6 +64,20 @@
           guest separately; attending guests are included in the caterer CSV.
         </p>
         <form data-admin-dinner-add-form class="mt-5 grid gap-5">
+          <label class="grid gap-2 text-sm font-bold"
+            >Dinner-update email (optional)
+            <input
+              name="email"
+              type="email"
+              maxlength="254"
+              autocomplete="email"
+              class="min-w-0 border border-ink bg-paper px-4 py-3 font-normal"
+            />
+            <span class="font-normal text-muted"
+              >Used only for dinner information. Leave empty to keep this guest
+              off the email audience.</span
+            >
+          </label>
           <div class="grid gap-5 md:grid-cols-2">
             <label class="grid gap-2 text-sm font-bold"
               >Guest Name
@@ -313,8 +327,12 @@
           Other guests
         </h3>
         <p class="text-sm leading-6 text-muted">
-          Guests added here or through the shared RSVP link. Check these names
-          against your organizer list to see who still needs to answer.
+          <a href="/admin/speakers/#announcements" class="underline"
+            >Send a combined speaker and dinner announcement</a
+          >
+          using saved guest emails. Guests added here or through the shared RSVP
+          link. Check these names against your organizer list to see who still
+          needs to answer.
         </p>
         <div class="grid gap-4" data-admin-dinner-organizers>
           <p class="border border-ink p-5 text-muted">Loading other guests.</p>

@@ -20,7 +20,12 @@ import {
   applyDinnerAttendance,
   type DinnerAttendanceRow,
 } from "./speaker-dinner-attendance.ts";
-import { isRecord, readJsonWithinLimit } from "./speaker-workspace-utils.ts";
+import {
+  isRecord,
+  readJsonWithinLimit,
+  normalizeEmail,
+  isLikelyEmail,
+} from "./speaker-workspace-utils.ts";
 import {
   classifyDiet,
   dietCategories,
@@ -79,6 +84,9 @@ interface SpeakerDinnerSharedInviteRow {
 }
 
 interface SpeakerDinnerSharedResponseRow {
+  email_ciphertext: string | null;
+  email_iv: string | null;
+  email_revision: number;
   consent_text: string;
   created_at: string;
   name_ciphertext: string;
@@ -91,6 +99,8 @@ interface SpeakerDinnerSharedResponseRow {
 }
 
 interface SpeakerDinnerSharedAdminItem {
+  email: string | null;
+  email_revision: number;
   response_id: string;
   source?: "admin";
   name: string;
@@ -538,6 +548,60 @@ export async function handleAdminDinnerGuest(
   );
 }
 
+export async function handleAdminDinnerGuestEmail(
+  request: Request,
+  env: Env,
+): Promise<Response> {
+  const configurationError = getSpeakerDinnerConfigurationError(env);
+  if (configurationError) return configurationError;
+  if (Date.now() > getSpeakerDinnerConfiguration(env)!.retention)
+    return jsonResponse({ error: "Dinner data retention has ended." }, 410);
+  const body = await readJsonWithinLimit(request, 4096);
+  if (body instanceof Response) return body;
+  if (
+    !isRecord(body) ||
+    typeof body.response_id !== "string" ||
+    typeof body.email !== "string" ||
+    !Number.isSafeInteger(body.revision)
+  )
+    return jsonResponse(
+      { error: "Choose a dinner guest and refresh their details." },
+      400,
+    );
+  const email = normalizeEmail(body.email);
+  if (email && !isLikelyEmail(email))
+    return jsonResponse(
+      { error: "Enter a valid email address or leave it empty." },
+      400,
+    );
+  const encrypted = email
+    ? await encryptText(email, env.EMAIL_ENCRYPTION_KEY)
+    : null;
+  const saved = await env.INTERESTS.prepare(
+    `UPDATE speaker_dinner_shared_responses
+    SET email_ciphertext = ?1, email_iv = ?2, email_revision = email_revision + 1, updated_at = ?3
+    WHERE response_id = ?4 AND email_revision = ?5 RETURNING response_id`,
+  )
+    .bind(
+      encrypted?.ciphertext ?? null,
+      encrypted?.iv ?? null,
+      new Date().toISOString(),
+      body.response_id,
+      body.revision,
+    )
+    .first();
+  if (!saved)
+    return jsonResponse(
+      { error: "Guest details changed. Refresh and try again." },
+      409,
+    );
+  return jsonResponse({
+    message: email
+      ? "Dinner-update email saved."
+      : "Dinner-update email removed.",
+  });
+}
+
 async function saveNamedDinnerResponse(
   request: Request,
   env: Env,
@@ -568,6 +632,19 @@ async function saveNamedDinnerResponse(
 
   if (responseDataResult instanceof Response) return responseDataResult;
 
+  const email =
+    consentText === adminDinnerConsentText
+      ? normalizeEmail(formDataResult.get("email"))
+      : "";
+  if (email && !isLikelyEmail(email))
+    return jsonResponse(
+      { error: "Enter a valid dinner-update email address." },
+      400,
+    );
+  const encryptedEmail = email
+    ? await encryptText(email, env.EMAIL_ENCRYPTION_KEY)
+    : null;
+
   const encryptionKey = await importAesKey(env.EMAIL_ENCRYPTION_KEY);
   const [encryptedName, encryptedResponse] = await Promise.all([
     encryptTextWithKey(name, encryptionKey),
@@ -585,8 +662,9 @@ async function saveNamedDinnerResponse(
       consent_text,
       created_at,
       responded_at,
-      updated_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      updated_at,
+      email_ciphertext, email_iv
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(response_id) DO UPDATE SET
       name_ciphertext = excluded.name_ciphertext,
       name_iv = excluded.name_iv,
@@ -606,6 +684,8 @@ async function saveNamedDinnerResponse(
       respondedAt,
       respondedAt,
       respondedAt,
+      encryptedEmail?.ciphertext ?? null,
+      encryptedEmail?.iv ?? null,
     )
     .run();
 
@@ -867,6 +947,9 @@ export async function readSpeakerDinnerSharedAdminItems(
       response_id,
       name_ciphertext,
       name_iv,
+      email_ciphertext,
+      email_iv,
+      email_revision,
       response_ciphertext,
       response_iv,
       consent_text,
@@ -894,6 +977,9 @@ async function readSpeakerDinnerSharedResponse(
       response_id,
       name_ciphertext,
       name_iv,
+      email_ciphertext,
+      email_iv,
+      email_revision,
       response_ciphertext,
       response_iv,
       consent_text,
@@ -929,6 +1015,15 @@ async function decryptSpeakerDinnerSharedResponse(
 
   return {
     response_id: row.response_id,
+    email:
+      row.email_ciphertext && row.email_iv
+        ? await decryptTextWithKey(
+            row.email_ciphertext,
+            row.email_iv,
+            encryptionKey,
+          )
+        : null,
+    email_revision: row.email_revision,
     name,
     responded_at: row.responded_at,
     response: candidate,

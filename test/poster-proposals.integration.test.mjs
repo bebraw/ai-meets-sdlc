@@ -879,6 +879,8 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   assert.deepEqual(dinnerAdmin.shared_responses, [
     {
       response_id: dinnerAdmin.shared_responses[0].response_id,
+      email: null,
+      email_revision: 0,
       name: "Organizer Example",
       responded_at: dinnerAdmin.shared_responses[0].responded_at,
       response: {

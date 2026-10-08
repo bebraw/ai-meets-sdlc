@@ -113,11 +113,12 @@
       <details
         class="border border-paper/50 p-5 md:p-7"
         data-admin-announcement-panel
+        id="announcements"
       >
         <summary
           class="cursor-pointer font-headline text-2xl font-black uppercase"
         >
-          Send speaker announcement
+          Send speaker and dinner announcement
         </summary>
         <form class="mt-7 grid gap-6" data-admin-announcement-form novalidate>
           <div class="grid gap-5 md:grid-cols-2">
@@ -141,6 +142,23 @@
               />
             </label>
           </div>
+          <label
+            class="grid grid-cols-[auto_1fr] gap-3 border border-paper/40 p-4"
+          >
+            <input class="mt-1 h-5 w-5" name="include_dinner" type="checkbox" />
+            <span class="grid gap-2">
+              <strong class="uppercase">Include attending dinner guests</strong>
+              <span class="text-sm leading-6 text-paper/60"
+                >Includes attending speakers and other dinner guests with saved
+                emails. People in both audiences receive one message. For
+                dinner-only updates, select no speakers below. Dinner guests
+                receive operational updates only.</span
+              >
+              <a class="w-fit text-sm underline" href="/admin/dinner/"
+                >Manage dinner guest emails</a
+              >
+            </span>
+          </label>
           <fieldset class="grid gap-3 border-t border-paper/40 pt-5">
             <legend class="pr-3 font-bold uppercase">Speakers</legend>
             <p class="text-sm leading-6 text-paper/60">
@@ -173,8 +191,8 @@
           <label class="grid gap-2">
             <span class="font-bold uppercase">Message</span>
             <span class="text-sm leading-6 text-paper/60">
-              Each speaker receives a separate message with their name and the
-              SDLCAI reply address.
+              Everyone receives this message, addressed separately with their
+              name and the SDLCAI reply address.
             </span>
             <textarea
               class="min-h-52 resize-y border border-paper bg-ink px-4 py-3 leading-7 text-paper outline-none focus:ring-2 focus:ring-paper"
@@ -183,6 +201,35 @@
               required
             ></textarea>
           </label>
+          <div class="grid gap-5 md:grid-cols-2">
+            <label class="grid gap-2">
+              <span class="font-bold uppercase"
+                >Speaker information (optional)</span
+              >
+              <span class="text-sm leading-6 text-paper/60"
+                >Appended for selected speakers.</span
+              >
+              <textarea
+                class="min-h-32 resize-y border border-paper bg-ink px-4 py-3 leading-7 text-paper outline-none focus:ring-2 focus:ring-paper"
+                name="speaker_text_body"
+                maxlength="10000"
+              ></textarea>
+            </label>
+            <label class="grid gap-2">
+              <span class="font-bold uppercase"
+                >Dinner information (optional)</span
+              >
+              <span class="text-sm leading-6 text-paper/60"
+                >Appended for the dinner audience. People in both audiences get
+                both sections in one email.</span
+              >
+              <textarea
+                class="min-h-32 resize-y border border-paper bg-ink px-4 py-3 leading-7 text-paper outline-none focus:ring-2 focus:ring-paper"
+                name="dinner_text_body"
+                maxlength="10000"
+              ></textarea>
+            </label>
+          </div>
           <div class="flex flex-wrap gap-3">
             <button
               class="border border-paper px-5 py-3 font-bold uppercase"
@@ -238,6 +285,13 @@
             data-admin-announcement-preview-panel
             hidden
           >
+            <label class="grid gap-2">
+              <span class="font-bold uppercase">Preview audience</span>
+              <select
+                class="border border-paper bg-ink px-4 py-3 text-paper"
+                data-admin-announcement-variant
+              ></select>
+            </label>
             <div class="grid gap-4 lg:grid-cols-2">
               <div class="border border-paper/40 p-4">
                 <p class="text-xs font-bold uppercase text-paper/50">
@@ -256,6 +310,7 @@
                   class="mt-3 h-80 w-full bg-paper"
                   data-admin-announcement-html-preview
                   title="Announcement HTML preview"
+                  sandbox=""
                 ></iframe>
               </div>
             </div>
@@ -267,6 +322,10 @@
                   <span data-admin-announcement-recipient-count>0</span>
                   eligible recipients
                 </p>
+                <p
+                  class="mt-2 text-sm font-bold"
+                  data-admin-announcement-audience-counts
+                ></p>
                 <p
                   class="mt-2 text-sm text-paper/60"
                   data-admin-announcement-recipient-list
@@ -289,7 +348,7 @@
               type="button"
               disabled
             >
-              Send separately to speakers
+              Send once per recipient
             </button>
           </section>
         </form>
@@ -299,7 +358,7 @@
         <summary
           class="cursor-pointer font-headline text-2xl font-black uppercase"
         >
-          Sent speaker messages
+          Sent announcements
         </summary>
         <p class="mt-4 text-sm text-paper/70">
           Archive of announcements sent through this site, with message contents

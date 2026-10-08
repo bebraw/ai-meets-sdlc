@@ -626,8 +626,16 @@ test("speaker invitation sessions, revisions, and automatic publishing stay gove
   const promotionPreview = await promotionResponse.json();
   assert.equal(promotionPreview.recipient_count, 0);
   assert.deepEqual(promotionPreview.excluded, [
-    { reason: "promotion-disabled", speaker_id: "mo-khazali" },
-    { reason: "unconfirmed", speaker_id: "ohans-emmanuel" },
+    {
+      reason: "promotion-disabled",
+      speaker_id: "mo-khazali",
+      name: "Mo Javad Khazali",
+    },
+    {
+      reason: "unconfirmed",
+      speaker_id: "ohans-emmanuel",
+      name: "Ohans Emmanuel",
+    },
   ]);
   assert.match(announcementPreview.text_body, /Hello \{\{speaker name\}\}/u);
   assert.doesNotMatch(

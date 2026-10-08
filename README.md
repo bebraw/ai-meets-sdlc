@@ -242,6 +242,29 @@ RSVP deadline until dinner data retention ends. Apply migration
 `npm run deploy` command applies it. `npm run dinner:browser-check` validates the
 workflow, mobile layout and accessibility with an isolated local database.
 
+Use **Send speaker and dinner announcement** at `/admin/speakers/#announcements`
+for a shared update. Select speakers, include attending dinner guests, or select
+no speakers for a dinner-only message. The preview shows speaker-only,
+dinner-only and overlapping recipients, plus contacts excluded from delivery.
+Recipients are combined by normalized email address; each address receives one
+separately addressed message. Optional speaker and dinner sections are appended
+for their respective audiences, with both sections in the overlap's one email.
+The preview selector shows each version; test messages include all optional
+sections. Saved speaker preferences, suppressed addresses and retention limits
+apply even when the same address appears in the dinner audience. Dinner guests
+receive operational event information only.
+
+Add optional dinner-update emails when adding guests, or choose **Save email**
+on existing guest cards at `/admin/dinner/`. Clear an address to stop dinner
+updates. Emails are encrypted, excluded from catering exports and deleted with
+dinner data. Names alone are never used to infer email addresses. Apply migration
+`0031_add_dinner_announcements.sql`; the normal deployment command applies it.
+Message history includes both audiences and failed-only retries. Preview tokens
+bind the message and eligible addresses, reject stale previews and prevent
+repeated submissions of the same confirmed preview. Campaign and delivery claims
+prevent concurrent retries; an accepted send that cannot be recorded stays
+claimed for manual investigation rather than being automatically retried.
+
 The schedule structure and session deck scaffold derive from
 `site/data/seminar.json`, `site/data/schedule.json`, `site/data/speakers.json`,
 and `site/data/sponsors.json`; the Worker resolves mutable speaker and talk copy
@@ -448,7 +471,8 @@ Each save creates a separate encrypted response alongside shared RSVP guests,
 with attending guests included in the caterer CSV as “added by admin”. The form
 records the administrator’s confirmation that the guest agreed to the processing.
 Manual additions remain available until dinner data retention ends and use the
-existing dinner cleanup and backup exclusions; no additional migration is needed.
+existing dinner cleanup and backup exclusions. Optional update emails use
+migration `0031_add_dinner_announcements.sql` as described above.
 
 ### Organizer digests
 

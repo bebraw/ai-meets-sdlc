@@ -80,7 +80,7 @@ type SpeakerDinnerAdminItem = {
 type DinnerAdminResponse = Pick<
   SpeakerDinnerAdminItem,
   "name" | "responded_at" | "response" | "updated_at"
-> & { response_id: string };
+> & { response_id: string; email: string | null; email_revision: number };
 
 type SpeakerDinnerStatus = {
   attendance_source?: "admin" | "speaker";
@@ -1547,8 +1547,75 @@ function initAdminSpeakerDinner() {
       article.appendChild(header);
       article.appendChild(details);
       if (isSpeaker(speaker)) article.appendChild(attendanceForm(speaker));
+      else article.appendChild(guestEmailForm(speaker));
       target.appendChild(article);
     }
+  }
+
+  function guestEmailForm(guest: DinnerAdminResponse): HTMLFormElement {
+    const form = createElement(
+      "form",
+      "grid gap-3 border-t border-ink p-5 lg:col-span-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end",
+    );
+    const label = createElement("label", "grid gap-2 text-sm font-bold");
+    label.appendChild(
+      createElement("span", "", `Dinner-update email for ${guest.name}`),
+    );
+    const input = createElement(
+      "input",
+      "min-w-0 w-full border border-ink bg-paper px-3 py-3 font-normal",
+    );
+    input.type = "email";
+    input.maxLength = 254;
+    input.value = guest.email ?? "";
+    label.appendChild(input);
+    const save = createElement(
+      "button",
+      "border border-ink px-4 py-3 text-sm font-bold uppercase hover:bg-ink hover:text-paper disabled:opacity-50",
+      "Save email",
+    );
+    save.type = "submit";
+    const message = createElement(
+      "p",
+      "text-sm text-muted sm:col-span-2",
+      "Optional. Clear this field to stop dinner updates. Use the same email as the speaker contact to receive one combined message.",
+    );
+    message.setAttribute("aria-live", "polite");
+    form.appendChild(label);
+    form.appendChild(save);
+    form.appendChild(message);
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (save.disabled) return;
+      save.disabled = true;
+      input.disabled = true;
+      message.textContent = "Saving dinner-update email…";
+      try {
+        const response = await fetch("/api/admin/speaker-dinner/guest-email", {
+          method: "PUT",
+          headers: {
+            "content-type": "application/json",
+            "x-admin-action": "manage-dinner-guest-email",
+          },
+          body: JSON.stringify({
+            response_id: guest.response_id,
+            revision: guest.email_revision,
+            email: input.value,
+          }),
+        });
+        const payload = (await response.json()) as FormResponse;
+        if (!response.ok || payload.error)
+          throw new Error(payload.error || "Could not save email.");
+        await loadSpeakers(`Dinner-update email saved for ${guest.name}.`);
+      } catch (error) {
+        message.textContent =
+          error instanceof Error ? error.message : "Could not save email.";
+      } finally {
+        save.disabled = false;
+        input.disabled = false;
+      }
+    });
+    return form;
   }
 
   function lockAttendance(value: boolean) {

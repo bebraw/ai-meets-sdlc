@@ -120,6 +120,9 @@ export type SpeakerEmailCategory = "operational" | "promotion";
 
 export interface SpeakerAnnouncementInput {
   category: SpeakerEmailCategory;
+  includeDinner: boolean;
+  speakerTextBody: string;
+  dinnerTextBody: string;
   speakerIds: string[];
   subject: string;
   textBody: string;
@@ -129,9 +132,15 @@ export interface SpeakerAnnouncementRecipient {
   email: string;
   name: string;
   speakerId: string;
+  sourceIds: string[];
+  groups: Array<"speakers" | "dinner">;
+  emailFingerprint: string;
 }
 
 export interface SpeakerEmailCampaignRow {
+  include_dinner: number;
+  speaker_text_body: string;
+  dinner_text_body: string;
   campaign_id: string;
   category: SpeakerEmailCategory;
   completed_at: string | null;

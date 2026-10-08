@@ -5,20 +5,20 @@ import {
   isRecord,
   normalizeEmail,
   isLikelyEmail,
-  decryptPrivateText,
+  hashPrivateText,
   escapeHtml,
 } from "./speaker-workspace-utils.ts";
 import {
   type SpeakerEmailCampaignRow,
   type SpeakerAnnouncementInput,
   type SpeakerAnnouncementRecipient,
-  type SpeakerEmailCategory,
-  type SpeakerContactRow,
 } from "./speaker-workspace-types.ts";
 import {
   canonicalSpeakerIds,
   readCanonicalSpeakers,
 } from "./canonical-content.ts";
+import { getAnnouncementRecipients } from "./announcement-recipients.ts";
+import { readSpeakerDinnerSharedAdminItems } from "./speaker-dinner.ts";
 
 export async function getSpeakerAnnouncements(
   env: Env,
@@ -36,6 +36,7 @@ export async function getSpeakerAnnouncements(
       `SELECT
        campaign_id,
        category,
+       include_dinner, speaker_text_body, dinner_text_body,
        subject,
        text_body,
        html_body,
@@ -56,23 +57,55 @@ export async function getSpeakerAnnouncements(
   const deliveries = campaigns.length
     ? await env
         .INTERESTS!.prepare(
-          `SELECT campaign_id, speaker_id, status, sent_at FROM speaker_email_deliveries
+          `SELECT campaign_id, speaker_id, source_ids, status, sent_at FROM speaker_email_deliveries
      WHERE campaign_id IN (${campaigns.map(() => "?").join(",")}) ORDER BY speaker_id`,
         )
         .bind(...campaigns.map(({ campaign_id }) => campaign_id))
         .all<{
           campaign_id: string;
           speaker_id: string;
+          source_ids: string | null;
           status: string;
           sent_at: string | null;
         }>()
     : { results: [] };
+  const names = new Map(
+    (await readCanonicalSpeakers(env)).flatMap((s) => [
+      [`speaker:${s.speakerId}`, s.content.profile.name],
+      [`dinner-speaker:${s.speakerId}`, s.content.profile.name],
+    ]),
+  );
+  if (
+    deliveries.results.some((d) => d.source_ids?.includes("dinner-guest:")) &&
+    Date.parse(env.SPEAKER_DINNER_RETENTION_UNTIL ?? "") > Date.now()
+  ) {
+    for (const guest of await readSpeakerDinnerSharedAdminItems(env))
+      names.set(`dinner-guest:${guest.response_id}`, guest.name);
+  }
   return json({
     campaigns: campaigns.map((campaign) => ({
       ...campaign,
-      deliveries: deliveries.results.filter(
-        (delivery) => delivery.campaign_id === campaign.campaign_id,
-      ),
+      deliveries: deliveries.results
+        .filter((delivery) => delivery.campaign_id === campaign.campaign_id)
+        .map((delivery) => {
+          const sources: string[] = delivery.source_ids
+            ? JSON.parse(delivery.source_ids)
+            : [`speaker:${delivery.speaker_id}`];
+          return {
+            ...delivery,
+            name: [
+              ...new Set(
+                sources.map(
+                  (source) =>
+                    names.get(source) ??
+                    (source.startsWith("dinner-guest:")
+                      ? "Dinner guest (record removed)"
+                      : source),
+                ),
+              ),
+            ].join(" / "),
+          };
+        }),
     })),
     count: campaigns.length,
     next_offset: result.results.length > 20 ? offset + 20 : null,
@@ -88,14 +121,50 @@ export async function previewSpeakerAnnouncement(
   if (prepared instanceof Response) return prepared;
 
   const { excluded, input, recipients } = prepared;
+  const both = recipients.filter((r) => r.groups.length === 2).length;
+  const variants = [
+    { label: "Speakers only", groups: ["speakers"] as const },
+    { label: "Dinner only", groups: ["dinner"] as const },
+    { label: "Speakers and dinner", groups: ["speakers", "dinner"] as const },
+  ]
+    .filter((v) =>
+      recipients.some((r) => r.groups.join(",") === v.groups.join(",")),
+    )
+    .map((v) => ({
+      label: v.label,
+      html_body: renderAnnouncementHtml(
+        "{{speaker name}}",
+        announcementBody(input, v.groups),
+      ),
+      text_body: renderAnnouncementText(
+        "{{speaker name}}",
+        announcementBody(input, v.groups),
+      ),
+    }));
 
   return json({
     excluded,
+    preview_token: await announcementToken(
+      env,
+      crypto.randomUUID(),
+      input,
+      recipients,
+      excluded,
+    ),
+    audience_counts: {
+      speakers_only:
+        recipients.filter((r) => r.groups.includes("speakers")).length - both,
+      dinner_only:
+        recipients.filter((r) => r.groups.includes("dinner")).length - both,
+      both,
+    },
+    variants,
     html_body: renderAnnouncementHtml("{{speaker name}}", input.textBody),
     recipient_count: recipients.length,
-    recipients: recipients.map(({ name, speakerId }) => ({
+    recipients: recipients.map(({ name, speakerId, groups }) => ({
       name,
       speaker_id: speakerId,
+      groups,
     })),
     subject: input.subject,
     text_body: renderAnnouncementText("{{speaker name}}", input.textBody),
@@ -113,7 +182,7 @@ export async function testSpeakerAnnouncement(
     );
   }
 
-  const body = await readJsonWithinLimit(request, 24 * 1024);
+  const body = await readJsonWithinLimit(request, 64 * 1024);
 
   if (body instanceof Response) return body;
 
@@ -138,9 +207,12 @@ export async function testSpeakerAnnouncement(
         email: testEmail,
         name: "Test recipient",
         speakerId: "test",
+        groups: ["speakers", "dinner"],
+        sourceIds: [],
+        emailFingerprint: "",
       },
       `[TEST] ${parsed.subject}`,
-      parsed.textBody,
+      announcementBody(parsed, ["speakers", "dinner"]),
     );
   } catch (error) {
     console.error("Speaker announcement test delivery failed", {
@@ -167,24 +239,29 @@ export async function sendSpeakerAnnouncement(
 
   if (prepared instanceof Response) return prepared;
 
-  const { body, input, recipients } = prepared;
+  const { body, input, recipients, excluded } = prepared;
   const confirmedCount = body.confirm_recipient_count;
+  const token =
+    typeof body.preview_token === "string" ? body.preview_token : "";
+  const nonce = token.split(".")[0] ?? "";
 
   if (
     !Number.isSafeInteger(confirmedCount) ||
-    confirmedCount !== recipients.length
+    confirmedCount !== recipients.length ||
+    !/^[0-9a-f-]{36}$/u.test(nonce) ||
+    token !== (await announcementToken(env, nonce, input, recipients, excluded))
   ) {
     return json(
       {
         error:
-          "Recipient eligibility changed. Preview again and confirm the new count.",
+          "The message or recipient list changed. Preview again and confirm the new recipients.",
       },
       409,
     );
   }
 
   if (recipients.length === 0) {
-    return json({ error: "No eligible speakers were selected." }, 400);
+    return json({ error: "No eligible recipients were selected." }, 400);
   }
 
   const campaignId = crypto.randomUUID();
@@ -193,10 +270,9 @@ export async function sendSpeakerAnnouncement(
     "{{speaker name}}",
     input.textBody,
   );
-  await env.INTERESTS!.batch([
-    env
-      .INTERESTS!.prepare(
-        `INSERT INTO speaker_email_campaigns (
+  const inserted = await env
+    .INTERESTS!.prepare(
+      `INSERT OR IGNORE INTO speaker_email_campaigns (
          campaign_id,
          category,
          subject,
@@ -204,18 +280,32 @@ export async function sendSpeakerAnnouncement(
          html_body,
          status,
          recipient_count,
-         created_at
-       ) VALUES (?1, ?2, ?3, ?4, ?5, 'sending', ?6, ?7)`,
-      )
-      .bind(
-        campaignId,
-        input.category,
-        input.subject,
-        input.textBody,
-        previewHtml,
-        recipients.length,
-        now,
-      ),
+         created_at, include_dinner, speaker_text_body, dinner_text_body, confirmation_token
+       ) VALUES (?1, ?2, ?3, ?4, ?5, 'sending', ?6, ?7, ?8, ?9, ?10, ?11) RETURNING campaign_id`,
+    )
+    .bind(
+      campaignId,
+      input.category,
+      input.subject,
+      input.textBody,
+      previewHtml,
+      recipients.length,
+      now,
+      input.includeDinner ? 1 : 0,
+      input.speakerTextBody,
+      input.dinnerTextBody,
+      token,
+    )
+    .first();
+  if (!inserted)
+    return json(
+      {
+        error:
+          "This preview has already been sent or is sending. Check the message history.",
+      },
+      409,
+    );
+  await env.INTERESTS!.batch([
     ...recipients.map((recipient) =>
       env
         .INTERESTS!.prepare(
@@ -224,10 +314,16 @@ export async function sendSpeakerAnnouncement(
            speaker_id,
            status,
            attempts,
-           updated_at
-         ) VALUES (?1, ?2, 'pending', 0, ?3)`,
+           updated_at, source_ids, email_fingerprint
+         ) VALUES (?1, ?2, 'pending', 0, ?3, ?4, ?5)`,
         )
-        .bind(campaignId, recipient.speakerId, now),
+        .bind(
+          campaignId,
+          recipient.speakerId,
+          now,
+          JSON.stringify(recipient.sourceIds),
+          recipient.emailFingerprint,
+        ),
     ),
   ]);
 
@@ -237,7 +333,7 @@ export async function sendSpeakerAnnouncement(
       campaignId,
       recipient,
       input.subject,
-      input.textBody,
+      announcementBody(input, recipient.groups),
     );
   }
 
@@ -247,7 +343,7 @@ export async function sendSpeakerAnnouncement(
     campaign_id: campaignId,
     message:
       outcome.failed_count === 0
-        ? `Announcement sent separately to ${outcome.sent_count} speakers.`
+        ? `Announcement sent separately to ${outcome.sent_count} recipients.`
         : `Sent ${outcome.sent_count}; ${outcome.failed_count} deliveries can be retried.`,
     ...outcome,
   });
@@ -286,6 +382,7 @@ export async function retrySpeakerAnnouncement(
       `SELECT
        campaign_id,
        category,
+       include_dinner, speaker_text_body, dinner_text_body,
        subject,
        text_body,
        html_body,
@@ -307,26 +404,58 @@ export async function retrySpeakerAnnouncement(
       409,
     );
   }
+  const claimed = await env.INTERESTS.prepare(
+    `UPDATE speaker_email_campaigns SET status = 'sending', completed_at = NULL
+    WHERE campaign_id = ?1 AND status IN ('failed', 'partial') RETURNING campaign_id`,
+  )
+    .bind(campaignId)
+    .first();
+  if (!claimed)
+    return json(
+      { error: "A retry is already running. Refresh the message history." },
+      409,
+    );
 
   const failedResult = await env
     .INTERESTS!.prepare(
-      `SELECT speaker_id
+      `SELECT speaker_id, source_ids, email_fingerprint
        FROM speaker_email_deliveries
       WHERE campaign_id = ?1 AND status = 'failed'`,
     )
     .bind(campaignId)
-    .all<{ speaker_id: string }>();
+    .all<{
+      speaker_id: string;
+      source_ids: string | null;
+      email_fingerprint: string | null;
+    }>();
+  const sources = failedResult.results.flatMap((row) =>
+    row.source_ids
+      ? (JSON.parse(row.source_ids) as string[])
+      : [`speaker:${row.speaker_id}`],
+  );
   const eligible = await getAnnouncementRecipients(
     env,
-    failedResult.results.map(({ speaker_id }) => speaker_id),
+    [
+      ...new Set(
+        sources.filter((s) => s.startsWith("speaker:")).map((s) => s.slice(8)),
+      ),
+    ],
     campaign.category,
-  );
-  const recipientsById = new Map(
-    eligible.recipients.map((recipient) => [recipient.speakerId, recipient]),
+    campaign.include_dinner === 1,
   );
 
-  for (const { speaker_id: speakerId } of failedResult.results) {
-    const recipient = recipientsById.get(speakerId);
+  for (const row of failedResult.results) {
+    const speakerId = row.speaker_id;
+    const originalSources: string[] = row.source_ids
+      ? JSON.parse(row.source_ids)
+      : [`speaker:${speakerId}`];
+    const recipient = eligible.recipients.find(
+      (r) =>
+        (row.email_fingerprint
+          ? r.emailFingerprint === row.email_fingerprint
+          : r.speakerId === speakerId) &&
+        r.sourceIds.some((s) => originalSources.includes(s)),
+    );
 
     if (!recipient) {
       await env
@@ -335,19 +464,38 @@ export async function retrySpeakerAnnouncement(
             SET status = 'skipped',
                 last_error_code = 'no-longer-eligible',
                 updated_at = ?3
-          WHERE campaign_id = ?1 AND speaker_id = ?2 AND status = 'failed'`,
+          WHERE campaign_id = ?1 AND speaker_id = ?2 AND status = 'failed' AND claim_token IS NULL`,
         )
         .bind(campaignId, speakerId, new Date().toISOString())
         .run();
       continue;
     }
+    recipient.speakerId = speakerId;
+    const groups = [
+      ...new Set(
+        recipient.sourceIds
+          .filter((s) => originalSources.includes(s))
+          .map((s) =>
+            s.startsWith("speaker:")
+              ? ("speakers" as const)
+              : ("dinner" as const),
+          ),
+      ),
+    ];
 
     await attemptCampaignDelivery(
       env,
       campaignId,
       recipient,
       campaign.subject,
-      campaign.text_body,
+      announcementBody(
+        {
+          textBody: campaign.text_body,
+          speakerTextBody: campaign.speaker_text_body,
+          dinnerTextBody: campaign.dinner_text_body,
+        },
+        groups,
+      ),
     );
   }
 
@@ -379,7 +527,7 @@ async function prepareSpeakerAnnouncement(
 
   if (configurationError) return configurationError;
 
-  const body = await readJsonWithinLimit(request, 24 * 1024);
+  const body = await readJsonWithinLimit(request, 64 * 1024);
 
   if (body instanceof Response) return body;
 
@@ -395,6 +543,7 @@ async function prepareSpeakerAnnouncement(
     env,
     parsed.speakerIds,
     parsed.category,
+    parsed.includeDinner,
   );
 
   return { body, input: parsed, ...selection };
@@ -427,10 +576,27 @@ function parseSpeakerAnnouncementInput(
     return { error: "Use a message between 20 and 10,000 characters." };
   }
 
-  const uniqueSpeakerIds = [...new Set(speakerIds)];
+  const uniqueSpeakerIds = [...new Set(speakerIds)].sort();
+  const includeDinner = body.include_dinner === true;
+  const speakerTextBody =
+    typeof body.speaker_text_body === "string"
+      ? body.speaker_text_body.trim().replace(/\r\n?/gu, "\n")
+      : "";
+  const dinnerTextBody =
+    typeof body.dinner_text_body === "string"
+      ? body.dinner_text_body.trim().replace(/\r\n?/gu, "\n")
+      : "";
+  if (speakerTextBody.length + dinnerTextBody.length + textBody.length > 10000)
+    return {
+      error: "Keep the combined message to 10,000 characters or fewer.",
+    };
+  if (includeDinner && category !== "operational")
+    return {
+      error: "Dinner recipients can receive operational event updates only.",
+    };
 
   if (
-    uniqueSpeakerIds.length === 0 ||
+    (uniqueSpeakerIds.length === 0 && !includeDinner) ||
     uniqueSpeakerIds.length > canonicalSpeakerIds.size ||
     uniqueSpeakerIds.some((speakerId) => !canonicalSpeakerIds.has(speakerId))
   ) {
@@ -439,91 +605,13 @@ function parseSpeakerAnnouncementInput(
 
   return {
     category,
+    includeDinner,
+    speakerTextBody,
+    dinnerTextBody,
     speakerIds: uniqueSpeakerIds,
     subject,
     textBody,
   };
-}
-
-async function getAnnouncementRecipients(
-  env: Env,
-  speakerIds: string[],
-  category: SpeakerEmailCategory,
-): Promise<{
-  excluded: Array<{ reason: string; speaker_id: string }>;
-  recipients: SpeakerAnnouncementRecipient[];
-}> {
-  const result = await env
-    .INTERESTS!.prepare(
-      `SELECT
-       speaker_id,
-       email_ciphertext,
-       email_iv,
-       email_confirmed_at,
-       retention_until,
-       operational_email_enabled,
-       promotion_email_enabled,
-       delivery_status,
-       updated_at
-     FROM speaker_contacts`,
-    )
-    .all<SpeakerContactRow>();
-  const contacts = new Map(
-    result.results.map((contact) => [contact.speaker_id, contact]),
-  );
-  const canonicalRecords = new Map(
-    (await readCanonicalSpeakers(env)).map((record) => [
-      record.speakerId,
-      record,
-    ]),
-  );
-  const recipients: SpeakerAnnouncementRecipient[] = [];
-  const excluded: Array<{ reason: string; speaker_id: string }> = [];
-
-  for (const speakerId of speakerIds) {
-    const speaker = canonicalRecords.get(speakerId);
-    const contact = contacts.get(speakerId);
-    let reason = "";
-
-    if (!speaker) reason = "unknown-speaker";
-    else if (!contact) reason = "no-contact";
-    else if (category === "promotion" && !contact.email_confirmed_at)
-      reason = "unconfirmed";
-    else if (contact.delivery_status !== "active") reason = "suppressed";
-    else if (
-      category === "operational" &&
-      contact.operational_email_enabled !== 1
-    ) {
-      reason = "operational-disabled";
-    } else if (
-      category === "promotion" &&
-      contact.promotion_email_enabled !== 1
-    ) {
-      reason = "promotion-disabled";
-    }
-
-    if (reason || !contact || !speaker) {
-      excluded.push({ reason, speaker_id: speakerId });
-      continue;
-    }
-
-    try {
-      recipients.push({
-        email: await decryptPrivateText(
-          contact.email_ciphertext,
-          contact.email_iv,
-          env.EMAIL_ENCRYPTION_KEY!,
-        ),
-        name: speaker.content.profile.name,
-        speakerId,
-      });
-    } catch {
-      console.error("Unable to decrypt announcement recipient", { speakerId });
-      excluded.push({ reason: "contact-unavailable", speaker_id: speakerId });
-    }
-  }
-
-  return { excluded, recipients };
 }
 
 async function attemptCampaignDelivery(
@@ -534,43 +622,44 @@ async function attemptCampaignDelivery(
   textBody: string,
 ): Promise<void> {
   const now = new Date().toISOString();
+  const claimToken = crypto.randomUUID();
+  const claimed = await env.INTERESTS.prepare(
+    `UPDATE speaker_email_deliveries SET claim_token = ?3, attempts = attempts + 1, updated_at = ?4
+    WHERE campaign_id = ?1 AND speaker_id = ?2 AND status IN ('pending', 'failed') AND claim_token IS NULL RETURNING speaker_id`,
+  )
+    .bind(campaignId, recipient.speakerId, claimToken, now)
+    .first();
+  if (!claimed) return;
 
   try {
     await deliverSpeakerEmail(env, recipient, subject, textBody);
-    await env
-      .INTERESTS!.prepare(
-        `UPDATE speaker_email_deliveries
-          SET status = 'sent',
-              attempts = attempts + 1,
-              last_error_code = NULL,
-              sent_at = ?3,
-              updated_at = ?3
-        WHERE campaign_id = ?1
-          AND speaker_id = ?2
-          AND status IN ('pending', 'failed')`,
-      )
-      .bind(campaignId, recipient.speakerId, now)
-      .run();
-  } catch (error) {
+  } catch {
     console.error("Speaker announcement delivery failed", {
       campaignId,
-      error: error instanceof Error ? error.message : "Unknown email error",
       speakerId: recipient.speakerId,
     });
     await env
       .INTERESTS!.prepare(
         `UPDATE speaker_email_deliveries
           SET status = 'failed',
-              attempts = attempts + 1,
+              claim_token = NULL,
               last_error_code = 'delivery-error',
               updated_at = ?3
         WHERE campaign_id = ?1
           AND speaker_id = ?2
-          AND status IN ('pending', 'failed')`,
+          AND claim_token = ?4`,
       )
-      .bind(campaignId, recipient.speakerId, now)
+      .bind(campaignId, recipient.speakerId, now, claimToken)
       .run();
+    return;
   }
+  // Keep the claim if recording an accepted send fails: an uncertain send must not be retried.
+  await env.INTERESTS.prepare(
+    `UPDATE speaker_email_deliveries SET status = 'sent', claim_token = NULL,
+    last_error_code = NULL, sent_at = ?3, updated_at = ?3 WHERE campaign_id = ?1 AND speaker_id = ?2 AND claim_token = ?4`,
+  )
+    .bind(campaignId, recipient.speakerId, new Date().toISOString(), claimToken)
+    .run();
 }
 
 async function deliverSpeakerEmail(
@@ -601,8 +690,8 @@ async function finalizeCampaign(
     .INTERESTS!.prepare(
       `SELECT
        SUM(CASE WHEN status = 'sent' THEN 1 ELSE 0 END) AS sent_count,
-       SUM(CASE WHEN status = 'failed' THEN 1 ELSE 0 END) AS failed_count,
-       SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) AS pending_count,
+       SUM(CASE WHEN status = 'failed' AND claim_token IS NULL THEN 1 ELSE 0 END) AS failed_count,
+       SUM(CASE WHEN status = 'pending' OR claim_token IS NOT NULL THEN 1 ELSE 0 END) AS pending_count,
        SUM(CASE WHEN status = 'skipped' THEN 1 ELSE 0 END) AS skipped_count
      FROM speaker_email_deliveries
     WHERE campaign_id = ?1`,
@@ -647,6 +736,47 @@ async function finalizeCampaign(
   };
 }
 
+function announcementBody(
+  input: Pick<
+    SpeakerAnnouncementInput,
+    "textBody" | "speakerTextBody" | "dinnerTextBody"
+  >,
+  groups: readonly string[],
+): string {
+  return [
+    input.textBody,
+    groups.includes("speakers") && input.speakerTextBody
+      ? `Speaker information\n${input.speakerTextBody}`
+      : "",
+    groups.includes("dinner") && input.dinnerTextBody
+      ? `Dinner information\n${input.dinnerTextBody}`
+      : "",
+  ]
+    .filter(Boolean)
+    .join("\n\n");
+}
+
+async function announcementToken(
+  env: Env,
+  nonce: string,
+  input: SpeakerAnnouncementInput,
+  recipients: SpeakerAnnouncementRecipient[],
+  excluded: Array<{ reason: string; speaker_id: string }>,
+): Promise<string> {
+  const snapshot = JSON.stringify({
+    nonce,
+    input,
+    recipients: recipients.map((r) => ({
+      email: r.emailFingerprint,
+      name: r.name,
+      groups: r.groups,
+      sources: r.sourceIds,
+    })),
+    excluded,
+  });
+  return `${nonce}.${await hashPrivateText(snapshot, env.EMAIL_ENCRYPTION_KEY, "announcement-preview")}`;
+}
+
 function renderAnnouncementText(speakerName: string, textBody: string): string {
   return [
     `Hello ${speakerName},`,
@@ -672,7 +802,7 @@ function renderAnnouncementHtml(speakerName: string, textBody: string): string {
 <html lang="en">
   <body style="margin:0;background:#f3efe7;color:#151515;font-family:Arial,sans-serif">
     <div style="max-width:640px;margin:0 auto;padding:32px 20px">
-      <p style="margin:0 0 24px;font-size:13px;font-weight:700;text-transform:uppercase">SDLCAI / Speaker update</p>
+      <p style="margin:0 0 24px;font-size:13px;font-weight:700;text-transform:uppercase">SDLCAI / Event update</p>
       <div style="border:1px solid #151515;background:#fff;padding:28px">
         <p style="font-size:17px;line-height:1.6">Hello ${escapeHtml(speakerName)},</p>
         ${paragraphs}

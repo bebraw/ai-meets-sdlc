@@ -28,6 +28,7 @@ import {
   handleSpeakerDinnerSharedStatus,
   handleSpeakerDinnerSharedResponse,
   handleAdminDinnerGuest,
+  handleAdminDinnerGuestEmail,
   handleAdminSpeakerDinnerAttendance,
   shouldPurgeSpeakerDinnerData,
   purgeSpeakerDinnerData,
@@ -462,6 +463,19 @@ const innerHandler = {
       if (forbiddenResponse) return forbiddenResponse;
       return withAdminSecurityHeaders(
         await handleAdminDinnerGuest(request, env),
+      );
+    }
+
+    if (url.pathname === "/api/admin/speaker-dinner/guest-email") {
+      if (request.method !== "PUT")
+        return jsonResponse({ error: "Method not allowed" }, 405);
+      const forbiddenResponse = requireAdminAction(
+        request,
+        "manage-dinner-guest-email",
+      );
+      if (forbiddenResponse) return forbiddenResponse;
+      return withAdminSecurityHeaders(
+        await handleAdminDinnerGuestEmail(request, env),
       );
     }
 

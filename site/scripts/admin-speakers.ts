@@ -137,17 +137,24 @@ interface EditorField {
 
 interface AnnouncementPreviewResponse {
   error?: string;
-  excluded: Array<{ reason: string; speaker_id: string }>;
+  excluded: Array<{ reason: string; speaker_id: string; name?: string }>;
+  preview_token: string;
+  audience_counts: { speakers_only: number; dinner_only: number; both: number };
+  variants: Array<{ label: string; text_body: string; html_body: string }>;
   html_body: string;
   recipient_count: number;
-  recipients: Array<{ name: string; speaker_id: string }>;
+  recipients: Array<{ name: string; speaker_id: string; groups: string[] }>;
   subject: string;
   text_body: string;
 }
 
 interface AnnouncementCampaign {
   text_body: string;
+  speaker_text_body: string;
+  dinner_text_body: string;
   deliveries: Array<{
+    name: string;
+    source_ids: string | null;
     speaker_id: string;
     status: string;
     sent_at: string | null;
@@ -189,8 +196,14 @@ const announcementSend = document.querySelector<HTMLButtonElement>(
   "[data-admin-announcement-send]",
 );
 let previewedRecipientCount: number | null = null;
+let previewToken: string | null = null;
+let announcementBusy = false;
 
 if (container) void loadSpeakers();
+if (location.hash === "#announcements") {
+  const panel = document.querySelector("[data-admin-announcement-panel]");
+  if (panel instanceof HTMLDetailsElement) panel.open = true;
+}
 
 refreshButton?.addEventListener("click", () => void loadSpeakers());
 
@@ -245,7 +258,12 @@ announcementConfirm?.addEventListener("change", () => {
     announcementSend.disabled = !announcementConfirm.checked;
 });
 announcementForm?.addEventListener("input", (event) => {
-  if (event.target === announcementConfirm) return;
+  if (
+    event.target === announcementConfirm ||
+    (event.target instanceof HTMLSelectElement &&
+      event.target.hasAttribute("data-admin-announcement-variant"))
+  )
+    return;
   invalidateAnnouncementPreview();
 });
 
@@ -318,11 +336,12 @@ async function previewAnnouncement(): Promise<void> {
   }
 
   previewedRecipientCount = response.data.recipient_count;
+  previewToken = response.data.preview_token;
   setAnnouncementPreview(response.data);
   setAnnouncementStatus(
     response.data.recipient_count > 0
       ? "Preview ready. Confirm the exact recipient count before sending."
-      : "No selected speakers are currently eligible for this category.",
+      : "No selected recipients are currently eligible for this category.",
     response.data.recipient_count === 0,
   );
 }
@@ -354,12 +373,19 @@ async function testAnnouncement(): Promise<void> {
 }
 
 async function sendAnnouncement(): Promise<void> {
-  if (previewedRecipientCount === null || !announcementConfirm?.checked) return;
+  if (
+    announcementBusy ||
+    previewedRecipientCount === null ||
+    !previewToken ||
+    !announcementConfirm?.checked
+  )
+    return;
+  announcementBusy = true;
 
   const payload = readAnnouncementPayload();
   if (announcementSend) announcementSend.disabled = true;
   setAnnouncementStatus(
-    "Sending one separately addressed message per speaker…",
+    "Sending one separately addressed message per recipient…",
   );
 
   const response = await requestJson<{
@@ -370,6 +396,7 @@ async function sendAnnouncement(): Promise<void> {
     body: JSON.stringify({
       ...payload,
       confirm_recipient_count: previewedRecipientCount,
+      preview_token: previewToken,
     }),
     headers: {
       "content-type": "application/json",
@@ -382,16 +409,21 @@ async function sendAnnouncement(): Promise<void> {
     !response.ok || Boolean(response.data.failed_count),
   );
 
+  announcementBusy = false;
   if (response.ok) {
     invalidateAnnouncementPreview();
     void loadAnnouncementHistory();
-  } else if (announcementSend) {
-    announcementSend.disabled = false;
+  } else {
+    invalidateAnnouncementPreview();
+    void loadAnnouncementHistory();
   }
 }
 
 function readAnnouncementPayload(): {
   category: string;
+  include_dinner: boolean;
+  speaker_text_body: string;
+  dinner_text_body: string;
   speaker_ids: string[];
   subject: string;
   text_body: string;
@@ -399,6 +431,9 @@ function readAnnouncementPayload(): {
   const formData = new FormData(announcementForm!);
   return {
     category: String(formData.get("category") ?? ""),
+    include_dinner: formData.get("include_dinner") === "on",
+    speaker_text_body: String(formData.get("speaker_text_body") ?? ""),
+    dinner_text_body: String(formData.get("dinner_text_body") ?? ""),
     speaker_ids: formData.getAll("speaker_id").map(String),
     subject: String(formData.get("subject") ?? ""),
     text_body: String(formData.get("text_body") ?? ""),
@@ -406,12 +441,26 @@ function readAnnouncementPayload(): {
 }
 
 function readAnnouncementMessage(): string | null {
-  const { subject, text_body } = readAnnouncementPayload();
+  const { subject, text_body, speaker_text_body, dinner_text_body } =
+    readAnnouncementPayload();
   if (!subject.trim() || !text_body.trim()) {
     setAnnouncementStatus("Enter a subject and message first.", true);
     return null;
   }
-  return `Subject: ${subject.trim()}\n\n${text_body.trim()}\n`;
+  return (
+    [
+      `Subject: ${subject.trim()}`,
+      text_body.trim(),
+      speaker_text_body.trim()
+        ? `Speaker information (selected speakers)\n${speaker_text_body.trim()}`
+        : "",
+      dinner_text_body.trim()
+        ? `Dinner information (dinner audience)\n${dinner_text_body.trim()}`
+        : "",
+    ]
+      .filter(Boolean)
+      .join("\n\n") + "\n"
+  );
 }
 
 async function copyAnnouncement(): Promise<void> {
@@ -436,7 +485,7 @@ function downloadAnnouncement(): void {
   );
   const link = document.createElement("a");
   link.href = url;
-  link.download = "sdlcai-speaker-message.txt";
+  link.download = "sdlcai-announcement.txt";
   document.body.appendChild(link);
   link.click();
   link.remove();
@@ -451,9 +500,11 @@ function setAnnouncementPreview(preview: AnnouncementPreviewResponse): void {
     "[data-admin-announcement-recipient-count]",
     String(preview.recipient_count),
   );
-  const recipientNames = preview.recipients.map(({ name }) => name).join(", ");
+  const recipientNames = preview.recipients
+    .map(({ name, groups }) => `${name} (${groups.join(" + ")})`)
+    .join(", ");
   const excluded = preview.excluded.length
-    ? ` Excluded: ${preview.excluded.map(({ speaker_id, reason }) => `${speaker_id} (${reason})`).join(", ")}.`
+    ? ` Excluded: ${preview.excluded.map(({ name, speaker_id, reason }) => `${name ?? speaker_id} (${reason})`).join(", ")}.`
     : "";
   setTextContent(
     "[data-admin-announcement-recipient-list]",
@@ -462,13 +513,43 @@ function setAnnouncementPreview(preview: AnnouncementPreviewResponse): void {
   const frame = document.querySelector<HTMLIFrameElement>(
     "[data-admin-announcement-html-preview]",
   );
-  if (frame) frame.srcdoc = preview.html_body;
+  const counts = preview.audience_counts;
+  setTextContent(
+    "[data-admin-announcement-audience-counts]",
+    `${counts.speakers_only} speakers only / ${counts.dinner_only} dinner only / ${counts.both} in both (one email each)`,
+  );
+  const variantElement = document.querySelector(
+    "[data-admin-announcement-variant]",
+  );
+  const variant =
+    variantElement instanceof HTMLSelectElement ? variantElement : null;
+  const showVariant = () => {
+    const selected = preview.variants[Number(variant?.value ?? 0)];
+    setTextContent(
+      "[data-admin-announcement-text-preview]",
+      selected?.text_body ?? preview.text_body,
+    );
+    if (frame) frame.srcdoc = selected?.html_body ?? preview.html_body;
+  };
+  if (variant) {
+    variant.replaceChildren(
+      ...preview.variants.map((v, i) => {
+        const option = document.createElement("option");
+        option.value = String(i);
+        option.textContent = v.label;
+        return option;
+      }),
+    );
+    variant.onchange = showVariant;
+  }
+  showVariant();
   if (announcementConfirm) announcementConfirm.checked = false;
   if (announcementSend) announcementSend.disabled = true;
 }
 
 function invalidateAnnouncementPreview(): void {
   previewedRecipientCount = null;
+  previewToken = null;
   announcementPreviewPanel?.setAttribute("hidden", "");
   if (announcementConfirm) announcementConfirm.checked = false;
   if (announcementSend) announcementSend.disabled = true;
@@ -493,7 +574,7 @@ async function loadAnnouncementHistory(offset = 0): Promise<void> {
   }
 
   if (response.data.campaigns.length === 0) {
-    history.textContent = "No speaker announcements have been sent.";
+    history.textContent = "No announcements have been sent.";
     return;
   }
 
@@ -540,7 +621,17 @@ function renderCampaign(campaign: AnnouncementCampaign): HTMLElement {
     node(
       "p",
       "my-4 whitespace-pre-wrap break-words text-sm",
-      campaign.text_body,
+      [
+        campaign.text_body,
+        campaign.speaker_text_body
+          ? `Speaker information\n${campaign.speaker_text_body}`
+          : "",
+        campaign.dinner_text_body
+          ? `Dinner information\n${campaign.dinner_text_body}`
+          : "",
+      ]
+        .filter(Boolean)
+        .join("\n\n"),
     ),
   );
   const recipients = node("ul", "grid gap-2 text-sm");
@@ -549,7 +640,7 @@ function renderCampaign(campaign: AnnouncementCampaign): HTMLElement {
       node(
         "li",
         "border-t border-paper/20 pt-2",
-        `${delivery.speaker_id} / ${delivery.status}${delivery.sent_at ? ` / ${formatDate(delivery.sent_at)}` : ""}`,
+        `${delivery.name ?? delivery.speaker_id} / ${delivery.status}${delivery.sent_at ? ` / ${formatDate(delivery.sent_at)}` : ""}`,
       ),
     );
   }
@@ -557,7 +648,7 @@ function renderCampaign(campaign: AnnouncementCampaign): HTMLElement {
   copy.appendChild(details);
   row.appendChild(copy);
 
-  if (campaign.failed_count > 0) {
+  if (campaign.failed_count > 0 && campaign.status !== "sending") {
     const retry = node(
       "button",
       "border border-paper px-3 py-2 text-xs font-bold uppercase",
