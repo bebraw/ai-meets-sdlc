@@ -11,3 +11,14 @@ export function formatSpeakerName(speaker: SpeakerName): string {
   const credentials = speaker.credentials?.trim();
   return credentials ? `${name}, ${credentials}` : name;
 }
+
+export function formatSpeakerAffiliation(speaker: {
+  role: string;
+  company?: string;
+}): string {
+  const role = speaker.role.trim();
+  const company = speaker.company?.trim();
+  return company && !role.toLowerCase().includes(company.toLowerCase())
+    ? [role, company].filter(Boolean).join(" / ")
+    : role || company || "";
+}

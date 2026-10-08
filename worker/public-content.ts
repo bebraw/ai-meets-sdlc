@@ -9,7 +9,10 @@ import {
 } from "./canonical-content";
 import { applyScheduleToResponse } from "./schedule-html.ts";
 import type { ScheduleOrder } from "./schedule-order.ts";
-import { formatSpeakerName } from "../site/scripts/speaker-name.ts";
+import {
+  formatSpeakerName,
+  formatSpeakerAffiliation,
+} from "../site/scripts/speaker-name.ts";
 import { getSlideTitleClassName } from "../site/scripts/slide-title.ts";
 
 const canonicalHtmlCacheControl =
@@ -70,6 +73,15 @@ export async function applyCanonicalContentToResponse(
       element(element) {
         const record = getSpeakerForElement(element, speakers);
         if (record) element.setInnerContent(record.content.profile.role);
+      },
+    })
+    .on("[data-canonical-speaker-affiliation]", {
+      element(element) {
+        const record = getSpeakerForElement(element, speakers);
+        if (record)
+          element.setInnerContent(
+            formatSpeakerAffiliation(record.content.profile),
+          );
       },
     })
     .on("[data-canonical-speaker-bio]", {

@@ -166,6 +166,30 @@ test("schedule saves are atomic, admin-only, and shared by public pages, slides,
   assert.equal((await save(empty, snapshot.revision)).status, 200);
   const emptyPage = await worker.fetch(`${origin}/schedule/`);
   assert.equal(emptyPage.headers.get("x-sdlcai-content-source"), "d1");
+  const emptyHome = await worker.fetch(`${origin}/`);
+  assert.equal(emptyHome.headers.get("x-sdlcai-content-source"), "d1");
+  const homeNodes = walk(parse(await emptyHome.text()));
+  for (const group of empty) {
+    const section = homeNodes.find(
+      (node) => attr(node, "data-home-speaker-group") === group.id,
+    );
+    assert.ok(section);
+    assert.equal(
+      attr(section, "hidden") !== undefined,
+      group.talkIds.length === 0,
+    );
+    const count = walk(section).find(
+      (node) => attr(node, "data-home-speaker-count") !== undefined,
+    );
+    assert.equal(
+      text(count),
+      `${group.talkIds.length} ${group.talkIds.length === 1 ? "speaker" : "speakers"}`,
+    );
+  }
+  assert.equal(
+    homeNodes.filter((node) => attr(node, "data-home-speaker-id")).length,
+    before.groups.flatMap((group) => group.talkIds).length,
+  );
   await runSql("DELETE FROM schedule_order");
   assert.equal((await worker.fetch(endpoint, { headers })).status, 503);
   assert.equal((await worker.fetch(`${origin}/event.json`)).status, 503);

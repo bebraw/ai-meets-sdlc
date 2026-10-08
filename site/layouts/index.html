@@ -207,29 +207,81 @@
     </div>
   </section>
 
-  <section id="schedule" class="border-b border-ink">
-    <div
-      class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:px-8 lg:grid-cols-[22rem_1fr]"
-    >
-      <div>
-        <p class="font-headline text-sm font-black uppercase text-muted">
-          Seminar day
-        </p>
-        <SectionHeading
-          &title="(id 'Day flow')"
-          &href="(id '#schedule')"
-          &ariaLabel="(id 'Link to schedule section')"
-          &className="(id 'mt-3 flex items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl')"
-          &anchorClassName="(id 'mt-[0.06em] inline-flex min-h-6 min-w-6 shrink-0 items-center justify-center text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
-        ></SectionHeading>
-        <p class="mt-6 max-w-xs text-xl leading-8 text-muted">
-          A compact single-track format with talks, posters, breaks, and panel
-          discussion.
-        </p>
+  <section id="speakers" class="border-b border-ink">
+    <span id="schedule" aria-hidden="true"></span>
+    <div class="mx-auto max-w-7xl px-5 py-16 md:px-8">
+      <div
+        class="grid gap-8 border-b border-ink pb-10 lg:grid-cols-[1fr_1fr] lg:items-end"
+      >
+        <div class="min-w-0">
+          <p class="font-headline text-sm font-black uppercase text-muted">
+            The people behind the ideas
+          </p>
+          <SectionHeading
+            &title="(id 'Meet our speakers')"
+            &href="(id '#speakers')"
+            &ariaLabel="(id 'Link to speakers section')"
+            &className="(id 'mt-3 flex min-w-0 items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl')"
+            &anchorClassName="(id 'mt-[0.06em] inline-flex min-h-6 min-w-6 shrink-0 items-center justify-center text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
+          ></SectionHeading>
+        </div>
+        <div class="grid gap-5">
+          <p id="speaker-themes" class="max-w-xl text-xl leading-8 text-muted">
+            Engineering leaders, builders, and researchers share how AI is
+            changing software development, from everyday practice to emerging
+            research.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <a
+              class="inline-flex min-h-11 items-center border border-ink bg-ink px-5 py-3 text-sm font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
+              href="/speakers/"
+              >All profiles &amp; talks</a
+            >
+            <a
+              class="inline-flex min-h-11 items-center border border-ink px-5 py-3 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+              href="/schedule/"
+              >Full schedule</a
+            >
+          </div>
+        </div>
       </div>
-      <SeminarSchedule
-        &className="(id 'grid border border-ink')"
-      ></SeminarSchedule>
+      <div class="mt-10 grid gap-10" data-home-speaker-groups>
+        <noop &foreach="homeSpeakerGroups as group">
+          <section
+            class="grid min-w-0 gap-5 border-b border-ink pb-10 last:border-b-0 last:pb-0 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-8"
+            &aria-labelledby="group.headingId"
+            &data-home-speaker-group="group.id"
+          >
+            <div class="min-w-0">
+              <p class="font-headline text-sm font-black uppercase text-muted">
+                <span &children="group.number"></span> /
+                <span
+                  &children="group.countLabel"
+                  data-home-speaker-count
+                ></span>
+              </p>
+              <h3
+                &id="group.headingId"
+                class="mt-3 font-headline text-3xl font-black uppercase leading-none sm:text-4xl"
+                &children="group.title"
+              ></h3>
+              <p
+                class="mt-4 max-w-xl text-sm leading-6 text-muted"
+                &children="group.description"
+              ></p>
+            </div>
+            <ul
+              class="grid min-w-0 grid-cols-2 gap-3 self-start sm:grid-cols-3 sm:gap-4"
+              data-schedule-kind="speakers"
+              &data-schedule-group="group.id"
+            >
+              <noop &foreach="group.items as speaker">
+                <SpeakerOverviewCard &speaker="speaker"></SpeakerOverviewCard>
+              </noop>
+            </ul>
+          </section>
+        </noop>
+      </div>
     </div>
   </section>
 
@@ -333,40 +385,6 @@
                 &src="organizer.photo"
               ></OrganizerCard>
             </noop>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="speaker-themes" class="border-b border-ink">
-    <div class="mx-auto max-w-7xl px-5 py-16 md:px-8">
-      <div class="grid gap-8 md:grid-cols-[1fr_2fr]">
-        <SectionHeading
-          &title="(id 'Speaker themes')"
-          &href="(id '#speaker-themes')"
-          &ariaLabel="(id 'Link to speaker themes section')"
-          &className="(id 'flex items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl')"
-          &anchorClassName="(id 'mt-[0.06em] inline-flex min-h-6 min-w-6 shrink-0 items-center justify-center text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
-        ></SectionHeading>
-        <div class="grid gap-px border border-ink bg-ink md:grid-cols-3">
-          <div class="bg-paper p-5">
-            <p class="font-headline text-3xl font-black uppercase">01</p>
-            <p class="mt-10 text-lg leading-7">
-              AI in real engineering pipelines
-            </p>
-          </div>
-          <div class="bg-paper p-5">
-            <p class="font-headline text-3xl font-black uppercase">02</p>
-            <p class="mt-10 text-lg leading-7">
-              Quality, testing, and review under automation
-            </p>
-          </div>
-          <div class="bg-paper p-5">
-            <p class="font-headline text-3xl font-black uppercase">03</p>
-            <p class="mt-10 text-lg leading-7">
-              Leadership and governance for AI adoption
-            </p>
           </div>
         </div>
       </div>

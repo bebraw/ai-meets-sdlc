@@ -11,7 +11,10 @@ import speakersData from "./data/speakers.json" with { type: "json" };
 import sponsorsData from "./data/sponsors.json" with { type: "json" };
 import { socialRenderPresets } from "../scripts/social-render-presets.mjs";
 import { getSlideTitleClassName } from "./scripts/slide-title.ts";
-import { formatSpeakerName } from "./scripts/speaker-name.ts";
+import {
+  formatSpeakerName,
+  formatSpeakerAffiliation,
+} from "./scripts/speaker-name.ts";
 
 function init() {
   const announcementItems = getAnnouncementItems();
@@ -65,6 +68,23 @@ function init() {
       })),
     organizerItems: () => organizerSeed.filter((person) => person.visible),
     scheduleItems: () => scheduleItems,
+    homeSpeakerGroups: () =>
+      scheduleItems
+        .filter((item) => item.talks?.length)
+        .map((item, index) => {
+          const items = item.talks.flatMap((talk) =>
+            talk.speakers.map((speaker) => ({ ...speaker, talk })),
+          );
+          return {
+            id: item.id,
+            headingId: `speakers-${item.id}`,
+            title: item.title,
+            description: item.body,
+            number: String(index + 1).padStart(2, "0"),
+            countLabel: `${items.length} ${items.length === 1 ? "speaker" : "speakers"}`,
+            items,
+          };
+        }),
     slideDeckItems: () => slideDeckItems,
     socialExportPresets: () => socialExportPresets,
     sponsorItems: () => sponsorItems,
@@ -493,6 +513,7 @@ function getSpeakersById() {
       {
         ...speaker,
         displayName: formatSpeakerName(speaker),
+        affiliation: formatSpeakerAffiliation(speaker),
         bioHtml: raw(renderDescriptionMarkdown(speaker.bio)),
       },
     ]),

@@ -5,6 +5,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
 import test from "node:test";
+import { parse } from "parse5";
 import { unstable_dev } from "wrangler";
 
 const execFileAsync = promisify(execFile);
@@ -400,12 +401,72 @@ test("speaker invitation sessions, revisions, and automatic publishing stay gove
   const publicAfterSubmitHtml = await publicAfterSubmit.text();
   assert.match(publicAfterSubmitHtml, /AI migrations you can verify/u);
   assert.match(publicAfterSubmitHtml, /Md Mo Javad Khazali, PhD/u);
-  for (const route of ["/schedule/", "/slides/deck/", "/slides/schedule/"]) {
+  for (const route of [
+    "/",
+    "/schedule/",
+    "/slides/deck/",
+    "/slides/schedule/",
+  ]) {
     const response = await worker.fetch(`${origin}${route}`, {
       headers: { authorization: adminAuthorization },
     });
     assert.equal(response.status, 200);
-    assert.match(await response.text(), /Md Mo Javad Khazali, PhD/u);
+    const html = await response.text();
+    assert.match(html, /Md Mo Javad Khazali, PhD/u);
+    if (route === "/") {
+      const walk = (node) => [node, ...(node.childNodes ?? []).flatMap(walk)];
+      const attr = (node, name) =>
+        node.attrs?.find((item) => item.name === name)?.value;
+      const text = (node) =>
+        node.nodeName === "#text"
+          ? node.value
+          : (node.childNodes ?? []).map(text).join("");
+      const cards = walk(parse(html)).filter((node) =>
+        attr(node, "data-home-speaker-id"),
+      );
+      assert.equal(cards.length, 10);
+      assert.ok(
+        cards.every(
+          (node) => attr(node, "data-home-speaker-id") !== "juho-vepsalainen",
+        ),
+      );
+      const card = cards.find(
+        (node) => attr(node, "data-home-speaker-id") === "mo-khazali",
+      );
+      const nodes = walk(card);
+      assert.equal(
+        text(
+          nodes.find(
+            (node) =>
+              attr(node, "data-canonical-speaker-affiliation") !== undefined,
+          ),
+        ),
+        `${proposed.profile.role} / Société 日本`,
+      );
+      assert.equal(
+        text(
+          nodes.find(
+            (node) => attr(node, "data-canonical-talk-title") !== undefined,
+          ),
+        ),
+        proposed.talks[0].title,
+      );
+      assert.equal(
+        attr(
+          nodes.find((node) => node.tagName === "img"),
+          "src",
+        ),
+        `/media/speakers/mo-khazali/${photoUpload.photo.content_hash}.webp`,
+      );
+      assert.equal(
+        attr(
+          nodes.find((node) => node.tagName === "a"),
+          "href",
+        ),
+        "/speakers/#mo-khazali",
+      );
+      assert.equal(nodes.filter((node) => node.tagName === "a").length, 1);
+    }
   }
   for (const route of ["/event.json", "/assets/social/speakers.json"]) {
     const response = await worker.fetch(`${origin}${route}`, {
@@ -874,10 +935,15 @@ test("speaker invitation sessions, revisions, and automatic publishing stay gove
       publicSpeakersResponse.headers.get("x-sdlcai-content-version"),
     );
     assert.match(publicPage, /AI product engineering in practice/u);
-    assert.match(
-      publicPage,
-      /An organizer-updated description about <strong>AI product engineering<\/strong>/u,
-    );
+    if (pathname === "/schedule/") {
+      assert.match(
+        publicPage,
+        /An organizer-updated description about <strong>AI product engineering<\/strong>/u,
+      );
+    } else {
+      assert.doesNotMatch(publicPage, /An organizer-updated description/u);
+      assert.doesNotMatch(publicPage, /Coldtea\.ai \/ Coldtea\.ai/u);
+    }
     assert.match(publicPage, /Co-founder and CEO at Coldtea\.ai/u);
     assert.doesNotMatch(publicPage, /juho-vepsalainen-test-session/u);
   }

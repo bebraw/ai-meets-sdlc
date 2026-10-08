@@ -6,8 +6,8 @@
       "seminar": {
         "operation": "seminar"
       },
-      "scheduleItems": {
-        "operation": "scheduleItems"
+      "homeSpeakerGroups": {
+        "operation": "homeSpeakerGroups"
       },
       "homeSponsorTiers": {
         "operation": "homeSponsorTiers"

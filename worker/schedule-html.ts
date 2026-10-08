@@ -25,15 +25,15 @@ export async function applyScheduleToResponse(
     scheduleSessions.map((session) => [session.id, session]),
   );
 
-  for (const kind of ["web", "screen", "cards"]) {
+  for (const kind of ["web", "screen", "cards", "speakers"]) {
     const containers = elements.filter(
       (node) => attr(node, "data-schedule-kind") === kind,
     );
-    const fragments = new Map<string, HtmlElement>();
+    const fragments = new Map<string, HtmlElement[]>();
     for (const container of containers) {
       for (const node of walk(container)) {
         const id = attr(node, "data-schedule-talk");
-        if (id) fragments.set(id, node);
+        if (id) fragments.set(id, [...(fragments.get(id) ?? []), node]);
       }
     }
     for (const container of containers) {
@@ -41,15 +41,31 @@ export async function applyScheduleToResponse(
         (item) => item.id === attr(container, "data-schedule-group"),
       );
       if (!group) continue;
-      const children = group.talkIds.map((id) => {
-        const node = fragments.get(id);
-        if (!node) throw new Error(`Missing schedule HTML for ${id}`);
-        return node;
+      const children = group.talkIds.flatMap((id) => {
+        const nodes = fragments.get(id);
+        if (!nodes) throw new Error(`Missing schedule HTML for ${id}`);
+        return nodes;
       });
       container.childNodes = children;
       children.forEach((child) => {
         child.parentNode = container;
       });
+      if (kind === "speakers") {
+        const section = container.parentNode;
+        if (section && "tagName" in section) {
+          section.attrs = section.attrs.filter(
+            (attribute) => attribute.name !== "hidden",
+          );
+          if (children.length === 0) setAttr(section, "hidden", "");
+          for (const node of walk(section)) {
+            if (attr(node, "data-home-speaker-count") !== undefined)
+              text(
+                node,
+                `${children.length} ${children.length === 1 ? "speaker" : "speakers"}`,
+              );
+          }
+        }
+      }
     }
   }
 
