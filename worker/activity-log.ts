@@ -14,6 +14,7 @@ type Activity = {
 const speakerActions: Record<string, [string, string]> = {
   "/api/speaker/dinner": ["Dinner response", "saved"],
   "/api/speaker/presentation": ["Presentation setup", "saved"],
+  "/api/speaker/slides": ["Presentation files", "uploaded"],
   "/api/speaker/photo": ["Speaker photo", "uploaded"],
   "/api/speaker/videos/upload": ["Speaker video", "upload started"],
   "/api/speaker/receipts": ["Travel receipt", "changed"],
@@ -33,6 +34,10 @@ const adminActions: Record<string, [string, string]> = {
   "/api/admin/speakers/photos/upload": ["Speaker photo", "uploaded"],
   "/api/admin/speakers/photos/review": ["Speaker photo", "reviewed"],
   "/api/admin/speakers/videos/review": ["Speaker video", "reviewed"],
+  "/api/admin/speakers/slides/publication": [
+    "Presentation files",
+    "publication updated",
+  ],
   "/api/admin/speakers/announcements/send": ["Speaker announcement", "sent"],
   "/api/admin/speakers/announcements/retry": [
     "Speaker announcement",
@@ -59,6 +64,7 @@ export function shouldRecordActivity(request: Request): boolean {
     path.startsWith("/api/admin/volunteers") ||
     path.startsWith("/api/admin/receipts") ||
     path.startsWith("/api/speaker/receipts/") ||
+    path.startsWith("/api/speaker/slides/") ||
     /^\/api\/speaker\/videos\/[0-9a-f-]{36}\/preview$/iu.test(path),
   );
 }
@@ -92,7 +98,9 @@ export async function recordSuccessfulActivity(
       speakerActions[path] ??
       (path.startsWith("/api/speaker/receipts/")
         ? ["Travel receipt", "changed"]
-        : ["Speaker video", "preview created"]);
+        : path.startsWith("/api/speaker/slides/")
+          ? ["Presentation files", "removed"]
+          : ["Speaker video", "preview created"]);
     const action =
       path === "/api/speaker/workspace" && body.action === "submit"
         ? "published"
@@ -131,13 +139,15 @@ export async function recordSuccessfulActivity(
                 "photo_revision_id",
                 body.photo_revision_id,
               ]
-            : path === "/api/admin/speakers/videos/review"
-              ? [
-                  "speaker_video_submissions",
-                  "submission_id",
-                  body.submission_id,
-                ]
-              : null;
+            : path === "/api/admin/speakers/slides/publication"
+              ? ["speaker_slides", "slide_id", body.slide_id]
+              : path === "/api/admin/speakers/videos/review"
+                ? [
+                    "speaker_video_submissions",
+                    "submission_id",
+                    body.submission_id,
+                  ]
+                : null;
       if (review && typeof review[2] === "string") {
         const row = await env.INTERESTS.prepare(
           `SELECT speaker_id FROM ${review[0]} WHERE ${review[1]} = ?1`,
@@ -161,15 +171,20 @@ export async function recordSuccessfulActivity(
       }
     }
     const action =
-      body.decision === "approve"
-        ? "approved"
-        : body.decision === "reject" || body.decision === "request_changes"
-          ? "changes requested"
-          : path === "/api/admin/speakers/content" && body.mode === "draft"
-            ? "saved draft"
-            : path === "/api/admin/speakers/content" && body.mode === "approve"
-              ? "published"
-              : defaultAction;
+      path === "/api/admin/speakers/slides/publication"
+        ? body.published === true
+          ? "published PDF"
+          : "unpublished PDF"
+        : body.decision === "approve"
+          ? "approved"
+          : body.decision === "reject" || body.decision === "request_changes"
+            ? "changes requested"
+            : path === "/api/admin/speakers/content" && body.mode === "draft"
+              ? "saved draft"
+              : path === "/api/admin/speakers/content" &&
+                  body.mode === "approve"
+                ? "published"
+                : defaultAction;
     activity = {
       actorType: "admin",
       actorId:

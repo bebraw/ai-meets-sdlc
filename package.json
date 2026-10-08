@@ -28,7 +28,7 @@
     "slides:check": "node scripts/validate-slide-layout.mjs",
     "slides:video-check": "node scripts/validate-video-download.mjs",
     "quality:build": "npm test && npm run validate",
-    "quality:gate": "npm run quality:build && npm run activity:browser-check && npm run qa:browser-check && npm run attendees:browser-check && npm run dinner:browser-check && npm run badges:browser-check && npm run layout:check && npm run slides:check && npm run a11y:check",
+    "quality:gate": "npm run quality:build && npm run activity:browser-check && npm run qa:browser-check && npm run attendees:browser-check && npm run dinner:browser-check && npm run badges:browser-check && npm run speaker-slides:browser-check && npm run layout:check && npm run slides:check && npm run a11y:check",
     "attendees:browser-check": "node scripts/validate-attendees.mjs",
     "dinner:browser-check": "node scripts/validate-dinner.mjs",
     "start": "gustwind --develop --port 3000",
@@ -42,7 +42,8 @@
     "deploy": "npm run quality:build && npm run db:migrate:remote && wrangler deploy",
     "event:build": "node scripts/generate-event-feed.mjs",
     "email:export": "node scripts/export-email-assets.mjs",
-    "badges:browser-check": "node scripts/validate-badges.mjs"
+    "badges:browser-check": "node scripts/validate-badges.mjs",
+    "speaker-slides:browser-check": "node scripts/validate-speaker-slides.mjs"
   },
   "engines": {
     "node": "24.x"

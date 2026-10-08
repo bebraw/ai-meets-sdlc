@@ -44,7 +44,11 @@ export function isCanonicalPublicHtmlPath(pathname: string): boolean {
 export async function applyCanonicalContentToResponse(
   response: Response,
   records: readonly CanonicalSpeakerRecord[],
-  options: { private?: boolean; schedule?: ScheduleOrder } = {},
+  options: {
+    private?: boolean;
+    schedule?: ScheduleOrder;
+    slides?: ReadonlyMap<string, string>;
+  } = {},
 ): Promise<Response> {
   if (!response.headers.get("content-type")?.includes("text/html")) {
     return response;
@@ -123,6 +127,21 @@ export async function applyCanonicalContentToResponse(
             html: true,
           });
         }
+      },
+    })
+    .on("[data-talk-materials]", {
+      element(element) {
+        const talkId = element.getAttribute("data-canonical-talk-id");
+        const href = talkId ? options.slides?.get(talkId) : undefined;
+        if (!href) {
+          element.remove();
+          return;
+        }
+        element.removeAttribute("hidden");
+        element.setInnerContent(
+          `<a href="${escapeAttribute(href)}" class="inline-flex border border-ink px-4 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper">Slides (PDF)</a>`,
+          { html: true },
+        );
       },
     })
     .transform(response);

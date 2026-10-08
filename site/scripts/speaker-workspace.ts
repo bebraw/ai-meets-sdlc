@@ -1,6 +1,7 @@
 export {};
 
 import { loadSpeakerReceipts } from "./receipts";
+import { loadSpeakerSlides } from "./speaker-slides.ts";
 import { formatSpeakerName } from "./speaker-name.ts";
 
 interface WorkspaceProfile {
@@ -235,6 +236,7 @@ async function loadWorkspace(): Promise<void> {
     loadVideos(),
     loadDinner(),
     loadPresentation(),
+    loadSpeakerSlides(response.data.content.talks),
     loadSpeakerReceipts(),
   ]);
 }

@@ -52,6 +52,10 @@ import {
   canonicalSpeakerIds,
   readCanonicalSpeaker,
 } from "./canonical-content.ts";
+import {
+  handleAdminSpeakerSlidesRequest,
+  handleSpeakerSlidesRequest,
+} from "./speaker-slides.ts";
 
 export { withSpeakerWorkspaceSecurityHeaders } from "./speaker-workspace-utils.ts";
 export { validateSpeakerWorkspaceContent } from "./speaker-content-validation.ts";
@@ -74,6 +78,39 @@ export async function handleSpeakerWorkspaceRequest(
 
   if (url.pathname === "/api/stream/webhook") {
     return handleStreamWebhookRequest(request, env);
+  }
+
+  if (url.pathname.startsWith("/api/admin/speakers/slides/")) {
+    if (!["GET", "HEAD"].includes(request.method)) {
+      const forbidden = requireAdminMutation(request, "publish-speaker-slides");
+      if (forbidden) return adminSecure(forbidden);
+    }
+    return adminSecure(await handleAdminSpeakerSlidesRequest(request, env));
+  }
+
+  if (
+    url.pathname === "/api/speaker/slides" ||
+    url.pathname.startsWith("/api/speaker/slides/")
+  ) {
+    if (
+      !["GET", "HEAD"].includes(request.method) &&
+      !isSameOriginMutation(request)
+    ) {
+      return secure(json({ error: "Request origin was not accepted." }, 403));
+    }
+    const session = await authenticateSpeaker(request, env);
+    if (session instanceof Response) return secure(session);
+    const canonical = await readCanonicalSpeaker(env, session.speaker_id);
+    if (!canonical)
+      return secure(json({ error: "Speaker profile was not found." }, 404));
+    return secure(
+      await handleSpeakerSlidesRequest(
+        request,
+        env,
+        session.speaker_id,
+        canonical.content.talks.map(({ id }) => id),
+      ),
+    );
   }
 
   if (

@@ -277,6 +277,31 @@ cookie, so the token does not enter HTTP request logs. Authenticated speakers
 read and save encrypted presentation logistics at `GET` and `POST
 /api/speaker/presentation`, and private dinner data at `GET` and `POST
 /api/speaker/dinner`.
+
+Presentation file uploads use `POST /api/speaker/slides` with a raw PDF/PPTX
+body (25 MB maximum), matching content type or `application/octet-stream`, and
+query parameters `talk_id`, `filename`, `may_publish=0|1`, and
+`replaces_slide_id` (empty for a new format slot). `GET /api/speaker/slides`
+lists files for assigned talks; `GET`, `HEAD`, and `DELETE
+/api/speaker/slides/:slide_id` download or remove a file. Co-speakers share
+access to their talk's files. All mutations require a same-origin session.
+
+`0030_create_speaker_slides.sql` stores current file metadata in D1 and a durable
+R2 deletion queue. File contents use the private `SPEAKER_UPLOADS` binding.
+Validated PDF signatures and PPTX package entries must match their extension;
+ZIP metadata extraction is bounded. Replacements use a revision comparison and
+reset publication. Scheduled cleanup retries deletion of replaced/removed R2
+objects; presentation files are independent of private contact expiry.
+
+Organizer downloads use `GET` or `HEAD /api/admin/speakers/slides/:slide_id`.
+`POST /api/admin/speakers/slides/publication` accepts JSON `{ "slide_id": "…",
+"published": true|false }` with `x-admin-action: publish-speaker-slides` and a
+same-origin organizer session. Only a permitted PDF for a public talk can be
+published. `/schedule/` inserts links to current published PDFs at
+`/media/talks/:talk_id/:slide_id.pdf`. Every public GET/HEAD rechecks publication
+and sends `Cache-Control: no-store`, so old links stop working after withdrawal,
+removal, or replacement. PowerPoint downloads always require authentication.
+
 Organizer email assignment uses `POST /api/admin/speakers/contact`; it stores
 the encrypted mapping without sending mail. Authenticated organizers can use
 `POST /api/admin/speakers/content` to save a validated speaker-visible draft or

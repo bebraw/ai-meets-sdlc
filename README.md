@@ -207,6 +207,22 @@ successful change without copying submitted values. It starts when migration
 `0019_create_activity_events.sql` and the corresponding Worker are deployed;
 the shared admin account does not identify individual organizers.
 
+Speakers upload PDF and PowerPoint (`.pptx`) files per talk under **Presentation
+files** in `/speaker/`, up to 25 MB per file. Each format has its own slot;
+uploading it again replaces that file. Files stay private and are available to
+the talk's speakers and organizers. The optional **Allow this PDF to be published
+with my talk** checkbox records permission for public sharing. PowerPoint files
+remain private for venue use.
+
+In `/admin/speakers/`, use **Publish PDF on schedule** when post-event material
+is ready. The corresponding talk at `/schedule/` gains a **Slides (PDF)** download
+link. **Unpublish PDF**, removal, and replacement immediately withdraw the old
+download; a replacement PDF requires permission and publication again. The
+public archive outlives speaker login sessions. Apply migration
+`0030_create_speaker_slides.sql` before deployment; `npm run deploy` applies it.
+Run `npm run speaker-slides:browser-check` to verify upload, publication,
+replacement, desktop/mobile layout, and accessibility with isolated storage.
+
 At `/admin/dinner/`, select a speaker's attendance and choose **Save attendance**
 to record plans on their behalf. **Use speaker response** restores their original
 reply, or awaiting reply when none exists. Food notes and the original reply are
@@ -436,7 +452,7 @@ The hourly Worker cron also sends these transactional emails to `info@sdlcai.org
 - **Data modifications:** Mondays from 09:00 Europe/Helsinki (with catch-up on
   later days), summarizing additions, updates and deletions since the previous
   completed digest. It covers registration interests, posters, speaker contacts,
-  published speaker/talk content, content/photo revisions, videos, presentation
+  published speaker/talk content, content/photo revisions, videos, presentation files,
   and dinner responses, travel receipts, volunteers and programme order.
   Counts include automated cleanup and repeated writes; private field values,
   authentication activity, email delivery records and repository changes are

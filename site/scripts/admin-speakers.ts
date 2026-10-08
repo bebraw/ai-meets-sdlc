@@ -1,4 +1,8 @@
 export {};
+import {
+  slideFormatLabel,
+  type SpeakerSlideFile,
+} from "./speaker-slides-model.ts";
 
 interface AdminSpeakerContent {
   profile: {
@@ -82,6 +86,7 @@ interface AdminSpeakerItem {
   speaker_id: string;
   workspace_only: boolean;
   videos: AdminSpeakerVideo[];
+  slides: SpeakerSlideFile[];
 }
 
 interface AdminSpeakerVideo {
@@ -657,6 +662,7 @@ function renderSpeaker(speaker: AdminSpeakerItem): HTMLElement {
   article.appendChild(renderInvitation(speaker));
   article.appendChild(renderContentEditor(speaker));
   article.appendChild(renderPresentation(speaker));
+  article.appendChild(renderSlideFiles(speaker));
   article.appendChild(renderDinner(speaker));
 
   if (speaker.photo) {
@@ -1132,6 +1138,143 @@ function renderAdminPhotoUpload(speaker: AdminSpeakerItem): HTMLElement {
     await loadSpeakers();
     setStatus(message);
   });
+  return section;
+}
+
+function renderSlideFiles(speaker: AdminSpeakerItem): HTMLElement {
+  const section = node("section", "grid gap-4 border-t border-paper/40 pt-5");
+  section.appendChild(
+    node(
+      "h4",
+      "font-headline text-2xl font-black uppercase",
+      "Presentation files",
+    ),
+  );
+  section.appendChild(
+    node(
+      "p",
+      "text-sm leading-6 text-paper/70",
+      "Download files for venue use. Publish a permitted PDF when post-event material is ready; it will appear beneath the talk on the public schedule. Replacements require publication again.",
+    ),
+  );
+  if (speaker.slides.length === 0) {
+    section.appendChild(
+      node("p", "text-sm text-paper/60", "No presentation files uploaded."),
+    );
+  }
+  for (const file of speaker.slides) {
+    const card = node(
+      "article",
+      "grid min-w-0 gap-3 border border-paper/40 p-4",
+    );
+    card.dataset.adminSlide = file.slide_id;
+    const title =
+      speaker.canonical.talks.find(({ id }) => id === file.talk_id)?.title ??
+      file.talk_id;
+    card.appendChild(
+      node(
+        "strong",
+        "uppercase",
+        `${title} / ${slideFormatLabel(file.format)}`,
+      ),
+    );
+    card.appendChild(
+      node(
+        "p",
+        "break-words text-sm text-paper/70",
+        `${file.filename} · ${(file.byte_size / (1024 * 1024)).toFixed(1)} MB · ${formatDate(file.uploaded_at)}`,
+      ),
+    );
+    card.appendChild(
+      node(
+        "p",
+        "text-sm font-bold",
+        file.published_at
+          ? "Published on the schedule"
+          : file.may_publish
+            ? "Private · PDF publication allowed"
+            : "Private · venue use only",
+      ),
+    );
+    const actions = node("div", "flex flex-wrap gap-3");
+    const download = node(
+      "a",
+      "border border-paper px-3 py-2 text-sm font-bold uppercase",
+      `Download ${slideFormatLabel(file.format)}`,
+    );
+    download.href = file.download_url;
+    actions.appendChild(download);
+    if (file.public_url) {
+      const link = node(
+        "a",
+        "border border-paper px-3 py-2 text-sm font-bold uppercase",
+        "Public PDF",
+      );
+      link.href = file.public_url;
+      actions.appendChild(link);
+    }
+    if (file.format === "pdf") {
+      const publish = reviewButton(
+        file.published_at ? "Unpublish PDF" : "Publish PDF on schedule",
+        !file.published_at,
+      );
+      publish.disabled =
+        !file.published_at && (!file.may_publish || speaker.workspace_only);
+      const status = node("p", "min-h-6 text-sm font-bold");
+      status.setAttribute("aria-live", "polite");
+      publish.addEventListener("click", async () => {
+        publish.disabled = true;
+        status.textContent = file.published_at
+          ? "Unpublishing PDF…"
+          : "Publishing PDF…";
+        const response = await requestJson<{
+          error?: string;
+          message?: string;
+        }>("/api/admin/speakers/slides/publication", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+            "x-admin-action": "publish-speaker-slides",
+          },
+          body: JSON.stringify({
+            slide_id: file.slide_id,
+            published: !file.published_at,
+          }),
+        });
+        publish.disabled = false;
+        status.textContent =
+          response.data.message ??
+          response.data.error ??
+          "Publication could not be saved.";
+        if (response.ok) {
+          await loadSpeakers();
+          setStatus(response.data.message ?? "PDF publication saved.");
+        }
+      });
+      actions.appendChild(publish);
+      card.appendChild(actions);
+      if (!file.may_publish)
+        card.appendChild(
+          node(
+            "p",
+            "text-sm text-paper/70",
+            "The speaker has not allowed public sharing of this PDF.",
+          ),
+        );
+      if (speaker.workspace_only)
+        card.appendChild(
+          node(
+            "p",
+            "text-sm text-paper/70",
+            "Private test account: publication is unavailable.",
+          ),
+        );
+      card.appendChild(status);
+    } else {
+      card.appendChild(actions);
+    }
+    section.appendChild(card);
+  }
   return section;
 }
 

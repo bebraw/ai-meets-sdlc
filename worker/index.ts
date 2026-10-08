@@ -89,6 +89,10 @@ import {
   requireSlideExportAccess,
 } from "./slide-export-auth.ts";
 import { readPublicCanonicalSpeakers } from "./canonical-content.ts";
+import {
+  readPublishedSlideLinks,
+  servePublishedSlides,
+} from "./speaker-slides.ts";
 import { backupSpeakerReceipts } from "./receipt-backups.ts";
 import { handleEventFeed } from "./event-feed.ts";
 import { handleVolunteersRequest } from "./volunteers.ts";
@@ -124,6 +128,29 @@ const innerHandler = {
     const isSpeakerSlideExport = isSpeakerSlideExportPath(url.pathname);
     const isSpeakerDinnerPrivate = isSpeakerDinnerPath(url.pathname);
     const isSpeakerWorkspacePrivate = isSpeakerWorkspacePath(url.pathname);
+
+    if (url.pathname.startsWith("/media/talks/")) {
+      try {
+        return (
+          (await servePublishedSlides(request, env)) ??
+          new Response("Slides not found.", {
+            status: 404,
+            headers: { "cache-control": "no-store" },
+          })
+        );
+      } catch {
+        console.error(
+          JSON.stringify({
+            message: "Published slides unavailable",
+            pathname: url.pathname,
+          }),
+        );
+        return new Response("Slides temporarily unavailable.", {
+          status: 503,
+          headers: { "cache-control": "no-store", "retry-after": "60" },
+        });
+      }
+    }
 
     try {
       const canonicalPhotoResponse = await serveCanonicalSpeakerPhoto(
@@ -530,14 +557,17 @@ const innerHandler = {
       isCanonicalPublicHtmlPath(url.pathname)
     ) {
       try {
-        const [records, schedule] = await Promise.all([
+        const [records, schedule, slides] = await Promise.all([
           readPublicCanonicalSpeakers(env),
           readScheduleOrder(env),
+          url.pathname === "/schedule/"
+            ? readPublishedSlideLinks(env)
+            : Promise.resolve(new Map<string, string>()),
         ]);
         response = await applyCanonicalContentToResponse(
           response.clone(),
           records,
-          { private: isAdminProtected, schedule },
+          { private: isAdminProtected, schedule, slides },
         );
       } catch (error) {
         console.error("canonical_public_content_fallback", {

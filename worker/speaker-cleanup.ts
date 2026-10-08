@@ -1,5 +1,6 @@
 import { loginRequestRetentionMilliseconds } from "./speaker-workspace-utils.ts";
 import { purgeDeletedSpeakerReceipts } from "./speaker-receipts.ts";
+import { purgeDeletedSpeakerSlides } from "./speaker-slides.ts";
 
 export async function purgeExpiredSpeakerWorkspaceData(
   env: Env,
@@ -8,6 +9,7 @@ export async function purgeExpiredSpeakerWorkspaceData(
 
   const now = new Date();
   await purgeDeletedSpeakerReceipts(env);
+  await purgeDeletedSpeakerSlides(env);
   const nowIso = now.toISOString();
   const retentionStart = new Date(
     now.getTime() - loginRequestRetentionMilliseconds,
