@@ -1,5 +1,6 @@
 import { append } from "./admin-toolkit.ts";
 import type { BadgePerson, BadgeSettings } from "./badge-model.ts";
+import type { SpareBadgeRole } from "./badge-studio-model.ts";
 const NS = "http://www.w3.org/2000/svg";
 const pt = 25.4 / 72;
 export interface BadgeFont {
@@ -99,13 +100,14 @@ export function renderBadge(
 ): { svg: SVGSVGElement; issues: string[] } {
   return renderBadgeArtwork(person, settings, font, preview, false);
 }
-export function renderSpareAttendeeBadge(
+export function renderSpareBadge(
+  role: SpareBadgeRole,
   settings: BadgeSettings,
   font: BadgeFont,
   preview = true,
 ): { svg: SVGSVGElement; issues: string[] } {
   return renderBadgeArtwork(
-    { name: "", company: "", role: "attendee" },
+    { name: "", company: "", role },
     settings,
     font,
     preview,
@@ -139,7 +141,7 @@ function renderBadgeArtwork(
     height: `${page}mm`,
     role: "img",
     "aria-label": spare
-      ? "Spare attendee badge"
+      ? `Spare ${person.role} badge`
       : `${person.role} badge for ${person.name}`,
   });
   append(root, svg("rect", { width: page, height: page, fill: background }));

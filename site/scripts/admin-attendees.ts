@@ -800,12 +800,14 @@ function setupList(root: HTMLElement) {
         const skipped = skippedTicketNote(imported);
         if (skipped) {
           const count = records.length - 1 - imported.length;
+          const spareRole =
+            type.input.value === "sponsor" ? "sponsor" : "attendee";
           const spares = el(
             "a",
-            `Prepare ${count} spare attendee badge${count === 1 ? "" : "s"} →`,
+            `Prepare ${count} spare ${spareRole} badge${count === 1 ? "" : "s"} →`,
             "font-bold underline",
           );
-          spares.href = `/admin/badges/?spares=${count}`;
+          spares.href = `/admin/badges/?${spareRole === "sponsor" ? "sponsor-spares" : "spares"}=${count}`;
           append(preview, el("p", skipped), spares);
         }
         for (const person of imported.slice(0, 5))

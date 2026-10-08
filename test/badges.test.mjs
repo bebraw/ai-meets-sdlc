@@ -12,19 +12,37 @@ import { fontCoverage } from "../site/scripts/badge-layout.ts";
 import {
   parsePrintPreferences,
   requestedSpareAttendeeBadges,
+  requestedSpareSponsorBadges,
 } from "../site/scripts/badge-studio-model.ts";
 const mapping = { name: 0, company: 1, email: 2, first: -1, last: -1 };
 test("spare badge preferences accept whole counts and keep older saved runs compatible", () => {
   const oldPreferences = { settings: defaultSettings, overrides: [] };
   assert.equal(parsePrintPreferences(oldPreferences).spareAttendeeBadges, 0);
+  assert.equal(parsePrintPreferences(oldPreferences).spareSponsorBadges, 0);
   assert.equal(
     parsePrintPreferences({ ...oldPreferences, spareAttendeeBadges: 13 })
       .spareAttendeeBadges,
     13,
   );
   for (const count of [-1, 0.5, 2001, Infinity, "13"])
-    assert.throws(() =>
-      parsePrintPreferences({ ...oldPreferences, spareAttendeeBadges: count }),
+    for (const key of ["spareAttendeeBadges", "spareSponsorBadges"])
+      assert.throws(() =>
+        parsePrintPreferences({ ...oldPreferences, [key]: count }),
+      );
+  const both = parsePrintPreferences({
+    ...oldPreferences,
+    spareAttendeeBadges: 13,
+    spareSponsorBadges: 7,
+  });
+  assert.equal(both.spareAttendeeBadges, 13);
+  assert.equal(both.spareSponsorBadges, 7);
+  assert.equal(requestedSpareSponsorBadges("?sponsor-spares=7&spares=13"), 7);
+  assert.equal(requestedSpareAttendeeBadges("?sponsor-spares=7&spares=13"), 13);
+  assert.equal(requestedSpareSponsorBadges("?sponsor-spares=0"), 0);
+  for (const value of ["", "-1", "0.5", "2001", "invalid"])
+    assert.equal(
+      requestedSpareSponsorBadges("?sponsor-spares=" + value),
+      undefined,
     );
   assert.equal(requestedSpareAttendeeBadges("?spares=13"), 13);
   assert.equal(requestedSpareAttendeeBadges("?spares=0"), 0);

@@ -106,6 +106,14 @@ retain the same ticket identity, arrival history, dietary response and badge
 inclusion rules. Catering includes active sponsors. Badges inherit this type,
 use teal with a SPONSOR label, and support a separate sponsor print run.
 
+Save independent attendee and sponsor spare-badge quantities in the encrypted
+print preferences, defaulting missing quantities to zero for earlier saved runs.
+Spare badges retain their role's artwork with blank name and company areas;
+include them in the corresponding role and full print runs, with separate
+spare-only runs. Apply the same page sizing, layout validation, and repeated-back
+setting as named badges. Spares do not create registrations or alter catering.
+Sponsor CSV previews link to the sponsor quantity for unassigned tickets.
+
 Keep arrivals outside the encrypted roster, indexed by random attendee ID.
 Writes compare the arrival revision and the roster revision displayed to staff,
 verify current staff

@@ -146,6 +146,7 @@ test("organizers seed the homepage while badge selection stays private; badges l
     preferences: {
       settings: defaultSettings,
       spareAttendeeBadges: 13,
+      spareSponsorBadges: 7,
       retiredLegacyIds: [],
       overrides: [
         {
@@ -175,6 +176,16 @@ test("organizers seed the homepage while badge selection stays private; badges l
     ).status,
     400,
   );
+  for (const count of [-1, 0.5, 2001, "7"])
+    assert.equal(
+      (
+        await send("badges", "PUT", {
+          ...payload,
+          preferences: { ...payload.preferences, spareSponsorBadges: count },
+        })
+      ).status,
+      400,
+    );
   assert.equal(
     (
       await send("badges", "PUT", {
@@ -294,6 +305,8 @@ test("organizers seed the homepage while badge selection stays private; badges l
     200,
   );
   studio = await (await send("badges")).json();
+  assert.equal(studio.preferences.spareAttendeeBadges, 0);
+  assert.equal(studio.preferences.spareSponsorBadges, 0);
   assert.equal(
     applyPrintPreferences(
       studio.people,

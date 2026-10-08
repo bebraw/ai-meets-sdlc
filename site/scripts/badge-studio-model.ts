@@ -12,17 +12,19 @@ const overrideSchema = v.object({
   company: v.pipe(v.string(), v.maxLength(300)),
   duplicateReviewed: v.boolean(),
 });
-export const maxSpareAttendeeBadges = 2000;
+export type SpareBadgeRole = "attendee" | "sponsor";
+export const maxSpareBadges = 2000;
 const spareBadgeCountSchema = v.pipe(
   v.number(),
   v.integer(),
   v.minValue(0),
-  v.maxValue(maxSpareAttendeeBadges),
+  v.maxValue(maxSpareBadges),
 );
 export const printPreferencesSchema = v.object({
   settings: badgeSettingsSchema,
   overrides: v.array(overrideSchema),
   spareAttendeeBadges: v.optional(spareBadgeCountSchema, 0),
+  spareSponsorBadges: v.optional(spareBadgeCountSchema, 0),
   retiredLegacyIds: v.optional(
     v.array(v.pipe(v.string(), v.minLength(1), v.maxLength(100))),
     () => [],
@@ -51,7 +53,18 @@ export function parsePrintPreferences(value: unknown): PrintPreferences {
 export function requestedSpareAttendeeBadges(
   search: string,
 ): number | undefined {
-  const value = new URLSearchParams(search).get("spares");
+  return requestedSpareBadgeCount(search, "spares");
+}
+export function requestedSpareSponsorBadges(
+  search: string,
+): number | undefined {
+  return requestedSpareBadgeCount(search, "sponsor-spares");
+}
+function requestedSpareBadgeCount(
+  search: string,
+  key: string,
+): number | undefined {
+  const value = new URLSearchParams(search).get(key);
   if (value === null || !/^\d+$/u.test(value)) return undefined;
   const parsed = v.safeParse(spareBadgeCountSchema, Number(value));
   return parsed.success ? parsed.output : undefined;

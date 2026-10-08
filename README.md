@@ -595,6 +595,13 @@ The count is saved with print settings, included in attendee and full runs, and
 can be printed separately with **Print / save PDF — spares**. The Tito import
 preview links to Badge studio with the skipped-ticket count prefilled; increase
 it to include additional spares.
+Set **Spare sponsor badges** for sponsors without a named registration. These
+use the teal sponsor background and **SPONSOR** label with blank name/company
+areas. Save the quantity with print settings. Sponsor and full runs include
+these spares; **Print / save PDF — sponsor spares** prints only spare sponsor
+badges. Attendee and sponsor quantities are independent whole numbers from 0
+to 2,000 and do not create registrations or change catering totals. Sponsor
+CSV previews prefill the sponsor quantity for skipped unassigned tickets.
 The 2,000-person limit applies to the attendee roster; the combined badge run
 includes additional team and earlier records. Print preferences are bounded by
 request and encrypted storage size rather than a combined record count.

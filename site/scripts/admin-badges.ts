@@ -13,15 +13,17 @@ import {
   applyPrintPreferences,
   parsePrintPreferences,
   isLegacyBadgeId,
-  maxSpareAttendeeBadges,
+  maxSpareBadges,
   requestedSpareAttendeeBadges,
+  requestedSpareSponsorBadges,
+  type SpareBadgeRole,
   type PrintPreferences,
   type BadgeStudioData,
 } from "./badge-studio-model.ts";
 import {
   loadBadgeFont,
   renderBadge,
-  renderSpareAttendeeBadge,
+  renderSpareBadge,
   type BadgeFont,
 } from "./badge-layout.ts";
 const root = document.querySelector<HTMLElement>("[data-admin-badges]");
@@ -36,9 +38,15 @@ function setup(root: HTMLElement): void {
   let dirty = false;
   let busy = false;
   let selected = "";
-  let previewingSpare = false;
-  let spareAttendeeBadges = 0;
-  const requestedSpares = requestedSpareAttendeeBadges(location.search);
+  let previewingSpare: SpareBadgeRole | false = false;
+  const spareBadges: Record<SpareBadgeRole, number> = {
+    attendee: 0,
+    sponsor: 0,
+  };
+  const requestedSpares = {
+    attendee: requestedSpareAttendeeBadges(location.search),
+    sponsor: requestedSpareSponsorBadges(location.search),
+  };
   let requestedSparesApplied = false;
   let font: BadgeFont | undefined;
   const layoutIssues = new Map<string, string[]>();
@@ -149,7 +157,7 @@ function setup(root: HTMLElement): void {
   function updateProofNavigation() {
     const index = workspace.people.findIndex((p) => p.id === selected);
     proofPosition.textContent = previewingSpare
-      ? "Spare attendee badge"
+      ? `Spare ${previewingSpare} badge`
       : workspace.people.length
         ? `${Math.max(0, index) + 1} / ${workspace.people.length}`
         : "0 / 0";
@@ -179,7 +187,7 @@ function setup(root: HTMLElement): void {
       ]!.id;
     showPreview();
   }
-  function showPreview(spare = false) {
+  function showPreview(spare: SpareBadgeRole | false = false) {
     previewingSpare = spare;
     const person =
       workspace.people.find((p) => p.id === selected) ?? workspace.people[0];
@@ -187,11 +195,11 @@ function setup(root: HTMLElement): void {
     selected = person?.id ?? "";
     updateProofNavigation();
     if (spare && font) {
-      const result = renderSpareAttendeeBadge(workspace.settings, font);
+      const result = renderSpareBadge(spare, workspace.settings, font);
       append(preview, result.svg);
       previewStatus.textContent = result.issues.length
         ? result.issues.join(" ")
-        : "Spare attendee badge: blank name and company areas for writing at the desk.";
+        : `Spare ${spare} badge: blank name and company areas for writing at the desk.`;
       return;
     }
     if (!person || !font) {
@@ -207,7 +215,7 @@ function setup(root: HTMLElement): void {
   function renderList() {
     const duplicate = duplicateIds(workspace.people);
     const term = filter.input.value.toLocaleLowerCase();
-    count.textContent = `${workspace.people.filter((p) => p.included).length} included / ${workspace.people.length} total · ${spareAttendeeBadges} spare attendee badges · ${duplicate.size} unresolved duplicate rows`;
+    count.textContent = `${workspace.people.filter((p) => p.included).length} included / ${workspace.people.length} total · ${spareBadges.attendee} spare attendee badges · ${spareBadges.sponsor} spare sponsor badges · ${duplicate.size} unresolved duplicate rows`;
     const visible = workspace.people.filter((p) =>
       `${p.name} ${p.email} ${p.source} ${p.role}`
         .toLocaleLowerCase()
@@ -435,38 +443,56 @@ function setup(root: HTMLElement): void {
   const legacyNotice = el("div", "", "grid gap-3 text-sm");
   append(sources, links, legacyNotice);
   const spares = el("section", "", "grid gap-3 border border-ink p-5");
-  const spareCount = field("Spare attendee badges", "0", "number");
-  spareCount.input.min = "0";
-  spareCount.input.max = String(maxSpareAttendeeBadges);
-  spareCount.input.step = "1";
-  spareCount.input.required = true;
-  spareCount.input.addEventListener("change", () => {
-    if (!spareCount.input.checkValidity() || !spareCount.input.value) {
-      spareCount.input.reportValidity();
-      spareCount.input.value = String(spareAttendeeBadges);
-      return;
-    }
-    spareAttendeeBadges = Number(spareCount.input.value);
-    invalidate();
-    renderList();
-    showPreview(true);
-  });
+  spares.dataset.spareBadges = "";
   append(
     spares,
-    el("h2", "Spare attendee badges", "font-headline text-2xl uppercase"),
+    el("h2", "Spare badges", "font-headline text-2xl uppercase"),
     el(
       "p",
-      "Blank name and company areas for unassigned Tito tickets and walk-ins. Choose a total that covers those tickets plus any extras. Spares are included in attendee and full print runs, and can also be printed on their own. Save print settings to keep the count for reprints.",
+      "Blank name and company areas for guests without a named registration. Choose attendee and sponsor quantities separately. Each is included in its role's print run and the full run, or can be printed on its own. Save print settings to keep both counts for reprints.",
       "text-sm leading-6",
     ),
-    spareCount.label,
-    button("Preview spare badge", () => showPreview(true)),
   );
+  const spareFields = new Map<SpareBadgeRole, HTMLInputElement>();
+  const spareControls = el("div", "", "grid gap-5 sm:grid-cols-2");
+  for (const role of ["attendee", "sponsor"] as const) {
+    const control = el("div", "", "grid content-start gap-3");
+    const count = field(`Spare ${role} badges`, "0", "number");
+    count.input.min = "0";
+    count.input.max = String(maxSpareBadges);
+    count.input.step = "1";
+    count.input.required = true;
+    count.input.addEventListener("change", () => {
+      if (!count.input.checkValidity() || !count.input.value) {
+        count.input.reportValidity();
+        count.input.value = String(spareBadges[role]);
+        return;
+      }
+      spareBadges[role] = Number(count.input.value);
+      invalidate();
+      renderList();
+      showPreview(role);
+    });
+    spareFields.set(role, count.input);
+    append(
+      control,
+      count.label,
+      button(
+        role === "attendee"
+          ? "Preview spare badge"
+          : "Preview spare sponsor badge",
+        () => showPreview(role),
+      ),
+    );
+    append(spareControls, control);
+  }
+  append(spares, spareControls);
   function preferences(): PrintPreferences {
     const originals = new Map(sourcePeople.map((p) => [p.id, p]));
     return parsePrintPreferences({
       settings: workspace.settings,
-      spareAttendeeBadges,
+      spareAttendeeBadges: spareBadges.attendee,
+      spareSponsorBadges: spareBadges.sponsor,
       retiredLegacyIds,
       overrides: workspace.people
         .filter((p) => {
@@ -503,27 +529,42 @@ function setup(root: HTMLElement): void {
       "People changed since this preview. Review the updated badges, then check or print again.";
     return false;
   }
-  async function check(role: BadgeRole | "all" | "spares", print: boolean) {
+  async function check(
+    role: BadgeRole | "all" | "spares" | "sponsor spares",
+    print: boolean,
+  ) {
     printRoot.removeAttribute("data-ready");
     printRoot.replaceChildren();
     if (!font) throw new Error("The badge font has not loaded.");
-    if (role !== "spares" && !(await refreshBeforePrint())) return;
+    if (
+      role !== "spares" &&
+      role !== "sponsor spares" &&
+      !(await refreshBeforePrint())
+    )
+      return;
     const people = workspace.people.filter(
       (p) => p.included && (role === "all" || p.role === role),
     );
-    const spareCount =
-      role === "all" || role === "attendee" || role === "spares"
-        ? spareAttendeeBadges
-        : 0;
+    const spareCounts = {
+      attendee:
+        role === "all" || role === "attendee" || role === "spares"
+          ? spareBadges.attendee
+          : 0,
+      sponsor:
+        role === "all" || role === "sponsor" || role === "sponsor spares"
+          ? spareBadges.sponsor
+          : 0,
+    };
+    const spareCount = spareCounts.attendee + spareCounts.sponsor;
     const total = people.length + spareCount;
     if (!total) throw new Error("No badges selected for this print run.");
     const duplicates = duplicateIds(workspace.people);
     layoutIssues.clear();
     const errors: string[] = [];
     const sheets: HTMLElement[] = [];
-    function addSheet(svg: SVGSVGElement, spare = false) {
+    function addSheet(svg: SVGSVGElement, spare?: SpareBadgeRole) {
       const sheet = el("section", "", "badge-print-sheet");
-      if (spare) sheet.dataset.spareBadge = "";
+      if (spare) sheet.dataset.spareBadge = spare;
       append(sheet, svg);
       sheets.push(sheet);
       if (workspace.settings.doubleSided)
@@ -545,16 +586,19 @@ function setup(root: HTMLElement): void {
         await new Promise((resolve) => setTimeout(resolve, 0));
       }
     }
-    if (spareCount) {
-      const rendered = renderSpareAttendeeBadge(
+    for (const spareRole of ["attendee", "sponsor"] as const) {
+      const quantity = spareCounts[spareRole];
+      if (!quantity) continue;
+      const rendered = renderSpareBadge(
+        spareRole,
         workspace.settings,
         font,
         false,
       );
       if (rendered.issues.length)
-        errors.push(`Spare attendee badges: ${rendered.issues.join(" ")}`);
-      for (let i = 0; i < spareCount; i++)
-        addSheet(rendered.svg.cloneNode(true) as SVGSVGElement, true);
+        errors.push(`Spare ${spareRole} badges: ${rendered.issues.join(" ")}`);
+      for (let i = 0; i < quantity; i++)
+        addSheet(rendered.svg.cloneNode(true) as SVGSVGElement, spareRole);
     }
     renderList();
     if (errors.length) {
@@ -563,7 +607,11 @@ function setup(root: HTMLElement): void {
     }
     const size = workspace.settings.diameter + 2 * workspace.settings.bleed;
     pageStyle.textContent = `@media print{@page{size:${size}mm ${size}mm;margin:0}.badge-print-sheet{width:${size}mm;height:${size}mm}}`;
-    status.textContent = `${total} badges passed layout and duplicate checks. ${sheets.length} PDF pages at ${size} × ${size} mm.${spareCount ? ` Includes ${spareCount} spare attendee badges.` : ""}${dirty ? " Save to keep these edits." : ""}`;
+    const spareSummary = Object.entries(spareCounts)
+      .filter(([, quantity]) => quantity)
+      .map(([role, quantity]) => `${quantity} spare ${role} badges`)
+      .join(" and ");
+    status.textContent = `${total} badges passed layout and duplicate checks. ${sheets.length} PDF pages at ${size} × ${size} mm.${spareSummary ? ` Includes ${spareSummary}.` : ""}${dirty ? " Save to keep these edits." : ""}`;
     if (print) {
       append(printRoot, ...sheets);
       await document.fonts.ready;
@@ -590,6 +638,7 @@ function setup(root: HTMLElement): void {
     "organizer",
     "sponsor",
     "spares",
+    "sponsor spares",
   ] as const)
     append(
       output,
@@ -616,7 +665,8 @@ function setup(root: HTMLElement): void {
     sourcePeople = result.people;
     signatures = result.signatures;
     const saved = parsePrintPreferences(result.preferences);
-    spareAttendeeBadges = saved.spareAttendeeBadges;
+    spareBadges.attendee = saved.spareAttendeeBadges;
+    spareBadges.sponsor = saved.spareSponsorBadges;
     retiredLegacyIds = saved.retiredLegacyIds;
     workspace = parseWorkspace({
       people: applyPrintPreferences(sourcePeople, saved, signatures),
@@ -626,17 +676,22 @@ function setup(root: HTMLElement): void {
     revision = result.revision;
     loaded = true;
     dirty = false;
-    if (!requestedSparesApplied && requestedSpares !== undefined) {
-      if (requestedSpares > spareAttendeeBadges) {
-        spareAttendeeBadges = requestedSpares;
-        dirty = true;
+    if (!requestedSparesApplied) {
+      for (const role of ["attendee", "sponsor"] as const) {
+        const requested = requestedSpares[role];
+        if (requested !== undefined && requested > spareBadges[role]) {
+          spareBadges[role] = requested;
+          dirty = true;
+        }
       }
       requestedSparesApplied = true;
       const url = new URL(location.href);
       url.searchParams.delete("spares");
+      url.searchParams.delete("sponsor-spares");
       history.replaceState(null, "", url);
     }
-    spareCount.input.value = String(spareAttendeeBadges);
+    for (const [role, input] of spareFields)
+      input.value = String(spareBadges[role]);
     printRoot.removeAttribute("data-ready");
     printRoot.replaceChildren();
     legacyNotice.replaceChildren();
@@ -687,8 +742,12 @@ function setup(root: HTMLElement): void {
     renderSettings();
     renderList();
     showPreview();
+    const preparedSpares = (["attendee", "sponsor"] as const)
+      .filter((role) => requestedSpares[role] !== undefined)
+      .map((role) => `${spareBadges[role]} spare ${role} badges`)
+      .join(" and ");
     status.textContent = dirty
-      ? `${spareAttendeeBadges} spare attendee badges prepared. Adjust the count and save print settings to keep it.`
+      ? `${preparedSpares} prepared. Adjust the count and save print settings to keep it.`
       : "Badge studio ready. People are loaded from attendee and team records.";
   }
   append(

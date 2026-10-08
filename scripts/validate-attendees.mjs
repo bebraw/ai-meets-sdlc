@@ -836,11 +836,11 @@ try {
   assert.equal(
     await admin
       .getByRole("link", {
-        name: "Prepare 1 spare attendee badge →",
+        name: "Prepare 1 spare sponsor badge →",
         exact: true,
       })
       .getAttribute("href"),
-    "/admin/badges/?spares=1",
+    "/admin/badges/?sponsor-spares=1",
   );
   await admin
     .getByRole("button", { name: "Import registrations", exact: true })

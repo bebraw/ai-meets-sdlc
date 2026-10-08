@@ -681,6 +681,162 @@ try {
     ).issues;
   });
   assert.ok(blankNameGuard.includes("Name is required."));
+  const sponsorSpareCount = page.getByLabel("Spare sponsor badges", {
+    exact: true,
+  });
+  assert.equal(await sponsorSpareCount.inputValue(), "0");
+  await page
+    .getByRole("button", { name: "Save print settings", exact: true })
+    .click();
+  await page
+    .getByText("Print settings and badge text saved.", { exact: true })
+    .waitFor();
+  await page.goto(`${origin}/admin/badges/?sponsor-spares=7`);
+  await page
+    .getByText(
+      "7 spare sponsor badges prepared. Adjust the count and save print settings to keep it.",
+      { exact: true },
+    )
+    .waitFor();
+  assert.equal(await sponsorSpareCount.inputValue(), "7");
+  assert.equal(new URL(page.url()).searchParams.has("sponsor-spares"), false);
+  await page.getByText("Printer settings", { exact: true }).click();
+  await page.getByLabel("Repeat each badge for an identical back").uncheck();
+  assert.equal(await spareCount.inputValue(), "13");
+  await page
+    .getByRole("button", { name: "Preview spare sponsor badge", exact: true })
+    .click();
+  assert.equal(
+    await page.locator(".badge-preview svg").getAttribute("aria-label"),
+    "Spare sponsor badge",
+  );
+  assert.deepEqual(
+    await page.locator(".badge-preview text").allTextContents(),
+    ["SPONSOR"],
+  );
+  assert.equal(
+    await page.locator(".badge-preview rect").first().getAttribute("fill"),
+    "#64c4bc",
+  );
+  await page
+    .getByRole("button", { name: "Save print settings", exact: true })
+    .click();
+  await page
+    .getByText("Print settings and badge text saved.", { exact: true })
+    .waitFor();
+  await page.reload();
+  await page.getByText(ready, { exact: true }).waitFor();
+  assert.equal(await sponsorSpareCount.inputValue(), "7");
+  assert.equal(await spareCount.inputValue(), "13");
+  for (const invalid of ["-1", "0.5", "2001"]) {
+    await sponsorSpareCount.fill(invalid);
+    await sponsorSpareCount.press("Tab");
+    assert.equal(await sponsorSpareCount.inputValue(), "7");
+  }
+  const namedSponsors = await page
+    .getByRole("article")
+    .filter({ hasText: "sponsor ·" })
+    .count();
+  await printRun("sponsor");
+  assert.equal(
+    await page.locator(".badge-print-sheet").count(),
+    namedSponsors + 7,
+  );
+  assert.equal(await page.locator('[data-spare-badge="sponsor"]').count(), 7);
+  assert.equal(await page.locator('[data-spare-badge="attendee"]').count(), 0);
+  await printRun("attendee");
+  assert.equal(
+    await page.locator(".badge-print-sheet").count(),
+    namedAttendees + 13,
+  );
+  assert.equal(await page.locator('[data-spare-badge="sponsor"]').count(), 0);
+  await printRun("all");
+  assert.equal(
+    await page.locator(".badge-print-sheet").count(),
+    (await page.getByRole("article").count()) + 20,
+  );
+  assert.equal(await page.locator('[data-spare-badge="sponsor"]').count(), 7);
+  assert.equal(await page.locator('[data-spare-badge="attendee"]').count(), 13);
+  await printRun("speaker");
+  assert.equal(await page.locator("[data-spare-badge]").count(), 0);
+  await printRun("sponsor spares");
+  assert.equal(await page.locator(".badge-print-sheet").count(), 7);
+  assert.deepEqual(
+    [
+      ...new Set(
+        await page.locator(".badge-print-root text").allTextContents(),
+      ),
+    ],
+    ["SPONSOR"],
+  );
+  assert.equal(await page.locator(".badge-print-root image").count(), 7);
+  const sponsorSparePdf = await page.pdf({
+    path: "/tmp/sdlcai-spare-sponsor-badges-test.pdf",
+    preferCSSPageSize: true,
+    printBackground: true,
+  });
+  assert.equal(
+    [...sponsorSparePdf.toString("latin1").matchAll(/\/Type \/Page\b/g)].length,
+    7,
+  );
+  await page
+    .getByRole("button", { name: "Preview spare sponsor badge", exact: true })
+    .click();
+  await page
+    .locator(".badge-preview")
+    .screenshot({ path: "/tmp/sdlcai-spare-sponsor-badge.png" });
+  await page.getByText("Printer settings", { exact: true }).click();
+  await page.getByLabel("Repeat each badge for an identical back").check();
+  await printRun("sponsor spares");
+  assert.equal(await page.locator(".badge-print-sheet").count(), 14);
+  await page
+    .getByRole("button", { name: "Preview spare sponsor badge", exact: true })
+    .click();
+  const axeSource = await readFile("node_modules/axe-core/axe.min.js", "utf8");
+  await page.addScriptTag({ content: axeSource });
+  for (const viewport of [
+    { width: 1440, height: 1000 },
+    { width: 390, height: 844 },
+  ]) {
+    await page.setViewportSize(viewport);
+    assert.ok(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth,
+      ),
+    );
+    assert.deepEqual(
+      await page.evaluate(async () =>
+        (
+          await window.axe.run(document, {
+            runOnly: {
+              type: "tag",
+              values: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"],
+            },
+            rules: { "target-size": { enabled: false } },
+          })
+        ).violations.map(({ id }) => id),
+      ),
+      [],
+    );
+    await page.locator("[data-spare-badges]").screenshot({
+      path: "/tmp/sdlcai-spare-badge-controls-" + viewport.width + ".png",
+    });
+  }
+  await sponsorSpareCount.fill("0");
+  await sponsorSpareCount.press("Tab");
+  await page.evaluate(() => {
+    window.__printed = false;
+  });
+  await page
+    .getByRole("button", {
+      name: "Print / save PDF — sponsor spares",
+      exact: true,
+    })
+    .click();
+  await page
+    .getByText("No badges selected for this print run.", { exact: true })
+    .waitFor();
+  assert.equal(await page.evaluate(() => window.__printed), false);
   await page.setViewportSize({ width: 390, height: 844 });
   assert.ok(
     await page.evaluate(
@@ -703,7 +859,7 @@ try {
   assert.deepEqual((await send("GET")).attendees, registrationsBeforeSpares);
   assert.deepEqual(errors, []);
   console.log(
-    "Badge browser checks passed: spare badges, Unicode, overflow, live records, duplicates, print preferences, source corrections, print pagination, and mobile layout.",
+    "Badge browser checks passed: independent attendee and sponsor spares, saved quantities, role-specific artwork and print runs, PDF pagination, repeated backs, Unicode, overflow, live records, duplicates, print preferences, source corrections, desktop/mobile layout and accessibility.",
   );
   console.log(JSON.stringify(layouts));
 } finally {
