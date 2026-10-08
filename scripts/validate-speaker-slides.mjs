@@ -256,6 +256,9 @@ try {
       exact: true,
     })
     .waitFor();
+  await card
+    .getByRole("link", { name: "Download PDF", exact: true })
+    .waitFor({ state: "detached" });
   assert.equal(
     await card.getByRole("link", { name: "Download PDF", exact: true }).count(),
     0,
