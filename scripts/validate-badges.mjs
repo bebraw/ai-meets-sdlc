@@ -34,7 +34,9 @@ try {
   const origin = `http://127.0.0.1:${fixture.worker.port}`;
   await page.route("**/test-scripts/*.ts", async (route) => {
     const file = new URL(route.request().url()).pathname.split("/").at(-1);
-    if (!["badge-layout.ts", "admin-toolkit.ts"].includes(file))
+    if (
+      !["badge-layout.ts", "badge-roles.ts", "admin-toolkit.ts"].includes(file)
+    )
       return route.abort();
     const source = await readFile(`site/scripts/${file}`, "utf8");
     await route.fulfill({
@@ -102,8 +104,40 @@ try {
   await send("POST", { revision: 0, source: "tito", attendees: inputs });
   const ready =
     "Badge studio ready. People are loaded from attendee and team records.";
+  const summary = page.locator("[data-badge-summary]");
+  const readSummary = async () => ({
+    rows: await summary.locator("tbody tr").evaluateAll((rows) =>
+      rows.map((row) => ({
+        role: row.dataset.badgeSummaryRole,
+        ...Object.fromEntries(
+          Array.from(row.querySelectorAll("[data-badge-summary-count]")).map(
+            (cell) => [
+              cell.dataset.badgeSummaryCount,
+              Number(cell.textContent),
+            ],
+          ),
+        ),
+      })),
+    ),
+    total: Number(await summary.locator("[data-lanyard-total]").textContent()),
+  });
+  // A failed initial load must not present a zero-lanyard shopping total.
+  await page.route("**/api/admin/badges", (route) =>
+    route.fulfill({
+      status: 503,
+      contentType: "application/json",
+      body: JSON.stringify({ error: "Temporary badge outage" }),
+    }),
+  );
+  await page.goto(`${origin}/admin/badges/`);
+  await page.getByText("Temporary badge outage", { exact: true }).waitFor();
+  assert.equal(await summary.isVisible(), false);
+  await page.unroute("**/api/admin/badges");
   await page.goto(`${origin}/admin/badges/`);
   await page.getByText(ready, { exact: true }).waitFor();
+  assert.ok(await summary.isVisible());
+  const initialSummary = await readSummary();
+  assert.equal(initialSummary.total, await page.getByRole("article").count());
   assert.equal(await page.getByLabel("CSV file").count(), 0);
   assert.equal(
     await page.getByRole("button", { name: "Add a manual badge" }).count(),
@@ -131,6 +165,11 @@ try {
     )
     .waitFor();
   assert.equal(await earlierCard.count(), 1);
+  assert.equal((await readSummary()).total, initialSummary.total + 1);
+  assert.equal(
+    (await readSummary()).rows[0].named,
+    initialSummary.rows[0].named + 1,
+  );
   await page.evaluate(() => {
     window.print = () => {
       window.__printed = true;
@@ -175,6 +214,7 @@ try {
     0,
     "Retirement survives reload without a matching email",
   );
+  assert.deepEqual(await readSummary(), initialSummary);
   await page
     .getByRole("button", {
       name: "Restore retired earlier badges",
@@ -728,6 +768,75 @@ try {
   await page.getByText(ready, { exact: true }).waitFor();
   assert.equal(await sponsorSpareCount.inputValue(), "7");
   assert.equal(await spareCount.inputValue(), "13");
+  const expectedSummaryRows = [];
+  for (const role of ["attendee", "speaker", "organizer", "sponsor"]) {
+    const named = await page
+      .getByRole("article")
+      .filter({ hasText: `${role} ·` })
+      .count();
+    const spares = role === "attendee" ? 13 : role === "sponsor" ? 7 : 0;
+    expectedSummaryRows.push({ role, named, spares, lanyards: named + spares });
+  }
+  const expectedSummary = {
+    rows: expectedSummaryRows,
+    total: (await page.getByRole("article").count()) + 20,
+  };
+  assert.deepEqual(await readSummary(), expectedSummary);
+  assert.deepEqual(await summary.locator("tfoot td").allTextContents(), [
+    String(expectedSummary.total - 20),
+    "20",
+    String(expectedSummary.total),
+  ]);
+  await page
+    .getByLabel("Find a badge")
+    .fill("no matching badge for this search");
+  assert.equal(await page.getByRole("article").count(), 0);
+  assert.deepEqual(await readSummary(), expectedSummary);
+  await page.getByLabel("Find a badge").fill("");
+  await page
+    .context()
+    .grantPermissions(["clipboard-read", "clipboard-write"], { origin });
+  await summary
+    .getByRole("button", { name: "Copy lanyard summary", exact: true })
+    .click();
+  await summary.getByText("Lanyard summary copied.", { exact: true }).waitFor();
+  const copiedSummary = await page.evaluate(() =>
+    navigator.clipboard.readText(),
+  );
+  assert.ok(copiedSummary.includes(`Total: ${expectedSummary.total} lanyards`));
+  assert.match(
+    copiedSummary,
+    /Sponsors \(teal badges\): \d+ lanyards \(\d+ named \+ 7 spare\)/,
+  );
+  assert.doesNotMatch(copiedSummary, /example\.test/);
+  const downloadEvent = page.waitForEvent("download");
+  await summary
+    .getByRole("button", { name: "Download lanyard summary", exact: true })
+    .click();
+  const summaryDownload = await downloadEvent;
+  assert.equal(
+    summaryDownload.suggestedFilename(),
+    "sdlcai-lanyard-summary.txt",
+  );
+  assert.equal(
+    await readFile(await summaryDownload.path(), "utf8"),
+    copiedSummary,
+  );
+  await page.evaluate(() => {
+    Object.defineProperty(navigator, "clipboard", {
+      value: undefined,
+      configurable: true,
+    });
+  });
+  await summary
+    .getByRole("button", { name: "Copy lanyard summary", exact: true })
+    .click();
+  await summary
+    .getByText(
+      "Copy is unavailable. Download the summary or select the table to copy it.",
+      { exact: true },
+    )
+    .waitFor();
   for (const invalid of ["-1", "0.5", "2001"]) {
     await sponsorSpareCount.fill(invalid);
     await sponsorSpareCount.press("Tab");
@@ -787,6 +896,11 @@ try {
     .screenshot({ path: "/tmp/sdlcai-spare-sponsor-badge.png" });
   await page.getByText("Printer settings", { exact: true }).click();
   await page.getByLabel("Repeat each badge for an identical back").check();
+  assert.deepEqual(
+    await readSummary(),
+    expectedSummary,
+    "Identical backs need no extra lanyards",
+  );
   await printRun("sponsor spares");
   assert.equal(await page.locator(".badge-print-sheet").count(), 14);
   await page
@@ -821,6 +935,9 @@ try {
     await page.locator("[data-spare-badges]").screenshot({
       path: "/tmp/sdlcai-spare-badge-controls-" + viewport.width + ".png",
     });
+    await summary.screenshot({
+      path: "/tmp/sdlcai-lanyard-summary-" + viewport.width + ".png",
+    });
   }
   await sponsorSpareCount.fill("0");
   await sponsorSpareCount.press("Tab");
@@ -846,6 +963,14 @@ try {
   );
   await spareCount.fill("0");
   await spareCount.press("Tab");
+  assert.equal(
+    (await readSummary()).total,
+    await page.getByRole("article").count(),
+  );
+  assert.ok((await readSummary()).rows.every((row) => row.spares === 0));
+  await summary
+    .getByText("Counts include unsaved changes in this tab.", { exact: true })
+    .waitFor();
   await page.evaluate(() => {
     window.__printed = false;
   });
@@ -859,7 +984,7 @@ try {
   assert.deepEqual((await send("GET")).attendees, registrationsBeforeSpares);
   assert.deepEqual(errors, []);
   console.log(
-    "Badge browser checks passed: independent attendee and sponsor spares, saved quantities, role-specific artwork and print runs, PDF pagination, repeated backs, Unicode, overflow, live records, duplicates, print preferences, source corrections, desktop/mobile layout and accessibility.",
+    "Badge browser checks passed: lanyard summaries, retired badges, search-independent totals, copy/download and clipboard fallback, independent attendee and sponsor spares, saved quantities, role-specific artwork and print runs, PDF pagination, repeated backs, Unicode, overflow, live records, duplicates, print preferences, source corrections, desktop/mobile layout and accessibility.",
   );
   console.log(JSON.stringify(layouts));
 } finally {

@@ -13,8 +13,61 @@ import {
   parsePrintPreferences,
   requestedSpareAttendeeBadges,
   requestedSpareSponsorBadges,
+  summarizeBadges,
+  formatBadgeSummary,
 } from "../site/scripts/badge-studio-model.ts";
 const mapping = { name: 0, company: 1, email: 2, first: -1, last: -1 };
+test("lanyard quantities include selected badges and role-specific spares, with duplicates visible for review", () => {
+  const person = (id, role, included = true, email = "") => ({
+    id,
+    role,
+    included,
+    email,
+    name: `Person ${id}`,
+    company: "",
+    source: id.startsWith("volunteers:") ? "volunteers" : "test",
+    duplicateReviewed: false,
+  });
+  const people = [
+    person("attendee-one", "attendee", true, "shared@example.test"),
+    person("attendee-two", "attendee"),
+    person("excluded-attendee", "attendee", false),
+    person("speaker-one", "speaker", true, "shared@example.test"),
+    person("organizer-one", "organizer"),
+    person("volunteers:one", "organizer"),
+    person("sponsor-one", "sponsor"),
+    person("excluded-sponsor", "sponsor", false),
+  ];
+  const summary = summarizeBadges(people, { attendee: 13, sponsor: 7 });
+  assert.deepEqual(summary.rows, [
+    { role: "attendee", named: 2, spares: 13, lanyards: 15 },
+    { role: "speaker", named: 1, spares: 0, lanyards: 1 },
+    { role: "organizer", named: 2, spares: 0, lanyards: 2 },
+    { role: "sponsor", named: 1, spares: 7, lanyards: 8 },
+  ]);
+  assert.equal(summary.named, 6);
+  assert.equal(summary.spares, 20);
+  assert.equal(summary.lanyards, 26);
+  assert.equal(summary.unresolvedDuplicateRows, 2);
+  const text = formatBadgeSummary(summary);
+  assert.match(
+    text,
+    /Attendees \(white badges\): 15 lanyards \(2 named \+ 13 spare\)/,
+  );
+  assert.match(text, /Organizers \/ volunteers \(orange badges\): 2 lanyards/);
+  assert.match(text, /Total: 26 lanyards/);
+  assert.match(text, /Review 2 badge rows/);
+  assert.doesNotMatch(text, /shared@example|Person attendee/);
+  for (const entry of people) entry.duplicateReviewed = true;
+  const reviewed = summarizeBadges(people, { attendee: 13, sponsor: 7 });
+  assert.equal(reviewed.lanyards, 26);
+  assert.equal(reviewed.unresolvedDuplicateRows, 0);
+  assert.doesNotMatch(formatBadgeSummary(reviewed), /Review \d+ badge rows/);
+  const empty = summarizeBadges([], { attendee: 0, sponsor: 7 });
+  assert.equal(empty.rows.length, 4);
+  assert.equal(empty.named, 0);
+  assert.equal(empty.lanyards, 7);
+});
 test("spare badge preferences accept whole counts and keep older saved runs compatible", () => {
   const oldPreferences = { settings: defaultSettings, overrides: [] };
   assert.equal(parsePrintPreferences(oldPreferences).spareAttendeeBadges, 0);

@@ -1,5 +1,6 @@
 import { append } from "./admin-toolkit.ts";
 import type { BadgePerson, BadgeSettings } from "./badge-model.ts";
+import { badgeRoleAppearance } from "./badge-roles.ts";
 import type { SpareBadgeRole } from "./badge-studio-model.ts";
 const NS = "http://www.w3.org/2000/svg";
 const pt = 25.4 / 72;
@@ -126,15 +127,7 @@ function renderBadgeArtwork(
     r = d / 2 - settings.safe;
   const page = d + b * 2;
   const issues: string[] = [];
-  const color = person.role === "speaker" ? "#ffffff" : "#000000";
-  const background =
-    person.role === "speaker"
-      ? "#000000"
-      : person.role === "organizer"
-        ? "#f58220"
-        : person.role === "sponsor"
-          ? "#64c4bc"
-          : "#ffffff";
+  const { foreground: color, background } = badgeRoleAppearance[person.role];
   const root = svg("svg", {
     viewBox: `0 0 ${page} ${page}`,
     width: `${page}mm`,

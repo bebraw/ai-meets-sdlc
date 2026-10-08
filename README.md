@@ -634,6 +634,15 @@ in the full badge run and can be generated separately with
 **Print / save PDF — sponsor**. Attendees use white, speakers black, and
 organizers and volunteers orange.
 
+The **Lanyard summary** at the top of Badge studio shows each badge type and
+color, its included named badges, spare badges, and lanyards needed, plus the
+combined total. It uses the complete current run, including unsaved spare counts;
+search filters and repeated front/back pages do not change the quantity. Retired
+earlier badges and people excluded in their source workspaces do not count.
+Unresolved duplicate emails are flagged before purchasing. Use **Copy lanyard
+summary** or **Download lanyard summary** to take the quantities shopping, and
+**Reload people and settings** to pick up changes made in other workspaces.
+
 Use 100% print scale, enable background graphics, disable headers/footers, and
 confirm dimensions and duplex order with the printer. Browser PDFs use RGB, not
 CMYK/PDF-X. Print a physical proof before the full run.

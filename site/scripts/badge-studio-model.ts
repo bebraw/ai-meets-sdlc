@@ -1,7 +1,11 @@
 import * as v from "valibot";
 import {
   badgeSettingsSchema,
+  badgeRoles,
+  badgeRoleAppearance,
+  duplicateIds,
   type BadgePerson,
+  type BadgeRole,
   type BadgeSettings,
 } from "./badge-model.ts";
 
@@ -92,4 +96,54 @@ export function applyPrintPreferences(
 }
 export function isLegacyBadgeId(id: string): boolean {
   return !/^(attendees|speakers|organizers|volunteers):/u.test(id);
+}
+
+export interface BadgeSummaryRow {
+  role: BadgeRole;
+  named: number;
+  spares: number;
+  lanyards: number;
+}
+export interface BadgeSummary {
+  rows: BadgeSummaryRow[];
+  named: number;
+  spares: number;
+  lanyards: number;
+  unresolvedDuplicateRows: number;
+}
+export function summarizeBadges(
+  people: readonly BadgePerson[],
+  spareBadges: Readonly<Record<SpareBadgeRole, number>>,
+): BadgeSummary {
+  const rows = badgeRoles.map((role) => {
+    const named = people.filter(
+      (person) => person.included && person.role === role,
+    ).length;
+    const spares =
+      role === "attendee" || role === "sponsor" ? spareBadges[role] : 0;
+    return { role, named, spares, lanyards: named + spares };
+  });
+  return {
+    rows,
+    named: rows.reduce((total, row) => total + row.named, 0),
+    spares: rows.reduce((total, row) => total + row.spares, 0),
+    lanyards: rows.reduce((total, row) => total + row.lanyards, 0),
+    unresolvedDuplicateRows: duplicateIds(people).size,
+  };
+}
+export function formatBadgeSummary(summary: BadgeSummary): string {
+  return [
+    "SDLCAI lanyard summary",
+    ...summary.rows.map((row) => {
+      const appearance = badgeRoleAppearance[row.role];
+      return `${appearance.label} (${appearance.colorName.toLowerCase()} badges): ${row.lanyards} lanyards (${row.named} named + ${row.spares} spare)`;
+    }),
+    `Total: ${summary.lanyards} lanyards (${summary.named} named + ${summary.spares} spare)`,
+    "One lanyard per included named badge or spare badge. Repeated backs do not add lanyards.",
+    ...(summary.unresolvedDuplicateRows
+      ? [
+          `Review ${summary.unresolvedDuplicateRows} badge rows with matching emails before buying. Totals include these rows until reviewed.`,
+        ]
+      : []),
+  ].join("\n");
 }

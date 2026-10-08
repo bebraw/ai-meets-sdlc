@@ -5,6 +5,7 @@ import {
   defaultSettings,
   parseWorkspace,
   duplicateIds,
+  badgeRoleAppearance,
   type BadgePerson,
   type BadgeRole,
   type BadgeWorkspace,
@@ -16,6 +17,8 @@ import {
   maxSpareBadges,
   requestedSpareAttendeeBadges,
   requestedSpareSponsorBadges,
+  summarizeBadges,
+  formatBadgeSummary,
   type SpareBadgeRole,
   type PrintPreferences,
   type BadgeStudioData,
@@ -61,6 +64,162 @@ function setup(root: HTMLElement): void {
   );
   status.setAttribute("role", "status");
   const toolbar = el("div", "", "flex flex-wrap gap-3 my-5");
+  const summary = el("section", "", "grid gap-5 border border-ink p-5 mb-8");
+  summary.dataset.badgeSummary = "";
+  summary.hidden = true;
+  summary.setAttribute("aria-labelledby", "lanyard-summary-title");
+  const summaryHeading = el(
+    "div",
+    "",
+    "flex flex-wrap items-start justify-between gap-5",
+  );
+  const summaryTitle = el(
+    "h2",
+    "Lanyard summary",
+    "font-headline text-3xl uppercase",
+  );
+  summaryTitle.id = "lanyard-summary-title";
+  const summaryTotal = el("p", "", "flex items-baseline gap-3 font-bold");
+  const summaryQuantity = el("span", "", "font-headline text-5xl tabular-nums");
+  summaryQuantity.dataset.lanyardTotal = "";
+  append(
+    summaryTotal,
+    summaryQuantity,
+    el("span", "lanyards needed", "text-sm uppercase"),
+  );
+  append(summaryHeading, summaryTitle, summaryTotal);
+  const summaryTable = el("table", "", "w-full table-fixed text-left text-sm");
+  append(
+    summaryTable,
+    el("caption", "Badge types and lanyard quantities", "sr-only"),
+  );
+  const summaryHead = el("thead");
+  const summaryHeader = el("tr", "", "border-b-2 border-ink");
+  for (const [label, width] of [
+    ["Badge type", "45%"],
+    ["Named", "18%"],
+    ["Spare", "15%"],
+    ["Lanyards", "22%"],
+  ] as const) {
+    const cell = el("th", label, "py-3 px-1 font-bold");
+    cell.scope = "col";
+    cell.style.width = width;
+    if (label !== "Badge type") cell.classList.add("text-right");
+    append(summaryHeader, cell);
+  }
+  append(summaryHead, summaryHeader);
+  const summaryBody = el("tbody");
+  const summaryFoot = el("tfoot");
+  append(summaryTable, summaryHead, summaryBody, summaryFoot);
+  const summaryNotice = el("p", "", "text-sm leading-6 font-bold");
+  const summaryStatus = el("p", "", "text-sm font-bold");
+  summaryStatus.setAttribute("role", "status");
+  const summaryActions = el("div", "", "flex flex-wrap gap-3");
+  const summaryCopy = button(
+    "Copy lanyard summary",
+    () =>
+      void work(async () => {
+        try {
+          await navigator.clipboard.writeText(
+            formatBadgeSummary(summarizeBadges(workspace.people, spareBadges)),
+          );
+          summaryStatus.textContent = "Lanyard summary copied.";
+        } catch {
+          summaryStatus.textContent =
+            "Copy is unavailable. Download the summary or select the table to copy it.";
+        }
+      }),
+  );
+  const summaryDownload = button("Download lanyard summary", () => {
+    const url = URL.createObjectURL(
+      new Blob(
+        [formatBadgeSummary(summarizeBadges(workspace.people, spareBadges))],
+        { type: "text/plain;charset=utf-8" },
+      ),
+    );
+    const link = el("a");
+    link.href = url;
+    link.download = "sdlcai-lanyard-summary.txt";
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+  append(summaryActions, summaryCopy, summaryDownload);
+  append(
+    summary,
+    summaryHeading,
+    el(
+      "p",
+      "One lanyard per included named badge or spare badge. Repeated backs do not add lanyards. Search filters do not change these totals.",
+      "text-sm leading-6",
+    ),
+    summaryTable,
+    summaryNotice,
+    summaryActions,
+    summaryStatus,
+  );
+  function renderSummary() {
+    summary.hidden = !loaded;
+    if (!loaded) return;
+    const totals = summarizeBadges(workspace.people, spareBadges);
+    summaryQuantity.textContent = String(totals.lanyards);
+    summaryBody.replaceChildren();
+    for (const row of totals.rows) {
+      const appearance = badgeRoleAppearance[row.role];
+      const line = el("tr", "", "border-b border-ink/30");
+      line.dataset.badgeSummaryRole = row.role;
+      const heading = el("th", "", "py-3 pr-2 font-normal");
+      heading.scope = "row";
+      const label = el("div", "", "flex items-start gap-2");
+      const swatch = el("span", "", "mt-1 h-3 w-3 shrink-0 border border-ink");
+      swatch.style.backgroundColor = appearance.background;
+      swatch.setAttribute("aria-hidden", "true");
+      const name = el("span", "", "grid min-w-0 gap-1");
+      append(
+        name,
+        el("span", appearance.label, "font-bold"),
+        el("span", `${appearance.colorName} badge`, "text-xs text-muted"),
+      );
+      append(label, swatch, name);
+      append(heading, label);
+      append(line, heading);
+      for (const [key, quantity] of [
+        ["named", row.named],
+        ["spares", row.spares],
+        ["lanyards", row.lanyards],
+      ] as const) {
+        const cell = el(
+          "td",
+          String(quantity),
+          "px-1 py-3 text-right tabular-nums",
+        );
+        cell.dataset.badgeSummaryCount = key;
+        if (key === "lanyards") cell.classList.add("font-bold");
+        append(line, cell);
+      }
+      append(summaryBody, line);
+    }
+    const totalRow = el("tr", "", "border-t-2 border-ink font-bold");
+    const totalLabel = el("th", "Total", "py-3");
+    totalLabel.scope = "row";
+    append(
+      totalRow,
+      totalLabel,
+      ...[totals.named, totals.spares, totals.lanyards].map((quantity) =>
+        el("td", String(quantity), "px-1 py-3 text-right tabular-nums"),
+      ),
+    );
+    summaryFoot.replaceChildren(totalRow);
+    summaryNotice.textContent = [
+      totals.unresolvedDuplicateRows
+        ? `Review ${totals.unresolvedDuplicateRows} badge rows with matching emails before buying. Totals include these rows until reviewed.`
+        : "",
+      dirty ? "Counts include unsaved changes in this tab." : "",
+    ]
+      .filter(Boolean)
+      .join(" ");
+    summaryNotice.hidden = !summaryNotice.textContent;
+    summaryStatus.textContent = "";
+  }
   const stage = el(
     "div",
     "",
@@ -129,6 +288,7 @@ function setup(root: HTMLElement): void {
     printRoot.replaceChildren();
     status.textContent =
       "Unsaved print settings or badge text. Save before leaving this page.";
+    renderSummary();
   }
   function locked(value: boolean) {
     busy = value;
@@ -213,6 +373,7 @@ function setup(root: HTMLElement): void {
       : `${person.name}: fits the safe area. Grey guides are preview only unless trim guide is enabled.`;
   }
   function renderList() {
+    renderSummary();
     const duplicate = duplicateIds(workspace.people);
     const term = filter.input.value.toLocaleLowerCase();
     count.textContent = `${workspace.people.filter((p) => p.included).length} included / ${workspace.people.length} total · ${spareBadges.attendee} spare attendee badges · ${spareBadges.sponsor} spare sponsor badges · ${duplicate.size} unresolved duplicate rows`;
@@ -760,7 +921,7 @@ function setup(root: HTMLElement): void {
   );
   append(controls, sources, spares, settingsPanel, output);
   append(stage, controls, proof);
-  append(root, status, toolbar, stage, count, filter.label, list);
+  append(root, status, toolbar, summary, stage, count, filter.label, list);
   window.addEventListener("afterprint", () => {
     printRoot.removeAttribute("data-ready");
     printRoot.replaceChildren();

@@ -1,11 +1,8 @@
 import * as v from "valibot";
+import { badgeRoles } from "./badge-roles.ts";
+export { badgeRoles, badgeRoleAppearance } from "./badge-roles.ts";
 const text = (max: number) => v.pipe(v.string(), v.maxLength(max));
-export const badgeRoleSchema = v.picklist([
-  "attendee",
-  "speaker",
-  "organizer",
-  "sponsor",
-]);
+export const badgeRoleSchema = v.picklist(badgeRoles);
 export const badgePersonSchema = v.object({
   id: text(100),
   name: text(300),
@@ -65,7 +62,7 @@ export function parseWorkspace(value: unknown): BadgeWorkspace {
     person.company = badgeCompany(person.email, person.company);
   return data;
 }
-export function duplicateIds(people: BadgePerson[]): Set<string> {
+export function duplicateIds(people: readonly BadgePerson[]): Set<string> {
   const emails = new Map<string, BadgePerson[]>();
   for (const person of people.filter((p) => p.included)) {
     const email = person.email.trim().toLowerCase();
