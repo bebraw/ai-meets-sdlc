@@ -6,304 +6,70 @@
   &ogType="(id 'website')"
   &robots="(id 'noindex,nofollow,noarchive')"
 >
-  <AdminNavigation></AdminNavigation>
+  <AdminNavigation &current="(id '')"></AdminNavigation>
   <AdminPageHeader
     &eyebrow="(id 'Admin / Control room')"
     &title="(id 'Admin desk')"
-    &description="(id 'Choose one focused workspace for speaker coordination, event submissions, contact exports, or protected presentation assets.')"
+    &description="(id 'Prepare the people and program, run the event, and coordinate hospitality. Choose a workspace below or switch with All workspaces.')"
   ></AdminPageHeader>
-
-  <section
-    class="border-b border-ink bg-ink px-5 py-10 text-paper md:px-8 md:py-16"
-    aria-labelledby="admin-workspaces-heading"
-  >
-    <div class="mx-auto grid min-w-0 max-w-7xl gap-7">
-      <div class="grid min-w-0 gap-4 md:grid-cols-[1fr_auto] md:items-end">
-        <div>
-          <p class="font-headline text-sm font-black uppercase text-paper/60">
-            Operations / 2026
-          </p>
-          <h2
-            class="mt-2 font-headline text-4xl font-black uppercase leading-none md:text-6xl"
-            id="admin-workspaces-heading"
-          >
-            Workspaces
-          </h2>
-        </div>
-        <p class="max-w-md text-sm font-bold uppercase leading-6 text-paper/60">
-          Every area is private, uncached, and excluded from search indexing.
-        </p>
-      </div>
-
-      <div
-        class="grid min-w-0 gap-px border border-paper/40 bg-paper/40 md:grid-cols-2"
+  <div class="bg-ink text-paper">
+    <noop &foreach="(adminWorkspaceGroups) as adminGroup">
+      <section
+        class="border-b border-paper/30 px-5 py-8 md:px-8 md:py-10"
+        &aria-labelledby="adminGroup.id"
+        data-admin-workspace-group
       >
-        <a
-          class="group grid min-h-64 min-w-0 content-between gap-8 bg-ink p-6 transition hover:bg-paper hover:text-ink md:p-8"
-          href="/admin/qa/"
+        <div
+          class="mx-auto grid min-w-0 max-w-7xl gap-6 lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-10"
         >
-          <span
-            class="font-headline text-sm font-black uppercase text-paper/60 transition group-hover:text-muted"
-            >Live event / Audience questions</span
+          <div>
+            <h2
+              class="font-headline text-3xl font-black uppercase leading-none md:text-4xl"
+              &id="adminGroup.id"
+              &children="adminGroup.label"
+            ></h2>
+            <p
+              class="mt-3 max-w-sm text-sm leading-6 text-paper/70"
+              &children="adminGroup.description"
+            ></p>
+          </div>
+          <ul
+            class="grid min-w-0 gap-px border border-paper/30 bg-paper/30 md:grid-cols-2"
           >
-          <span
-            ><strong
-              class="block font-headline text-5xl font-black uppercase leading-none lg:text-7xl"
-              >Q&A</strong
-            ><span
-              class="mt-4 block max-w-xl text-lg leading-7 text-paper/70 transition group-hover:text-muted"
-              >Open session rooms, review audience questions, and share
-              moderator and MC access links.</span
-            ></span
-          >
-        </a>
-        <a
-          class="group grid min-h-64 min-w-0 content-between gap-8 bg-ink p-6 transition hover:bg-paper hover:text-ink md:p-8"
-          href="/admin/speakers/"
-        >
-          <span
-            class="font-headline text-sm font-black uppercase text-paper/60 transition group-hover:text-muted"
-            >01 / People and program</span
-          >
-          <span>
-            <strong
-              class="block font-headline text-5xl font-black uppercase leading-none lg:text-7xl"
-              >Speakers</strong
-            >
-            <span
-              class="mt-4 block max-w-xl text-lg leading-7 text-paper/70 transition group-hover:text-muted"
-              >Assign email access, edit or review profile and talk details,
-              manage promotion uploads, and send speaker announcements.</span
-            >
-          </span>
-        </a>
-        <a
-          class="group grid min-h-64 min-w-0 content-between gap-8 bg-ink p-6 transition hover:bg-paper hover:text-ink md:p-8"
-          href="/admin/dinner/"
-        >
-          <span
-            class="font-headline text-sm font-black uppercase text-paper/60 transition group-hover:text-muted"
-            >02 / Catering</span
-          >
-          <span>
-            <strong
-              class="block font-headline text-5xl font-black uppercase leading-none lg:text-7xl"
-              >Dinner</strong
-            >
-            <span
-              class="mt-4 block max-w-xl text-lg leading-7 text-paper/70 transition group-hover:text-muted"
-              >Track replies and explicit declines, review private catering
-              details, and export the attending guests.</span
-            >
-          </span>
-        </a>
-        <a
-          class="group grid min-h-64 min-w-0 content-between gap-8 bg-ink p-6 transition hover:bg-paper hover:text-ink md:p-8"
-          href="/admin/posters/"
-        >
-          <span
-            class="font-headline text-sm font-black uppercase text-paper/60 transition group-hover:text-muted"
-            >03 / Rolling review</span
-          >
-          <span>
-            <strong
-              class="block font-headline text-5xl font-black uppercase leading-none lg:text-7xl"
-              >Posters</strong
-            >
-            <span
-              class="mt-4 block max-w-xl text-lg leading-7 text-paper/70 transition group-hover:text-muted"
-              >Review proposals, update decisions, and export the confidential
-              submission list.</span
-            >
-          </span>
-        </a>
-        <a
-          class="group grid min-h-64 min-w-0 content-between gap-8 bg-ink p-6 transition hover:bg-paper hover:text-ink md:p-8"
-          href="/admin/interests/"
-        >
-          <span
-            class="font-headline text-sm font-black uppercase text-paper/60 transition group-hover:text-muted"
-            >04 / Registration contacts</span
-          >
-          <span>
-            <strong
-              class="block font-headline text-5xl font-black uppercase leading-none lg:text-7xl"
-              >Interest list</strong
-            >
-            <span
-              class="mt-4 block max-w-xl text-lg leading-7 text-paper/70 transition group-hover:text-muted"
-              >Inspect and export the people who asked to hear when registration
-              opened.</span
-            >
-          </span>
-        </a>
-        <a
-          class="group grid min-h-64 min-w-0 content-between gap-8 bg-ink p-6 transition hover:bg-paper hover:text-ink md:col-span-2 md:p-8"
-          href="/admin/receipts/"
-        >
-          <span
-            class="font-headline text-sm font-black uppercase text-paper/60 transition group-hover:text-muted"
-            >05 / Event follow-up</span
-          >
-          <span
-            ><strong
-              class="block font-headline text-5xl font-black uppercase leading-none lg:text-7xl"
-              >Travel receipts</strong
-            ><span
-              class="mt-4 block max-w-2xl text-lg leading-7 text-paper/70 transition group-hover:text-muted"
-              >Enable speaker uploads, download travel receipts, and track
-              processing after the event.</span
-            ></span
-          >
-        </a>
-        <a
-          class="group grid min-h-64 min-w-0 content-between gap-8 bg-ink p-6 transition hover:bg-paper hover:text-ink md:col-span-2 md:p-8"
-          href="/admin/slides/"
-        >
-          <span
-            class="font-headline text-sm font-black uppercase text-paper/60 transition group-hover:text-muted"
-            >06 / Event day</span
-          >
-          <span>
-            <strong
-              class="block font-headline text-5xl font-black uppercase leading-none lg:text-7xl"
-              >Screen assets</strong
-            >
-            <span
-              class="mt-4 block max-w-2xl text-lg leading-7 text-paper/70 transition group-hover:text-muted"
-              >Open protected schedule displays, session slides, and
-              downloadable event artwork.</span
-            >
-          </span>
-        </a>
-        <a
-          class="group grid min-h-64 min-w-0 content-between gap-8 bg-ink p-6 transition hover:bg-paper hover:text-ink md:col-span-2 md:p-8"
-          href="/admin/volunteers/"
-        >
-          <span
-            class="font-headline text-sm font-black uppercase text-paper/60 transition group-hover:text-muted"
-            >07 / Volunteer team</span
-          >
-          <span>
-            <strong
-              class="block font-headline text-5xl font-black uppercase leading-none lg:text-7xl"
-              >Volunteers</strong
-            >
-            <span
-              class="mt-4 block max-w-2xl text-lg leading-7 text-paper/70 transition group-hover:text-muted"
-              >Keep volunteer names, email addresses, and tasks together.</span
-            >
-          </span>
-        </a>
-        <a
-          class="group grid min-h-64 min-w-0 content-between gap-8 bg-ink p-6 transition hover:bg-paper hover:text-ink md:col-span-2 md:p-8"
-          href="/admin/discussion-tables/"
-        >
-          <span
-            class="font-headline text-sm font-black uppercase text-paper/60 transition group-hover:text-muted"
-            >Event day / Conversations</span
-          >
-          <span>
-            <strong
-              class="block font-headline text-5xl font-black uppercase leading-none lg:text-7xl"
-              >Discussion tables</strong
-            >
-            <span
-              class="mt-4 block max-w-2xl text-lg leading-7 text-paper/70 transition group-hover:text-muted"
-              >Preview eight conversation topics and download foldable A4 signs
-              for the standing tables.</span
-            >
-          </span>
-        </a>
-        <a
-          class="group grid min-h-64 min-w-0 content-between gap-8 bg-ink p-6 transition hover:bg-paper hover:text-ink md:col-span-2 md:p-8"
-          href="/admin/music/"
-        >
-          <span
-            class="font-headline text-sm font-black uppercase text-paper/60 transition group-hover:text-muted"
-            >Event day / Atmosphere</span
-          >
-          <span>
-            <strong
-              class="block font-headline text-5xl font-black uppercase leading-none lg:text-7xl"
-              >Break music</strong
-            >
-            <span
-              class="mt-4 block max-w-2xl text-lg leading-7 text-paper/70 transition group-hover:text-muted"
-              >Audition instrumental track proposals, choose a shortlist, and
-              export an ordered Spotify track list for the venue.</span
-            >
-          </span>
-        </a>
-        <a
-          class="group grid min-h-64 min-w-0 content-between gap-8 bg-ink p-6 transition hover:bg-paper hover:text-ink md:col-span-2 md:p-8"
-          href="/admin/schedule/"
-        >
-          <span
-            class="font-headline text-sm font-black uppercase text-paper/60 transition group-hover:text-muted"
-            >08 / Running order</span
-          >
-          <span
-            ><strong
-              class="block font-headline text-5xl font-black uppercase leading-none lg:text-7xl"
-              >Schedule</strong
-            ><span
-              class="mt-4 block max-w-2xl text-lg leading-7 text-paper/70 transition group-hover:text-muted"
-              >Drag talks into order, move them between sessions, and save the
-              updated schedule.</span
-            ></span
-          >
-        </a>
-        <a
-          class="group grid min-h-64 min-w-0 content-between gap-8 bg-ink p-6 transition hover:bg-paper hover:text-ink md:col-span-2 md:p-8"
-          href="/admin/activity/"
-        >
-          <span
-            class="font-headline text-sm font-black uppercase text-paper/60 transition group-hover:text-muted"
-            >09 / Change history</span
-          >
-          <span
-            ><strong
-              class="block font-headline text-5xl font-black uppercase leading-none lg:text-7xl"
-              >Activity log</strong
-            >
-            <span
-              class="mt-4 block max-w-2xl text-lg leading-7 text-paper/70 transition group-hover:text-muted"
-              >See when speakers sign in and what speakers or organizers
-              changed.</span
-            ></span
-          >
-        </a>
-        <a
-          class="grid min-w-0 gap-5 bg-ink p-6 hover:bg-paper hover:text-ink md:p-8"
-          href="/admin/organizers/"
-          ><strong class="font-headline text-3xl uppercase sm:text-5xl"
-            >Organizers</strong
-          ><span
-            >Manage the homepage team and select who needs an event badge.</span
-          ></a
-        >
-        <a
-          class="grid min-w-0 gap-5 bg-ink p-6 hover:bg-paper hover:text-ink md:p-8"
-          href="/admin/badges/"
-          ><strong class="font-headline text-3xl uppercase sm:text-5xl"
-            >Badges</strong
-          ><span
-            >Preview badges from attendee and team records, check layouts, and
-            generate print output.</span
-          ></a
-        >
-        <a
-          class="grid min-w-0 gap-5 bg-ink p-6 hover:bg-paper hover:text-ink md:p-8"
-          href="/admin/attendees/"
-          ><strong class="font-headline text-3xl uppercase sm:text-5xl"
-            >Attendees</strong
-          ><span
-            >Import registrations, verify tickets, track arrivals, and give
-            staff access to the registration desk.</span
-          ></a
-        >
-      </div>
-    </div>
-  </section>
+            <noop &foreach="adminGroup.items as workspace">
+              <li class="min-w-0 bg-ink">
+                <a
+                  class="group flex h-full min-w-0 items-start justify-between gap-4 p-5 transition hover:bg-paper hover:text-ink focus-visible:relative focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-paper md:p-6"
+                  &href="workspace.href"
+                >
+                  <span class="grid min-w-0 gap-3">
+                    <span
+                      class="font-headline text-2xl font-black uppercase leading-none md:text-3xl"
+                      &children="workspace.label"
+                    ></span>
+                    <span
+                      class="text-sm leading-6 text-paper/70 transition group-hover:text-muted group-focus-visible:text-muted"
+                      &children="workspace.description"
+                    ></span>
+                  </span>
+                  <svg
+                    class="h-5 w-5 shrink-0"
+                    viewBox="0 0 16 16"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M3 8h10m-4-4 4 4-4 4"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                    ></path>
+                  </svg>
+                </a>
+              </li>
+            </noop>
+          </ul>
+        </div>
+      </section>
+    </noop>
+  </div>
 </BaseLayout>

@@ -64,7 +64,11 @@
   },
   "slides": {
     "layout": "slide-library",
-    "scripts": [{ "name": "index" }, { "name": "video-download" }],
+    "scripts": [
+      { "name": "index" },
+      { "name": "video-download" },
+      { "name": "admin-navigation" }
+    ],
     "dataSources": {
       "seminar": {
         "operation": "seminar"
@@ -154,7 +158,11 @@
   },
   "admin-slides": {
     "layout": "slides",
-    "scripts": [{ "name": "index" }, { "name": "video-download" }],
+    "scripts": [
+      { "name": "index" },
+      { "name": "video-download" },
+      { "name": "admin-navigation" }
+    ],
     "dataSources": {
       "seminar": {
         "operation": "seminar"
@@ -289,6 +297,7 @@
   },
   "admin": {
     "layout": "admin",
+    "scripts": [{ "name": "admin-navigation" }],
     "dataSources": {
       "seminar": {
         "operation": "seminar"

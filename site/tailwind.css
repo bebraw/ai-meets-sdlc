@@ -59,6 +59,28 @@
 }
 
 @layer components {
+  [data-admin-workspace-group] li:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  .admin-workspace-menu > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .admin-workspace-menu[open] > summary {
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  .admin-workspace-menu[open] .admin-menu-chevron {
+    transform: rotate(180deg);
+  }
+
+  .admin-workspace-link[aria-current="page"] {
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
   [hidden] {
     display: none !important;
   }

@@ -1,94 +1,111 @@
-<nav class="border-b border-ink bg-ink text-paper" aria-label="Admin sections">
-  <div class="mx-auto grid max-w-7xl gap-3 px-5 py-4 lg:px-8">
-    <a
-      class="w-fit font-headline text-lg font-black uppercase tracking-tight"
-      href="/admin/"
-      >SDLCAI / Admin</a
-    >
-    <div class="flex min-w-0 gap-2 overflow-x-auto pb-1 lg:pb-0">
+<nav
+  class="admin-navigation border-b border-ink bg-ink text-paper"
+  aria-label="Admin sections"
+  data-admin-navigation
+>
+  <div class="relative mx-auto max-w-7xl px-5 py-4 lg:px-8">
+    <div class="relative flex flex-wrap items-center justify-between gap-4">
       <a
-        class="shrink-0 border border-paper/50 px-3 py-2 text-xs font-bold uppercase transition hover:bg-paper hover:text-ink"
-        href="/admin/attendees/"
-        >Attendees</a
+        class="grid gap-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-paper"
+        href="/admin/"
+        &aria-current="(adminDeskCurrent (get props current))"
       >
-      <a
-        class="shrink-0 border border-paper/50 px-3 py-2 text-xs font-bold uppercase transition hover:bg-paper hover:text-ink"
-        href="/admin/qa/"
-        >Q&A</a
-      >
-      <a
-        class="shrink-0 border border-paper/50 px-3 py-2 text-xs font-bold uppercase transition hover:bg-paper hover:text-ink"
-        href="/admin/speakers/"
-        >Speakers</a
-      >
-      <a
-        class="shrink-0 border border-paper/50 px-3 py-2 text-xs font-bold uppercase transition hover:bg-paper hover:text-ink"
-        href="/admin/dinner/"
-        >Dinner</a
-      >
-      <a
-        class="shrink-0 border border-paper/50 px-3 py-2 text-xs font-bold uppercase transition hover:bg-paper hover:text-ink"
-        href="/admin/receipts/"
-        >Travel receipts</a
-      >
-      <a
-        class="shrink-0 border border-paper/50 px-3 py-2 text-xs font-bold uppercase transition hover:bg-paper hover:text-ink"
-        href="/admin/posters/"
-        >Posters</a
-      >
-      <a
-        class="shrink-0 border border-paper/50 px-3 py-2 text-xs font-bold uppercase transition hover:bg-paper hover:text-ink"
-        href="/admin/interests/"
-        >Interest list</a
-      >
-      <a
-        class="shrink-0 border border-paper/50 px-3 py-2 text-xs font-bold uppercase transition hover:bg-paper hover:text-ink"
-        href="/admin/slides/"
-        >Screen assets</a
-      >
-      <a
-        class="shrink-0 border border-paper/50 px-3 py-2 text-xs font-bold uppercase transition hover:bg-paper hover:text-ink"
-        href="/admin/discussion-tables/"
-        >Discussion tables</a
-      >
-      <a
-        class="shrink-0 border border-paper/50 px-3 py-2 text-xs font-bold uppercase transition hover:bg-paper hover:text-ink"
-        href="/admin/music/"
-        >Break music</a
-      >
-      <a
-        class="shrink-0 border border-paper/50 px-3 py-2 text-xs font-bold uppercase transition hover:bg-paper hover:text-ink"
-        href="/admin/volunteers/"
-        >Volunteers</a
-      >
-      <a
-        class="shrink-0 border border-paper/50 px-3 py-2 text-xs font-bold uppercase transition hover:bg-paper hover:text-ink"
-        href="/admin/schedule/"
-        >Schedule</a
-      >
-      <a
-        class="shrink-0 border border-paper/50 px-3 py-2 text-xs font-bold uppercase transition hover:bg-paper hover:text-ink"
-        href="/admin/activity/"
-        >Activity log</a
-      >
-      <a
-        class="shrink-0 border border-paper/50 px-3 py-2 text-xs font-bold uppercase hover:bg-paper hover:text-ink"
-        href="/admin/organizers/"
-        >Organizers</a
-      >
-      <a
-        class="shrink-0 border border-paper/50 px-3 py-2 text-xs font-bold uppercase hover:bg-paper hover:text-ink"
-        href="/admin/badges/"
-        >Badges</a
-      >
-      <form action="/admin/logout/" method="post">
-        <button
-          class="shrink-0 border border-paper/50 px-3 py-2 text-xs font-bold uppercase transition hover:bg-paper hover:text-ink"
-          type="submit"
+        <span
+          class="text-[0.65rem] font-bold uppercase tracking-widest text-paper/70"
+          >SDLCAI / 2026</span
         >
-          Sign out
-        </button>
-      </form>
+        <span class="font-headline text-xl font-black uppercase"
+          >Admin desk</span
+        >
+      </a>
+      <div class="flex flex-wrap items-center gap-2">
+        <details class="admin-workspace-menu" data-admin-workspace-menu>
+          <summary
+            class="flex min-h-11 cursor-pointer list-none items-center gap-3 border border-paper/50 px-3 py-2 text-xs font-bold uppercase transition hover:bg-paper hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper"
+          >
+            All workspaces
+            <svg
+              class="admin-menu-chevron h-3 w-3"
+              viewBox="0 0 12 12"
+              aria-hidden="true"
+            >
+              <path
+                d="m2 4 4 4 4-4"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+              ></path>
+            </svg>
+          </summary>
+          <div
+            class="admin-workspace-panel absolute inset-x-0 top-full z-30 mt-2 grid max-h-[70vh] gap-6 overflow-y-auto border border-paper/50 bg-ink p-5 shadow-xl sm:grid-cols-2 lg:grid-cols-3 lg:p-6"
+          >
+            <noop
+              &foreach="(adminNavigationGroups (get props current)) as adminGroup"
+            >
+              <div>
+                <h2
+                  class="mb-3 border-b border-paper/30 pb-2 font-headline text-xl font-black uppercase"
+                  &children="adminGroup.label"
+                ></h2>
+                <ul class="grid gap-1">
+                  <noop &foreach="adminGroup.items as workspace">
+                    <li>
+                      <a
+                        class="admin-workspace-link flex min-h-11 items-center justify-between gap-3 px-3 py-2 text-sm font-bold transition hover:bg-paper hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper"
+                        &href="workspace.href"
+                        &aria-current="workspace.ariaCurrent"
+                        ><span &children="workspace.label"></span
+                        ><svg
+                          class="h-4 w-4 shrink-0"
+                          viewBox="0 0 16 16"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M3 8h10m-4-4 4 4-4 4"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                          ></path></svg
+                      ></a>
+                    </li>
+                  </noop>
+                </ul>
+              </div>
+            </noop>
+          </div>
+        </details>
+        <form action="/admin/logout/" method="post">
+          <button
+            class="min-h-11 px-3 py-2 text-xs font-bold uppercase underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper"
+            type="submit"
+          >
+            Sign out
+          </button>
+        </form>
+      </div>
+    </div>
+    <div
+      class="mt-4 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-paper/30 pt-3"
+      &visibleIf="(adminGroupLabel (get props current))"
+    >
+      <p
+        class="font-headline text-base font-black uppercase text-paper/70"
+        &children="(adminGroupLabel (get props current))"
+      ></p>
+      <nav
+        class="flex min-w-0 flex-wrap gap-2"
+        &aria-label="(adminContextLabel (get props current))"
+      >
+        <noop &foreach="(adminContextItems (get props current)) as workspace">
+          <a
+            class="admin-workspace-link flex min-h-11 items-center border border-paper/40 px-3 py-2 text-xs font-bold uppercase transition hover:bg-paper hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper"
+            &href="workspace.href"
+            &aria-current="workspace.ariaCurrent"
+            &children="workspace.label"
+          ></a>
+        </noop>
+      </nav>
     </div>
   </div>
 </nav>

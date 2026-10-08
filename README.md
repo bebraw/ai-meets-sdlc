@@ -188,6 +188,15 @@ For local PNG review, run `npm run build && npm run slides:export:video`.
 Then `npm run slides:video-check` checks a real full-deck ZIP in Chromium and WebKit,
 including retries, cancellation, changed-content recovery, and mobile controls.
 
+The admin desk and **All workspaces** menu group tools in the same order:
+**People** (attendees, badges, organizers, volunteers), **Program** (schedule,
+speakers, posters), **Event day** (Q&A, screen assets, discussion tables, break
+music), **Hospitality** (dinner, travel receipts), and **Administration**
+(activity log, interest list). Each workspace shows its related group links
+and highlights the current page. The grouped menu also works without JavaScript;
+with scripts enabled, Escape returns focus to the menu button, and clicking or
+moving focus outside closes it.
+
 The deployed Worker serves a protected dashboard at `/admin/`, with focused
 workspaces at `/admin/speakers/`, `/admin/dinner/`, `/admin/receipts/`, `/admin/posters/`,
 `/admin/interests/`, `/admin/volunteers/`, `/admin/activity/`, `/admin/qa/`,
