@@ -1,6 +1,6 @@
 import { append, button, el, field, message } from "./admin-toolkit.ts";
 import { cateringSummaryText } from "./attendee-diets.ts";
-import type { Attendee } from "./attendee-model.ts";
+import { isStoredAttendee, type Attendee } from "./attendee-model.ts";
 import { appendDietDetails } from "./catering-summary.ts";
 import { createDietReviewPanel } from "./attendee-diet-review-panel.ts";
 import type { DietReview } from "./attendee-diet-reviews.ts";
@@ -32,7 +32,7 @@ export function createAttendeeCateringPanel(
     ),
     el(
       "p",
-      "Active Tito and Webropol registrations, accepted poster presenters and volunteers, plus speakers and mapped dinner guests. Cancelled registrations are excluded. This summary uses the complete list, regardless of the search filters below.",
+      "Active imported and manual registrations, accepted poster presenters and volunteers, plus speakers and mapped dinner guests. Cancelled registrations are excluded. This summary uses the complete list, regardless of the search filters below.",
       "mt-3 max-w-3xl leading-7 text-muted",
     ),
     el(
@@ -200,7 +200,7 @@ export function createAttendeeCateringPanel(
     mappingTitle,
     el(
       "p",
-      "Use Automatic for exact matches. Match poster presenters and volunteers to an imported registration when needed; these links also apply at check-in. Map dinner aliases to an organizer or existing attendee. Choose Additional person only when they need their own meal. Saved links survive attendee reimports; unmatched or ambiguous responses are not counted until mapped.",
+      "Use Automatic for exact matches. Match poster presenters and volunteers to an imported or manual registration when needed; these links also apply at check-in. Map dinner aliases to an organizer or existing attendee. Choose Additional person only when they need their own meal. Saved links survive attendee reimports; unmatched or ambiguous responses are not counted until mapped.",
       "mt-3 max-w-3xl text-sm leading-6 text-muted",
     ),
     mappingRows,
@@ -373,9 +373,7 @@ export function createAttendeeCateringPanel(
             .filter(
               (person) =>
                 person.status === "active" &&
-                (!member ||
-                  person.source === "tito" ||
-                  person.source === "webropol"),
+                (!member || isStoredAttendee(person)),
             )
             .map((person): [string, string] => [
               ` ${person.type === "organizer" ? "Organizer" : "Attendee"}: ${person.name} · ${person.ticketCode || person.email}`.trim(),

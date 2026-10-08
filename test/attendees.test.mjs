@@ -3,12 +3,70 @@ import test from "node:test";
 import { parseCsv } from "../site/scripts/badge-model.ts";
 import { redeemRegistrationGrant } from "../worker/registration-auth.ts";
 import {
+  addManualAttendee,
   importAttendeeCsv,
   mergeAttendeeImport,
   detectAttendeeMapping,
   parseAttendeeRoster,
   prepareAttendeeCsv,
 } from "../site/scripts/attendee-model.ts";
+
+test("manual attendees have independent identities and survive provider imports", () => {
+  const input = {
+    name: "  Manual Zoë  ",
+    email: "MANUAL@example.test",
+    company: "Company",
+    ticketCode: "",
+    status: "active",
+    badge: false,
+    type: "sponsor",
+    diet: "Vegan",
+  };
+  const roster = addManualAttendee([], input);
+  assert.equal(roster[0].source, "manual");
+  assert.equal(roster[0].name, "Manual Zoë");
+  assert.equal(roster[0].email, "manual@example.test");
+  assert.match(roster[0].id, /^[0-9a-f-]{36}$/u);
+  assert.throws(() => addManualAttendee(roster, input), /already exists/);
+  const imported = mergeAttendeeImport(roster, "tito", [
+    { ...input, name: "Imported name", type: "attendee", diet: "Gluten free" },
+  ]);
+  assert.deepEqual(imported[0], roster[0]);
+  assert.equal(imported.length, 2);
+  assert.equal(roster.length, 1);
+  const ticket = { ...input, email: "", ticketCode: "MANUAL-1" };
+  const ticketRoster = addManualAttendee(roster, ticket);
+  assert.throws(
+    () =>
+      addManualAttendee(ticketRoster, { ...ticket, ticketCode: "manual-1" }),
+    /already exists/,
+  );
+  assert.throws(
+    () => addManualAttendee([], { ...input, email: "" }),
+    /ticket code or attendee email/,
+  );
+});
+
+test("manual creation enforces the shared roster capacity without changing existing people", () => {
+  const input = {
+    name: "Guest",
+    email: "guest@example.test",
+    company: "",
+    ticketCode: "",
+    status: "active",
+    badge: true,
+  };
+  const roster = Array.from({ length: 2000 }, (_, index) => ({
+    ...input,
+    email: `guest-${index}@example.test`,
+    id: String(index),
+    source: "manual",
+    sourceKey: `email:guest-${index}@example.test`,
+    type: "attendee",
+  }));
+  assert.throws(() => addManualAttendee(roster, input));
+  assert.equal(roster.length, 2000);
+});
 
 const mapping = {
   name: 0,

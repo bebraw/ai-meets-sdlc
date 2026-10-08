@@ -24,10 +24,11 @@ export const attendeeInputSchema = v.object({
   diet: v.optional(text(2000)),
 });
 export type AttendeeInput = v.InferOutput<typeof attendeeInputSchema>;
+export type StoredAttendeeSource = "tito" | "webropol" | "manual";
 export interface AttendeeRecord extends AttendeeInput {
   type: AttendeeType;
   id: string;
-  source: "tito" | "webropol" | "poster" | "volunteer";
+  source: StoredAttendeeSource | "poster" | "volunteer";
   sourceKey: string;
 }
 export interface Attendee extends AttendeeRecord {
@@ -48,6 +49,11 @@ export interface RegistrationGrant {
   created_at: string;
   revoked_at: string | null;
   link: string | null;
+}
+export function isStoredAttendee(
+  person: Pick<AttendeeRecord, "source">,
+): boolean {
+  return ["tito", "webropol", "manual"].includes(person.source);
 }
 export function parseAttendeeInput(value: unknown): AttendeeInput {
   const input = v.parse(attendeeInputSchema, value);
@@ -78,7 +84,7 @@ export function parseAttendeeRoster(value: unknown): AttendeeRecord[] {
           ...attendeeInputSchema.entries,
           type: v.optional(attendeeTypeSchema, "attendee"),
           id: v.pipe(text(100), v.minLength(1)),
-          source: v.picklist(["tito", "webropol"]),
+          source: v.picklist(["tito", "webropol", "manual"]),
           sourceKey: v.pipe(text(400), v.minLength(1)),
         }),
       ),
@@ -104,6 +110,27 @@ export function parseAttendeeRoster(value: unknown): AttendeeRecord[] {
     ...parseAttendeeInput(record),
     type: record.type,
   }));
+}
+export function addManualAttendee(
+  current: AttendeeRecord[],
+  value: unknown,
+): AttendeeRecord[] {
+  const input = parseAttendeeInput(value);
+  const sourceKey = attendeeSourceKey(input);
+  if (current.some((p) => p.source === "manual" && p.sourceKey === sourceKey))
+    throw new Error(
+      "A manual attendee with this ticket code or email already exists. Edit the existing attendee.",
+    );
+  return parseAttendeeRoster([
+    ...current,
+    {
+      ...input,
+      type: input.type ?? "attendee",
+      id: crypto.randomUUID(),
+      source: "manual",
+      sourceKey,
+    },
+  ]);
 }
 export function mergeAttendeeImport(
   current: AttendeeRecord[],

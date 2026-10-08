@@ -459,6 +459,16 @@ tracking triggers to a migration and its display label to the digest.
 
 ## Attendee management and registration desk
 
+Use **Add attendee** at `/admin/attendees/` to create a manual registration.
+Enter a name and either an attendee email or a ticket code; company and dietary
+requirements are optional. Choose the attendee type and badge inclusion, then
+select **Save new attendee**. Manual entries support editing, cancellation,
+check-in, catering, and badge printing, and retain their details through CSV
+imports. Their source is **Manual**. Reusing a manual ticket code or email-only
+identity rejects the new entry; edit the existing person instead. Imported
+registrations remain separate even when their identity matches a manual entry.
+No additional migration is needed. Registration staff cannot add attendees.
+
 Apply `0023_create_attendee_registration.sql` before deploying. At
 `/admin/attendees/`, import Tito and Webropol CSVs separately using the same
 column-mapping workflow previously used by badges. Map individual ticket codes and attendee

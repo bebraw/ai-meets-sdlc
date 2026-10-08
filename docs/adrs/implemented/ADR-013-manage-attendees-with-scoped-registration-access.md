@@ -22,6 +22,15 @@ identities and unknown mapped ticket statuses. Organizers can correct details,
 cancel registrations and select badge inclusion. Identity corrections update the
 source key while preserving record IDs; subsequent imports use the corrected key.
 
+Organizers can also add individual manual registrations through **Add attendee**.
+Use the same validated fields, encrypted roster, capacity bound, and optimistic
+revision checks, with server-generated IDs and a separate `manual` source.
+Reject duplicate identities within that source instead of updating an existing
+person. Provider imports leave manual records unchanged. Manual entries support
+the same organizer editing, arrival, catering, canonical identity mapping, and
+badge inclusion flows; registration staff can only look them up and mark arrivals.
+Existing rosters remain readable, and no migration is needed.
+
 Capture an optional original dietary response in the encrypted roster. Detect
 comma, semicolon and tab exports, Tito's food-restriction question and blank
 active Void Status, and Webropol's metadata, two header rows and Finnish status

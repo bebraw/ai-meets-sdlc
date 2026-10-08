@@ -17,6 +17,7 @@ import {
   sha256Hex,
 } from "./form-utils.ts";
 import { isRecord, readJsonWithinLimit } from "./speaker-workspace-utils.ts";
+import { isStoredAttendee } from "../site/scripts/attendee-model.ts";
 import {
   dinnerDiet,
   buildCateringRoster,
@@ -279,15 +280,14 @@ async function handle(request: Request, env: Env): Promise<Response> {
         item.target !== "separate" &&
         !roster.people.some(
           (person) =>
-            (person.source === "tito" || person.source === "webropol") &&
-            `attendee:${person.id}` === item.target,
+            isStoredAttendee(person) && `attendee:${person.id}` === item.target,
         ),
     )
   )
     return jsonResponse(
       {
         error:
-          "Match a poster presenter or volunteer to an imported registration, or choose Additional person.",
+          "Match a poster presenter or volunteer to an imported or manual registration, or choose Additional person.",
       },
       400,
     );

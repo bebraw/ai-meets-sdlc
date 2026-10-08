@@ -70,6 +70,12 @@ try {
     true,
   );
   await admin.unroute("**/api/admin/attendees", failRoster);
+  assert.equal(
+    await admin
+      .getByRole("button", { name: "Add attendee", exact: true })
+      .isDisabled(),
+    true,
+  );
   await reload.click();
   await admin.getByText("Registrations updated.", { exact: true }).waitFor();
   await admin.getByLabel("CSV file (UTF-8, up to 2 MB)").setInputFiles({
@@ -1360,6 +1366,186 @@ try {
       path: path.join(tmpdir(), `sdlcai-diet-review-${viewport.width}.png`),
     });
   }
+  const manualPanel = admin.locator("[data-manual-attendee]");
+  await admin
+    .getByRole("button", { name: "Add attendee", exact: true })
+    .click();
+  await manualPanel
+    .getByLabel("Name", { exact: true })
+    .fill("Manual Browser Guest");
+  await manualPanel
+    .getByLabel("Company", { exact: true })
+    .fill("Manual Company");
+  await manualPanel
+    .getByLabel("Dietary requirements (original response)", { exact: true })
+    .fill("Vegan\nNut allergy");
+  await manualPanel
+    .getByLabel("Attendee type", { exact: true })
+    .selectOption("sponsor");
+  assert.equal(
+    await manualPanel
+      .getByLabel("Include in badge run", { exact: true })
+      .isChecked(),
+    true,
+  );
+  await manualPanel
+    .getByRole("button", { name: "Save new attendee", exact: true })
+    .click();
+  await admin
+    .getByText(
+      "Each attendee needs a name and a ticket code or attendee email.",
+      { exact: true },
+    )
+    .waitFor();
+  assert.equal(
+    await manualPanel.getByLabel("Name", { exact: true }).inputValue(),
+    "Manual Browser Guest",
+  );
+  await manualPanel
+    .getByLabel("Attendee email", { exact: true })
+    .fill("manual-browser@example.test");
+  for (const viewport of [
+    { width: 390, height: 844 },
+    { width: 1440, height: 1000 },
+  ]) {
+    await admin.setViewportSize(viewport);
+    assert.equal(
+      await admin.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+      true,
+    );
+    assert.deepEqual(
+      await admin.evaluate(async () =>
+        (
+          await window.axe.run(document, {
+            runOnly: {
+              type: "tag",
+              values: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"],
+            },
+            rules: { "target-size": { enabled: false } },
+          })
+        ).violations.map(({ id }) => id),
+      ),
+      [],
+    );
+    await manualPanel.screenshot({
+      path: path.join(
+        tmpdir(),
+        "sdlcai-manual-attendee-" + viewport.width + ".png",
+      ),
+    });
+  }
+  const beforeManual = Number(await cateringCount("Active registrations"));
+  await admin.route("**/api/admin/attendees", async (route) => {
+    if (route.request().method() === "POST") await failRoster(route);
+    else await route.continue();
+  });
+  await manualPanel
+    .getByRole("button", { name: "Save new attendee", exact: true })
+    .click();
+  await admin.getByText(outage, { exact: true }).waitFor();
+  assert.equal(
+    await manualPanel
+      .getByLabel("Attendee email", { exact: true })
+      .inputValue(),
+    "manual-browser@example.test",
+  );
+  await admin.unroute("**/api/admin/attendees");
+  await reload.click();
+  await admin.getByText("Registrations updated.", { exact: true }).waitFor();
+  assert.equal(
+    await manualPanel.getByLabel("Name", { exact: true }).inputValue(),
+    "Manual Browser Guest",
+  );
+  await manualPanel
+    .getByRole("button", { name: "Save new attendee", exact: true })
+    .click();
+  await admin
+    .getByText("Manual Browser Guest added as a manual attendee.", {
+      exact: true,
+    })
+    .waitFor();
+  assert.equal(await manualPanel.isVisible(), false);
+  const manualMatch = admin.locator("[data-attendee-id]").filter({
+    has: admin.getByRole("heading", {
+      name: "Manual Browser Guest",
+      exact: true,
+    }),
+  });
+  await manualMatch
+    .getByText("SPONSOR · MANUAL · No ticket code", { exact: true })
+    .waitFor();
+  const manualId = await manualMatch.getAttribute("data-attendee-id");
+  const manualCard = admin.locator('[data-attendee-id="' + manualId + '"]');
+  assert.equal(
+    await cateringCount("Active registrations"),
+    String(beforeManual + 1),
+  );
+  const manualBadges = await (
+    await adminContext.request.get(origin + "/api/admin/badges")
+  ).json();
+  assert.ok(
+    manualBadges.people.some(
+      (p) => p.id === "attendees:" + manualId && p.role === "sponsor",
+    ),
+  );
+  await manualCard
+    .getByRole("button", { name: "Edit attendee", exact: true })
+    .click();
+  await manualCard
+    .getByLabel("Company", { exact: true })
+    .fill("Corrected Manual Company");
+  await manualCard
+    .getByRole("button", { name: "Save attendee", exact: true })
+    .click();
+  await admin.getByText("Attendee saved.", { exact: true }).waitFor();
+  await manualCard.getByText(/Corrected Manual Company/).waitFor();
+  await manualCard
+    .getByRole("button", { name: "Mark arrived", exact: true })
+    .click();
+  await admin
+    .getByText("Manual Browser Guest marked as arrived.", { exact: true })
+    .waitFor();
+  await admin
+    .getByRole("button", { name: "Add attendee", exact: true })
+    .click();
+  await manualPanel
+    .getByLabel("Name", { exact: true })
+    .fill("Duplicate Manual Guest");
+  await manualPanel
+    .getByLabel("Attendee email", { exact: true })
+    .fill("manual-browser@example.test");
+  await manualPanel
+    .getByRole("button", { name: "Save new attendee", exact: true })
+    .click();
+  await admin
+    .getByText(
+      "A manual attendee with this ticket code or email already exists. Edit the existing attendee.",
+      { exact: true },
+    )
+    .waitFor();
+  assert.equal(
+    await manualPanel.getByLabel("Name", { exact: true }).inputValue(),
+    "Duplicate Manual Guest",
+  );
+  assert.equal(
+    await cateringCount("Active registrations"),
+    String(beforeManual + 1),
+  );
+  await manualPanel
+    .getByRole("button", { name: "Cancel adding attendee", exact: true })
+    .click();
+  assert.equal(await manualPanel.isVisible(), false);
+  await admin.reload();
+  await admin.getByText(/Registrations loaded/).waitFor();
+  await admin
+    .getByLabel("Find an attendee", { exact: true })
+    .fill("Manual Browser Guest");
+  await manualCard.getByText(/Corrected Manual Company/).waitFor();
+  await manualCard
+    .getByRole("button", { name: "Undo arrival", exact: true })
+    .waitFor();
   assert.deepEqual(errors, []);
   console.log(
     "Attendee browser check passed: canonical poster and volunteer registration/check-in, organizer roles, poster dinner restrictions, Tito/Webropol diet imports, separate sponsor imports, type filtering/editing, sponsor badges/PDF output, catering groups, copy/download, multiline diet edits, filter-independent totals, organizer-only diets, load recovery, preserved edit drafts, concurrent corrections, source refresh, scoped staff access, exact ticket lookup, arrivals, cancellation, undo, badge seeding, sign-out/reuse, revocation, mobile layout and accessibility.",

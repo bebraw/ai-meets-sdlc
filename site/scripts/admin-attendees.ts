@@ -12,7 +12,9 @@ import {
   attendeeColumnAliases,
   detectAttendeeMapping,
   importAttendeeCsv,
+  isStoredAttendee,
   mergeAttendeeImport,
+  parseAttendeeInput,
   prepareAttendeeCsv,
   type Attendee,
   type AttendeeInput,
@@ -127,6 +129,19 @@ function setupList(root: HTMLElement) {
   };
   let loaded = false;
   let busy = false;
+  let manualForm: HTMLFormElement | undefined;
+  const manualPanel = el("section", "", "my-5 border border-ink p-5");
+  manualPanel.dataset.manualAttendee = "";
+  manualPanel.hidden = true;
+  const addAttendee = button("Add attendee", () => {
+    if (!loaded || busy) return;
+    if (manualForm) {
+      manualForm.querySelector("input")?.focus();
+      return;
+    }
+    manualPanel.hidden = false;
+    edit(manualPanel);
+  });
   const drafts = new Map<
     string,
     { form: HTMLFormElement; revision: number; original: string }
@@ -196,6 +211,7 @@ function setupList(root: HTMLElement) {
     badges.href = "/admin/badges/";
     append(
       toolbar,
+      addAttendee,
       badges,
       button("Download attendee list", () => {
         if (!loaded) return;
@@ -224,6 +240,7 @@ function setupList(root: HTMLElement) {
   }
   append(root, status, toolbar);
   if (admin) {
+    append(root, manualPanel);
     const panels = el("div", "", "my-8 grid gap-6 lg:grid-cols-2");
     append(panels, importPanel(), accessPanel());
     append(root, panels);
@@ -409,7 +426,7 @@ function setupList(root: HTMLElement) {
             controls,
             button("Undo arrival", () => void arrive(person, "undo")),
           );
-        if (person.source === "tito" || person.source === "webropol")
+        if (isStoredAttendee(person))
           append(
             controls,
             button("Edit attendee", () => edit(card, person)),
@@ -448,7 +465,9 @@ function setupList(root: HTMLElement) {
           "p",
           data.attendees.length
             ? "No registration found. Check the spelling or ask an organizer to verify the ticket."
-            : "No registrations imported yet.",
+            : admin
+              ? "No registrations yet. Import a CSV or add an attendee."
+              : "No registrations available. Ask an organizer to update the list.",
           "border border-ink p-5",
         ),
       );
@@ -475,12 +494,23 @@ function setupList(root: HTMLElement) {
           : `Arrival undone for ${person.name}.`;
     });
   }
-  function edit(card: HTMLElement, person: Attendee) {
+  function edit(card: HTMLElement, person?: Attendee) {
+    const initial: AttendeeInput = person ?? {
+      name: "",
+      company: "",
+      email: "",
+      ticketCode: "",
+      diet: "",
+      status: "active",
+      type: "attendee",
+      badge: true,
+    };
     const form = el("form", "", "grid gap-3 md:col-span-2");
+    if (!person) form.className = "grid gap-4 md:grid-cols-2";
     const draft = {
       form,
       revision: data.revision,
-      original: editSource(person),
+      original: person ? editSource(person) : "",
     };
     const dietLabel = el("label", "", "grid gap-2 text-sm font-bold");
     const dietInput = el(
@@ -488,18 +518,19 @@ function setupList(root: HTMLElement) {
       "",
       "w-full border border-ink bg-paper p-3 font-normal leading-6",
     );
-    dietInput.value = person.diet ?? "";
+    dietInput.value = initial.diet ?? "";
     dietInput.rows = 3;
     append(
       dietLabel,
       el("span", "Dietary requirements (original response)"),
       dietInput,
     );
+    if (!person) dietLabel.classList.add("md:col-span-2");
     const fields = {
-      name: field("Name", person.name),
-      company: field("Company", person.company),
-      email: field("Attendee email", person.email, "email"),
-      ticketCode: field("Ticket code", person.ticketCode),
+      name: field("Name", initial.name),
+      company: field("Company", initial.company),
+      email: field("Attendee email", initial.email, "email"),
+      ticketCode: field("Ticket code", initial.ticketCode),
       diet: { label: dietLabel, input: dietInput },
     };
     fields.name.input.required = true;
@@ -518,53 +549,97 @@ function setupList(root: HTMLElement) {
       ["Active", "active"],
       ["Cancelled", "cancelled"],
     ]);
-    ticketState.input.value = person.status;
+    ticketState.input.value = initial.status;
     const type = selectField("Attendee type", [
       ["Attendee", "attendee"],
       ["Sponsor", "sponsor"],
       ["Organizer", "organizer"],
     ]);
-    type.input.value = person.type;
+    type.input.value = initial.type ?? "attendee";
     const badge = field("Include in badge run", "", "checkbox");
-    badge.input.checked = person.badge;
+    badge.input.checked = initial.badge;
     badge.input.className = "h-5 w-5";
-    const save = el("button", "Save attendee", buttonClass);
-    save.type = "submit";
-    append(
-      form,
-      ticketState.label,
-      type.label,
-      badge.label,
-      save,
-      button("Cancel editing", () => {
-        drafts.delete(person.id);
-        render();
-      }),
+    if (!person) badge.label.classList.add("md:col-span-2");
+    const save = el(
+      "button",
+      person ? "Save attendee" : "Save new attendee",
+      buttonClass,
     );
-    drafts.set(person.id, draft);
-    card.replaceChildren(form);
+    save.type = "submit";
+    function close() {
+      if (person) drafts.delete(person.id);
+      else {
+        manualForm = undefined;
+        manualPanel.replaceChildren();
+        manualPanel.hidden = true;
+      }
+    }
+    const cancel = button(
+      person ? "Cancel editing" : "Cancel adding attendee",
+      () => {
+        close();
+        render();
+        if (!person) addAttendee.focus();
+      },
+    );
+    append(form, ticketState.label, type.label, badge.label);
+    if (person) append(form, save, cancel);
+    else {
+      const actions = el("div", "", "flex flex-wrap gap-3 md:col-span-2");
+      append(actions, save, cancel);
+      append(form, actions);
+    }
+    if (person) {
+      drafts.set(person.id, draft);
+      card.replaceChildren(form);
+    } else {
+      manualForm = form;
+      card.replaceChildren(
+        el(
+          "h2",
+          "Add attendee",
+          "mb-3 font-headline text-2xl font-black uppercase",
+        ),
+        el(
+          "p",
+          "Enter a name and either an attendee email or a ticket code. Manual attendees join registration, catering, and selected badge runs. CSV imports leave their details unchanged.",
+          "mb-5 max-w-3xl text-sm leading-6",
+        ),
+        form,
+      );
+    }
     fields.name.input.focus();
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       void work(async () => {
-        await api(endpoint, action, "PUT", {
-          id: person.id,
-          revision: draft.revision,
-          attendee: {
-            name: fields.name.input.value,
-            company: fields.company.input.value,
-            email: fields.email.input.value,
-            ticketCode: fields.ticketCode.input.value,
-            status: ticketState.input.value,
-            badge: badge.input.checked,
-            type: type.input.value,
-            diet: fields.diet.input.value,
-          },
+        const attendee = parseAttendeeInput({
+          name: fields.name.input.value,
+          company: fields.company.input.value,
+          email: fields.email.input.value,
+          ticketCode: fields.ticketCode.input.value,
+          status: ticketState.input.value,
+          badge: badge.input.checked,
+          type: type.input.value,
+          diet: fields.diet.input.value,
         });
-        drafts.delete(person.id);
+        await api(endpoint, action, person ? "PUT" : "POST", {
+          ...(person ? { id: person.id } : { action: "create" }),
+          revision: person ? draft.revision : data.revision,
+          attendee,
+        });
+        close();
+        if (!person) {
+          search.input.value = attendee.name;
+          lookup.input.value = "person";
+          state.input.value = "all";
+          attendeeType.input.value = "all";
+        }
         render();
         await load();
-        status.textContent = "Attendee saved.";
+        status.textContent = person
+          ? "Attendee saved."
+          : `${attendee.name} added as a manual attendee.`;
+        if (!person) search.input.focus();
       });
     });
   }
@@ -667,9 +742,7 @@ function setupList(root: HTMLElement) {
         source.input.value as "tito" | "webropol",
       );
       mergeAttendeeImport(
-        data.attendees.filter(
-          (person) => person.source === "tito" || person.source === "webropol",
-        ),
+        data.attendees.filter(isStoredAttendee),
         source.input.value as "tito" | "webropol",
         imported,
       );
@@ -888,6 +961,7 @@ function setupList(root: HTMLElement) {
   setInterval(() => {
     if (
       busy ||
+      manualForm ||
       drafts.size ||
       catering?.hasDrafts() ||
       document.hidden ||
@@ -899,7 +973,7 @@ function setupList(root: HTMLElement) {
     });
   }, 15000);
   window.addEventListener("beforeunload", (event) => {
-    if (!drafts.size && !catering?.hasDrafts()) return;
+    if (!manualForm && !drafts.size && !catering?.hasDrafts()) return;
     event.preventDefault();
     event.returnValue = "";
   });

@@ -7,6 +7,7 @@ import { withAdminSecurityHeaders } from "./admin-auth.ts";
 import { encryptText, jsonResponse, requireAdminAction } from "./form-utils.ts";
 import { isRecord, readJsonWithinLimit } from "./speaker-workspace-utils.ts";
 import {
+  addManualAttendee,
   mergeAttendeeImport,
   attendeeSourceKey,
   parseAttendeeInput,
@@ -244,7 +245,9 @@ async function handle(
     );
   let people;
   try {
-    if (
+    if (request.method === "POST" && body.action === "create") {
+      people = addManualAttendee(roster.people, body.attendee);
+    } else if (
       request.method === "POST" &&
       (body.source === "tito" || body.source === "webropol") &&
       Array.isArray(body.attendees)
@@ -268,7 +271,10 @@ async function handle(
       people = parseAttendeeRoster(people);
     } else
       return jsonResponse(
-        { error: "Choose Tito or Webropol and import attendee rows." },
+        {
+          error:
+            "Add a manual attendee or choose Tito or Webropol to import rows.",
+        },
         400,
       );
   } catch (error) {
