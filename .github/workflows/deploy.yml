@@ -1,0 +1,75 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: [Quality]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+# Finish a production migration/upload before starting another deployment.
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy checked commit
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_repository.full_name == github.repository &&
+      (github.event.workflow_run.event == 'push' || github.event.workflow_run.event == 'workflow_dispatch')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: production
+    env:
+      DEPLOY_SHA: ${{ github.event.workflow_run.head_sha }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+      - name: Skip superseded commits
+        id: current
+        run: |
+          if test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$DEPLOY_SHA"; then
+            echo "current=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "current=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::A newer main commit exists; skipping this deployment."
+          fi
+      - uses: actions/setup-node@v6
+        if: steps.current.outputs.current == 'true'
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - uses: actions/cache@v5
+        if: steps.current.outputs.current == 'true'
+        with:
+          path: |
+            .cache/types.tsbuildinfo
+            .gustwind/persistent-assets
+          key: ${{ runner.os }}-build-v1-${{ hashFiles('package-lock.json') }}-${{ github.event.workflow_run.head_sha }}
+          restore-keys: |
+            ${{ runner.os }}-build-v1-${{ hashFiles('package-lock.json') }}-
+      - run: npm ci
+        if: steps.current.outputs.current == 'true'
+      - name: Build and validate the checked source
+        if: steps.current.outputs.current == 'true'
+        run: npm run worker:build && npm run validate
+      - name: Migrate and deploy
+        if: steps.current.outputs.current == 'true'
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          test -n "$CLOUDFLARE_API_TOKEN"
+          # Check again after setup/build, before touching production.
+          if test "$(git ls-remote origin refs/heads/main | cut -f1)" != "$DEPLOY_SHA"; then
+            echo "::notice::A newer main commit exists; skipping this deployment."
+            exit 0
+          fi
+          npm run deploy:checked

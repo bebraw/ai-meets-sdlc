@@ -30,11 +30,13 @@ Canonical read failures return 503 with `no-store`, allowing consumers to retain
 their last valid snapshot instead of replacing it with older bundled content.
 
 `revision` is SHA-256 of the public dataset (including `updatedAt`, excluding the
-revision itself). The build timestamp is the latest modification time of feed
-source files, not the time of each build/request. Live revisions use the later of
-that timestamp and the public canonical records' update times. Repeated reads of
-unchanged data retain the same revision and ETag. A fresh checkout can change the
-source timestamp and thus the revision even when text is unchanged.
+revision itself). The build timestamp is the committer time of the last Git commit
+that changed a feed source file. Fresh checkouts, file modification times, and
+unrelated commits therefore preserve the same feed bytes and revision. Builds
+require full Git history (`fetch-depth: 0` in GitHub Actions); source archives can
+instead supply `SOURCE_DATE_EPOCH` as Unix seconds. Live revisions use the later
+of that timestamp and the public canonical records' update times. Repeated reads
+of unchanged data retain the same revision and ETag.
 
 ## Lecture integration
 

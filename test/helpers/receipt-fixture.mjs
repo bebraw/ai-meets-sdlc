@@ -1,43 +1,26 @@
-import { execFile } from "node:child_process";
-import { mkdtemp, rm } from "node:fs/promises";
-import { tmpdir } from "node:os";
-import path from "node:path";
-import { promisify } from "node:util";
-import { unstable_dev } from "wrangler";
+import { createWorkerFixture } from "./worker-fixture.mjs";
 
-const exec = promisify(execFile);
 export const receiptOrigin = "https://sdlcai.org";
 export const receiptAdmin = `Basic ${Buffer.from("receipts-admin:local-receipts-test").toString("base64")}`;
 const keyMaterial = "isolated-receipt-test-encryption";
 
 export async function createReceiptFixture({ vars = {} } = {}) {
-  const directory = await mkdtemp(path.join(tmpdir(), "sdlcai-receipts-test-"));
-  const cli = path.resolve("node_modules/.bin/wrangler");
-  const runSql = async (sql) => {
-    const result = await exec(cli, [
-      "d1",
-      "execute",
-      "ai-meets-sdlc-interests",
-      "--local",
-      "--persist-to",
-      directory,
-      "--json",
-      "--command",
-      sql,
-    ]);
-    return JSON.parse(result.stdout)[0].results;
-  };
-  let worker;
+  const fixture = await createWorkerFixture({
+    vars: {
+      ADMIN_USERNAME: "receipts-admin",
+      ADMIN_PASSWORD: "local-receipts-test",
+      EMAIL_ENCRYPTION_KEY: keyMaterial,
+      PUBLIC_SITE_ORIGIN: receiptOrigin,
+      SPEAKER_CONTACT_RETENTION_UNTIL: "2099-11-30T21:59:59Z",
+      SPEAKER_WORKSPACE_ACCESS_UNTIL: "2099-10-31T21:59:59Z",
+      TURNSTILE_SITE_KEY: "",
+      TURNSTILE_SECRET_KEY: "",
+      SHOW_INTEREST_FORM: "",
+      ...vars,
+    },
+  });
+  const { worker, runSql } = fixture;
   try {
-    await exec(cli, [
-      "d1",
-      "migrations",
-      "apply",
-      "ai-meets-sdlc-interests",
-      "--local",
-      "--persist-to",
-      directory,
-    ]);
     const tokens = new Map();
     for (const [index, speakerId] of [
       "mo-khazali",
@@ -61,30 +44,6 @@ export async function createReceiptFixture({ vars = {} } = {}) {
         INSERT INTO speaker_workspace_access (speaker_id, invite_token_hash, access_generation, invite_created_at, invite_expires_at, created_at, updated_at)
         VALUES ('${speakerId}', '${hash}', 1, '2026-09-01T00:00:00Z', '2099-10-31T21:59:59Z', '2026-09-01T00:00:00Z', '2026-09-01T00:00:00Z');`);
     }
-    worker = await unstable_dev("worker/index.ts", {
-      config: "wrangler.jsonc",
-      experimental: {
-        disableExperimentalWarning: true,
-        forceLocal: true,
-        watch: false,
-        disableDevRegistry: true,
-      },
-      local: true,
-      logLevel: "error",
-      persist: true,
-      persistTo: directory,
-      vars: {
-        ADMIN_USERNAME: "receipts-admin",
-        ADMIN_PASSWORD: "local-receipts-test",
-        EMAIL_ENCRYPTION_KEY: keyMaterial,
-        PUBLIC_SITE_ORIGIN: receiptOrigin,
-        SPEAKER_CONTACT_RETENTION_UNTIL: "2099-11-30T21:59:59Z",
-        SPEAKER_WORKSPACE_ACCESS_UNTIL: "2099-10-31T21:59:59Z",
-        TURNSTILE_SITE_KEY: "",
-        SHOW_INTEREST_FORM: "",
-        ...vars,
-      },
-    });
     const cookies = new Map();
     for (const [speakerId, token] of tokens) {
       const response = await worker.fetch(
@@ -99,18 +58,11 @@ export async function createReceiptFixture({ vars = {} } = {}) {
       );
     }
     return {
-      worker,
+      ...fixture,
       cookies,
-      directory,
-      runSql,
-      async dispose() {
-        await worker.stop();
-        await rm(directory, { recursive: true, force: true });
-      },
     };
   } catch (error) {
-    await worker?.stop();
-    await rm(directory, { recursive: true, force: true });
+    await fixture.dispose();
     throw error;
   }
 }

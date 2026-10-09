@@ -53,7 +53,7 @@ export function selectSteps(args) {
       }
     }
     return [
-      npmStep("worker:build"),
+      npmStep("worker:test-build"),
       {
         name: shard ? `integration tests (${shard})` : "integration tests",
         command: process.execPath,
@@ -72,7 +72,7 @@ export function selectSteps(args) {
   if (!Object.hasOwn(browserGroups, group)) {
     throw new Error(`Unknown quality-gate group: ${group ?? "(missing)"}`);
   }
-  return ["worker:build", ...browserGroups[group]].map(npmStep);
+  return ["worker:test-build", ...browserGroups[group]].map(npmStep);
 }
 
 export async function runQualityGate(

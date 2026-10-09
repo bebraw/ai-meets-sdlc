@@ -172,15 +172,29 @@ rendering still runs on Cloudflare; local browsers are needed for release checks
 
 ### Release checks
 
-Use `npm run deploy` as the deployment command, including in Workers Builds.
-It runs `quality:build` (build, types, integration tests, and generated-site
-validation) before Wrangler can deploy. Leave the optional Workers Builds
-**Build command** empty: `deploy` already builds, so a separate
-`npm run worker:build` repeats that work. Keep the non-production **Version
-command** as `npm run worker:build && npx wrangler versions upload`, which builds
-once before uploading a preview. Run `npm ci` first if dependencies
-are not installed automatically. Deployment does not install or launch browsers:
-the hosted runner cannot elevate to root to install their OS dependencies.
+Production deployment is handled by `.github/workflows/deploy.yml` after the
+`Quality` workflow passes for a `main` push or manual quality run. It checks out
+that exact commit, builds and validates the site, then runs `deploy:checked`
+(verify build output, remote D1 migrations, Wrangler deploy). Tests and browser
+checks run once in the quality workflow; deployment does not repeat them. Failed,
+cancelled, skipped, fork, and pull-request quality runs cannot deploy. Superseded
+commits are skipped before setup and checked again before migrations. Production
+deployments run serially and are not cancelled mid-migration by a newer push.
+
+Configure the `production` GitHub environment with `CLOUDFLARE_ACCOUNT_ID` and
+`CLOUDFLARE_API_TOKEN` secrets. Scope the token to the event account and the
+`sdlcai.org` zone, with permissions for Worker deployment and D1 migrations.
+Disable automatic production builds in Cloudflare **Settings → Builds → Branch
+control** when activating this workflow, so independent Workers Builds cannot
+publish before GitHub checks finish. Keep the old guarded `npm run deploy`
+command until the GitHub credential is configured and the switch is complete.
+Never use `deploy:checked` as an independent Workers Builds deploy command: it
+depends on the GitHub quality gate. To retry a release, rerun the successful
+deployment workflow, or run `Quality` manually on `main` for fresh checks.
+
+`npm run deploy` remains available for a guarded local deployment, running
+`quality:build` before migrating and deploying. For the full local release gate,
+including browsers, run `npm run quality:gate` first.
 
 Enable **Build cache** under the Worker's **Settings → Builds** to retain npm
 downloads between Cloudflare builds. Gustwind is not one of Cloudflare's
@@ -194,8 +208,17 @@ dependencies preinstalled. npm downloads, TypeScript build information, and
 Gustwind's content-addressed CSS/JS assets persist through GitHub Actions
 caches, keyed by OS, lockfile, and commit with a lockfile restore fallback.
 Every job still makes a clean site build and uses the same unexpected-error-log
-guard. A final `Quality gate` job fails if any shard or browser group fails,
-is cancelled, or is skipped.
+guard. Checkouts include full Git history so event-feed timestamps stay stable.
+A final `Quality gate` job fails if any shard or browser group fails, is cancelled,
+or is skipped.
+
+`worker:test-build` builds the site and uses `test:prepare` to compile the Worker
+once into `.cache/test-worker`. Shared integration fixtures use Wrangler's test
+harness to load that output, apply migrations directly, and seed D1/R2 through
+binding proxies. Each fixture has a fresh runtime and isolated storage; compiled
+code is shared, test state is not. Captured Worker logs are forwarded to the same
+unexpected-error guard. Run `npm run worker:test-build` before invoking individual
+Node integration tests or browser validators that use these fixtures directly.
 
 For local checks, install browsers with
 `npm run layout:install-browsers`, then run `npm run quality:gate`.
@@ -203,10 +226,8 @@ The validators support Playwright's bundled Chromium as well as system Chrome
 and `LAYOUT_BROWSER_PATH`.
 
 Require the `Quality gate` status check in GitHub branch protection to block
-merges when these checks fail. Workers Builds runs independently and does not
-wait for GitHub Actions; direct pushes can deploy before browser checks finish.
-Build, integration-test, and generated-site validation failures still stop
-`npm run deploy` directly.
+merges when these checks fail. The deployment workflow also waits for the complete
+quality run, including browser checks, on direct pushes to `main`.
 
 For local iterations, `npm run build` and `npm run worker:dev` enable Gustwind's
 incremental route reuse. `npm run build:clean` disables route reuse;

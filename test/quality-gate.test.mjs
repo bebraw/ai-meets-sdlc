@@ -89,7 +89,7 @@ test("CI browser groups cover every browser check exactly once", () => {
   ].sort();
   const grouped = Object.keys(browserGroups).flatMap((group) => {
     const steps = selectSteps([`--group=${group}`]);
-    assert.equal(steps[0].name, "worker:build");
+    assert.equal(steps[0].name, "worker:test-build");
     return steps.slice(1).map(({ name }) => name);
   });
   assert.deepEqual(grouped.sort(), expected);
@@ -104,7 +104,7 @@ test("CI browser groups cover every browser check exactly once", () => {
 
 test("integration sharding preserves build/validation and rejects options that could skip checks", () => {
   const steps = selectSteps(["--group=integration", "--shard=2/4"]);
-  assert.equal(steps[0].name, "worker:build");
+  assert.equal(steps[0].name, "worker:test-build");
   assert.equal(steps[1].command, process.execPath);
   assert.deepEqual(steps[1].args, [
     "--test",

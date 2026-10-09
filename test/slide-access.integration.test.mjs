@@ -1,8 +1,4 @@
 import assert from "node:assert/strict";
-import { execFile } from "node:child_process";
-import { writeFile } from "node:fs/promises";
-import path from "node:path";
-import { promisify } from "node:util";
 import test from "node:test";
 import {
   createReceiptFixture,
@@ -10,12 +6,10 @@ import {
   receiptOrigin as origin,
 } from "./helpers/receipt-fixture.mjs";
 
-const exec = promisify(execFile);
-
 test("slide pages and production exports require organizers; speaker graphics require an active login even when cached", async (t) => {
   const fixture = await createReceiptFixture();
   t.after(() => fixture.dispose());
-  const { worker, cookies, runSql, directory } = fixture;
+  const { worker, cookies, runSql, env } = fixture;
   const admin = { authorization: receiptAdmin };
   const speaker = { cookie: cookies.get("mo-khazali") };
   const version = "f".repeat(64);
@@ -84,23 +78,11 @@ test("slide pages and production exports require organizers; speaker graphics re
 
   // Seed existing R2 objects, then warm the Cache API through authorized requests.
   const bytes = Buffer.from("stored slide export fixture");
-  const filename = path.join(directory, "stored-slide-export");
-  await writeFile(filename, bytes);
   for (const object of [
     `social/v2/${version}/${slideId}-linkedin.jpg`,
     `social/video/v1/${version}/${slideId}.png`,
   ]) {
-    await exec(path.resolve("node_modules/.bin/wrangler"), [
-      "r2",
-      "object",
-      "put",
-      `ai-meets-sdlc-social-exports/${object}`,
-      "--local",
-      "--persist-to",
-      directory,
-      "--file",
-      filename,
-    ]);
+    await env.SOCIAL_EXPORTS.put(object, bytes);
   }
   for (const [route, headers] of [
     [jpg, speaker],

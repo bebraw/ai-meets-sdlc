@@ -1,4 +1,4 @@
-import { readFile, writeFile, stat } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { parse } from "parse5";
 import seminar from "../site/data/seminar.json" with { type: "json" };
 import schedule from "../site/data/schedule.json" with { type: "json" };
@@ -11,6 +11,7 @@ import {
   sessionContent,
 } from "../worker/event-feed-data.ts";
 import { attr, elements, validateFeed } from "./event-feed-validation.mjs";
+import { sourceUpdatedAt } from "./source-updated-at.mjs";
 
 const origin = "https://www.sdlcai.org";
 const home = elements(parse(await readFile("build/index.html", "utf8")));
@@ -26,16 +27,11 @@ const sourceFiles = [
   "site/dataSources.ts",
   "site/components/ScheduleRow.html",
   "scripts/generate-event-feed.mjs",
+  "scripts/source-updated-at.mjs",
   "worker/event-feed-data.ts",
   "site/scripts/speaker-name.ts",
 ];
-const updatedAt = new Date(
-  Math.max(
-    ...(await Promise.all(
-      sourceFiles.map(async (file) => (await stat(file)).mtimeMs),
-    )),
-  ),
-).toISOString();
+const updatedAt = await sourceUpdatedAt(sourceFiles);
 const topics = schedule.items
   .filter((item) => item.talks)
   .map((item) => ({
