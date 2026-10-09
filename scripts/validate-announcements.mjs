@@ -213,6 +213,25 @@ try {
         "selected text remains readable",
       );
     }
+    const emailColors = await page
+      .locator('[data-admin-speakers] input[name="email"]')
+      .first()
+      .evaluate((field) => ({
+        background: getComputedStyle(field).backgroundColor,
+        selection: getComputedStyle(field, "::selection").backgroundColor,
+      }));
+    assert.notEqual(
+      emailColors.selection,
+      emailColors.background,
+      "speaker email address selection is visible",
+    );
+    await message.press("ControlOrMeta+A");
+    await message.screenshot({
+      path: path.join(
+        tmpdir(),
+        `sdlcai-announcement-selection-${dark ? "dark" : "light"}.png`,
+      ),
+    });
   }
   await page.evaluate(() => document.documentElement.classList.remove("dark"));
   await panel.locator("[data-admin-announcement-copy]").click();
