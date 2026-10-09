@@ -183,11 +183,14 @@ deployments run serially and are not cancelled mid-migration by a newer push.
 
 Configure the `production` GitHub environment with `CLOUDFLARE_ACCOUNT_ID` and
 `CLOUDFLARE_API_TOKEN` secrets. Scope the token to the event account and the
-`sdlcai.org` zone, with permissions for Worker deployment and D1 migrations.
-Disable automatic production builds in Cloudflare **Settings → Builds → Branch
-control** when activating this workflow, so independent Workers Builds cannot
-publish before GitHub checks finish. Keep the old guarded `npm run deploy`
-command until the GitHub credential is configured and the switch is complete.
+`sdlcai.org` zone: account permissions **Workers Scripts: Edit**, **D1: Edit**,
+**Workers R2 Storage: Read**, and **Account Settings: Read**; zone permission
+**Workers Routes: Edit**. Enable **Disable builds** under Cloudflare
+**Settings → Builds** when activating this workflow, so independent Workers
+Builds cannot publish before GitHub checks finish. This stops automatic production
+and non-production builds while leaving the repository connected. Keep the old
+guarded `npm run deploy` command until the GitHub credential is configured and the
+switch is complete.
 Never use `deploy:checked` as an independent Workers Builds deploy command: it
 depends on the GitHub quality gate. To retry a release, rerun the successful
 deployment workflow, or run `Quality` manually on `main` for fresh checks.
@@ -196,8 +199,9 @@ deployment workflow, or run `Quality` manually on `main` for fresh checks.
 `quality:build` before migrating and deploying. For the full local release gate,
 including browsers, run `npm run quality:gate` first.
 
-Enable **Build cache** under the Worker's **Settings → Builds** to retain npm
-downloads between Cloudflare builds. Gustwind is not one of Cloudflare's
+If using independent Workers Builds again, enable **Build cache** under the
+Worker's **Settings → Builds** to retain npm downloads between Cloudflare builds.
+Gustwind is not one of Cloudflare's
 automatically cached frameworks, so this does not persist its route or asset
 cache. See [Cloudflare build caching](https://developers.cloudflare.com/workers/ci-cd/builds/build-caching/).
 
