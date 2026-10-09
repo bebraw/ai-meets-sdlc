@@ -10,6 +10,7 @@ Text and artwork stay vector; the page needs no bleed or borderless printer.
 
 import io
 import os
+import shutil
 from pathlib import Path
 
 from fontTools.ttLib import TTFont as FontToolsFont
@@ -23,6 +24,7 @@ from reportlab.pdfgen import canvas
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "output/pdf/sdlcai-2026-speakers-dinner-a4.pdf"
+ASSET = ROOT / "assets/slides/sdlcai-2026-speakers-dinner-a4.pdf"
 WIDTH, HEIGHT = A4
 INSET = 14 * mm
 RIGHT = WIDTH - INSET
@@ -202,7 +204,10 @@ def create_sign():
             if not any(key in descriptor for key in
                        ["/FontFile", "/FontFile2", "/FontFile3"]):
                 raise ValueError("A brand font was not embedded")
+    ASSET.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(OUTPUT, ASSET)
     print(f"Created and verified: {OUTPUT}")
+    print(f"Admin download: {ASSET}")
 
 
 if __name__ == "__main__":

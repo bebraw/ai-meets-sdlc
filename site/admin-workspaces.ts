@@ -104,7 +104,7 @@ export const adminWorkspaceGroups = [
         label: "Dinner",
         href: "/admin/dinner/",
         description:
-          "Record attendance, review dietary details, and export the dinner catering summary.",
+          "Record attendance, review catering, and download the A4 entrance sign.",
       },
       {
         id: "receipts",

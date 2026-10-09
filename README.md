@@ -232,6 +232,11 @@ public archive outlives speaker login sessions. Apply migration
 Run `npm run speaker-slides:browser-check` to verify upload, publication,
 replacement, desktop/mobile layout, and accessibility with isolated storage.
 
+At `/admin/dinner/#entrance-sign`, use **Download A4 PDF** for the speakers’ dinner
+entrance sign. Print on A4 at 100% / actual size. Regenerate it with
+`uv run scripts/export-speaker-dinner-sign.py`; the exporter also updates the
+protected copy under `/assets/slides/` for the normal site build.
+
 At `/admin/dinner/`, select a speaker's attendance and choose **Save attendance**
 to record plans on their behalf. **Use speaker response** restores their original
 reply, or awaiting reply when none exists. Food notes and the original reply are
