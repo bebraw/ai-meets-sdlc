@@ -352,6 +352,12 @@ try {
     "QA browser check passed: live moderation, voting, MC screen, reusable links, revocation, mobile layout, accessibility, drafts, and native forms.",
   );
 } finally {
+  // Run pagehide so live EventSource streams close before Chromium or Workerd
+  // exits. Force-closing the browser can reset active streams during teardown.
+  for (const context of browser?.contexts() ?? []) {
+    for (const page of context.pages()) await page.goto("about:blank");
+    await context.close();
+  }
   await browser?.close();
   await worker?.stop();
   await rm(persistenceDirectory, { recursive: true, force: true });

@@ -57,7 +57,11 @@ export function selectSteps(args) {
       {
         name: shard ? `integration tests (${shard})` : "integration tests",
         command: process.execPath,
-        args: ["--test", ...(shard ? [`--test-shard=${shard}`] : [])],
+        args: [
+          "--test",
+          "--test-timeout=180000",
+          ...(shard ? [`--test-shard=${shard}`] : []),
+        ],
       },
       npmStep("validate"),
     ];

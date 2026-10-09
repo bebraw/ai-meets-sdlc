@@ -18,6 +18,9 @@ jobs:
     name: Integration tests (${{ matrix.shard }}/4)
     runs-on: ubuntu-24.04
     timeout-minutes: 15
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
+      options: --ipc=host
     strategy:
       fail-fast: false
       matrix:

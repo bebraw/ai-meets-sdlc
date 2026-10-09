@@ -37,7 +37,7 @@
     "announcements:browser-check": "node scripts/validate-announcements.mjs",
     "start": "gustwind --develop --port 3000",
     "serve": "gustwind --serve --port 3000 --input ./build",
-    "test": "npm run worker:build && node --test",
+    "test": "npm run worker:build && node --test --test-timeout=180000",
     "types:check": "tsc --noEmit",
     "types:generate": "wrangler types worker-configuration.d.ts",
     "validate": "npm run data:validate && gustwind --validate --input ./build",
