@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
+import { expectConsoleErrors } from "./helpers/expected-console-errors.mjs";
 import { Miniflare } from "miniflare";
 import {
   sendPosterReviewDigest,
@@ -153,9 +154,14 @@ test("failed sends retry after the lease, preserve their cutoff and stop after s
   f.env.EMAIL.send = async () => {
     throw new Error("provider failure");
   };
-  await assert.rejects(
-    sendDataChangeDigest(f.env, monday),
-    /later hourly trigger/,
+  await expectConsoleErrors(
+    t,
+    ["organizer_digest_failed { kind: 'data', period: '2026-09-21' }"],
+    () =>
+      assert.rejects(
+        sendDataChangeDigest(f.env, monday),
+        /later hourly trigger/,
+      ),
   );
   await f.poster();
   f.env.EMAIL.send = send;

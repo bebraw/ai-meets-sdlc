@@ -16,7 +16,7 @@ const validationConcurrency = Number(process.env.A11Y_CONCURRENCY ?? 2);
 const axeSource = await readFile("node_modules/axe-core/axe.min.js", "utf8");
 const debug = (...args) => {
   if (process.env.A11Y_DEBUG) {
-    console.error("[a11y]", ...args);
+    console.debug("[a11y]", ...args);
   }
 };
 

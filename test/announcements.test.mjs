@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
+import { format } from "node:util";
+import { expectConsoleErrors } from "./helpers/expected-console-errors.mjs";
 import { Miniflare } from "miniflare";
 import {
   previewSpeakerAnnouncement,
@@ -208,7 +210,18 @@ test("concurrent retries send only failures and recheck the original contact and
       throw new Error("Simulated provider rejection");
     return deliver(message);
   };
-  const sent = await (await send(f, await preview(f))).json();
+  const guest = (await readSpeakerDinnerSharedAdminItems(f.env))[0];
+  const firstPreview = await preview(f);
+  const sent = await expectConsoleErrors(
+    t,
+    ({ campaign_id }) => [
+      format("Speaker announcement delivery failed", {
+        campaignId: campaign_id,
+        speakerId: `dinner-guest:${guest.response_id}`,
+      }),
+    ],
+    async () => (await send(f, firstPreview)).json(),
+  );
   assert.equal(sent.failed_count, 1);
   assert.equal(f.messages.length, 2);
   f.env.EMAIL.send = deliver;
@@ -230,8 +243,18 @@ test("concurrent retries send only failures and recheck the original contact and
   f.env.EMAIL.send = async () => {
     throw new Error("Simulated rejection");
   };
-  const second = await (await send(f, await preview(f))).json();
-  const guest = (await readSpeakerDinnerSharedAdminItems(f.env))[0];
+  const secondPreview = await preview(f);
+  const second = await expectConsoleErrors(
+    t,
+    ({ campaign_id }) =>
+      secondPreview.recipients.map(({ speaker_id }) =>
+        format("Speaker announcement delivery failed", {
+          campaignId: campaign_id,
+          speakerId: speaker_id,
+        }),
+      ),
+    async () => (await send(f, secondPreview)).json(),
+  );
   await handleAdminDinnerGuestEmail(
     request({
       response_id: guest.response_id,

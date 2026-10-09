@@ -461,6 +461,11 @@ GitHub Actions runs the complete `quality:gate`, including responsive layout,
 slides, and accessibility checks, on pull requests and pushes to `main`. Its
 Ubuntu runner installs Chromium, WebKit, and their OS dependencies. Require the
 `Quality gate` status check in branch protection to block merges on failures.
+The gate stops the current check and skips subsequent checks on a nonzero exit
+or an unexpected error log, including plain `console.error` calls and colored
+Wrangler error output. Tests that deliberately trigger failures capture and
+assert their exact logs only for the failing operation; missing or extra errors
+fail those tests.
 Cloudflare Workers Builds runs independently of this workflow.
 
 See [Cloudflare setup](docs/cloudflare.md) for provisioning, secrets, backup, and

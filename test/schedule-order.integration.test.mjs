@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { parse } from "parse5";
+import { expectConsoleErrors } from "./helpers/expected-console-errors.mjs";
 import {
   createReceiptFixture,
   receiptAdmin,
@@ -191,15 +192,24 @@ test("schedule saves are atomic, admin-only, and shared by public pages, slides,
     before.groups.flatMap((group) => group.talkIds).length,
   );
   await runSql("DELETE FROM schedule_order");
-  assert.equal((await worker.fetch(endpoint, { headers })).status, 503);
-  assert.equal((await worker.fetch(`${origin}/event.json`)).status, 503);
-  const fallback = await worker.fetch(`${origin}/schedule/`);
-  assert.equal(fallback.status, 200);
-  assert.equal(
-    fallback.headers.get("x-sdlcai-content-source"),
-    "bundled-fallback",
+  await expectConsoleErrors(
+    t,
+    [
+      "schedule_order_unavailable",
+      "canonical_public_content_fallback { error: 'Missing schedule order', pathname: '/schedule/' }",
+    ],
+    async () => {
+      assert.equal((await worker.fetch(endpoint, { headers })).status, 503);
+      assert.equal((await worker.fetch(`${origin}/event.json`)).status, 503);
+      const fallback = await worker.fetch(`${origin}/schedule/`);
+      assert.equal(fallback.status, 200);
+      assert.equal(
+        fallback.headers.get("x-sdlcai-content-source"),
+        "bundled-fallback",
+      );
+      assert.match(await fallback.text(), /Joongi Shin/);
+    },
   );
-  assert.match(await fallback.text(), /Joongi Shin/);
 });
 
 function walk(node) {

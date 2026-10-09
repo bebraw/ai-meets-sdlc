@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
+import { expectConsoleErrors } from "./helpers/expected-console-errors.mjs";
 import { Miniflare } from "miniflare";
 import {
   readCanonicalSpeaker,
@@ -231,9 +232,14 @@ test("delivery failures retry after the lease and never resend a completed diges
   f.env.EMAIL.send = async () => {
     throw new Error("simulated provider failure");
   };
-  await assert.rejects(
-    sendSpeakerReviewDigest(f.env, morning),
-    /later hourly trigger/u,
+  await expectConsoleErrors(
+    t,
+    ["speaker_review_digest_failed { date: '2099-06-01' }"],
+    () =>
+      assert.rejects(
+        sendSpeakerReviewDigest(f.env, morning),
+        /later hourly trigger/u,
+      ),
   );
   assert.equal(
     (await f.db.prepare("SELECT status FROM speaker_review_digests").first())
