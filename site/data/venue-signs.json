@@ -1,0 +1,49 @@
+{
+  "signs": [
+    {
+      "id": "welcome",
+      "title": "Welcome / entrance",
+      "description": "Put on the venue door so guests can identify the event.",
+      "kind": "welcome"
+    },
+    {
+      "id": "direction-left",
+      "title": "This way / left",
+      "description": "Use at a junction where guests should turn left.",
+      "kind": "direction",
+      "direction": "left"
+    },
+    {
+      "id": "direction-right",
+      "title": "This way / right",
+      "description": "Use at a junction where guests should turn right.",
+      "kind": "direction",
+      "direction": "right"
+    },
+    {
+      "id": "direction-ahead",
+      "title": "This way / straight ahead",
+      "description": "Use where guests should continue straight ahead.",
+      "kind": "direction",
+      "direction": "ahead"
+    },
+    {
+      "id": "registration",
+      "title": "Registration / check-in",
+      "description": "Place at the registration desk where guests collect their badges.",
+      "kind": "registration"
+    },
+    {
+      "id": "qa",
+      "title": "Audience Q&A",
+      "description": "Place near the stage entrance or seating. The QR code opens public audience questions.",
+      "kind": "qa"
+    },
+    {
+      "id": "schedule",
+      "title": "Day at a glance",
+      "description": "Session times for the foyer. The QR code opens the full program and updates.",
+      "kind": "schedule"
+    }
+  ]
+}

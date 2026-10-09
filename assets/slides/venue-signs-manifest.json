@@ -1,0 +1,105 @@
+{
+  "pageCount": 7,
+  "pdf": "/assets/slides/sdlcai-2026-venue-signs-a4.pdf",
+  "items": [
+    {
+      "id": "welcome",
+      "title": "Welcome / entrance",
+      "description": "Put on the venue door so guests can identify the event.",
+      "kind": "welcome",
+      "number": "01",
+      "page": 1,
+      "pdf": "/assets/slides/venue-signs/sdlcai-2026-welcome-a4.pdf",
+      "preview": "/assets/slides/venue-signs/sdlcai-2026-welcome-a4.png"
+    },
+    {
+      "id": "direction-left",
+      "title": "This way / left",
+      "description": "Use at a junction where guests should turn left.",
+      "kind": "direction",
+      "direction": "left",
+      "number": "02",
+      "page": 2,
+      "pdf": "/assets/slides/venue-signs/sdlcai-2026-direction-left-a4.pdf",
+      "preview": "/assets/slides/venue-signs/sdlcai-2026-direction-left-a4.png"
+    },
+    {
+      "id": "direction-right",
+      "title": "This way / right",
+      "description": "Use at a junction where guests should turn right.",
+      "kind": "direction",
+      "direction": "right",
+      "number": "03",
+      "page": 3,
+      "pdf": "/assets/slides/venue-signs/sdlcai-2026-direction-right-a4.pdf",
+      "preview": "/assets/slides/venue-signs/sdlcai-2026-direction-right-a4.png"
+    },
+    {
+      "id": "direction-ahead",
+      "title": "This way / straight ahead",
+      "description": "Use where guests should continue straight ahead.",
+      "kind": "direction",
+      "direction": "ahead",
+      "number": "04",
+      "page": 4,
+      "pdf": "/assets/slides/venue-signs/sdlcai-2026-direction-ahead-a4.pdf",
+      "preview": "/assets/slides/venue-signs/sdlcai-2026-direction-ahead-a4.png"
+    },
+    {
+      "id": "registration",
+      "title": "Registration / check-in",
+      "description": "Place at the registration desk where guests collect their badges.",
+      "kind": "registration",
+      "number": "05",
+      "page": 5,
+      "pdf": "/assets/slides/venue-signs/sdlcai-2026-registration-a4.pdf",
+      "preview": "/assets/slides/venue-signs/sdlcai-2026-registration-a4.png"
+    },
+    {
+      "id": "qa",
+      "title": "Audience Q&A",
+      "description": "Place near the stage entrance or seating. The QR code opens public audience questions.",
+      "kind": "qa",
+      "number": "06",
+      "page": 6,
+      "pdf": "/assets/slides/venue-signs/sdlcai-2026-qa-a4.pdf",
+      "preview": "/assets/slides/venue-signs/sdlcai-2026-qa-a4.png"
+    },
+    {
+      "id": "schedule",
+      "title": "Day at a glance",
+      "description": "Session times for the foyer. The QR code opens the full program and updates.",
+      "kind": "schedule",
+      "number": "07",
+      "page": 7,
+      "pdf": "/assets/slides/venue-signs/sdlcai-2026-schedule-a4.pdf",
+      "preview": "/assets/slides/venue-signs/sdlcai-2026-schedule-a4.png"
+    }
+  ],
+  "files": {
+    "assets/slides/sdlcai-2026-venue-signs-a4.pdf": "48cd42945090309bd6ea162e9867cbefc7ebb05e16a9e1c42b05bcb9da4d2bb2",
+    "assets/slides/venue-signs/sdlcai-2026-welcome-a4.pdf": "626badd3f192b4f79fda3a0187e6331e0da4b6c1f579047d0a46fc9cd2138332",
+    "assets/slides/venue-signs/sdlcai-2026-welcome-a4.png": "028cf2961acadd5c5d5f501f0c5bf52667eb195d8b6b498a3c14bee9f94c0ad0",
+    "assets/slides/venue-signs/sdlcai-2026-direction-left-a4.pdf": "c16e1efae79019fdbae221951bae1001e5b8d9b3c9e20acf929eda64631bf964",
+    "assets/slides/venue-signs/sdlcai-2026-direction-left-a4.png": "66fd1d13380ca0227c18c4f56510fd825aabdb33f09f84d5290874455c90d9f1",
+    "assets/slides/venue-signs/sdlcai-2026-direction-right-a4.pdf": "3b2151747d56df046e7e4a3495984189d2a1685a76b984ecfc6cd4e22c640ada",
+    "assets/slides/venue-signs/sdlcai-2026-direction-right-a4.png": "e58af43c5bdf0484a6eab57e7e58ba8f325e7fbe86d38d807cf5a7616efa6bab",
+    "assets/slides/venue-signs/sdlcai-2026-direction-ahead-a4.pdf": "e1130d3e3011a611e34c087b219675a082ce60b1143ca5e7ec4af4a5878762e0",
+    "assets/slides/venue-signs/sdlcai-2026-direction-ahead-a4.png": "66f31e6c5e80a5d1c15da5fdb3568620204eb49965c765fe320f124fe8e3f037",
+    "assets/slides/venue-signs/sdlcai-2026-registration-a4.pdf": "6f9bb038fbdfec4eb85f0f93e12935dc89a2b032d01de7c0eb77b48fae0d9faa",
+    "assets/slides/venue-signs/sdlcai-2026-registration-a4.png": "791fa97f8a5c8b5318ce526925ef6f7c1b39fb88599cd6d174d77eea324c464e",
+    "assets/slides/venue-signs/sdlcai-2026-qa-a4.pdf": "213a179ca67238455949b3d47c3b5c30084a37cf3ba365663cbddaccfd32b1c5",
+    "assets/slides/venue-signs/sdlcai-2026-qa-a4.png": "a48fc52b5049de727a0673bd7e0491a760f9bb379c9a6993b81536b93fb05b37",
+    "assets/slides/venue-signs/sdlcai-2026-schedule-a4.pdf": "8cba06c9b0c4f78548d8f4bcf57f5cad3242deb100362fa23965b39bf0c89e5b",
+    "assets/slides/venue-signs/sdlcai-2026-schedule-a4.png": "284022c5acfcc0da24fcdd4587d7d4c3629e432ed86e7a42de32662560139feb"
+  },
+  "sources": {
+    "site/data/venue-signs.json": "a17e3a6816a5701c3c98aa9b1d8950bf8692834c934ce0a1de7ae3a37d1e9821",
+    "site/data/seminar.json": "bad5c24432e422059b451e6545872c721457af6b5462654769100c4cd80dfedb",
+    "site/data/schedule.json": "0c08a3eb5e5aef8c68fe9e33f9a3a8d43283e40e7ae9d4a091ccf3a8d0857107",
+    "scripts/export-venue-signs.py": "d2efb13b51385ac706d23c463d2b8a3b81b1e3b48582cc8c6a6feef45c8d63e2",
+    "assets/fonts/FinlandicaHeadline-Black.woff2": "8298aa158ae58dfc158c8a4d45bb716028dea167ab45e913279db882f5392bb9",
+    "assets/fonts/FinlandicaText-Regular.woff2": "55488a608932885926fb4779c0d9dabe9533249c824f8e3cf396d840843f423a",
+    "assets/fonts/FinlandicaText-Bold.woff2": "6f9c759a3eec0508d8d60a217d63d6e56821aadbd3d173502bb2ff69ebe8c671"
+  }
+}

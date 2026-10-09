@@ -5,6 +5,7 @@ import { raw } from "gustwind/htmlisp";
 import { Renderer, marked } from "marked";
 import schedule from "./data/schedule.json" with { type: "json" };
 import discussionTables from "./data/discussion-tables.json" with { type: "json" };
+import venueSigns from "../assets/slides/venue-signs-manifest.json" with { type: "json" };
 import music from "./data/music.json" with { type: "json" };
 import seminarData from "./data/seminar.json" with { type: "json" };
 import speakersData from "./data/speakers.json" with { type: "json" };
@@ -43,6 +44,13 @@ function init() {
     announcementItem: (match) =>
       getAnnouncementItem(announcementItemsBySlug, match.slug),
     seminar: () => seminar,
+    venueSigns: () => venueSigns,
+    venueSignItems: () =>
+      venueSigns.items.map((sign) => ({
+        ...sign,
+        previewLabel: `Preview ${sign.title} PDF (opens in a new tab)`,
+        downloadLabel: `Download A4 PDF: ${sign.title}`,
+      })),
     discussionTableItems: () =>
       discussionTables.topics.map((topic, index) => ({
         ...topic,

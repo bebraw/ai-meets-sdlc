@@ -284,6 +284,26 @@ from D1. Sponsor data records the package tier and whether the contract includes
 between-talk placement; validation requires Epic and Tech sponsors to receive
 that placement and excludes Brand and Location sponsors.
 
+## Venue signs
+
+At `/admin/venue-signs/` under **Event day**, organizers can preview and download
+seven A4 signs: welcome, left/right/straight-ahead directions, registration,
+audience Q&A, and a session-level daily schedule. Download the complete seven-page
+pack or individual PDFs. Print A4 portrait, single-sided, at 100% / actual size.
+The signs have 14 mm printer-safe margins and work in colour or black and white.
+Check a physical proof, scan the QR codes, and walk the venue route before
+choosing arrow placements. Q&A links to `/qa/`; the schedule links to the full
+published program at `/schedule/`.
+
+Regenerate with `npm run signs:export` (requires `uv` and Poppler's `pdftoppm`).
+The exporter uses `site/data/venue-signs.json`, the shared event date/venue and
+session times, and the bundled Finlandica fonts. Talk titles and speaker order
+are left to the linked live program. It verifies A4 size, page count, required
+text, print margins, and font embedding, then renders the actual PDFs for
+previews. Outputs are in `output/pdf/` and the protected `/assets/slides/` area.
+The normal build uses committed PDFs and previews; build verification rejects
+stale sources or changed exports. The fonts and artwork remain vector in PDFs.
+
 ## Discussion tables
 
 At `/admin/discussion-tables/`, organizers can review eight program-based topics

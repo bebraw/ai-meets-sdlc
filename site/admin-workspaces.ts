@@ -80,6 +80,13 @@ export const adminWorkspaceGroups = [
           "Open schedule displays, session slides, and artwork downloads.",
       },
       {
+        id: "venue-signs",
+        label: "Venue signs",
+        href: "/admin/venue-signs/",
+        description:
+          "Download A4 entrance, direction, registration, Q&A, and schedule signs.",
+      },
+      {
         id: "discussion-tables",
         label: "Discussion tables",
         href: "/admin/discussion-tables/",

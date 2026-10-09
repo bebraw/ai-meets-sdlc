@@ -450,6 +450,20 @@
           }
         }
       },
+      "venue-signs": {
+        "layout": "admin-venue-signs",
+        "scripts": [{ "name": "index" }],
+        "dataSources": {
+          "venueSigns": { "operation": "venueSigns" },
+          "venueSignItems": { "operation": "venueSignItems" }
+        },
+        "context": {
+          "meta": {
+            "title": "SDLCAI Venue Signs",
+            "description": "Preview and download A4 signs for the venue entrance, directions, registration, Q&A, and daily schedule."
+          }
+        }
+      },
       "music": {
         "layout": "admin-music",
         "scripts": [{ "name": "admin-music" }],

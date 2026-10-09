@@ -75,6 +75,7 @@ for (const pathname of [
   "/admin/organizers/",
   "/admin/badges/",
   "/admin/discussion-tables/",
+  "/admin/venue-signs/",
   "/admin/music/",
   "/admin/attendees/",
   "/registration/",
@@ -252,6 +253,32 @@ if (
   discussionTableManifest.sha256
 ) {
   failures.push("Discussion-table PDF differs from the verified print export.");
+}
+
+const venueSignsManifest = JSON.parse(
+  await readFile("assets/slides/venue-signs-manifest.json", "utf8"),
+);
+for (const [source, expectedHash] of Object.entries(
+  venueSignsManifest.sources,
+)) {
+  const hash = createHash("sha256")
+    .update(await readFile(source))
+    .digest("hex");
+  if (hash !== expectedHash) {
+    failures.push(
+      `${source}: venue-sign PDFs are stale; run npm run signs:export`,
+    );
+  }
+}
+for (const [filename, expectedHash] of Object.entries(
+  venueSignsManifest.files,
+)) {
+  const hash = createHash("sha256")
+    .update(await readFile(path.join(buildDir, filename)))
+    .digest("hex");
+  if (hash !== expectedHash) {
+    failures.push(`${filename}: differs from the verified venue-sign export`);
+  }
 }
 
 if (failures.length > 0) {

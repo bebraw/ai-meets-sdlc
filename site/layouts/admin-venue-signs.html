@@ -1,0 +1,163 @@
+<BaseLayout
+  &title="(id 'SDLCAI Venue Signs')"
+  &description="(id 'Print A4 entrance, direction, registration, Q&A, and schedule signs for SDLCAI 2026.')"
+  &ogDescription="(id 'Seven venue signs, individual PDFs, and a complete A4 print pack.')"
+  &url="(id 'https://sdlcai.org/admin/venue-signs/')"
+  &ogType="(id 'website')"
+  &robots="(id 'noindex,nofollow,noarchive')"
+>
+  <AdminNavigation &current="(id 'venue-signs')"></AdminNavigation>
+  <AdminPageHeader
+    &eyebrow="(adminEyebrow (id 'venue-signs'))"
+    &title="(id 'Venue signs')"
+    &description="(id 'Help guests find the event, check in, and join the day. Preview each sign below or download the complete print pack.')"
+  ></AdminPageHeader>
+
+  <section class="border-b border-ink" aria-labelledby="print-pack-heading">
+    <div
+      class="mx-auto grid max-w-7xl gap-8 px-5 py-10 md:px-8 lg:grid-cols-[1fr_22rem] lg:gap-16"
+    >
+      <div>
+        <p class="font-headline text-sm font-black uppercase text-muted">
+          <span &children="venueSigns.pageCount"></span> pages / A4 portrait
+        </p>
+        <h2
+          id="print-pack-heading"
+          class="mt-3 font-headline text-4xl font-black uppercase leading-none md:text-5xl"
+        >
+          Ready for the venue
+        </h2>
+        <p class="mt-5 max-w-2xl text-lg leading-7 text-muted">
+          Large black type on white paper, with red accents. Each sign is one A4
+          page with 14 mm margins. Print extra copies of the directions where
+          needed, or select individual pages from the pack.
+        </p>
+        <a
+          class="mt-6 inline-flex min-h-11 items-center border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
+          &href="venueSigns.pdf"
+          download="sdlcai-2026-venue-signs-a4.pdf"
+          >Download all signs / A4 PDF</a
+        >
+        <p class="mt-5 max-w-2xl text-sm leading-6 text-muted">
+          The schedule shows session times. Its QR code opens the full program
+          and updates; the Q&A sign opens public audience questions.
+        </p>
+      </div>
+      <aside
+        class="border border-ink p-5 md:p-6"
+        aria-labelledby="printing-heading"
+      >
+        <h3
+          id="printing-heading"
+          class="font-headline text-2xl font-black uppercase"
+        >
+          Before putting them up
+        </h3>
+        <ol class="mt-5 grid gap-4 text-base leading-7 text-muted">
+          <li>
+            <strong class="text-ink">1. Print.</strong> A4 portrait,
+            single-sided, at 100% / actual size.
+          </li>
+          <li>
+            <strong class="text-ink">2. Check.</strong> Print one proof and scan
+            both QR codes on paper.
+          </li>
+          <li>
+            <strong class="text-ink">3. Place.</strong> Walk the guest route and
+            choose the correct arrow at each junction.
+          </li>
+        </ol>
+        <p
+          class="mt-5 border-t border-ink/20 pt-4 text-sm leading-6 text-muted"
+        >
+          Colour is optional; all signs also work in black and white.
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  <section
+    class="border-b border-ink"
+    aria-labelledby="individual-signs-heading"
+  >
+    <div class="mx-auto max-w-7xl px-5 py-10 md:px-8 md:py-14">
+      <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
+        <h2
+          id="individual-signs-heading"
+          class="font-headline text-4xl font-black uppercase leading-none md:text-5xl"
+        >
+          Choose a sign
+        </h2>
+        <p class="text-sm leading-6 text-muted">
+          Numbers match the pages in the print pack.
+        </p>
+      </div>
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <noop &foreach="venueSignItems as sign">
+          <article
+            class="flex min-w-0 flex-col border border-ink"
+            data-venue-sign
+          >
+            <a
+              class="block border-b border-ink bg-white p-5 transition hover:bg-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+              &href="sign.pdf"
+              &aria-label="sign.previewLabel"
+              target="_blank"
+              rel="noopener"
+            >
+              <img
+                class="mx-auto aspect-[210/297] h-auto w-full max-w-72 object-contain"
+                &src="sign.preview"
+                &alt="sign.title"
+                width="637"
+                height="900"
+                loading="lazy"
+                decoding="async"
+              />
+            </a>
+            <div class="flex flex-1 flex-col items-start p-5 md:p-6">
+              <p class="text-sm font-bold uppercase text-muted">
+                Page <span &children="sign.number"></span>
+              </p>
+              <h3
+                class="mt-3 font-headline text-3xl font-black uppercase leading-none"
+                &children="sign.title"
+              ></h3>
+              <p
+                class="mb-6 mt-4 text-base leading-7 text-muted"
+                &children="sign.description"
+              ></p>
+              <a
+                class="mt-auto inline-flex min-h-11 items-center border border-ink px-4 py-3 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+                &href="sign.pdf"
+                &aria-label="sign.downloadLabel"
+                download
+                >Download A4 PDF</a
+              >
+            </div>
+          </article>
+        </noop>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-ink px-5 py-8 md:px-8">
+    <div class="mx-auto max-w-7xl">
+      <h2 class="font-headline text-2xl font-black uppercase">
+        More printed materials
+      </h2>
+      <div class="mt-4 flex flex-wrap gap-x-8 gap-y-3">
+        <a
+          class="inline-flex min-h-11 items-center font-bold underline underline-offset-4 hover:no-underline"
+          href="/admin/discussion-tables/"
+          >Discussion-table tents</a
+        >
+        <a
+          class="inline-flex min-h-11 items-center font-bold underline underline-offset-4 hover:no-underline"
+          href="/admin/dinner/#entrance-sign"
+          >Speakers’ dinner entrance sign</a
+        >
+      </div>
+    </div>
+  </section>
+</BaseLayout>

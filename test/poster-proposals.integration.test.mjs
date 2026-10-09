@@ -313,6 +313,9 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
     "sdlcai-2026-screen-ad.svg",
     "sdlcai-2026-screen-ad.pdf",
     "sdlcai-2026-discussion-tables.pdf",
+    "sdlcai-2026-venue-signs-a4.pdf",
+    "venue-signs/sdlcai-2026-welcome-a4.pdf",
+    "venue-signs/sdlcai-2026-welcome-a4.png",
   ]) {
     const assetPath = `/assets/slides/${filename}`;
     const assetRedirect = await worker.fetch(`${origin}${assetPath}`, {
@@ -342,7 +345,11 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
     assert.equal(assetResponse.headers.get("location"), null);
     assert.match(
       assetResponse.headers.get("content-type") ?? "",
-      filename.endsWith(".svg") ? /^image\/svg\+xml/u : /^application\/pdf/u,
+      filename.endsWith(".svg")
+        ? /^image\/svg\+xml/u
+        : filename.endsWith(".png")
+          ? /^image\/png/u
+          : /^application\/pdf/u,
     );
     assert.equal(assetResponse.headers.get("cache-control"), "no-store");
     if (filename.endsWith(".pdf")) {
@@ -351,6 +358,15 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   }
 
   const adminPages = [
+    {
+      pathname: "/admin/venue-signs/",
+      includes: [
+        /data-venue-sign/,
+        /href="\/assets\/slides\/sdlcai-2026-venue-signs-a4\.pdf"/,
+        /venue-signs\/sdlcai-2026-qa-a4\.pdf/,
+      ],
+      excludes: [/data-admin-poster-proposals/],
+    },
     {
       pathname: "/admin/music/",
       includes: [
