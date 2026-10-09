@@ -451,12 +451,8 @@ function readAnnouncementMessage(): string | null {
     [
       `Subject: ${subject.trim()}`,
       text_body.trim(),
-      speaker_text_body.trim()
-        ? `Speaker information (selected speakers)\n${speaker_text_body.trim()}`
-        : "",
-      dinner_text_body.trim()
-        ? `Dinner information (dinner audience)\n${dinner_text_body.trim()}`
-        : "",
+      speaker_text_body.trim(),
+      dinner_text_body.trim(),
     ]
       .filter(Boolean)
       .join("\n\n") + "\n"
@@ -623,12 +619,8 @@ function renderCampaign(campaign: AnnouncementCampaign): HTMLElement {
       "my-4 whitespace-pre-wrap break-words text-sm",
       [
         campaign.text_body,
-        campaign.speaker_text_body
-          ? `Speaker information\n${campaign.speaker_text_body}`
-          : "",
-        campaign.dinner_text_body
-          ? `Dinner information\n${campaign.dinner_text_body}`
-          : "",
+        campaign.speaker_text_body,
+        campaign.dinner_text_body,
       ]
         .filter(Boolean)
         .join("\n\n"),

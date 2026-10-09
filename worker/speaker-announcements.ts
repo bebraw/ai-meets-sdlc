@@ -746,10 +746,10 @@ function announcementBody(
   return [
     input.textBody,
     groups.includes("speakers") && input.speakerTextBody
-      ? `Speaker information\n${input.speakerTextBody}`
+      ? input.speakerTextBody
       : "",
     groups.includes("dinner") && input.dinnerTextBody
-      ? `Dinner information\n${input.dinnerTextBody}`
+      ? input.dinnerTextBody
       : "",
   ]
     .filter(Boolean)
