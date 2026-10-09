@@ -189,6 +189,9 @@ const announcementStatus = document.querySelector<HTMLElement>(
 const announcementPreviewPanel = document.querySelector<HTMLElement>(
   "[data-admin-announcement-preview-panel]",
 );
+const announcementHtmlPreview = document.querySelector<HTMLIFrameElement>(
+  "[data-admin-announcement-html-preview]",
+);
 const announcementConfirm = document.querySelector<HTMLInputElement>(
   "[data-admin-announcement-confirm]",
 );
@@ -198,6 +201,7 @@ const announcementSend = document.querySelector<HTMLButtonElement>(
 let previewedRecipientCount: number | null = null;
 let previewToken: string | null = null;
 let announcementBusy = false;
+let announcementPreviewResizeObserver: ResizeObserver | null = null;
 
 if (container) void loadSpeakers();
 if (location.hash === "#announcements") {
@@ -506,9 +510,6 @@ function setAnnouncementPreview(preview: AnnouncementPreviewResponse): void {
     "[data-admin-announcement-recipient-list]",
     `${recipientNames || "None"}.${excluded}`,
   );
-  const frame = document.querySelector<HTMLIFrameElement>(
-    "[data-admin-announcement-html-preview]",
-  );
   const counts = preview.audience_counts;
   setTextContent(
     "[data-admin-announcement-audience-counts]",
@@ -525,7 +526,7 @@ function setAnnouncementPreview(preview: AnnouncementPreviewResponse): void {
       "[data-admin-announcement-text-preview]",
       selected?.text_body ?? preview.text_body,
     );
-    if (frame) frame.srcdoc = selected?.html_body ?? preview.html_body;
+    setAnnouncementHtmlPreview(selected?.html_body ?? preview.html_body);
   };
   if (variant) {
     variant.replaceChildren(
@@ -543,9 +544,31 @@ function setAnnouncementPreview(preview: AnnouncementPreviewResponse): void {
   if (announcementSend) announcementSend.disabled = true;
 }
 
+function setAnnouncementHtmlPreview(html: string): void {
+  const frame = announcementHtmlPreview;
+  if (!frame) return;
+  announcementPreviewResizeObserver?.disconnect();
+  announcementPreviewResizeObserver = null;
+  frame.onload = () => {
+    const body = frame.contentDocument?.body;
+    if (!body || announcementPreviewPanel?.hidden) return;
+    const fitContent = () => {
+      frame.style.height = `${Math.ceil(body.getBoundingClientRect().height)}px`;
+    };
+    announcementPreviewResizeObserver = new ResizeObserver(fitContent);
+    announcementPreviewResizeObserver.observe(body);
+    fitContent();
+  };
+  // The sandbox permits measuring the generated email, while scripts stay disabled.
+  frame.srcdoc = html;
+}
+
 function invalidateAnnouncementPreview(): void {
   previewedRecipientCount = null;
   previewToken = null;
+  announcementPreviewResizeObserver?.disconnect();
+  announcementPreviewResizeObserver = null;
+  if (announcementHtmlPreview) announcementHtmlPreview.onload = null;
   announcementPreviewPanel?.setAttribute("hidden", "");
   if (announcementConfirm) announcementConfirm.checked = false;
   if (announcementSend) announcementSend.disabled = true;

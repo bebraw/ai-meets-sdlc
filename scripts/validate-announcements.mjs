@@ -144,7 +144,12 @@ try {
     .fill("General event details for speakers and dinner guests.");
   await panel
     .locator('[name="speaker_text_body"]')
-    .fill("Speaker-specific instructions.");
+    .fill(
+      "Speaker-specific instructions.\n\n" +
+        "Please arrive before your session to check the microphone, connect your laptop, and review your presentation with the event team.\n\n".repeat(
+          8,
+        ),
+    );
   await panel
     .locator('[name="dinner_text_body"]')
     .fill("Dinner-specific instructions.");
@@ -167,7 +172,33 @@ try {
     /1 speakers only \/ 1 dinner only \/ 1 in both/u,
   );
   const variant = panel.locator("[data-admin-announcement-variant]");
+  const htmlPreview = panel.locator("[data-admin-announcement-html-preview]");
+  const assertPreviewFits = async (hasSpeaker) => {
+    await page.waitForFunction((hasSpeaker) => {
+      const frame = document.querySelector(
+        "[data-admin-announcement-html-preview]",
+      );
+      const body = frame?.contentDocument?.body;
+      if (!body || body.innerText.includes("Speaker-specific") !== hasSpeaker)
+        return false;
+      const height = Math.ceil(body.getBoundingClientRect().height);
+      return (
+        height > 0 &&
+        frame.clientHeight >= height &&
+        frame.clientHeight <= Math.max(320, height) + 1
+      );
+    }, hasSpeaker);
+  };
   await variant.selectOption({ label: "Speakers and dinner" });
+  await assertPreviewFits(true);
+  const longPreviewHeight = await htmlPreview.evaluate(
+    (frame) => frame.clientHeight,
+  );
+  assert.ok(longPreviewHeight > 600, "long messages expand the HTML preview");
+  assert.ok(
+    (await htmlPreview.boundingBox()).width >= 640,
+    "desktop preview has a full email width",
+  );
   assert.match(
     await panel.locator("[data-admin-announcement-text-preview]").textContent(),
     /Speaker-specific[\s\S]*Dinner-specific/u,
@@ -178,6 +209,12 @@ try {
     "changing the preview version preserves confirmation",
   );
   await variant.selectOption({ label: "Dinner only" });
+  await assertPreviewFits(false);
+  assert.ok(
+    (await htmlPreview.evaluate((frame) => frame.clientHeight)) <
+      longPreviewHeight,
+    "switching to a shorter audience message shrinks the preview",
+  );
   assert.doesNotMatch(
     await panel.locator("[data-admin-announcement-text-preview]").textContent(),
     /Speaker-specific/u,
@@ -207,10 +244,15 @@ try {
   await panel.locator("[data-admin-announcement-select-all]").click();
   await previewButton.click();
   await preview.waitFor({ state: "visible" });
+  await variant.selectOption({ label: "Speakers and dinner" });
+  await assertPreviewFits(true);
+  await preview.screenshot({
+    path: path.join(tmpdir(), "sdlcai-announcements-preview-desktop.png"),
+  });
   const axe = await readFile("node_modules/axe-core/axe.min.js", "utf8");
   for (const width of [1440, 390, 320]) {
     await page.setViewportSize({ width, height: 1000 });
-    await page.waitForTimeout(250);
+    await assertPreviewFits(true);
     await page.addScriptTag({ content: axe });
     const violations = await page.evaluate(async () =>
       (
@@ -235,6 +277,16 @@ try {
       `Announcement overflow at ${width}px`,
     );
   }
+  await panel.getByText("Exact text body", { exact: true }).click();
+  assert.equal(
+    await panel.locator("[data-admin-announcement-text-preview]").isVisible(),
+    true,
+    "the plain-text version can be expanded",
+  );
+  await panel.getByText("Exact text body", { exact: true }).click();
+  await preview.screenshot({
+    path: path.join(tmpdir(), "sdlcai-announcements-preview-mobile.png"),
+  });
   await page.screenshot({
     path: path.join(tmpdir(), "sdlcai-announcements-320.png"),
   });
@@ -257,7 +309,7 @@ try {
   assert.equal(await preview.isVisible(), false);
   assert.deepEqual(errors, []);
   console.log(
-    "Announcement browser checks passed: guest email editing, authorization, overlapping and dinner-only audiences, version previews, confirmation, mobile layout and accessibility. No real email sent.",
+    "Announcement browser checks passed: guest email editing, authorization, overlapping and dinner-only audiences, full-height responsive previews, confirmation, mobile layout and accessibility. No real email sent.",
   );
   await context.close();
   await browser.close();
