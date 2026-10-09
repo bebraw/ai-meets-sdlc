@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import test from "node:test";
-import { Miniflare } from "miniflare";
+import { convertV4MiniflareOptions, Miniflare } from "miniflare";
 import { backupSpeakerReceipts } from "../worker/receipt-backups.ts";
 import { prepareReceiptRestore } from "../scripts/prepare-receipt-restore.mjs";
 
@@ -221,13 +221,15 @@ test("overlapping receipt exports keep one complete snapshot", async (t) => {
 });
 
 async function fixture(t) {
-  const mf = new Miniflare({
-    modules: true,
-    script: "export default { fetch() { return new Response('ok') } }",
-    compatibilityDate: "2026-04-30",
-    d1Databases: ["INTERESTS"],
-    r2Buckets: ["INTEREST_BACKUPS", "SPEAKER_UPLOADS"],
-  });
+  const mf = new Miniflare(
+    convertV4MiniflareOptions({
+      modules: true,
+      script: "export default { fetch() { return new Response('ok') } }",
+      compatibilityDate: "2026-04-30",
+      d1Databases: ["INTERESTS"],
+      r2Buckets: ["INTEREST_BACKUPS", "SPEAKER_UPLOADS"],
+    }),
+  );
   t.after(() => mf.dispose());
   const db = await mf.getD1Database("INTERESTS");
   for (const sql of migration

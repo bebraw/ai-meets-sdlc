@@ -1,18 +1,20 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
-import { Miniflare } from "miniflare";
+import { convertV4MiniflareOptions, Miniflare } from "miniflare";
 import { backupAttendees } from "../worker/backups.ts";
 import { decryptText, encryptText } from "../worker/form-utils.ts";
 
 test("attendee backups preserve encrypted roster and arrival history, omit credentials, and deduplicate snapshots", async (t) => {
-  const mf = new Miniflare({
-    modules: true,
-    script: "export default { fetch() { return new Response('ok') } }",
-    compatibilityDate: "2026-04-30",
-    d1Databases: ["INTERESTS"],
-    r2Buckets: ["INTEREST_BACKUPS"],
-  });
+  const mf = new Miniflare(
+    convertV4MiniflareOptions({
+      modules: true,
+      script: "export default { fetch() { return new Response('ok') } }",
+      compatibilityDate: "2026-04-30",
+      d1Databases: ["INTERESTS"],
+      r2Buckets: ["INTEREST_BACKUPS"],
+    }),
+  );
   t.after(() => mf.dispose());
   const db = await mf.getD1Database("INTERESTS"),
     bucket = await mf.getR2Bucket("INTEREST_BACKUPS");

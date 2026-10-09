@@ -3,7 +3,7 @@ import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 import { format } from "node:util";
 import { expectConsoleErrors } from "./helpers/expected-console-errors.mjs";
-import { Miniflare } from "miniflare";
+import { convertV4MiniflareOptions, Miniflare } from "miniflare";
 import {
   previewSpeakerAnnouncement,
   sendSpeakerAnnouncement,
@@ -447,12 +447,14 @@ test("guest update emails are encrypted, optional, validated, revision guarded a
 });
 
 async function fixture(t) {
-  const mf = new Miniflare({
-    modules: true,
-    script: "export default {fetch() {return new Response('ok')}}",
-    compatibilityDate: "2026-04-30",
-    d1Databases: ["INTERESTS"],
-  });
+  const mf = new Miniflare(
+    convertV4MiniflareOptions({
+      modules: true,
+      script: "export default {fetch() {return new Response('ok')}}",
+      compatibilityDate: "2026-04-30",
+      d1Databases: ["INTERESTS"],
+    }),
+  );
   t.after(() => mf.dispose());
   const db = await mf.getD1Database("INTERESTS");
   for (const migration of migrations)

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 import { expectConsoleErrors } from "./helpers/expected-console-errors.mjs";
-import { Miniflare } from "miniflare";
+import { convertV4MiniflareOptions, Miniflare } from "miniflare";
 import {
   readCanonicalSpeaker,
   hashCanonicalContent,
@@ -370,12 +370,14 @@ function reviewUrl(message) {
 }
 
 async function fixture(t) {
-  const mf = new Miniflare({
-    modules: true,
-    script: "export default { fetch() { return new Response('ok') } }",
-    compatibilityDate: "2026-04-30",
-    d1Databases: ["INTERESTS"],
-  });
+  const mf = new Miniflare(
+    convertV4MiniflareOptions({
+      modules: true,
+      script: "export default { fetch() { return new Response('ok') } }",
+      compatibilityDate: "2026-04-30",
+      d1Databases: ["INTERESTS"],
+    }),
+  );
   t.after(() => mf.dispose());
   const db = await mf.getD1Database("INTERESTS");
   for (const migration of migrations) {
