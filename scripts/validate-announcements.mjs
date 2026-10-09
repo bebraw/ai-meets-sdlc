@@ -155,6 +155,74 @@ try {
     .fill("Dinner-specific instructions.");
   const closing = panel.locator('[name="closing_text_body"]');
   await closing.fill("Best,\nJuho & the SDLCAI team");
+  await panel.locator('[name="test_email"]').fill("test@example.test");
+  const message = panel.locator('[name="text_body"]');
+  const originalMessage = await message.inputValue();
+  await context.grantPermissions(["clipboard-read", "clipboard-write"], {
+    origin,
+  });
+  await message.press("ControlOrMeta+A");
+  await message.press("ControlOrMeta+C");
+  assert.equal(
+    await page.evaluate(() => navigator.clipboard.readText()),
+    originalMessage,
+  );
+  await closing.fill("");
+  await closing.press("ControlOrMeta+V");
+  assert.equal(
+    await closing.inputValue(),
+    originalMessage,
+    "native paste works in the closing field",
+  );
+  await closing.press("ControlOrMeta+A");
+  await closing.press("ControlOrMeta+X");
+  assert.equal(
+    await closing.inputValue(),
+    "",
+    "native cut works in message fields",
+  );
+  await closing.fill("Best,\nJuho & the SDLCAI team");
+  for (const dark of [false, true]) {
+    await page.evaluate(
+      (dark) => document.documentElement.classList.toggle("dark", dark),
+      dark,
+    );
+    for (const name of [
+      "subject",
+      "text_body",
+      "speaker_text_body",
+      "dinner_text_body",
+      "closing_text_body",
+      "test_email",
+    ]) {
+      const colors = await panel
+        .locator(`[name="${name}"]`)
+        .evaluate((field) => ({
+          background: getComputedStyle(field).backgroundColor,
+          selection: getComputedStyle(field, "::selection").backgroundColor,
+          selectedText: getComputedStyle(field, "::selection").color,
+        }));
+      assert.notEqual(
+        colors.selection,
+        colors.background,
+        `visible ${name} selection in ${dark ? "dark" : "light"} mode`,
+      );
+      assert.notEqual(
+        colors.selectedText,
+        colors.selection,
+        "selected text remains readable",
+      );
+    }
+  }
+  await page.evaluate(() => document.documentElement.classList.remove("dark"));
+  await panel.locator("[data-admin-announcement-copy]").click();
+  await panel
+    .getByText("Subject and message copied.", { exact: true })
+    .waitFor();
+  assert.match(
+    await page.evaluate(() => navigator.clipboard.readText()),
+    /Speaker-specific[\s\S]*Dinner-specific[\s\S]*Best,\nJuho & the SDLCAI team/u,
+  );
   const preview = page.locator("[data-admin-announcement-preview-panel]");
   const confirm = panel.locator("[data-admin-announcement-confirm]");
   const send = panel.locator("[data-admin-announcement-send]");
@@ -250,6 +318,60 @@ try {
   await panel.locator("[data-admin-announcement-select-none]").click();
   await previewButton.click();
   await preview.waitFor({ state: "visible" });
+  await confirm.check();
+  const draftFields = [
+    "category",
+    "subject",
+    "text_body",
+    "speaker_text_body",
+    "dinner_text_body",
+    "closing_text_body",
+    "test_email",
+  ];
+  const draft = await Promise.all(
+    draftFields.map((name) => panel.locator(`[name="${name}"]`).inputValue()),
+  );
+  await page.reload();
+  await panel.locator('[name="speaker_id"]').first().waitFor();
+  assert.equal(
+    await panel.getAttribute("open"),
+    "",
+    "restoring a draft opens the composer",
+  );
+  assert.deepEqual(
+    await Promise.all(
+      draftFields.map((name) => panel.locator(`[name="${name}"]`).inputValue()),
+    ),
+    draft,
+    "reload restores every message field",
+  );
+  assert.equal(
+    await panel.locator('[name="include_dinner"]').isChecked(),
+    true,
+  );
+  assert.equal(
+    await panel.locator('[name="speaker_id"]:checked').count(),
+    0,
+    "reload preserves dinner-only recipients",
+  );
+  assert.equal(await preview.isVisible(), false);
+  assert.equal(await confirm.isChecked(), false);
+  assert.equal(
+    await send.isDisabled(),
+    true,
+    "restoring a draft requires fresh preview and confirmation",
+  );
+  await page.locator("[data-admin-speakers-refresh]").click();
+  await page.waitForFunction(
+    () => !document.querySelector("[data-admin-speakers-refresh]").disabled,
+  );
+  assert.equal(
+    await panel.locator('[name="speaker_id"]:checked').count(),
+    0,
+    "refreshing speakers preserves recipient choices",
+  );
+  await previewButton.click();
+  await preview.waitFor({ state: "visible" });
   assert.equal(
     await panel
       .locator("[data-admin-announcement-recipient-count]")
@@ -331,7 +453,7 @@ try {
   assert.equal(await preview.isVisible(), false);
   assert.deepEqual(errors, []);
   console.log(
-    "Announcement browser checks passed: guest email editing, authorization, overlapping and dinner-only audiences, full-height responsive previews, confirmation, mobile layout and accessibility. No real email sent.",
+    "Announcement browser checks passed: guest email editing, authorization, native copy/cut/paste, visible text selection, draft recovery after reload, preserved recipients, full-height responsive previews, confirmation, mobile layout and accessibility. No real email sent.",
   );
   await context.close();
   await browser.close();

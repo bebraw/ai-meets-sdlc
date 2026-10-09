@@ -59,6 +59,12 @@
 }
 
 @layer components {
+  [data-admin-announcement-form] input::selection,
+  [data-admin-announcement-form] textarea::selection {
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
   [data-admin-workspace-group] li:last-child:nth-child(odd) {
     grid-column: 1 / -1;
   }

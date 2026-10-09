@@ -203,6 +203,20 @@ let previewedRecipientCount: number | null = null;
 let previewToken: string | null = null;
 let announcementBusy = false;
 let announcementPreviewResizeObserver: ResizeObserver | null = null;
+const announcementDraftKey = "sdlcai-announcement-draft-v1";
+const announcementDraftFields = [
+  "category",
+  "subject",
+  "text_body",
+  "speaker_text_body",
+  "dinner_text_body",
+  "closing_text_body",
+  "test_email",
+] as const;
+let restoredAnnouncementSpeakerIds: Set<string> | null = null;
+let announcementDraftUnsaved = false;
+
+restoreAnnouncementDraft();
 
 if (container) void loadSpeakers();
 if (location.hash === "#announcements") {
@@ -270,10 +284,115 @@ announcementForm?.addEventListener("input", (event) => {
   )
     return;
   invalidateAnnouncementPreview();
+  saveAnnouncementDraft();
 });
+window.addEventListener("beforeunload", (event) => {
+  if (announcementDraftUnsaved) event.preventDefault();
+});
+
+function saveAnnouncementDraft(): void {
+  if (!announcementForm) return;
+  const data = new FormData(announcementForm);
+  const fields = Object.fromEntries(
+    announcementDraftFields.map((name) => [name, String(data.get(name) ?? "")]),
+  );
+  const speakerIds = announcementSpeakers?.childElementCount
+    ? data.getAll("speaker_id").map(String)
+    : restoredAnnouncementSpeakerIds
+      ? [...restoredAnnouncementSpeakerIds]
+      : null;
+  try {
+    localStorage.setItem(
+      announcementDraftKey,
+      JSON.stringify({
+        fields,
+        includeDinner: data.get("include_dinner") === "on",
+        speakerIds,
+      }),
+    );
+    announcementDraftUnsaved = false;
+    setTextContent(
+      "[data-admin-announcement-draft-status]",
+      "Draft saved in this browser.",
+    );
+  } catch {
+    announcementDraftUnsaved = true;
+    setTextContent(
+      "[data-admin-announcement-draft-status]",
+      "Draft saving is unavailable. Download .txt before leaving this page.",
+    );
+  }
+}
+
+function restoreAnnouncementDraft(): void {
+  if (!announcementForm) return;
+  try {
+    const saved: unknown = JSON.parse(
+      localStorage.getItem(announcementDraftKey) ?? "null",
+    );
+    if (
+      !saved ||
+      typeof saved !== "object" ||
+      !("fields" in saved) ||
+      !saved.fields ||
+      typeof saved.fields !== "object" ||
+      Array.isArray(saved.fields)
+    )
+      return;
+    for (const name of announcementDraftFields) {
+      const value: unknown = Reflect.get(saved.fields, name);
+      const field = announcementForm.elements.namedItem(name);
+      if (
+        typeof value !== "string" ||
+        value.length > 10000 ||
+        (name === "category" &&
+          value !== "operational" &&
+          value !== "promotion")
+      )
+        continue;
+      if (
+        field instanceof HTMLInputElement ||
+        field instanceof HTMLTextAreaElement ||
+        field instanceof HTMLSelectElement
+      )
+        field.value = value;
+    }
+    const dinner = announcementForm.elements.namedItem("include_dinner");
+    if (
+      dinner instanceof HTMLInputElement &&
+      "includeDinner" in saved &&
+      typeof saved.includeDinner === "boolean"
+    )
+      dinner.checked = saved.includeDinner;
+    if (
+      "speakerIds" in saved &&
+      Array.isArray(saved.speakerIds) &&
+      saved.speakerIds.every((id) => typeof id === "string")
+    )
+      restoredAnnouncementSpeakerIds = new Set(saved.speakerIds);
+    document
+      .querySelector<HTMLDetailsElement>("[data-admin-announcement-panel]")
+      ?.setAttribute("open", "");
+    setTextContent(
+      "[data-admin-announcement-draft-status]",
+      "Draft restored from this browser. Preview recipients before sending.",
+    );
+  } catch {
+    // Keep the form usable if stored data is invalid or browser storage is blocked.
+  }
+}
 
 function renderAnnouncementSpeakers(speakers: AdminSpeakerItem[]): void {
   if (!announcementSpeakers) return;
+  const selected = announcementSpeakers.childElementCount
+    ? new Set(
+        [
+          ...announcementSpeakers.querySelectorAll<HTMLInputElement>(
+            'input[name="speaker_id"]:checked',
+          ),
+        ].map((checkbox) => checkbox.value),
+      )
+    : restoredAnnouncementSpeakerIds;
 
   announcementSpeakers.replaceChildren(
     ...speakers.map((speaker) => {
@@ -286,7 +405,7 @@ function renderAnnouncementSpeakers(speakers: AdminSpeakerItem[]): void {
       checkbox.type = "checkbox";
       checkbox.name = "speaker_id";
       checkbox.value = speaker.speaker_id;
-      checkbox.checked = true;
+      checkbox.checked = selected?.has(speaker.speaker_id) ?? true;
       const copy = node("span", "grid gap-1");
       copy.appendChild(node("strong", "uppercase", speaker.name));
       copy.appendChild(
@@ -314,6 +433,7 @@ function setAnnouncementSelection(selected: boolean): void {
     checkbox.checked = selected;
   }
   invalidateAnnouncementPreview();
+  saveAnnouncementDraft();
 }
 
 async function previewAnnouncement(): Promise<void> {

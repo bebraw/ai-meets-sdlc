@@ -246,6 +246,9 @@ Use **Send speaker and dinner announcement** at `/admin/speakers/#announcements`
 for a shared update. Select speakers, include attending dinner guests, or select
 no speakers for a dinner-only message. The preview shows speaker-only,
 dinner-only and overlapping recipients, plus contacts excluded from delivery.
+The composer saves its draft and recipient choices in the current browser and
+restores them after a reload. Restored drafts require a fresh recipient preview
+and confirmation before sending. Use **Download .txt** for a portable backup.
 Recipients are combined by normalized email address; each address receives one
 separately addressed message. Optional speaker and dinner sections are appended
 for their respective audiences, with both sections in the overlap's one email.
