@@ -153,6 +153,8 @@ try {
   await panel
     .locator('[name="dinner_text_body"]')
     .fill("Dinner-specific instructions.");
+  const closing = panel.locator('[name="closing_text_body"]');
+  await closing.fill("Best,\nJuho & the SDLCAI team");
   const preview = page.locator("[data-admin-announcement-preview-panel]");
   const confirm = panel.locator("[data-admin-announcement-confirm]");
   const send = panel.locator("[data-admin-announcement-send]");
@@ -201,7 +203,7 @@ try {
   );
   assert.match(
     await panel.locator("[data-admin-announcement-text-preview]").textContent(),
-    /Speaker-specific[\s\S]*Dinner-specific/u,
+    /Speaker-specific[\s\S]*Dinner-specific[\s\S]*Best,\nJuho & the SDLCAI team/u,
   );
   assert.equal(
     await preview.isVisible(),
@@ -219,8 +221,27 @@ try {
     await panel.locator("[data-admin-announcement-text-preview]").textContent(),
     /Speaker-specific/u,
   );
+  assert.match(
+    await panel.locator("[data-admin-announcement-text-preview]").textContent(),
+    /Dinner-specific[\s\S]*Best,\nJuho & the SDLCAI team/u,
+  );
+  const downloadEvent = page.waitForEvent("download");
+  await panel.locator("[data-admin-announcement-download]").click();
+  const download = await downloadEvent;
+  const downloadPath = path.join(tmpdir(), "sdlcai-announcement-download.txt");
+  await download.saveAs(downloadPath);
+  assert.match(
+    await readFile(downloadPath, "utf8"),
+    /Speaker-specific[\s\S]*Dinner-specific[\s\S]*Best,\nJuho & the SDLCAI team/u,
+  );
   await confirm.check();
   assert.equal(await send.isEnabled(), true);
+  await closing.fill("Best,\nJuho");
+  assert.equal(await preview.isVisible(), false);
+  assert.equal(await send.isDisabled(), true);
+  await previewButton.click();
+  await preview.waitFor({ state: "visible" });
+  await confirm.check();
   await panel
     .locator('[name="text_body"]')
     .fill("A revised general message for the same recipients.");
@@ -305,6 +326,7 @@ try {
     .waitFor();
   assert.equal(submission.confirm_recipient_count, 3);
   assert.equal(submission.include_dinner, true);
+  assert.equal(submission.closing_text_body, "Best,\nJuho");
   assert.ok(submission.preview_token);
   assert.equal(await preview.isVisible(), false);
   assert.deepEqual(errors, []);

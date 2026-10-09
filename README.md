@@ -249,6 +249,10 @@ dinner-only and overlapping recipients, plus contacts excluded from delivery.
 Recipients are combined by normalized email address; each address receives one
 separately addressed message. Optional speaker and dinner sections are appended
 for their respective audiences, with both sections in the overlap's one email.
+The optional closing / signature follows these sections for every recipient and
+is included in previews, test messages, copied or downloaded messages, history
+and retries. Apply migration `0032_add_announcement_closing.sql` before deploying;
+the normal deployment command applies it.
 The preview selector shows each version; test messages include all optional
 sections. Saved speaker preferences, suppressed addresses and retention limits
 apply even when the same address appears in the dinner audience. Dinner guests

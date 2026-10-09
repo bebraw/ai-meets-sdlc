@@ -123,6 +123,7 @@ export interface SpeakerAnnouncementInput {
   includeDinner: boolean;
   speakerTextBody: string;
   dinnerTextBody: string;
+  closingTextBody: string;
   speakerIds: string[];
   subject: string;
   textBody: string;
@@ -141,6 +142,7 @@ export interface SpeakerEmailCampaignRow {
   include_dinner: number;
   speaker_text_body: string;
   dinner_text_body: string;
+  closing_text_body: string;
   campaign_id: string;
   category: SpeakerEmailCategory;
   completed_at: string | null;

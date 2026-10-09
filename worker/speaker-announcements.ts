@@ -36,7 +36,7 @@ export async function getSpeakerAnnouncements(
       `SELECT
        campaign_id,
        category,
-       include_dinner, speaker_text_body, dinner_text_body,
+       include_dinner, speaker_text_body, dinner_text_body, closing_text_body,
        subject,
        text_body,
        html_body,
@@ -159,7 +159,10 @@ export async function previewSpeakerAnnouncement(
       both,
     },
     variants,
-    html_body: renderAnnouncementHtml("{{speaker name}}", input.textBody),
+    html_body: renderAnnouncementHtml(
+      "{{speaker name}}",
+      announcementBody(input, []),
+    ),
     recipient_count: recipients.length,
     recipients: recipients.map(({ name, speakerId, groups }) => ({
       name,
@@ -167,7 +170,10 @@ export async function previewSpeakerAnnouncement(
       groups,
     })),
     subject: input.subject,
-    text_body: renderAnnouncementText("{{speaker name}}", input.textBody),
+    text_body: renderAnnouncementText(
+      "{{speaker name}}",
+      announcementBody(input, []),
+    ),
   });
 }
 
@@ -268,7 +274,7 @@ export async function sendSpeakerAnnouncement(
   const now = new Date().toISOString();
   const previewHtml = renderAnnouncementHtml(
     "{{speaker name}}",
-    input.textBody,
+    announcementBody(input, []),
   );
   const inserted = await env
     .INTERESTS!.prepare(
@@ -280,8 +286,8 @@ export async function sendSpeakerAnnouncement(
          html_body,
          status,
          recipient_count,
-         created_at, include_dinner, speaker_text_body, dinner_text_body, confirmation_token
-       ) VALUES (?1, ?2, ?3, ?4, ?5, 'sending', ?6, ?7, ?8, ?9, ?10, ?11) RETURNING campaign_id`,
+         created_at, include_dinner, speaker_text_body, dinner_text_body, closing_text_body, confirmation_token
+       ) VALUES (?1, ?2, ?3, ?4, ?5, 'sending', ?6, ?7, ?8, ?9, ?10, ?11, ?12) RETURNING campaign_id`,
     )
     .bind(
       campaignId,
@@ -294,6 +300,7 @@ export async function sendSpeakerAnnouncement(
       input.includeDinner ? 1 : 0,
       input.speakerTextBody,
       input.dinnerTextBody,
+      input.closingTextBody,
       token,
     )
     .first();
@@ -382,7 +389,7 @@ export async function retrySpeakerAnnouncement(
       `SELECT
        campaign_id,
        category,
-       include_dinner, speaker_text_body, dinner_text_body,
+       include_dinner, speaker_text_body, dinner_text_body, closing_text_body,
        subject,
        text_body,
        html_body,
@@ -493,6 +500,7 @@ export async function retrySpeakerAnnouncement(
           textBody: campaign.text_body,
           speakerTextBody: campaign.speaker_text_body,
           dinnerTextBody: campaign.dinner_text_body,
+          closingTextBody: campaign.closing_text_body,
         },
         groups,
       ),
@@ -586,7 +594,17 @@ function parseSpeakerAnnouncementInput(
     typeof body.dinner_text_body === "string"
       ? body.dinner_text_body.trim().replace(/\r\n?/gu, "\n")
       : "";
-  if (speakerTextBody.length + dinnerTextBody.length + textBody.length > 10000)
+  const closingTextBody =
+    typeof body.closing_text_body === "string"
+      ? body.closing_text_body.trim().replace(/\r\n?/gu, "\n")
+      : "";
+  if (
+    speakerTextBody.length +
+      dinnerTextBody.length +
+      closingTextBody.length +
+      textBody.length >
+    10000
+  )
     return {
       error: "Keep the combined message to 10,000 characters or fewer.",
     };
@@ -608,6 +626,7 @@ function parseSpeakerAnnouncementInput(
     includeDinner,
     speakerTextBody,
     dinnerTextBody,
+    closingTextBody,
     speakerIds: uniqueSpeakerIds,
     subject,
     textBody,
@@ -739,7 +758,7 @@ async function finalizeCampaign(
 function announcementBody(
   input: Pick<
     SpeakerAnnouncementInput,
-    "textBody" | "speakerTextBody" | "dinnerTextBody"
+    "textBody" | "speakerTextBody" | "dinnerTextBody" | "closingTextBody"
   >,
   groups: readonly string[],
 ): string {
@@ -751,6 +770,7 @@ function announcementBody(
     groups.includes("dinner") && input.dinnerTextBody
       ? input.dinnerTextBody
       : "",
+    input.closingTextBody,
   ]
     .filter(Boolean)
     .join("\n\n");

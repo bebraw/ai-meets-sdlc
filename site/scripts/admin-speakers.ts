@@ -152,6 +152,7 @@ interface AnnouncementCampaign {
   text_body: string;
   speaker_text_body: string;
   dinner_text_body: string;
+  closing_text_body: string;
   deliveries: Array<{
     name: string;
     source_ids: string | null;
@@ -428,6 +429,7 @@ function readAnnouncementPayload(): {
   include_dinner: boolean;
   speaker_text_body: string;
   dinner_text_body: string;
+  closing_text_body: string;
   speaker_ids: string[];
   subject: string;
   text_body: string;
@@ -438,6 +440,7 @@ function readAnnouncementPayload(): {
     include_dinner: formData.get("include_dinner") === "on",
     speaker_text_body: String(formData.get("speaker_text_body") ?? ""),
     dinner_text_body: String(formData.get("dinner_text_body") ?? ""),
+    closing_text_body: String(formData.get("closing_text_body") ?? ""),
     speaker_ids: formData.getAll("speaker_id").map(String),
     subject: String(formData.get("subject") ?? ""),
     text_body: String(formData.get("text_body") ?? ""),
@@ -445,8 +448,13 @@ function readAnnouncementPayload(): {
 }
 
 function readAnnouncementMessage(): string | null {
-  const { subject, text_body, speaker_text_body, dinner_text_body } =
-    readAnnouncementPayload();
+  const {
+    subject,
+    text_body,
+    speaker_text_body,
+    dinner_text_body,
+    closing_text_body,
+  } = readAnnouncementPayload();
   if (!subject.trim() || !text_body.trim()) {
     setAnnouncementStatus("Enter a subject and message first.", true);
     return null;
@@ -457,6 +465,7 @@ function readAnnouncementMessage(): string | null {
       text_body.trim(),
       speaker_text_body.trim(),
       dinner_text_body.trim(),
+      closing_text_body.trim(),
     ]
       .filter(Boolean)
       .join("\n\n") + "\n"
@@ -644,6 +653,7 @@ function renderCampaign(campaign: AnnouncementCampaign): HTMLElement {
         campaign.text_body,
         campaign.speaker_text_body,
         campaign.dinner_text_body,
+        campaign.closing_text_body,
       ]
         .filter(Boolean)
         .join("\n\n"),

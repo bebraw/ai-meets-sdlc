@@ -9,6 +9,7 @@ import {
   sendSpeakerAnnouncement,
   retrySpeakerAnnouncement,
   getSpeakerAnnouncements,
+  testSpeakerAnnouncement,
 } from "../worker/speaker-announcements.ts";
 import {
   handleAdminDinnerGuest,
@@ -35,6 +36,7 @@ const input = {
   text_body: "General information for everyone attending our event.",
   speaker_text_body: "Speaker-only setup instructions.",
   dinner_text_body: "Dinner-only arrival instructions.",
+  closing_text_body: "Best,\nJuho & the SDLCAI team",
 };
 const request = (body) =>
   new Request(origin, {
@@ -70,6 +72,22 @@ test("combined audiences deduplicate normalized email, preview overlap, flag mis
   assert.equal(p.excluded.length, 1);
   assert.equal(p.excluded[0].name, "Missing email");
   assert.equal(p.variants.length, 3);
+  for (const variant of p.variants) {
+    assert.ok(variant.text_body.includes(input.closing_text_body));
+    assert.equal(variant.text_body.split(input.closing_text_body).length, 2);
+    assert.match(variant.html_body, /Best,<br>Juho &amp; the SDLCAI team/u);
+    for (const section of [input.speaker_text_body, input.dinner_text_body]) {
+      if (variant.text_body.includes(section))
+        assert.ok(
+          variant.text_body.indexOf(section) <
+            variant.text_body.indexOf(input.closing_text_body),
+        );
+    }
+    assert.doesNotMatch(
+      variant.text_body,
+      /Speaker information|Dinner information|Closing \/ signature/u,
+    );
+  }
   const speaker = p.variants.find((v) => v.label === "Speakers only");
   assert.match(speaker.text_body, /Speaker-only/u);
   assert.doesNotMatch(speaker.text_body, /Dinner-only/u);
@@ -78,6 +96,10 @@ test("combined audiences deduplicate normalized email, preview overlap, flag mis
   assert.equal(response.status, 200);
   assert.equal(f.messages.length, 4);
   assert.equal(new Set(f.messages.map((m) => m.to)).size, 4);
+  for (const message of f.messages) {
+    assert.ok(message.text.includes(input.closing_text_body));
+    assert.match(message.html, /Best,<br>Juho &amp; the SDLCAI team/u);
+  }
   const mo = f.messages.find((m) => m.to === "mo@example.test");
   assert.match(mo.text, /Speaker-only/u);
   assert.match(mo.text, /Dinner-only/u);
@@ -94,6 +116,7 @@ test("combined audiences deduplicate normalized email, preview overlap, flag mis
   ).json();
   assert.equal(archive.campaigns[0].deliveries.length, 4);
   assert.equal(archive.campaigns[0].dinner_text_body, input.dinner_text_body);
+  assert.equal(archive.campaigns[0].closing_text_body, input.closing_text_body);
   assert.doesNotMatch(
     JSON.stringify(archive),
     /@example.test|email_fingerprint/u,
@@ -157,6 +180,15 @@ test("dinner aliases cannot bypass suppression, disabled operational mail or exp
 test("preview confirmation detects changed addresses with the same count and changed message content", async (t) => {
   const f = await fixture(t);
   const p = await preview(f);
+  assert.equal(
+    (
+      await send(f, p, {
+        ...input,
+        closing_text_body: "Regards,\nJuho",
+      })
+    ).status,
+    409,
+  );
   assert.equal(
     (
       await send(f, p, {
@@ -231,6 +263,14 @@ test("concurrent retries send only failures and recheck the original contact and
   ]);
   assert.deepEqual(retries.map((r) => r.status).sort(), [200, 409]);
   assert.equal(f.messages.length, 3);
+  const retried = f.messages.find(
+    (message) => message.to === "guest@example.test",
+  );
+  assert.ok(
+    retried.text.indexOf(input.dinner_text_body) <
+      retried.text.indexOf(input.closing_text_body),
+  );
+  assert.match(retried.html, /Best,<br>Juho &amp; the SDLCAI team/u);
   assert.equal(
     (
       await retrySpeakerAnnouncement(
@@ -281,6 +321,44 @@ test("concurrent retries send only failures and recheck the original contact and
     3,
     "changed contact and preferences are skipped instead of sending again",
   );
+});
+
+test("closing text is optional, normalized and included in the combined length limit and test messages", async (t) => {
+  const f = await fixture(t);
+  const { closing_text_body, ...withoutClosing } = input;
+  const p = await preview(f, withoutClosing);
+  assert.ok(
+    p.variants.every((variant) => !variant.text_body.includes("Best,")),
+  );
+  assert.equal(
+    (
+      await previewSpeakerAnnouncement(
+        request({ ...input, closing_text_body: "x".repeat(10_000) }),
+        f.env,
+      )
+    ).status,
+    400,
+  );
+  assert.equal(
+    (
+      await testSpeakerAnnouncement(
+        request({
+          ...input,
+          closing_text_body: "  Best,\r\nJuho & the SDLCAI team  ",
+          test_email: "test@example.test",
+        }),
+        f.env,
+      )
+    ).status,
+    200,
+  );
+  assert.equal(f.messages.length, 1);
+  assert.ok(f.messages[0].text.includes(closing_text_body));
+  assert.ok(
+    f.messages[0].text.indexOf(input.dinner_text_body) <
+      f.messages[0].text.indexOf(closing_text_body),
+  );
+  assert.match(f.messages[0].html, /Best,<br>Juho &amp; the SDLCAI team/u);
 });
 
 test("an accepted send whose database write fails keeps its claim and cannot be resent automatically", async (t) => {
