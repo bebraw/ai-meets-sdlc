@@ -486,19 +486,32 @@ npm run deploy
 `deploy` runs `quality:build` (build, types, integration tests, and generated-site
 validation), applies pending production D1 migrations, and then deploys the Worker.
 A failed migration stops deployment. It does not install or launch browsers.
-Workers Builds can keep `npm run worker:build` as the build command and
-`npm run deploy` as the deploy command.
+In Workers Builds, leave the optional **Build command** empty and set the
+**Deploy command** to `npm run deploy`. This builds and checks the site once per
+deployment. Enable **Build cache** in Cloudflare to reuse npm downloads.
 
-GitHub Actions runs the complete `quality:gate`, including responsive layout,
-slides, and accessibility checks, on pull requests and pushes to `main`. Its
-Ubuntu runner installs Chromium, WebKit, and their OS dependencies. Require the
+GitHub Actions runs four integration-test shards and four browser-check groups
+in parallel on pull requests and pushes to `main`. Browser jobs use the
+Playwright image with Chromium, WebKit, and their OS dependencies preinstalled.
+All jobs restore npm, TypeScript, and Gustwind asset caches. Require the
 `Quality gate` status check in branch protection to block merges on failures.
-The gate stops the current check and skips subsequent checks on a nonzero exit
+This aggregate check passes only when every shard and group succeeds. Run the
+complete gate locally with `npm run quality:gate`; individual groups support
+`npm run quality:gate -- --group=guests` or
+`npm run quality:gate -- --group=integration --shard=1/4`.
+Each gate stops the current check and skips subsequent checks on a nonzero exit
 or an unexpected error log, including plain `console.error` calls and colored
 Wrangler error output. Tests that deliberately trigger failures capture and
 assert their exact logs only for the failing operation; missing or extra errors
 fail those tests.
 Cloudflare Workers Builds runs independently of this workflow.
+
+`npm run build` and `npm run worker:dev` use Gustwind's incremental route cache
+for local iterations. TypeScript also reuses `.cache/types.tsbuildinfo` while
+checking changed inputs. `npm run worker:build`, tests, and deployment always
+rebuild the site from scratch, while reusing content-addressed CSS/JS assets.
+Use `npm run build:clean` for a clean local site build. To reset all compilation
+caches, remove `build/`, `.cache/`, and `.gustwind/persistent-assets/`.
 
 See [Cloudflare setup](docs/cloudflare.md) for provisioning, secrets, backup, and
 deployment notes.

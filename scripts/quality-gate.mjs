@@ -5,24 +5,71 @@ import { stripVTControlCharacters } from "node:util";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const consolePreload = new URL("./quality-console-errors.mjs", import.meta.url);
-const tasks = [
+export const browserGroups = {
+  organizers: [
+    "activity:browser-check",
+    "qa:browser-check",
+    "announcements:browser-check",
+  ],
+  guests: ["attendees:browser-check", "dinner:browser-check"],
+  assets: [
+    "badges:browser-check",
+    "speaker-slides:browser-check",
+    "slides:check",
+  ],
+  presentation: ["layout:check", "a11y:check"],
+};
+const npmStep = (name) => ({ name, command: "npm", args: ["run", name] });
+const defaultSteps = [
   "quality:build",
-  "activity:browser-check",
-  "qa:browser-check",
-  "attendees:browser-check",
-  "dinner:browser-check",
-  "announcements:browser-check",
-  "badges:browser-check",
-  "speaker-slides:browser-check",
-  "layout:check",
-  "slides:check",
-  "a11y:check",
-];
-const defaultSteps = tasks.map((name) => ({
-  name,
-  command: "npm",
-  args: ["run", name],
-}));
+  ...Object.values(browserGroups).flat(),
+].map(npmStep);
+
+// Each CI job uses the same error-log guard as the complete local gate.
+// Reject unknown groups and invalid shards instead of silently skipping checks.
+export function selectSteps(args) {
+  if (!args.length) return defaultSteps;
+  let group;
+  let shard;
+  for (const arg of args) {
+    if (arg.startsWith("--group=") && group === undefined) {
+      group = arg.slice("--group=".length);
+    } else if (arg.startsWith("--shard=") && shard === undefined) {
+      shard = arg.slice("--shard=".length);
+    } else {
+      throw new Error(`Unknown or duplicate quality-gate option: ${arg}`);
+    }
+  }
+  if (group === "integration") {
+    if (shard !== undefined) {
+      const match = /^([1-9]\d*)\/([1-9]\d*)$/u.exec(shard);
+      if (
+        !match ||
+        !Number.isSafeInteger(Number(match[1])) ||
+        !Number.isSafeInteger(Number(match[2])) ||
+        Number(match[1]) > Number(match[2])
+      ) {
+        throw new Error(`Invalid integration-test shard: ${shard}`);
+      }
+    }
+    return [
+      npmStep("worker:build"),
+      {
+        name: shard ? `integration tests (${shard})` : "integration tests",
+        command: process.execPath,
+        args: ["--test", ...(shard ? [`--test-shard=${shard}`] : [])],
+      },
+      npmStep("validate"),
+    ];
+  }
+  if (shard !== undefined) {
+    throw new Error("--shard requires --group=integration");
+  }
+  if (!Object.hasOwn(browserGroups, group)) {
+    throw new Error(`Unknown quality-gate group: ${group ?? "(missing)"}`);
+  }
+  return ["worker:build", ...browserGroups[group]].map(npmStep);
+}
 
 export async function runQualityGate(
   steps = defaultSteps,
@@ -115,5 +162,10 @@ if (
   process.argv[1] &&
   pathToFileURL(path.resolve(process.argv[1])).href === import.meta.url
 ) {
-  process.exitCode = await runQualityGate();
+  try {
+    process.exitCode = await runQualityGate(selectSteps(process.argv.slice(2)));
+  } catch (error) {
+    process.stderr.write(`${error.message}\n`);
+    process.exitCode = 1;
+  }
 }

@@ -14,10 +14,40 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  quality:
-    name: Quality gate
+  integration:
+    name: Integration tests (${{ matrix.shard }}/4)
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - uses: actions/cache@v5
+        with:
+          path: |
+            .cache/types.tsbuildinfo
+            .gustwind/persistent-assets
+          key: ${{ runner.os }}-build-v1-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-build-v1-${{ hashFiles('package-lock.json') }}-
+      - run: npm ci
+      - name: Build, test shard, and validate
+        run: npm run quality:gate -- --group=integration --shard=${{ matrix.shard }}/4
+
+  browser:
+    name: Browser checks (${{ matrix.group }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        group: [organizers, guests, assets, presentation]
     container:
       # Keep this aligned with the Playwright version in package.json.
       image: mcr.microsoft.com/playwright:v1.63.0-noble
@@ -30,6 +60,30 @@ jobs:
         with:
           node-version-file: .node-version
           cache: npm
+      - uses: actions/cache@v5
+        with:
+          path: |
+            .cache/types.tsbuildinfo
+            .gustwind/persistent-assets
+          key: ${{ runner.os }}-build-v1-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-build-v1-${{ hashFiles('package-lock.json') }}-
       - run: npm ci
-      - name: Run complete quality gate
-        run: npm run quality:gate
+      - name: Build and run browser group
+        run: npm run quality:gate -- --group=${{ matrix.group }}
+
+  quality:
+    # Preserve the required branch-protection check, including on failure/skip.
+    name: Quality gate
+    if: ${{ always() }}
+    needs: [integration, browser]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 1
+    steps:
+      - name: Require every test shard and browser group to pass
+        env:
+          INTEGRATION_RESULT: ${{ needs.integration.result }}
+          BROWSER_RESULT: ${{ needs.browser.result }}
+        run: |
+          test "$INTEGRATION_RESULT" = success
+          test "$BROWSER_RESULT" = success

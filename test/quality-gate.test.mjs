@@ -3,7 +3,11 @@ import { access, mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
-import { runQualityGate } from "../scripts/quality-gate.mjs";
+import {
+  browserGroups,
+  runQualityGate,
+  selectSteps,
+} from "../scripts/quality-gate.mjs";
 import { expectConsoleErrors } from "./helpers/expected-console-errors.mjs";
 
 for (const [name, source] of [
@@ -68,6 +72,56 @@ test("quality gate runs all successful steps and permits warnings", async () => 
     0,
   );
   assert.match(output, /completed final check/u);
+});
+
+test("CI browser groups cover every browser check exactly once", () => {
+  const expected = [
+    "activity:browser-check",
+    "qa:browser-check",
+    "attendees:browser-check",
+    "dinner:browser-check",
+    "announcements:browser-check",
+    "badges:browser-check",
+    "speaker-slides:browser-check",
+    "layout:check",
+    "slides:check",
+    "a11y:check",
+  ].sort();
+  const grouped = Object.keys(browserGroups).flatMap((group) => {
+    const steps = selectSteps([`--group=${group}`]);
+    assert.equal(steps[0].name, "worker:build");
+    return steps.slice(1).map(({ name }) => name);
+  });
+  assert.deepEqual(grouped.sort(), expected);
+  assert.deepEqual(
+    selectSteps([])
+      .slice(1)
+      .map(({ name }) => name)
+      .sort(),
+    expected,
+  );
+});
+
+test("integration sharding preserves build/validation and rejects options that could skip checks", () => {
+  const steps = selectSteps(["--group=integration", "--shard=2/4"]);
+  assert.equal(steps[0].name, "worker:build");
+  assert.equal(steps[1].command, process.execPath);
+  assert.deepEqual(steps[1].args, ["--test", "--test-shard=2/4"]);
+  assert.equal(steps[2].name, "validate");
+  for (const args of [
+    ["--group=unknown"],
+    ["--group=__proto__"],
+    ["--group=guests", "--shard=1/4"],
+    ["--shard=1/4"],
+    ["--group=integration", "--group=integration"],
+    ["--group=integration", "--shard=1/4", "--shard=2/4"],
+    ["--group=integration", "--unknown"],
+    ...["0/4", "5/4", "1/0", "2", "1/4junk", "1/9007199254740992"].map(
+      (shard) => ["--group=integration", `--shard=${shard}`],
+    ),
+  ]) {
+    assert.throws(() => selectSteps(args), Error, args.join(" "));
+  }
 });
 
 test("expected error capture checks exact logs and restores console.error", async (t) => {

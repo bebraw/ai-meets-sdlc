@@ -130,6 +130,8 @@ try {
     })
     .click();
   const panel = page.locator("[data-admin-announcement-panel]");
+  // Navigation can finish before the client module opens the linked composer.
+  await page.locator("[data-admin-announcement-panel][open]").waitFor();
   assert.equal(await panel.getAttribute("open"), "");
   await page
     .locator("[data-admin-announcement-speakers] input")

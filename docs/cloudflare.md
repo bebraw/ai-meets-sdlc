@@ -174,15 +174,30 @@ rendering still runs on Cloudflare; local browsers are needed for release checks
 
 Use `npm run deploy` as the deployment command, including in Workers Builds.
 It runs `quality:build` (build, types, integration tests, and generated-site
-validation) before Wrangler can deploy. Workers Builds can keep
-`npm run worker:build` as the build command. Run `npm ci` first if dependencies
+validation) before Wrangler can deploy. Leave the optional Workers Builds
+**Build command** empty: `deploy` already builds, so a separate
+`npm run worker:build` repeats that work. Keep the non-production **Version
+command** as `npm run worker:build && npx wrangler versions upload`, which builds
+once before uploading a preview. Run `npm ci` first if dependencies
 are not installed automatically. Deployment does not install or launch browsers:
 the hosted runner cannot elevate to root to install their OS dependencies.
 
+Enable **Build cache** under the Worker's **Settings → Builds** to retain npm
+downloads between Cloudflare builds. Gustwind is not one of Cloudflare's
+automatically cached frameworks, so this does not persist its route or asset
+cache. See [Cloudflare build caching](https://developers.cloudflare.com/workers/ci-cd/builds/build-caching/).
+
 The GitHub Actions workflow in `.github/workflows/quality.yml` runs the complete
-`quality:gate` on pull requests and pushes to `main`. Its Ubuntu runner installs
-Chromium and WebKit with `--with-deps` before running the admin activity browser
-check, layout, slide, and accessibility checks. For local checks, install browsers with
+gate as four Node integration-test shards and four browser groups in parallel.
+Browser jobs use the matching Playwright container with browsers and OS
+dependencies preinstalled. npm downloads, TypeScript build information, and
+Gustwind's content-addressed CSS/JS assets persist through GitHub Actions
+caches, keyed by OS, lockfile, and commit with a lockfile restore fallback.
+Every job still makes a clean site build and uses the same unexpected-error-log
+guard. A final `Quality gate` job fails if any shard or browser group fails,
+is cancelled, or is skipped.
+
+For local checks, install browsers with
 `npm run layout:install-browsers`, then run `npm run quality:gate`.
 The validators support Playwright's bundled Chromium as well as system Chrome
 and `LAYOUT_BROWSER_PATH`.
@@ -192,6 +207,14 @@ merges when these checks fail. Workers Builds runs independently and does not
 wait for GitHub Actions; direct pushes can deploy before browser checks finish.
 Build, integration-test, and generated-site validation failures still stop
 `npm run deploy` directly.
+
+For local iterations, `npm run build` and `npm run worker:dev` enable Gustwind's
+incremental route reuse. `npm run build:clean` disables route reuse;
+`npm run worker:build` and release checks use that clean path automatically.
+TypeScript's incremental cache is `.cache/types.tsbuildinfo`; Gustwind stores
+route metadata in `build/.gustwind/` and compiled assets in
+`.gustwind/persistent-assets/`. All are ignored by Git. Remove those caches if
+investigating a cache issue; production builds do not reuse generated HTML.
 
 Cloudflare Email Sending is onboarded for `sdlcai.org`. Cloudflare manages the
 outbound bounce MX, SPF, and DKIM records separately from the root-domain email
