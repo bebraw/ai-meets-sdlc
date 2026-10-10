@@ -94,6 +94,12 @@ export const adminWorkspaceGroups = [
           "Preview conversation topics and print foldable A4 table signs.",
       },
       {
+        id: "intro",
+        label: "Intro video",
+        href: "/admin/intro/",
+        description: "Review the opening film and download the 4K draft.",
+      },
+      {
         id: "music",
         label: "Break music",
         href: "/admin/music/",

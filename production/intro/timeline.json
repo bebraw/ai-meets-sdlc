@@ -1,0 +1,124 @@
+{
+  "fps": 24,
+  "width": 3840,
+  "height": 2160,
+  "duration": 196.8,
+  "cards": [
+    {
+      "card": "opening",
+      "start": 9.6,
+      "end": 19.8
+    },
+    {
+      "card": "whole-system",
+      "start": 21.6,
+      "end": 28.8
+    },
+    {
+      "card": "question-discovery",
+      "start": 28.8,
+      "end": 33.6
+    },
+    {
+      "card": "speaker-tapio-pitkaranta",
+      "start": 33.6,
+      "end": 43.2
+    },
+    {
+      "card": "speaker-joongi-shin",
+      "start": 43.2,
+      "end": 52.800000000000004
+    },
+    {
+      "card": "question-builders",
+      "start": 52.8,
+      "end": 57.6
+    },
+    {
+      "card": "speaker-mo-khazali",
+      "start": 57.6,
+      "end": 67.2
+    },
+    {
+      "card": "speaker-viljami-kuosmanen",
+      "start": 67.2,
+      "end": 76.8
+    },
+    {
+      "card": "value",
+      "start": 76.8,
+      "end": 81.6
+    },
+    {
+      "card": "question-trust",
+      "start": 81.6,
+      "end": 86.4
+    },
+    {
+      "card": "speaker-ohans-emmanuel",
+      "start": 86.4,
+      "end": 96.0
+    },
+    {
+      "card": "speaker-sini-tistelgren",
+      "start": 96,
+      "end": 105.6
+    },
+    {
+      "card": "question-adoption",
+      "start": 110.4,
+      "end": 115.2
+    },
+    {
+      "card": "speaker-jenni-kylmakoski",
+      "start": 115.2,
+      "end": 124.8
+    },
+    {
+      "card": "speaker-jussi-hacklin",
+      "start": 124.8,
+      "end": 134.4
+    },
+    {
+      "card": "question-next",
+      "start": 139.2,
+      "end": 144
+    },
+    {
+      "card": "speaker-muhammad-waseem",
+      "start": 144,
+      "end": 153.6
+    },
+    {
+      "card": "speaker-zak-allal",
+      "start": 153.6,
+      "end": 163.2
+    },
+    {
+      "card": "voices",
+      "start": 163.2,
+      "end": 168
+    },
+    {
+      "card": "opening",
+      "start": 168,
+      "end": 177.6
+    },
+    {
+      "card": "finale",
+      "start": 177.6,
+      "end": 187.2
+    },
+    {
+      "card": "credits",
+      "start": 187.2,
+      "end": 196.8
+    }
+  ],
+  "shots": [
+    "SDLCAI / 01 Awakening",
+    "SDLCAI / 02 Orbit",
+    "SDLCAI / 03 Inside the system",
+    "SDLCAI / 04 Convergence"
+  ]
+}

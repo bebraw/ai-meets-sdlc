@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "sourceURL": "https://sdlcai.org/event.json",
+  "scheduleURL": "https://sdlcai.org/schedule/",
+  "retrievedAt": "2026-10-10T11:34:05.585Z",
+  "revision": "5eec5ff08d209723cf6ea39cd45baf0cebb5444c12a7b95ea95742406f87acf3",
+  "updatedAt": "2026-10-09T11:58:05.000Z",
+  "eventId": "sdlcai-2026",
+  "eventDate": "2026-10-13",
+  "timeZone": "Europe/Helsinki",
+  "sessionStartFormat": "HH:mm in timeZone on eventDate; session start, not individual talk time",
+  "programme": [
+    {
+      "sessionId": "industry-perspectives-morning",
+      "sessionTitle": "Industry perspectives",
+      "sessionStart": "09:00",
+      "speakerId": "mo-khazali",
+      "speakerName": "Mo Khazali",
+      "talkTitle": "1978: The Last Good Year",
+      "portraitUrl": "https://sdlcai.org/media/speakers/mo-khazali/9439c041812ffc4c7513f1984adce04b077a90092b354ffcc7dec6690ac70865.webp"
+    },
+    {
+      "sessionId": "industry-perspectives-morning",
+      "sessionTitle": "Industry perspectives",
+      "sessionStart": "09:00",
+      "speakerId": "ohans-emmanuel",
+      "speakerName": "Ohans Emmanuel",
+      "talkTitle": "Zero-trust harnesses for agentic software delivery",
+      "portraitUrl": "https://sdlcai.org/assets/speakers/ohans-emmanuel.webp"
+    },
+    {
+      "sessionId": "industry-perspectives-morning",
+      "sessionTitle": "Industry perspectives",
+      "sessionStart": "09:00",
+      "speakerId": "jenni-kylmakoski",
+      "speakerName": "Jenni Kylmäkoski",
+      "talkTitle": "Why Leaders Should Use AI Themselves and Eat Their Own Dog Food?",
+      "portraitUrl": "https://sdlcai.org/assets/speakers/jenni-kylmakoski.webp"
+    },
+    {
+      "sessionId": "views-from-academia",
+      "sessionTitle": "Views from academia",
+      "sessionStart": "11:00",
+      "speakerId": "tapio-pitkaranta",
+      "speakerName": "Tapio Pitkäranta",
+      "talkTitle": "The Agentic Probe: The Instrument of Agentic Discovery & Engineering",
+      "portraitUrl": "https://sdlcai.org/assets/speakers/tapio-pitkaranta.webp"
+    },
+    {
+      "sessionId": "views-from-academia",
+      "sessionTitle": "Views from academia",
+      "sessionStart": "11:00",
+      "speakerId": "joongi-shin",
+      "speakerName": "Dr Joongi Shin",
+      "talkTitle": "Generative UI for users, not just for designers",
+      "portraitUrl": "https://sdlcai.org/assets/speakers/joongi-shin.jpg"
+    },
+    {
+      "sessionId": "views-from-industry",
+      "sessionTitle": "Views from industry",
+      "sessionStart": "13:30",
+      "speakerId": "jussi-hacklin",
+      "speakerName": "Jussi Hacklin",
+      "talkTitle": "Driving AI adoption above targets in highly regulated environment",
+      "portraitUrl": "https://sdlcai.org/assets/speakers/jussi-hacklin.webp"
+    },
+    {
+      "sessionId": "views-from-industry",
+      "sessionTitle": "Views from industry",
+      "sessionStart": "13:30",
+      "speakerId": "viljami-kuosmanen",
+      "speakerName": "Viljami Kuosmanen",
+      "talkTitle": "I Let Non-Engineers Vibe-Code Our Production Codebase",
+      "portraitUrl": "https://sdlcai.org/assets/speakers/viljami-kuosmanen.webp"
+    },
+    {
+      "sessionId": "views-from-industry",
+      "sessionTitle": "Views from industry",
+      "sessionStart": "13:30",
+      "speakerId": "sini-tistelgren",
+      "speakerName": "Sini Tistelgrén",
+      "talkTitle": "AI Factory doesn't eliminate the fundamentals – it just hides what's missing, until it's too late.",
+      "portraitUrl": "https://sdlcai.org/assets/speakers/sini-tistelgren.webp"
+    },
+    {
+      "sessionId": "academia",
+      "sessionTitle": "Academia",
+      "sessionStart": "15:30",
+      "speakerId": "zak-allal",
+      "speakerName": "MD, MBA Zak Allal",
+      "talkTitle": "Medical Breakthroughs and Scientific Discoveries",
+      "portraitUrl": "https://sdlcai.org/assets/speakers/zak-allal.webp"
+    },
+    {
+      "sessionId": "academia",
+      "sessionTitle": "Academia",
+      "sessionStart": "15:30",
+      "speakerId": "muhammad-waseem",
+      "speakerName": "Dr Muhammad Waseem",
+      "talkTitle": "GenAI in Software Engineering: What Works, What Fails, What’s Next",
+      "portraitUrl": "https://sdlcai.org/assets/speakers/muhammad-waseem.webp"
+    }
+  ]
+}

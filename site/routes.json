@@ -464,6 +464,17 @@
           }
         }
       },
+      "intro": {
+        "layout": "admin-intro",
+        "scripts": [{ "name": "admin-intro" }],
+        "context": {
+          "meta": {
+            "title": "SDLCAI Intro Video",
+            "description": "Review the SDLCAI opening film draft and download the 4K version.",
+            "robots": "noindex,nofollow,noarchive"
+          }
+        }
+      },
       "music": {
         "layout": "admin-music",
         "scripts": [{ "name": "admin-music" }],

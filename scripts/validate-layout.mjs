@@ -18,6 +18,7 @@ const routes = [
   "/admin/discussion-tables/",
   "/admin/venue-signs/",
   "/admin/music/",
+  "/admin/intro/",
   "/admin/receipts/",
   "/admin/interests/",
   "/admin/posters/",

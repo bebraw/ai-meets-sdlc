@@ -1,0 +1,84 @@
+[
+  {
+    "upload_id": 46765,
+    "upload_name": "A Foolish Game",
+    "upload_extra": {
+      "usertags": "spirograph_room,soundscape,music_for_a_movie,female_vocals,synthesizer,bass,brass,violin,orchestral,drums,piano",
+      "ccud": "big_summer_fest,remix,media,bpm_100_105,ccplus",
+      "systags": "attribution,audio,mp3,44k,stereo,CBR,audio,mp3,44k,stereo,CBR",
+      "featuring": "snowflake",
+      "bpm": 100,
+      "relative_dir": "content/CSoul",
+      "nsfw": false,
+      "last_op": "add",
+      "num_reviews": 3,
+      "ccplus": true
+    },
+    "user_name": "CSoul",
+    "upload_tags": ",big_summer_fest,remix,media,bpm_100_105,ccplus,sample,attribution,audio,mp3,44k,stereo,CBR,spirograph_room,soundscape,music_for_a_movie,female_vocals,synthesizer,bass,brass,violin,orchestral,drums,piano,",
+    "upload_num_scores": 9,
+    "file_page_url": "https://ccmixter.org/files/CSoul/46765",
+    "user_real_name": "CSoul",
+    "artist_page_url": "https://ccmixter.org/people/CSoul",
+    "license_logo_url": "https://ccmixter.org/ccskins/shared/images/lics/small-by-3.png",
+    "license_url": "http://creativecommons.org/licenses/by/3.0/",
+    "license_name": "Attribution (3.0)",
+    "upload_date_format": "Wed, Jul 23, 2014 @ 12:20 PM",
+    "files": [
+      {
+        "file_id": 69585,
+        "file_upload": 46765,
+        "file_name": "CSoul_-_A_Foolish_Game.mp3",
+        "file_nicname": "mp3",
+        "file_format_info": {
+          "media-type": "audio",
+          "format-name": "audio-mp3-mp3",
+          "default-ext": "mp3",
+          "mime_type": "audio/mpeg",
+          "sr": "44k",
+          "ch": "stereo",
+          "ps": "6:10",
+          "br": "CBR"
+        },
+        "file_extra": { "sha1": "LAZEDWI6LV7FGSNM2FHQH5KDPGVM2JGJ" },
+        "file_filesize": " (5.64MB)",
+        "file_order": 0,
+        "file_is_remote": 0,
+        "file_num_download": 0,
+        "download_url": "https://ccmixter.org/content/CSoul/CSoul_-_A_Foolish_Game.mp3",
+        "local_path": "/var/www/ccmixter/content/CSoul/CSoul_-_A_Foolish_Game.mp3",
+        "file_rawsize": 5918379
+      },
+      {
+        "file_id": 69586,
+        "file_upload": 46765,
+        "file_name": "CSoul_-_A_Foolish_Game_1.mp3",
+        "file_nicname": "A Foolish Game instrument",
+        "file_format_info": {
+          "media-type": "audio",
+          "format-name": "audio-mp3-mp3",
+          "default-ext": "mp3",
+          "mime_type": "audio/mpeg",
+          "sr": "44k",
+          "ch": "stereo",
+          "ps": "6:08",
+          "br": "CBR"
+        },
+        "file_extra": {
+          "ccud": "big_summer_fest,sample,media",
+          "type": "bigsummermusicfestsamples",
+          "sha1": "WZBN7C62UERVSQXC5IKQOL53SRPMBKQB"
+        },
+        "file_filesize": " (5.62MB)",
+        "file_order": 1,
+        "file_is_remote": 0,
+        "file_num_download": 0,
+        "download_url": "https://ccmixter.org/content/CSoul/CSoul_-_A_Foolish_Game_1.mp3",
+        "local_path": "/var/www/ccmixter/content/CSoul/CSoul_-_A_Foolish_Game_1.mp3",
+        "file_rawsize": 5892433
+      }
+    ],
+    "upload_description_plain": "An instrumental version is available as a second file.",
+    "upload_description_html": "An instrumental version is available as a second file."
+  }
+]

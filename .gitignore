@@ -9,3 +9,9 @@ build/
 !.env.example
 .dev.vars
 /tito-sample.csv
+
+# Local seminar film renders and downloaded CC BY soundtrack masters.
+/output/intro/
+/production/intro/generated/
+/production/intro/music/*.mp3
+/scripts/intro/__pycache__/

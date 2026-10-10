@@ -20,7 +20,7 @@ for daily backup export.
 | `QA_ROOMS`                 | Durable Objects | Stores each QA room's questions, votes, status, active question, and staff audit. |
 | `QA_UPDATES`               | Durable Objects | Streams event-wide change notifications without question or credential data.      |
 | `INTEREST_BACKUPS`         | R2              | Stores change-aware JSON backups for forms and canonical speaker content.         |
-| `SOCIAL_EXPORTS`           | R2              | Stores immutable, content-addressed social JPEGs.                                 |
+| `SOCIAL_EXPORTS`           | R2              | Stores immutable social JPEGs and private intro-film review revisions.            |
 | `SOCIAL_BROWSER`           | Browser         | Renders a social JPEG when its R2 object does not exist.                          |
 | `SPEAKER_UPLOADS`          | R2              | Stores private reviewed 400x400 speaker WebP derivatives.                         |
 | `IMAGES`                   | Images          | Decodes, crops, strips metadata, and re-encodes portraits.                        |

@@ -1,0 +1,12 @@
+"A Foolish Game" by CSoul featuring snowflake
+https://ccmixter.org/files/CSoul/46765
+Creative Commons Attribution 3.0
+https://creativecommons.org/licenses/by/3.0/
+
+Download both the vocal and instrumental MP3s from the source page.
+Store them locally as vocal.mp3 and instrumental.mp3 in this directory.
+The official source metadata is preserved in source-metadata.json.
+
+The intro uses sample-aligned crossfades between the two versions,
+an opening refrain, instrumental speaker sections, and a vocal finale.
+See scripts/intro/mix_music.py for the precise edit and loudness mix.

@@ -1,0 +1,50 @@
+{
+  "title": "Cipher",
+  "creator": "Kevin MacLeod",
+  "publisherSite": "https://incompetech.com/",
+  "trackPage": "https://incompetech.com/music/royalty-free/index.html?Search=Search&isrc=USUAN1100844",
+  "catalogueUrl": "https://incompetech.com/music/royalty-free/pieces.json",
+  "downloadUrl": "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Cipher2.mp3",
+  "isrc": "USUAN1100844",
+  "sourceFilename": "Cipher2.mp3",
+  "catalogueLength": "00:03:51",
+  "catalogueBpm": 150,
+  "catalogueInstruments": "Synths, Electric Piano, Percussion, Strings",
+  "catalogueFeel": "Bright, Grooving, Uplifting",
+  "catalogueUploadDate": "2011-07-29",
+  "licence": {
+    "name": "Creative Commons Attribution 4.0 International",
+    "spdx": "CC-BY-4.0",
+    "url": "https://creativecommons.org/licenses/by/4.0/",
+    "legalCode": "https://creativecommons.org/licenses/by/4.0/legalcode.en",
+    "verification": "The composer's current track page supplies an attribution notice identifying Cipher, Kevin MacLeod and Creative Commons By Attribution 4.0. The composer's public catalogue maps ISRC USUAN1100844 to Cipher2.mp3.",
+    "permissionBasis": "CC BY 4.0 section 1(a) treats synchronization with moving images as adapted material. Sections 1(i) and 2(a)(1) cover sharing, including public performance, and producing/reproducing/sharing adaptations. Section 3(a) requires attribution, licence identification and indication of changes."
+  },
+  "verifiedOn": "2026-10-10",
+  "localSource": "production/intro/music/cipher.mp3",
+  "sourceSha256": "d3d0614535a61d748e2fd8d5117fc4d781022a7624794802a2462d8af3fdd522",
+  "sourceProbe": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "mp3",
+        "sample_rate": "44100",
+        "channels": 2,
+        "bit_rate": "320000"
+      }
+    ],
+    "format": {
+      "duration": "231.262050",
+      "size": "9252699"
+    }
+  },
+  "prototype": {
+    "variant": "C",
+    "sourceStartSeconds": 0,
+    "sourceEndSeconds": 36,
+    "output": "output/intro/prototypes-02/music-c.wav",
+    "changes": "Excerpted from the first 36 seconds; 0.08-second entrance fade and 1.2-second ending fade; loudness adjusted; resampled to 48 kHz.",
+    "scope": "The music is licensed under CC BY 4.0. No licence is asserted for the remaining film assets."
+  }
+}

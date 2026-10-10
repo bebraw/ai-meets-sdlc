@@ -77,6 +77,7 @@ for (const pathname of [
   "/admin/discussion-tables/",
   "/admin/venue-signs/",
   "/admin/music/",
+  "/admin/intro/",
   "/admin/attendees/",
   "/registration/",
   "/registration/access/",

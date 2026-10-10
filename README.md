@@ -190,7 +190,7 @@ including retries, cancellation, changed-content recovery, and mobile controls.
 
 The admin desk and **All workspaces** menu group tools in the same order:
 **People** (attendees, badges, organizers, volunteers), **Program** (schedule,
-speakers, posters), **Event day** (Q&A, screen assets, discussion tables, break
+speakers, posters), **Event day** (Q&A, screen assets, venue signs, discussion tables, intro video, break
 music), **Hospitality** (dinner, travel receipts), and **Administration**
 (activity log, interest list). Each workspace shows its related group links
 and highlights the current page. The grouped menu also works without JavaScript;
@@ -200,7 +200,7 @@ moving focus outside closes it.
 The deployed Worker serves a protected dashboard at `/admin/`, with focused
 workspaces at `/admin/speakers/`, `/admin/dinner/`, `/admin/receipts/`, `/admin/posters/`,
 `/admin/interests/`, `/admin/volunteers/`, `/admin/activity/`, `/admin/qa/`,
-`/admin/attendees/`, and `/admin/slides/`. Organizers sign in through the
+`/admin/attendees/`, `/admin/intro/`, and `/admin/slides/`. Organizers sign in through the
 password-manager-compatible form at `/admin/login/`; a signed, secure cookie
 keeps the browser session active for seven days. HTTP Basic credentials remain
 accepted when supplied proactively by scripts, but unauthenticated browser
@@ -215,6 +215,46 @@ The activity log stores the time, actor account, speaker target, and kind of
 successful change without copying submitted values. It starts when migration
 `0019_create_activity_events.sql` and the corresponding Worker are deployed;
 the shared admin account does not identify individual organizers.
+
+At `/admin/intro/`, Draft 03 is the full two-minute Finnish demoscene opening
+film: all ten talks follow the published session and speaker order, with static
+names and talk titles, straight text cuts, and one continuously morphing shape.
+The page has a 1080p review player, a native 3840×2160 master download, and the
+CC BY 4.0 attribution for “Cipher” by Kevin MacLeod. The earlier three 36-second
+prototypes, research references, and Draft 01 remain available for comparison.
+The immutable assets live under `intro/draft-03-20261010/`,
+`intro/prototypes-02-20261010/`, and `intro/draft-01-20261010/` in the existing
+`SOCIAL_EXPORTS` R2 bucket.
+`/api/admin/intro/` exposes only explicitly allowlisted assets, requires the same
+admin authentication as the page, and streams byte ranges for seeking. Draft
+responses use `no-store`; no public bucket URL or new D1 state is needed. Keep
+new revisions under new object keys.
+
+Before rebuilding film scenes, run `node scripts/intro/sync_programme.mjs` to
+validate and snapshot the live feed and schedule in `production/intro/`.
+`draft-03-timeline.json` contains 2,880 contiguous frames at 24 fps; cumulative
+timings are snapped to frame boundaries and retain the live programme revision.
+Refresh `generated/draft-03-portraits/<speakerId>.png` from the snapshot's
+`portraitUrl` values before building. `build_draft03.py` exposes
+`build_draft03(ROOT, snapshot, timeline)` for Blender MCP and rejects mismatched
+programme revisions. `build_draft03_titles.py` preserves the published wording,
+checks native glyph bounds, and verifies static transforms and visibility cuts.
+
+Save the editable scene to `output/intro/draft-03.blend`, then run
+`render_draft03.py` inside Blender with `--qa` for representative title, pose,
+and intermediate-morph frames. Its `--start`/`--end` arguments support disjoint
+render ranges and resuming the full native 4K sequence. A changed scene needs
+fresh frames: resumable rendering skips existing JPEGs. Once all frames and the
+120-second `music.wav` and `music-credit.txt` are in `output/intro/draft-03/`,
+run `python3 scripts/intro/finish_draft03.py`. It checks every source frame,
+creates the 4K master and downsampled preview, and validates frame count,
+duration, attribution metadata, faststart placement, and full decoding.
+QA and export reports stay beside the rendered media.
+
+The earlier `build_prototype_*.py`, `render_prototypes.py`, and
+`finish_prototypes.py` scripts retain the 1080p comparison workflow.
+Generated media stays in ignored `production/intro/generated/` and `output/intro/`,
+outside public build assets.
 
 Speakers upload PDF and PowerPoint (`.pptx`) files per talk under **Presentation
 files** in `/speaker/`, up to 25 MB per file. Each format has its own slot;

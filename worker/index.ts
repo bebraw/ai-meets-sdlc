@@ -1,4 +1,5 @@
 import { handleOrganizers, applyOrganizers } from "./organizers.ts";
+import { handleIntroVideoRequest } from "./intro-video.ts";
 import { handleQaRequest } from "./qa.ts";
 export { QaRoom } from "./qa-room.ts";
 export { QaUpdates } from "./qa-updates.ts";
@@ -206,6 +207,9 @@ const innerHandler = {
       const unauthorizedResponse = await requireSlideExportAccess(request, env);
       if (unauthorizedResponse) return unauthorizedResponse;
     }
+
+    const introVideoResponse = await handleIntroVideoRequest(request, env);
+    if (introVideoResponse) return introVideoResponse;
 
     const socialRenderResponse = await handleSocialRenderRequest(
       request,

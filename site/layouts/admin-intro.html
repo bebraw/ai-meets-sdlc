@@ -1,0 +1,640 @@
+<BaseLayout
+  &title="(id 'SDLCAI Intro Video')"
+  &description="(id 'Review the full SDLCAI 2026 opening film and earlier motion prototypes.')"
+  &url="(id 'https://sdlcai.org/admin/intro/')"
+  &robots="(id 'noindex,nofollow,noarchive')"
+>
+  <AdminNavigation &current="(id 'intro')"></AdminNavigation>
+  <AdminPageHeader
+    &eyebrow="(adminEyebrow (id 'intro'))"
+    &title="(id 'Intro video')"
+    &description="(id 'Draft 03 develops the Finnish demoscene direction into a full opening film. Review the programme, reading time and continuous motion.')"
+  ></AdminPageHeader>
+
+  <section
+    class="border-b border-ink"
+    aria-labelledby="intro-current-title"
+    data-intro-review
+  >
+    <div class="mx-auto max-w-7xl px-5 py-8 md:px-8 md:py-12">
+      <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p class="text-sm font-bold uppercase text-muted">
+            Draft 03 / Full programme / 10 October 2026
+          </p>
+          <h2
+            id="intro-current-title"
+            class="mt-2 font-headline text-3xl font-black uppercase leading-none md:text-4xl"
+          >
+            Demoscene. Continuous motion.
+          </h2>
+        </div>
+        <p class="text-sm font-bold uppercase">
+          2:00 / 4K master / 1080p preview
+        </p>
+      </div>
+      <p
+        id="intro-current-note"
+        class="mb-6 max-w-3xl text-lg leading-7 text-muted"
+      >
+        The full programme follows schedule order, with session names, speakers
+        and talk titles. Text stays still and changes with clean cuts while the
+        geometry continuously morphs. “Cipher” by Kevin MacLeod carries the
+        two-minute film.
+      </p>
+      <video
+        class="aspect-video w-full border border-ink bg-ink"
+        width="1920"
+        height="1080"
+        controls
+        playsinline
+        preload="metadata"
+        poster="/api/admin/intro/draft-03/poster.jpg"
+        src="/api/admin/intro/draft-03/preview.mp4"
+        aria-label="SDLCAI intro video, draft 03, full demoscene cut"
+        aria-describedby="intro-current-note"
+        data-intro-player
+      >
+        <p>Download the review MP4 below to watch this draft.</p>
+      </video>
+      <p class="mt-3 leading-7" role="status" data-intro-error hidden>
+        Draft 03 could not load. Reload to check your admin session, or use a
+        download below.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a
+          class="inline-flex min-h-11 items-center border border-ink bg-ink px-5 py-3 text-sm font-bold uppercase text-paper hover:bg-paper hover:text-ink"
+          href="/api/admin/intro/draft-03/4k.mp4?download=1"
+          download
+          >Download 4K master</a
+        >
+        <a
+          class="inline-flex min-h-11 items-center border border-ink px-5 py-3 text-sm font-bold uppercase hover:bg-ink hover:text-paper"
+          href="/api/admin/intro/draft-03/preview.mp4?download=1"
+          download
+          >Download 1080p preview</a
+        >
+        <a
+          class="inline-flex min-h-11 items-center px-3 py-3 text-sm font-bold uppercase underline underline-offset-4"
+          href="/api/admin/intro/draft-03/music-credit.txt?download=1"
+          download
+          >Download music credit</a
+        >
+      </div>
+      <p class="mt-5 max-w-3xl leading-7 text-muted">
+        Use fullscreen to judge the names and talk titles at presentation size.
+        Include the player time when sharing feedback. The earlier cuts remain
+        below for comparison; playing one video pauses the others.
+      </p>
+      <p class="mt-3 max-w-3xl leading-7 text-muted">
+        Music: “Cipher” by
+        <a
+          class="font-bold underline underline-offset-4"
+          href="https://incompetech.com/music/royalty-free/index.html?Search=Search&amp;isrc=USUAN1100844"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Kevin MacLeod (incompetech.com)</a
+        >, licensed under
+        <a
+          class="font-bold underline underline-offset-4"
+          href="https://creativecommons.org/licenses/by/4.0/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >CC BY 4.0</a
+        >. Excerpted to two minutes, faded and loudness adjusted.
+      </p>
+    </div>
+  </section>
+
+  <section class="border-b border-ink" aria-labelledby="intro-prototypes-title">
+    <div class="mx-auto max-w-7xl px-5 py-8 md:px-8 md:py-12">
+      <details data-intro-collapse>
+        <summary class="cursor-pointer py-2">
+          <h2
+            id="intro-prototypes-title"
+            class="inline font-headline text-2xl font-black uppercase"
+          >
+            Motion prototypes / Three directions
+          </h2>
+          <span class="ml-3 text-sm font-bold uppercase text-muted"
+            >0:36 each</span
+          >
+        </summary>
+        <div class="mt-5">
+          <p class="max-w-3xl text-lg leading-7 text-muted">
+            Each sample covers the opening and Industry perspectives: Mo
+            Khazali, Ohans Emmanuel and Jenni Kylmäkoski, in schedule order,
+            with their talk titles. Use the fullscreen control to judge
+            legibility at presentation size.
+          </p>
+          <p class="mb-8 mt-3 max-w-3xl leading-7 text-muted">
+            A and B use “A Foolish Game.” C pairs the demoscene direction with
+            the electronic track “Cipher.” All three samples use the same
+            speaker content and timing.
+          </p>
+          <div class="space-y-10">
+            <article
+              class="border-t-4 border-ink pt-4"
+              aria-labelledby="intro-a-title"
+              data-intro-review
+            >
+              <p class="text-sm font-bold uppercase text-muted">
+                Direction A / Graphic / typography
+              </p>
+              <h3
+                id="intro-a-title"
+                class="mb-5 mt-2 font-headline text-3xl font-black uppercase leading-none"
+              >
+                The changing loop
+              </h3>
+              <div class="grid gap-6 lg:grid-cols-3">
+                <div class="lg:col-span-2">
+                  <video
+                    class="aspect-video w-full border border-ink bg-ink"
+                    width="1920"
+                    height="1080"
+                    controls
+                    playsinline
+                    preload="none"
+                    poster="/api/admin/intro/prototypes-02/a-poster.jpg"
+                    src="/api/admin/intro/prototypes-02/a.mp4"
+                    aria-label="Prototype A, The changing loop"
+                    aria-describedby="intro-a-note"
+                    data-intro-player
+                  >
+                    <p>Download prototype A below to watch this sample.</p>
+                  </video>
+                  <p
+                    class="mt-3 leading-7"
+                    role="status"
+                    data-intro-error
+                    hidden
+                  >
+                    Prototype A could not load. Reload to check your admin
+                    session, or use the download.
+                  </p>
+                </div>
+                <div>
+                  <p id="intro-a-note" class="leading-7 text-muted">
+                    A graphic journey through the software lifecycle. Branches,
+                    feedback loops and bold typography give the motion its
+                    character, with room for the speaker and talk title to
+                    settle.
+                  </p>
+                  <a
+                    class="mt-5 inline-flex min-h-11 items-center border border-ink px-5 py-3 text-sm font-bold uppercase hover:bg-ink hover:text-paper"
+                    href="/api/admin/intro/prototypes-02/a.mp4?download=1"
+                    download
+                    >Download A / 1080p</a
+                  >
+                </div>
+              </div>
+            </article>
+
+            <article
+              class="border-t-4 border-ink pt-4"
+              aria-labelledby="intro-b-title"
+              data-intro-review
+            >
+              <p class="text-sm font-bold uppercase text-muted">
+                Direction B / Architectural 3D
+              </p>
+              <h3
+                id="intro-b-title"
+                class="mb-5 mt-2 font-headline text-3xl font-black uppercase leading-none"
+              >
+                The SDLC machine
+              </h3>
+              <div class="grid gap-6 lg:grid-cols-3">
+                <div class="lg:col-span-2">
+                  <video
+                    class="aspect-video w-full border border-ink bg-ink"
+                    width="1920"
+                    height="1080"
+                    controls
+                    playsinline
+                    preload="none"
+                    poster="/api/admin/intro/prototypes-02/b-poster.jpg"
+                    src="/api/admin/intro/prototypes-02/b.mp4"
+                    aria-label="Prototype B, The SDLC machine"
+                    aria-describedby="intro-b-note"
+                    data-intro-player
+                  >
+                    <p>Download prototype B below to watch this sample.</p>
+                  </video>
+                  <p
+                    class="mt-3 leading-7"
+                    role="status"
+                    data-intro-error
+                    hidden
+                  >
+                    Prototype B could not load. Reload to check your admin
+                    session, or use the download.
+                  </p>
+                </div>
+                <div>
+                  <p id="intro-b-note" class="leading-7 text-muted">
+                    A vast machine with a purpose: software moves through an
+                    architectural system of connected stages. Camera movement
+                    and scale give the opening its cinematic weight.
+                  </p>
+                  <a
+                    class="mt-5 inline-flex min-h-11 items-center border border-ink px-5 py-3 text-sm font-bold uppercase hover:bg-ink hover:text-paper"
+                    href="/api/admin/intro/prototypes-02/b.mp4?download=1"
+                    download
+                    >Download B / 1080p</a
+                  >
+                </div>
+              </div>
+            </article>
+
+            <article
+              class="border-t-4 border-ink pt-4"
+              aria-labelledby="intro-c-title"
+              data-intro-review
+            >
+              <p class="text-sm font-bold uppercase text-muted">
+                Direction C / Finnish demoscene
+              </p>
+              <h3
+                id="intro-c-title"
+                class="mb-5 mt-2 font-headline text-3xl font-black uppercase leading-none"
+              >
+                Demoscene
+              </h3>
+              <div class="grid gap-6 lg:grid-cols-3">
+                <div class="lg:col-span-2">
+                  <video
+                    class="aspect-video w-full border border-ink bg-ink"
+                    width="1920"
+                    height="1080"
+                    controls
+                    playsinline
+                    preload="none"
+                    poster="/api/admin/intro/prototypes-02/c-poster.jpg"
+                    src="/api/admin/intro/prototypes-02/c.mp4"
+                    aria-label="Prototype C, Demoscene"
+                    aria-describedby="intro-c-note"
+                    data-intro-player
+                  >
+                    <p>Download prototype C below to watch this sample.</p>
+                  </video>
+                  <p
+                    class="mt-3 leading-7"
+                    role="status"
+                    data-intro-error
+                    hidden
+                  >
+                    Prototype C could not load. Reload to check your admin
+                    session, or use the download.
+                  </p>
+                </div>
+                <div>
+                  <p id="intro-c-note" class="leading-7 text-muted">
+                    Procedural graphics, bold type and rhythmic transformations
+                    bring a Finnish demoscene influence to the opening. Compare
+                    its energy and visual character with the other two
+                    directions.
+                  </p>
+                  <a
+                    class="mt-5 inline-flex min-h-11 items-center border border-ink px-5 py-3 text-sm font-bold uppercase hover:bg-ink hover:text-paper"
+                    href="/api/admin/intro/prototypes-02/c.mp4?download=1"
+                    download
+                    >Download C / 1080p</a
+                  >
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="mt-10 border-t border-ink pt-6">
+            <h3 class="font-headline text-2xl font-black uppercase">
+              What to compare
+            </h3>
+            <p class="mt-3 max-w-3xl text-lg leading-7 text-muted">
+              Which direction gives the event more character? Can you read the
+              names and talk titles comfortably? Does the movement support the
+              music and leave room for the people?
+            </p>
+            <p class="mt-3 max-w-3xl leading-7">
+              These 1080p, 24 fps motion samples led to the full demoscene cut
+              above. Programme details were checked against the live schedule on
+              10 October 2026.
+            </p>
+            <p class="mt-3 leading-7 text-muted">
+              Include A, B or C and the player time when sharing feedback.
+              Playing a video pauses the others.
+            </p>
+          </div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section class="border-b border-ink" aria-labelledby="intro-research-title">
+    <div class="mx-auto max-w-7xl px-5 py-10 md:px-8 md:py-12">
+      <p class="text-sm font-bold uppercase text-muted">
+        Research behind the cut
+      </p>
+      <h2
+        id="intro-research-title"
+        class="mt-2 font-headline text-3xl font-black uppercase leading-none"
+      >
+        Give every image a reason
+      </h2>
+      <p class="mt-4 max-w-3xl text-lg leading-7 text-muted">
+        The new cut gives the talks more space, uses the live programme as its
+        running order, and builds motion around the subject. These opening films
+        and demoscene references informed the direction and the editing
+        approach.
+      </p>
+      <ul class="mt-8 grid gap-8 md:grid-cols-2">
+        <li class="border-t border-ink pt-4">
+          <a
+            class="inline-flex min-h-11 items-center font-bold underline underline-offset-4"
+            href="https://vimeo.com/359637882"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Web Unleashed 2019 / Jam3</a
+          >
+          <p class="mt-2 leading-7 text-muted">
+            Build the visual language from the subject. Browser tabs, windows
+            and scrollbars become the material of this developer-conference
+            opener. For SDLCAI, branches and feedback loops can shape the film.
+          </p>
+        </li>
+        <li class="border-t border-ink pt-4">
+          <a
+            class="inline-flex min-h-11 items-center font-bold underline underline-offset-4"
+            href="https://www.worship.studio/sp18/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Semi Permanent 2018 / Joyce N. Ho &amp; Worship</a
+          >
+          <p class="mt-2 leading-7 text-muted">
+            Let typography carry some of the energy. Distinctive letterforms
+            give the titles character; our names and talk titles then need a
+            calm, readable hold within each introduction.
+          </p>
+        </li>
+        <li class="border-t border-ink pt-4">
+          <a
+            class="inline-flex min-h-11 items-center font-bold underline underline-offset-4"
+            href="https://www.behance.net/gallery/81950543/TEDx-Sydney-2019-Titles"
+            target="_blank"
+            rel="noopener noreferrer"
+            >TEDxSydney 2019: Legacy / Substance</a
+          >
+          <p class="mt-2 leading-7 text-muted">
+            Make scale mean something. A fictional orbital archive gives its
+            grand architecture a clear function. The SDLC machine similarly
+            needs recognizable stages and a change moving through them.
+          </p>
+        </li>
+        <li class="border-t border-ink pt-4">
+          <a
+            class="inline-flex min-h-11 items-center font-bold underline underline-offset-4"
+            href="https://www.maxon.net/en/article/what-you-may-find"
+            target="_blank"
+            rel="noopener noreferrer"
+            >FITC 2020: What You May Find / Sarofsky</a
+          >
+          <p class="mt-2 leading-7 text-muted">
+            Use the song to shape the story. The creators cut storyboard
+            sketches to the lyrics before building their 3D scenes. This
+            informed the earlier “A Foolish Game” prototypes; the full cut
+            carries that attention to musical phrasing into “Cipher.”
+          </p>
+        </li>
+        <li class="border-t border-ink pt-4 md:col-span-2">
+          <div class="flex flex-wrap gap-x-6 gap-y-2">
+            <a
+              class="inline-flex min-h-11 items-center font-bold underline underline-offset-4"
+              href="https://github.com/mtuomi/SecondReality"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Second Reality / Future Crew</a
+            >
+            <a
+              class="inline-flex min-h-11 items-center font-bold underline underline-offset-4"
+              href="https://archive.assembly.org/2006/demo/1995-by-kewlers-mfx"
+              target="_blank"
+              rel="noopener noreferrer"
+              >1995 / Kewlers &amp; mfx</a
+            >
+          </div>
+          <p class="mt-2 max-w-3xl leading-7 text-muted">
+            For the demoscene direction, let computed forms carry the identity.
+            The Finnish demoscene references lead to original vector forms and
+            flowing grids, with gentler motion while the audience reads each
+            talk title.
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="border-b border-ink" aria-labelledby="intro-archive-title">
+    <div class="mx-auto max-w-7xl px-5 py-8 md:px-8 md:py-10">
+      <details data-intro-review data-intro-collapse>
+        <summary class="cursor-pointer py-2">
+          <h2
+            id="intro-archive-title"
+            class="inline font-headline text-2xl font-black uppercase"
+          >
+            Draft 01 / Earlier cut
+          </h2>
+          <span class="ml-3 text-sm font-bold uppercase text-muted">3:17</span>
+        </summary>
+        <div class="mt-5">
+          <video
+            class="aspect-video w-full border border-ink bg-ink"
+            width="1920"
+            height="1080"
+            controls
+            playsinline
+            preload="none"
+            poster="/api/admin/intro/draft-01/poster.jpg"
+            src="/api/admin/intro/draft-01/preview.mp4"
+            aria-label="SDLCAI intro video, draft 01, earlier cut"
+            aria-describedby="intro-player-note"
+            data-intro-player
+          >
+            <p>Download the review MP4 below to watch this draft.</p>
+          </video>
+          <p id="intro-player-note" class="mt-3 text-sm leading-6 text-muted">
+            Kept here for comparison. This first cut groups speakers by theme
+            and contains earlier talk information. The newer cuts above use the
+            updated programme and schedule order.
+          </p>
+          <p
+            class="mt-3 border border-ink p-4 leading-7"
+            role="status"
+            data-intro-error
+            hidden
+          >
+            The video could not load. Reload the page to check your admin
+            session, or try a download below.
+          </p>
+          <nav
+            class="mt-6 flex flex-wrap gap-2"
+            aria-label="Jump to a section of draft 01"
+            data-intro-chapters
+            hidden
+          >
+            <button
+              type="button"
+              class="min-h-11 border border-ink px-3 py-2 text-sm font-bold hover:bg-ink hover:text-paper"
+              data-intro-seek="0"
+            >
+              0:00 Opening
+            </button>
+            <button
+              type="button"
+              class="min-h-11 border border-ink px-3 py-2 text-sm font-bold hover:bg-ink hover:text-paper"
+              data-intro-seek="28.8"
+            >
+              0:29 Discovery
+            </button>
+            <button
+              type="button"
+              class="min-h-11 border border-ink px-3 py-2 text-sm font-bold hover:bg-ink hover:text-paper"
+              data-intro-seek="52.8"
+            >
+              0:53 Builders
+            </button>
+            <button
+              type="button"
+              class="min-h-11 border border-ink px-3 py-2 text-sm font-bold hover:bg-ink hover:text-paper"
+              data-intro-seek="81.6"
+            >
+              1:22 Trust
+            </button>
+            <button
+              type="button"
+              class="min-h-11 border border-ink px-3 py-2 text-sm font-bold hover:bg-ink hover:text-paper"
+              data-intro-seek="110.4"
+            >
+              1:50 Adoption
+            </button>
+            <button
+              type="button"
+              class="min-h-11 border border-ink px-3 py-2 text-sm font-bold hover:bg-ink hover:text-paper"
+              data-intro-seek="139.2"
+            >
+              2:19 Next
+            </button>
+            <button
+              type="button"
+              class="min-h-11 border border-ink px-3 py-2 text-sm font-bold hover:bg-ink hover:text-paper"
+              data-intro-seek="168"
+            >
+              2:48 Finale
+            </button>
+          </nav>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a
+              class="inline-flex min-h-11 items-center border border-ink bg-ink px-5 py-3 text-sm font-bold uppercase text-paper hover:bg-paper hover:text-ink"
+              href="/api/admin/intro/draft-01/4k.mp4?download=1"
+              download
+              >Download 4K / 304 MB</a
+            >
+            <a
+              class="inline-flex min-h-11 items-center border border-ink px-5 py-3 text-sm font-bold uppercase hover:bg-ink hover:text-paper"
+              href="/api/admin/intro/draft-01/preview.mp4?download=1"
+              download
+              >Download 1080p / 109 MB</a
+            >
+          </div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section class="border-b border-ink" aria-labelledby="intro-credit-title">
+    <div class="mx-auto max-w-7xl px-5 py-10 md:px-8 md:py-12">
+      <h2
+        id="intro-credit-title"
+        class="font-headline text-3xl font-black uppercase leading-none"
+      >
+        Music credits
+      </h2>
+      <div class="mt-6 grid gap-8 md:grid-cols-2">
+        <div>
+          <h3 class="text-sm font-bold uppercase text-muted">
+            A, B and draft 01
+          </h3>
+          <p class="mt-3 text-lg leading-7">
+            “A Foolish Game” by CSoul featuring snowflake.
+          </p>
+          <p class="mt-3 leading-7 text-muted">
+            Licensed under
+            <a
+              class="font-bold underline underline-offset-4"
+              href="https://creativecommons.org/licenses/by/3.0/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Creative Commons Attribution 3.0</a
+            >. Excerpted; vocal and instrumental versions crossfaded; fades and
+            loudness adjusted.
+          </p>
+          <a
+            class="mt-3 inline-flex min-h-11 items-center font-bold underline underline-offset-4"
+            href="https://ccmixter.org/files/CSoul/46765"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Track on ccMixter</a
+          >
+        </div>
+        <div>
+          <h3 class="text-sm font-bold uppercase text-muted">
+            Draft 03 and prototype C
+          </h3>
+          <p class="mt-3 text-lg leading-7">
+            “Cipher” by Kevin MacLeod (incompetech.com).
+          </p>
+          <p class="mt-3 leading-7 text-muted">
+            Licensed under
+            <a
+              class="font-bold underline underline-offset-4"
+              href="https://creativecommons.org/licenses/by/4.0/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Creative Commons Attribution 4.0</a
+            >. Excerpted; fades and loudness adjusted; resampled to 48 kHz.
+          </p>
+          <a
+            class="mt-3 inline-flex min-h-11 items-center font-bold underline underline-offset-4"
+            href="https://incompetech.com/music/royalty-free/index.html?Search=Search&amp;isrc=USUAN1100844"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Track on Incompetech</a
+          >
+        </div>
+      </div>
+      <p class="mt-6 max-w-3xl leading-7 text-muted">
+        These licences cover the music. The downloadable credits record the
+        sources and changes for each soundtrack.
+      </p>
+      <div class="mt-4 flex flex-wrap gap-x-6 gap-y-2">
+        <a
+          class="inline-flex min-h-11 items-center font-bold underline underline-offset-4"
+          href="/api/admin/intro/draft-03/music-credit.txt?download=1"
+          download
+          >Download draft 03 music credit</a
+        >
+        <a
+          class="inline-flex min-h-11 items-center font-bold underline underline-offset-4"
+          href="/api/admin/intro/prototypes-02/music-credit.txt?download=1"
+          download
+          >Download prototype music credit</a
+        >
+        <a
+          class="inline-flex min-h-11 items-center font-bold underline underline-offset-4"
+          href="/api/admin/intro/draft-01/music-credit.txt?download=1"
+          download
+          >Download draft 01 music credit</a
+        >
+      </div>
+    </div>
+  </section>
+</BaseLayout>
