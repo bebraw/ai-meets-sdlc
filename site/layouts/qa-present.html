@@ -1,7 +1,26 @@
-<QaWorkspace
-  &title="(id 'SDLCAI Audience Questions')"
-  &heading="(id 'Audience questions')"
-  &eyebrow="(id 'SDLCAI / Live queue')"
-  &description="(id 'Follow the approved questions. Ask and vote at sdlcai.org/qa.')"
-  &url="(id 'https://sdlcai.org/qa/present/')"
-></QaWorkspace>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <FontPreloads />
+    <meta name="robots" content="noindex,nofollow,noarchive" />
+    <title>SDLCAI / Open questions</title>
+    <link rel="canonical" href="https://sdlcai.org/qa/present/" />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <noop &foreach="styles as style">
+      <link &href="style.href" &rel="style.rel" />
+    </noop>
+  </head>
+  <body class="qa-present-page">
+    <main data-qa-content>
+      <div class="qa-presentation">
+        <h1 class="qa-presentation-title">Audience questions</h1>
+        <p class="qa-presentation-empty">No active session.</p>
+      </div>
+    </main>
+    <noop &foreach="scripts as script">
+      <script &src="script.src" &type="script.type"></script>
+    </noop>
+  </body>
+</html>

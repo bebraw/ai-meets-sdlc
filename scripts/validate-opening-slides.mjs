@@ -111,6 +111,7 @@ try {
             "crew",
             "attendees",
             "group-photo",
+            "logo",
             "afterparty",
           ],
           prefix: "closing-",
@@ -142,7 +143,7 @@ try {
             );
             assert.equal(await active.getAttribute("data-slide-id"), id);
             assert.equal(
-              await active.locator("[data-slide-progress]").innerText(),
+              await active.locator("[data-slide-progress]").textContent(),
               `${ids.indexOf(id) + 1} / ${ids.length}`,
             );
             const overflow = await active.evaluate((slide) => {
@@ -206,6 +207,12 @@ try {
       await page.goto(`${origin}/slides/closing/?slideId=group-photo`);
       assert.equal(await active.getAttribute("data-slide-id"), "group-photo");
       assert.equal(await active.locator(".closing-camera").count(), 1);
+      await page.keyboard.press("ArrowRight");
+      assert.equal(await active.getAttribute("data-slide-id"), "logo");
+      assert.equal(
+        await active.locator(".closing-logo-image").getAttribute("src"),
+        "/assets/logo.svg",
+      );
       await page.keyboard.press("ArrowRight");
       assert.equal(await active.getAttribute("data-slide-id"), "afterparty");
       assert.equal(await active.locator("img").getAttribute("alt"), "Tada!");

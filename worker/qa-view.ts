@@ -149,6 +149,21 @@ export function renderQaPage(data: QaPageData): string {
     admin: "/admin/qa/",
   };
   const path = `${paths[data.view]}${data.room && ["admin", "moderator", "mc"].includes(data.view) ? `?room=${data.room.id}` : ""}`;
+  if (data.view === "present") {
+    const questions =
+      data.snapshot?.questions.filter(
+        (question) =>
+          question.status === "approved" || question.status === "active",
+      ) ?? [];
+    return `<div class="qa-presentation" data-qa-state data-room-id="${data.room?.id ?? ""}" data-revision="${data.snapshot?.revision ?? 0}">
+      <h1 class="qa-presentation-title">${escape(data.room?.title ?? "Audience questions")}</h1>
+      ${
+        questions.length
+          ? `<ol class="qa-presentation-questions" aria-label="Open questions">${questions.map((question) => `<li data-qa-question="${question.id}"><p>${escape(question.text)}</p></li>`).join("")}</ol>`
+          : `<p class="qa-presentation-empty">${data.room ? "No questions yet." : "No active session."}</p>`
+      }
+    </div>`;
+  }
   if (data.view === "screen") {
     const active = data.snapshot?.questions.find((q) => q.status === "active");
     const size =

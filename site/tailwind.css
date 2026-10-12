@@ -56,6 +56,53 @@
 }
 
 @layer components {
+  .qa-present-page {
+    color-scheme: dark;
+    background: #080808;
+    color: #f6f4ef;
+  }
+
+  .qa-presentation {
+    min-height: 100svh;
+    padding: clamp(1.5rem, 3.8vw, 10rem);
+  }
+
+  .qa-presentation-title {
+    margin: 0;
+    font-family: "Finlandica Headline", Georgia, serif;
+    font-size: clamp(2rem, 3.4vw, 9rem);
+    font-weight: 900;
+    line-height: 1.05;
+    overflow-wrap: anywhere;
+    text-transform: uppercase;
+  }
+
+  .qa-presentation-questions {
+    display: grid;
+    gap: 0;
+    margin: clamp(2rem, 4vh, 6rem) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .qa-presentation-questions li {
+    padding: clamp(1.5rem, 2.8vh, 4rem) 0;
+    border-top: 1px solid rgb(246 244 239 / 0.25);
+  }
+
+  .qa-presentation-questions p,
+  .qa-presentation-empty {
+    margin: 0;
+    font-size: clamp(1.5rem, 2.3vw, 6rem);
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+
+  .qa-presentation-empty {
+    margin-top: clamp(2rem, 4vh, 6rem);
+    color: rgb(246 244 239 / 0.65);
+  }
+
   [data-admin-workspace-group] li:last-child:nth-child(odd) {
     grid-column: 1 / -1;
   }
@@ -1523,6 +1570,25 @@
   .closing-camera {
     width: 23cqw;
     height: 23cqw;
+  }
+
+  .closing-logo {
+    background: #080808;
+  }
+
+  .closing-logo .opening-header,
+  .closing-logo .opening-footer {
+    visibility: hidden;
+  }
+
+  .closing-logo .opening-content {
+    justify-items: center;
+  }
+
+  .closing-logo-image {
+    width: 36cqw;
+    height: 36cqw;
+    object-fit: contain;
   }
 
   .closing-party .opening-content {
