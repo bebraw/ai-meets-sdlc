@@ -65,10 +65,19 @@ try {
       );
       await page.addInitScript(() => {
         window.videoPauses = 0;
+        window.videoFailure = null;
+        window.videoPlays = [];
         HTMLMediaElement.prototype.play = function () {
+          window.videoPlays.push(this.src);
+          if (window.videoFailure) {
+            const name = window.videoFailure;
+            window.videoFailure = null;
+            return Promise.reject(new DOMException("Playback failed", name));
+          }
           this.dispatchEvent(new Event("play"));
           return Promise.resolve();
         };
+        HTMLMediaElement.prototype.load = function () {};
         HTMLMediaElement.prototype.pause = function () {
           window.videoPauses += 1;
         };
@@ -224,6 +233,10 @@ try {
         await page.locator("[data-presentation-deck]").isVisible(),
         false,
       );
+      assert.match(
+        await page.locator("video").getAttribute("src"),
+        /\/4k\.mp4$/,
+      );
       await page.keyboard.press("ArrowRight");
       assert.equal(await active.getAttribute("data-slide-id"), "welcome");
       await page
@@ -241,6 +254,70 @@ try {
       assert.equal(await active.getAttribute("data-slide-id"), "welcome");
       assert.equal(new URL(page.url()).searchParams.has("intro"), false);
       assert.ok(await page.evaluate(() => window.videoPauses > 0));
+      assert.equal(await page.locator("[data-use-preview]").isVisible(), false);
+
+      // Unsupported 4K and media errors recover once, while a permission error
+      // leaves resolution unchanged and allows the presenter to try Play again.
+      await page.goto(`${origin}/slides/opening/?intro=1`);
+      await page.evaluate(() => {
+        window.videoFailure = "NotSupportedError";
+      });
+      await page
+        .getByRole("button", { name: "Play intro", exact: true })
+        .click();
+      await page.waitForFunction(() =>
+        document.querySelector("video").src.endsWith("/preview.mp4"),
+      );
+      assert.equal(
+        await page.locator("[data-opening-quality]").innerText(),
+        "1080p",
+      );
+      assert.equal(await page.locator("[data-video-error]").isVisible(), false);
+      await page.locator("video").dispatchEvent("error");
+      assert.equal(await page.locator("[data-video-error]").isVisible(), true);
+      assert.equal(await page.locator("[data-video-prompt]").isVisible(), true);
+
+      await page.goto(`${origin}/slides/opening/?intro=1`);
+      await page.evaluate(() => {
+        window.videoFailure = "NotAllowedError";
+      });
+      await page
+        .getByRole("button", { name: "Play intro", exact: true })
+        .click();
+      assert.match(
+        await page.locator("video").getAttribute("src"),
+        /\/4k\.mp4$/,
+      );
+      assert.equal(await page.locator("[data-video-prompt]").isVisible(), true);
+      await page
+        .getByRole("button", { name: "Play intro", exact: true })
+        .click();
+      await page.locator("video").dispatchEvent("error");
+      assert.match(
+        await page.locator("video").getAttribute("src"),
+        /\/preview\.mp4$/,
+      );
+      assert.equal(await page.locator("[data-video-error]").isVisible(), false);
+
+      await page.goto(`${origin}/slides/opening/?intro=1`);
+      await page
+        .getByRole("button", { name: "Play intro", exact: true })
+        .click();
+      await page.locator("video").evaluate((video) => {
+        video.currentTime = 42;
+      });
+      await page
+        .getByRole("button", { name: "Use 1080p", exact: true })
+        .click();
+      assert.match(
+        await page.locator("video").getAttribute("src"),
+        /\/preview\.mp4$/,
+      );
+      assert.equal(
+        await page.locator("video").evaluate((video) => video.currentTime),
+        42,
+      );
+
       await page.goto(`${origin}/slides/opening/?intro=1`);
       await page
         .getByRole("button", { name: "Continue to welcome", exact: true })
@@ -251,9 +328,41 @@ try {
         false,
       );
       assert.equal(await active.getAttribute("data-slide-id"), "welcome");
+      await page.locator("video").dispatchEvent("error");
+      assert.match(
+        await page.locator("video").getAttribute("src"),
+        /\/4k\.mp4$/,
+      );
+
+      await page.goto(`${origin}/admin/`);
+      const eventDay = page.locator("[data-admin-workspace-group]", {
+        has: page.locator("h2#event-day"),
+      });
+      for (const [label, href] of [
+        ["Opening slides", "/slides/opening/"],
+        ["Closing slides", "/slides/closing/"],
+      ]) {
+        assert.equal(
+          await eventDay
+            .getByRole("link", { name: new RegExp(label) })
+            .getAttribute("href"),
+          href,
+        );
+      }
+      await page.goto(`${origin}/admin-slides/`);
+      for (const href of [
+        "/slides/opening/",
+        "/slides/opening/?intro=1",
+        "/slides/closing/",
+      ]) {
+        assert.equal(
+          (await page.locator(`a[href="${href}"]`).count()) > 0,
+          true,
+        );
+      }
       assert.deepEqual(errors, []);
       console.log(
-        `${name}: all 12 opening and 7 closing slides fit four viewports; navigation, photo-to-party ending, and pre-roll passed.`,
+        `${name}: opening/closing layouts and admin shortcuts passed; 4K playback selection, 1080p recovery, navigation, photo-to-party ending, and pre-roll passed.`,
       );
     } finally {
       await browser.close();

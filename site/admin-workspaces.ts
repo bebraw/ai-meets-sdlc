@@ -87,11 +87,25 @@ export const adminWorkspaceGroups = [
           "Open session rooms, moderate questions, and share staff access.",
       },
       {
+        id: "opening-slides",
+        label: "Opening slides",
+        href: "/slides/opening/",
+        description:
+          "Present the welcome deck, with an optional 4K opening film from Screen assets.",
+      },
+      {
+        id: "closing-slides",
+        label: "Closing slides",
+        href: "/slides/closing/",
+        description:
+          "Recap the day, thank everyone, then cue the group photo and afterparty.",
+      },
+      {
         id: "slides",
         label: "Screen assets",
         href: "/admin/slides/",
         description:
-          "Open schedule displays, session slides, and artwork downloads.",
+          "Open the opening and closing decks, 4K film pre-roll, schedule displays, and artwork downloads.",
       },
       {
         id: "venue-signs",

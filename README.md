@@ -174,7 +174,11 @@ at `/slides/deck/` and a screen schedule at `/slides/schedule/`. The separate
 slide tools and slide library. It starts at the welcome slide for the host's
 entrance. The optional pre-roll at `/slides/opening/?intro=1` has a **Play intro**
 button for the two-minute film with sound; it reveals the welcome slide when
-finished, so the film can run before the host steps on stage. Arrow keys, Page
+finished, so the film can run before the host steps on stage. Playback starts with
+the native 4K master. **Use 1080p** switches to the smaller preview at the current
+position if the venue connection or device struggles; load/decode errors also
+fall back to 1080p automatically. Playback permission errors keep the play button
+available instead of changing resolution. Arrow keys, Page
 Up/Down, Home/End, swipe, and the presentation controls navigate the deck.
 Continuing to the welcome slide pauses playback. Fullscreen is available from the
 controls, which fade out while presenting. Speaker portraits and names use
@@ -190,6 +194,8 @@ keyboard, swipe, and fullscreen controls and published speaker content. Run
 `npm run slides:opening-check` to check both decks in Chromium and WebKit at four
 viewport sizes. Set `OPENING_SCREENSHOTS` to save full-size review images (closing
 slides have a `closing-` prefix).
+Direct **Opening slides** and **Closing slides** shortcuts are also in the admin
+desk's **Event day** section and **All workspaces** menu.
 
 The closing camera icon is from [Lucide](https://lucide.dev/icons/camera), with
 a lighter stroke for projection, under the [ISC license](assets/slides/lucide-LICENSE.txt).

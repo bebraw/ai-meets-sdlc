@@ -21,21 +21,22 @@
     >
       <video
         data-opening-video
+        src="/api/admin/intro/draft-03/4k.mp4"
+        data-opening-preview-src="/api/admin/intro/draft-03/preview.mp4"
         controls
         playsinline
         preload="none"
         poster="/api/admin/intro/draft-03/poster.jpg"
         aria-label="SDLCAI opening film"
       >
-        <source src="/api/admin/intro/draft-03/preview.mp4" type="video/mp4" />
-        <a href="/api/admin/intro/draft-03/preview.mp4"
+        <a href="/api/admin/intro/draft-03/4k.mp4?download=1"
           >Download the opening film</a
         >
       </video>
       <div class="opening-video-prompt" data-video-prompt>
         <p>SDLCAI / Opening film</p>
         <button type="button" data-play-intro>Play intro</button>
-        <p>Sound on · Two minutes</p>
+        <p><span data-opening-quality>4K</span> · Sound on · Two minutes</p>
       </div>
       <p class="opening-video-error" data-video-error role="status" hidden>
         The film could not play.
@@ -280,6 +281,7 @@
       <button type="button" data-finish-preroll hidden>
         Continue to welcome
       </button>
+      <button type="button" data-use-preview hidden>Use 1080p</button>
       <button type="button" data-slide-previous aria-label="Previous slide">
         Previous
       </button>

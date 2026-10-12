@@ -10,6 +10,11 @@ const deck = document.querySelector<HTMLElement>("[data-presentation-deck]");
 const continueButton = document.querySelector<HTMLButtonElement>(
   "[data-finish-preroll]",
 );
+const previewButton =
+  document.querySelector<HTMLButtonElement>("[data-use-preview]");
+const quality = document.querySelector<HTMLElement>("[data-opening-quality]");
+let playbackRequested = false;
+let playAttempt = 0;
 
 if (
   new URL(window.location.href).searchParams.get("intro") === "1" &&
@@ -20,15 +25,19 @@ if (
   preroll.hidden = false;
   deck.hidden = true;
   continueButton.hidden = false;
+  if (previewButton) previewButton.hidden = false;
   document.body.dataset.preroll = "true";
 }
 
 function finishPreroll() {
   if (!preroll || !deck || !continueButton) return;
+  playbackRequested = false;
+  playAttempt += 1;
   video?.pause();
   preroll.hidden = true;
   deck.hidden = false;
   continueButton.hidden = true;
+  if (previewButton) previewButton.hidden = true;
   delete document.body.dataset.preroll;
   const url = new URL(window.location.href);
   url.searchParams.delete("intro");
@@ -38,21 +47,67 @@ function finishPreroll() {
 continueButton?.addEventListener("click", finishPreroll);
 
 if (video && playButton && prompt && error) {
-  playButton.addEventListener("click", () => {
-    error.hidden = true;
-    void video.play().catch(() => {
-      error.hidden = false;
+  let usingPreview = false;
+
+  function showError() {
+    if (preroll?.hidden) return;
+    prompt!.hidden = false;
+    error!.hidden = false;
+  }
+
+  function usePreview() {
+    const source = video!.dataset.openingPreviewSrc;
+    if (!source || usingPreview || preroll?.hidden) return;
+    const position = video!.currentTime;
+    usingPreview = true;
+    playAttempt += 1;
+    video!.pause();
+    video!.src = source;
+    video!.load();
+    video!.currentTime = position;
+    if (quality) quality.textContent = "1080p";
+    if (previewButton) {
+      previewButton.disabled = true;
+      previewButton.textContent = "1080p";
+    }
+    if (playbackRequested) playFilm();
+  }
+
+  function playFilm() {
+    if (preroll?.hidden) return;
+    playbackRequested = true;
+    const attempt = ++playAttempt;
+    error!.hidden = true;
+    void video!.play().catch((reason: unknown) => {
+      if (attempt !== playAttempt || preroll?.hidden) return;
+      if (reason instanceof DOMException && reason.name === "AbortError")
+        return;
+      if (
+        reason instanceof DOMException &&
+        reason.name === "NotSupportedError" &&
+        !usingPreview
+      ) {
+        usePreview();
+        return;
+      }
+      showError();
     });
-  });
+  }
+
+  playButton.addEventListener("click", playFilm);
+  previewButton?.addEventListener("click", usePreview);
   video.addEventListener("play", () => {
+    if (preroll?.hidden) {
+      video.pause();
+      return;
+    }
+    playbackRequested = true;
     prompt.hidden = true;
     error.hidden = true;
   });
   video.addEventListener("error", () => {
-    error.hidden = false;
-  });
-  video.querySelector("source")?.addEventListener("error", () => {
-    error.hidden = false;
+    if (usingPreview) showError();
+    else usePreview();
   });
   video.addEventListener("ended", finishPreroll);
 }
