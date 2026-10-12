@@ -32,9 +32,12 @@ their last valid snapshot instead of replacing it with older bundled content.
 `revision` is SHA-256 of the public dataset (including `updatedAt`, excluding the
 revision itself). The build timestamp is the committer time of the last Git commit
 that changed a feed source file. Fresh checkouts, file modification times, and
-unrelated commits therefore preserve the same feed bytes and revision. Builds
-require full Git history (`fetch-depth: 0` in GitHub Actions); source archives can
-instead supply `SOURCE_DATE_EPOCH` as Unix seconds. Live revisions use the later
+unrelated commits therefore preserve the same feed bytes and revision. Shallow
+checkouts automatically fetch the full history of the checked-out commit from
+`origin` before resolving the timestamp, without changing the checked-out commit.
+GitHub Actions uses `fetch-depth: 0` to avoid this extra fetch. Source archives or
+offline shallow checkouts can instead supply `SOURCE_DATE_EPOCH` as Unix seconds.
+Live revisions use the later
 of that timestamp and the public canonical records' update times. Repeated reads
 of unchanged data retain the same revision and ETag.
 

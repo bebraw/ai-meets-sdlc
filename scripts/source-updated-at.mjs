@@ -17,11 +17,25 @@ export async function sourceUpdatedAt(
     return date.toISOString();
   }
   const git = async (...args) =>
-    (await exec("git", args, { cwd })).stdout.trim();
+    (
+      await exec("git", args, {
+        cwd,
+        env: { ...process.env, GIT_TERMINAL_PROMPT: "0" },
+        timeout: 120_000,
+      })
+    ).stdout.trim();
   if ((await git("rev-parse", "--is-shallow-repository")) === "true") {
-    throw new Error(
-      "Event feed timestamps require full Git history (checkout fetch-depth: 0), or SOURCE_DATE_EPOCH for source archives.",
-    );
+    const historyError =
+      "Could not retrieve full Git history for event feed timestamps. Allow fetching from origin, use checkout fetch-depth: 0, or set SOURCE_DATE_EPOCH for source archives.";
+    try {
+      // Fetch the checked-out revision, even if the remote branch has moved.
+      const head = await git("rev-parse", "HEAD");
+      await git("fetch", "--unshallow", "--no-tags", "origin", head);
+    } catch {
+      throw new Error(historyError);
+    }
+    if ((await git("rev-parse", "--is-shallow-repository")) === "true")
+      throw new Error(historyError);
   }
   const timestamp = await git("log", "-1", "--format=%cI", "--", ...files);
   if (!timestamp)

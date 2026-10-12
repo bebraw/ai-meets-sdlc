@@ -201,6 +201,10 @@ including browsers, run `npm run quality:gate` first.
 
 If using independent Workers Builds again, enable **Build cache** under the
 Worker's **Settings → Builds** to retain npm downloads between Cloudflare builds.
+Event-feed generation automatically retrieves full Git history from `origin`
+when Workers Builds supplies a shallow checkout, keeping the checked-out commit
+and content timestamps stable. The build fails with guidance if history cannot
+be retrieved; source archives can supply `SOURCE_DATE_EPOCH` instead.
 Gustwind is not one of Cloudflare's
 automatically cached frameworks, so this does not persist its route or asset
 cache. See [Cloudflare build caching](https://developers.cloudflare.com/workers/ci-cd/builds/build-caching/).

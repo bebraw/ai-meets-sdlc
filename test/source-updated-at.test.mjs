@@ -55,11 +55,51 @@ test("feed source time survives fresh checkouts and unrelated commits, and advan
     "2026-09-03T10:00:00.000Z",
   );
 
+  await writeFile(
+    path.join(directory, "unrelated.txt"),
+    "another code-only edit",
+  );
+  await commit("2026-09-04T10:00:00Z");
   const shallow = path.join(directory, "shallow");
   await exec("git", ["clone", "--depth=1", `file://${directory}`, shallow]);
+  const shallowGit = (...args) => exec("git", args, { cwd: shallow });
+  await shallowGit("checkout", "--detach");
+  const head = (await shallowGit("rev-parse", "HEAD")).stdout;
+  // A later remote commit must not change the content or timestamp being built.
+  await writeFile(source, "newer public content");
+  await commit("2026-09-05T10:00:00Z");
+  assert.equal(
+    await sourceUpdatedAt(["source.json"], { cwd: shallow }),
+    "2026-09-03T10:00:00.000Z",
+  );
+  assert.equal((await shallowGit("rev-parse", "HEAD")).stdout, head);
+  assert.equal(
+    (await shallowGit("rev-parse", "--is-shallow-repository")).stdout.trim(),
+    "false",
+  );
+  await shallowGit("remote", "remove", "origin");
+  assert.equal(
+    await sourceUpdatedAt(["source.json"], { cwd: shallow }),
+    "2026-09-03T10:00:00.000Z",
+  );
+
+  const offline = path.join(directory, "offline");
+  await exec("git", ["clone", "--depth=1", `file://${directory}`, offline]);
+  await exec(
+    "git",
+    ["remote", "set-url", "origin", `file://${directory}/missing-origin`],
+    { cwd: offline },
+  );
   await assert.rejects(
-    sourceUpdatedAt(["source.json"], { cwd: shallow }),
-    /full Git history/u,
+    sourceUpdatedAt(["source.json"], { cwd: offline }),
+    /Could not retrieve full Git history/u,
+  );
+  assert.equal(
+    await sourceUpdatedAt(["source.json"], {
+      cwd: offline,
+      epoch: "1788256800",
+    }),
+    original,
   );
 });
 
