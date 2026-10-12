@@ -1,0 +1,17 @@
+<BaseLayout
+  &title="(id 'SDLCAI Attendee Messages')"
+  &description="(id 'Send event information and review attendee email history.')"
+  &url="(id 'https://sdlcai.org/admin/attendee-messages/')"
+  &robots="(id 'noindex,nofollow,noarchive')"
+>
+  <AdminNavigation &current="(id 'attendee-messages')"></AdminNavigation>
+  <AdminPageHeader
+    &eyebrow="(adminEyebrow (id 'attendee-messages'))"
+    &title="(id 'Attendee messages')"
+    &description="(id 'Welcome attendees, share practical details, and send event follow-up.')"
+  ></AdminPageHeader>
+  <section class="border-b border-ink px-5 py-10 md:px-8">
+    <div class="mx-auto grid max-w-7xl gap-8" data-attendee-messages></div>
+    <noscript>Enable JavaScript to compose and review messages.</noscript>
+  </section>
+</BaseLayout>

@@ -598,6 +598,65 @@ tracking triggers to a migration and its display label to the digest.
 
 ## Attendee management and registration desk
 
+### Attendee messages and SDLCAI news
+
+Apply `0033_add_attendee_messages_and_newsletter.sql` before deploying this
+feature. **Send attendee messages** at `/admin/attendees/` opens
+`/admin/attendee-messages/`. Start with the welcome or follow-up draft, edit the
+copy, send a test to your own address, and preview the message and recipients.
+Confirm the review checkbox before sending. This sender is for SDLCAI 2026
+operational information and event follow-up, without future event promotions.
+
+The audience uses the same active registrations, accepted posters, and
+volunteers as the attendee view. It excludes cancelled registrations, missing
+addresses, and unsubscribes, and sends once per normalized email address.
+Preview approval expires after two hours and is invalidated by copy or audience
+changes. Each preview can create only one campaign. Each recipient receives a
+separate message with an account-free unsubscribe link and RFC 8058 one-click
+unsubscribe headers. Suppression is keyed to the address and survives imports.
+Newsletter consent is separate and is never inferred from event registration.
+
+The browser processes ten recipients per request. If interrupted, use
+**Continue remaining recipients** in history. **Accepted** means provider
+acceptance, not confirmed inbox delivery. The history includes provider message
+IDs and recipient outcomes. Definitive provider rejections can be retried;
+network errors or interruptions during acceptance remain **unknown** and are
+never retried automatically. Reconcile unknown outcomes with provider logs
+before any manual resend. The existing Cloudflare `EMAIL` binding and
+`EMAIL_ENCRYPTION_KEY` are reused. No real emails are sent by the test suite.
+Run `npm run mailing:browser-check` after the Worker test build to verify the
+composer, consent form, and unsubscribe flow at mobile and desktop sizes using
+mocked delivery.
+
+Marketing signup is controlled by `NEWSLETTER_ENABLED` in `wrangler.jsonc`,
+defaulting to `"false"`. While off, homepage/footer signup entry points are
+removed and the signup API rejects requests; `/subscribe/` explains that signup
+is closed. Confirmation and unsubscribe links, plus admin consent management,
+continue to work for existing subscriptions. `/admin/newsletter/` shows the flag
+state, subscribers, and consent history. There is no marketing campaign sender.
+
+Before enabling signup, choose a marketing-compatible delivery provider and
+update the privacy policy with its processing details. Cloudflare Email Service
+is used only for transactional event and confirmation emails. The future signup
+flow uses the existing Turnstile widget/keys, verifies the `newsletter-signup`
+action and configured hostnames server-side, requires explicit consent, and
+confirms email ownership with a single-use 24-hour link. Repeated requests are
+limited per address and keyed IP fingerprint. Contacts from Tito, Webropol, or
+the old interest list are not imported into this list.
+
+Daily cleanup removes pending subscriptions older than seven days, expired
+resubscribe requests, and consent/suppression evidence one year after newsletter
+unsubscribe. Unsubscribe immediately removes the encrypted newsletter address.
+Daily R2 mailing snapshots preserve encrypted contacts, consent records, event
+suppression, and delivery history for 30 days. Event communication records join
+the manual attendee retention review by 31 January 2027. When restoring, preserve
+newer unsubscribe records and reconcile all restored pending/unknown deliveries
+against provider logs before resuming: an old snapshot is not proof that a send
+was never accepted. Keep recovered marketing signup disabled until consent and
+suppression records have been reconciled.
+
+### Registrations and arrivals
+
 Use **Add attendee** at `/admin/attendees/` to create a manual registration.
 Enter a name and either an attendee email or a ticket code; company and dietary
 requirements are optional. Choose the attendee type and badge inclusion, then

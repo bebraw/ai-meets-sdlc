@@ -1,0 +1,32 @@
+<BaseLayout
+  &title="meta.title"
+  &description="meta.description"
+  &url="meta.url"
+  &robots="(id 'noindex,nofollow,noarchive')"
+>
+  <section class="border-b border-ink px-5 py-16 md:px-8 md:py-24">
+    <div class="mx-auto grid max-w-3xl gap-6">
+      <p class="font-headline text-sm font-black uppercase text-muted">
+        SDLCAI / Email preferences
+      </p>
+      <h1
+        class="font-headline text-4xl font-black uppercase leading-none md:text-6xl"
+        &children="meta.heading"
+      ></h1>
+      <p class="text-lg leading-8" &children="meta.description"></p>
+      <div class="grid gap-5 border-t border-ink pt-6" data-email-preferences>
+        <p role="status" aria-live="polite" data-email-preferences-status>
+          Open the link from your email to continue.
+        </p>
+      </div>
+      <p class="text-sm leading-6 text-muted">
+        Need help? Email
+        <a class="underline" href="mailto:info@sdlcai.org">info@sdlcai.org</a>.
+      </p>
+      <noscript
+        >Enable JavaScript to update your email preferences, or contact us by
+        email.</noscript
+      >
+    </div>
+  </section>
+</BaseLayout>

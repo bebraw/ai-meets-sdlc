@@ -35,6 +35,7 @@
     "attendees:browser-check": "node scripts/validate-attendees.mjs",
     "dinner:browser-check": "node scripts/validate-dinner.mjs",
     "announcements:browser-check": "node scripts/validate-announcements.mjs",
+    "mailing:browser-check": "node scripts/validate-mailing.mjs",
     "start": "gustwind --develop --port 3000",
     "serve": "gustwind --serve --port 3000 --input ./build",
     "test": "npm run worker:test-build && node --test --test-timeout=180000",

@@ -11,7 +11,11 @@ export const browserGroups = {
     "qa:browser-check",
     "announcements:browser-check",
   ],
-  guests: ["attendees:browser-check", "dinner:browser-check"],
+  guests: [
+    "attendees:browser-check",
+    "dinner:browser-check",
+    "mailing:browser-check",
+  ],
   assets: [
     "badges:browser-check",
     "speaker-slides:browser-check",

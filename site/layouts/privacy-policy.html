@@ -150,12 +150,60 @@
             attendee roster and its database backups are encrypted.
           </p>
           <p class="mt-4 text-muted">
+            We also use registration email addresses to send practical event
+            information and follow-up about SDLCAI 2026. Each message includes
+            an unsubscribe link that works without signing in. Unsubscribing
+            does not cancel your registration. We keep a keyed address
+            fingerprint and the unsubscribe time separately from imports so
+            importing a registration again does not reset that choice. Message
+            history records the copy, time, recipient fingerprints, provider
+            acceptance or rejection, and provider message identifiers. Provider
+            acceptance does not establish inbox delivery. Event email records
+            are included in the manual retention review by 31 January 2027.
+            Registration does not subscribe you to future promotions.
+          </p>
+          <p class="mt-4 text-muted">
             Named registration staff links allow staff to look up attendees and
             mark arrivals. A necessary sign-in cookie lasts 14 days. Links
             remain valid until revoked; revocation ends every associated browser
             session. Arrival history records the registration record identifier,
             staff account, action and time. Registration staff cannot access
             other private organizer tools.
+          </p>
+        </section>
+
+        <section class="border-t border-ink pt-6" id="sdlcai-news">
+          <h2
+            class="font-headline text-3xl font-black uppercase leading-none md:text-5xl"
+          >
+            SDLCAI news
+          </h2>
+          <p class="mt-6 text-muted">
+            SDLCAI news is a separate, optional email list for SDLCAI updates
+            and future events. Signup is currently closed while we select a
+            marketing email provider. We do not add attendees or earlier
+            registration interest contacts automatically.
+          </p>
+          <p class="mt-4 text-muted">
+            When signup opens, we ask for your email address, your explicit
+            agreement, and confirmation through an email link. We process this
+            information on the basis of your consent. Addresses are encrypted in
+            our Cloudflare database. We record the consent wording and version,
+            request time, confirmation time, and withdrawal time. Cloudflare
+            Turnstile protects the signup form; a keyed IP fingerprint is kept
+            for up to 48 hours for rate limiting. Confirmation emails use
+            Cloudflare Email Service. Marketing delivery will use a suitable
+            provider identified here before campaigns begin.
+          </p>
+          <p class="mt-4 text-muted">
+            You can withdraw consent through an unsubscribe link without signing
+            in, or by contacting info@sdlcai.org. We remove your address from
+            the active list immediately. Unconfirmed requests are deleted after
+            seven days. After unsubscribe, we retain a keyed address fingerprint
+            and consent evidence for up to one year to record your choice, then
+            delete them. Active subscriptions remain until you unsubscribe and
+            are reviewed annually. Private mailing snapshots expire after 30
+            days; recovery must preserve later unsubscribe choices.
           </p>
         </section>
 
@@ -484,33 +532,6 @@
                   class="font-bold text-ink underline"
                   href="https://stripe.com/at/privacy/"
                   >Stripe Privacy Statement</a
-                >.
-              </p>
-            </div>
-            <div class="bg-paper p-5">
-              <h3 class="font-headline text-2xl font-black uppercase">
-                Mailjet
-              </h3>
-              <p class="mt-4 text-muted">
-                If you would like to receive our newsletter, we require a valid
-                email address as well as information that allows us to verify
-                that you own the specified email address and agree to receive
-                the newsletter. No additional data is collected or is only
-                collected on a voluntary basis.
-              </p>
-              <p class="mt-4 text-muted">
-                We only use this data to send the requested information and do
-                not pass it on to third parties. You can revoke consent to the
-                storage of your data and email address as well as their use for
-                sending the newsletter at any time, for example through the
-                unsubscribe link in the newsletter.
-              </p>
-              <p class="mt-4 text-muted">
-                For further details please see the
-                <a
-                  class="font-bold text-ink underline"
-                  href="https://www.mailjet.com/legal/privacy-policy/"
-                  >Mailjet Privacy Statement</a
                 >.
               </p>
             </div>

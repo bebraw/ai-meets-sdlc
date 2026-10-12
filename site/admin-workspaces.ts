@@ -19,6 +19,20 @@ export const adminWorkspaceGroups = [
           "Plan lanyard quantities, prepare spare badges, and generate print output.",
       },
       {
+        id: "attendee-messages",
+        label: "Attendee messages",
+        href: "/admin/attendee-messages/",
+        description:
+          "Send event emails and review acceptance and unsubscribe history.",
+      },
+      {
+        id: "newsletter",
+        label: "SDLCAI news",
+        href: "/admin/newsletter/",
+        description:
+          "Review news subscribers and consent. Marketing signup is feature flagged.",
+      },
+      {
         id: "organizers",
         label: "Organizers",
         href: "/admin/organizers/",

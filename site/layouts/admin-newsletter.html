@@ -1,0 +1,17 @@
+<BaseLayout
+  &title="(id 'SDLCAI News Subscribers')"
+  &description="(id 'Review SDLCAI news subscriptions and consent records.')"
+  &url="(id 'https://sdlcai.org/admin/newsletter/')"
+  &robots="(id 'noindex,nofollow,noarchive')"
+>
+  <AdminNavigation &current="(id 'newsletter')"></AdminNavigation>
+  <AdminPageHeader
+    &eyebrow="(adminEyebrow (id 'newsletter'))"
+    &title="(id 'SDLCAI news')"
+    &description="(id 'Review subscribers, confirmation history, and unsubscribe requests.')"
+  ></AdminPageHeader>
+  <section class="border-b border-ink px-5 py-10 md:px-8">
+    <div class="mx-auto grid max-w-7xl gap-6" data-admin-newsletter></div>
+    <noscript>Enable JavaScript to manage subscriptions.</noscript>
+  </section>
+</BaseLayout>

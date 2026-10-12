@@ -500,6 +500,26 @@
           }
         }
       },
+      "attendee-messages": {
+        "layout": "admin-attendee-messages",
+        "scripts": [{ "name": "admin-attendee-messages" }],
+        "context": {
+          "meta": {
+            "title": "SDLCAI Attendee Messages",
+            "description": "Send event information and review attendee email history."
+          }
+        }
+      },
+      "newsletter": {
+        "layout": "admin-newsletter",
+        "scripts": [{ "name": "admin-newsletter" }],
+        "context": {
+          "meta": {
+            "title": "SDLCAI News Subscribers",
+            "description": "Review newsletter subscriptions and consent history."
+          }
+        }
+      },
       "qa": {
         "layout": "admin-qa",
         "scripts": [{ "name": "index" }, { "name": "qa" }],
@@ -589,6 +609,71 @@
         "description": "Private workspace for SDLCAI speakers to manage their profile, talk, presentation setup, dinner details, and promotion material.",
         "ogEyebrow": "Speaker workspace",
         "ogDescription": "Private workspace for SDLCAI speakers."
+      }
+    }
+  },
+  "subscribe": {
+    "layout": "subscribe",
+    "scripts": [{ "name": "newsletter" }],
+    "dataSources": { "seminar": { "operation": "seminar" } },
+    "context": {
+      "meta": {
+        "title": "SDLCAI News",
+        "description": "Get SDLCAI news and hear about future events by email."
+      }
+    },
+    "routes": {
+      "confirm": {
+        "layout": "email-preferences",
+        "scripts": [{ "name": "email-preferences" }],
+        "context": {
+          "meta": {
+            "title": "Confirm SDLCAI News",
+            "heading": "Confirm your subscription",
+            "description": "Confirm that you would like to receive SDLCAI news, including future events.",
+            "url": "https://sdlcai.org/subscribe/confirm/"
+          }
+        }
+      },
+      "unsubscribe": {
+        "layout": "email-preferences",
+        "scripts": [{ "name": "email-preferences" }],
+        "context": {
+          "meta": {
+            "title": "Unsubscribe from SDLCAI News",
+            "heading": "Unsubscribe from SDLCAI news",
+            "description": "Stop receiving SDLCAI news and future event announcements.",
+            "url": "https://sdlcai.org/subscribe/unsubscribe/"
+          }
+        }
+      }
+    }
+  },
+  "event-email": {
+    "layout": "email-preferences",
+    "scripts": [{ "name": "email-preferences" }],
+    "dataSources": { "seminar": { "operation": "seminar" } },
+    "context": {
+      "meta": {
+        "title": "SDLCAI Event Email Preferences",
+        "heading": "Event email preferences",
+        "description": "Open the unsubscribe link in an event email to update your preferences.",
+        "url": "https://sdlcai.org/event-email/"
+      }
+    },
+    "routes": {
+      "unsubscribe": {
+        "layout": "email-preferences",
+        "scripts": [{ "name": "email-preferences" }],
+        "dataSources": { "seminar": { "operation": "seminar" } },
+        "context": {
+          "meta": {
+            "title": "Unsubscribe from SDLCAI Event Emails",
+            "heading": "Unsubscribe from event emails",
+            "description": "Stop receiving SDLCAI 2026 event emails. Your registration will remain valid.",
+            "url": "https://sdlcai.org/event-email/unsubscribe/"
+          }
+        }
       }
     }
   },

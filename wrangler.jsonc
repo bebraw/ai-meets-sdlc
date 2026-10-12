@@ -80,6 +80,9 @@
     "TURNSTILE_HOSTNAMES": "sdlcai.org,www.sdlcai.org",
     // Legacy interest form flag; the sold-out homepage has no signup form.
     "SHOW_INTEREST_FORM": "",
+    // Keep marketing signup closed until a suitable campaign provider is selected.
+    // Confirmation and unsubscribe links continue to work while disabled.
+    "NEWSLETTER_ENABLED": "false",
   },
   "d1_databases": [
     {

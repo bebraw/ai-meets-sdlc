@@ -5,6 +5,10 @@ export { QaRoom } from "./qa-room.ts";
 export { QaUpdates } from "./qa-updates.ts";
 import { handleBadgeWorkspace } from "./badge-workspace.ts";
 import { handleAttendeesRequest } from "./attendees.ts";
+import { handleAttendeeMessages } from "./attendee-messages.ts";
+import { handleNewsletterRequest, purgeNewsletterData } from "./newsletter.ts";
+import { privateMailResponse } from "./mail-utils.ts";
+import { backupMailingData } from "./mail-backups.ts";
 import { handleAttendeeCatering } from "./attendee-catering.ts";
 import {
   handleDinnerDietReview,
@@ -226,6 +230,16 @@ const innerHandler = {
     if (promotionManifestResponse)
       return withAdminSecurityHeaders(promotionManifestResponse);
 
+    const messageResponse = await handleAttendeeMessages(request, env);
+    if (messageResponse)
+      return isAdminProtected
+        ? withAdminSecurityHeaders(messageResponse)
+        : messageResponse;
+    const newsletterResponse = await handleNewsletterRequest(request, env);
+    if (newsletterResponse)
+      return isAdminProtected
+        ? withAdminSecurityHeaders(newsletterResponse)
+        : newsletterResponse;
     const attendeeResponse = await handleAttendeesRequest(request, env);
     if (attendeeResponse) return attendeeResponse;
     if (url.pathname === "/api/admin/attendees/catering")
@@ -628,6 +642,11 @@ const innerHandler = {
       return withSpeakerWorkspaceSecurityHeaders(response);
     }
 
+    if (
+      url.pathname.startsWith("/subscribe/") ||
+      url.pathname === "/event-email/unsubscribe/"
+    )
+      return privateMailResponse(response);
     return withStaticAssetCache(response, url);
   },
 
@@ -650,6 +669,7 @@ const innerHandler = {
       ctx.waitUntil(backupPosterProposals(env));
       ctx.waitUntil(backupCanonicalSpeakerContent(env));
       ctx.waitUntil(backupAttendees(env));
+      ctx.waitUntil(backupMailingData(env));
       ctx.waitUntil(backupSpeakerReceipts(env));
     }
 
@@ -658,6 +678,7 @@ const innerHandler = {
     }
 
     ctx.waitUntil(purgeExpiredSpeakerWorkspaceData(env));
+    ctx.waitUntil(purgeNewsletterData(env));
     ctx.waitUntil(purgeSpeakerReviewDigests(env));
   },
 } satisfies ExportedHandler<Env>;

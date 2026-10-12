@@ -90,7 +90,7 @@ export async function injectRuntimeConfig(
   const html = await response.text();
   const showInterestForm = env.SHOW_INTEREST_FORM === "true";
 
-  return new Response(
+  const configured = new Response(
     html
       .replaceAll("__TURNSTILE_SITE_KEY__", env.TURNSTILE_SITE_KEY ?? "")
       .replaceAll(
@@ -106,6 +106,20 @@ export async function injectRuntimeConfig(
         status === response.status ? response.statusText : "Not Found",
     },
   );
+  const enabled = String(env.NEWSLETTER_ENABLED) === "true";
+  return new HTMLRewriter()
+    .on("[data-newsletter-entry]", {
+      element(element) {
+        if (enabled) element.removeAttribute("hidden");
+        else element.remove();
+      },
+    })
+    .on("[data-newsletter-disabled]", {
+      element(element) {
+        if (enabled) element.remove();
+      },
+    })
+    .transform(configured);
 }
 
 export function calendarResponse(): Response {
