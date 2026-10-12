@@ -127,7 +127,18 @@ export function buildCateringRoster(
       source.kind === "poster-presenter" || source.kind === "volunteer",
   );
   const targets = new Map<string, { name: string; email?: string }>([
-    ...active.map((person) => [`attendee:${person.id}`, person] as const),
+    ...active.map(
+      (person) =>
+        [
+          `attendee:${person.id}`,
+          {
+            ...person,
+            name: person.unassigned
+              ? `Unassigned ticket ${person.ticketCode}`
+              : person.name,
+          },
+        ] as const,
+    ),
     ...speakers.map((source) => [source.id, source] as const),
     ...members.map((source) => [source.id, source] as const),
     ...data.organizers.map(
@@ -259,7 +270,9 @@ export function buildCateringRoster(
         .filter((person) => person.status === "cancelled")
         .map((person) => ({
           id: `attendee:${person.id}`,
-          name: person.name,
+          name: person.unassigned
+            ? `Unassigned ticket ${person.ticketCode}`
+            : person.name,
           status: "cancelled" as const,
           sourceSignature: "",
         })),

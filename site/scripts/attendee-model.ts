@@ -22,6 +22,8 @@ export const attendeeInputSchema = v.object({
   badge: v.boolean(),
   type: v.optional(attendeeTypeSchema),
   diet: v.optional(text(2000)),
+  orderCode: v.optional(text(100)),
+  unassigned: v.optional(v.boolean()),
 });
 export type AttendeeInput = v.InferOutput<typeof attendeeInputSchema>;
 export type StoredAttendeeSource = "tito" | "webropol" | "manual";
@@ -30,6 +32,7 @@ export interface AttendeeRecord extends AttendeeInput {
   id: string;
   source: StoredAttendeeSource | "poster" | "volunteer";
   sourceKey: string;
+  assignedAtDesk?: boolean | undefined;
 }
 export interface Attendee extends AttendeeRecord {
   arrivedAt: string | null;
@@ -61,8 +64,15 @@ export function parseAttendeeInput(value: unknown): AttendeeInput {
   input.company = input.company.trim().normalize("NFC");
   input.email = input.email.trim().toLowerCase();
   input.ticketCode = input.ticketCode.trim();
+  if (input.orderCode !== undefined) input.orderCode = input.orderCode.trim();
   if (input.diet !== undefined) input.diet = input.diet.trim().normalize("NFC");
-  if (!input.name || (!input.ticketCode && !input.email))
+  if (input.unassigned) {
+    if (!input.ticketCode || input.name || input.email)
+      throw new Error(
+        "An unassigned ticket needs a ticket code and blank attendee name and email.",
+      );
+    input.badge = false;
+  } else if (!input.name || (!input.ticketCode && !input.email))
     throw new Error(
       "Each attendee needs a name and a ticket code or attendee email.",
     );
@@ -76,6 +86,16 @@ export function attendeeSourceKey(input: AttendeeInput): string {
     ? `ticket:${input.ticketCode.toLowerCase()}`
     : `email:${input.email}`;
 }
+export function attendeeOrderCode(
+  person: Pick<AttendeeRecord, "source" | "ticketCode" | "orderCode">,
+): string {
+  return (
+    person.orderCode ||
+    (person.source === "tito"
+      ? (person.ticketCode.match(/^(.+)-\d+$/u)?.[1] ?? "")
+      : "")
+  );
+}
 export function parseAttendeeRoster(value: unknown): AttendeeRecord[] {
   const records = v.parse(
     v.pipe(
@@ -86,6 +106,7 @@ export function parseAttendeeRoster(value: unknown): AttendeeRecord[] {
           id: v.pipe(text(100), v.minLength(1)),
           source: v.picklist(["tito", "webropol", "manual"]),
           sourceKey: v.pipe(text(400), v.minLength(1)),
+          assignedAtDesk: v.optional(v.boolean()),
         }),
       ),
       v.maxLength(2000),
@@ -107,9 +128,14 @@ export function parseAttendeeRoster(value: unknown): AttendeeRecord[] {
     );
   return records.map((record) => ({
     ...record,
-    ...parseAttendeeInput(record),
+    ...parseStoredInput(record),
     type: record.type,
   }));
+}
+function parseStoredInput(record: AttendeeRecord): AttendeeInput {
+  if (record.unassigned && record.source !== "tito")
+    throw new Error("Only Tito tickets can be unassigned.");
+  return parseAttendeeInput(record);
 }
 export function addManualAttendee(
   current: AttendeeRecord[],
@@ -155,12 +181,25 @@ export function mergeAttendeeImport(
     if (index >= 0) {
       // Unmapped diets/types, badge choices, and arrivals survive a source refresh.
       const { diet, type, ...details } = input;
+      const existing = result[index]!;
+      const keepDeskAssignment = existing.assignedAtDesk && input.unassigned;
       result[index] = {
-        ...result[index]!,
+        ...existing,
         ...details,
-        ...(diet === undefined ? {} : { diet }),
-        type: type ?? result[index]!.type,
-        badge: result[index]!.badge,
+        ...(diet === undefined || keepDeskAssignment ? {} : { diet }),
+        ...(keepDeskAssignment
+          ? {
+              name: existing.name,
+              email: existing.email,
+              company: existing.company,
+              unassigned: false,
+            }
+          : { unassigned: input.unassigned ?? false, assignedAtDesk: false }),
+        type: type ?? existing.type,
+        badge:
+          existing.unassigned && !input.unassigned
+            ? input.badge
+            : existing.badge,
       };
     } else
       result.push({
@@ -182,6 +221,7 @@ export interface AttendeeMapping {
   ticketCode: number;
   status: number;
   diet?: number;
+  orderCode?: number;
 }
 
 export const attendeeColumnAliases = {
@@ -209,6 +249,12 @@ export const attendeeColumnAliases = {
     "ticket id",
     "ticket number",
     "barcode",
+  ],
+  orderCode: [
+    "registration reference",
+    "order reference",
+    "order code",
+    "order id",
   ],
   status: [
     "status",
@@ -244,6 +290,7 @@ export function detectAttendeeMapping(
     ticketCode: -1,
     status: -1,
     diet: -1,
+    orderCode: -1,
   };
   for (const key of Object.keys(
     attendeeColumnAliases,
@@ -386,42 +433,50 @@ export function importAttendeeCsv(
   source?: "tito" | "webropol",
 ): AttendeeInput[] {
   const header = records[0]!;
-  const assignedRecords = records.filter((record, index) => {
-    // Tito includes purchased tickets whose attendee details are not assigned yet.
-    // Keep malformed and cancelled rows for validation; a cancellation must not
-    // silently leave an existing registration active during a refresh.
+  const unassignedRows = new Set<number>();
+  const validationRecords = records.map((record, index) => {
     if (
-      index === 0 ||
-      source !== "tito" ||
-      mapping.ticketCode < 0 ||
-      mapping.email < 0 ||
-      (mapping.name < 0 && (mapping.first < 0 || mapping.last < 0)) ||
-      record.cells.length !== header.cells.length ||
-      !record.cells[mapping.ticketCode]?.trim() ||
-      [mapping.name, mapping.first, mapping.last, mapping.email].some(
+      index &&
+      source === "tito" &&
+      mapping.ticketCode >= 0 &&
+      mapping.email >= 0 &&
+      (mapping.name >= 0 || (mapping.first >= 0 && mapping.last >= 0)) &&
+      record.cells.length === header.cells.length &&
+      record.cells[mapping.ticketCode]?.trim() &&
+      ![mapping.name, mapping.first, mapping.last, mapping.email].some(
         (column) => column >= 0 && record.cells[column]?.trim(),
       )
-    )
-      return true;
-    return importTicketStatus(header, record, mapping.status) !== "active";
+    ) {
+      unassignedRows.add(index);
+      // Validate all other CSV fields without persisting a placeholder as a person's name.
+      const cells = [...record.cells];
+      cells[mapping.name >= 0 ? mapping.name : mapping.first] =
+        "Unassigned ticket";
+      return { ...record, cells };
+    }
+    return record;
   });
-  const people = importCsv(assignedRecords, mapping, "Registration");
-  if (records.length > 1 && !people.length)
-    throw new Error(
-      "No assigned attendees in this CSV. Assign attendee details in Tito and export again.",
-    );
+  const people = importCsv(validationRecords, mapping, "Registration");
   return people.map((person, index) => {
-    const record = assignedRecords[index + 1]!;
+    const record = records[index + 1]!;
     const status = importTicketStatus(header, record, mapping.status);
+    const ticketCode =
+      mapping.ticketCode < 0 ? "" : (record.cells[mapping.ticketCode] ?? "");
+    const orderCode =
+      mapping.orderCode !== undefined && mapping.orderCode >= 0
+        ? (record.cells[mapping.orderCode]?.trim() ?? "")
+        : source === "tito"
+          ? attendeeOrderCode({ source, ticketCode, orderCode: "" })
+          : "";
+    const unassigned = unassignedRows.has(index + 1);
     try {
       return parseAttendeeInput({
         ...person,
-        ticketCode:
-          mapping.ticketCode < 0
-            ? ""
-            : (record.cells[mapping.ticketCode] ?? ""),
+        ...(unassigned ? { name: "", unassigned: true } : {}),
+        ticketCode,
+        ...(orderCode ? { orderCode } : {}),
         status,
-        badge: true,
+        badge: !unassigned,
         ...(type === undefined ? {} : { type }),
         ...(mapping.diet !== undefined && mapping.diet >= 0
           ? { diet: record.cells[mapping.diet] ?? "" }

@@ -103,7 +103,8 @@ export async function handleAttendeesRequest(
     path === "/api/admin/attendees" || path === "/api/admin/attendees/access";
   const staff =
     path === "/api/registration/attendees" ||
-    path === "/api/registration/arrival";
+    path === "/api/registration/arrival" ||
+    path === "/api/registration/assign";
   const session = path === "/api/registration/session";
   const page = path === "/registration/" || path === "/registration/access/";
   if (
@@ -223,6 +224,8 @@ async function handle(
       );
     return jsonResponse({ grants: await readRegistrationGrants(request, env) });
   }
+  if (path === "/api/registration/assign")
+    return assignAndArrive(request, env, actor);
   if (request.method === "GET" && path !== "/api/registration/arrival")
     return jsonResponse({ ...(await readList(env, actor)) });
   if (path === "/api/registration/arrival")
@@ -290,6 +293,97 @@ async function handle(
   }
   return saveRoster(env, people, roster.revision);
 }
+async function assignAndArrive(
+  request: Request,
+  env: Env,
+  actor: RegistrationActor,
+): Promise<Response> {
+  if (request.method !== "POST")
+    return jsonResponse({ error: "Method not allowed." }, 405);
+  const body = await readJsonWithinLimit(request, 4096);
+  if (body instanceof Response) return body;
+  if (
+    !isRecord(body) ||
+    typeof body.id !== "string" ||
+    typeof body.name !== "string" ||
+    !body.name.trim() ||
+    body.name.length > 300 ||
+    !Number.isSafeInteger(body.rosterRevision) ||
+    Number(body.rosterRevision) < 0 ||
+    !Number.isSafeInteger(body.revision) ||
+    Number(body.revision) < 0
+  )
+    return jsonResponse(
+      {
+        error:
+          "Enter the ticket holder's name and reload the ticket before confirming arrival.",
+      },
+      400,
+    );
+  const roster = await readAttendeeRoster(env);
+  const person = roster.people.find((p) => p.id === body.id);
+  if (
+    roster.revision !== body.rosterRevision ||
+    !person?.unassigned ||
+    person.source !== "tito" ||
+    person.status !== "active"
+  )
+    return jsonResponse(
+      {
+        error:
+          "The ticket changed or is no longer available. Reload and verify it before confirming arrival.",
+      },
+      409,
+    );
+  const updated = {
+    ...person,
+    ...parseAttendeeInput({
+      ...person,
+      name: body.name,
+      unassigned: false,
+      badge: true,
+    }),
+    assignedAtDesk: true,
+  };
+  const people = roster.people.map((p) => (p.id === person.id ? updated : p));
+  const text = JSON.stringify(parseAttendeeRoster(people));
+  if (new TextEncoder().encode(text).byteLength > 1200 * 1024)
+    return jsonResponse({ error: "Attendee list is too large." }, 413);
+  const encrypted = await encryptText(text, env.EMAIL_ENCRYPTION_KEY);
+  const now = new Date().toISOString();
+  // The encrypted value ties the arrival to this exact roster update. Both statements
+  // run in one transaction, including revision, arrival and staff revocation guards.
+  const writes = await env.INTERESTS.batch([
+    env.INTERESTS.prepare(
+      `UPDATE attendee_roster SET ciphertext=?1, iv=?2, updated_at=?3, revision=revision+1
+      WHERE id=1 AND revision=?4
+      AND COALESCE((SELECT revision FROM attendee_arrivals WHERE attendee_id=?5),0)=?6
+      AND NOT EXISTS(SELECT 1 FROM attendee_arrivals WHERE attendee_id=?5 AND arrived_at IS NOT NULL)
+      AND (?7 IS NULL OR EXISTS(SELECT 1 FROM registration_staff_sessions s JOIN registration_access_grants g ON g.id=s.grant_id WHERE s.token_hash=?7 AND s.expires_at>?3 AND g.revoked_at IS NULL))`,
+    ).bind(
+      encrypted.ciphertext,
+      encrypted.iv,
+      now,
+      roster.revision,
+      person.id,
+      body.revision,
+      actor.sessionHash,
+    ),
+    env.INTERESTS.prepare(
+      `INSERT INTO attendee_arrivals(attendee_id,arrived_at,arrived_by,revision)
+      SELECT ?1,?2,?3,1 WHERE EXISTS(SELECT 1 FROM attendee_roster WHERE id=1 AND revision=?4 AND ciphertext=?5)
+      ON CONFLICT(attendee_id) DO UPDATE SET arrived_at=excluded.arrived_at,arrived_by=excluded.arrived_by,revision=attendee_arrivals.revision+1`,
+    ).bind(person.id, now, actor.id, roster.revision + 1, encrypted.ciphertext),
+  ]);
+  if (writes.every((write) => write.meta.changes > 0))
+    return jsonResponse({ ok: true });
+  return jsonResponse(
+    {
+      error: "The ticket or staff access changed. Reload before trying again.",
+    },
+    409,
+  );
+}
 async function markArrival(
   request: Request,
   env: Env,
@@ -330,6 +424,11 @@ async function markArrival(
       {
         error: "This registration is cancelled. Ask an organizer to verify it.",
       },
+      409,
+    );
+  if (body.action === "arrived" && person.unassigned)
+    return jsonResponse(
+      { error: "Enter the ticket holder's name using Assign and check in." },
       409,
     );
   const aliases = roster.aliases.get(person.id) ?? [person.id];

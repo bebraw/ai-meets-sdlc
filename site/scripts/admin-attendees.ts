@@ -10,6 +10,7 @@ import {
 import type { CsvRecord } from "./badge-model.ts";
 import {
   attendeeColumnAliases,
+  attendeeOrderCode,
   detectAttendeeMapping,
   importAttendeeCsv,
   isStoredAttendee,
@@ -171,16 +172,18 @@ function setupList(root: HTMLElement) {
   const toolbar = el("div", "", "my-5 flex flex-wrap gap-3");
   const counts = el("p", "", "my-5 font-headline text-xl font-black uppercase");
   const search = field("Find an attendee", "", "search");
-  search.input.placeholder = "Name, email, or ticket code";
+  search.input.placeholder = "Name, email, ticket code, or order reference";
   const lookup = selectField("Search by", [
     ["Name or email", "person"],
     ["Exact ticket code", "ticket"],
+    ["Exact order reference", "order"],
   ]);
   const state = selectField("Show registrations", [
     ["All registrations", "all"],
     ["Not arrived", "waiting"],
     ["Arrived", "arrived"],
     ["Cancelled", "cancelled"],
+    ["Unassigned tickets", "unassigned"],
   ]);
   const attendeeType = selectField("Registration type", [
     ["All types", "all"],
@@ -293,6 +296,8 @@ function setupList(root: HTMLElement) {
       person.badge,
       person.type,
       person.diet,
+      person.orderCode,
+      person.unassigned,
     ]);
   }
   async function load() {
@@ -337,7 +342,11 @@ function setupList(root: HTMLElement) {
       const matches =
         lookup.input.value === "ticket"
           ? Boolean(term && p.ticketCode.toLowerCase() === term)
-          : `${p.name} ${p.email} ${p.ticketCode}`.toLowerCase().includes(term);
+          : lookup.input.value === "order"
+            ? Boolean(term) && attendeeOrderCode(p).toLowerCase() === term
+            : `${p.name} ${p.email} ${p.ticketCode} ${attendeeOrderCode(p)}`
+                .toLowerCase()
+                .includes(term);
       return (
         matches &&
         (attendeeType.input.value === "all" ||
@@ -347,12 +356,17 @@ function setupList(root: HTMLElement) {
             p.status === "active" &&
             !p.arrivedAt) ||
           (state.input.value === "arrived" && p.arrivedAt) ||
-          (state.input.value === "cancelled" && p.status === "cancelled"))
+          (state.input.value === "cancelled" && p.status === "cancelled") ||
+          (state.input.value === "unassigned" &&
+            p.unassigned &&
+            p.status === "active"))
       );
     });
     results.textContent =
-      lookup.input.value === "ticket" && !term
-        ? "Enter the complete ticket code, or paste it from a scanner."
+      ["ticket", "order"].includes(lookup.input.value) && !term
+        ? lookup.input.value === "order"
+          ? "Enter the complete order reference to see its tickets."
+          : "Enter the complete ticket code, or paste it from a scanner."
         : `${visible.length} matching registration${visible.length === 1 ? "" : "s"}${lookup.input.value === "ticket" && visible.length > 1 ? ". Multiple matches: verify the attendee and registration source." : "."}`;
     const displayed = visible.slice(0, 100);
     const displayedIds = new Set(displayed.map((person) => person.id));
@@ -378,7 +392,11 @@ function setupList(root: HTMLElement) {
       const details = el("div", "", "min-w-0 break-words");
       append(
         details,
-        el("h2", person.name, "font-headline text-2xl font-black"),
+        el(
+          "h2",
+          person.unassigned ? "Unassigned ticket" : person.name,
+          "font-headline text-2xl font-black",
+        ),
         el(
           "p",
           [person.company, person.email].filter(Boolean).join(" · "),
@@ -390,6 +408,15 @@ function setupList(root: HTMLElement) {
           "mt-2 text-sm font-bold",
         ),
       );
+      if (attendeeOrderCode(person))
+        append(
+          details,
+          el(
+            "p",
+            `Order ${attendeeOrderCode(person)}`,
+            "mt-1 text-sm font-bold",
+          ),
+        );
       if (admin)
         append(
           details,
@@ -418,7 +445,9 @@ function setupList(root: HTMLElement) {
       if (person.status === "active" && !person.arrivedAt)
         append(
           controls,
-          button("Mark arrived", () => void arrive(person, "arrived")),
+          person.unassigned
+            ? button("Assign and check in", () => assign(card, person))
+            : button("Mark arrived", () => void arrive(person, "arrived")),
         );
       if (admin) {
         if (person.arrivedAt)
@@ -494,6 +523,62 @@ function setupList(root: HTMLElement) {
           : `Arrival undone for ${person.name}.`;
     });
   }
+  function assign(card: HTMLElement, person: Attendee) {
+    const form = el("form", "", "grid gap-3 md:col-span-2");
+    const name = field("Ticket holder's name", "");
+    name.input.required = true;
+    name.input.maxLength = 300;
+    name.input.autocomplete = "off";
+    const draft = {
+      form,
+      revision: data.revision,
+      original: editSource(person),
+    };
+    drafts.set(person.id, draft);
+    const save = el("button", "Confirm name and arrival", buttonClass);
+    save.type = "submit";
+    const cancel = button("Cancel assignment", () => {
+      drafts.delete(person.id);
+      render();
+    });
+    append(
+      form,
+      el(
+        "h2",
+        `Assign ticket ${person.ticketCode}`,
+        "font-headline text-2xl font-black",
+      ),
+      el(
+        "p",
+        `Verify the booking${attendeeOrderCode(person) ? ` for order ${attendeeOrderCode(person)}` : ""} and enter the person using this ticket. This confirms arrival for this ticket only.`,
+        "text-sm leading-6",
+      ),
+      name.label,
+      save,
+      cancel,
+    );
+    card.replaceChildren(form);
+    name.input.focus();
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      void work(async () => {
+        try {
+          await api("/api/registration/assign", action, "POST", {
+            id: person.id,
+            name: name.input.value,
+            revision: person.arrivalRevision,
+            rosterRevision: draft.revision,
+          });
+        } catch (error) {
+          await load();
+          throw error;
+        }
+        drafts.delete(person.id);
+        await load();
+        status.textContent = `${name.input.value.trim()} assigned to ticket ${person.ticketCode} and marked as arrived.`;
+      });
+    });
+  }
   function edit(card: HTMLElement, person?: Attendee) {
     const initial: AttendeeInput = person ?? {
       name: "",
@@ -533,7 +618,7 @@ function setupList(root: HTMLElement) {
       ticketCode: field("Ticket code", initial.ticketCode),
       diet: { label: dietLabel, input: dietInput },
     };
-    fields.name.input.required = true;
+    fields.name.input.required = !person?.unassigned;
     for (const [key, value] of Object.entries(fields)) {
       value.input.maxLength =
         key === "diet"
@@ -621,6 +706,14 @@ function setupList(root: HTMLElement) {
           badge: badge.input.checked,
           type: type.input.value,
           diet: fields.diet.input.value,
+          ...(person?.orderCode ? { orderCode: person.orderCode } : {}),
+          ...(person?.unassigned
+            ? {
+                unassigned:
+                  !fields.name.input.value.trim() &&
+                  !fields.email.input.value.trim(),
+              }
+            : {}),
         });
         await api(endpoint, action, person ? "PUT" : "POST", {
           ...(person ? { id: person.id } : { action: "create" }),
@@ -691,6 +784,7 @@ function setupList(root: HTMLElement) {
       ticketCode: "Ticket code",
       status: "Ticket status",
       diet: "Dietary requirements column",
+      orderCode: "Order reference",
     };
     function parseFile() {
       records = [];
@@ -748,10 +842,12 @@ function setupList(root: HTMLElement) {
       );
       return imported;
     }
-    function skippedTicketNote(imported: AttendeeInput[]): string {
-      const skipped = records.length - 1 - imported.length;
-      return skipped > 0
-        ? `${skipped} unassigned Tito ticket${skipped === 1 ? "" : "s"} skipped. Assign attendee details in Tito and re-import.`
+    function unassignedTicketNote(imported: AttendeeInput[]): string {
+      const count = imported.filter(
+        (p) => p.unassigned && p.status === "active",
+      ).length;
+      return count > 0
+        ? `${count} unassigned Tito ticket${count === 1 ? "" : "s"} included. Find by ticket or order reference and assign a name at check-in.`
         : "";
     }
     file.input.addEventListener(
@@ -797,9 +893,11 @@ function setupList(root: HTMLElement) {
             "font-bold",
           ),
         );
-        const skipped = skippedTicketNote(imported);
-        if (skipped) {
-          const count = records.length - 1 - imported.length;
+        const note = unassignedTicketNote(imported);
+        if (note) {
+          const count = imported.filter(
+            (p) => p.unassigned && p.status === "active",
+          ).length;
           const spareRole =
             type.input.value === "sponsor" ? "sponsor" : "attendee";
           const spares = el(
@@ -808,14 +906,14 @@ function setupList(root: HTMLElement) {
             "font-bold underline",
           );
           spares.href = `/admin/badges/?${spareRole === "sponsor" ? "sponsor-spares" : "spares"}=${count}`;
-          append(preview, el("p", skipped), spares);
+          append(preview, el("p", note), spares);
         }
         for (const person of imported.slice(0, 5))
           append(
             preview,
             el(
               "p",
-              `${person.name} · ${person.email} · ${person.ticketCode || "No ticket code"} · ${person.type ?? "Keep existing type / new attendee"} · ${person.status} · Diet: ${person.diet ?? "Not mapped"}`,
+              `${person.unassigned ? "Unassigned ticket" : person.name} · ${person.email} · ${person.ticketCode || "No ticket code"} · ${person.type ?? "Keep existing type / new attendee"} · ${person.status} · Diet: ${person.diet ?? "Not mapped"}`,
             ),
           );
       } catch (error) {
@@ -827,14 +925,14 @@ function setupList(root: HTMLElement) {
       () =>
         void work(async () => {
           const imported = rows();
-          const skipped = skippedTicketNote(imported);
+          const note = unassignedTicketNote(imported);
           await api(endpoint, action, "POST", {
             revision: data.revision,
             source: source.input.value,
             attendees: imported,
           });
           await load();
-          status.textContent = `${imported.length} registrations imported. Existing arrival records preserved.${skipped ? ` ${skipped}` : ""}`;
+          status.textContent = `${imported.length} registrations imported. Existing arrival records preserved.${note ? ` ${note}` : ""}`;
         }),
     );
     append(
@@ -847,7 +945,7 @@ function setupList(root: HTMLElement) {
       mappingRoot,
       el(
         "p",
-        "Without ticket codes, matching uses attendee email within the selected source. Unassigned Tito tickets are skipped; assign attendee details in Tito and re-import. Filter cancelled or refunded tickets out first if your CSV has no status column.",
+        "Without ticket codes, matching uses attendee email within the selected source. Unassigned Tito tickets are included for assignment at check-in. Map Order reference if available; otherwise Tito references such as ABCD-1 use ABCD as the order. Filter cancelled or refunded tickets out first if your CSV has no status column.",
         "text-sm leading-6",
       ),
       previewRows,

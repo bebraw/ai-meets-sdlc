@@ -731,10 +731,13 @@ Apply `0023_create_attendee_registration.sql` before deploying. At
 column-mapping workflow previously used by badges. Map individual ticket codes and attendee
 emails, preview the rows, then import. A ticket code identifies a registration
 within its source; without a code, attendee email is the identity. Selecting
-Tito skips active, unassigned tickets with a ticket code but no attendee name or
-email. Map both attendee names and emails; purchaser details
-are not used as a fallback. The preview and import result report skipped tickets.
-Assign their attendee details in Tito and re-import to add them later. Keep the
+Tito imports unassigned tickets with a ticket code and blank attendee name and
+email as **Unassigned ticket**. Map both attendee names and emails; purchaser
+details are not used as a fallback. These tickets count toward catering but do
+not produce named badges. Map **Order reference** to the registration/order
+reference column if available; otherwise a Tito ticket reference such as
+`ABCD-1` uses `ABCD` as its order reference. The preview and import result report
+unassigned tickets and link to the appropriate spare badge quantity. Keep the
 same identity columns on subsequent imports. Correcting a ticket code or an
 email-only identity also updates its import key while keeping the attendee ID.
 Re-imports update matching
@@ -757,8 +760,13 @@ Create a named staff link for each person handling registration. The link opens
 `/registration/access/` and requires **Open registration desk** to sign in. Links
 remain reusable until revoked; the HttpOnly browser session lasts 14 days.
 Revocation ends every session for that link. Registration staff can search by
-name/email or look up an exact ticket code and mark an active registration as
-arrived. They cannot edit attendees, import data, undo arrivals, print badges,
+name/email or look up an exact ticket code or order reference. An order lookup
+shows its individual tickets and arrival statuses. Staff can select **Assign and
+check in** on an active unassigned ticket, enter the holder's name, and confirm
+that ticket's arrival. Assignment and arrival are atomic; concurrent claims,
+cancelled tickets, stale lists, and revoked access are rejected. Later unassigned
+CSV exports preserve desk-entered names and arrivals; a named Tito assignment
+updates the same ticket. They cannot otherwise edit attendees, import data, undo arrivals, print badges,
 or open organizer tools. Q&A and registration links grant separate access.
 
 Arrival writes are atomic, reject repeat/stale submissions, record the staff
@@ -778,8 +786,9 @@ The badge studio automatically loads active, badge-selected registrations from
 the current list. Arrival is independent of badge inclusion. Imports, attendee
 corrections and inclusion choices belong in `/admin/attendees/`.
 
-Use **Reserved meals** in the catering summary for unassigned tickets and other
-guests who need meals but have no named registration. Save the reserve before
+Use **Reserved meals** in the catering summary for guests without a registration.
+Imported unassigned tickets already count toward catering; reduce any earlier
+reserve for those tickets to avoid counting them twice. Save the reserve before
 copying or downloading the summary. It increases the catering headcount and
 missing-diet total without creating attendees or badges. Reduce it as those
 people join the named list. The reserve is saved with catering settings
@@ -850,7 +859,7 @@ Set **Spare attendee badges** to cover unassigned Tito tickets and walk-ins.
 These badges have the attendee logo and role with blank name/company areas.
 The count is saved with print settings, included in attendee and full runs, and
 can be printed separately with **Print / save PDF — spares**. The Tito import
-preview links to Badge studio with the skipped-ticket count prefilled; increase
+preview links to Badge studio with the unassigned-ticket count prefilled; increase
 it to include additional spares.
 Set **Spare sponsor badges** for sponsors without a named registration. These
 use the teal sponsor background and **SPONSOR** label with blank name/company
@@ -858,7 +867,7 @@ areas. Save the quantity with print settings. Sponsor and full runs include
 these spares; **Print / save PDF — sponsor spares** prints only spare sponsor
 badges. Attendee and sponsor quantities are independent whole numbers from 0
 to 2,000 and do not create registrations or change catering totals. Sponsor
-CSV previews prefill the sponsor quantity for skipped unassigned tickets.
+CSV previews prefill the sponsor quantity for unassigned tickets.
 The 2,000-person limit applies to the attendee roster; the combined badge run
 includes additional team and earlier records. Print preferences are bounded by
 request and encrypted storage size rather than a combined record count.

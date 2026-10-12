@@ -174,7 +174,7 @@ test("Tito semicolon exports detect the final diet column and interpret blank Vo
   assert.equal(prepared.records[2].row, 4);
 });
 
-test("Tito imports skip unassigned tickets without using the purchaser's details", () => {
+test("Tito imports retain unassigned tickets without using the purchaser's details", () => {
   const prepared = prepareAttendeeCsv(
     [
       "Registration Name,Registration Email,Ticket Full Name,Ticket First Name,Ticket Last Name,Ticket Email,Ticket Company Name,Void Status,Ticket Reference,What kind of food restrictions do you have?",
@@ -185,19 +185,23 @@ test("Tito imports skip unassigned tickets without using the purchaser's details
   );
   const detected = detectAttendeeMapping(prepared.records[0].cells);
   const rows = importAttendeeCsv(prepared.records, detected, "sponsor", "tito");
-  assert.equal(rows.length, 2);
-  assert.equal(rows[0].name, "Zoë Åström");
-  assert.equal(rows[0].email, "zoe@example.test");
-  assert.equal(rows[0].ticketCode, "ASSIGNED");
-  assert.equal(rows[0].company, "Example, Ltd");
-  assert.equal(rows[0].diet, "Vegan\nand gluten free");
-  assert.equal(rows[0].status, "active");
-  assert.equal(rows[0].type, "sponsor");
-  assert.equal(rows[1].ticketCode, "CANCELLED");
-  assert.equal(rows[1].status, "cancelled");
-  assert.equal(rows[1].diet, "Dairy free");
+  assert.equal(rows.length, 3);
+  assert.equal(rows[0].name, "");
+  assert.equal(rows[0].email, "");
+  assert.equal(rows[0].unassigned, true);
+  assert.equal(rows[0].badge, false);
+  assert.equal(rows[1].name, "Zoë Åström");
+  assert.equal(rows[1].email, "zoe@example.test");
+  assert.equal(rows[1].ticketCode, "ASSIGNED");
+  assert.equal(rows[1].company, "Example, Ltd");
+  assert.equal(rows[1].diet, "Vegan\nand gluten free");
+  assert.equal(rows[1].status, "active");
+  assert.equal(rows[1].type, "sponsor");
+  assert.equal(rows[2].ticketCode, "CANCELLED");
+  assert.equal(rows[2].status, "cancelled");
+  assert.equal(rows[2].diet, "Dairy free");
   const roster = mergeAttendeeImport([], "tito", rows);
-  assert.equal(roster.length, 2);
+  assert.equal(roster.length, 3);
   const assigned = prepared.records.map((record, index) =>
     index === 1
       ? {
@@ -225,16 +229,18 @@ test("Tito imports skip unassigned tickets without using the purchaser's details
   assert.equal(refreshed.length, 3);
   assert.equal(refreshed[0].id, roster[0].id);
   assert.equal(refreshed[1].id, roster[1].id);
-  assert.equal(refreshed[2].ticketCode, "UNASSIGNED");
-  assert.equal(refreshed[2].name, "New Attendee");
-  assert.equal(refreshed[2].diet, "Nut allergy");
+  assert.equal(refreshed[0].ticketCode, "UNASSIGNED");
+  assert.equal(refreshed[0].name, "New Attendee");
+  assert.equal(refreshed[0].diet, "Nut allergy");
+  assert.equal(refreshed[0].unassigned, false);
+  assert.equal(refreshed[0].badge, true);
   assert.throws(
     () => importAttendeeCsv(prepared.records, detected, undefined, "webropol"),
     /Row 2: name is missing/,
   );
 });
 
-test("skipping unassigned Tito tickets keeps malformed rows and unknown statuses visible", () => {
+test("unassigned Tito imports still validate malformed rows, statuses and mappings", () => {
   const header = "Ticket Full Name,Ticket Email,Ticket Reference,Void Status";
   const importRow = (row, selected = {}) => {
     const prepared = prepareAttendeeCsv(`${header}\n${row}`);
@@ -245,13 +251,13 @@ test("skipping unassigned Tito tickets keeps malformed rows and unknown statuses
       "tito",
     );
   };
-  assert.throws(() => importRow(",,UNASSIGNED,"), /No assigned attendees/);
+  assert.equal(importRow(",,UNASSIGNED,")[0].unassigned, true);
   assert.throws(() => importRow(",,UNASSIGNED"), /expected 4 columns/);
   assert.throws(
     () => importRow(",,UNASSIGNED,pending"),
     /unknown ticket status/,
   );
-  assert.throws(() => importRow(",,CANCELLED,true"), /name is missing/);
+  assert.equal(importRow(",,CANCELLED,true")[0].status, "cancelled");
   assert.throws(
     () => importRow(",person@example.test,TICKET,"),
     /name is missing/,

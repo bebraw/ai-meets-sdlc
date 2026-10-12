@@ -189,7 +189,7 @@ export function createAttendeeCateringPanel(
     el("h3", "Meal reserve", "text-lg font-bold uppercase"),
     el(
       "p",
-      "Reserve meals for unassigned tickets or additional guests. These meals have no dietary answers. Reduce the reserve as ticket holders join the named attendee list. Spare badge quantity is managed separately in Badge studio.",
+      "Imported unassigned tickets already count toward catering. Reserve meals only for guests without a registration, and reduce any earlier reserve for tickets now imported. These meals have no dietary answers. Spare badge quantity is managed separately in Badge studio.",
       "max-w-3xl text-sm leading-6 text-muted",
     ),
     reserve.label,

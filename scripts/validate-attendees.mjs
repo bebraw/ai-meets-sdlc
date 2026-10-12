@@ -808,7 +808,7 @@ try {
     name: "tito-sponsors.csv",
     mimeType: "text/csv",
     buffer: Buffer.from(
-      "Ticket Full Name,Ticket Email,Ticket Company Name,Ticket Reference,Void Status,What kind of food restrictions do you have?\n,,,SP-UNASSIGNED,,\nSponsor Zoë,sponsor@example.test,Sponsor Company,SP-1,,Vegan and gluten free",
+      "Ticket Full Name,Ticket Email,Ticket Company Name,Ticket Reference,Void Status,What kind of food restrictions do you have?\n,,,SP-2,,\nSponsor Zoë,sponsor@example.test,Sponsor Company,SP-1,,Vegan and gluten free",
     ),
   });
   await admin
@@ -827,12 +827,12 @@ try {
   await admin
     .getByText(/Sponsor Zoë · sponsor@example.test · SP-1 · sponsor · active/)
     .waitFor();
-  const skippedTicketNote =
-    "1 unassigned Tito ticket skipped. Assign attendee details in Tito and re-import.";
+  const unassignedTicketNote =
+    "1 unassigned Tito ticket included. Find by ticket or order reference and assign a name at check-in.";
   await admin
-    .getByText("1 registrations · 0 cancelled", { exact: true })
+    .getByText("2 registrations · 0 cancelled", { exact: true })
     .waitFor();
-  await admin.getByText(skippedTicketNote, { exact: true }).waitFor();
+  await admin.getByText(unassignedTicketNote, { exact: true }).waitFor();
   assert.equal(
     await admin
       .getByRole("link", {
@@ -847,17 +847,20 @@ try {
     .click();
   await admin
     .getByText(
-      `1 registrations imported. Existing arrival records preserved. ${skippedTicketNote}`,
+      `2 registrations imported. Existing arrival records preserved. ${unassignedTicketNote}`,
       { exact: true },
     )
     .waitFor();
-  assert.equal(await cateringCount("Active registrations"), "4");
+  assert.equal(await cateringCount("Active registrations"), "5");
   await admin
     .getByLabel("Registration type", { exact: true })
     .selectOption("sponsor");
-  assert.equal(await admin.locator("[data-attendee-id]").count(), 1);
-  const sponsorCard = admin.locator("[data-attendee-id]");
-  const sponsorId = await sponsorCard.getAttribute("data-attendee-id");
+  assert.equal(await admin.locator("[data-attendee-id]").count(), 2);
+  const sponsorMatch = admin.locator("[data-attendee-id]").filter({
+    has: admin.getByRole("heading", { name: "Sponsor Zoë", exact: true }),
+  });
+  const sponsorId = await sponsorMatch.getAttribute("data-attendee-id");
+  const sponsorCard = admin.locator(`[data-attendee-id="${sponsorId}"]`);
   await sponsorCard
     .getByText("SPONSOR · TITO · Ticket SP-1", { exact: true })
     .waitFor();
@@ -866,7 +869,7 @@ try {
     .waitFor();
   assert.equal(
     await cateringCount("Active registrations"),
-    "4",
+    "5",
     "Type filters do not change catering totals",
   );
   await sponsorCard
@@ -883,7 +886,7 @@ try {
     .getByRole("button", { name: "Save attendee", exact: true })
     .click();
   await admin.getByText("Attendee saved.", { exact: true }).waitFor();
-  assert.equal(await admin.locator("[data-attendee-id]").count(), 0);
+  assert.equal(await admin.locator("[data-attendee-id]").count(), 1);
   await admin
     .getByLabel("Registration type", { exact: true })
     .selectOption("all");
@@ -1062,6 +1065,62 @@ try {
     .getByRole("button", { name: "Open registration desk", exact: true })
     .click();
   await staff.waitForURL("**/registration/");
+  await staff.getByLabel("Search by", { exact: true }).selectOption("order");
+  await staff.getByLabel("Find an attendee", { exact: true }).fill("SP");
+  assert.equal(await staff.locator("[data-attendee-id]").count(), 2);
+  const unassignedMatch = staff.locator("[data-attendee-id]").filter({
+    has: staff.getByRole("heading", {
+      name: "Unassigned ticket",
+      exact: true,
+    }),
+  });
+  const unassignedId = await unassignedMatch.getAttribute("data-attendee-id");
+  const unassignedCard = staff.locator(`[data-attendee-id="${unassignedId}"]`);
+  await unassignedCard
+    .getByRole("button", { name: "Assign and check in", exact: true })
+    .click();
+  await unassignedCard
+    .getByLabel("Ticket holder's name", { exact: true })
+    .fill("Sponsor Walkup");
+  assert.equal(
+    await staff.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+    true,
+  );
+  await staff.addScriptTag({ content: axeSource });
+  assert.deepEqual(
+    await staff.evaluate(async () =>
+      (
+        await window.axe.run(document, {
+          runOnly: {
+            type: "tag",
+            values: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"],
+          },
+          rules: { "target-size": { enabled: false } },
+        })
+      ).violations.map((item) => item.id),
+    ),
+    [],
+  );
+  await staff.screenshot({
+    path: path.join(tmpdir(), "sdlcai-unassigned-registration-mobile.png"),
+    fullPage: true,
+  });
+  await unassignedCard
+    .getByRole("button", { name: "Confirm name and arrival", exact: true })
+    .click();
+  await staff
+    .getByText(
+      "Sponsor Walkup assigned to ticket SP-2 and marked as arrived.",
+      { exact: true },
+    )
+    .waitFor();
+  const orderCards = staff.locator("[data-attendee-id]");
+  assert.equal(await orderCards.count(), 2);
+  assert.equal(await orderCards.getByText(/^Arrived /u).count(), 1);
+  await staff.getByLabel("Find an attendee", { exact: true }).fill("");
+  await staff.getByLabel("Search by", { exact: true }).selectOption("person");
   await staff
     .getByLabel("Registration type", { exact: true })
     .selectOption("organizer");
@@ -1092,6 +1151,8 @@ try {
     path: path.join(tmpdir(), "sdlcai-canonical-registration-mobile.png"),
     fullPage: true,
   });
+  await reload.click();
+  await admin.getByText("Registrations updated.", { exact: true }).waitFor();
   await admin
     .getByLabel("Registration type", { exact: true })
     .selectOption("all");
