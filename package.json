@@ -24,6 +24,7 @@
     "slides:export": "node scripts/export-slide-assets.mjs",
     "tables:export": "uv run scripts/export-discussion-tables.py",
     "signs:export": "uv run scripts/export-venue-signs.py",
+    "signs:export:outdoor": "uv run scripts/export-outdoor-signs.py",
     "slides:export:social": "node scripts/export-social-slides.mjs",
     "slides:export:video": "node scripts/export-social-slides.mjs --video",
     "youtube:export": "node scripts/export-youtube-assets.mjs",

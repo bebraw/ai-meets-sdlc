@@ -362,6 +362,12 @@ that placement and excludes Brand and Location sponsors.
 
 ## Venue signs
 
+For outdoor stands, `npm run signs:export:outdoor` creates A3 welcome signs in
+portrait and landscape, with no arrows. Both use large SDLCAI and Marsio lettering
+and 18 mm clear print margins. Print the PDFs on A3 at 100% / actual size. The
+PDFs are in `output/pdf/`, 300 dpi PNGs are in `output/images/`, and the complete
+set is in `output/sdlcai-2026-outdoor-signs-a3.zip`.
+
 At `/admin/venue-signs/` under **Event day**, organizers can preview and download
 seven A4 signs: welcome, left/right/straight-ahead directions, registration,
 audience Q&A, and a session-level daily schedule. Download the complete seven-page
