@@ -39,6 +39,7 @@ export function isCanonicalPublicHtmlPath(pathname: string): boolean {
     "/schedule/",
     "/slides/deck/",
     "/slides/opening/",
+    "/slides/closing/",
     "/slides/",
     "/slides/schedule/",
     "/speakers/",

@@ -1153,7 +1153,7 @@
   }
 }
 
-/* Opening slides keep a 16:9 stage, including on portrait review screens. */
+/* Opening and closing slides keep a 16:9 stage on all review screens. */
 @layer components {
   .opening-page {
     --opening-width: min(100dvw, 177.777778dvh);
@@ -1499,6 +1499,48 @@
 
   .opening-conduct h1 {
     font-size: 7.3cqw;
+  }
+
+  .closing-recap .opening-theme-list {
+    gap: 1.4cqw;
+  }
+
+  .closing-crew h1,
+  .closing-attendees h1 {
+    font-size: 10.5cqw;
+    line-height: 0.92;
+  }
+
+  .closing-photo .opening-content {
+    justify-items: center;
+    gap: 3cqw;
+    text-align: center;
+  }
+
+  .closing-camera {
+    width: 23cqw;
+    height: 23cqw;
+  }
+
+  .closing-party .opening-content {
+    grid-template-columns: 0.8fr 1.3fr;
+    align-items: center;
+    gap: 5cqw;
+  }
+
+  .closing-party-emoji {
+    width: 100%;
+    height: 30cqw;
+    object-fit: contain;
+  }
+
+  .closing-party h1 {
+    font-size: 8.4cqw;
+    margin-bottom: 2.5cqw;
+  }
+
+  .closing-party .opening-detail {
+    margin-top: 1.5cqw;
   }
 
   .opening-hashtag h1 {

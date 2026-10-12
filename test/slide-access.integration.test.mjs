@@ -35,6 +35,7 @@ test("slide pages and production exports require organizers; speaker graphics re
     "/slides/deck/?slide=4",
     "/slides/opening/",
     "/slides/opening/?intro=1",
+    "/slides/closing/",
     "/slides/schedule/",
     "/assets/social/manifest.json",
     "/assets/social/video/manifest.json",
@@ -56,6 +57,7 @@ test("slide pages and production exports require organizers; speaker graphics re
     "/slides/deck/",
     "/slides/schedule/",
     "/slides/opening/",
+    "/slides/closing/",
   ]) {
     const response = await fetch(route, admin);
     assert.equal(response.status, 200, route);

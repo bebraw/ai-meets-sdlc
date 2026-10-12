@@ -66,6 +66,7 @@ for (const pathname of [
   "/slides/",
   "/slides/deck/",
   "/slides/opening/",
+  "/slides/closing/",
   "/slides/schedule/",
   "/admin/",
   "/admin/login/",

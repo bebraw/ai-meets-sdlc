@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow,noarchive" />
+    <title>SDLCAI Closing Slides</title>
+    <meta name="description" content="Closing presentation for SDLCAI 2026." />
+    <link rel="canonical" href="https://sdlcai.org/slides/closing/" />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <noop &foreach="styles as style">
+      <link &href="style.href" &rel="style.rel" />
+    </noop>
+  </head>
+  <body class="presentation-page opening-page">
+    <main
+      class="presentation-deck opening-deck"
+      aria-label="SDLCAI closing slides"
+      data-presentation-deck
+    >
+      <OpeningSlide
+        &slideId="(id 'recap')"
+        &className="(id 'presentation-slide opening-slide opening-themes closing-recap')"
+      >
+        <h1>Today at SDLCAI</h1>
+        <ol class="opening-theme-list">
+          <li>
+            <span>01</span><strong>AI in real engineering pipelines</strong>
+          </li>
+          <li>
+            <span>02</span
+            ><strong>Quality, testing &amp; review under automation</strong>
+          </li>
+          <li>
+            <span>03</span
+            ><strong>Leadership &amp; governance for AI adoption</strong>
+          </li>
+        </ol>
+        <p class="opening-detail">
+          Industry &amp; academia. Talks, posters &amp; hallway conversations.
+        </p>
+      </OpeningSlide>
+
+      <OpeningSlide
+        &slideId="(id 'speakers')"
+        &className="(id 'presentation-slide opening-slide opening-speakers')"
+      >
+        <h1>Thank you, speakers</h1>
+        <div class="opening-speaker-grid">
+          <noop &foreach="openingSpeakerGroups as group">
+            <div
+              class="opening-speaker-group"
+              &data-schedule-group="group.id"
+              data-schedule-kind="cards"
+            >
+              <noop &foreach="group.items as speaker">
+                <figure &data-schedule-talk="speaker.talkId">
+                  <img
+                    &src="speaker.photo"
+                    &alt="speaker.name"
+                    &data-canonical-speaker-id="speaker.id"
+                    data-canonical-speaker-photo
+                    width="400"
+                    height="400"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <figcaption
+                    &children="speaker.displayName"
+                    &data-canonical-speaker-id="speaker.id"
+                    data-canonical-speaker-name
+                  ></figcaption>
+                </figure>
+              </noop>
+            </div>
+          </noop>
+        </div>
+      </OpeningSlide>
+
+      <OpeningSlide
+        &slideId="(id 'sponsors')"
+        &className="(id 'presentation-slide opening-slide opening-sponsors')"
+      >
+        <h1>Thank you, sponsors</h1>
+        <div class="opening-sponsor-tiers">
+          <noop &foreach="homeSponsorTiers as tier">
+            <section &class="tier.openingClassName" &aria-label="tier.label">
+              <h2 &children="tier.label"></h2>
+              <div>
+                <noop &foreach="tier.items as sponsor">
+                  <figure &class="sponsor.openingClassName">
+                    <img
+                      &src="sponsor.logo"
+                      &alt="sponsor.name"
+                      &width="sponsor.logoWidth"
+                      &height="sponsor.logoHeight"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </figure>
+                </noop>
+              </div>
+            </section>
+          </noop>
+        </div>
+      </OpeningSlide>
+
+      <OpeningSlide
+        &slideId="(id 'crew')"
+        &className="(id 'presentation-slide opening-slide closing-crew')"
+      >
+        <p class="opening-eyebrow">Behind the scenes</p>
+        <h1>Thank you,<br />organizers</h1>
+        <p class="opening-lead">Our volunteers &amp; the Marsio team.</p>
+        <p class="opening-detail">For making the day possible.</p>
+      </OpeningSlide>
+
+      <OpeningSlide
+        &slideId="(id 'attendees')"
+        &className="(id 'presentation-slide opening-slide closing-attendees')"
+      >
+        <p class="opening-eyebrow">To everyone who joined us</p>
+        <h1>Thank you<br />for being here.</h1>
+        <p class="opening-lead">
+          For your questions, posters &amp; conversations.
+        </p>
+      </OpeningSlide>
+
+      <OpeningSlide
+        &slideId="(id 'group-photo')"
+        &className="(id 'presentation-slide opening-slide closing-photo')"
+      >
+        <svg
+          class="closing-camera"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path
+            d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"
+          />
+          <circle cx="12" cy="13" r="3" />
+        </svg>
+        <h1>Group photo</h1>
+      </OpeningSlide>
+
+      <OpeningSlide
+        &slideId="(id 'afterparty')"
+        &className="(id 'presentation-slide opening-slide closing-party')"
+      >
+        <img
+          class="closing-party-emoji"
+          src="/assets/slides/party-popper.svg"
+          alt="Tada!"
+          width="360"
+          height="360"
+          loading="lazy"
+          decoding="async"
+        />
+        <div>
+          <h1>Afterparty</h1>
+          <p class="opening-lead">Right here at Marsio.</p>
+          <p class="opening-detail" &children="openingAfterparty.time"></p>
+        </div>
+      </OpeningSlide>
+    </main>
+    <nav class="opening-controls" aria-label="Presentation controls">
+      <a href="/admin/slides/" aria-label="Back to slide tools">Slides</a>
+      <button type="button" data-slide-previous aria-label="Previous slide">
+        Previous
+      </button>
+      <button type="button" data-slide-next aria-label="Next slide">
+        Next
+      </button>
+      <button
+        type="button"
+        data-slide-fullscreen
+        aria-label="Toggle fullscreen"
+      >
+        Fullscreen
+      </button>
+    </nav>
+    <noscript
+      ><p class="opening-no-script">
+        Enable JavaScript to present the closing slides.
+      </p></noscript
+    >
+    <noop &foreach="scripts as script"
+      ><script &src="script.src" &type="script.type"></script
+    ></noop>
+  </body>
+</html>

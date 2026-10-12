@@ -5,7 +5,7 @@ import { createServer } from "node:http";
 import path from "node:path";
 import { chromium, webkit } from "playwright";
 
-// This checks the real built deck. Video events are simulated; the production
+// This checks the real built opening and closing decks. Video events are simulated; the production
 // film is private R2 media, so CI neither needs production credentials nor
 // downloads a two-minute movie.
 const root = path.resolve("build");
@@ -73,80 +73,135 @@ try {
           window.videoPauses += 1;
         };
       });
-      await page.goto(`${origin}/slides/opening/`);
-      await page.evaluate(() => document.fonts.ready);
       const active = page.locator("[data-presentation-slide].is-active");
-      assert.equal(await active.getAttribute("data-slide-id"), "welcome");
-      assert.equal(await page.locator("[data-presentation-slide]").count(), 12);
-      const ids = await page
-        .locator("[data-presentation-slide]")
-        .evaluateAll((slides) => slides.map((slide) => slide.dataset.slideId));
-      for (const viewport of [
-        { width: 1920, height: 1080 },
-        { width: 1280, height: 720 },
-        { width: 1024, height: 768 },
-        { width: 390, height: 844 },
+      for (const { deck, ids, prefix } of [
+        {
+          deck: "opening",
+          ids: [
+            "welcome",
+            "sold-out",
+            "themes",
+            "speakers",
+            "schedule",
+            "afterparty",
+            "hallway-track",
+            "pacman-rule",
+            "questions",
+            "sponsors",
+            "code-of-conduct",
+            "sdlcai",
+          ],
+          prefix: "",
+        },
+        {
+          deck: "closing",
+          ids: [
+            "recap",
+            "speakers",
+            "sponsors",
+            "crew",
+            "attendees",
+            "group-photo",
+            "afterparty",
+          ],
+          prefix: "closing-",
+        },
       ]) {
-        await page.setViewportSize(viewport);
-        await page.keyboard.press("Home");
-        for (const id of ids) {
-          await page.waitForFunction(() =>
-            [...document.querySelectorAll(".is-active img")].every(
-              (image) => image.complete && image.naturalWidth > 0,
+        await page.goto(`${origin}/slides/${deck}/`);
+        await page.evaluate(() => document.fonts.ready);
+        assert.deepEqual(
+          await page
+            .locator("[data-presentation-slide]")
+            .evaluateAll((slides) =>
+              slides.map((slide) => slide.dataset.slideId),
             ),
-          );
-          assert.equal(await active.getAttribute("data-slide-id"), id);
-          const overflow = await active.evaluate((slide) => {
-            const bounds = slide.getBoundingClientRect();
-            return [
-              ...slide.querySelectorAll(
-                ".opening-content, h1, h2, p, li, figure, img, svg, figcaption, a",
-              ),
-            ].flatMap((element) => {
-              const rect = element.getBoundingClientRect();
-              if (!rect.width || !rect.height) return [];
-              return rect.left < bounds.left - 1 ||
-                rect.top < bounds.top - 1 ||
-                rect.right > bounds.right + 1 ||
-                rect.bottom > bounds.bottom + 1 ||
-                element.scrollWidth > element.clientWidth + 2
-                ? [
-                    element.tagName +
-                      ": " +
-                      (element.getAttribute("alt") ??
-                        element.textContent.slice(0, 80)) +
-                      ` ${JSON.stringify({ left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom, width: element.clientWidth, scrollWidth: element.scrollWidth })}`,
-                  ]
-                : [];
-            });
-          });
-          if (output && name === "chromium" && viewport.width === 1920) {
-            await page.screenshot({ path: path.join(output, `${id}.png`) });
-            await writeFile(
-              path.join(output, `${id}.json`),
-              JSON.stringify(
-                await active.evaluate((slide) =>
-                  [
-                    ...slide.querySelectorAll(
-                      ".opening-header,.opening-content,.opening-footer,h1",
-                    ),
-                  ].map((el) => ({
-                    tag: el.tagName,
-                    class: el.className,
-                    text: el.textContent.slice(0, 80),
-                    rect: el.getBoundingClientRect().toJSON(),
-                    fontSize: getComputedStyle(el).fontSize,
-                  })),
-                ),
-                null,
-                2,
+          ids,
+        );
+        for (const viewport of [
+          { width: 1920, height: 1080 },
+          { width: 1280, height: 720 },
+          { width: 1024, height: 768 },
+          { width: 390, height: 844 },
+        ]) {
+          await page.setViewportSize(viewport);
+          await page.keyboard.press("Home");
+          for (const id of ids) {
+            await page.waitForFunction(() =>
+              [...document.querySelectorAll(".is-active img")].every(
+                (image) => image.complete && image.naturalWidth > 0,
               ),
             );
+            assert.equal(await active.getAttribute("data-slide-id"), id);
+            assert.equal(
+              await active.locator("[data-slide-progress]").innerText(),
+              `${ids.indexOf(id) + 1} / ${ids.length}`,
+            );
+            const overflow = await active.evaluate((slide) => {
+              const bounds = slide.getBoundingClientRect();
+              return [
+                ...slide.querySelectorAll(
+                  ".opening-content, h1, h2, p, li, figure, img, svg, figcaption, a",
+                ),
+              ].flatMap((element) => {
+                const rect = element.getBoundingClientRect();
+                if (!rect.width || !rect.height) return [];
+                return rect.left < bounds.left - 1 ||
+                  rect.top < bounds.top - 1 ||
+                  rect.right > bounds.right + 1 ||
+                  rect.bottom > bounds.bottom + 1 ||
+                  element.scrollWidth > element.clientWidth + 2
+                  ? [
+                      element.tagName +
+                        ": " +
+                        (element.getAttribute("alt") ??
+                          element.textContent.slice(0, 80)) +
+                        ` ${JSON.stringify({ left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom, width: element.clientWidth, scrollWidth: element.scrollWidth })}`,
+                    ]
+                  : [];
+              });
+            });
+            if (output && name === "chromium" && viewport.width === 1920) {
+              await page.screenshot({
+                path: path.join(output, `${prefix}${id}.png`),
+              });
+              await writeFile(
+                path.join(output, `${prefix}${id}.json`),
+                JSON.stringify(
+                  await active.evaluate((slide) =>
+                    [
+                      ...slide.querySelectorAll(
+                        ".opening-header,.opening-content,.opening-footer,h1",
+                      ),
+                    ].map((el) => ({
+                      tag: el.tagName,
+                      class: el.className,
+                      text: el.textContent.slice(0, 80),
+                      rect: el.getBoundingClientRect().toJSON(),
+                      fontSize: getComputedStyle(el).fontSize,
+                    })),
+                  ),
+                  null,
+                  2,
+                ),
+              );
+            }
+            assert.deepEqual(
+              overflow,
+              [],
+              `${name} ${deck} ${viewport.width} ${id}`,
+            );
+            await page.keyboard.press("ArrowRight");
           }
-          assert.deepEqual(overflow, [], `${name} ${viewport.width} ${id}`);
-          await page.keyboard.press("ArrowRight");
         }
       }
+      await page.goto(`${origin}/slides/closing/?slideId=group-photo`);
+      assert.equal(await active.getAttribute("data-slide-id"), "group-photo");
+      assert.equal(await active.locator(".closing-camera").count(), 1);
+      await page.keyboard.press("ArrowRight");
+      assert.equal(await active.getAttribute("data-slide-id"), "afterparty");
+      assert.equal(await active.locator("img").getAttribute("alt"), "Tada!");
+      await page.keyboard.press("ArrowRight");
+      assert.equal(await active.getAttribute("data-slide-id"), "afterparty");
       await page.setViewportSize({ width: 1920, height: 1080 });
       await page.goto(`${origin}/slides/opening/?slideId=questions`);
       assert.equal(await active.getAttribute("data-slide-id"), "questions");
@@ -198,7 +253,7 @@ try {
       assert.equal(await active.getAttribute("data-slide-id"), "welcome");
       assert.deepEqual(errors, []);
       console.log(
-        `${name}: all 12 opening slides fit four viewports; navigation and pre-roll passed.`,
+        `${name}: all 12 opening and 7 closing slides fit four viewports; navigation, photo-to-party ending, and pre-roll passed.`,
       );
     } finally {
       await browser.close();

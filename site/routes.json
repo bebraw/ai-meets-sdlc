@@ -107,6 +107,22 @@
           }
         }
       },
+      "closing": {
+        "layout": "slide-closing",
+        "scripts": [{ "name": "slides" }],
+        "dataSources": {
+          "openingSpeakerGroups": { "operation": "openingSpeakerGroups" },
+          "openingAfterparty": { "operation": "openingAfterparty" },
+          "homeSponsorTiers": { "operation": "homeSponsorTiers" }
+        },
+        "context": {
+          "meta": {
+            "title": "SDLCAI Closing Slides",
+            "description": "Closing presentation for SDLCAI 2026.",
+            "robots": "noindex,nofollow,noarchive"
+          }
+        }
+      },
       "deck": {
         "layout": "slide-deck",
         "scripts": [{ "name": "slides" }],

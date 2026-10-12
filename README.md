@@ -181,6 +181,23 @@ controls, which fade out while presenting. Speaker portraits and names use
 approved speaker content, and their order follows the published programme.
 The Pacman vector is reused from `https://slides.futurefrontend.com/opening`;
 the conduct slide links to `https://berlincodeofconduct.org/en`.
+
+The matching seven-slide closing deck is at `/slides/closing/`, also linked from
+the admin slide tools and library. It recaps the programme's themes, thanks the
+speakers, sponsors, organizers, volunteers, venue team, and attendees, then ends
+with a group-photo cue followed by the afterparty. Both decks use the same
+keyboard, swipe, and fullscreen controls and published speaker content. Run
+`npm run slides:opening-check` to check both decks in Chromium and WebKit at four
+viewport sizes. Set `OPENING_SCREENSHOTS` to save full-size review images (closing
+slides have a `closing-` prefix).
+
+The closing camera icon is from [Lucide](https://lucide.dev/icons/camera), with
+a lighter stroke for projection, under the [ISC license](assets/slides/lucide-LICENSE.txt).
+The party-popper emoji is [Twemoji](https://github.com/jdecked/twemoji), originally
+by Twitter, Inc. and other contributors, used unchanged under
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Its license is included
+at `assets/slides/twemoji-LICENSE-GRAPHICS.txt`.
+
 The session slide library includes
 per-slide LinkedIn, X, and Bluesky downloads generated from the same event data.
 The library and admin slides page also offer **Download all PNGs — 4K**.
