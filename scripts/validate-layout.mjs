@@ -24,6 +24,7 @@ const routes = [
   "/admin/posters/",
   "/admin/speakers/",
   "/contact/",
+  "/faq/",
   "/for-sponsors/",
   "/posters/",
   "/privacy-policy/",

@@ -592,6 +592,23 @@
       }
     }
   },
+  "faq": {
+    "layout": "faq",
+    "scripts": [{ "name": "index" }],
+    "dataSources": {
+      "seminar": {
+        "operation": "seminar"
+      }
+    },
+    "context": {
+      "meta": {
+        "title": "SDLCAI FAQ",
+        "description": "Practical information for SDLCAI 2026: public transport to Marsio, parking, the venue address, food, and the afterparty.",
+        "ogEyebrow": "Plan your visit",
+        "ogDescription": "Find your way to Marsio and get ready for the seminar, food, and afterparty."
+      }
+    }
+  },
   "contact": {
     "layout": "contact",
     "scripts": [{ "name": "index" }],
