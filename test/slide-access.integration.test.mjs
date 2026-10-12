@@ -33,6 +33,8 @@ test("slide pages and production exports require organizers; speaker graphics re
     "/slides",
     "/slides/",
     "/slides/deck/?slide=4",
+    "/slides/opening/",
+    "/slides/opening/?intro=1",
     "/slides/schedule/",
     "/assets/social/manifest.json",
     "/assets/social/video/manifest.json",
@@ -49,7 +51,12 @@ test("slide pages and production exports require organizers; speaker graphics re
       assert.equal(login.searchParams.get("next"), route);
     }
   }
-  for (const route of ["/slides/", "/slides/deck/", "/slides/schedule/"]) {
+  for (const route of [
+    "/slides/",
+    "/slides/deck/",
+    "/slides/schedule/",
+    "/slides/opening/",
+  ]) {
     const response = await fetch(route, admin);
     assert.equal(response.status, 200, route);
     assertPrivate(response);

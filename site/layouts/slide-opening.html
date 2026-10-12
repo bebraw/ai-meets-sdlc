@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow,noarchive" />
+    <title>SDLCAI Opening Slides</title>
+    <meta name="description" content="Opening presentation for SDLCAI 2026." />
+    <link rel="canonical" href="https://sdlcai.org/slides/opening/" />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <noop &foreach="styles as style">
+      <link &href="style.href" &rel="style.rel" />
+    </noop>
+  </head>
+  <body class="presentation-page opening-page">
+    <section
+      class="opening-slide opening-video opening-preroll"
+      data-opening-preroll
+      aria-label="SDLCAI opening film"
+      hidden
+    >
+      <video
+        data-opening-video
+        controls
+        playsinline
+        preload="none"
+        poster="/api/admin/intro/draft-03/poster.jpg"
+        aria-label="SDLCAI opening film"
+      >
+        <source src="/api/admin/intro/draft-03/preview.mp4" type="video/mp4" />
+        <a href="/api/admin/intro/draft-03/preview.mp4"
+          >Download the opening film</a
+        >
+      </video>
+      <div class="opening-video-prompt" data-video-prompt>
+        <p>SDLCAI / Opening film</p>
+        <button type="button" data-play-intro>Play intro</button>
+        <p>Sound on · Two minutes</p>
+      </div>
+      <p class="opening-video-error" data-video-error role="status" hidden>
+        The film could not play.
+        <a href="/admin/intro/">Open the video downloads</a>, or continue to the
+        welcome slide.
+      </p>
+    </section>
+    <main
+      class="presentation-deck opening-deck"
+      aria-label="SDLCAI opening slides"
+      data-presentation-deck
+    >
+      <OpeningSlide
+        &slideId="(id 'welcome')"
+        &className="(id 'presentation-slide opening-slide opening-welcome')"
+      >
+        <p class="opening-eyebrow">Welcome to</p>
+        <h1 class="opening-wordmark">SDLCAI</h1>
+        <p class="opening-lead">AI meets the software development lifecycle.</p>
+        <p class="opening-detail">
+          One day. Industry and academia. One conversation.
+        </p>
+      </OpeningSlide>
+
+      <OpeningSlide
+        &slideId="(id 'sold-out')"
+        &className="(id 'presentation-slide opening-slide opening-sold-out')"
+      >
+        <div>
+          <p class="opening-eyebrow">Sold out</p>
+          <h1>200</h1>
+          <p class="opening-lead">attendees (approx.)</p>
+        </div>
+        <p class="opening-side-note">Thank you<br />for being here.</p>
+      </OpeningSlide>
+
+      <OpeningSlide
+        &slideId="(id 'themes')"
+        &className="(id 'presentation-slide opening-slide opening-themes')"
+      >
+        <h1>Today’s themes</h1>
+        <ol class="opening-theme-list">
+          <li>
+            <span>01</span><strong>AI in real engineering pipelines</strong>
+          </li>
+          <li>
+            <span>02</span
+            ><strong>Quality, testing &amp; review under automation</strong>
+          </li>
+          <li>
+            <span>03</span
+            ><strong>Leadership &amp; governance for AI adoption</strong>
+          </li>
+        </ol>
+      </OpeningSlide>
+
+      <OpeningSlide
+        &slideId="(id 'speakers')"
+        &className="(id 'presentation-slide opening-slide opening-speakers')"
+      >
+        <h1>Today’s speakers</h1>
+        <div class="opening-speaker-grid">
+          <noop &foreach="openingSpeakerGroups as group">
+            <div
+              class="opening-speaker-group"
+              &data-schedule-group="group.id"
+              data-schedule-kind="cards"
+            >
+              <noop &foreach="group.items as speaker">
+                <figure &data-schedule-talk="speaker.talkId">
+                  <img
+                    &src="speaker.photo"
+                    &alt="speaker.name"
+                    &data-canonical-speaker-id="speaker.id"
+                    data-canonical-speaker-photo
+                    width="400"
+                    height="400"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <figcaption
+                    &children="speaker.displayName"
+                    &data-canonical-speaker-id="speaker.id"
+                    data-canonical-speaker-name
+                  ></figcaption>
+                </figure>
+              </noop>
+            </div>
+          </noop>
+        </div>
+      </OpeningSlide>
+
+      <OpeningSlide
+        &slideId="(id 'schedule')"
+        &className="(id 'presentation-slide opening-slide opening-schedule')"
+      >
+        <h1>The day ahead</h1>
+        <div class="opening-schedule-columns">
+          <noop &foreach="openingScheduleColumns as column">
+            <ol>
+              <noop &foreach="column.items as item">
+                <li>
+                  <time &children="item.time"></time
+                  ><span &children="item.title"></span>
+                </li>
+              </noop>
+            </ol>
+          </noop>
+        </div>
+        <a class="opening-detail" href="/schedule/"
+          >Full programme at sdlcai.org/schedule</a
+        >
+      </OpeningSlide>
+
+      <OpeningSlide
+        &slideId="(id 'afterparty')"
+        &className="(id 'presentation-slide opening-slide opening-afterparty')"
+      >
+        <p class="opening-eyebrow" &children="openingAfterparty.time"></p>
+        <h1>Afterparty</h1>
+        <p class="opening-lead">Right here at Marsio.</p>
+        <p class="opening-detail">Food, conversation &amp; time to catch up.</p>
+      </OpeningSlide>
+
+      <OpeningSlide
+        &slideId="(id 'hallway-track')"
+        &className="(id 'presentation-slide opening-slide opening-hallway')"
+      >
+        <h1>Hallway<br />track</h1>
+        <div>
+          <p class="opening-lead">The conversations<br />between the talks.</p>
+          <p class="opening-detail">
+            Meet someone new.<br />Compare notes. Visit the posters.
+          </p>
+        </div>
+      </OpeningSlide>
+
+      <OpeningSlide
+        &slideId="(id 'pacman-rule')"
+        &className="(id 'presentation-slide opening-slide opening-pacman')"
+      >
+        <div>
+          <h1>The Pacman rule</h1>
+          <p class="opening-lead">Leave a gap<br />in your circle.</p>
+          <p class="opening-detail">
+            Make it easy for someone<br />new to join the conversation.
+          </p>
+        </div>
+        <svg
+          class="opening-pacman-graphic"
+          viewBox="0 0 640 420"
+          role="img"
+          aria-label="A conversation circle with an opening for another person to join"
+        >
+          <path
+            d="M318 66c-74 0-134 60-134 134s60 134 134 134c42 0 81-19 107-52l-92-82 92-82c-26-33-65-52-107-52Z"
+            fill="currentColor"
+          />
+        </svg>
+      </OpeningSlide>
+
+      <OpeningSlide
+        &slideId="(id 'questions')"
+        &className="(id 'presentation-slide opening-slide opening-questions')"
+      >
+        <div>
+          <h1>Questions?</h1>
+          <p class="opening-lead">
+            Ask questions.<br />Vote for the ones you want answered.
+          </p>
+          <a class="opening-qa-link" href="/qa/">sdlcai.org/qa</a>
+        </div>
+        <a
+          class="opening-qr"
+          href="/qa/"
+          aria-label="Open the SDLCAI audience Q&A"
+          ><img
+            src="/assets/slides/qa-qr.svg"
+            alt="QR code for https://sdlcai.org/qa/"
+            width="330"
+            height="330"
+            loading="lazy"
+            decoding="async"
+        /></a>
+      </OpeningSlide>
+
+      <OpeningSlide
+        &slideId="(id 'sponsors')"
+        &className="(id 'presentation-slide opening-slide opening-sponsors')"
+      >
+        <h1>Thank you, sponsors</h1>
+        <div class="opening-sponsor-tiers">
+          <noop &foreach="homeSponsorTiers as tier">
+            <section &class="tier.openingClassName" &aria-label="tier.label">
+              <h2 &children="tier.label"></h2>
+              <div>
+                <noop &foreach="tier.items as sponsor">
+                  <figure &class="sponsor.openingClassName">
+                    <img
+                      &src="sponsor.logo"
+                      &alt="sponsor.name"
+                      &width="sponsor.logoWidth"
+                      &height="sponsor.logoHeight"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </figure>
+                </noop>
+              </div>
+            </section>
+          </noop>
+        </div>
+      </OpeningSlide>
+
+      <OpeningSlide
+        &slideId="(id 'code-of-conduct')"
+        &className="(id 'presentation-slide opening-slide opening-conduct')"
+      >
+        <h1>Berlin<br />Code of Conduct</h1>
+        <p class="opening-lead">
+          Respect each other.<br />Help make this a welcoming space.
+        </p>
+        <p class="opening-detail">
+          A concern or something wrong? Please talk to an organizer.
+        </p>
+        <a class="opening-detail" href="https://berlincodeofconduct.org/en"
+          >berlincodeofconduct.org/en</a
+        >
+      </OpeningSlide>
+
+      <OpeningSlide
+        &slideId="(id 'sdlcai')"
+        &className="(id 'presentation-slide opening-slide opening-hashtag')"
+      >
+        <p class="opening-eyebrow">Share your day</p>
+        <h1>#sdlcai</h1>
+        <p class="opening-lead">Ideas. Conversations. New connections.</p>
+      </OpeningSlide>
+    </main>
+    <nav class="opening-controls" aria-label="Presentation controls">
+      <a href="/admin/slides/" aria-label="Back to slide tools">Slides</a>
+      <button type="button" data-finish-preroll hidden>
+        Continue to welcome
+      </button>
+      <button type="button" data-slide-previous aria-label="Previous slide">
+        Previous
+      </button>
+      <button type="button" data-slide-next aria-label="Next slide">
+        Next
+      </button>
+      <button
+        type="button"
+        data-slide-fullscreen
+        aria-label="Toggle fullscreen"
+      >
+        Fullscreen
+      </button>
+    </nav>
+    <noscript
+      ><p class="opening-no-script">
+        Enable JavaScript to present the opening slides.
+      </p></noscript
+    >
+    <noop &foreach="scripts as script"
+      ><script &src="script.src" &type="script.type"></script
+    ></noop>
+  </body>
+</html>

@@ -86,6 +86,7 @@ test("CI browser groups cover every browser check exactly once", () => {
     "speaker-slides:browser-check",
     "layout:check",
     "slides:check",
+    "slides:opening-check",
     "a11y:check",
   ].sort();
   const grouped = Object.keys(browserGroups).flatMap((group) => {

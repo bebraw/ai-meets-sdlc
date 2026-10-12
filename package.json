@@ -29,6 +29,7 @@
     "social:export": "node scripts/export-promo-assets.mjs",
     "social:manifest": "node scripts/generate-social-render-manifest.mjs",
     "slides:check": "node scripts/validate-slide-layout.mjs",
+    "slides:opening-check": "node scripts/validate-opening-slides.mjs",
     "slides:video-check": "node scripts/validate-video-download.mjs",
     "quality:build": "npm test && npm run validate",
     "quality:gate": "node scripts/quality-gate.mjs",

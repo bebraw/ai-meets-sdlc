@@ -21,7 +21,7 @@ export const browserGroups = {
     "speaker-slides:browser-check",
     "slides:check",
   ],
-  presentation: ["layout:check", "a11y:check"],
+  presentation: ["layout:check", "a11y:check", "slides:opening-check"],
 };
 const npmStep = (name) => ({ name, command: "npm", args: ["run", name] });
 const defaultSteps = [

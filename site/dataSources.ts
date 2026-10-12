@@ -94,6 +94,29 @@ function init() {
           };
         }),
     slideDeckItems: () => slideDeckItems,
+    openingSpeakerGroups: () =>
+      scheduleItems
+        .filter((item) => item.talks?.length)
+        .map((item) => ({
+          id: item.id,
+          items: item.talks.flatMap((talk) =>
+            talk.speakers.map((speaker) => ({ ...speaker, talkId: talk.id })),
+          ),
+        })),
+    openingScheduleColumns: () => {
+      const items = scheduleItems.filter(
+        (item) => !["doors-open", "opening"].includes(item.id),
+      );
+      const afternoon = items.findIndex(
+        (item) => item.id === "views-from-industry",
+      );
+      return [
+        { items: items.slice(0, afternoon) },
+        { items: items.slice(afternoon) },
+      ];
+    },
+    openingAfterparty: () =>
+      scheduleItems.find((item) => item.id === "afterparty"),
     socialExportPresets: () => socialExportPresets,
     sponsorItems: () => sponsorItems,
     homeSponsorTiers: () => getHomeSponsorTiers(sponsorItems),
@@ -359,6 +382,7 @@ function getSponsorItems() {
         `sponsor-logo-${sponsor.id}`,
         `sponsor-logo-surface-${sponsor.logoSurface}`,
       ].join(" "),
+      openingClassName: `opening-sponsor opening-sponsor-${sponsor.id}`,
       presentationClassName: [
         "presentation-sponsor",
         `presentation-sponsor-${sponsor.tier}`,
@@ -389,6 +413,7 @@ function getHomeSponsorTiers(sponsorItems) {
         id: `sponsors-${tier}`,
         label: items.length === 1 ? label : `${label}s`,
         className: `sponsor-tier sponsor-tier-${tier}`,
+        openingClassName: `opening-sponsor-tier opening-sponsor-tier-${tier}`,
         items,
       };
     })

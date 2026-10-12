@@ -1153,6 +1153,479 @@
   }
 }
 
+/* Opening slides keep a 16:9 stage, including on portrait review screens. */
+@layer components {
+  .opening-page {
+    --opening-width: min(100dvw, 177.777778dvh);
+  }
+
+  .opening-deck {
+    display: grid;
+    place-items: center;
+  }
+
+  .opening-slide {
+    container-type: size;
+    width: var(--opening-width);
+    height: calc(var(--opening-width) * 0.5625);
+    padding: calc(var(--opening-width) * 0.035)
+      calc(var(--opening-width) * 0.045);
+    gap: calc(var(--opening-width) * 0.025);
+    background:
+      radial-gradient(circle, rgb(246 244 239 / 0.08) 1px, transparent 1.5px) 0
+        0 / calc(var(--opening-width) * 0.011)
+        calc(var(--opening-width) * 0.011),
+      #080808;
+  }
+
+  .opening-header,
+  .opening-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.05cqw;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgb(246 244 239 / 0.65);
+  }
+
+  .opening-header span:first-child {
+    color: #f6f4ef;
+    font-family: "Finlandica Headline", Georgia, serif;
+    font-size: 1.7cqw;
+    font-weight: 900;
+  }
+
+  .opening-content {
+    min-width: 0;
+    min-height: 0;
+    display: grid;
+    align-content: center;
+    gap: 2cqw;
+  }
+
+  .opening-content h1,
+  .opening-content h2,
+  .opening-content strong {
+    font-family: "Finlandica Headline", Georgia, serif;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .opening-content h1 {
+    font-size: 7.4cqw;
+    line-height: 0.95;
+    text-wrap: balance;
+  }
+
+  .opening-eyebrow {
+    font-size: 2cqw;
+    line-height: 1.2;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .opening-lead {
+    font-size: 3.1cqw;
+    line-height: 1.18;
+  }
+
+  .opening-detail {
+    font-size: 2cqw;
+    line-height: 1.35;
+    color: rgb(246 244 239 / 0.72);
+  }
+
+  a.opening-detail {
+    width: fit-content;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .opening-welcome .opening-wordmark {
+    font-size: 20cqw;
+    line-height: 0.85;
+    letter-spacing: -0.025em;
+  }
+
+  .opening-sold-out .opening-content {
+    grid-template-columns: 1.3fr 1fr;
+    align-items: end;
+  }
+
+  .opening-sold-out h1 {
+    font-size: 27cqw;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+  }
+
+  .opening-side-note {
+    padding: 0 0 1cqw 3cqw;
+    border-left: 1px solid rgb(246 244 239 / 0.4);
+    font-size: 4.5cqw;
+    line-height: 1.1;
+  }
+
+  .opening-theme-list {
+    display: grid;
+    list-style: none;
+    margin-top: 1cqw;
+  }
+
+  .opening-theme-list li {
+    display: grid;
+    grid-template-columns: 5cqw 1fr;
+    align-items: baseline;
+    gap: 2cqw;
+    padding: 2cqw 0;
+    border-top: 1px solid rgb(246 244 239 / 0.4);
+  }
+
+  .opening-theme-list span {
+    font-size: 1.8cqw;
+    color: rgb(246 244 239 / 0.6);
+  }
+
+  .opening-theme-list strong {
+    max-width: 72cqw;
+    font-size: 3.8cqw;
+    line-height: 1.05;
+  }
+
+  .opening-speakers h1,
+  .opening-schedule h1,
+  .opening-sponsors h1 {
+    font-size: 5.8cqw;
+  }
+
+  .opening-speaker-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 1.8cqw 2.4cqw;
+  }
+
+  .opening-speaker-group {
+    display: contents;
+  }
+
+  .opening-speaker-grid figure {
+    display: grid;
+    align-content: start;
+    gap: 0.65cqw;
+    min-width: 0;
+  }
+
+  .opening-speaker-grid img {
+    display: block;
+    width: 100%;
+    height: 11.2cqw;
+    object-fit: cover;
+    object-position: center 30%;
+    filter: grayscale(1);
+  }
+
+  .opening-speaker-grid figcaption {
+    font-size: 1.65cqw;
+    line-height: 1.08;
+    font-weight: 700;
+  }
+
+  .opening-schedule-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4cqw;
+  }
+
+  .opening-schedule-columns ol {
+    list-style: none;
+  }
+
+  .opening-schedule-columns li {
+    display: grid;
+    grid-template-columns: 12cqw 1fr;
+    gap: 1cqw;
+    align-items: baseline;
+    padding: 1.3cqw 0;
+    border-top: 1px solid rgb(246 244 239 / 0.35);
+    font-size: 2cqw;
+    line-height: 1.15;
+  }
+
+  .opening-schedule-columns time {
+    color: rgb(246 244 239 / 0.66);
+    font-size: 1.65cqw;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .opening-afterparty h1 {
+    font-size: 12.5cqw;
+  }
+
+  .opening-hallway .opening-content {
+    grid-template-columns: 1.2fr 1fr;
+    gap: 6cqw;
+    align-items: center;
+  }
+
+  .opening-hallway h1 {
+    font-size: 10.5cqw;
+  }
+
+  .opening-hallway .opening-detail,
+  .opening-pacman .opening-detail {
+    margin-top: 2cqw;
+  }
+
+  .opening-pacman .opening-content {
+    grid-template-columns: 1.2fr 1fr;
+    align-items: center;
+    gap: 2cqw;
+  }
+
+  .opening-pacman h1 {
+    font-size: 6.5cqw;
+    margin-bottom: 2.4cqw;
+  }
+
+  .opening-pacman-graphic {
+    width: 100%;
+    height: 32cqw;
+  }
+
+  .opening-questions .opening-content {
+    grid-template-columns: 1.6fr 1fr;
+    align-items: center;
+    gap: 5cqw;
+  }
+
+  .opening-questions h1 {
+    margin-bottom: 2.4cqw;
+  }
+
+  .opening-questions .opening-lead {
+    font-size: 2.7cqw;
+  }
+
+  .opening-qa-link {
+    display: block;
+    width: fit-content;
+    margin-top: 3cqw;
+    font-family: "Finlandica Headline", Georgia, serif;
+    font-size: 6.1cqw;
+    font-weight: 900;
+    line-height: 1;
+  }
+
+  .opening-qr img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    background: white;
+  }
+
+  .opening-sponsor-tiers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2cqw 4cqw;
+  }
+
+  .opening-sponsor-tier h2 {
+    margin-bottom: 0.8cqw;
+    font-family: "Finlandica Text", Georgia, serif;
+    font-size: 1.2cqw;
+    font-weight: 700;
+    color: rgb(246 244 239 / 0.65);
+  }
+
+  .opening-sponsor-tier > div {
+    display: flex;
+    gap: 1.4cqw;
+    flex-wrap: wrap;
+  }
+
+  .opening-sponsor {
+    display: grid;
+    place-items: center;
+    width: 19cqw;
+    height: 7.2cqw;
+    padding: 1.2cqw;
+    background: #fff;
+  }
+
+  .opening-sponsor img {
+    min-width: 0;
+    min-height: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .opening-sponsor-tier-epic {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .opening-sponsor-tier-epic .opening-sponsor {
+    width: 100%;
+    height: 13.2cqw;
+    padding: 0.9cqw;
+  }
+
+  .opening-sponsor-tier-tech {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .opening-sponsor-tier-tech .opening-sponsor {
+    width: calc((100% - 1.4cqw) / 2);
+    height: 5.9cqw;
+    padding: 1.2cqw;
+  }
+
+  .opening-sponsor-tier-brand .opening-sponsor {
+    width: 23cqw;
+    height: 6.5cqw;
+  }
+
+  .opening-sponsor-tier-location .opening-sponsor {
+    width: 12cqw;
+    height: 6.5cqw;
+    padding: 0.7cqw;
+  }
+
+  .opening-conduct h1 {
+    font-size: 7.3cqw;
+  }
+
+  .opening-hashtag h1 {
+    font-size: 19cqw;
+    line-height: 0.85;
+    text-transform: none;
+  }
+
+  .opening-video {
+    padding: 0;
+    background: #000;
+  }
+
+  .opening-preroll {
+    position: fixed;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .opening-page[data-preroll] [data-slide-previous],
+  .opening-page[data-preroll] [data-slide-next] {
+    display: none;
+  }
+
+  .opening-video video {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .opening-video-prompt {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 1.5cqw;
+    background: rgb(0 0 0 / 0.7);
+    font-size: 1.6cqw;
+  }
+
+  .opening-video-prompt button {
+    border: 1px solid #f6f4ef;
+    padding: 1.4cqw 3cqw;
+    background: #f6f4ef;
+    color: #080808;
+    font-family: "Finlandica Headline", Georgia, serif;
+    font-size: 5cqw;
+    font-weight: 900;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .opening-video-error {
+    position: absolute;
+    inset: auto 4cqw 6cqw;
+    padding: 1.2cqw;
+    background: #080808;
+    font-size: 1.5cqw;
+  }
+
+  .opening-video-error a {
+    text-decoration: underline;
+  }
+
+  .opening-controls {
+    position: fixed;
+    z-index: 10;
+    bottom: 0.5rem;
+    left: 50%;
+    display: flex;
+    gap: 0.25rem;
+    max-width: 100%;
+    transform: translateX(-50%);
+    padding: 0.35rem;
+    background: #080808;
+    opacity: 0;
+    transition: opacity 160ms ease;
+  }
+
+  .opening-controls:hover,
+  .opening-controls:focus-within {
+    opacity: 1;
+  }
+
+  .opening-controls a,
+  .opening-controls button {
+    min-height: 2.75rem;
+    padding: 0.6rem;
+    color: #f6f4ef;
+    font-size: 0.8rem;
+  }
+
+  .opening-controls a:hover,
+  .opening-controls button:hover {
+    background: #292929;
+  }
+
+  .opening-page :focus-visible {
+    outline: 2px solid #f6f4ef;
+    outline-offset: 3px;
+  }
+
+  .opening-no-script {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    background: #080808;
+    padding: 1rem;
+  }
+
+  @media (hover: none) {
+    .opening-controls {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .opening-controls {
+      transition: none;
+    }
+  }
+}
+
 /* A shared light surface gives every sponsor the same contrast in both themes. */
 .sponsor-tiers {
   padding: 1.25rem;

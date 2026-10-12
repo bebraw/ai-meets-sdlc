@@ -65,6 +65,7 @@ const fontSubsetCharacters = new Set(
 for (const pathname of [
   "/slides/",
   "/slides/deck/",
+  "/slides/opening/",
   "/slides/schedule/",
   "/admin/",
   "/admin/login/",

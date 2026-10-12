@@ -169,7 +169,19 @@ EMAIL_ENCRYPTION_KEY=... npm run --silent interests:export -- --remote --format 
 ```
 
 The organizer-only slide library is available at `/slides/`, with a keyboard/swipe deck
-at `/slides/deck/` and a screen schedule at `/slides/schedule/`. It includes
+at `/slides/deck/` and a screen schedule at `/slides/schedule/`. The separate
+12-slide opening presentation is at `/slides/opening/`, linked from the admin
+slide tools and slide library. It starts at the welcome slide for the host's
+entrance. The optional pre-roll at `/slides/opening/?intro=1` has a **Play intro**
+button for the two-minute film with sound; it reveals the welcome slide when
+finished, so the film can run before the host steps on stage. Arrow keys, Page
+Up/Down, Home/End, swipe, and the presentation controls navigate the deck.
+Continuing to the welcome slide pauses playback. Fullscreen is available from the
+controls, which fade out while presenting. Speaker portraits and names use
+approved speaker content, and their order follows the published programme.
+The Pacman vector is reused from `https://slides.futurefrontend.com/opening`;
+the conduct slide links to `https://berlincodeofconduct.org/en`.
+The session slide library includes
 per-slide LinkedIn, X, and Bluesky downloads generated from the same event data.
 The library and admin slides page also offer **Download all PNGs — 4K**.
 It prepares a ZIP of all slides in current deck order, numbered for production,

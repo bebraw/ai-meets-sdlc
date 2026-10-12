@@ -10,6 +10,7 @@ function initializeSlideDeck() {
   const slides = Array.from(
     document.querySelectorAll<HTMLElement>(slideSelector),
   );
+  const deck = document.querySelector<HTMLElement>("[data-presentation-deck]");
 
   if (slides.length === 0) return;
 
@@ -32,6 +33,10 @@ function initializeSlideDeck() {
 
       slide.classList.toggle(activeClassName, isActive);
       slide.setAttribute("aria-hidden", String(!isActive));
+      slide.inert = !isActive;
+      if (!isActive) {
+        for (const video of slide.querySelectorAll("video")) video.pause();
+      }
 
       const progress = slide.querySelector<HTMLElement>(
         "[data-slide-progress]",
@@ -83,7 +88,16 @@ function initializeSlideDeck() {
   }
 
   document.addEventListener("keydown", (event) => {
+    if (deck?.hidden) return;
     if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey)
+      return;
+    if (
+      event.target instanceof Element &&
+      (event.target.closest(
+        "input, select, textarea, video, [contenteditable='true']",
+      ) ||
+        (event.key === " " && event.target.closest("button, a")))
+    )
       return;
 
     if (["ArrowRight", "PageDown", " "].includes(event.key)) {
@@ -110,9 +124,30 @@ function initializeSlideDeck() {
     }
   });
 
+  document.querySelectorAll("[data-slide-previous]").forEach((button) => {
+    button.addEventListener("click", () => navigate(-1));
+  });
+  document.querySelectorAll("[data-slide-next]").forEach((button) => {
+    button.addEventListener("click", () => navigate(1));
+  });
+  document.querySelectorAll("[data-slide-fullscreen]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const operation = document.fullscreenElement
+        ? document.exitFullscreen()
+        : document.documentElement.requestFullscreen();
+      void operation.catch(() => undefined);
+    });
+  });
+
   document.addEventListener(
     "touchstart",
     (event) => {
+      if (deck?.hidden) return;
+      if (
+        event.target instanceof Element &&
+        event.target.closest("video, button, a")
+      )
+        return;
       const touch = event.changedTouches[0];
       touchStart = touch ? { x: touch.clientX, y: touch.clientY } : undefined;
     },

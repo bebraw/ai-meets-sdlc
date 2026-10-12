@@ -84,6 +84,7 @@ test("schedule saves are atomic, admin-only, and shared by public pages, slides,
     "/schedule/",
     "/slides/schedule/",
     "/slides/deck/",
+    "/slides/opening/",
     "/admin/slides/deck/",
     "/admin/slides/schedule/",
   ]) {
