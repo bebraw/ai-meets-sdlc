@@ -339,7 +339,7 @@ try {
         has: page.locator("h2#event-day"),
       });
       for (const [label, href] of [
-        ["Opening slides", "/slides/opening/"],
+        ["Opening slides", "/slides/opening/?intro=1"],
         ["Closing slides", "/slides/closing/"],
       ]) {
         assert.equal(

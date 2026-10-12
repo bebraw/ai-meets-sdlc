@@ -195,7 +195,8 @@ keyboard, swipe, and fullscreen controls and published speaker content. Run
 viewport sizes. Set `OPENING_SCREENSHOTS` to save full-size review images (closing
 slides have a `closing-` prefix).
 Direct **Opening slides** and **Closing slides** shortcuts are also in the admin
-desk's **Event day** section and **All workspaces** menu.
+desk's **Event day** section and **All workspaces** menu. The **Opening slides**
+shortcut starts with the 4K film pre-roll, then continues to the welcome deck.
 
 The closing camera icon is from [Lucide](https://lucide.dev/icons/camera), with
 a lighter stroke for projection, under the [ISC license](assets/slides/lucide-LICENSE.txt).

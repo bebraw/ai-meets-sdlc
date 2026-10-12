@@ -89,9 +89,8 @@ export const adminWorkspaceGroups = [
       {
         id: "opening-slides",
         label: "Opening slides",
-        href: "/slides/opening/",
-        description:
-          "Present the welcome deck, with an optional 4K opening film from Screen assets.",
+        href: "/slides/opening/?intro=1",
+        description: "Play the 4K opening film, then present the welcome deck.",
       },
       {
         id: "closing-slides",
