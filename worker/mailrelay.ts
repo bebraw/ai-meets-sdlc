@@ -145,7 +145,7 @@ function remoteSubscriber(value: unknown, includeGroups = false): Remote {
     if (!Array.isArray(value.groups))
       throw new SyncError("invalid_provider_groups");
     groups = value.groups.map((group: unknown) => {
-      const id = isRecord(group) ? group.id : group;
+      const id = isRecord(group) ? (group.group_id ?? group.id) : group;
       if (!Number.isSafeInteger(id) || Number(id) < 1)
         throw new SyncError("invalid_provider_groups");
       return Number(id);

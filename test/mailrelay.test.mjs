@@ -205,6 +205,48 @@ test("local opt-out removes only the SDLCAI group, works while signup is disable
   );
 });
 
+test("Mailrelay's live group_id membership format syncs and removes only the configured group", async (t) => {
+  const f = await mailingFixture(t);
+  configured(f);
+  const id = await seed(f);
+  const mock = provider(t, f, {
+    contacts: [remoteContact()],
+    onCall: ({ method, target, contacts }) => {
+      if (method !== "GET" || !target.pathname.endsWith("/10")) return;
+      const contact = contacts.get(10);
+      return Response.json({
+        ...contact,
+        groups: contact.groups.map((group) => ({
+          group_id: group.id,
+          name: "Group",
+          assigned_at: "2026-10-12T10:00:00Z",
+        })),
+      });
+    },
+  });
+  assert.equal((await syncMailrelay(f.env)).reason, "synced");
+  assert.equal((await job(f, id)).state, "synced");
+  await unsubscribeNewsletter(f.env, id);
+  assert.equal((await syncMailrelay(f.env)).reason, "synced");
+  assert.deepEqual(mock.contacts.get(10).groups, [{ id: 99 }]);
+  assert.equal((await job(f, id)).email_ciphertext, null);
+
+  const invalidId = await seed(f, "invalid-group@example.test");
+  provider(t, f, {
+    onCall: ({ method }) =>
+      method === "GET"
+        ? Response.json(
+            remoteContact({
+              email: "invalid-group@example.test",
+              groups: [{ group_id: "44" }],
+            }),
+          )
+        : undefined,
+  });
+  assert.equal((await syncMailrelay(f.env)).reason, "invalid_provider_groups");
+  assert.equal((await job(f, invalidId)).state, "failed");
+});
+
 test("native Mailrelay unsubscribes are reconciled locally and never reactivated; bounces remain blocked", async (t) => {
   const f = await mailingFixture(t);
   configured(f);
