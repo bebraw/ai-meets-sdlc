@@ -80,9 +80,14 @@
     "TURNSTILE_HOSTNAMES": "sdlcai.org,www.sdlcai.org",
     // Legacy interest form flag; the sold-out homepage has no signup form.
     "SHOW_INTEREST_FORM": "",
-    // Keep marketing signup closed until a suitable campaign provider is selected.
+    // Marketing signup remains closed until the Mailrelay account is ready.
     // Confirmation and unsubscribe links continue to work while disabled.
     "NEWSLETTER_ENABLED": "false",
+    // Independent switch: existing withdrawals can sync while signup is closed.
+    "MAILRELAY_SYNC_ENABLED": "false",
+    "MAILRELAY_ACCOUNT_DOMAIN": "sdlcai.ipzmarketing.com",
+    "MAILRELAY_GROUP_ID": "1",
+    // Set MAILRELAY_API_KEY with wrangler secret put, never in vars.
   },
   "d1_databases": [
     {

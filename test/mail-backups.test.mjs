@@ -50,6 +50,8 @@ test("mailing snapshots keep encrypted consent and suppression evidence, dedupli
     email,
   );
   assert.equal(snapshot.rows.newsletter_consent_events[0].action, "requested");
+  assert.deepEqual(snapshot.rows.newsletter_mailrelay_sync, []);
+  assert.equal(snapshot.rows.newsletter_mailrelay_control[0].scope, null);
   assert.equal(
     snapshot.rows.attendee_message_preferences[0].email_hash,
     "suppressed-address-hash",

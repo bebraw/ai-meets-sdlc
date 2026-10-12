@@ -5,6 +5,8 @@ export async function backupMailingData(env: Env): Promise<void> {
   const tables = [
     "newsletter_subscribers",
     "newsletter_consent_events",
+    "newsletter_mailrelay_sync",
+    "newsletter_mailrelay_control",
     "attendee_message_preferences",
     "attendee_message_campaigns",
     "attendee_message_deliveries",

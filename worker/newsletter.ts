@@ -17,6 +17,7 @@ import {
   createToken,
 } from "./speaker-workspace-utils.ts";
 import { verifyTurnstile } from "./turnstile.ts";
+import { mailrelayStatus, syncMailrelay } from "./mailrelay.ts";
 import {
   mailHtml,
   mailOrigin,
@@ -54,7 +55,11 @@ export async function handleNewsletterRequest(
   env: Env,
 ): Promise<Response | null> {
   const path = new URL(request.url).pathname;
-  if (!path.startsWith("/api/newsletter/") && path !== "/api/admin/newsletter")
+  if (
+    !path.startsWith("/api/newsletter/") &&
+    path !== "/api/admin/newsletter" &&
+    path !== "/api/admin/newsletter/mailrelay"
+  )
     return null;
   try {
     return privateMailResponse(await handle(request, env, path));
@@ -80,6 +85,35 @@ async function handle(
     return json({ error: "Email subscriptions are not open yet." }, 404);
   if (!env.EMAIL_ENCRYPTION_KEY)
     return json({ error: "Subscriptions are temporarily unavailable." }, 503);
+  if (path === "/api/admin/newsletter/mailrelay") {
+    if (request.method !== "POST")
+      return json({ error: "Method not allowed." }, 405);
+    const denied = requireAdminAction(request, "manage-newsletter");
+    if (denied) return denied;
+    const body = await readJsonWithinLimit(request, 4096);
+    if (body instanceof Response) return body;
+    if (
+      !isRecord(body) ||
+      !["start", "sync", "retry"].includes(String(body.action))
+    )
+      return json({ error: "Choose start, sync or retry." }, 400);
+    const status = await mailrelayStatus(env);
+    if (!status.ready)
+      return json(
+        { error: status.error ?? "Mailrelay sync is disabled." },
+        409,
+      );
+    if (body.action === "start")
+      await env.INTERESTS.prepare(
+        "UPDATE newsletter_mailrelay_sync SET checked_at = NULL WHERE state IN ('synced', 'blocked') AND desired_status = 'subscribed'",
+      ).run();
+    if (body.action === "retry")
+      await env.INTERESTS.prepare(
+        "UPDATE newsletter_mailrelay_sync SET state = 'pending', next_attempt_at = '', error_code = NULL WHERE state = 'failed'",
+      ).run();
+    const result = await syncMailrelay(env);
+    return json({ ...result, mailrelay: await mailrelayStatus(env) });
+  }
   if (path === "/api/admin/newsletter") {
     if (request.method === "GET") {
       const offset = Number(
@@ -88,10 +122,19 @@ async function handle(
       if (!Number.isSafeInteger(offset) || offset < 0)
         return json({ error: "Invalid offset." }, 400);
       const result = await env.INTERESTS.prepare(
-        "SELECT * FROM newsletter_subscribers ORDER BY requested_at DESC, id LIMIT 51 OFFSET ?",
+        `SELECT s.*, j.state AS sync_state, j.remote_status, j.checked_at, j.error_code
+         FROM newsletter_subscribers s LEFT JOIN newsletter_mailrelay_sync j ON j.subscriber_id = s.id
+         ORDER BY s.requested_at DESC, s.id LIMIT 51 OFFSET ?`,
       )
         .bind(offset)
-        .all<Subscriber>();
+        .all<
+          Subscriber & {
+            sync_state: string | null;
+            remote_status: string | null;
+            checked_at: string | null;
+            error_code: string | null;
+          }
+        >();
       const rows = result.results.slice(0, 50);
       const counts = await env.INTERESTS.prepare(
         "SELECT status, COUNT(*) AS count FROM newsletter_subscribers GROUP BY status",
@@ -105,6 +148,10 @@ async function handle(
           requested_at: row.requested_at,
           confirmed_at: row.confirmed_at,
           unsubscribed_at: row.unsubscribed_at,
+          sync_state: row.sync_state,
+          remote_status: row.remote_status,
+          checked_at: row.checked_at,
+          sync_error: row.error_code,
           email:
             row.email_ciphertext && row.email_iv
               ? await decryptText(
@@ -126,6 +173,7 @@ async function handle(
         : [];
       return json({
         enabled: newsletterEnabled(env),
+        mailrelay: await mailrelayStatus(env),
         counts: counts.results,
         subscribers,
         events,
@@ -317,12 +365,16 @@ export async function unsubscribeNewsletter(
   env: Env,
   id: string,
 ): Promise<void> {
-  await env.INTERESTS.prepare(
-    `UPDATE newsletter_subscribers SET status = 'unsubscribed', email_ciphertext = NULL, email_iv = NULL, confirmation_hash = NULL, confirmation_expires_at = NULL,
+  await env.INTERESTS.batch([
+    env.INTERESTS.prepare(
+      `UPDATE newsletter_subscribers SET status = 'unsubscribed', email_ciphertext = NULL, email_iv = NULL, confirmation_hash = NULL, confirmation_expires_at = NULL,
     unsubscribed_at = COALESCE(unsubscribed_at, ?) WHERE id = ?`,
-  )
-    .bind(new Date().toISOString(), id)
-    .run();
+    ).bind(new Date().toISOString(), id),
+    env.INTERESTS.prepare(
+      `UPDATE newsletter_mailrelay_sync SET state = 'synced', email_ciphertext = NULL, email_iv = NULL, remote_status = 'never_synced'
+       WHERE subscriber_id = ? AND desired_status = 'unsubscribed' AND NOT EXISTS(SELECT 1 FROM newsletter_mailrelay_control WHERE scope IS NOT NULL)`,
+    ).bind(id),
+  ]);
 }
 export async function purgeNewsletterData(env: Env): Promise<void> {
   const now = Date.now();
@@ -331,7 +383,8 @@ export async function purgeNewsletterData(env: Env): Promise<void> {
       "DELETE FROM newsletter_subscribers WHERE status = 'pending' AND requested_at < ?",
     ).bind(new Date(now - 7 * 86_400_000).toISOString()),
     env.INTERESTS.prepare(
-      "DELETE FROM newsletter_subscribers WHERE status = 'unsubscribed' AND unsubscribed_at < ? AND (confirmation_expires_at IS NULL OR confirmation_expires_at < ?)",
+      `DELETE FROM newsletter_subscribers WHERE status = 'unsubscribed' AND unsubscribed_at < ? AND (confirmation_expires_at IS NULL OR confirmation_expires_at < ?)
+       AND NOT EXISTS(SELECT 1 FROM newsletter_mailrelay_sync j WHERE j.subscriber_id = newsletter_subscribers.id AND j.state IN ('pending', 'failed'))`,
     ).bind(
       new Date(now - 365 * 86_400_000).toISOString(),
       new Date(now).toISOString(),

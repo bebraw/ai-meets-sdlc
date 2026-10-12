@@ -193,9 +193,62 @@ try {
   );
   await visual("unsubscribe");
   await page.goto(origin + "/admin/newsletter/");
+  await page.getByText(/Signup enabled\./u).waitFor();
+  assert.equal(
+    await page
+      .getByRole("button", { name: "Sync with Mailrelay", exact: true })
+      .isDisabled(),
+    true,
+  );
+  // Simulate resumable admin sync without connecting to a real provider.
+  let syncSteps = 0;
+  await page.route(/\/api\/admin\/newsletter(?:\?.*)?$/u, (route) =>
+    route.fulfill({
+      json: {
+        enabled: true,
+        counts: [],
+        subscribers: [],
+        events: [],
+        next_offset: null,
+        mailrelay: {
+          enabled: true,
+          ready: true,
+          error: null,
+          counts: [{ state: syncSteps > 0 ? "synced" : "pending", count: 1 }],
+        },
+      },
+    }),
+  );
+  await page.route("**/api/admin/newsletter/mailrelay", async (route) => {
+    syncSteps++;
+    assert.equal(
+      route.request().postDataJSON().action,
+      syncSteps === 1 ? "start" : "sync",
+    );
+    await route.fulfill({
+      json: {
+        processed: syncSteps === 1,
+        reason: syncSteps === 1 ? "synced" : "up_to_date",
+        mailrelay: {
+          enabled: true,
+          ready: true,
+          error: null,
+          counts: [{ state: "synced", count: 1 }],
+        },
+      },
+    });
+  });
+  await page.reload();
   await page
-    .getByText(/Signup enabled\. Marketing delivery awaits provider selection/u)
+    .getByRole("button", { name: "Sync with Mailrelay", exact: true })
+    .click();
+  await page
+    .getByText(/Sync stopped: up to date\. 1 contact checked\./u)
     .waitFor();
+  assert.equal(syncSteps, 2);
+  await page.setViewportSize({ width: 320, height: 1000 });
+  await visual("mailrelay-320");
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await visual("subscribers");
   assert.deepEqual(errors, []);
   console.log(

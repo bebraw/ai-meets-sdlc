@@ -22,6 +22,7 @@ test("mailing admin routes require organizer authentication; feature flag gates 
     "/api/admin/attendee-messages",
     "/api/admin/attendee-messages/deliveries",
     "/api/admin/newsletter",
+    "/api/admin/newsletter/mailrelay",
   ]) {
     assert.equal((await f.worker.fetch(origin + path)).status, 401);
   }

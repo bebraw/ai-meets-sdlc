@@ -9,6 +9,7 @@ import { handleAttendeeMessages } from "./attendee-messages.ts";
 import { handleNewsletterRequest, purgeNewsletterData } from "./newsletter.ts";
 import { privateMailResponse } from "./mail-utils.ts";
 import { backupMailingData } from "./mail-backups.ts";
+import { runMailrelaySync } from "./mailrelay.ts";
 import { handleAttendeeCatering } from "./attendee-catering.ts";
 import {
   handleDinnerDietReview,
@@ -236,10 +237,21 @@ const innerHandler = {
         ? withAdminSecurityHeaders(messageResponse)
         : messageResponse;
     const newsletterResponse = await handleNewsletterRequest(request, env);
-    if (newsletterResponse)
+    if (newsletterResponse) {
+      if (
+        request.method === "POST" &&
+        newsletterResponse.ok &&
+        [
+          "/api/newsletter/confirm",
+          "/api/newsletter/unsubscribe",
+          "/api/admin/newsletter",
+        ].includes(url.pathname)
+      )
+        ctx.waitUntil(runMailrelaySync(env));
       return isAdminProtected
         ? withAdminSecurityHeaders(newsletterResponse)
         : newsletterResponse;
+    }
     const attendeeResponse = await handleAttendeesRequest(request, env);
     if (attendeeResponse) return attendeeResponse;
     if (url.pathname === "/api/admin/attendees/catering")
@@ -656,6 +668,7 @@ const innerHandler = {
     ctx: ExecutionContext,
   ): Promise<void> {
     if (event.cron === speakerReviewDigestCron) {
+      ctx.waitUntil(runMailrelaySync(env, 10));
       ctx.waitUntil(sendPosterReviewDigest(env, new Date(event.scheduledTime)));
       ctx.waitUntil(sendDataChangeDigest(env, new Date(event.scheduledTime)));
       ctx.waitUntil(

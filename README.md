@@ -600,7 +600,8 @@ tracking triggers to a migration and its display label to the digest.
 
 ### Attendee messages and SDLCAI news
 
-Apply `0033_add_attendee_messages_and_newsletter.sql` before deploying this
+Apply `0033_add_attendee_messages_and_newsletter.sql` and
+`0034_add_mailrelay_sync.sql` before deploying this
 feature. **Send attendee messages** at `/admin/attendees/` opens
 `/admin/attendee-messages/`. Start with the welcome or follow-up draft, edit the
 copy, send a test to your own address, and preview the message and recipients.
@@ -635,9 +636,9 @@ is closed. Confirmation and unsubscribe links, plus admin consent management,
 continue to work for existing subscriptions. `/admin/newsletter/` shows the flag
 state, subscribers, and consent history. There is no marketing campaign sender.
 
-Before enabling signup, choose a marketing-compatible delivery provider and
-update the privacy policy with its processing details. Cloudflare Email Service
-is used only for transactional event and confirmation emails. The future signup
+Mailrelay is the marketing provider integration; signup and syncing remain
+disabled until its SDLCAI account is configured. Cloudflare Email Service
+is used only for transactional event and confirmation emails. The signup
 flow uses the existing Turnstile widget/keys, verifies the `newsletter-signup`
 action and configured hostnames server-side, requires explicit consent, and
 confirms email ownership with a single-use 24-hour link. Repeated requests are
@@ -646,7 +647,10 @@ the old interest list are not imported into this list.
 
 Daily cleanup removes pending subscriptions older than seven days, expired
 resubscribe requests, and consent/suppression evidence one year after newsletter
-unsubscribe. Unsubscribe immediately removes the encrypted newsletter address.
+unsubscribe. Unsubscribe immediately removes the encrypted newsletter address
+from the active list. When provider removal is outstanding, the sync queue keeps
+an encrypted recovery copy until that removal succeeds. Failed removals must be
+resolved before retention cleanup can delete their evidence.
 Daily R2 mailing snapshots preserve encrypted contacts, consent records, event
 suppression, and delivery history for 30 days. Event communication records join
 the manual attendee retention review by 31 January 2027. When restoring, preserve
@@ -654,6 +658,61 @@ newer unsubscribe records and reconcile all restored pending/unknown deliveries
 against provider logs before resuming: an old snapshot is not proof that a send
 was never accepted. Keep recovered marketing signup disabled until consent and
 suppression records have been reconciled.
+
+### Mailrelay subscriber synchronization
+
+This integration reuses the subscriber-sync payload from
+`monolisa/website/utils/mailrelay.ts`: initial `status: active`,
+`replace_groups: false`, and `restore_if_deleted: false`. Only double-confirmed
+SDLCAI news subscribers are enrolled. Attendees, legacy interests, and pending
+signups are never transferred. No campaign or transactional Mailrelay sending
+API is used; compose/paste HTML and send campaigns through Mailrelay's dashboard.
+Use its recipient-specific unsubscribe link in every campaign.
+
+Configure these server-side settings:
+
+| Setting                    | Value                                                               |
+| -------------------------- | ------------------------------------------------------------------- |
+| `MAILRELAY_ACCOUNT_DOMAIN` | `sdlcai.ipzmarketing.com`                                           |
+| `MAILRELAY_GROUP_ID`       | `"1"`, the SDLCAI news group                                        |
+| `MAILRELAY_API_KEY`        | Worker secret, set with `npx wrangler secret put MAILRELAY_API_KEY` |
+| `MAILRELAY_SYNC_ENABLED`   | `"true"` after account/group/key setup; defaults to `"false"`       |
+| `NEWSLETTER_ENABLED`       | Independent public signup flag; still defaults to `"false"`         |
+
+Keep the account and group dedicated to this mailing purpose. Review Mailrelay's
+processing agreement and the privacy notice before opening signup. Enabling sync
+does not enable public signup, and closing signup does not prevent existing
+withdrawals from syncing. Switching sync off pauses all provider API requests;
+local withdrawals remain queued. Never reuse MonoLisa's credentials or group.
+
+In `/admin/newsletter/`, **Sync with Mailrelay** starts a full reconciliation,
+including contacts checked recently, and processes one contact per resumable
+request. Keep the page open until it reports **up to date**. **Stop after this
+contact** pauses without losing progress. Each contact shows its provider
+status, last check, and safe error code. **Retry failed syncs** retries permanent
+errors after configuration/data fixes. Network/server failures retry with
+backoff; HTTP 429 respects the provider's shared cooldown. A D1 lease serializes
+all requests, spaced at least 1.5 seconds apart. A crashed lease expires after
+two minutes; repeating sync is safe.
+
+Confirmation and unsubscribe requests wake one pending contact in background.
+The existing hourly cron processes up to ten contacts and checks older provider
+states. **Run a full sync before every campaign**, and resolve pending/failed
+removals before sending. Local withdrawals remove only the SDLCAI group,
+preserving other groups and the provider's suppression status. Native provider
+unsubscribes, spam complaints, deleted contacts, or removed group membership
+withdraw the local subscription. Bounces, bans, and inactive statuses are shown
+as blocked and never reactivated automatically. A fresh local confirmation can
+restore group membership for an otherwise active contact; it cannot override
+Mailrelay's unsubscribe/ban/deletion protections.
+
+The first sync pins the account/group scope in D1. Changing either setting
+returns `account_or_group_changed`, preventing old provider IDs from being used
+in another account. To migrate accounts, first reconcile outstanding withdrawals
+against the old account and plan a reviewed migration of confirmed consent and
+suppression records. Restoring backups must include both Mailrelay tables,
+preserve later withdrawals, and clear any restored lease before resuming.
+Provider keys and raw error response bodies are never stored in D1 or backups.
 
 ### Registrations and arrivals
 
