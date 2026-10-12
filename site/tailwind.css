@@ -1092,8 +1092,9 @@
     }
   }
 
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
+  /* Only slide navigation replaces the root fade with its own animation. */
+  html[data-slide-direction]::view-transition-old(root),
+  html[data-slide-direction]::view-transition-new(root) {
     animation: none;
   }
 
