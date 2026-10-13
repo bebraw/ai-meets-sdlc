@@ -281,8 +281,23 @@ async function validateDeck(page, origin, viewport, failures) {
           );
         }
 
-        if (sponsorStrip?.querySelector(".presentation-sponsor-brand")) {
-          errors.push("Brand sponsor appeared in the between-talk strip");
+        const courtesyLogo = sponsorStrip?.querySelector(
+          ".presentation-sponsor-aimbition img",
+        );
+        if (courtesyLogo) {
+          const courtesyRect = courtesyLogo.getBoundingClientRect();
+          for (const image of sponsorStrip.querySelectorAll("img")) {
+            if (image === courtesyLogo) continue;
+            const rect = image.getBoundingClientRect();
+            if (
+              courtesyRect.width * courtesyRect.height >=
+              rect.width * rect.height
+            ) {
+              errors.push(
+                "Aimbition must be the smallest between-talk sponsor logo",
+              );
+            }
+          }
         }
 
         if (sponsorStrip?.querySelector(".presentation-sponsor-location")) {

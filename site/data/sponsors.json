@@ -68,7 +68,7 @@
       "logoHeight": 1563,
       "tier": "brand",
       "logoSurface": "light",
-      "betweenTalks": false,
+      "betweenTalks": true,
       "logoDark": "/assets/sponsors/aimbition-group-white.png"
     },
     {

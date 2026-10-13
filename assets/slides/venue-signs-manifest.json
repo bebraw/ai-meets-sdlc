@@ -96,7 +96,7 @@
   "sources": {
     "site/data/venue-signs.json": "a17e3a6816a5701c3c98aa9b1d8950bf8692834c934ce0a1de7ae3a37d1e9821",
     "site/data/seminar.json": "bad5c24432e422059b451e6545872c721457af6b5462654769100c4cd80dfedb",
-    "site/data/schedule.json": "0c08a3eb5e5aef8c68fe9e33f9a3a8d43283e40e7ae9d4a091ccf3a8d0857107",
+    "site/data/schedule.json": "3d21215bac70889a329a387fb34244c9549f80f4f0385754a156d49be4e7b3c5",
     "scripts/export-venue-signs.py": "d2efb13b51385ac706d23c463d2b8a3b81b1e3b48582cc8c6a6feef45c8d63e2",
     "assets/fonts/FinlandicaHeadline-Black.woff2": "8298aa158ae58dfc158c8a4d45bb716028dea167ab45e913279db882f5392bb9",
     "assets/fonts/FinlandicaText-Regular.woff2": "55488a608932885926fb4779c0d9dabe9533249c824f8e3cf396d840843f423a",

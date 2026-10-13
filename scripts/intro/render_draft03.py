@@ -10,9 +10,10 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--qa", action="store_true")
 parser.add_argument("--start", type=int)
 parser.add_argument("--end", type=int)
+parser.add_argument("--output", type=Path, help="Separate output directory for a revised film.")
 args = parser.parse_args(sys.argv[sys.argv.index("--")+1:] if "--" in sys.argv else [])
 root = Path(__file__).resolve().parents[2]
-output = root / "output/intro/draft-03"
+output = args.output.resolve() if args.output else root / "output/intro/draft-03"
 scene = next(s for s in bpy.data.scenes if s.get("revision") == "draft-03")
 bpy.context.window.scene = scene
 scene.render.resolution_percentage = 100

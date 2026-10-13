@@ -21,3 +21,7 @@ placements.
   optical size adjustment for Wonna's stacked mark.
 
 Wonna and Rakettitiede retain their existing assets and fixed logo backgrounds.
+
+Aimbition also appears in the between-talk slide strip as an organizer-approved
+courtesy placement. Its logo is the smallest on the session, schedule, opening,
+and closing slides; its sponsorship tier remains Brand.

@@ -707,12 +707,15 @@ async function validateSponsors(sponsors) {
       errors.push(`${sponsorPath}.betweenTalks must be a boolean.`);
     }
 
-    const isBetweenTalkTier =
-      sponsor.tier === "epic" || sponsor.tier === "tech";
+    // Aimbition has an organizer-approved courtesy placement at the smallest size.
+    const isBetweenTalkSponsor =
+      sponsor.tier === "epic" ||
+      sponsor.tier === "tech" ||
+      sponsor.id === "aimbition";
 
-    if (sponsor.betweenTalks !== isBetweenTalkTier) {
+    if (sponsor.betweenTalks !== isBetweenTalkSponsor) {
       errors.push(
-        `${sponsorPath}.betweenTalks must match the Epic/Tech sponsor package commitment.`,
+        `${sponsorPath}.betweenTalks must match the Epic/Tech packages or Aimbition courtesy placement.`,
       );
     }
 

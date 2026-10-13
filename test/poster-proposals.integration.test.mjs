@@ -603,7 +603,7 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   assert.equal((deckHtml.match(/data-presentation-slide/g) ?? []).length, 22);
   assert.match(deckHtml, /alt="Wunderdog"/);
   assert.match(deckHtml, /alt="Reaktor"/);
-  assert.doesNotMatch(deckHtml, /alt="AIMBITION"/);
+  assert.match(deckHtml, /alt="AIMBITION"/);
   assert.doesNotMatch(deckHtml, /alt="Aalto University"/);
 
   const scheduleSlidesResponse = await worker.fetch(

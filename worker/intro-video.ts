@@ -6,7 +6,7 @@ const assets = new Map([
   [
     "draft-03/preview.mp4",
     {
-      key: "intro/draft-03-20261010/preview.mp4",
+      key: "intro/draft-03-20261013/preview.mp4",
       type: "video/mp4",
       filename: "sdlcai-intro-draft-03-1080p.mp4",
     },
@@ -14,7 +14,7 @@ const assets = new Map([
   [
     "draft-03/4k.mp4",
     {
-      key: "intro/draft-03-20261010/4k.mp4",
+      key: "intro/draft-03-20261013/4k.mp4",
       type: "video/mp4",
       filename: "sdlcai-intro-draft-03-4k.mp4",
     },
@@ -22,7 +22,7 @@ const assets = new Map([
   [
     "draft-03/poster.jpg",
     {
-      key: "intro/draft-03-20261010/poster.jpg",
+      key: "intro/draft-03-20261013/poster.jpg",
       type: "image/jpeg",
       filename: "sdlcai-intro-draft-03.jpg",
     },
@@ -30,7 +30,7 @@ const assets = new Map([
   [
     "draft-03/music-credit.txt",
     {
-      key: "intro/draft-03-20261010/music-credit.txt",
+      key: "intro/draft-03-20261013/music-credit.txt",
       type: "text/plain; charset=utf-8",
       filename: "sdlcai-intro-draft-03-music-credit.txt",
     },

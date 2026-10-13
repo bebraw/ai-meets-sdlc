@@ -820,6 +820,12 @@
     width: clamp(4.8rem, 7vw, 7.7rem);
   }
 
+  .presentation-sponsor-brand {
+    width: clamp(3.8rem, 5.4vw, 5.6rem);
+    height: clamp(1.6rem, 2.4vw, 2.5rem);
+    --presentation-sponsor-padding: clamp(0.2rem, 0.4vw, 0.35rem);
+  }
+
   .presentation-progress {
     display: flex;
     flex: none;
@@ -1018,6 +1024,12 @@
   .presentation-schedule-sponsor-location {
     width: clamp(2.8rem, 4.4vw, 4rem);
     height: clamp(2.8rem, 4.4vw, 4rem);
+  }
+
+  .presentation-schedule-sponsor-brand {
+    width: clamp(3.4rem, 4.8vw, 4.8rem);
+    height: clamp(1.5rem, 2.2vw, 2.1rem);
+    --presentation-sponsor-padding: clamp(0.2rem, 0.35vw, 0.3rem);
   }
 
   @media (max-width: 720px) {
@@ -1537,8 +1549,9 @@
   }
 
   .opening-sponsor-tier-brand .opening-sponsor {
-    width: 23cqw;
-    height: 6.5cqw;
+    width: 10cqw;
+    height: 4cqw;
+    padding: 0.6cqw;
   }
 
   .opening-sponsor-tier-location .opening-sponsor {

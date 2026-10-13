@@ -274,11 +274,16 @@ def finish_poster(manifest):
 
 
 def main():
+    global OUTPUT, FRAMES
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, help="Directory containing a revised film's frames and music.")
     parser.add_argument("--preview-only", action="store_true",
                         help="Create the 1080p preview directly from completed native frames; skip the 4K encode.")
     parser.add_argument("--force", action="store_true", help="Re-encode even when an existing export validates.")
     args = parser.parse_args()
+    if args.output:
+        OUTPUT = args.output.resolve()
+        FRAMES = OUTPUT / "frames"
     credit = (OUTPUT / "music-credit.txt").read_text()
     check(all(value in credit for value in ("Cipher", "Kevin MacLeod", "https://creativecommons.org/licenses/by/4.0/", "Changes:")),
           "music-credit.txt must contain the full attribution, licence URL and changes")

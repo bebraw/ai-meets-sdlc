@@ -8,8 +8,8 @@
   "durationSeconds": 120,
   "frameConvention": "start/end inclusive; startSeconds inclusive and endSeconds exclusive; intended cumulative endpoints independently rounded to the nearest frame",
   "programmeSource": "production/intro/live-programme.json",
-  "programmeRevision": "5eec5ff08d209723cf6ea39cd45baf0cebb5444c12a7b95ea95742406f87acf3",
-  "programmeRetrievedAt": "2026-10-10T11:34:05.585Z",
+  "programmeRevision": "78760132f094ace1c247bc0a1eb59977e5f8d889a16055ca5cea252e4c9a8236",
+  "programmeRetrievedAt": "2026-10-13T05:17:17.513Z",
   "sourceURL": "https://sdlcai.org/event.json",
   "scheduleURL": "https://sdlcai.org/schedule/",
   "textTreatment": "Static native text, straight cuts at entry boundaries; no title entrance or exit animation.",
@@ -238,7 +238,7 @@
       "sessionStart": "13:30",
       "speakerId": "sini-tistelgren",
       "speakerName": "Sini Tistelgrén",
-      "talkTitle": "AI Factory doesn't eliminate the fundamentals – it just hides what's missing, until it's too late.",
+      "talkTitle": "AI Factory doesn't eliminate the fundamentals",
       "portraitUrl": "https://sdlcai.org/assets/speakers/sini-tistelgren.webp",
       "speakerNumber": 8,
       "sessionNumber": 3
@@ -296,7 +296,7 @@
       "sessionStart": "15:30",
       "speakerId": "muhammad-waseem",
       "speakerName": "Dr Muhammad Waseem",
-      "talkTitle": "GenAI in Software Engineering: What Works, What Fails, What’s Next",
+      "talkTitle": "Code Was Never the Hard Part. Understanding Was—and Still Is.",
       "portraitUrl": "https://sdlcai.org/assets/speakers/muhammad-waseem.webp",
       "speakerNumber": 10,
       "sessionNumber": 4

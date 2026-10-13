@@ -21,7 +21,7 @@ BALANCED_TITLES = {
     "viljami-kuosmanen": "I Let Non-Engineers Vibe-Code\nOur Production Codebase",
     "sini-tistelgren": "AI Factory doesn't eliminate\nthe fundamentals – it just\nhides what's missing,\nuntil it's too late.",
     "zak-allal": "Medical Breakthroughs\nand Scientific Discoveries",
-    "muhammad-waseem": "GenAI in Software Engineering:\nWhat Works, What Fails,\nWhat’s Next",
+    "muhammad-waseem": "Code Was Never the Hard Part.\nUnderstanding Was—and Still Is.",
 }
 
 

@@ -52,12 +52,6 @@
       "body": "Short research-driven talks on AI and software development.",
       "talks": [
         {
-          "id": "genai-software-engineering",
-          "title": "GenAI in Software Engineering: What Works, What Fails, What’s Next",
-          "abstract": "This talk examines the current role of Generative AI in software engineering, moving beyond the hype around coding assistants. It discusses where GenAI is already useful, such as implementation, testing, documentation, and refactoring, and where progress remains limited, such as requirements, architecture, and long-term maintenance. The talk also highlights key open questions around measurement, verification, security, developer expertise, and the future shape of software engineering work.",
-          "speakers": ["muhammad-waseem"]
-        },
-        {
           "id": "agentic-discovery",
           "title": "Agentic Discovery",
           "abstract": "Abstract forthcoming.",
@@ -120,6 +114,12 @@
           "title": "Mystery talk",
           "abstract": "Zak Allal shares an industry perspective on applied AI in software development. The exact topic of his talk is still to be decided.",
           "speakers": ["zak-allal"]
+        },
+        {
+          "id": "genai-software-engineering",
+          "title": "Code Was Never the Hard Part. Understanding Was—and Still Is.",
+          "abstract": "Generative AI has made writing code cheap, but it has not made understanding it cheap, and that gap is becoming the central problem in software engineering. Drawing on recent research and his own empirical study of 1,500 AI-generated refactorings across 15 repositories, Dr Waseem shows that code which looks correct in a single file is often unsafe once it ripples through the wider system. He traces how the work is shifting across four fronts: writing, where AI is fast, reading and verification, where humans have become the bottleneck, deciding, where agents are becoming users and even customers, and caring, where security, accountability, and the training of future engineers are at stake. The talk argues that architecture, verification, and the recorded reasoning behind our systems now matter more, not less, because they are exactly what AI cannot generate for us. The message is simple: code was never the hard part, and closing the understanding gap is the real work ahead.",
+          "speakers": ["muhammad-waseem"]
         }
       ]
     },

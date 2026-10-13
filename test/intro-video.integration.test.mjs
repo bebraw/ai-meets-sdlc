@@ -257,7 +257,7 @@ test("full intro draft stays private and exposes only seekable review assets", a
   t.after(() => fixture.dispose());
   const { worker, env } = fixture;
   const route = "/api/admin/intro/draft-03/";
-  const key = "intro/draft-03-20261010/";
+  const key = "intro/draft-03-20261013/";
   const draftAssets = new Map([
     ["preview.mp4", "draft-03:1080p:0123456789abcdefghijklmnopqrstuvwxyz"],
     ["4k.mp4", "draft-03:4k:0123456789abcdefghijklmnopqrstuvwxyz"],

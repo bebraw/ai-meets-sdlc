@@ -258,7 +258,7 @@ names and talk titles, straight text cuts, and one continuously morphing shape.
 The page has a 1080p review player, a native 3840×2160 master download, and the
 CC BY 4.0 attribution for “Cipher” by Kevin MacLeod. The earlier three 36-second
 prototypes, research references, and Draft 01 remain available for comparison.
-The immutable assets live under `intro/draft-03-20261010/`,
+The current immutable assets live under `intro/draft-03-20261013/`,
 `intro/prototypes-02-20261010/`, and `intro/draft-01-20261010/` in the existing
 `SOCIAL_EXPORTS` R2 bucket.
 `/api/admin/intro/` exposes only explicitly allowlisted assets, requires the same
@@ -286,6 +286,14 @@ run `python3 scripts/intro/finish_draft03.py`. It checks every source frame,
 creates the 4K master and downsampled preview, and validates frame count,
 duration, attribution metadata, faststart placement, and full decoding.
 QA and export reports stay beside the rendered media.
+
+For a title correction, refresh the live programme and run
+`scripts/intro/update_draft03.py` inside the original Draft 03 Blender file. It
+creates a dated scene and render directory, reuses unchanged native frames, and
+leaves changed speaker intervals empty for fresh rendering. Pass that directory
+to both `render_draft03.py --output <directory>` and
+`finish_draft03.py --output <directory>`. The 13 October revision updates Waseem
+and Sini's published titles while preserving the earlier scene and film.
 
 The earlier `build_prototype_*.py`, `render_prototypes.py`, and
 `finish_prototypes.py` scripts retain the 1080p comparison workflow.
@@ -358,7 +366,8 @@ The schedule structure and session deck scaffold derive from
 and `site/data/sponsors.json`; the Worker resolves mutable speaker and talk copy
 from D1. Sponsor data records the package tier and whether the contract includes
 between-talk placement; validation requires Epic and Tech sponsors to receive
-that placement and excludes Brand and Location sponsors.
+that placement. Aimbition has an organizer-approved courtesy placement with the
+smallest logo; Location sponsors remain excluded from the between-talk strip.
 
 ## Venue signs
 
