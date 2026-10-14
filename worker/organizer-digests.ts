@@ -97,6 +97,7 @@ const dataLabels: Record<string, string> = {
   speaker_video_submissions: "Speaker videos",
   speaker_presentation_responses: "Presentation responses",
   speaker_slides: "Presentation files",
+  speaker_slide_links: "Public slide links",
   speaker_dinner_responses: "Speaker dinner responses",
   speaker_dinner_shared_responses: "Dinner guest responses",
   speaker_dinner_catering: "Dinner dietary reviews",

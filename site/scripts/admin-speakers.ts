@@ -2,6 +2,7 @@ export {};
 import {
   slideFormatLabel,
   type SpeakerSlideFile,
+  type SpeakerSlideLink,
 } from "./speaker-slides-model.ts";
 
 interface AdminSpeakerContent {
@@ -87,6 +88,7 @@ interface AdminSpeakerItem {
   workspace_only: boolean;
   videos: AdminSpeakerVideo[];
   slides: SpeakerSlideFile[];
+  slide_links: SpeakerSlideLink[];
 }
 
 interface AdminSpeakerVideo {
@@ -1386,6 +1388,10 @@ function renderSlideFiles(speaker: AdminSpeakerItem): HTMLElement {
       "Presentation files",
     ),
   );
+  if (!speaker.workspace_only) {
+    for (const talk of speaker.canonical.talks)
+      section.appendChild(renderSlideLink(speaker, talk));
+  }
   section.appendChild(
     node(
       "p",
@@ -1512,6 +1518,102 @@ function renderSlideFiles(speaker: AdminSpeakerItem): HTMLElement {
     section.appendChild(card);
   }
   return section;
+}
+
+function renderSlideLink(
+  speaker: AdminSpeakerItem,
+  talk: AdminSpeakerContent["talks"][number],
+): HTMLElement {
+  const saved = speaker.slide_links.find(({ talk_id }) => talk_id === talk.id);
+  const form = node("form", "grid min-w-0 gap-3 border border-paper/40 p-4");
+  form.dataset.adminSlideLink = talk.id;
+  form.appendChild(node("strong", "uppercase", `${talk.title} / Slide link`));
+  form.appendChild(
+    node(
+      "p",
+      "text-sm leading-6 text-paper/70",
+      "Add a slide link supplied by the speaker. Saving publishes it as Slides on the public schedule. Published PDFs stay available too.",
+    ),
+  );
+  const label = node(
+    "label",
+    "grid min-w-0 gap-2 text-sm font-bold uppercase",
+    "Slide URL (HTTPS)",
+  );
+  const input = node(
+    "input",
+    "min-w-0 w-full border border-paper bg-ink p-3 font-normal normal-case text-paper",
+  );
+  input.type = "url";
+  input.required = true;
+  input.maxLength = 2048;
+  input.placeholder = "https://…";
+  input.value = saved?.url ?? "";
+  label.appendChild(input);
+  form.appendChild(label);
+  const actions = node("div", "flex flex-wrap gap-3");
+  const save = reviewButton("Save slide link", true);
+  save.type = "submit";
+  actions.appendChild(save);
+  const remove = reviewButton("Remove slide link", false);
+  if (saved) {
+    const open = node(
+      "a",
+      "border border-paper px-3 py-2 text-sm font-bold uppercase",
+      "Open slide link",
+    );
+    open.href = saved.url;
+    actions.appendChild(open);
+    actions.appendChild(remove);
+  }
+  form.appendChild(actions);
+  const status = node("p", "min-h-6 text-sm font-bold");
+  status.setAttribute("aria-live", "polite");
+  form.appendChild(status);
+  const submit = async (url: string) => {
+    save.disabled = true;
+    remove.disabled = true;
+    input.disabled = true;
+    setEditorStatus(
+      status,
+      url ? "Saving slide link…" : "Removing slide link…",
+    );
+    const response = await requestJson<{ error?: string; message?: string }>(
+      "/api/admin/speakers/slides/links",
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "x-admin-action": "publish-speaker-slides",
+        },
+        body: JSON.stringify({
+          speaker_id: speaker.speaker_id,
+          talk_id: talk.id,
+          url,
+          previous_url: saved?.url ?? null,
+        }),
+      },
+    );
+    save.disabled = false;
+    remove.disabled = false;
+    input.disabled = false;
+    if (!response.ok) {
+      setEditorStatus(
+        status,
+        response.data.error ?? "Slide link could not be saved.",
+        true,
+      );
+      return;
+    }
+    await loadSpeakers();
+    setStatus(response.data.message ?? "Slide link saved.");
+  };
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (form.reportValidity()) void submit(input.value.trim());
+  });
+  remove.addEventListener("click", () => void submit(""));
+  return form;
 }
 
 function renderVideos(speaker: AdminSpeakerItem): HTMLElement {

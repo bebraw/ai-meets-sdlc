@@ -40,7 +40,10 @@ import {
 } from "./canonical-content.ts";
 import { readAdminSpeakerPhotos } from "./speaker-photos.ts";
 import { readAdminSpeakerVideos } from "./speaker-videos.ts";
-import { readAdminSpeakerSlides } from "./speaker-slides.ts";
+import {
+  readAdminSpeakerSlides,
+  readAdminSpeakerSlideLinks,
+} from "./speaker-slides.ts";
 import { validateSpeakerWorkspaceContent } from "./speaker-content-validation.ts";
 
 export async function getAdminSpeakers(env: Env): Promise<Response> {
@@ -58,6 +61,7 @@ export async function getAdminSpeakers(env: Env): Promise<Response> {
     photos,
     videos,
     slides,
+    slideLinks,
   ] = await Promise.all([
     env
       .INTERESTS!.prepare(
@@ -137,6 +141,7 @@ export async function getAdminSpeakers(env: Env): Promise<Response> {
     readAdminSpeakerPhotos(env),
     readAdminSpeakerVideos(env),
     readAdminSpeakerSlides(env),
+    readAdminSpeakerSlideLinks(env),
   ]);
   const contacts = new Map(
     contactResult.results.map((contact) => [contact.speaker_id, contact]),
@@ -265,6 +270,9 @@ export async function getAdminSpeakers(env: Env): Promise<Response> {
         workspace_only: workspaceOnlySpeakerIds.has(record.speakerId),
         videos: videos.get(record.speakerId) ?? [],
         slides: canonical.talks.flatMap(({ id }) => slides.get(id) ?? []),
+        slide_links: canonical.talks.flatMap(
+          ({ id }) => slideLinks.get(id) ?? [],
+        ),
       };
     }),
   );

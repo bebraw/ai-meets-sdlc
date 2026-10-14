@@ -37,6 +37,7 @@ const adminActions: Record<string, [string, string]> = {
   "/api/admin/speakers/photos/upload": ["Speaker photo", "uploaded"],
   "/api/admin/speakers/photos/review": ["Speaker photo", "reviewed"],
   "/api/admin/speakers/videos/review": ["Speaker video", "reviewed"],
+  "/api/admin/speakers/slides/links": ["Presentation files", "link saved"],
   "/api/admin/speakers/slides/publication": [
     "Presentation files",
     "publication updated",
@@ -178,16 +179,20 @@ export async function recordSuccessfulActivity(
         ? body.published === true
           ? "published PDF"
           : "unpublished PDF"
-        : body.decision === "approve"
-          ? "approved"
-          : body.decision === "reject" || body.decision === "request_changes"
-            ? "changes requested"
-            : path === "/api/admin/speakers/content" && body.mode === "draft"
-              ? "saved draft"
-              : path === "/api/admin/speakers/content" &&
-                  body.mode === "approve"
-                ? "published"
-                : defaultAction;
+        : path === "/api/admin/speakers/slides/links"
+          ? typeof body.url === "string" && body.url.trim()
+            ? "link saved"
+            : "link removed"
+          : body.decision === "approve"
+            ? "approved"
+            : body.decision === "reject" || body.decision === "request_changes"
+              ? "changes requested"
+              : path === "/api/admin/speakers/content" && body.mode === "draft"
+                ? "saved draft"
+                : path === "/api/admin/speakers/content" &&
+                    body.mode === "approve"
+                  ? "published"
+                  : defaultAction;
     activity = {
       actorType: "admin",
       actorId:

@@ -8,6 +8,133 @@ import {
 } from "./helpers/receipt-fixture.mjs";
 import { pdfSlideBytes, powerpointSlideBytes } from "./helpers/slide-files.mjs";
 
+test("organizers can publish, update and remove external slide links per public talk", async (t) => {
+  const fixture = await createReceiptFixture();
+  t.after(() => fixture.dispose());
+  const { worker, cookies, runSql } = fixture;
+  const adminHeaders = {
+    authorization: receiptAdmin,
+    origin,
+    "content-type": "application/json",
+    "x-admin-action": "publish-speaker-slides",
+  };
+  const endpoint = `${origin}/api/admin/speakers/slides/links`;
+  const getSpeaker = async () => {
+    const response = await worker.fetch(`${origin}/api/admin/speakers`, {
+      headers: adminHeaders,
+    });
+    return (await response.json()).speakers.find(
+      ({ speaker_id }) => speaker_id === "mo-khazali",
+    );
+  };
+  const speaker = await getSpeaker();
+  const talkId = speaker.canonical.talks[0].id;
+  const slideUrl = 'https://slides.example.org/deck?view=public&title="Slides"';
+  const save = (overrides = {}, headers = adminHeaders) =>
+    worker.fetch(endpoint, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({
+        speaker_id: speaker.speaker_id,
+        talk_id: talkId,
+        url: slideUrl,
+        previous_url: null,
+        ...overrides,
+      }),
+    });
+  const scheduleHtml = async () => {
+    const response = await worker.fetch(`${origin}/schedule/`);
+    assert.equal(response.headers.get("cache-control"), "no-store");
+    return response.text();
+  };
+  assert.deepEqual(speaker.slide_links, []);
+  assert.equal((await save({}, {})).status, 401);
+  assert.equal(
+    (await save({}, { cookie: cookies.get("mo-khazali"), origin })).status,
+    401,
+  );
+  assert.equal(
+    (await save({}, { ...adminHeaders, origin: "https://attacker.example" }))
+      .status,
+    403,
+  );
+  assert.equal(
+    (await save({}, { ...adminHeaders, "x-admin-action": "wrong" })).status,
+    403,
+  );
+  assert.equal(
+    (await worker.fetch(endpoint, { headers: adminHeaders })).status,
+    405,
+  );
+  assert.equal((await save({ previous_url: undefined })).status, 400);
+  assert.equal((await save({ talk_id: "someone-elses-talk" })).status, 400);
+  assert.equal((await save({ speaker_id: "missing-speaker" })).status, 400);
+  assert.equal(
+    (
+      await save({
+        speaker_id: "juho-vepsalainen",
+        talk_id: "juho-vepsalainen-test-session",
+      })
+    ).status,
+    400,
+  );
+  for (const url of [
+    "javascript:alert(1)",
+    "http://slides.example.org/deck",
+    "/relative",
+    "not a URL",
+    "https://user:secret@slides.example.org",
+    "https://slides.example.org/\npath",
+    `https://slides.example.org/${"x".repeat(2048)}`,
+  ])
+    assert.equal((await save({ url })).status, 400, url);
+  assert.equal((await save({ url: `  ${slideUrl}  ` })).status, 200);
+  const normalizedUrl = new URL(slideUrl).toString();
+  assert.deepEqual((await getSpeaker()).slide_links, [
+    { talk_id: talkId, url: normalizedUrl },
+  ]);
+  const html = await scheduleHtml();
+  assert.ok(html.includes(`href="${normalizedUrl.replaceAll("&", "&amp;")}"`));
+  assert.match(html, />Slides<\/a>/u);
+  assert.equal((await save()).status, 409);
+  assert.equal(
+    (await save({ previous_url: "https://stale.example.org/", url: "" }))
+      .status,
+    409,
+  );
+  const updatedUrl = "https://slides.example.org/updated";
+  assert.equal(
+    (await save({ previous_url: normalizedUrl, url: updatedUrl })).status,
+    200,
+  );
+  assert.ok((await scheduleHtml()).includes(updatedUrl));
+  assert.ok(!(await scheduleHtml()).includes(normalizedUrl));
+  assert.equal(
+    (await save({ previous_url: normalizedUrl, url: "" })).status,
+    409,
+  );
+  await runSql(
+    "UPDATE speaker_workspace_sessions SET expires_at = '2000-01-01T00:00:00Z'",
+  );
+  assert.ok((await scheduleHtml()).includes(updatedUrl));
+  assert.equal((await save({ previous_url: updatedUrl, url: "" })).status, 200);
+  assert.deepEqual((await getSpeaker()).slide_links, []);
+  assert.doesNotMatch(await scheduleHtml(), />Slides<\/a>/u);
+  assert.equal((await save({ previous_url: updatedUrl })).status, 409);
+  assert.equal((await save()).status, 200);
+  const events = await runSql(
+    "SELECT action FROM activity_events WHERE category = 'Presentation files'",
+  );
+  assert.ok(events.some(({ action }) => action === "link saved"));
+  assert.ok(events.some(({ action }) => action === "link removed"));
+  const changes = await runSql(
+    "SELECT operation FROM organizer_data_changes WHERE table_name = 'speaker_slide_links'",
+  );
+  assert.ok(changes.some(({ operation }) => operation === "added"));
+  assert.ok(changes.some(({ operation }) => operation === "updated"));
+  assert.ok(changes.some(({ operation }) => operation === "deleted"));
+});
+
 test("speaker slides stay private until publication, and replacement withdraws public files", async (t) => {
   const fixture = await createReceiptFixture();
   t.after(() => fixture.dispose());

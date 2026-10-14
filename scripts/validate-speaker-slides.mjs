@@ -199,6 +199,58 @@ try {
   const latestPublicHref = await publicLink.getAttribute("href");
   assert.notEqual(latestPublicHref, firstPublicHref);
 
+  const slideLinkForm = admin.locator(`[data-admin-slide-link="${talkId}"]`);
+  const externalLink = scheduleTalk.getByRole("link", {
+    name: "Slides",
+    exact: true,
+  });
+  const saveLink = async (url) => {
+    await slideLinkForm.getByLabel("Slide URL (HTTPS)").fill(url);
+    await slideLinkForm
+      .getByRole("button", { name: "Save slide link", exact: true })
+      .click();
+  };
+  const firstSlideUrl = "https://slides.example.org/deck?view=public&lang=en";
+  await saveLink(firstSlideUrl);
+  await admin
+    .getByText("Slide link published on the schedule.", { exact: true })
+    .waitFor();
+  await admin.reload();
+  assert.equal(
+    await slideLinkForm.getByLabel("Slide URL (HTTPS)").inputValue(),
+    firstSlideUrl,
+  );
+  await schedule.reload();
+  assert.equal(await externalLink.getAttribute("href"), firstSlideUrl);
+  assert.equal(await publicLink.getAttribute("href"), latestPublicHref);
+  const staleAdmin = await adminContext.newPage();
+  await staleAdmin.goto(`${origin}/admin/speakers/`);
+  const staleForm = staleAdmin.locator(`[data-admin-slide-link="${talkId}"]`);
+  await staleForm.getByLabel("Slide URL (HTTPS)").waitFor();
+  const updatedSlideUrl = "https://slides.example.org/updated";
+  await saveLink(updatedSlideUrl);
+  await admin
+    .getByText("Slide link published on the schedule.", { exact: true })
+    .waitFor();
+  await staleForm
+    .getByLabel("Slide URL (HTTPS)")
+    .fill("https://slides.example.org/stale");
+  await staleForm
+    .getByRole("button", { name: "Save slide link", exact: true })
+    .click();
+  await staleForm
+    .getByText("The slide link changed. Reload speakers before saving again.", {
+      exact: true,
+    })
+    .waitFor();
+  assert.equal(
+    await staleForm.getByLabel("Slide URL (HTTPS)").inputValue(),
+    "https://slides.example.org/stale",
+  );
+  await staleAdmin.close();
+  await schedule.reload();
+  assert.equal(await externalLink.getAttribute("href"), updatedSlideUrl);
+
   const axe = await readFile("node_modules/axe-core/axe.min.js", "utf8");
   for (const width of [1440, 390]) {
     for (const page of [speaker, admin, schedule]) {
@@ -208,7 +260,7 @@ try {
         page === speaker
           ? "[data-speaker-slide-files]"
           : page === admin
-            ? "[data-admin-slide]"
+            ? "[data-admin-slide], [data-admin-slide-link]"
             : "[data-schedule-talk]";
       const violations = await page.evaluate(async (selector) => {
         const result = await window.axe.run(selector, {
@@ -235,7 +287,24 @@ try {
     await adminCard.screenshot({
       path: path.join(tmpdir(), `sdlcai-admin-slide-files-${width}.png`),
     });
+    await slideLinkForm.screenshot({
+      path: path.join(tmpdir(), `sdlcai-admin-slide-link-${width}.png`),
+    });
   }
+  await slideLinkForm
+    .getByRole("button", { name: "Remove slide link", exact: true })
+    .click();
+  await admin
+    .getByText("Slide link removed from the schedule.", { exact: true })
+    .waitFor();
+  await admin.reload();
+  assert.equal(
+    await slideLinkForm.getByLabel("Slide URL (HTTPS)").inputValue(),
+    "",
+  );
+  await schedule.reload();
+  assert.equal(await externalLink.count(), 0);
+  assert.equal(await publicLink.getAttribute("href"), latestPublicHref);
   await adminCard
     .getByRole("button", { name: "Unpublish PDF", exact: true })
     .click();
@@ -271,7 +340,7 @@ try {
   );
   assert.deepEqual(errors, []);
   console.log(
-    "Speaker PDF/PowerPoint uploads, private downloads, publication, replacement, removal, mobile layout and accessibility passed.",
+    "Speaker PDF/PowerPoint uploads, private downloads, publication, manual slide links, stale edits, replacement, removal, mobile layout and accessibility passed.",
   );
 } finally {
   await browser?.close();

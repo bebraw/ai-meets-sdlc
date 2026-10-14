@@ -14,6 +14,7 @@ import {
   formatSpeakerAffiliation,
 } from "../site/scripts/speaker-name.ts";
 import { getSlideTitleClassName } from "../site/scripts/slide-title.ts";
+import type { PublishedSlideLink } from "../site/scripts/speaker-slides-model.ts";
 
 const canonicalHtmlCacheControl =
   "public, max-age=60, s-maxage=300, stale-while-revalidate=86400";
@@ -52,7 +53,7 @@ export async function applyCanonicalContentToResponse(
   options: {
     private?: boolean;
     schedule?: ScheduleOrder;
-    slides?: ReadonlyMap<string, string>;
+    slides?: ReadonlyMap<string, readonly PublishedSlideLink[]>;
   } = {},
 ): Promise<Response> {
   if (!response.headers.get("content-type")?.includes("text/html")) {
@@ -146,14 +147,19 @@ export async function applyCanonicalContentToResponse(
     .on("[data-talk-materials]", {
       element(element) {
         const talkId = element.getAttribute("data-canonical-talk-id");
-        const href = talkId ? options.slides?.get(talkId) : undefined;
-        if (!href) {
+        const links = talkId ? options.slides?.get(talkId) : undefined;
+        if (!links?.length) {
           element.remove();
           return;
         }
         element.removeAttribute("hidden");
         element.setInnerContent(
-          `<a href="${escapeAttribute(href)}" class="inline-flex border border-ink px-4 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper">Slides (PDF)</a>`,
+          links
+            .map(
+              ({ url, label }) =>
+                `<a href="${escapeAttribute(url)}" class="inline-flex border border-ink px-4 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper">${label}</a>`,
+            )
+            .join(" "),
           { html: true },
         );
       },

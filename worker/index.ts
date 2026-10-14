@@ -96,6 +96,7 @@ import {
   requireSlideExportAccess,
 } from "./slide-export-auth.ts";
 import { readPublicCanonicalSpeakers } from "./canonical-content.ts";
+import type { PublishedSlideLink } from "../site/scripts/speaker-slides-model.ts";
 import {
   readPublishedSlideLinks,
   servePublishedSlides,
@@ -606,7 +607,7 @@ const innerHandler = {
           readScheduleOrder(env),
           url.pathname === "/schedule/"
             ? readPublishedSlideLinks(env)
-            : Promise.resolve(new Map<string, string>()),
+            : Promise.resolve(new Map<string, PublishedSlideLink[]>()),
         ]);
         response = await applyCanonicalContentToResponse(
           response.clone(),

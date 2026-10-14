@@ -316,6 +316,15 @@ public archive outlives speaker login sessions. Apply migration
 Run `npm run speaker-slides:browser-check` to verify upload, publication,
 replacement, desktop/mobile layout, and accessibility with isolated storage.
 
+For links supplied separately or after the event, enter **Slide URL (HTTPS)**
+under the talk's **Presentation files** in `/admin/speakers/` and choose **Save
+slide link**. Saving immediately adds a **Slides** link to the public schedule,
+alongside any published PDF. Edit and save the URL to replace it, or use **Remove
+slide link** to withdraw it. Links are independent of speaker uploads and login
+expiry. If another admin tab has changed the link, reload speakers before saving
+again. Apply `0031_create_speaker_slide_links.sql` before deploying this version;
+`npm run deploy` applies pending migrations.
+
 At `/admin/dinner/#entrance-sign`, use **Download A4 PDF** for the speakers’ dinner
 entrance sign. Print on A4 at 100% / actual size. Regenerate it with
 `uv run scripts/export-speaker-dinner-sign.py`; the exporter also updates the

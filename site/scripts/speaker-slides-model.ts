@@ -2,6 +2,16 @@ export const maxSlideFileBytes = 25 * 1024 * 1024;
 
 export type SlideFormat = "pdf" | "powerpoint";
 
+export interface SpeakerSlideLink {
+  talk_id: string;
+  url: string;
+}
+
+export interface PublishedSlideLink {
+  url: string;
+  label: "Slides" | "Slides (PDF)";
+}
+
 export interface SpeakerSlideFile {
   slide_id: string;
   talk_id: string;
