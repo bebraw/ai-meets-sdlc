@@ -53,6 +53,87 @@ try {
     });
     surface.setDefaultTimeout(15000);
   }
+  const enterFullscreen = async (surface, native = true) => {
+    await surface
+      .getByRole("button", { name: "Full screen", exact: true })
+      .click();
+    await surface.waitForFunction(
+      () =>
+        document.querySelector("#fullscreen").getAttribute("aria-pressed") ===
+        "true",
+    );
+    if (native)
+      await surface.waitForFunction(
+        () => document.fullscreenElement?.id === "preview-viewer",
+      );
+    else
+      assert.equal(
+        await surface.evaluate(() => document.fullscreenElement),
+        null,
+      );
+    assert.equal(await surface.locator("#editor").isVisible(), false);
+    assert.match(
+      await surface.locator("#preview").getAttribute("src"),
+      /\/share\.jpg$/,
+    );
+    assert.match(
+      await surface.locator("#fullscreen-credit").textContent(),
+      /Photo: .*CC BY 4\.0/,
+    );
+    const bounds = await surface.evaluate(() => {
+      const viewer = document.querySelector("#preview-viewer");
+      const box = viewer.getBoundingClientRect();
+      const image = document.querySelector("#preview").getBoundingClientRect();
+      return {
+        fills:
+          Math.abs(box.width - innerWidth) < 1 &&
+          Math.abs(box.height - innerHeight) < 1 &&
+          box.x === 0 &&
+          box.y === 0,
+        fits:
+          image.x >= 0 &&
+          image.y >= 0 &&
+          image.right <= innerWidth &&
+          image.bottom <= innerHeight,
+        fit: getComputedStyle(document.querySelector("#preview")).objectFit,
+        overflow:
+          viewer.scrollWidth > viewer.clientWidth ||
+          viewer.scrollHeight > viewer.clientHeight,
+      };
+    });
+    assert.deepEqual(bounds, {
+      fills: true,
+      fits: true,
+      fit: "contain",
+      overflow: false,
+    });
+  };
+  const assertPreviewRestored = async (surface) => {
+    await surface
+      .getByRole("button", { name: "Full screen", exact: true })
+      .waitFor();
+    assert.equal(
+      await surface.locator("#fullscreen").getAttribute("aria-pressed"),
+      "false",
+    );
+    assert.equal(await surface.locator("#editor").isVisible(), true);
+    assert.equal(
+      await surface.locator("#detail").evaluate((dialog) => dialog.open),
+      true,
+    );
+    assert.equal(
+      await surface.evaluate(() => document.fullscreenElement),
+      null,
+    );
+    assert.match(
+      await surface.locator("#preview").getAttribute("src"),
+      /\/preview\.jpg$/,
+    );
+    assert.equal(
+      await surface.evaluate(() => document.activeElement.id),
+      "fullscreen",
+    );
+  };
   await page.goto(`${origin}/photos/`);
   const assertTheme = async (surface, theme) => {
     const state = await surface.evaluate(() => ({
@@ -146,6 +227,29 @@ try {
   );
   assert.equal(await page.locator("#original").isVisible(), false);
   assert.ok(await page.locator("#public-caption").textContent());
+  const firstTitle = await page.locator("#detail-title").textContent();
+  await enterFullscreen(page);
+  await page.keyboard.press("ArrowRight");
+  assert.notEqual(
+    await page.locator("#detail-title").textContent(),
+    firstTitle,
+  );
+  await page.keyboard.press("ArrowLeft");
+  assert.equal(await page.locator("#detail-title").textContent(), firstTitle);
+  await page.keyboard.press("Escape");
+  await assertPreviewRestored(page);
+  await enterFullscreen(page);
+  await page.evaluate(() => document.exitFullscreen());
+  await assertPreviewRestored(page);
+  await enterFullscreen(page);
+  await page.getByRole("button", { name: "Close", exact: true }).click();
+  await page.locator("#detail").waitFor({ state: "hidden" });
+  assert.equal(await page.evaluate(() => document.fullscreenElement), null);
+  await page.locator("#grid .image-button").first().click();
+  assert.equal(
+    await page.locator("#fullscreen").getAttribute("aria-pressed"),
+    "false",
+  );
   await page.getByRole("button", { name: "Next photo" }).click();
   await page.getByRole("button", { name: "Close", exact: true }).click();
   await page.locator("#selection").selectOption("");
@@ -185,6 +289,15 @@ try {
   assert.match(await admin.locator("#count").textContent(), /^188 of 188/);
   await admin.locator("#grid .image-button").first().click();
   await admin.locator('[name="caption"]').fill("Hosted browser check caption");
+  await enterFullscreen(admin);
+  await admin
+    .getByRole("button", { name: "Exit full screen", exact: true })
+    .click();
+  await assertPreviewRestored(admin);
+  assert.equal(
+    await admin.locator('[name="caption"]').inputValue(),
+    "Hosted browser check caption",
+  );
   await admin.getByRole("button", { name: "Save photo details" }).click();
   await admin
     .getByText("Saved to the photo catalog.", { exact: true })
@@ -260,6 +373,26 @@ try {
             [],
             `${theme} photo dialog accessibility`,
           );
+          await enterFullscreen(surface);
+          const fullscreenViolations = await surface.evaluate(async () =>
+            (
+              await axe.run(document, {
+                runOnly: {
+                  type: "tag",
+                  values: ["wcag2a", "wcag2aa", "wcag21aa"],
+                },
+              })
+            ).violations.map(({ id }) => id),
+          );
+          assert.deepEqual(
+            fullscreenViolations,
+            [],
+            `${theme} fullscreen accessibility`,
+          );
+          await surface
+            .getByRole("button", { name: "Exit full screen", exact: true })
+            .click();
+          await assertPreviewRestored(surface);
           await surface
             .getByRole("button", { name: "Close", exact: true })
             .click();
@@ -267,9 +400,66 @@ try {
       }
     }
   }
+  for (const support of ["missing", "rejected"]) {
+    const fallback = await publicContext.newPage();
+    fallback.setDefaultTimeout(15000);
+    fallback.on("pageerror", (error) => errors.push(error.message));
+    await fallback.addInitScript((support) => {
+      Object.defineProperty(Element.prototype, "requestFullscreen", {
+        configurable: true,
+        value:
+          support === "missing"
+            ? undefined
+            : () =>
+                Promise.reject(
+                  new DOMException("Fullscreen denied", "NotAllowedError"),
+                ),
+      });
+    }, support);
+    await fallback.goto(`${origin}/photos/`);
+    await fallback.locator("#grid .image-button").first().click();
+    await fallback.addScriptTag({ content: axe });
+    for (const viewport of support === "missing"
+      ? [
+          { width: 1440, height: 1000 },
+          { width: 390, height: 844 },
+          { width: 320, height: 568 },
+          { width: 844, height: 390 },
+        ]
+      : [{ width: 390, height: 844 }]) {
+      await fallback.setViewportSize(viewport);
+      await enterFullscreen(fallback, false);
+      await fallback.keyboard.press("Tab");
+      assert.equal(
+        await fallback.evaluate(() =>
+          document
+            .querySelector("#preview-viewer")
+            .contains(document.activeElement),
+        ),
+        true,
+      );
+      const violations = await fallback.evaluate(async () =>
+        (
+          await axe.run(document, {
+            runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21aa"] },
+          })
+        ).violations.map(({ id }) => id),
+      );
+      assert.deepEqual(
+        violations,
+        [],
+        `${support} fullscreen at ${viewport.width}px`,
+      );
+      await fallback.keyboard.press("Escape");
+      await assertPreviewRestored(fallback);
+    }
+    await fallback.keyboard.press("Escape");
+    await fallback.locator("#detail").waitFor({ state: "hidden" });
+    await fallback.close();
+  }
   assert.deepEqual(errors, []);
   console.log(
-    "Hosted photo bank passed: public gallery, organizer edits, licensed ZIP download, shared theme preference and accessible light/dark layouts and dialogs at 320/390/1440 px.",
+    "Hosted photo bank passed: public gallery, organizer edits, licensed ZIP, shared themes, native/fallback fullscreen, keyboard exit/navigation, preserved drafts and accessible desktop/mobile previews.",
   );
 } finally {
   await browser?.close();

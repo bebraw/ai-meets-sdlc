@@ -139,6 +139,10 @@ The public gallery is at <https://sdlcai.org/photos/> and opens with the 43
 highlights. Clear the selection filter to explore all published alternates.
 Visitors can search, filter, preview, copy attribution, and download sharing
 copies individually or in a ZIP with credits and catalog metadata.
+The preview's **Full screen** control expands the photograph, using the larger
+sharing image while retaining navigation and photographer credit. Escape or
+**Exit full screen** restores the details panel; **Close** returns to the gallery.
+Browsers without native fullscreen support use a viewport-filling preview.
 
 Organizers curate at <https://sdlcai.org/admin/photos/> using the existing admin
 login. Hosted edits live in D1's `event_photo_reviews` table, over the versioned

@@ -383,6 +383,10 @@
         margin-right: auto;
         overflow-wrap: anywhere;
       }
+      .dialog-bar button {
+        min-height: 44px;
+        flex-shrink: 0;
+      }
       .dialog-content {
         display: grid;
         grid-template-columns: minmax(0, 1.7fr) minmax(280px, 1fr);
@@ -400,6 +404,64 @@
         max-width: 100%;
         max-height: 72dvh;
         object-fit: contain;
+      }
+      .photo-fullscreen {
+        overflow: hidden;
+      }
+      dialog.preview-fullscreen {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100dvh;
+        max-width: none;
+        max-height: none;
+        margin: 0;
+        border: 0;
+        overflow: hidden;
+      }
+      #preview-viewer.preview-fullscreen {
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr) auto;
+        width: 100%;
+        height: 100%;
+        background: var(--paper);
+        color: var(--ink);
+      }
+      .preview-fullscreen .dialog-bar strong {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .preview-fullscreen .dialog-content {
+        display: block;
+        min-height: 0;
+      }
+      .preview-fullscreen .photo-stage {
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        padding: 12px;
+        align-self: stretch;
+      }
+      .preview-fullscreen .photo-stage img {
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+      }
+      .preview-fullscreen .editor {
+        display: none;
+      }
+      .fullscreen-credit {
+        display: none;
+      }
+      .preview-fullscreen .fullscreen-credit {
+        display: block;
+        margin: 0;
+        padding: 10px 14px;
+        border-top: 1px solid var(--line);
+        font-size: 13px;
+        color: var(--muted);
       }
       .editor {
         padding: 22px;
@@ -536,6 +598,16 @@
         }
         .dialog-bar strong {
           font-size: 13px;
+          flex-basis: 100%;
+          margin-right: 0;
+        }
+        .dialog-bar {
+          flex-wrap: wrap;
+          padding: 10px 12px;
+        }
+        .dialog-bar button {
+          padding: 8px 10px;
+          font-size: 14px;
         }
       }
       @media (max-width: 380px) {
@@ -661,75 +733,84 @@
       <a href="/collections.json" download>Download collection definitions</a>
     </footer>
     <dialog id="detail" aria-labelledby="detail-title">
-      <div class="dialog-bar">
-        <strong id="detail-title"></strong
-        ><button id="previous" aria-label="Previous photo">Prev</button
-        ><button id="next" aria-label="Next photo">Next</button
-        ><button id="close">Close</button>
-      </div>
-      <div class="dialog-content">
-        <div class="photo-stage">
-          <img
-            id="preview"
-            alt=""
-            loading="lazy"
-            decoding="async"
-            width="1800"
-            height="1200"
-          />
+      <div id="preview-viewer">
+        <div class="dialog-bar">
+          <strong id="detail-title"></strong
+          ><button id="previous" aria-label="Previous photo">Prev</button
+          ><button id="next" aria-label="Next photo">Next</button
+          ><button
+            id="fullscreen"
+            aria-controls="preview-viewer"
+            aria-pressed="false"
+          >
+            Full screen</button
+          ><button id="close">Close</button>
         </div>
-        <form class="editor" id="editor">
-          <h2>Photo details</h2>
-          <p class="facts" id="facts"></p>
-          <p class="facts" id="programme-context"></p>
-          <p id="talk-context"></p>
-          <p id="confirmed-people" hidden></p>
-          <p class="license" id="credit"></p>
-          <div class="downloads">
-            <a id="original" href="#">Full resolution</a
-            ><a id="share" href="#">Sharing copy</a
-            ><button type="button" id="copy-credit">Copy credit</button>
+        <div class="dialog-content">
+          <div class="photo-stage">
+            <img
+              id="preview"
+              alt=""
+              loading="lazy"
+              decoding="async"
+              width="1800"
+              height="1200"
+            />
           </div>
-          <div class="review-row">
-            <label>Category<select name="category"></select></label
-            ><label>Selection<select name="selection"></select></label>
-          </div>
-          <label
-            >Caption<textarea name="caption" maxlength="2000"></textarea>
-          </label>
-          <label
-            >Alt text<textarea name="altText" maxlength="2000"></textarea>
-          </label>
-          <label
-            >Tags<input name="tags" placeholder="Separate tags with commas"
-          /></label>
-          <details>
-            <summary>Talk and people associations</summary>
-            <div>
-              <fieldset id="talks"><legend>Related talks</legend></fieldset>
-              <fieldset id="people">
-                <legend>Confirmed people in this photo</legend>
-              </fieldset>
-              <label
-                >Association evidence<textarea
-                  name="associationEvidence"
-                  placeholder="For example: visible slide title, or organizer confirmation"
-                  maxlength="2000"
-                ></textarea>
-              </label>
-              <p class="help">
-                A related talk does not confirm who appears in the photograph.
-                Add person tags after confirmation.
-              </p>
+          <form class="editor" id="editor">
+            <h2>Photo details</h2>
+            <p class="facts" id="facts"></p>
+            <p class="facts" id="programme-context"></p>
+            <p id="talk-context"></p>
+            <p id="confirmed-people" hidden></p>
+            <p class="license" id="credit"></p>
+            <div class="downloads">
+              <a id="original" href="#">Full resolution</a
+              ><a id="share" href="#">Sharing copy</a
+              ><button type="button" id="copy-credit">Copy credit</button>
             </div>
-          </details>
-          <label
-            >Review notes<textarea name="notes" maxlength="2000"></textarea>
-          </label>
-          <div class="related" id="related"></div>
-          <p id="edit-status" role="status"></p>
-          <button class="primary" type="submit">Save photo details</button>
-        </form>
+            <div class="review-row">
+              <label>Category<select name="category"></select></label
+              ><label>Selection<select name="selection"></select></label>
+            </div>
+            <label
+              >Caption<textarea name="caption" maxlength="2000"></textarea>
+            </label>
+            <label
+              >Alt text<textarea name="altText" maxlength="2000"></textarea>
+            </label>
+            <label
+              >Tags<input name="tags" placeholder="Separate tags with commas"
+            /></label>
+            <details>
+              <summary>Talk and people associations</summary>
+              <div>
+                <fieldset id="talks"><legend>Related talks</legend></fieldset>
+                <fieldset id="people">
+                  <legend>Confirmed people in this photo</legend>
+                </fieldset>
+                <label
+                  >Association evidence<textarea
+                    name="associationEvidence"
+                    placeholder="For example: visible slide title, or organizer confirmation"
+                    maxlength="2000"
+                  ></textarea>
+                </label>
+                <p class="help">
+                  A related talk does not confirm who appears in the photograph.
+                  Add person tags after confirmation.
+                </p>
+              </div>
+            </details>
+            <label
+              >Review notes<textarea name="notes" maxlength="2000"></textarea>
+            </label>
+            <div class="related" id="related"></div>
+            <p id="edit-status" role="status"></p>
+            <button class="primary" type="submit">Save photo details</button>
+          </form>
+        </div>
+        <p class="fullscreen-credit" id="fullscreen-credit"></p>
       </div>
     </dialog>
     <script type="module">
@@ -771,6 +852,8 @@
         visible = [],
         current,
         dirty = false;
+      let fullscreenPreview = false,
+        nativePreviewFullscreen = false;
       const selected = new Set();
       const status = (message, error = false) => {
         $("#status").textContent = message;
@@ -958,9 +1041,7 @@
         current = photo;
         dirty = false;
         $("#detail-title").textContent = photo.filename;
-        $("#preview").src = `/${photo.images.preview.path}`;
-        $("#preview").width = photo.images.preview.width;
-        $("#preview").height = photo.images.preview.height;
+        updatePreviewImage();
         $("#preview").alt =
           photo.altText ||
           photo.caption ||
@@ -984,6 +1065,7 @@
           : "";
         $("#credit").textContent =
           `Photo: ${photo.photographer} / ${catalog.license}`;
+        $("#fullscreen-credit").textContent = $("#credit").textContent;
         for (const field of [
           "category",
           "selection",
@@ -1023,9 +1105,68 @@
           }
         if (!$("#detail").open) $("#detail").showModal();
       }
-      function close() {
+      function updatePreviewImage() {
+        const image = current.images[fullscreenPreview ? "share" : "preview"];
+        $("#preview").src = `/${image.path}`;
+        $("#preview").width = image.width;
+        $("#preview").height = image.height;
+      }
+      function setFullscreenPreview(active) {
+        fullscreenPreview = active;
+        $("#detail").classList.toggle("preview-fullscreen", active);
+        $("#preview-viewer").classList.toggle("preview-fullscreen", active);
+        document.documentElement.classList.toggle("photo-fullscreen", active);
+        $("#fullscreen").textContent = active
+          ? "Exit full screen"
+          : "Full screen";
+        $("#fullscreen").setAttribute("aria-pressed", String(active));
+        updatePreviewImage();
+      }
+      async function exitFullscreenPreview() {
+        if (document.fullscreenElement === $("#preview-viewer")) {
+          try {
+            await document.exitFullscreen();
+          } catch {
+            // Keep the viewport-sized preview usable if native exit fails.
+            return;
+          }
+        }
+        nativePreviewFullscreen = false;
+        setFullscreenPreview(false);
+        $("#fullscreen").focus();
+      }
+      async function toggleFullscreenPreview() {
+        if (fullscreenPreview) return exitFullscreenPreview();
+        setFullscreenPreview(true);
+        const viewer = $("#preview-viewer");
+        if (document.fullscreenEnabled && viewer.requestFullscreen) {
+          try {
+            // Dialog elements cannot enter native fullscreen; use their viewer.
+            await viewer.requestFullscreen({ navigationUI: "hide" });
+            // Fullscreen events can be delayed until the next animation frame.
+            nativePreviewFullscreen = document.fullscreenElement === viewer;
+            if (!fullscreenPreview || !$("#detail").open)
+              await exitFullscreenPreview();
+          } catch {
+            // The viewport-sized mode also works without native fullscreen.
+          }
+        }
+      }
+      document.addEventListener("fullscreenchange", () => {
+        const active = document.fullscreenElement === $("#preview-viewer");
+        if (nativePreviewFullscreen && !active) {
+          setFullscreenPreview(false);
+          $("#fullscreen").focus();
+        }
+        nativePreviewFullscreen = active;
+      });
+      async function close() {
         if (dirty && !confirm("Discard unsaved changes to this photo?")) return;
         dirty = false;
+        if (fullscreenPreview) {
+          await exitFullscreenPreview();
+          if (fullscreenPreview) return;
+        }
         $("#detail").close();
       }
       function navigate(direction) {
@@ -1033,13 +1174,21 @@
         show(visible[(position + direction + visible.length) % visible.length]);
       }
       $("#close").onclick = close;
+      $("#fullscreen").onclick = toggleFullscreenPreview;
       $("#previous").onclick = () => navigate(-1);
       $("#next").onclick = () => navigate(1);
       $("#detail").addEventListener("cancel", (event) => {
         event.preventDefault();
-        close();
+        if (fullscreenPreview) void exitFullscreenPreview();
+        else void close();
       });
       $("#detail").addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && fullscreenPreview) {
+          event.preventDefault();
+          event.stopPropagation();
+          void exitFullscreenPreview();
+          return;
+        }
         if (["INPUT", "TEXTAREA", "SELECT"].includes(event.target.tagName))
           return;
         if (event.key === "ArrowLeft") {
