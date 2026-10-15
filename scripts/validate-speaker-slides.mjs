@@ -305,6 +305,7 @@ try {
   };
   const firstSlideUrl = "https://slides.example.org/deck?view=public&lang=en";
   await saveLink(firstSlideUrl);
+  await slideLinkForm.waitFor({ state: "hidden" });
   await admin
     .getByText("Slide link published on the schedule.", { exact: true })
     .waitFor();
@@ -323,6 +324,7 @@ try {
   await staleForm.getByLabel("Slide URL (HTTPS)").waitFor();
   const updatedSlideUrl = "https://slides.example.org/updated";
   await saveLink(updatedSlideUrl);
+  await slideLinkForm.waitFor({ state: "hidden" });
   await admin
     .getByText("Slide link published on the schedule.", { exact: true })
     .waitFor();
@@ -381,6 +383,7 @@ try {
   await slideLinkForm
     .getByRole("button", { name: "Save slide link", exact: true })
     .click();
+  await slideLinkForm.waitFor({ state: "hidden" });
   await admin
     .getByText("Slide link published on the schedule.", { exact: true })
     .waitFor();
@@ -398,6 +401,9 @@ try {
   await slideLinkForm
     .getByRole("button", { name: "Save slide link", exact: true })
     .click();
+  // The previous save has the same status text; wait for this refresh to close
+  // the editor before starting another edit in the newly rendered workspace.
+  await slideLinkForm.waitFor({ state: "hidden" });
   await admin
     .getByText("Slide link published on the schedule.", { exact: true })
     .waitFor();
