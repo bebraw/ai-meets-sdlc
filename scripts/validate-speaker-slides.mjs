@@ -345,15 +345,22 @@ try {
   await schedule.reload();
   assert.equal(await externalLink.getAttribute("href"), updatedSlideUrl);
 
-  const index = schedule.locator("#talk-materials");
-  const indexTalk = index.locator(`[data-materials-talk="${talkId}"]`);
-  assert.equal(await index.locator("[data-materials-talk]").count(), 10);
+  const programme = schedule.locator("#day-flow");
+  assert.equal(await programme.locator("[data-schedule-talk]").count(), 10);
+  const talkIds = await schedule
+    .locator("[data-canonical-talk-title]")
+    .evaluateAll((elements) =>
+      elements.map((element) => element.dataset.canonicalTalkId),
+    );
+  assert.equal(talkIds.length, 10);
+  assert.equal(new Set(talkIds).size, 10);
   assert.equal(
-    await indexTalk
+    await schedule
       .getByRole("link", { name: "Slides (PDF)", exact: true })
-      .getAttribute("href"),
-    latestPublicHref,
+      .count(),
+    1,
   );
+  assert.equal(await publicLink.getAttribute("href"), latestPublicHref);
   assert.equal(
     await scheduleTalk.locator("details").getAttribute("open"),
     null,
@@ -380,12 +387,6 @@ try {
   await schedule.reload();
   assert.equal(
     await scheduleTalk
-      .getByRole("link", { name: "Related resource", exact: true })
-      .getAttribute("href"),
-    updatedSlideUrl,
-  );
-  assert.equal(
-    await indexTalk
       .getByRole("link", { name: "Related resource", exact: true })
       .getAttribute("href"),
     updatedSlideUrl,
@@ -417,13 +418,18 @@ try {
     .getByText("Recording link published on the schedule.", { exact: true })
     .waitFor();
   await schedule.reload();
-  for (const target of [scheduleTalk, indexTalk])
-    assert.equal(
-      await target
-        .getByRole("link", { name: "Watch talk", exact: true })
-        .getAttribute("href"),
-      "https://video.example.org/edited-talk",
-    );
+  assert.equal(
+    await schedule
+      .getByRole("link", { name: "Watch talk", exact: true })
+      .count(),
+    1,
+  );
+  assert.equal(
+    await scheduleTalk
+      .getByRole("link", { name: "Watch talk", exact: true })
+      .getAttribute("href"),
+    "https://video.example.org/edited-talk",
+  );
 
   const adminUploadForm = admin.locator(
     `[data-admin-slide-upload="${talkId}"]`,
@@ -532,7 +538,7 @@ try {
           ? "[data-speaker-slide-files]"
           : page === admin
             ? "[data-admin-presentation]"
-            : "#talk-materials, [data-schedule-talk]";
+            : "#day-flow";
       const violations = await page.evaluate(async (selector) => {
         const result = await window.axe.run(selector, {
           runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21aa"] },
@@ -561,8 +567,8 @@ try {
     await presentation.screenshot({
       path: path.join(tmpdir(), `sdlcai-admin-presentation-${width}.png`),
     });
-    await index.screenshot({
-      path: path.join(tmpdir(), `sdlcai-talk-materials-${width}.png`),
+    await scheduleTalk.screenshot({
+      path: path.join(tmpdir(), `sdlcai-programme-talk-${width}.png`),
     });
     const fileMore = adminCard.locator("summary");
     assert.equal(
@@ -778,7 +784,7 @@ try {
   await htmlAdminCard.waitFor({ state: "detached" });
   assert.deepEqual(errors, []);
   console.log(
-    "Speaker and admin uploads, PDF publication, materials index, presentation/resource and recording links, stale edits, replacement, removal, mobile layout and accessibility passed.",
+    "Speaker and admin uploads, PDF publication, single programme listing, presentation/resource and recording links, stale edits, replacement, removal, mobile layout and accessibility passed.",
   );
 } finally {
   await browser?.close();
