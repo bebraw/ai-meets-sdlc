@@ -45,9 +45,14 @@ This mutable file is ignored by Git. Back it up using the **Back up review decis
 download. Reload stale drafts before saving; the server rejects conflicting
 edits instead of replacing a newer decision.
 
-The first visual pass categorizes and captions all 188 photos and shortlists
-30 highlights. Other frames are retained as alternates. Similar-frame groups
-are suggestions to compare, not automatic duplicate deletions.
+The visual review categorizes and captions all 188 photos and shortlists
+42 highlights: two dedicated presentation photos for each of the ten talks,
+two complementary views of each of the three panels, 14 atmospheric photos,
+the group photograph and closing acknowledgements. The atmosphere selection
+covers arrival, the audience and an audience question, foyer conversations,
+refreshments, venue details, poster displays and the afterparty.
+Other frames are retained as alternates. Similar-frame groups are suggestions
+to compare, not automatic duplicate deletions.
 
 Talk associations use visible slide text and stage-sequence context. They do
 not identify people. `depictedSpeakerIds` starts empty and is reserved for
@@ -98,7 +103,7 @@ npm run photos:export -- --collection group-photo --size original
 npm run photos:export -- --collection talk-non-engineers-vibe-code-production
 ```
 
-The default export is the 30-photo highlight collection at sharing size.
+The default export is the 42-photo highlight collection at sharing size.
 Use the review interface for arbitrary selections. ZIP creation streams
 already-compressed JPEGs without recompressing them.
 
@@ -129,7 +134,7 @@ and real review decisions unchanged.
 
 ## Hosting integration
 
-The public gallery is at <https://sdlcai.org/photos/> and opens with the 30
+The public gallery is at <https://sdlcai.org/photos/> and opens with the 42
 highlights. Clear the selection filter to explore all published alternates.
 Visitors can search, filter, preview, copy attribution, and download sharing
 copies individually or in a ZIP with credits and catalog metadata.

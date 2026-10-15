@@ -99,13 +99,13 @@ try {
     .waitFor();
   await assertTheme(page, "dark");
   await page
-    .waitForFunction(() => document.querySelectorAll(".card").length === 30)
+    .waitForFunction(() => document.querySelectorAll(".card").length === 42)
     .catch(async (error) => {
       throw new Error(
         `${error.message}; page errors: ${JSON.stringify(errors)}; console: ${JSON.stringify(consoleErrors)}; state: ${JSON.stringify(await page.evaluate(() => ({ url: location.href, count: document.querySelectorAll(".card").length, status: document.querySelector("#status").textContent, selection: document.querySelector("#selection").value })))}`,
       );
     });
-  assert.match(await page.locator("#count").textContent(), /^30 of 188/);
+  assert.match(await page.locator("#count").textContent(), /^42 of 188/);
   assert.equal(
     await page.locator("#download-size option[value=original]").count(),
     0,
