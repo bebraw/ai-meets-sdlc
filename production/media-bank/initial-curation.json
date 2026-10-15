@@ -2296,10 +2296,17 @@
     },
     "photo-7e3e1d1a47d7761d8b3e": {
       "category": "venue",
-      "caption": "SDLCAI branded refreshments at the seminar.",
-      "altText": "SDLCAI branded refreshments at the seminar.",
-      "tags": ["branding", "refreshments", "detail"],
-      "selection": "alternate",
+      "caption": "SDLCAI Lager cans ready for the seminar afterparty.",
+      "altText": "Black cans labelled SDLCAI Lager arranged on a drinks tray at Marsio.",
+      "tags": [
+        "branding",
+        "refreshments",
+        "detail",
+        "beer",
+        "lager",
+        "afterparty"
+      ],
+      "selection": "selected",
       "relatedTalkIds": [],
       "depictedSpeakerIds": [],
       "associationEvidence": "",

@@ -46,11 +46,12 @@ download. Reload stale drafts before saving; the server rejects conflicting
 edits instead of replacing a newer decision.
 
 The visual review categorizes and captions all 188 photos and shortlists
-42 highlights: two dedicated presentation photos for each of the ten talks,
-two complementary views of each of the three panels, 14 atmospheric photos,
+43 highlights: two dedicated presentation photos for each of the ten talks,
+two complementary views of each of the three panels, 15 atmospheric photos,
 the group photograph and closing acknowledgements. The atmosphere selection
 covers arrival, the audience and an audience question, foyer conversations,
-refreshments, venue details, poster displays and the afterparty.
+refreshments, venue details, poster displays and the afterparty, including
+the branded SDLCAI Lager cans.
 Other frames are retained as alternates. Similar-frame groups are suggestions
 to compare, not automatic duplicate deletions.
 
@@ -103,7 +104,7 @@ npm run photos:export -- --collection group-photo --size original
 npm run photos:export -- --collection talk-non-engineers-vibe-code-production
 ```
 
-The default export is the 42-photo highlight collection at sharing size.
+The default export is the 43-photo highlight collection at sharing size.
 Use the review interface for arbitrary selections. ZIP creation streams
 already-compressed JPEGs without recompressing them.
 
@@ -134,7 +135,7 @@ and real review decisions unchanged.
 
 ## Hosting integration
 
-The public gallery is at <https://sdlcai.org/photos/> and opens with the 42
+The public gallery is at <https://sdlcai.org/photos/> and opens with the 43
 highlights. Clear the selection filter to explore all published alternates.
 Visitors can search, filter, preview, copy attribution, and download sharing
 copies individually or in a ZIP with credits and catalog metadata.

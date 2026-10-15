@@ -74,7 +74,7 @@ try {
   );
   assert.equal(
     catalog.photos.filter((photo) => photo.selection === "selected").length,
-    42,
+    43,
   );
   assert.equal(
     catalog.photos.filter((photo) => photo.category === "uncategorized").length,
@@ -140,12 +140,12 @@ try {
   await page.locator(".card").last().waitFor();
   assert.equal(await page.locator(".card").count(), 188);
   await page.locator("#selection").selectOption("selected");
-  assert.equal(await page.locator(".card").count(), 42);
+  assert.equal(await page.locator(".card").count(), 43);
   await page.reload();
   await page.locator(".card").last().waitFor();
   assert.equal(
     await page.locator(".card").count(),
-    42,
+    43,
     "Collection filters survive reloads",
   );
   await page
