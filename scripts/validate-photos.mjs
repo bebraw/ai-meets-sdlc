@@ -82,6 +82,8 @@ try {
     true,
   );
   assert.equal(await deferred.locator("#tag").isDisabled(), true);
+  assert.equal(await deferred.locator("#person").isVisible(), false);
+  assert.equal(await deferred.locator("#similar").isVisible(), false);
   assert.equal(
     await deferred.locator("#grid").getAttribute("aria-busy"),
     "true",

@@ -1397,6 +1397,10 @@
             link.href = "/api/photos/credits";
           else link.hidden = true;
         }
+        if (!organizer) {
+          $("#similar").closest("label").hidden = true;
+          $("#person").closest("label").hidden = true;
+        }
       }
       const catalogControls = [
         ...document.querySelectorAll(
@@ -1437,10 +1441,9 @@
               caption.id = "public-caption";
               $("#editor h2").after(caption);
               $("#editor h2").textContent = "Image details";
-              if (
-                !catalog.photos.some((photo) => photo.depictedSpeakerIds.length)
-              )
-                $("#person").closest("label").hidden = true;
+              $("#person").closest("label").hidden = !catalog.photos.some(
+                (photo) => photo.depictedSpeakerIds.length,
+              );
             }
           }
           for (const category of catalog.categories) {
