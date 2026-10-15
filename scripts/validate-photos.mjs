@@ -85,14 +85,14 @@ try {
     .getByText("Dark", { exact: true })
     .waitFor();
   await assertTheme(page, "light");
-  await page.goto(`${origin}/schedule/`);
+  await page.getByRole("link", { name: "Schedule", exact: true }).click();
   await page
     .locator("[data-theme-label]")
     .getByText("Dark", { exact: true })
     .waitFor();
   await assertTheme(page, "light");
   await page.getByRole("button", { name: "Toggle dark mode" }).click();
-  await page.goto(`${origin}/photos/`);
+  await page.getByRole("link", { name: "Photos", exact: true }).first().click();
   await page
     .locator("[data-theme-label]")
     .getByText("Light", { exact: true })

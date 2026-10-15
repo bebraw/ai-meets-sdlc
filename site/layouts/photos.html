@@ -29,6 +29,9 @@
       })();
     </script>
     <style>
+      @view-transition {
+        navigation: auto;
+      }
       @font-face {
         font-family: Headline;
         src: url("/assets/fonts/FinlandicaHeadline-Black.woff2");
@@ -543,6 +546,17 @@
         }
         .dialog-bar {
           flex-wrap: wrap;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        ::view-transition-group(*),
+        ::view-transition-old(*),
+        ::view-transition-new(*) {
+          animation-duration: 0s !important;
+          animation-delay: 0s !important;
+        }
+        .image-button img {
+          transition: none;
         }
       }
     </style>
