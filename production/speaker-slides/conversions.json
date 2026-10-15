@@ -1,0 +1,50 @@
+{
+  "converted_on": "2026-10-15",
+  "bucket": "ai-meets-sdlc-speaker-uploads",
+  "files": [
+    {
+      "speaker_id": "joongi-shin",
+      "talk_id": "joongi-shin-ui-perspective",
+      "slide_id": "d18b4c6d-4204-474b-88f9-0ffab2c9abf3",
+      "r2_key": "speaker-slides/joongi-shin-ui-perspective/d18b4c6d-4204-474b-88f9-0ffab2c9abf3.pdf",
+      "filename": "joongi-shin.pdf",
+      "byte_size": 8659226,
+      "content_hash": "f0e0d9c57fd71ad739aaefab95b27bba65a6d0942fc7c4459e551d1714ebc17f",
+      "page_count": 51,
+      "source_format": "powerpoint"
+    },
+    {
+      "speaker_id": "jussi-hacklin",
+      "talk_id": "driving-ai-adoption-regulated-environment",
+      "slide_id": "0b20a9fb-eb1c-42c3-b080-034d9ba4d98e",
+      "r2_key": "speaker-slides/driving-ai-adoption-regulated-environment/0b20a9fb-eb1c-42c3-b080-034d9ba4d98e.pdf",
+      "filename": "jussi-hacklin.pdf",
+      "byte_size": 1782973,
+      "content_hash": "6dd4bbb03b76524570540dbd4942a82a12825f21530b8cd3405c0dd8f03a4c5a",
+      "page_count": 8,
+      "source_format": "powerpoint"
+    },
+    {
+      "speaker_id": "mo-khazali",
+      "talk_id": "mo-khazali-industry-perspective",
+      "slide_id": "f2ba9ef0-a8bd-4062-b4dc-5c779e707405",
+      "r2_key": "speaker-slides/mo-khazali-industry-perspective/f2ba9ef0-a8bd-4062-b4dc-5c779e707405.pdf",
+      "filename": "mo-khazali.pdf",
+      "byte_size": 35627112,
+      "content_hash": "3f1eff59c2ef5713c772e49493907220d2eb3655d24e78290b025780f752b64f",
+      "page_count": 161,
+      "source_format": "web"
+    },
+    {
+      "speaker_id": "muhammad-waseem",
+      "talk_id": "genai-software-engineering",
+      "slide_id": "f491d4b2-18a5-4208-a7b2-19b48c192193",
+      "r2_key": "speaker-slides/genai-software-engineering/f491d4b2-18a5-4208-a7b2-19b48c192193.pdf",
+      "filename": "muhammad-waseem.pdf",
+      "byte_size": 25841869,
+      "content_hash": "c1c81b37aa4cfb63a8f0901d793421c278bc5e02710b848f74a9d7fbb141e2a3",
+      "page_count": 29,
+      "source_format": "powerpoint"
+    }
+  ]
+}

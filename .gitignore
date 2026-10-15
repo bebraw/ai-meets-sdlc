@@ -15,3 +15,6 @@ build/
 /production/intro/generated/
 /production/intro/music/*.mp3
 /scripts/intro/__pycache__/
+
+# Private speaker decks are stored in R2 and published through the admin workspace.
+/output/pdf/speaker-slides/
