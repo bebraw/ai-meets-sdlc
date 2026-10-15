@@ -451,11 +451,11 @@ test("organizers can publish, update and remove external slide links per public 
   assert.equal((await save({ url: `  ${slideUrl}  ` })).status, 200);
   const normalizedUrl = new URL(slideUrl).toString();
   assert.deepEqual((await getSpeaker()).slide_links, [
-    { talk_id: talkId, url: normalizedUrl },
+    { talk_id: talkId, url: normalizedUrl, kind: "presentation" },
   ]);
   const html = await scheduleHtml();
   assert.ok(html.includes(`href="${normalizedUrl.replaceAll("&", "&amp;")}"`));
-  assert.match(html, />Slides<\/a>/u);
+  assert.match(html, />Presentation<\/a>/u);
   assert.equal((await save()).status, 409);
   assert.equal(
     (await save({ previous_url: "https://stale.example.org/", url: "" }))
@@ -479,7 +479,7 @@ test("organizers can publish, update and remove external slide links per public 
   assert.ok((await scheduleHtml()).includes(updatedUrl));
   assert.equal((await save({ previous_url: updatedUrl, url: "" })).status, 200);
   assert.deepEqual((await getSpeaker()).slide_links, []);
-  assert.doesNotMatch(await scheduleHtml(), />Slides<\/a>/u);
+  assert.doesNotMatch(await scheduleHtml(), />Presentation<\/a>/u);
   assert.equal((await save({ previous_url: updatedUrl })).status, 409);
   assert.equal((await save()).status, 200);
   const events = await runSql(

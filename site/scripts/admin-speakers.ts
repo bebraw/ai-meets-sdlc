@@ -6,6 +6,7 @@ import {
   slideFormatLabel,
   type SpeakerSlideFile,
   type SpeakerSlideLink,
+  type SpeakerRecordingLink,
 } from "./speaker-slides-model.ts";
 
 interface AdminSpeakerContent {
@@ -92,6 +93,7 @@ interface AdminSpeakerItem {
   videos: AdminSpeakerVideo[];
   slides: SpeakerSlideFile[];
   slide_links: SpeakerSlideLink[];
+  recording_links: SpeakerRecordingLink[];
 }
 
 interface AdminSpeakerVideo {
@@ -1402,7 +1404,11 @@ function renderSlideFiles(speaker: AdminSpeakerItem): HTMLElement {
     for (const file of files)
       group.appendChild(renderSlideFile(speaker, file, upload));
     const link = speaker.workspace_only ? null : renderSlideLink(speaker, talk);
+    const recording = speaker.workspace_only
+      ? null
+      : renderSlideLink(speaker, talk, "recording");
     if (link?.row) group.appendChild(link.row);
+    if (recording?.row) group.appendChild(recording.row);
     const actions = node("div", "flex flex-wrap gap-4 pt-1");
     const addFile = slideAction("Upload file");
     addFile.dataset.adminUploadToggle = "";
@@ -1417,9 +1423,17 @@ function renderSlideFiles(speaker: AdminSpeakerItem): HTMLElement {
       addLink.addEventListener("click", link.open);
       actions.appendChild(addLink);
     }
+    if (recording && !recording.row) {
+      const addRecording = slideAction("Add recording link");
+      addRecording.setAttribute("aria-controls", recording.form.id);
+      addRecording.setAttribute("aria-expanded", "false");
+      addRecording.addEventListener("click", recording.open);
+      actions.appendChild(addRecording);
+    }
     group.appendChild(actions);
     group.appendChild(upload.form);
     if (link) group.appendChild(link.form);
+    if (recording) group.appendChild(recording.form);
     section.appendChild(group);
   }
   return section;
@@ -1777,19 +1791,29 @@ function renderAdminSlideUpload(
 function renderSlideLink(
   speaker: AdminSpeakerItem,
   talk: AdminSpeakerContent["talks"][number],
+  type: "slide" | "recording" = "slide",
 ): { form: HTMLFormElement; row: HTMLElement | null; open: () => void } {
-  const saved = speaker.slide_links.find(({ talk_id }) => talk_id === talk.id);
+  const recording = type === "recording";
+  const title = recording ? "Recording" : "Slide";
+  const savedSlide = speaker.slide_links.find(
+    ({ talk_id }) => talk_id === talk.id,
+  );
+  const saved = recording
+    ? speaker.recording_links.find(({ talk_id }) => talk_id === talk.id)
+    : savedSlide;
+  const savedKind = savedSlide?.kind ?? "presentation";
   const form = node(
     "form",
     "grid min-w-0 gap-3 border-l-2 border-paper/40 py-3 pl-4",
   );
-  form.dataset.adminSlideLink = talk.id;
-  form.id = `slide-link-${speaker.speaker_id}-${talk.id}`;
+  if (recording) form.dataset.adminRecordingLink = talk.id;
+  else form.dataset.adminSlideLink = talk.id;
+  form.id = `${type}-link-${speaker.speaker_id}-${talk.id}`;
   form.hidden = true;
   const label = node(
     "label",
     "grid min-w-0 gap-2 text-sm font-bold",
-    "Slide URL (HTTPS)",
+    `${title} URL (HTTPS)`,
   );
   const input = node(
     "input",
@@ -1802,6 +1826,29 @@ function renderSlideLink(
   input.value = saved?.url ?? "";
   label.appendChild(input);
   form.appendChild(label);
+  const kind = node(
+    "select",
+    "w-full border border-paper/40 bg-ink p-2 text-sm font-normal text-paper",
+  );
+  for (const [value, text] of [
+    ["presentation", "Presentation"],
+    ["resource", "Related resource"],
+  ] as const) {
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = text;
+    kind.appendChild(option);
+  }
+  kind.value = savedKind;
+  if (!recording) {
+    const field = node("div", "grid gap-2");
+    const kindLabel = node("label", "text-sm font-bold", "Link type");
+    kind.id = `${form.id}-kind`;
+    kindLabel.htmlFor = kind.id;
+    field.appendChild(kindLabel);
+    field.appendChild(kind);
+    form.appendChild(field);
+  }
   form.appendChild(
     node(
       "p",
@@ -1810,7 +1857,7 @@ function renderSlideLink(
     ),
   );
   const actions = node("div", "flex flex-wrap items-center gap-3");
-  const save = slideAction("Save slide link", true);
+  const save = slideAction(`Save ${type} link`, true);
   save.type = "submit";
   const cancel = slideAction("Cancel");
   actions.appendChild(save);
@@ -1820,10 +1867,11 @@ function renderSlideLink(
   form.appendChild(status);
   const rowStatus = slideStatus();
   const remove = slideAction("Remove link");
-  remove.setAttribute("aria-label", "Remove slide link");
+  remove.setAttribute("aria-label", `Remove ${type} link`);
   let opener: HTMLElement | null = null;
   cancel.addEventListener("click", () => {
     input.value = saved?.url ?? "";
+    kind.value = savedKind;
     form.hidden = true;
     setSlideStatus(status, "");
     opener?.setAttribute("aria-expanded", "false");
@@ -1840,14 +1888,14 @@ function renderSlideLink(
   };
   const submit = async (url: string) => {
     const feedback = form.hidden ? rowStatus : status;
-    for (const control of [save, remove, cancel, input])
+    for (const control of [save, remove, cancel, input, kind])
       control.disabled = true;
     setSlideStatus(
       feedback,
-      url ? "Saving slide link…" : "Removing slide link…",
+      url ? `Saving ${type} link…` : `Removing ${type} link…`,
     );
     const response = await requestJson<{ error?: string; message?: string }>(
-      "/api/admin/speakers/slides/links",
+      `/api/admin/speakers/slides/${recording ? "recordings" : "links"}`,
       {
         method: "POST",
         headers: {
@@ -1859,21 +1907,22 @@ function renderSlideLink(
           talk_id: talk.id,
           url,
           previous_url: saved?.url ?? null,
+          ...(!recording ? { kind: kind.value, previous_kind: savedKind } : {}),
         }),
       },
     );
-    for (const control of [save, remove, cancel, input])
+    for (const control of [save, remove, cancel, input, kind])
       control.disabled = false;
     if (!response.ok) {
       setSlideStatus(
         feedback,
-        response.data.error ?? "Slide link could not be saved.",
+        response.data.error ?? `${title} link could not be saved.`,
         true,
       );
       return;
     }
     await loadSpeakers();
-    setStatus(response.data.message ?? "Slide link saved.");
+    setStatus(response.data.message ?? `${title} link saved.`);
   };
   form.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -1885,10 +1934,21 @@ function renderSlideLink(
       "div",
       "grid min-w-0 gap-2 border-b border-paper/20 py-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center",
     );
-    row.dataset.adminSlideLinkRow = talk.id;
+    if (recording) row.dataset.adminRecordingLinkRow = talk.id;
+    else row.dataset.adminSlideLinkRow = talk.id;
     const copy = node("div", "grid min-w-0 gap-1");
     const heading = node("div", "flex flex-wrap items-center gap-3");
-    heading.appendChild(node("strong", "text-sm", "Public slide link"));
+    heading.appendChild(
+      node(
+        "strong",
+        "text-sm",
+        recording
+          ? "Talk recording"
+          : savedKind === "resource"
+            ? "Related resource"
+            : "Public slide link",
+      ),
+    );
     heading.appendChild(slideVisibility("Published"));
     copy.appendChild(heading);
     const address = node("p", "truncate text-xs text-paper/60", saved.url);
@@ -1902,15 +1962,15 @@ function renderSlideLink(
       "Open",
     );
     visit.href = saved.url;
-    visit.setAttribute("aria-label", "Open slide link");
+    visit.setAttribute("aria-label", `Open ${type} link`);
     rowActions.appendChild(visit);
     const edit = slideAction("Edit");
-    edit.setAttribute("aria-label", "Edit public slide link");
+    edit.setAttribute("aria-label", `Edit public ${type} link`);
     edit.setAttribute("aria-controls", form.id);
     edit.setAttribute("aria-expanded", "false");
     edit.addEventListener("click", open);
     rowActions.appendChild(edit);
-    const more = slideMoreActions("public slide link");
+    const more = slideMoreActions(`public ${type} link`);
     remove.addEventListener("click", () => {
       more.details.open = false;
       void submit("");

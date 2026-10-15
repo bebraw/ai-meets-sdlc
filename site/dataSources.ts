@@ -524,6 +524,7 @@ function getScheduleItems(speakersById) {
 
       return {
         ...talk,
+        scheduleHref: `#${talk.id}`,
         abstractHtml: raw(renderDescriptionMarkdown(talk.abstract)),
         speakers: talkSpeakers,
       };

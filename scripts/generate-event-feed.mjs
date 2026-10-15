@@ -41,14 +41,11 @@ const topics = schedule.items
   }));
 const sessions = schedule.items.flatMap((item) =>
   (item.talks ?? []).map((talk) => {
-    const title = scheduleNodes.find(
+    const destination = scheduleNodes.find(
       (node) =>
-        attr(node, "data-canonical-talk-id") === talk.id &&
-        attr(node, "data-canonical-talk-title") !== undefined,
+        attr(node, "data-schedule-talk") === talk.id &&
+        attr(node, "id") === talk.id,
     );
-    let destination = title;
-    while (destination && !attr(destination, "id"))
-      destination = destination.parentNode;
     if (!destination)
       throw new Error(`No published destination for ${talk.id}`);
     return {

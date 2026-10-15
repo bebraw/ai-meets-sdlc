@@ -1,0 +1,71 @@
+<section id="talk-materials" class="border-b border-ink">
+  <div class="mx-auto max-w-7xl px-5 py-12 md:px-8 md:py-16">
+    <div class="mb-8 grid gap-3">
+      <p class="font-headline text-sm font-black uppercase text-muted">
+        From the seminar
+      </p>
+      <SectionHeading
+        &title="(id 'Talks & materials')"
+        &href="(id '#talk-materials')"
+        &ariaLabel="(id 'Link to talks and materials')"
+        &className="(id 'flex items-start gap-3 font-headline text-4xl font-black uppercase leading-none md:text-6xl')"
+        &anchorClassName="(id 'mt-[0.06em] inline-flex min-h-6 min-w-6 shrink-0 items-center justify-center text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
+      ></SectionHeading>
+      <p class="max-w-3xl leading-7 text-muted">
+        Slides and resources from the seminar. Recordings will be added as they
+        become available.
+      </p>
+    </div>
+    <div class="border-t border-ink">
+      <noop &foreach="scheduleItems as scheduleItem">
+        <ul
+          &visibleIf="scheduleItem.talks"
+          &data-materials-group="scheduleItem.id"
+          data-schedule-kind="materials"
+          class="list-none"
+        >
+          <noop &foreach="scheduleItem.talks as talkItem">
+            <li
+              &data-materials-talk="talkItem.id"
+              class="grid min-w-0 gap-3 border-b border-ink py-5 md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:gap-6"
+            >
+              <div class="grid min-w-0 gap-2">
+                <div
+                  class="flex flex-wrap gap-x-4 gap-y-1 text-sm font-bold text-muted"
+                >
+                  <noop &foreach="talkItem.speakers as speakerItem">
+                    <span
+                      &children="speakerItem.displayName"
+                      &data-canonical-speaker-id="speakerItem.id"
+                      data-canonical-speaker-name
+                    ></span>
+                  </noop>
+                </div>
+                <a
+                  &href="talkItem.scheduleHref"
+                  &children="talkItem.title"
+                  &data-canonical-talk-id="talkItem.id"
+                  data-canonical-talk-title
+                  class="font-headline text-xl font-black uppercase leading-snug hover:underline md:text-2xl"
+                ></a>
+              </div>
+              <div
+                class="flex flex-wrap gap-3 md:max-w-sm md:justify-end"
+                &data-canonical-talk-id="talkItem.id"
+                data-talk-materials
+                hidden
+              ></div>
+              <p
+                &data-canonical-talk-id="talkItem.id"
+                data-talk-materials-pending
+                class="text-sm text-muted"
+              >
+                Materials forthcoming
+              </p>
+            </li>
+          </noop>
+        </ul>
+      </noop>
+    </div>
+  </div>
+</section>

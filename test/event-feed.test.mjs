@@ -31,6 +31,8 @@ test("built feed resolves real fragments and excludes private content", async ()
     "details-pending",
   );
   assert.ok(seed.sessions.every((session) => !("startDate" in session)));
+  for (const session of seed.sessions)
+    assert.equal(new URL(session.url).hash, `#${session.id}`);
 });
 
 test("validation rejects broken fragments, duplicate IDs, bad references and invalid schema", async () => {
@@ -96,8 +98,8 @@ test("a changed destination is checked against the element, not HTTP success", a
     await writeFile(
       filename,
       (await readFile(filename, "utf8")).replace(
-        `id="${previousAnchor}"`,
-        'id="new-anchor"',
+        ` id="${previousAnchor}"`,
+        ' id="new-anchor"',
       ),
     );
     await validateFeed(feed, schema, directory);

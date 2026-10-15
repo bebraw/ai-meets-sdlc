@@ -7,6 +7,7 @@ import {
   type SlideFormat,
   type SpeakerSlideFile,
   type SpeakerSlideLink,
+  type SpeakerRecordingLink,
   type PublishedSlideLink,
 } from "../site/scripts/speaker-slides-model.ts";
 import {
@@ -107,7 +108,11 @@ export async function handleAdminSpeakerSlidesRequest(
   }
   if (url.pathname === "/api/admin/speakers/slides/links") {
     if (request.method !== "POST") return methodNotAllowed("POST");
-    return saveAdminSlideLink(request, env);
+    return saveAdminTalkLink(request, env, "slide");
+  }
+  if (url.pathname === "/api/admin/speakers/slides/recordings") {
+    if (request.method !== "POST") return methodNotAllowed("POST");
+    return saveAdminTalkLink(request, env, "recording");
   }
   if (url.pathname === "/api/admin/speakers/slides/publication") {
     if (request.method !== "POST") return methodNotAllowed("POST");
@@ -187,13 +192,16 @@ async function removeSlide(env: Env, slideId: string): Promise<Response> {
 export async function readPublishedSlideLinks(
   env: Env,
 ): Promise<Map<string, PublishedSlideLink[]>> {
-  const [files, links] = await Promise.all([
+  const [files, links, recordings] = await Promise.all([
     env.INTERESTS.prepare(
       `SELECT * FROM speaker_slides
        WHERE format = 'pdf' AND may_publish = 1 AND published_at IS NOT NULL`,
     ).all<SlideRow>(),
     env.INTERESTS.prepare("SELECT * FROM speaker_slide_links").all<
       SpeakerSlideLink & { speaker_id: string }
+    >(),
+    env.INTERESTS.prepare("SELECT * FROM speaker_recording_links").all<
+      SpeakerRecordingLink & { speaker_id: string }
     >(),
   ]);
   const published = new Map<string, PublishedSlideLink[]>();
@@ -210,7 +218,20 @@ export async function readPublishedSlideLinks(
     )
       continue;
     const materials = published.get(link.talk_id) ?? [];
-    materials.push({ url: link.url, label: "Slides" });
+    materials.push({
+      url: link.url,
+      label: link.kind === "resource" ? "Related resource" : "Presentation",
+    });
+    published.set(link.talk_id, materials);
+  }
+  for (const link of recordings.results) {
+    if (
+      workspaceOnlySpeakerIds.has(link.speaker_id) ||
+      !parseHttpsUrl(link.url)
+    )
+      continue;
+    const materials = published.get(link.talk_id) ?? [];
+    materials.push({ url: link.url, label: "Watch talk" });
     published.set(link.talk_id, materials);
   }
   return published;
@@ -220,15 +241,27 @@ export async function readAdminSpeakerSlideLinks(
   env: Env,
 ): Promise<Map<string, SpeakerSlideLink>> {
   const result = await env.INTERESTS.prepare(
-    "SELECT talk_id, url FROM speaker_slide_links ORDER BY talk_id",
+    "SELECT talk_id, url, kind FROM speaker_slide_links ORDER BY talk_id",
   ).all<SpeakerSlideLink>();
   return new Map(result.results.map((link) => [link.talk_id, link]));
 }
 
-async function saveAdminSlideLink(
+export async function readAdminSpeakerRecordingLinks(
+  env: Env,
+): Promise<Map<string, SpeakerRecordingLink>> {
+  const result = await env.INTERESTS.prepare(
+    "SELECT talk_id, url FROM speaker_recording_links ORDER BY talk_id",
+  ).all<SpeakerRecordingLink>();
+  return new Map(result.results.map((link) => [link.talk_id, link]));
+}
+
+async function saveAdminTalkLink(
   request: Request,
   env: Env,
+  type: "slide" | "recording",
 ): Promise<Response> {
+  const table =
+    type === "slide" ? "speaker_slide_links" : "speaker_recording_links";
   const body = await readJsonWithinLimit(request, 16 * 1024);
   if (body instanceof Response) return body;
   if (
@@ -238,7 +271,18 @@ async function saveAdminSlideLink(
     typeof body.url !== "string" ||
     !(body.previous_url === null || typeof body.previous_url === "string")
   )
-    return json({ error: "Submit the slide link form again." }, 400);
+    return json({ error: `Submit the ${type} link form again.` }, 400);
+
+  const kind = body.kind ?? "presentation";
+  const previousKind = body.previous_kind ?? "presentation";
+  if (
+    type === "slide" &&
+    (typeof kind !== "string" ||
+      typeof previousKind !== "string" ||
+      !["presentation", "resource"].includes(kind) ||
+      !["presentation", "resource"].includes(previousKind))
+  )
+    return json({ error: "Choose a presentation or related resource." }, 400);
 
   const canonical = await readCanonicalSpeaker(env, body.speaker_id);
   if (
@@ -255,43 +299,57 @@ async function saveAdminSlideLink(
     (!parsed || value.length > 2048 || /[\x00-\x1f\x7f]/u.test(value))
   )
     return json(
-      { error: "Enter a complete HTTPS slide URL, up to 2,048 characters." },
+      { error: `Enter a complete HTTPS ${type} URL, up to 2,048 characters.` },
       400,
     );
 
   const linkUrl = parsed?.toString() ?? "";
   const updatedAt = new Date().toISOString();
+  const kindCondition = type === "slide" ? " AND kind = ?3" : "";
+  const previousValues =
+    type === "slide"
+      ? [body.talk_id, body.previous_url, previousKind]
+      : [body.talk_id, body.previous_url];
   // Compare the saved URL in the write itself so concurrent tabs cannot silently
   // replace or remove a link that has changed since their form was loaded.
   const statement = !linkUrl
     ? env.INTERESTS.prepare(
-        "DELETE FROM speaker_slide_links WHERE talk_id = ?1 AND url = ?2 RETURNING talk_id",
-      ).bind(body.talk_id, body.previous_url)
+        `DELETE FROM ${table} WHERE talk_id = ?1 AND url = ?2${kindCondition} RETURNING talk_id`,
+      ).bind(...previousValues)
     : body.previous_url === null
       ? env.INTERESTS.prepare(
-          `INSERT INTO speaker_slide_links (talk_id, speaker_id, url, updated_at)
-           VALUES (?1, ?2, ?3, ?4)
+          `INSERT INTO ${table} (talk_id, speaker_id, url, updated_at${type === "slide" ? ", kind" : ""})
+           VALUES (?1, ?2, ?3, ?4${type === "slide" ? ", ?5" : ""})
            ON CONFLICT(talk_id) DO NOTHING RETURNING talk_id`,
-        ).bind(body.talk_id, body.speaker_id, linkUrl, updatedAt)
+        ).bind(
+          body.talk_id,
+          body.speaker_id,
+          linkUrl,
+          updatedAt,
+          ...(type === "slide" ? [kind] : []),
+        )
       : env.INTERESTS.prepare(
-          `UPDATE speaker_slide_links SET speaker_id = ?2, url = ?3, updated_at = ?4
-           WHERE talk_id = ?1 AND url = ?5 RETURNING talk_id`,
+          `UPDATE ${table} SET speaker_id = ?2, url = ?3, updated_at = ?4${type === "slide" ? ", kind = ?6" : ""}
+           WHERE talk_id = ?1 AND url = ?5${type === "slide" ? " AND kind = ?7" : ""} RETURNING talk_id`,
         ).bind(
           body.talk_id,
           body.speaker_id,
           linkUrl,
           updatedAt,
           body.previous_url,
+          ...(type === "slide" ? [kind, previousKind] : []),
         );
   if (!(await statement.first()))
     return json(
-      { error: "The slide link changed. Reload speakers before saving again." },
+      {
+        error: `The ${type} link changed. Reload speakers before saving again.`,
+      },
       409,
     );
   return json({
     message: linkUrl
-      ? "Slide link published on the schedule."
-      : "Slide link removed from the schedule.",
+      ? `${type === "slide" ? "Slide" : "Recording"} link published on the schedule.`
+      : `${type === "slide" ? "Slide" : "Recording"} link removed from the schedule.`,
   });
 }
 

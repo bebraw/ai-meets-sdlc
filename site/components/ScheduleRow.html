@@ -53,83 +53,103 @@
               &data-canonical-talk-id="talkItem.id"
               data-canonical-talk-title
             ></h4>
-            <div
-              class="leading-7 text-muted [&_a]:font-bold [&_a]:text-ink [&_a]:underline [&_a]:underline-offset-4 [&_li]:mb-2 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mb-4 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-6"
-              &children="talkItem.abstractHtml"
-              &data-canonical-talk-id="talkItem.id"
-              data-canonical-talk-abstract
-            ></div>
-            <noop &foreach="talkItem.speakers as speakerItem">
-              <div class="border-t border-ink pt-4">
+            <div class="flex flex-wrap gap-x-4 gap-y-1">
+              <noop &foreach="talkItem.speakers as speakerItem">
                 <a
                   &href="speakerItem.speakerHref"
-                  class="font-headline text-2xl font-black uppercase hover:underline"
+                  class="font-bold hover:underline"
                   &children="speakerItem.displayName"
                   &data-canonical-speaker-id="speakerItem.id"
                   data-canonical-speaker-name
                 ></a>
-                <p
-                  class="mt-1 font-bold leading-6 text-muted"
-                  &children="speakerItem.role"
-                  &data-canonical-speaker-id="speakerItem.id"
-                  data-canonical-speaker-role
-                ></p>
-                <div
-                  class="mt-3 leading-7 text-muted [&_a]:font-bold [&_a]:text-ink [&_a]:underline [&_a]:underline-offset-4 [&_li]:mb-2 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mb-4 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-6"
-                  &children="speakerItem.bioHtml"
-                  &data-canonical-speaker-id="speakerItem.id"
-                  data-canonical-speaker-bio
-                ></div>
-                <div
-                  class="mt-4 flex flex-wrap gap-3"
-                  &data-canonical-speaker-id="speakerItem.id"
-                  data-canonical-speaker-socials
-                >
-                  <a
-                    &visibleIf="speakerItem.website"
-                    &href="speakerItem.website"
-                    class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-                    >Website</a
-                  >
-                  <a
-                    &visibleIf="speakerItem.linkedin"
-                    &href="speakerItem.linkedin"
-                    class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-                    >LinkedIn</a
-                  >
-                  <a
-                    &visibleIf="speakerItem.scholar"
-                    &href="speakerItem.scholar"
-                    class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-                    >Scholar</a
-                  >
-                  <a
-                    &visibleIf="speakerItem.github"
-                    &href="speakerItem.github"
-                    class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-                    >GitHub</a
-                  >
-                  <a
-                    &visibleIf="speakerItem.devto"
-                    &href="speakerItem.devto"
-                    class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-                    >DEV</a
-                  >
-                  <a
-                    &visibleIf="speakerItem.x"
-                    &href="speakerItem.x"
-                    class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-                    >X</a
-                  >
-                </div>
-              </div>
-            </noop>
+              </noop>
+            </div>
             <div
               class="flex flex-wrap gap-3"
               &data-canonical-talk-id="talkItem.id"
               data-talk-materials
               hidden
             ></div>
+            <details class="group min-w-0">
+              <summary
+                class="w-fit cursor-pointer py-2 text-sm font-bold underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+              >
+                About this talk
+              </summary>
+              <div class="mt-3 grid gap-4">
+                <div
+                  class="leading-7 text-muted [&_a]:font-bold [&_a]:text-ink [&_a]:underline [&_a]:underline-offset-4 [&_li]:mb-2 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mb-4 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-6"
+                  &children="talkItem.abstractHtml"
+                  &data-canonical-talk-id="talkItem.id"
+                  data-canonical-talk-abstract
+                ></div>
+                <noop &foreach="talkItem.speakers as speakerItem">
+                  <div class="border-t border-ink pt-4">
+                    <a
+                      &href="speakerItem.speakerHref"
+                      class="font-headline text-2xl font-black uppercase hover:underline"
+                      &children="speakerItem.displayName"
+                      &data-canonical-speaker-id="speakerItem.id"
+                      data-canonical-speaker-name
+                    ></a>
+                    <p
+                      class="mt-1 font-bold leading-6 text-muted"
+                      &children="speakerItem.role"
+                      &data-canonical-speaker-id="speakerItem.id"
+                      data-canonical-speaker-role
+                    ></p>
+                    <div
+                      class="mt-3 leading-7 text-muted [&_a]:font-bold [&_a]:text-ink [&_a]:underline [&_a]:underline-offset-4 [&_li]:mb-2 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mb-4 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-6"
+                      &children="speakerItem.bioHtml"
+                      &data-canonical-speaker-id="speakerItem.id"
+                      data-canonical-speaker-bio
+                    ></div>
+                    <div
+                      class="mt-4 flex flex-wrap gap-3"
+                      &data-canonical-speaker-id="speakerItem.id"
+                      data-canonical-speaker-socials
+                    >
+                      <a
+                        &visibleIf="speakerItem.website"
+                        &href="speakerItem.website"
+                        class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+                        >Website</a
+                      >
+                      <a
+                        &visibleIf="speakerItem.linkedin"
+                        &href="speakerItem.linkedin"
+                        class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+                        >LinkedIn</a
+                      >
+                      <a
+                        &visibleIf="speakerItem.scholar"
+                        &href="speakerItem.scholar"
+                        class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+                        >Scholar</a
+                      >
+                      <a
+                        &visibleIf="speakerItem.github"
+                        &href="speakerItem.github"
+                        class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+                        >GitHub</a
+                      >
+                      <a
+                        &visibleIf="speakerItem.devto"
+                        &href="speakerItem.devto"
+                        class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+                        >DEV</a
+                      >
+                      <a
+                        &visibleIf="speakerItem.x"
+                        &href="speakerItem.x"
+                        class="border border-ink px-3 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+                        >X</a
+                      >
+                    </div>
+                  </div>
+                </noop>
+              </div>
+            </details>
           </div>
         </article>
       </noop>

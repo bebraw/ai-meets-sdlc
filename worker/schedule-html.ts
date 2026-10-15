@@ -25,20 +25,24 @@ export async function applyScheduleToResponse(
     scheduleSessions.map((session) => [session.id, session]),
   );
 
-  for (const kind of ["web", "screen", "cards", "speakers"]) {
+  for (const kind of ["web", "screen", "cards", "speakers", "materials"]) {
+    const talkAttribute =
+      kind === "materials" ? "data-materials-talk" : "data-schedule-talk";
+    const groupAttribute =
+      kind === "materials" ? "data-materials-group" : "data-schedule-group";
     const containers = elements.filter(
       (node) => attr(node, "data-schedule-kind") === kind,
     );
     const fragments = new Map<string, HtmlElement[]>();
     for (const container of containers) {
       for (const node of walk(container)) {
-        const id = attr(node, "data-schedule-talk");
+        const id = attr(node, talkAttribute);
         if (id) fragments.set(id, [...(fragments.get(id) ?? []), node]);
       }
     }
     for (const container of containers) {
       const group = order.groups.find(
-        (item) => item.id === attr(container, "data-schedule-group"),
+        (item) => item.id === attr(container, groupAttribute),
       );
       if (!group) continue;
       const children = group.talkIds.flatMap((id) => {

@@ -1,0 +1,87 @@
+{
+  "approved_on": "2026-10-15",
+  "approval": "Organizer approved all eight PDFs for public sharing.",
+  "published_at": "2026-10-15T10:03:53.307Z",
+  "files": [
+    {
+      "slide_id": "d6658bed-6f24-4668-b331-b70df7bd7f55",
+      "speaker_id": "jenni-kylmakoski",
+      "talk_id": "jenni-kylmakoski-industry-perspective",
+      "filename": "SDLCAI - Why Leaders Should Use AI Themselves and Eat Their Own Dog Food_ .pdf",
+      "byte_size": 2259879,
+      "content_hash": "a820fb549afbdea8386fba355c26427095f9e92c12ece454ae5d528273453582",
+      "r2_key": "speaker-slides/jenni-kylmakoski-industry-perspective/d6658bed-6f24-4668-b331-b70df7bd7f55.pdf",
+      "public_url": "/media/talks/jenni-kylmakoski-industry-perspective/d6658bed-6f24-4668-b331-b70df7bd7f55.pdf"
+    },
+    {
+      "slide_id": "d18b4c6d-4204-474b-88f9-0ffab2c9abf3",
+      "speaker_id": "joongi-shin",
+      "talk_id": "joongi-shin-ui-perspective",
+      "filename": "joongi-shin.pdf",
+      "byte_size": 8659226,
+      "content_hash": "f0e0d9c57fd71ad739aaefab95b27bba65a6d0942fc7c4459e551d1714ebc17f",
+      "r2_key": "speaker-slides/joongi-shin-ui-perspective/d18b4c6d-4204-474b-88f9-0ffab2c9abf3.pdf",
+      "public_url": "/media/talks/joongi-shin-ui-perspective/d18b4c6d-4204-474b-88f9-0ffab2c9abf3.pdf"
+    },
+    {
+      "slide_id": "0b20a9fb-eb1c-42c3-b080-034d9ba4d98e",
+      "speaker_id": "jussi-hacklin",
+      "talk_id": "driving-ai-adoption-regulated-environment",
+      "filename": "jussi-hacklin.pdf",
+      "byte_size": 1782973,
+      "content_hash": "6dd4bbb03b76524570540dbd4942a82a12825f21530b8cd3405c0dd8f03a4c5a",
+      "r2_key": "speaker-slides/driving-ai-adoption-regulated-environment/0b20a9fb-eb1c-42c3-b080-034d9ba4d98e.pdf",
+      "public_url": "/media/talks/driving-ai-adoption-regulated-environment/0b20a9fb-eb1c-42c3-b080-034d9ba4d98e.pdf"
+    },
+    {
+      "slide_id": "f2ba9ef0-a8bd-4062-b4dc-5c779e707405",
+      "speaker_id": "mo-khazali",
+      "talk_id": "mo-khazali-industry-perspective",
+      "filename": "mo-khazali.pdf",
+      "byte_size": 35627112,
+      "content_hash": "3f1eff59c2ef5713c772e49493907220d2eb3655d24e78290b025780f752b64f",
+      "r2_key": "speaker-slides/mo-khazali-industry-perspective/f2ba9ef0-a8bd-4062-b4dc-5c779e707405.pdf",
+      "public_url": "/media/talks/mo-khazali-industry-perspective/f2ba9ef0-a8bd-4062-b4dc-5c779e707405.pdf"
+    },
+    {
+      "slide_id": "f491d4b2-18a5-4208-a7b2-19b48c192193",
+      "speaker_id": "muhammad-waseem",
+      "talk_id": "genai-software-engineering",
+      "filename": "muhammad-waseem.pdf",
+      "byte_size": 25841869,
+      "content_hash": "c1c81b37aa4cfb63a8f0901d793421c278bc5e02710b848f74a9d7fbb141e2a3",
+      "r2_key": "speaker-slides/genai-software-engineering/f491d4b2-18a5-4208-a7b2-19b48c192193.pdf",
+      "public_url": "/media/talks/genai-software-engineering/f491d4b2-18a5-4208-a7b2-19b48c192193.pdf"
+    },
+    {
+      "slide_id": "f58fdda9-1f7d-4dbb-b060-94eb6a581c49",
+      "speaker_id": "sini-tistelgren",
+      "talk_id": "ai-factory-fundamentals",
+      "filename": "The-AI-Factory-Does-Not-Eliminate-the-Fundamentals-Sini-Tistelgren-Aimbition.pdf",
+      "byte_size": 795319,
+      "content_hash": "708e3d8768db4f0649849741fda44bcb072f792fbf45462935189bc3266aae24",
+      "r2_key": "speaker-slides/ai-factory-fundamentals/f58fdda9-1f7d-4dbb-b060-94eb6a581c49.pdf",
+      "public_url": "/media/talks/ai-factory-fundamentals/f58fdda9-1f7d-4dbb-b060-94eb6a581c49.pdf"
+    },
+    {
+      "slide_id": "404574e7-178f-48ea-bca5-02245c74ab6a",
+      "speaker_id": "viljami-kuosmanen",
+      "talk_id": "non-engineers-vibe-code-production",
+      "filename": "04-sdlcai-viljami.pdf",
+      "byte_size": 7135829,
+      "content_hash": "e5fad10e8fb39a06425928eff06d143406fa04c827a76c48817d7966c5f40d3e",
+      "r2_key": "speaker-slides/non-engineers-vibe-code-production/404574e7-178f-48ea-bca5-02245c74ab6a.pdf",
+      "public_url": "/media/talks/non-engineers-vibe-code-production/404574e7-178f-48ea-bca5-02245c74ab6a.pdf"
+    },
+    {
+      "slide_id": "ca321a78-3c93-4396-b728-07c1805ceae1",
+      "speaker_id": "zak-allal",
+      "talk_id": "zak-allal-industry-perspective",
+      "filename": "zak-allal_talk_2026-10-13.pdf",
+      "byte_size": 13373237,
+      "content_hash": "c4a328f65be0e506d5c8a5b37c7aee3abf1129c64d2207a1cbabd51ab9ba1ca1",
+      "r2_key": "speaker-slides/zak-allal-industry-perspective/ca321a78-3c93-4396-b728-07c1805ceae1.pdf",
+      "public_url": "/media/talks/zak-allal-industry-perspective/ca321a78-3c93-4396-b728-07c1805ceae1.pdf"
+    }
+  ]
+}

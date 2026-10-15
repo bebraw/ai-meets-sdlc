@@ -157,11 +157,17 @@ export async function applyCanonicalContentToResponse(
           links
             .map(
               ({ url, label }) =>
-                `<a href="${escapeAttribute(url)}" class="inline-flex border border-ink px-4 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper">${label}</a>`,
+                `<a href="${escapeAttribute(url)}" class="inline-flex items-center border border-ink px-4 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper">${label}</a>`,
             )
             .join(" "),
           { html: true },
         );
+      },
+    })
+    .on("[data-talk-materials-pending]", {
+      element(element) {
+        const talkId = element.getAttribute("data-canonical-talk-id");
+        if (talkId && options.slides?.get(talkId)?.length) element.remove();
       },
     })
     .transform(response);

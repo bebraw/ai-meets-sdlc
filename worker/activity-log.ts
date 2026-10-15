@@ -38,6 +38,7 @@ const adminActions: Record<string, [string, string]> = {
   "/api/admin/speakers/photos/review": ["Speaker photo", "reviewed"],
   "/api/admin/speakers/videos/review": ["Speaker video", "reviewed"],
   "/api/admin/speakers/slides/links": ["Presentation files", "link saved"],
+  "/api/admin/speakers/slides/recordings": ["Talk recordings", "link saved"],
   "/api/admin/speakers/slides/upload": ["Presentation files", "uploaded"],
   "/api/admin/speakers/slides/publication": [
     "Presentation files",
@@ -183,7 +184,10 @@ export async function recordSuccessfulActivity(
         ? body.published === true
           ? "published PDF"
           : "unpublished PDF"
-        : path === "/api/admin/speakers/slides/links"
+        : [
+              "/api/admin/speakers/slides/links",
+              "/api/admin/speakers/slides/recordings",
+            ].includes(path)
           ? typeof body.url === "string" && body.url.trim()
             ? "link saved"
             : "link removed"

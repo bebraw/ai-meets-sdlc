@@ -14,6 +14,17 @@ Local copies are in `output/pdf/speaker-slides/`, which Git ignores. Publish a
 permitted PDF through the admin speaker workspace when post-event materials are
 ready. The original PowerPoints and existing web links remain attached.
 
+All eight current PDFs were approved by the organizer and published on
+15 October 2026. `publications.json` records the exact files, hashes, and public
+URLs at publication. This includes the four original speaker PDFs and the four
+conversions below. Later replacements still require publication through the
+admin speaker workspace; the approval applies to these recorded files.
+
+The schedule lists materials near the top and beneath each talk title. Admins
+can classify external links as presentations or related resources, and add
+recording links when edited videos are ready. Recording links appear as
+**Watch talk** in both places.
+
 ## Conversion notes
 
 | Speaker         | Source                    | PDF pages | Notes                                                                                                                        |

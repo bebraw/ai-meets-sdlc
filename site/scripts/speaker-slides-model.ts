@@ -12,11 +12,17 @@ export const slideContentTypes = {
 export interface SpeakerSlideLink {
   talk_id: string;
   url: string;
+  kind: "presentation" | "resource";
+}
+
+export interface SpeakerRecordingLink {
+  talk_id: string;
+  url: string;
 }
 
 export interface PublishedSlideLink {
   url: string;
-  label: "Slides" | "Slides (PDF)";
+  label: "Presentation" | "Related resource" | "Slides (PDF)" | "Watch talk";
 }
 
 export interface SpeakerSlideFile {
