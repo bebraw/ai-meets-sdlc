@@ -220,7 +220,77 @@ try {
     0,
   );
   assert.equal(await page.locator("#person").isVisible(), false);
+  const publicTags = [
+    ...new Set(
+      publicPhotos.flatMap((photo) =>
+        initial.photos[photo.id].tags.map((tag) => tag.toLocaleLowerCase()),
+      ),
+    ),
+  ].sort();
+  assert.deepEqual(
+    (
+      await page
+        .locator("#tag option")
+        .evaluateAll((options) =>
+          options.map((option) => option.value).filter(Boolean),
+        )
+    ).sort(),
+    publicTags,
+  );
+  assert.equal(
+    await page.locator('#tag option[value="welcome-sign"]').count(),
+    0,
+  );
   await page.locator("#selection").selectOption("");
+  for (const tag of [
+    "beer",
+    "coffee",
+    "panel",
+    "presentation-slides",
+    "sponsors",
+    "audio-mixer",
+  ]) {
+    await page.locator("#tag").selectOption(tag);
+    const expected = publicPhotos
+      .filter((photo) => initial.photos[photo.id].tags.includes(tag))
+      .map((photo) => photo.id)
+      .sort();
+    assert.deepEqual(
+      (
+        await page
+          .locator(".card")
+          .evaluateAll((cards) => cards.map((card) => card.dataset.photoId))
+      ).sort(),
+      expected,
+      `Exact membership for tag ${tag}`,
+    );
+  }
+  await page.locator("#tag").selectOption("coffee");
+  await page.reload();
+  await page.waitForFunction(
+    () => document.querySelectorAll(".card").length > 0,
+  );
+  assert.equal(await page.locator("#tag").inputValue(), "coffee");
+  assert.equal(await page.locator("#selection").inputValue(), "");
+  assert.equal(new URL(page.url()).searchParams.has("selection"), true);
+  await page.locator("#photographer").selectOption("Bulent Sahin");
+  assert.equal(
+    await page.locator(".card").count(),
+    publicPhotos.filter(
+      (photo) =>
+        photo.photographer === "Bulent Sahin" &&
+        initial.photos[photo.id].tags.includes("coffee"),
+    ).length,
+  );
+  await page.locator("#grid .image-button").first().click();
+  assert.match(await page.locator("#photo-tags").textContent(), /Coffee/);
+  await page.getByRole("button", { name: "Close", exact: true }).click();
+  await page.getByRole("button", { name: "Clear filters" }).click();
+  await page.waitForFunction(
+    (count) => document.querySelectorAll(".card").length === count,
+    publicPhotos.length,
+  );
+  assert.equal(await page.locator("#tag").inputValue(), "");
   await page.locator("#search").fill("Sini Tistelgrén");
   const sini = seed.photos.find(
     (photo) => photo.filename === "IMG_20261013_141709_015.jpg",
@@ -320,6 +390,10 @@ try {
   );
   await admin.locator("#grid .image-button").first().click();
   await admin.locator('[name="caption"]').fill("Hosted browser check caption");
+  const originalTags = await admin.locator('[name="tags"]').inputValue();
+  await admin
+    .locator('[name="tags"]')
+    .fill(`${originalTags}, browser-review-tag`);
   await enterFullscreen(admin);
   await admin
     .getByRole("button", { name: "Exit full screen", exact: true })
@@ -333,11 +407,27 @@ try {
   await admin
     .getByText("Saved to the photo catalog.", { exact: true })
     .waitFor();
+  assert.match(
+    await admin.locator("#photo-tags").textContent(),
+    /Browser review tag/,
+  );
+  assert.equal(
+    await admin.locator('#tag option[value="browser-review-tag"]').count(),
+    1,
+  );
   await admin.getByRole("button", { name: "Close", exact: true }).click();
+  await admin.locator("#tag").selectOption("browser-review-tag");
+  assert.equal(await admin.locator(".card").count(), 1);
   await admin.reload();
   await admin
     .getByText("Hosted browser check caption", { exact: true })
     .waitFor();
+  assert.equal(await admin.locator("#tag").inputValue(), "browser-review-tag");
+  await admin.getByRole("button", { name: "Clear filters" }).click();
+  await admin.waitForFunction(
+    (count) => document.querySelectorAll(".card").length === count,
+    seed.photos.length,
+  );
   await page.reload();
   await page
     .getByText("Hosted browser check caption", { exact: true })

@@ -57,7 +57,7 @@ stop the import. File checksums deduplicate repeated imports, and the ignored
 `source.json` manifest preserves original paths across separate input folders.
 
 Open <http://127.0.0.1:3010/>. The server binds only to the local machine.
-It supports search; category, photographer, shortlist, talk and person filters;
+It supports search; category, tag, photographer, shortlist, talk and person filters;
 full-size previews; comparison of conservative similar-frame suggestions;
 caption, alt text and tag editing; and individual or ZIP downloads.
 
@@ -90,6 +90,16 @@ thank-you screen, branded stage, Swarmia/AIMBITION banners and Aalto lettering.
 These photos are also tagged with the visible sponsor names, covering all seven
 sponsors in `site/data/sponsors.json`. Tags describe visible branding; they do
 not identify people.
+
+All 314 photos have reviewed visual tags for objects and activities, including
+presentation slides, panels, group photos, pastries, coffee, branded drinks,
+camera equipment and production desks. Orientation tags come from the image
+dimensions. Tags describe visible content; they do not identify people or infer
+off-stage talk topics from timestamps. Private drafts remain private.
+The Tag dropdown lists tags available in the visitor's collection and combines
+with the other filters. Photo previews show their tags. Filter URLs preserve
+both the chosen tag and whether the visitor is browsing highlights or all
+published photos, including after a reload.
 
 Talk associations use visible slide text and stage-sequence context. They do
 not identify people. `depictedSpeakerIds` starts empty and is reserved for
