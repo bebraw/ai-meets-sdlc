@@ -308,6 +308,13 @@ const server = createServer(async (request, response) => {
         name,
       );
     }
+    if (read && url.pathname === "/assets/favicon.svg")
+      return await serveFile(
+        request,
+        response,
+        path.join(repoRoot, "assets/favicon.svg"),
+        "image/svg+xml",
+      );
     if (
       read &&
       /^\/assets\/fonts\/Finlandica(Headline-Black|Text-Regular|Text-Bold)\.woff2$/.test(
