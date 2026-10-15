@@ -1,0 +1,25 @@
+{
+  "eventId": "sdlcai-2026",
+  "eventDate": "2026-10-13",
+  "timezone": "Europe/Helsinki",
+  "license": "CC BY 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "sources": [
+    {
+      "id": "fujifilm",
+      "model": "X-T3",
+      "photographer": "Juho Vepsäläinen",
+      "clockShiftSeconds": 0,
+      "timezoneOffset": "+03:00",
+      "calibration": "Original EXIF timezone retained."
+    },
+    {
+      "id": "insta360",
+      "model": "Insta360 Ace Pro",
+      "photographer": "Bulent Sahin",
+      "clockShiftSeconds": -3600,
+      "timezoneOffset": "+03:00",
+      "calibration": "User confirmed that the camera was one hour ahead; subtract exactly one hour before interpreting as Finnish local time."
+    }
+  ]
+}

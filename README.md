@@ -54,6 +54,11 @@ ticket or registration actions.
 
 ## Development
 
+The local [photo media bank](production/media-bank/README.md) catalogs event
+photos, applies confirmed camera clock corrections, and provides curation,
+collections and credited downloads. Start it with `npm run photos:review`
+after preparing the source folder.
+
 The [public event feed](docs/event-feed.md) is generated and validated with the
 site at `/event.json`, with its JSON Schema at `/event.schema.json`.
 

@@ -18,3 +18,7 @@ build/
 
 # Private speaker decks are stored in R2 and published through the admin workspace.
 /output/pdf/speaker-slides/
+
+# Generated event-photo derivatives and local review state.
+/output/media-bank/
+/production/media-bank/curation.json

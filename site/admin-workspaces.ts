@@ -52,6 +52,13 @@ export const adminWorkspaceGroups = [
     description: "Coordinate the running order and the people presenting.",
     items: [
       {
+        id: "photos",
+        label: "Photo media bank",
+        href: "/admin/photos/",
+        description:
+          "Curate event photos, prepare collections, and confirm speaker tags.",
+      },
+      {
         id: "schedule",
         label: "Schedule",
         href: "/admin/schedule/",

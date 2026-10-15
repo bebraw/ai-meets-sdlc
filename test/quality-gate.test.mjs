@@ -84,6 +84,7 @@ test("CI browser groups cover every browser check exactly once", () => {
     "mailing:browser-check",
     "badges:browser-check",
     "speaker-slides:browser-check",
+    "photos:browser-check",
     "layout:check",
     "slides:check",
     "slides:opening-check",

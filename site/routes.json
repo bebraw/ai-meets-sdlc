@@ -42,6 +42,15 @@
       }
     }
   },
+  "photos": {
+    "layout": "photos",
+    "context": {
+      "meta": {
+        "title": "SDLCAI Photo Media Bank",
+        "description": "Photos from SDLCAI 2026, shared under CC BY 4.0."
+      }
+    }
+  },
   "schedule": {
     "layout": "schedule",
     "scripts": [{ "name": "index" }],
@@ -345,6 +354,16 @@
       }
     },
     "routes": {
+      "photos": {
+        "layout": "photos",
+        "context": {
+          "meta": {
+            "title": "SDLCAI Photo Media Bank — Organizer Review",
+            "description": "Curate event photos, credits and speaker collections.",
+            "robots": "noindex,nofollow,noarchive"
+          }
+        }
+      },
       "login": {
         "layout": "admin-login",
         "scripts": [{ "name": "index" }],

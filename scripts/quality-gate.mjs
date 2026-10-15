@@ -19,6 +19,7 @@ export const browserGroups = {
   assets: [
     "badges:browser-check",
     "speaker-slides:browser-check",
+    "photos:browser-check",
     "slides:check",
   ],
   presentation: [

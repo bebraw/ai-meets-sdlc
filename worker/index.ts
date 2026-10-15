@@ -1,4 +1,5 @@
 import { handleOrganizers, applyOrganizers } from "./organizers.ts";
+import { handleEventPhotos, backupEventPhotoReviews } from "./event-photos.ts";
 import { handleIntroVideoRequest } from "./intro-video.ts";
 import { handleQaRequest } from "./qa.ts";
 export { QaRoom } from "./qa-room.ts";
@@ -213,6 +214,9 @@ const innerHandler = {
       const unauthorizedResponse = await requireSlideExportAccess(request, env);
       if (unauthorizedResponse) return unauthorizedResponse;
     }
+
+    const eventPhotosResponse = await handleEventPhotos(request, env, ctx);
+    if (eventPhotosResponse) return eventPhotosResponse;
 
     const introVideoResponse = await handleIntroVideoRequest(request, env);
     if (introVideoResponse) return introVideoResponse;
@@ -683,6 +687,7 @@ const innerHandler = {
       ctx.waitUntil(backupPosterProposals(env));
       ctx.waitUntil(backupCanonicalSpeakerContent(env));
       ctx.waitUntil(backupAttendees(env));
+      ctx.waitUntil(backupEventPhotoReviews(env));
       ctx.waitUntil(backupMailingData(env));
       ctx.waitUntil(backupSpeakerReceipts(env));
     }

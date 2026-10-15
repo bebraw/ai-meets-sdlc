@@ -35,6 +35,8 @@ const routes = [
   "/posters/",
   "/privacy-policy/",
   "/schedule/",
+  "/photos/",
+  "/admin/photos/",
   "/speaker-dinner/",
   "/speaker-dinner/shared/",
   // Internal static build path served as /admin/slides/ by the Worker.

@@ -1,0 +1,15 @@
+{
+  "source": "https://www.sdlcai.org/event.json",
+  "titles": {
+    "mo-khazali-industry-perspective": "1978: The Last Good Year",
+    "ohans-emmanuel-industry-perspective": "Zero-trust harnesses for agentic software delivery",
+    "jenni-kylmakoski-industry-perspective": "Why Leaders Should Use AI Themselves and Eat Their Own Dog Food?",
+    "agentic-discovery": "The Agentic Probe: The Instrument of Agentic Discovery & Engineering",
+    "joongi-shin-ui-perspective": "Generative UI for users, not just for designers",
+    "driving-ai-adoption-regulated-environment": "Driving AI adoption above targets in highly regulated environment",
+    "non-engineers-vibe-code-production": "I Let Non-Engineers Vibe-Code Our Production Codebase",
+    "ai-factory-fundamentals": "AI Factory doesn't eliminate the fundamentals",
+    "zak-allal-industry-perspective": "Medical Breakthroughs and Scientific Discoveries",
+    "genai-software-engineering": "Code Was Never the Hard Part. Understanding Was—and Still Is."
+  }
+}
