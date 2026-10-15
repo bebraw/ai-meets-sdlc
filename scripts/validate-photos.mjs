@@ -84,6 +84,9 @@ try {
       const viewer = document.querySelector("#preview-viewer");
       const box = viewer.getBoundingClientRect();
       const image = document.querySelector("#preview").getBoundingClientRect();
+      const controls = [...viewer.querySelectorAll(".dialog-bar button")].map(
+        (button) => button.getBoundingClientRect(),
+      );
       return {
         fills:
           Math.abs(box.width - innerWidth) < 1 &&
@@ -99,6 +102,9 @@ try {
         overflow:
           viewer.scrollWidth > viewer.clientWidth ||
           viewer.scrollHeight > viewer.clientHeight,
+        controlsInOneRow: controls.every(
+          (box) => Math.abs(box.y - controls[0].y) < 1,
+        ),
       };
     });
     assert.deepEqual(bounds, {
@@ -106,6 +112,7 @@ try {
       fits: true,
       fit: "contain",
       overflow: false,
+      controlsInOneRow: true,
     });
   };
   const assertPreviewRestored = async (surface) => {
