@@ -20,6 +20,7 @@
     "photos:export": "node scripts/media-bank/export.mjs",
     "photos:upload": "node scripts/media-bank/upload.mjs",
     "photos:seed": "node scripts/media-bank/seed.mjs",
+    "photos:metadata": "node scripts/media-bank/metadata.mjs",
     "photos:browser-check": "node scripts/validate-photos.mjs",
     "interests:decrypt": "node scripts/decrypt-interests.mjs",
     "interests:export": "node scripts/export-interest-contacts.mjs",

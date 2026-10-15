@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import sources from "../production/media-bank/sources.json" with { type: "json" };
 import {
   correctedTimestamp,
   localTimestamp,
@@ -8,14 +9,15 @@ import {
   attribution,
 } from "../scripts/media-bank/catalog.mjs";
 
-test("Insta360 correction subtracts one hour in Finnish time and normalizes to UTC", () => {
-  const source = { timezoneOffset: "+03:00", clockShiftSeconds: -3600 };
+test("Insta360 retains its recording-verified Finnish time and normalizes to UTC", () => {
+  const source = sources.sources.find((item) => item.id === "insta360");
+  assert.equal(source.clockShiftSeconds, 0);
   const result = correctedTimestamp("2026:10:13 13:58:21", source);
-  assert.equal(result, "2026-10-13T09:58:21.000Z");
-  assert.equal(localTimestamp(result), "2026-10-13 12:58:21");
+  assert.equal(result, "2026-10-13T10:58:21.000Z");
+  assert.equal(localTimestamp(result), "2026-10-13 13:58:21");
   assert.equal(
     correctedTimestamp("2026:10:13 00:30:00", source),
-    "2026-10-12T20:30:00.000Z",
+    "2026-10-12T21:30:00.000Z",
   );
   assert.throws(() => correctedTimestamp("missing", source));
 });

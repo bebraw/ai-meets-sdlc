@@ -1,5 +1,6 @@
 import seed from "../site/data/event-photos.json" with { type: "json" };
 import initial from "../production/media-bank/initial-curation.json" with { type: "json" };
+import { photoEventContext } from "../site/scripts/photo-context.ts";
 import * as v from "valibot";
 import { Zip, ZipPassThrough } from "fflate";
 import { hasAdminSession, withAdminSecurityHeaders } from "./admin-auth.ts";
@@ -39,6 +40,7 @@ type Photo = BasePhoto &
   Review & {
     originalAvailable: boolean;
     images: ReturnType<typeof imagePaths>;
+    eventContext: ReturnType<typeof photoEventContext>;
   };
 interface Access {
   admin: boolean;
@@ -178,6 +180,7 @@ async function catalog(
       notes: admin ? review.notes : "",
       associationEvidence: admin ? review.associationEvidence : "",
       originalAvailable,
+      eventContext: photoEventContext({ ...base, ...review }, seed.talks),
     });
   }
   return jsonResponse(
@@ -367,6 +370,14 @@ async function zipResponse(
                 capturedLocal: photo.capturedLocal,
                 caption: reviews.get(photo.id)!.caption,
                 category: reviews.get(photo.id)!.category,
+                relatedTalkIds: reviews.get(photo.id)!.relatedTalkIds,
+                eventContext: photoEventContext(
+                  {
+                    ...photo,
+                    ...reviews.get(photo.id)!,
+                  },
+                  seed.talks,
+                ),
                 attribution: credit(photo, parsed.output.variant),
               })),
             },
@@ -530,6 +541,7 @@ export async function handleEventPhotos(
           ...review,
           revision: review.revision + 1,
           originalAvailable: true,
+          eventContext: photoEventContext({ ...base, ...review }, seed.talks),
         }),
       );
     }

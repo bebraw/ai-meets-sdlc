@@ -18,9 +18,10 @@
       "id": "insta360",
       "model": "Insta360 Ace Pro",
       "photographer": "Bulent Sahin",
-      "clockShiftSeconds": -3600,
+      "clockShiftSeconds": 0,
       "timezoneOffset": "+03:00",
-      "calibration": "User confirmed that the camera was one hour ahead; subtract exactly one hour before interpreting as Finnish local time."
+      "calibration": "User approved removing the earlier minus-one-hour correction after comparing the recording's broadcast start, Sini's introduction at 5:26:14, and IMG_20261013_141709_015.jpg (raw EXIF 14:17:12). The original camera time aligns with the recording at approximately 14:17 Finnish time.",
+      "calibrationStatus": "recording-verified"
     }
   ],
   "categories": [
@@ -2529,487 +2530,6 @@
       }
     },
     {
-      "id": "photo-e5c775d174b4eafeba8d",
-      "filename": "IMG_20261013_135818_003.jpg",
-      "sha256": "e5c775d174b4eafeba8d4bc5f494db3ce4da33999d3e9cb35bb3943adc109753",
-      "bytes": 2161046,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 13:58:21",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T09:58:21.000Z",
-      "capturedLocal": "2026-10-13 12:58:21",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 32362,
-          "sha256": "046ba8b41e8fb535078412f38e494e1d03db6b64a3d14bed1f2fd24f0ae839bc"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 234305,
-          "sha256": "3ab3ebfcbf05aa67b47d682dadada68fc31ae8c4591cd91084b7f211f6006103"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 644269,
-          "sha256": "3d90cc2f282afe60adcbb86113253c7b4e14236613dddb0e75fccc64f1c528f7"
-        }
-      }
-    },
-    {
-      "id": "photo-6c88e2482f1b9a630882",
-      "filename": "IMG_20261013_135903_004.jpg",
-      "sha256": "6c88e2482f1b9a6308826d076907bff90955a860185fafb701a655d15e242542",
-      "bytes": 2987220,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 13:59:05",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T09:59:05.000Z",
-      "capturedLocal": "2026-10-13 12:59:05",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 45246,
-          "sha256": "6aaea2e5023dea0386316b7609b2b6750b4faaed21e8e796c1ae47ae1ba3cf0b"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 380492,
-          "sha256": "9198bb9c3a4934f35622dec71b1874d01c9e57f1a338cbc6c6fc631f4aada222"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 1070354,
-          "sha256": "92814995d12f35e96f2b8a726a8f97e0b0106112d0b38553124a974f95755b3d"
-        }
-      }
-    },
-    {
-      "id": "photo-a811a8f266632626485f",
-      "filename": "IMG_20261013_140230_005.jpg",
-      "sha256": "a811a8f266632626485fd7a478cda56362dcf5e7d33b628c0193af7f8ce1c3e7",
-      "bytes": 4749145,
-      "width": 8064,
-      "height": 4536,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 14:02:33",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T10:02:33.000Z",
-      "capturedLocal": "2026-10-13 13:02:33",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 270,
-          "bytes": 31515,
-          "sha256": "5ae36798dae90fe3eb6e73723a96ab48461c5cc1b277dfc8459e5e4e0f7ab01e"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1013,
-          "bytes": 259749,
-          "sha256": "4a81aa8cf29dc6a3709089d6ff4cc6f5cc892f8076ffcfaedf5b1de84dc9b08f"
-        },
-        "share": {
-          "width": 3200,
-          "height": 1800,
-          "bytes": 764517,
-          "sha256": "78201f179dd9e7ea84db79465a6efbac9eab2817dc19e9544f830e8fa6158604"
-        }
-      }
-    },
-    {
-      "id": "photo-713a59b8b3b4d1e3fe94",
-      "filename": "IMG_20261013_140510_007.jpg",
-      "sha256": "713a59b8b3b4d1e3fe94f3bb75e6bb148b9d0c6e21035d77d2f66a7d7d69e5d2",
-      "bytes": 7522021,
-      "width": 8064,
-      "height": 4536,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 14:05:11",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T10:05:11.000Z",
-      "capturedLocal": "2026-10-13 13:05:11",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 270,
-          "bytes": 33562,
-          "sha256": "dff35de864355e371ece847149e5189dc46cf40e1f00d212005dcec9073967f5"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1013,
-          "bytes": 300688,
-          "sha256": "82640a9811e6db7a272563e59d852d1a291aaba5419aa05b414183c72cbe54db"
-        },
-        "share": {
-          "width": 3200,
-          "height": 1800,
-          "bytes": 977375,
-          "sha256": "dc0885656758686d92164ab9b8c41f2708bc32e22a7bdb3d8ed280108a3a54d1"
-        }
-      }
-    },
-    {
-      "id": "photo-33069df6ff8499fe8fb4",
-      "filename": "IMG_20261013_140520_008.jpg",
-      "sha256": "33069df6ff8499fe8fb4a5c60bf2f9ffe759203bae6980beef2814f5620c51ca",
-      "bytes": 7414703,
-      "width": 8064,
-      "height": 4536,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 14:05:21",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T10:05:21.000Z",
-      "capturedLocal": "2026-10-13 13:05:21",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 270,
-          "bytes": 35529,
-          "sha256": "0904cf012677c718f52ce80106c33b123a0e1879e75779521be4782061c9681e"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1013,
-          "bytes": 305888,
-          "sha256": "b7c65fb48a2491a0a357e26e470f34787a157a03428f945932d9de97245ad0fc"
-        },
-        "share": {
-          "width": 3200,
-          "height": 1800,
-          "bytes": 976671,
-          "sha256": "3ba975917d2e258df7a32cc7e24263e2be58d8c854572e7c97d603635214cc54"
-        }
-      }
-    },
-    {
-      "id": "photo-a3f2e0cf814465575950",
-      "filename": "IMG_20261013_141225_009.jpg",
-      "sha256": "a3f2e0cf81446557595085c3a4dc0437a430d86c7d08a78c65e724c52603a96f",
-      "bytes": 8346979,
-      "width": 8064,
-      "height": 4536,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 14:12:25",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T10:12:25.000Z",
-      "capturedLocal": "2026-10-13 13:12:25",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 270,
-          "bytes": 28789,
-          "sha256": "e6aa466b85a78f7690148501cf4675e36832f4a48f8e57c9f99a094bf46518a4"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1013,
-          "bytes": 301526,
-          "sha256": "6c97e5568cf7be1a0e1f5ad2c6369be6e74a0c26bb5964429ea9d06c2cb5c553"
-        },
-        "share": {
-          "width": 3200,
-          "height": 1800,
-          "bytes": 1067871,
-          "sha256": "76c97f55799f17a67443c6aca758c3047188a287ef7593f6161e8289644d113c"
-        }
-      }
-    },
-    {
-      "id": "photo-b25df93c78dbcc9263a7",
-      "filename": "IMG_20261013_141228_010.jpg",
-      "sha256": "b25df93c78dbcc9263a74e757b0c941264379d9b8c4595973ebfddc507e3173e",
-      "bytes": 9202838,
-      "width": 8064,
-      "height": 4536,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 14:12:28",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T10:12:28.000Z",
-      "capturedLocal": "2026-10-13 13:12:28",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 270,
-          "bytes": 28876,
-          "sha256": "73210892b1e6acca4626d3278aab46c160270970701eab08fccec009eee95694"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1013,
-          "bytes": 315664,
-          "sha256": "68eea8c29e989dc2dab3599052752249dbb85c238c9a654e1ed852c7380db0aa"
-        },
-        "share": {
-          "width": 3200,
-          "height": 1800,
-          "bytes": 1188795,
-          "sha256": "d72ef6f574ea25eed0cfedcafe0a16572887dbce08d169b6b7eb123f8b3627fe"
-        }
-      }
-    },
-    {
-      "id": "photo-64d4291c5880a6f3dadc",
-      "filename": "IMG_20261013_141253_011.jpg",
-      "sha256": "64d4291c5880a6f3dadc8adf65015d0cd86366ce7594770b60b2e634cfdb335f",
-      "bytes": 2228434,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 14:12:56",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T10:12:56.000Z",
-      "capturedLocal": "2026-10-13 13:12:56",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 32983,
-          "sha256": "c738a03c10ee25a1a680a9daf9930852cb1b60e5ec2493a7dbd10c808bebbf5a"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 244297,
-          "sha256": "54df08a5edaafd2431a9c3e13d740531bf727eb7ce3f238642c93a9512e66344"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 669181,
-          "sha256": "ea92577a470b07bf6db369d540e61cfd1485cd6dcb922810180d52dc1e2d3a3c"
-        }
-      }
-    },
-    {
-      "id": "photo-7ad65f67d97a2f30a7aa",
-      "filename": "IMG_20261013_141257_012.jpg",
-      "sha256": "7ad65f67d97a2f30a7aa99e4cbc0ca69511e3494a212c2c14fec7655a5a8a272",
-      "bytes": 2239118,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 14:13:00",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T10:13:00.000Z",
-      "capturedLocal": "2026-10-13 13:13:00",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 32490,
-          "sha256": "12b53bcb8e5e52e9d11310e5038854c5c43d4869a59441fdaf24bf5a387c0aba"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 242545,
-          "sha256": "262ab9925d3d10ed722a3ad74de7a69336e9e2286a540847ce52123956309042"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 666872,
-          "sha256": "3d99bf547ddf424459962e9e0c58deeabc66f7cee0044713be04680d97217c64"
-        }
-      }
-    },
-    {
-      "id": "photo-b98a507c25a2dc950f15",
-      "filename": "IMG_20261013_141600_014.jpg",
-      "sha256": "b98a507c25a2dc950f1514086b089c92a8d923b2413e5395297a01f89c0ee3cb",
-      "bytes": 2163099,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 14:16:03",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T10:16:03.000Z",
-      "capturedLocal": "2026-10-13 13:16:03",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 34014,
-          "sha256": "945657cbe33bd51d8dfbe4a0ab9fabd956f026f8110da80c165e2f8e7fc03720"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 233393,
-          "sha256": "ddfd91075889aed4dbd07f42f336ed43b80d7a2c8e6a36c04de657cb6c1dcdfe"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 643562,
-          "sha256": "d5ac7e27908218c582e2b9038f307bcb56199c641124e977f3fa75caef41450f"
-        }
-      }
-    },
-    {
-      "id": "photo-44351ebb7486135dcb82",
-      "filename": "IMG_20261013_141709_015.jpg",
-      "sha256": "44351ebb7486135dcb82a7311c670e4d493930546b2e0e796c3b7764540d08b2",
-      "bytes": 2328176,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 14:17:12",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T10:17:12.000Z",
-      "capturedLocal": "2026-10-13 13:17:12",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 36817,
-          "sha256": "23ce58ca98b307a78a3eb1ad7015fc1e2f6828364e826144dfedb1e92d40652a"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 263089,
-          "sha256": "2daf417f636f0b2b9ac65afa67d39ca7843f5b0c0d5420ce490602347a1d3b7a"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 732235,
-          "sha256": "ffbdd08d3e6f65a5f4ae1cff9ef88b71f575a3c705af00f144e0562e885f03c6"
-        }
-      }
-    },
-    {
-      "id": "photo-590e14e3fa6ddf099e33",
-      "filename": "IMG_20261013_141740_016.jpg",
-      "sha256": "590e14e3fa6ddf099e333bd66f993215083a6062e349567143c25ca5a13483fa",
-      "bytes": 2195556,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 14:17:42",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T10:17:42.000Z",
-      "capturedLocal": "2026-10-13 13:17:42",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 34242,
-          "sha256": "e867efb10588dd480bd67294d53bda0e94ec31e775c4bcc788435ff3474c8042"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 239781,
-          "sha256": "978bc199095e04a55b1660f9204364907d36b1935e8a0e0cdc273aa673135758"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 656948,
-          "sha256": "259407166ed5b615d97eeba9e028f4797448b0573f9c50d8c4b8db5b24f93bbb"
-        }
-      }
-    },
-    {
-      "id": "photo-9fb72df35d6a37491a63",
-      "filename": "IMG_20261013_141929_018.jpg",
-      "sha256": "9fb72df35d6a37491a6350d82294c7ea0c1b00cec4081364296e10fe3bd83a7a",
-      "bytes": 2281240,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 14:19:32",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T10:19:32.000Z",
-      "capturedLocal": "2026-10-13 13:19:32",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 35528,
-          "sha256": "eae4c7a070c37a0adb10eeece9f47a8c56e2760bd3da662e51da81d592ab2f31"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 253766,
-          "sha256": "065fe160b88bc8e8f76a9b3a06a0a571b46299741c17bca62f67d9e256a88b2c"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 702531,
-          "sha256": "ee253539bf0546b8c916263194d5a70feabb4e06d97b03f75483ee7c7115e899"
-        }
-      }
-    },
-    {
       "id": "photo-677f95908a5e25682903",
       "filename": "DSCF6647.jpeg",
       "sha256": "677f95908a5e256829038b6e7a39cd7b2aa88be1c3ae4c8a958fcd4ba9df065d",
@@ -3228,154 +2748,6 @@
           "height": 2133,
           "bytes": 793622,
           "sha256": "5e088480a77fd03639821e18cf2ca1c999b89a47764cdce585d1fed90bedcb3e"
-        }
-      }
-    },
-    {
-      "id": "photo-7c7f58a814217ba299eb",
-      "filename": "IMG_20261013_144513_019.jpg",
-      "sha256": "7c7f58a814217ba299eb28e512863f8949c306fb478071b553e9c17db2dd20f8",
-      "bytes": 2236991,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 14:45:16",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T10:45:16.000Z",
-      "capturedLocal": "2026-10-13 13:45:16",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 36097,
-          "sha256": "a99bc029082208962c505fc17866f8a5b17b09c19c5e634791effab293a8969f"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 255426,
-          "sha256": "d9396ca74b43b33d4207b43a37d81525994d6becaa402019560edf4286babd7d"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 696811,
-          "sha256": "d260dc992140d4187c4aba7b70ab94f029156b7905c00a0fabf9d9393a487cee"
-        }
-      }
-    },
-    {
-      "id": "photo-92c28265134ea3d92139",
-      "filename": "IMG_20261013_144603_020.jpg",
-      "sha256": "92c28265134ea3d921395c788a7ae9f5ee62bb0d39cf9e4ba2e3405fb4a44a59",
-      "bytes": 2500193,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 14:46:06",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T10:46:06.000Z",
-      "capturedLocal": "2026-10-13 13:46:06",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 43697,
-          "sha256": "d60c745dca7e3364efecb6e6d6927269600dd1b496b0eb814f26843b5741402f"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 306725,
-          "sha256": "2bfb3f34247fcebd20b5ce5ee37ab71186e6b6481c3bfdc5aefdb3e8439b2012"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 829979,
-          "sha256": "735dc5fc247ddbd2d615cdbc257ffad6ef5a441a9850bae2af1b15f693d1253e"
-        }
-      }
-    },
-    {
-      "id": "photo-81c1beb9d3ef995d3adb",
-      "filename": "IMG_20261013_145022_023.jpg",
-      "sha256": "81c1beb9d3ef995d3adbf99bbe94bfee8d74af68d9dc2a61fb5cd61b4afb2ae3",
-      "bytes": 2501864,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 14:50:25",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T10:50:25.000Z",
-      "capturedLocal": "2026-10-13 13:50:25",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 45083,
-          "sha256": "22b771797979978ad79213362883a11ba22bfceade87be7e53a921373c3824b7"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 312483,
-          "sha256": "ab011f963214116ba5e4ffbe91deb891921e81ed9df81d116be360ef0058e4fc"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 831307,
-          "sha256": "b6d422a4824f3140bf8a21120d7bcbac1d5ae1ff20c33e8515db34efca951d2d"
-        }
-      }
-    },
-    {
-      "id": "photo-b42a22c5ce7feacec809",
-      "filename": "IMG_20261013_145028_024.jpg",
-      "sha256": "b42a22c5ce7feacec80961dd61adb26f0ae2bab495d50afbd89feb4c08899a0b",
-      "bytes": 2437778,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 14:50:31",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T10:50:31.000Z",
-      "capturedLocal": "2026-10-13 13:50:31",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 43235,
-          "sha256": "abddb9fb83f4dff370e305ea8edf75179ddc2f33c10a1a581271c0162511bc9b"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 299350,
-          "sha256": "87c8d65ce129512aea5c5ed05ed6c2fe1c4ae20d8699b10d231c1c20e1451c65"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 795261,
-          "sha256": "8115e4767289fc409915bab5ff90dce3aba9a8dd0cdf7997dbed53ac5b463f20"
         }
       }
     },
@@ -3602,520 +2974,372 @@
       }
     },
     {
-      "id": "photo-859250505d6ffafb77fb",
-      "filename": "IMG_20261013_145903_025.jpg",
-      "sha256": "859250505d6ffafb77fbe45c41b8e707dbc8725b6be26cda7b1e21561cb9662a",
-      "bytes": 8001187,
+      "id": "photo-e5c775d174b4eafeba8d",
+      "filename": "IMG_20261013_135818_003.jpg",
+      "sha256": "e5c775d174b4eafeba8d4bc5f494db3ce4da33999d3e9cb35bb3943adc109753",
+      "bytes": 2161046,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 13:58:21",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T10:58:21.000Z",
+      "capturedLocal": "2026-10-13 13:58:21",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 32362,
+          "sha256": "046ba8b41e8fb535078412f38e494e1d03db6b64a3d14bed1f2fd24f0ae839bc"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 234305,
+          "sha256": "3ab3ebfcbf05aa67b47d682dadada68fc31ae8c4591cd91084b7f211f6006103"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 644269,
+          "sha256": "3d90cc2f282afe60adcbb86113253c7b4e14236613dddb0e75fccc64f1c528f7"
+        }
+      }
+    },
+    {
+      "id": "photo-6c88e2482f1b9a630882",
+      "filename": "IMG_20261013_135903_004.jpg",
+      "sha256": "6c88e2482f1b9a6308826d076907bff90955a860185fafb701a655d15e242542",
+      "bytes": 2987220,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 13:59:05",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T10:59:05.000Z",
+      "capturedLocal": "2026-10-13 13:59:05",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 45246,
+          "sha256": "6aaea2e5023dea0386316b7609b2b6750b4faaed21e8e796c1ae47ae1ba3cf0b"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 380492,
+          "sha256": "9198bb9c3a4934f35622dec71b1874d01c9e57f1a338cbc6c6fc631f4aada222"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 1070354,
+          "sha256": "92814995d12f35e96f2b8a726a8f97e0b0106112d0b38553124a974f95755b3d"
+        }
+      }
+    },
+    {
+      "id": "photo-a811a8f266632626485f",
+      "filename": "IMG_20261013_140230_005.jpg",
+      "sha256": "a811a8f266632626485fd7a478cda56362dcf5e7d33b628c0193af7f8ce1c3e7",
+      "bytes": 4749145,
       "width": 8064,
       "height": 4536,
       "sourceId": "insta360",
       "photographer": "Bulent Sahin",
       "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 14:59:03",
+      "rawCaptureTime": "2026:10:13 14:02:33",
       "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T10:59:03.000Z",
-      "capturedLocal": "2026-10-13 13:59:03",
-      "calibrationStatus": "user-confirmed",
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T11:02:33.000Z",
+      "capturedLocal": "2026-10-13 14:02:33",
+      "calibrationStatus": "recording-verified",
       "images": {
         "thumbnail": {
           "width": 480,
           "height": 270,
-          "bytes": 32316,
-          "sha256": "0247b234bad85af437d7a0fe7bffec8eae3b9c430864c6f4409bb2f5a4731bdb"
+          "bytes": 31515,
+          "sha256": "5ae36798dae90fe3eb6e73723a96ab48461c5cc1b277dfc8459e5e4e0f7ab01e"
         },
         "preview": {
           "width": 1800,
           "height": 1013,
-          "bytes": 307723,
-          "sha256": "688ea176f5f9cff0bfca9f413427c1c819889145ff72d331e420ad92abe6c955"
+          "bytes": 259749,
+          "sha256": "4a81aa8cf29dc6a3709089d6ff4cc6f5cc892f8076ffcfaedf5b1de84dc9b08f"
         },
         "share": {
           "width": 3200,
           "height": 1800,
-          "bytes": 1024885,
-          "sha256": "257eeb85ff4b85a3c6a3b6cabf9e8adfc992661749ba67b2edc0bc3e10d71555"
+          "bytes": 764517,
+          "sha256": "78201f179dd9e7ea84db79465a6efbac9eab2817dc19e9544f830e8fa6158604"
         }
       }
     },
     {
-      "id": "photo-3ab6e90944fae0f4c8f9",
-      "filename": "IMG_20261013_150332_029.jpg",
-      "sha256": "3ab6e90944fae0f4c8f93ab266ab46fecd6fd710611cdb59a24a2711765ca9b8",
-      "bytes": 2914614,
+      "id": "photo-713a59b8b3b4d1e3fe94",
+      "filename": "IMG_20261013_140510_007.jpg",
+      "sha256": "713a59b8b3b4d1e3fe94f3bb75e6bb148b9d0c6e21035d77d2f66a7d7d69e5d2",
+      "bytes": 7522021,
+      "width": 8064,
+      "height": 4536,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 14:05:11",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T11:05:11.000Z",
+      "capturedLocal": "2026-10-13 14:05:11",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 270,
+          "bytes": 33562,
+          "sha256": "dff35de864355e371ece847149e5189dc46cf40e1f00d212005dcec9073967f5"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1013,
+          "bytes": 300688,
+          "sha256": "82640a9811e6db7a272563e59d852d1a291aaba5419aa05b414183c72cbe54db"
+        },
+        "share": {
+          "width": 3200,
+          "height": 1800,
+          "bytes": 977375,
+          "sha256": "dc0885656758686d92164ab9b8c41f2708bc32e22a7bdb3d8ed280108a3a54d1"
+        }
+      }
+    },
+    {
+      "id": "photo-33069df6ff8499fe8fb4",
+      "filename": "IMG_20261013_140520_008.jpg",
+      "sha256": "33069df6ff8499fe8fb4a5c60bf2f9ffe759203bae6980beef2814f5620c51ca",
+      "bytes": 7414703,
+      "width": 8064,
+      "height": 4536,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 14:05:21",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T11:05:21.000Z",
+      "capturedLocal": "2026-10-13 14:05:21",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 270,
+          "bytes": 35529,
+          "sha256": "0904cf012677c718f52ce80106c33b123a0e1879e75779521be4782061c9681e"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1013,
+          "bytes": 305888,
+          "sha256": "b7c65fb48a2491a0a357e26e470f34787a157a03428f945932d9de97245ad0fc"
+        },
+        "share": {
+          "width": 3200,
+          "height": 1800,
+          "bytes": 976671,
+          "sha256": "3ba975917d2e258df7a32cc7e24263e2be58d8c854572e7c97d603635214cc54"
+        }
+      }
+    },
+    {
+      "id": "photo-a3f2e0cf814465575950",
+      "filename": "IMG_20261013_141225_009.jpg",
+      "sha256": "a3f2e0cf81446557595085c3a4dc0437a430d86c7d08a78c65e724c52603a96f",
+      "bytes": 8346979,
+      "width": 8064,
+      "height": 4536,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 14:12:25",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T11:12:25.000Z",
+      "capturedLocal": "2026-10-13 14:12:25",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 270,
+          "bytes": 28789,
+          "sha256": "e6aa466b85a78f7690148501cf4675e36832f4a48f8e57c9f99a094bf46518a4"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1013,
+          "bytes": 301526,
+          "sha256": "6c97e5568cf7be1a0e1f5ad2c6369be6e74a0c26bb5964429ea9d06c2cb5c553"
+        },
+        "share": {
+          "width": 3200,
+          "height": 1800,
+          "bytes": 1067871,
+          "sha256": "76c97f55799f17a67443c6aca758c3047188a287ef7593f6161e8289644d113c"
+        }
+      }
+    },
+    {
+      "id": "photo-b25df93c78dbcc9263a7",
+      "filename": "IMG_20261013_141228_010.jpg",
+      "sha256": "b25df93c78dbcc9263a74e757b0c941264379d9b8c4595973ebfddc507e3173e",
+      "bytes": 9202838,
+      "width": 8064,
+      "height": 4536,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 14:12:28",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T11:12:28.000Z",
+      "capturedLocal": "2026-10-13 14:12:28",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 270,
+          "bytes": 28876,
+          "sha256": "73210892b1e6acca4626d3278aab46c160270970701eab08fccec009eee95694"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1013,
+          "bytes": 315664,
+          "sha256": "68eea8c29e989dc2dab3599052752249dbb85c238c9a654e1ed852c7380db0aa"
+        },
+        "share": {
+          "width": 3200,
+          "height": 1800,
+          "bytes": 1188795,
+          "sha256": "d72ef6f574ea25eed0cfedcafe0a16572887dbce08d169b6b7eb123f8b3627fe"
+        }
+      }
+    },
+    {
+      "id": "photo-64d4291c5880a6f3dadc",
+      "filename": "IMG_20261013_141253_011.jpg",
+      "sha256": "64d4291c5880a6f3dadc8adf65015d0cd86366ce7594770b60b2e634cfdb335f",
+      "bytes": 2228434,
       "width": 4032,
       "height": 3024,
       "sourceId": "insta360",
       "photographer": "Bulent Sahin",
       "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:03:34",
+      "rawCaptureTime": "2026:10:13 14:12:56",
       "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:03:34.000Z",
-      "capturedLocal": "2026-10-13 14:03:34",
-      "calibrationStatus": "user-confirmed",
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T11:12:56.000Z",
+      "capturedLocal": "2026-10-13 14:12:56",
+      "calibrationStatus": "recording-verified",
       "images": {
         "thumbnail": {
           "width": 480,
           "height": 360,
-          "bytes": 38845,
-          "sha256": "673b2738eccb608a939a7a63ef6200754d72e69e90d08734d12a9d67a1df0c89"
+          "bytes": 32983,
+          "sha256": "c738a03c10ee25a1a680a9daf9930852cb1b60e5ec2493a7dbd10c808bebbf5a"
         },
         "preview": {
           "width": 1800,
           "height": 1350,
-          "bytes": 359653,
-          "sha256": "3956b6bcffb92fd0ce837bd84b8874a7687262cf2b34589b851762b5e0b9e412"
+          "bytes": 244297,
+          "sha256": "54df08a5edaafd2431a9c3e13d740531bf727eb7ce3f238642c93a9512e66344"
         },
         "share": {
           "width": 3200,
           "height": 2400,
-          "bytes": 1040142,
-          "sha256": "1d8ee597437e7d1b2c9001395e731daf02bc5205ae0ff3cdbdd54a29fabd6019"
+          "bytes": 669181,
+          "sha256": "ea92577a470b07bf6db369d540e61cfd1485cd6dcb922810180d52dc1e2d3a3c"
         }
       }
     },
     {
-      "id": "photo-1e96aac463248d6ff461",
-      "filename": "IMG_20261013_150400_030.jpg",
-      "sha256": "1e96aac463248d6ff461534afad68173dc1d9f44f9d40e72d0a566fce64d8d9d",
-      "bytes": 3524630,
+      "id": "photo-7ad65f67d97a2f30a7aa",
+      "filename": "IMG_20261013_141257_012.jpg",
+      "sha256": "7ad65f67d97a2f30a7aa99e4cbc0ca69511e3494a212c2c14fec7655a5a8a272",
+      "bytes": 2239118,
       "width": 4032,
       "height": 3024,
       "sourceId": "insta360",
       "photographer": "Bulent Sahin",
       "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:04:03",
+      "rawCaptureTime": "2026:10:13 14:13:00",
       "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:04:03.000Z",
-      "capturedLocal": "2026-10-13 14:04:03",
-      "calibrationStatus": "user-confirmed",
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T11:13:00.000Z",
+      "capturedLocal": "2026-10-13 14:13:00",
+      "calibrationStatus": "recording-verified",
       "images": {
         "thumbnail": {
           "width": 480,
           "height": 360,
-          "bytes": 43894,
-          "sha256": "d37268420aa755a05f578e261201d27145fe78ae9e4876e48764d03342fe016c"
+          "bytes": 32490,
+          "sha256": "12b53bcb8e5e52e9d11310e5038854c5c43d4869a59441fdaf24bf5a387c0aba"
         },
         "preview": {
           "width": 1800,
           "height": 1350,
-          "bytes": 456344,
-          "sha256": "772e19286cd8902c35c41f0bab6c47229473edf5aa122754c497a97db28cf7c8"
+          "bytes": 242545,
+          "sha256": "262ab9925d3d10ed722a3ad74de7a69336e9e2286a540847ce52123956309042"
         },
         "share": {
           "width": 3200,
           "height": 2400,
-          "bytes": 1362600,
-          "sha256": "ef7f812b7d61727f915b8fa6dea0864dfa7939bc343b43a9f8b4396072576ac8"
+          "bytes": 666872,
+          "sha256": "3d99bf547ddf424459962e9e0c58deeabc66f7cee0044713be04680d97217c64"
         }
       }
     },
     {
-      "id": "photo-b44e1fc3e00d381be5c9",
-      "filename": "IMG_20261013_150415_031.jpg",
-      "sha256": "b44e1fc3e00d381be5c9e9af1a53fb671a3f7efe8e5d63f4fa4e8c27e8934b7f",
-      "bytes": 3411061,
+      "id": "photo-b98a507c25a2dc950f15",
+      "filename": "IMG_20261013_141600_014.jpg",
+      "sha256": "b98a507c25a2dc950f1514086b089c92a8d923b2413e5395297a01f89c0ee3cb",
+      "bytes": 2163099,
       "width": 4032,
       "height": 3024,
       "sourceId": "insta360",
       "photographer": "Bulent Sahin",
       "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:04:17",
+      "rawCaptureTime": "2026:10:13 14:16:03",
       "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:04:17.000Z",
-      "capturedLocal": "2026-10-13 14:04:17",
-      "calibrationStatus": "user-confirmed",
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T11:16:03.000Z",
+      "capturedLocal": "2026-10-13 14:16:03",
+      "calibrationStatus": "recording-verified",
       "images": {
         "thumbnail": {
           "width": 480,
           "height": 360,
-          "bytes": 42103,
-          "sha256": "e8fcf12eef4a5743f4c763d8ebffb564dcad17578aff73ccda6fd2e57ac7be3c"
+          "bytes": 34014,
+          "sha256": "945657cbe33bd51d8dfbe4a0ab9fabd956f026f8110da80c165e2f8e7fc03720"
         },
         "preview": {
           "width": 1800,
           "height": 1350,
-          "bytes": 433624,
-          "sha256": "b3fa39008931cb15ff483ac3c85444b926af38640d7c03a6389c245f0191255f"
+          "bytes": 233393,
+          "sha256": "ddfd91075889aed4dbd07f42f336ed43b80d7a2c8e6a36c04de657cb6c1dcdfe"
         },
         "share": {
           "width": 3200,
           "height": 2400,
-          "bytes": 1306909,
-          "sha256": "d4dd1f9668d45873cf8982dd8b2ab2f6317b3d50b375f632478fc826e776bfed"
-        }
-      }
-    },
-    {
-      "id": "photo-033f84d9d0afaae4ca89",
-      "filename": "IMG_20261013_150433_032.jpg",
-      "sha256": "033f84d9d0afaae4ca892975d7bb535706ff81a0d31d16a235f759f2e0cfd584",
-      "bytes": 3387123,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:04:36",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:04:36.000Z",
-      "capturedLocal": "2026-10-13 14:04:36",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 40505,
-          "sha256": "29598a33619809779b6dfbd12a3fdd62b55fdbfcfeb0a46293443d4831d860b0"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 425021,
-          "sha256": "d5df45fbe6a659d0ecec67842d739616e0c468781b854703d8d22e1383993d56"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 1279105,
-          "sha256": "16058040a5f7085bb23ecea28bbac779a837d1484aec2b6341872f7ca88cbf58"
-        }
-      }
-    },
-    {
-      "id": "photo-74a574ee5b044366950c",
-      "filename": "IMG_20261013_150517_033.jpg",
-      "sha256": "74a574ee5b044366950c8230c2a1a5b61236501075ff0e984ccf0847f4f3f99b",
-      "bytes": 2775744,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:05:20",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:05:20.000Z",
-      "capturedLocal": "2026-10-13 14:05:20",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 40340,
-          "sha256": "a5ecbad62fb6d2d5d5ec60d4e29c344a8baca04207bdc168746b651779522407"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 348137,
-          "sha256": "bd27eded51526af6215eaaa3a6f6cf332471be0cf0e7f0a12a825b1eb2736a53"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 980381,
-          "sha256": "5e28009a56d35e9e686be589a93e6f7c89fc012c8b130cfc36b76d68fad6388f"
-        }
-      }
-    },
-    {
-      "id": "photo-2dcaf8f49092ab782392",
-      "filename": "IMG_20261013_150521_034.jpg",
-      "sha256": "2dcaf8f49092ab78239205734ab3d2dfd80c418b96af1ee6e058bc725e34a32b",
-      "bytes": 3377522,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:05:23",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:05:23.000Z",
-      "capturedLocal": "2026-10-13 14:05:23",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 42318,
-          "sha256": "b8a39c0394a5ea3d84ec4fbb9d08f44e9b4a9b472cab26f3ed831a05c8bfee94"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 421376,
-          "sha256": "6c1df183581f36f22f2d9b83dabbb990222e3324b9227ab218b6281a425744e2"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 1256130,
-          "sha256": "137cf33563c29f8458ee1520bc432c199aca5b94a7c2e2f70111723b035025e2"
-        }
-      }
-    },
-    {
-      "id": "photo-ac0289d835df0423935e",
-      "filename": "IMG_20261013_150600_035.jpg",
-      "sha256": "ac0289d835df0423935e4037156cbec0a3ca63754b55450718c45654290b7d20",
-      "bytes": 2436295,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:06:03",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:06:03.000Z",
-      "capturedLocal": "2026-10-13 14:06:03",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 33893,
-          "sha256": "af0b31424346410de377c9caf5bc97016e4cb370406b2cd6bc9059bcacb3d352"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 280662,
-          "sha256": "26b080cc09d43b0849bc399b8e27724ed22485cdfafe88469dd34645124488cc"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 803144,
-          "sha256": "38ccb5f3e3f6c651533bf171bbd8c7723937f3c1d65cfbdb077731bf8ff5f383"
-        }
-      }
-    },
-    {
-      "id": "photo-53110811329dddeb70ab",
-      "filename": "IMG_20261013_150605_036.jpg",
-      "sha256": "53110811329dddeb70ab28096accf715791892c0f13abe9a68a7c44962300d44",
-      "bytes": 2677600,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:06:07",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:06:07.000Z",
-      "capturedLocal": "2026-10-13 14:06:07",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 40572,
-          "sha256": "aeb275db124793941c6345e0eb759d61afc8cec407bf784fce774ceb4067edb9"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 329653,
-          "sha256": "200032db718750ab813ca47022040b43fb8cb5160f652336f784c84eab788957"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 936737,
-          "sha256": "142c986271b7f60b62ea4c0c34c03b19ecc3e5e0d71d5fe263de7968ca6d9521"
-        }
-      }
-    },
-    {
-      "id": "photo-ee49381450b751ec6f73",
-      "filename": "IMG_20261013_150621_037.jpg",
-      "sha256": "ee49381450b751ec6f731a3e171cf46a4861a204dae655ef00c0de5b593bced7",
-      "bytes": 2448308,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:06:24",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:06:24.000Z",
-      "capturedLocal": "2026-10-13 14:06:24",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 37376,
-          "sha256": "1234e7c42e0207f2a16525f1128402af2b9ac9ea302928aed696f0a1e1e4a64b"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 289830,
-          "sha256": "3fcce7ed89c00696cda2ac0a2ebb8b01ec3f1083ced81d57d5a6ee0c09e564d7"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 804793,
-          "sha256": "d623f96e0a7005d173905f62fabdb57d341920784af9b75ae84519b2540b8c46"
-        }
-      }
-    },
-    {
-      "id": "photo-adf7e7f7ee3f6eb6d275",
-      "filename": "IMG_20261013_150630_038.jpg",
-      "sha256": "adf7e7f7ee3f6eb6d275c967305a9f06b977a921a7622cb4196ba427e2875316",
-      "bytes": 2837334,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:06:33",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:06:33.000Z",
-      "capturedLocal": "2026-10-13 14:06:33",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 38516,
-          "sha256": "7a50bc2c8856724b6434adf6e517aa97cac2835c0d4a50945a75073ff142394d"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 331788,
-          "sha256": "de499ca57f99e2fd69b118c6f7e2645db8127b7cf31dba81f8e96d57fe39b7a1"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 977772,
-          "sha256": "d7bdf4b5ac02995c24214dd3b8b40a6bd6fbf9cbd54992e4edc63c8285926d9f"
-        }
-      }
-    },
-    {
-      "id": "photo-cfb9da995523a704aa34",
-      "filename": "IMG_20261013_150806_039.jpg",
-      "sha256": "cfb9da995523a704aa34193a685596b94da29c0841793ffb2fd59372315c8239",
-      "bytes": 2910114,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:08:09",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:08:09.000Z",
-      "capturedLocal": "2026-10-13 14:08:09",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 38771,
-          "sha256": "a8fcf0cb0f23d5f2d8d9207c6c60dfd3032737cd0f8f5b8a13d0acac96624980"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 365721,
-          "sha256": "9975e5ecac8a54a1dacf80f5d525159dd782d12ec6ce181df95062e6e94a7efb"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 1061770,
-          "sha256": "c2471d3d43713c0d05bbbbfd34e9af40badd0b1a55fb61c898df35f03dde9173"
-        }
-      }
-    },
-    {
-      "id": "photo-abb4115bfee6cf3dcfaa",
-      "filename": "IMG_20261013_150826_040.jpg",
-      "sha256": "abb4115bfee6cf3dcfaa0e905d8a0c5cf677c9178c41c309cbff3bfcdf976458",
-      "bytes": 2808071,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:08:29",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:08:29.000Z",
-      "capturedLocal": "2026-10-13 14:08:29",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 46036,
-          "sha256": "8533c680da698b570de48de7ac6ffacf2ce37ade9ae63e9c12152934e9648752"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 360559,
-          "sha256": "f0ef94a0fa69a4c13a3e73814c9d1c1ca648fe7b46029bd7e2bd9b84cf39df2d"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 1010070,
-          "sha256": "30e3250d5941c2c276f770958533bb4bed31cd8df6515f17eef0d7e0847b0b89"
-        }
-      }
-    },
-    {
-      "id": "photo-7564061568fb452bb831",
-      "filename": "IMG_20261013_151149_041.jpg",
-      "sha256": "7564061568fb452bb8312a6383a9a6ecfd6ba8a2ca821a84658b3cf0c78e14aa",
-      "bytes": 2687144,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:11:52",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:11:52.000Z",
-      "capturedLocal": "2026-10-13 14:11:52",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 43019,
-          "sha256": "a9f468a618eb80f7c2416b661d2d02af7926e3431c6f683d82099763f6c4b087"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 338515,
-          "sha256": "189b438517536f89e55559e2e4d0c1d53e3ee0a27150e8535c35f2f22cdd6573"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 951548,
-          "sha256": "76afc0d51e29355a09fbe2faeceeb0c61f75cb5c4cea9ec27c730bfab7468a27"
+          "bytes": 643562,
+          "sha256": "d5ac7e27908218c582e2b9038f307bcb56199c641124e977f3fa75caef41450f"
         }
       }
     },
@@ -4157,6 +3381,43 @@
       }
     },
     {
+      "id": "photo-44351ebb7486135dcb82",
+      "filename": "IMG_20261013_141709_015.jpg",
+      "sha256": "44351ebb7486135dcb82a7311c670e4d493930546b2e0e796c3b7764540d08b2",
+      "bytes": 2328176,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 14:17:12",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T11:17:12.000Z",
+      "capturedLocal": "2026-10-13 14:17:12",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 36817,
+          "sha256": "23ce58ca98b307a78a3eb1ad7015fc1e2f6828364e826144dfedb1e92d40652a"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 263089,
+          "sha256": "2daf417f636f0b2b9ac65afa67d39ca7843f5b0c0d5420ce490602347a1d3b7a"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 732235,
+          "sha256": "ffbdd08d3e6f65a5f4ae1cff9ef88b71f575a3c705af00f144e0562e885f03c6"
+        }
+      }
+    },
+    {
       "id": "photo-a61b1dc914f83161db89",
       "filename": "DSCF6665.jpeg",
       "sha256": "a61b1dc914f83161db8929d1f827408b13744204ce8a2075917bd4ff72657e87",
@@ -4190,6 +3451,43 @@
           "height": 2133,
           "bytes": 649050,
           "sha256": "a61e182196a32f067952e0ae6dbf40ff64b755bc0475342077107207d3f5d0d6"
+        }
+      }
+    },
+    {
+      "id": "photo-590e14e3fa6ddf099e33",
+      "filename": "IMG_20261013_141740_016.jpg",
+      "sha256": "590e14e3fa6ddf099e333bd66f993215083a6062e349567143c25ca5a13483fa",
+      "bytes": 2195556,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 14:17:42",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T11:17:42.000Z",
+      "capturedLocal": "2026-10-13 14:17:42",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 34242,
+          "sha256": "e867efb10588dd480bd67294d53bda0e94ec31e775c4bcc788435ff3474c8042"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 239781,
+          "sha256": "978bc199095e04a55b1660f9204364907d36b1935e8a0e0cdc273aa673135758"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 656948,
+          "sha256": "259407166ed5b615d97eeba9e028f4797448b0573f9c50d8c4b8db5b24f93bbb"
         }
       }
     },
@@ -4231,520 +3529,113 @@
       }
     },
     {
-      "id": "photo-2d732f7162e462459295",
-      "filename": "IMG_20261013_152224_042.jpg",
-      "sha256": "2d732f7162e46245929550552f068de0dea3e2ce6303a07b5c8b2662711e71d8",
-      "bytes": 2689179,
+      "id": "photo-9fb72df35d6a37491a63",
+      "filename": "IMG_20261013_141929_018.jpg",
+      "sha256": "9fb72df35d6a37491a6350d82294c7ea0c1b00cec4081364296e10fe3bd83a7a",
+      "bytes": 2281240,
       "width": 4032,
       "height": 3024,
       "sourceId": "insta360",
       "photographer": "Bulent Sahin",
       "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:22:27",
+      "rawCaptureTime": "2026:10:13 14:19:32",
       "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:22:27.000Z",
-      "capturedLocal": "2026-10-13 14:22:27",
-      "calibrationStatus": "user-confirmed",
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T11:19:32.000Z",
+      "capturedLocal": "2026-10-13 14:19:32",
+      "calibrationStatus": "recording-verified",
       "images": {
         "thumbnail": {
           "width": 480,
           "height": 360,
-          "bytes": 45360,
-          "sha256": "8fe99db6536e79647ce5db7d8a613903429a2d90c9a8a0b318d31f45867f3856"
+          "bytes": 35528,
+          "sha256": "eae4c7a070c37a0adb10eeece9f47a8c56e2760bd3da662e51da81d592ab2f31"
         },
         "preview": {
           "width": 1800,
           "height": 1350,
-          "bytes": 343661,
-          "sha256": "69699203fa7c306d6db6da2ed9285ee92488d70539a8025cda17d4b532e798b7"
+          "bytes": 253766,
+          "sha256": "065fe160b88bc8e8f76a9b3a06a0a571b46299741c17bca62f67d9e256a88b2c"
         },
         "share": {
           "width": 3200,
           "height": 2400,
-          "bytes": 947121,
-          "sha256": "fd355bdc1617cb2e3f90c0e0a62666791aac8883378c78a71a70faa94e44a7d0"
+          "bytes": 702531,
+          "sha256": "ee253539bf0546b8c916263194d5a70feabb4e06d97b03f75483ee7c7115e899"
         }
       }
     },
     {
-      "id": "photo-86c7fc64a14d66ca57d3",
-      "filename": "IMG_20261013_152231_043.jpg",
-      "sha256": "86c7fc64a14d66ca57d3face19f17b087e17bdf20f58358e443d21c31d2031d9",
-      "bytes": 3029359,
+      "id": "photo-7c7f58a814217ba299eb",
+      "filename": "IMG_20261013_144513_019.jpg",
+      "sha256": "7c7f58a814217ba299eb28e512863f8949c306fb478071b553e9c17db2dd20f8",
+      "bytes": 2236991,
       "width": 4032,
       "height": 3024,
       "sourceId": "insta360",
       "photographer": "Bulent Sahin",
       "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:22:34",
+      "rawCaptureTime": "2026:10:13 14:45:16",
       "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:22:34.000Z",
-      "capturedLocal": "2026-10-13 14:22:34",
-      "calibrationStatus": "user-confirmed",
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T11:45:16.000Z",
+      "capturedLocal": "2026-10-13 14:45:16",
+      "calibrationStatus": "recording-verified",
       "images": {
         "thumbnail": {
           "width": 480,
           "height": 360,
-          "bytes": 42011,
-          "sha256": "bdbcde1e230e79b4a4f289ae99e5b2d6bbb93b4a4837d4946a1c952be4290319"
+          "bytes": 36097,
+          "sha256": "a99bc029082208962c505fc17866f8a5b17b09c19c5e634791effab293a8969f"
         },
         "preview": {
           "width": 1800,
           "height": 1350,
-          "bytes": 365202,
-          "sha256": "8cad0f23a06e3e0d5796c472f2754511b0ba8409a77e44e06bd8054a4fc76cf2"
+          "bytes": 255426,
+          "sha256": "d9396ca74b43b33d4207b43a37d81525994d6becaa402019560edf4286babd7d"
         },
         "share": {
           "width": 3200,
           "height": 2400,
-          "bytes": 1081369,
-          "sha256": "51b7caa154e2356ef7767ae53b430982cdb0b040bf5bf3c0a9adeae35b8d98bb"
+          "bytes": 696811,
+          "sha256": "d260dc992140d4187c4aba7b70ab94f029156b7905c00a0fabf9d9393a487cee"
         }
       }
     },
     {
-      "id": "photo-f44ce30fb2d1b6da1ed2",
-      "filename": "IMG_20261013_152444_044.jpg",
-      "sha256": "f44ce30fb2d1b6da1ed2a644aecfbad06cdfb601425ac0543069037fd56afc4f",
-      "bytes": 3600707,
+      "id": "photo-92c28265134ea3d92139",
+      "filename": "IMG_20261013_144603_020.jpg",
+      "sha256": "92c28265134ea3d921395c788a7ae9f5ee62bb0d39cf9e4ba2e3405fb4a44a59",
+      "bytes": 2500193,
       "width": 4032,
       "height": 3024,
       "sourceId": "insta360",
       "photographer": "Bulent Sahin",
       "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:24:47",
+      "rawCaptureTime": "2026:10:13 14:46:06",
       "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:24:47.000Z",
-      "capturedLocal": "2026-10-13 14:24:47",
-      "calibrationStatus": "user-confirmed",
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T11:46:06.000Z",
+      "capturedLocal": "2026-10-13 14:46:06",
+      "calibrationStatus": "recording-verified",
       "images": {
         "thumbnail": {
           "width": 480,
           "height": 360,
-          "bytes": 46956,
-          "sha256": "fbb849f63325e957236f3a58bfebf00a9d81f59bf8c473c4f084d63d1b5880a4"
+          "bytes": 43697,
+          "sha256": "d60c745dca7e3364efecb6e6d6927269600dd1b496b0eb814f26843b5741402f"
         },
         "preview": {
           "width": 1800,
           "height": 1350,
-          "bytes": 468609,
-          "sha256": "72a130c3d811e7fdfe77b8d6237fea1e492ee4df6b90d45e95053e444600460d"
+          "bytes": 306725,
+          "sha256": "2bfb3f34247fcebd20b5ce5ee37ab71186e6b6481c3bfdc5aefdb3e8439b2012"
         },
         "share": {
           "width": 3200,
           "height": 2400,
-          "bytes": 1381806,
-          "sha256": "4edbf25c23d550887b027cdc2ee4ccb3e14f9e9e15316e0f6038a2749c571333"
-        }
-      }
-    },
-    {
-      "id": "photo-a852e393451e30617765",
-      "filename": "IMG_20261013_152644_045.jpg",
-      "sha256": "a852e393451e30617765ec3412571760a9043d57b7c41cf5c98a8d94f1e2859c",
-      "bytes": 3046365,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:26:46",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:26:46.000Z",
-      "capturedLocal": "2026-10-13 14:26:46",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 44054,
-          "sha256": "32e20a0371760af5766fcb197991a176e949a7aa004594f57bb947e4a0d40dbe"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 384054,
-          "sha256": "a5da0c037195df71ae744ea37136fa66bb23f0a3af215bfec0a434fc2257dbb5"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 1113534,
-          "sha256": "4196c26df5010304d2a2164236fe324ffdf2db681563073a0790a8b640fb3c4c"
-        }
-      }
-    },
-    {
-      "id": "photo-86dcbee9783887853ea5",
-      "filename": "IMG_20261013_152650_046.jpg",
-      "sha256": "86dcbee9783887853ea52d8ade2a6edeffef445818a20954602f0dfd25087402",
-      "bytes": 3362893,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:26:52",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:26:52.000Z",
-      "capturedLocal": "2026-10-13 14:26:52",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 43177,
-          "sha256": "60657f31fdcc98a9917510d3e82fb52192785b7bdced8e5a0d1e6079f1fdfe15"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 427811,
-          "sha256": "d440fcc67a9d1540c474c0acd6ed348ddba19361bdbb68c66e0806fd65b3db7c"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 1276537,
-          "sha256": "af7abcb130980e09ad53b7b3f2c8d610133a60a123a8239b81666d18683cf032"
-        }
-      }
-    },
-    {
-      "id": "photo-e8016034b7a1fee10def",
-      "filename": "IMG_20261013_152728_047.jpg",
-      "sha256": "e8016034b7a1fee10deff1c9056837459b9cfd23aacc85ca229d3a6a1854b384",
-      "bytes": 2517855,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:27:31",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:27:31.000Z",
-      "capturedLocal": "2026-10-13 14:27:31",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 36500,
-          "sha256": "8eeaf62c8e78e2fdd79a2cd9e63b1b934e62862821bec22609ed18996fd3706c"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 306840,
-          "sha256": "ca132a1a3b2250b16dc412db6702f60be6d0046f7cdcc824bb7c5f9c8ed216aa"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 870928,
-          "sha256": "5f318ac500174da155a2ae689d5be607e8445e1f4697fab1cfff1c566a574691"
-        }
-      }
-    },
-    {
-      "id": "photo-ddf7e7e1c632289fed50",
-      "filename": "IMG_20261013_153421_048.jpg",
-      "sha256": "ddf7e7e1c632289fed5028b0243ee44ae99ee440ffb28ff1bbaf5d56a0f9553f",
-      "bytes": 2152917,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:34:24",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:34:24.000Z",
-      "capturedLocal": "2026-10-13 14:34:24",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 36852,
-          "sha256": "4a4f58e13b761d78592637a9a341e194bee2e290d1fa18eec0eaebc54627eb4d"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 243915,
-          "sha256": "1b82dd521e3a6b7f67333c8e25ca20bc6bae13f2d06db168e119c945a3ea3a6d"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 662274,
-          "sha256": "f659e493182a194fa100c80279f674e5fc1051483bf699e24f029d341cdc55c2"
-        }
-      }
-    },
-    {
-      "id": "photo-3892dc850ad6320724bc",
-      "filename": "IMG_20261013_153430_049.jpg",
-      "sha256": "3892dc850ad6320724bcd3ade2f4b46ee999b5d522560fe212b74adf874e1f1a",
-      "bytes": 2146586,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:34:33",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:34:33.000Z",
-      "capturedLocal": "2026-10-13 14:34:33",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 35646,
-          "sha256": "6fa89353c9972b527c36b12f00a5d23e9d304614317b9a7d5cc5e69923eba987"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 234651,
-          "sha256": "879a96519fa64a3534274b8427255447d812ab8a742c8284b0a3b45a25a79ee1"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 640044,
-          "sha256": "7b8de9b9c5af3f2d530f9494abf0506902bc824b3dfadce709209e4bfddcb560"
-        }
-      }
-    },
-    {
-      "id": "photo-d3dc28e8420e05a1ff46",
-      "filename": "IMG_20261013_153452_050.jpg",
-      "sha256": "d3dc28e8420e05a1ff46d31343110f3acd76952f892c78a37dc6154c92f59a64",
-      "bytes": 1963086,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:34:55",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:34:55.000Z",
-      "capturedLocal": "2026-10-13 14:34:55",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 30472,
-          "sha256": "5d8ed31f7cd316b6c3b5c20f1bb7deaaaf1c33a51b66c33c227c9ebd1f082118"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 197261,
-          "sha256": "67b49296bea76e825ca5c230f6a1d7c94c7bff12d9e82bcdb8198f11065c0d55"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 535047,
-          "sha256": "1a6682b44cdc1341d39b53cbb86c039b70e23e1665463d7eb933f12c4c231a9d"
-        }
-      }
-    },
-    {
-      "id": "photo-c1bc5facec5e9bda9cbc",
-      "filename": "IMG_20261013_153519_051.jpg",
-      "sha256": "c1bc5facec5e9bda9cbcfd174136729ca4a8cf5d0c21ed3b21151282c6a64c3a",
-      "bytes": 2091933,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:35:22",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:35:22.000Z",
-      "capturedLocal": "2026-10-13 14:35:22",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 33401,
-          "sha256": "c871f9dea5471a543fd7db6daa7573c3f6ef266bd1c0f54e68d0d20c6d736fa6"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 220080,
-          "sha256": "4f09662f2b6f27282a154f1f25c009b31dd2892f1cb6c31c133f97fbc7b1bde0"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 600079,
-          "sha256": "6655b9f88af5361a9b12e5f095c4836571eda40a084f25e1c10c3aeb02e8d255"
-        }
-      }
-    },
-    {
-      "id": "photo-4ee98602203e60187a94",
-      "filename": "IMG_20261013_153645_054.jpg",
-      "sha256": "4ee98602203e60187a945513455ff53eb307199028fb8cf7f475632abebe14c1",
-      "bytes": 2266789,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:36:48",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:36:48.000Z",
-      "capturedLocal": "2026-10-13 14:36:48",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 35591,
-          "sha256": "537e67a9617e3a28f30f975500e6f7eeef45551c61e2bea796a5143533606027"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 258217,
-          "sha256": "01c954623a477ab5bd464318a79aa776d34e6c750227ef81410482b633a5960c"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 709042,
-          "sha256": "a2d6e7e893c361a73e57f2d7ee896434e104c40866640c4625f54eab8e3ebe8d"
-        }
-      }
-    },
-    {
-      "id": "photo-76aaa5841d435eb26dbc",
-      "filename": "IMG_20261013_153723_055.jpg",
-      "sha256": "76aaa5841d435eb26dbc6adce9287e8dbc430ba4e2ab6c40f8b3c022492e2672",
-      "bytes": 2174854,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:37:26",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:37:26.000Z",
-      "capturedLocal": "2026-10-13 14:37:26",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 33450,
-          "sha256": "4071e5bc7d5d756a70ee117b3b809786728eb9d7bbaee96b49f63b2b26376a57"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 239683,
-          "sha256": "32b3de0ce5f751cb19d3ba4ebb1501bdd200f57acb7225f45f53a07260dd749e"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 659475,
-          "sha256": "74c1dbe485fd2550c185f19b1af13b9856e4638ca9cb675b53f6d13e5540b05b"
-        }
-      }
-    },
-    {
-      "id": "photo-ad0f3107764b884a4905",
-      "filename": "IMG_20261013_153728_056.jpg",
-      "sha256": "ad0f3107764b884a4905dd5f781c5ebcb50d3ffdf1beb031d3eddd4c614cbea8",
-      "bytes": 2021962,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:37:31",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:37:31.000Z",
-      "capturedLocal": "2026-10-13 14:37:31",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 30349,
-          "sha256": "8609aab3d31c0a39a24130074a0a920c52bbabe0443ce488bd034e3737459ce0"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 209131,
-          "sha256": "150b0857acafdf5120898783e24f841b3585779b0e0061f1db5852bd861c4787"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 573269,
-          "sha256": "ce79a1a24563a079ec6312f670a22892ef26664db23a2e08ada364902bbb0ba3"
-        }
-      }
-    },
-    {
-      "id": "photo-7d606c4529f5edb59172",
-      "filename": "IMG_20261013_153835_057.jpg",
-      "sha256": "7d606c4529f5edb59172dbf8860b996e38d74630344411f314489a2e59cd60c1",
-      "bytes": 2039733,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:38:38",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:38:38.000Z",
-      "capturedLocal": "2026-10-13 14:38:38",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 30173,
-          "sha256": "2bd67e7d793dc9ed7a4493ad910cb9bdf72f0b3433f86572de2b22b6a90cb312"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 204211,
-          "sha256": "c8942067ef5f76d6228ff7ac33cb797f917f3d2095715d1ade8a4552b21df2b0"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 569668,
-          "sha256": "d0b939f463353e0c439788d4a800f61cb4d58dd8b252ff040d6b2bc07725795d"
+          "bytes": 829979,
+          "sha256": "735dc5fc247ddbd2d615cdbc257ffad6ef5a441a9850bae2af1b15f693d1253e"
         }
       }
     },
@@ -4823,6 +3714,117 @@
       }
     },
     {
+      "id": "photo-81c1beb9d3ef995d3adb",
+      "filename": "IMG_20261013_145022_023.jpg",
+      "sha256": "81c1beb9d3ef995d3adbf99bbe94bfee8d74af68d9dc2a61fb5cd61b4afb2ae3",
+      "bytes": 2501864,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 14:50:25",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T11:50:25.000Z",
+      "capturedLocal": "2026-10-13 14:50:25",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 45083,
+          "sha256": "22b771797979978ad79213362883a11ba22bfceade87be7e53a921373c3824b7"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 312483,
+          "sha256": "ab011f963214116ba5e4ffbe91deb891921e81ed9df81d116be360ef0058e4fc"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 831307,
+          "sha256": "b6d422a4824f3140bf8a21120d7bcbac1d5ae1ff20c33e8515db34efca951d2d"
+        }
+      }
+    },
+    {
+      "id": "photo-b42a22c5ce7feacec809",
+      "filename": "IMG_20261013_145028_024.jpg",
+      "sha256": "b42a22c5ce7feacec80961dd61adb26f0ae2bab495d50afbd89feb4c08899a0b",
+      "bytes": 2437778,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 14:50:31",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T11:50:31.000Z",
+      "capturedLocal": "2026-10-13 14:50:31",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 43235,
+          "sha256": "abddb9fb83f4dff370e305ea8edf75179ddc2f33c10a1a581271c0162511bc9b"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 299350,
+          "sha256": "87c8d65ce129512aea5c5ed05ed6c2fe1c4ae20d8699b10d231c1c20e1451c65"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 795261,
+          "sha256": "8115e4767289fc409915bab5ff90dce3aba9a8dd0cdf7997dbed53ac5b463f20"
+        }
+      }
+    },
+    {
+      "id": "photo-859250505d6ffafb77fb",
+      "filename": "IMG_20261013_145903_025.jpg",
+      "sha256": "859250505d6ffafb77fbe45c41b8e707dbc8725b6be26cda7b1e21561cb9662a",
+      "bytes": 8001187,
+      "width": 8064,
+      "height": 4536,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 14:59:03",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T11:59:03.000Z",
+      "capturedLocal": "2026-10-13 14:59:03",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 270,
+          "bytes": 32316,
+          "sha256": "0247b234bad85af437d7a0fe7bffec8eae3b9c430864c6f4409bb2f5a4731bdb"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1013,
+          "bytes": 307723,
+          "sha256": "688ea176f5f9cff0bfca9f413427c1c819889145ff72d331e420ad92abe6c955"
+        },
+        "share": {
+          "width": 3200,
+          "height": 1800,
+          "bytes": 1024885,
+          "sha256": "257eeb85ff4b85a3c6a3b6cabf9e8adfc992661749ba67b2edc0bc3e10d71555"
+        }
+      }
+    },
+    {
       "id": "photo-c1764ef1d4e3646fb547",
       "filename": "DSCF6670.jpeg",
       "sha256": "c1764ef1d4e3646fb54749a39960f19945e4e73388d66b45245985ff0ee4b0c1",
@@ -4860,43 +3862,6 @@
       }
     },
     {
-      "id": "photo-5b5e322c4a380914a7b1",
-      "filename": "IMG_20261013_155947_062.jpg",
-      "sha256": "5b5e322c4a380914a7b1f24a6f42c5e5de92be0f6369fc02b16a67671b553297",
-      "bytes": 2250036,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 15:59:50",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T11:59:50.000Z",
-      "capturedLocal": "2026-10-13 14:59:50",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 36619,
-          "sha256": "f79fbfcc05700f02a2528ee6c892fd10027fbedfed5f91f4985d5fb45bfd8fb6"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 253003,
-          "sha256": "c3998fc797876a5bd08ef549eee6bf7a2823df64404324528d63f34439c097b0"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 694377,
-          "sha256": "07bcf25dbe3ec2f7cf18c6d4fc40a5043b39c09dde3f5c1d874ad98f0bb310ba"
-        }
-      }
-    },
-    {
       "id": "photo-c8b4bef9056d3a5aff57",
       "filename": "DSCF6671.jpeg",
       "sha256": "c8b4bef9056d3a5aff57e7599c81122fdaaee9112924a6e243c9cadf0ac3d91a",
@@ -4930,6 +3895,450 @@
           "height": 2133,
           "bytes": 759101,
           "sha256": "ac7833fb6a87b0afff231f194763a3c142a27aefc25697baad551aee53be9208"
+        }
+      }
+    },
+    {
+      "id": "photo-3ab6e90944fae0f4c8f9",
+      "filename": "IMG_20261013_150332_029.jpg",
+      "sha256": "3ab6e90944fae0f4c8f93ab266ab46fecd6fd710611cdb59a24a2711765ca9b8",
+      "bytes": 2914614,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 15:03:34",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:03:34.000Z",
+      "capturedLocal": "2026-10-13 15:03:34",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 38845,
+          "sha256": "673b2738eccb608a939a7a63ef6200754d72e69e90d08734d12a9d67a1df0c89"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 359653,
+          "sha256": "3956b6bcffb92fd0ce837bd84b8874a7687262cf2b34589b851762b5e0b9e412"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 1040142,
+          "sha256": "1d8ee597437e7d1b2c9001395e731daf02bc5205ae0ff3cdbdd54a29fabd6019"
+        }
+      }
+    },
+    {
+      "id": "photo-1e96aac463248d6ff461",
+      "filename": "IMG_20261013_150400_030.jpg",
+      "sha256": "1e96aac463248d6ff461534afad68173dc1d9f44f9d40e72d0a566fce64d8d9d",
+      "bytes": 3524630,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 15:04:03",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:04:03.000Z",
+      "capturedLocal": "2026-10-13 15:04:03",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 43894,
+          "sha256": "d37268420aa755a05f578e261201d27145fe78ae9e4876e48764d03342fe016c"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 456344,
+          "sha256": "772e19286cd8902c35c41f0bab6c47229473edf5aa122754c497a97db28cf7c8"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 1362600,
+          "sha256": "ef7f812b7d61727f915b8fa6dea0864dfa7939bc343b43a9f8b4396072576ac8"
+        }
+      }
+    },
+    {
+      "id": "photo-b44e1fc3e00d381be5c9",
+      "filename": "IMG_20261013_150415_031.jpg",
+      "sha256": "b44e1fc3e00d381be5c9e9af1a53fb671a3f7efe8e5d63f4fa4e8c27e8934b7f",
+      "bytes": 3411061,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 15:04:17",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:04:17.000Z",
+      "capturedLocal": "2026-10-13 15:04:17",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 42103,
+          "sha256": "e8fcf12eef4a5743f4c763d8ebffb564dcad17578aff73ccda6fd2e57ac7be3c"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 433624,
+          "sha256": "b3fa39008931cb15ff483ac3c85444b926af38640d7c03a6389c245f0191255f"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 1306909,
+          "sha256": "d4dd1f9668d45873cf8982dd8b2ab2f6317b3d50b375f632478fc826e776bfed"
+        }
+      }
+    },
+    {
+      "id": "photo-033f84d9d0afaae4ca89",
+      "filename": "IMG_20261013_150433_032.jpg",
+      "sha256": "033f84d9d0afaae4ca892975d7bb535706ff81a0d31d16a235f759f2e0cfd584",
+      "bytes": 3387123,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 15:04:36",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:04:36.000Z",
+      "capturedLocal": "2026-10-13 15:04:36",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 40505,
+          "sha256": "29598a33619809779b6dfbd12a3fdd62b55fdbfcfeb0a46293443d4831d860b0"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 425021,
+          "sha256": "d5df45fbe6a659d0ecec67842d739616e0c468781b854703d8d22e1383993d56"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 1279105,
+          "sha256": "16058040a5f7085bb23ecea28bbac779a837d1484aec2b6341872f7ca88cbf58"
+        }
+      }
+    },
+    {
+      "id": "photo-74a574ee5b044366950c",
+      "filename": "IMG_20261013_150517_033.jpg",
+      "sha256": "74a574ee5b044366950c8230c2a1a5b61236501075ff0e984ccf0847f4f3f99b",
+      "bytes": 2775744,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 15:05:20",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:05:20.000Z",
+      "capturedLocal": "2026-10-13 15:05:20",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 40340,
+          "sha256": "a5ecbad62fb6d2d5d5ec60d4e29c344a8baca04207bdc168746b651779522407"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 348137,
+          "sha256": "bd27eded51526af6215eaaa3a6f6cf332471be0cf0e7f0a12a825b1eb2736a53"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 980381,
+          "sha256": "5e28009a56d35e9e686be589a93e6f7c89fc012c8b130cfc36b76d68fad6388f"
+        }
+      }
+    },
+    {
+      "id": "photo-2dcaf8f49092ab782392",
+      "filename": "IMG_20261013_150521_034.jpg",
+      "sha256": "2dcaf8f49092ab78239205734ab3d2dfd80c418b96af1ee6e058bc725e34a32b",
+      "bytes": 3377522,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 15:05:23",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:05:23.000Z",
+      "capturedLocal": "2026-10-13 15:05:23",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 42318,
+          "sha256": "b8a39c0394a5ea3d84ec4fbb9d08f44e9b4a9b472cab26f3ed831a05c8bfee94"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 421376,
+          "sha256": "6c1df183581f36f22f2d9b83dabbb990222e3324b9227ab218b6281a425744e2"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 1256130,
+          "sha256": "137cf33563c29f8458ee1520bc432c199aca5b94a7c2e2f70111723b035025e2"
+        }
+      }
+    },
+    {
+      "id": "photo-ac0289d835df0423935e",
+      "filename": "IMG_20261013_150600_035.jpg",
+      "sha256": "ac0289d835df0423935e4037156cbec0a3ca63754b55450718c45654290b7d20",
+      "bytes": 2436295,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 15:06:03",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:06:03.000Z",
+      "capturedLocal": "2026-10-13 15:06:03",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 33893,
+          "sha256": "af0b31424346410de377c9caf5bc97016e4cb370406b2cd6bc9059bcacb3d352"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 280662,
+          "sha256": "26b080cc09d43b0849bc399b8e27724ed22485cdfafe88469dd34645124488cc"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 803144,
+          "sha256": "38ccb5f3e3f6c651533bf171bbd8c7723937f3c1d65cfbdb077731bf8ff5f383"
+        }
+      }
+    },
+    {
+      "id": "photo-53110811329dddeb70ab",
+      "filename": "IMG_20261013_150605_036.jpg",
+      "sha256": "53110811329dddeb70ab28096accf715791892c0f13abe9a68a7c44962300d44",
+      "bytes": 2677600,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 15:06:07",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:06:07.000Z",
+      "capturedLocal": "2026-10-13 15:06:07",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 40572,
+          "sha256": "aeb275db124793941c6345e0eb759d61afc8cec407bf784fce774ceb4067edb9"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 329653,
+          "sha256": "200032db718750ab813ca47022040b43fb8cb5160f652336f784c84eab788957"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 936737,
+          "sha256": "142c986271b7f60b62ea4c0c34c03b19ecc3e5e0d71d5fe263de7968ca6d9521"
+        }
+      }
+    },
+    {
+      "id": "photo-ee49381450b751ec6f73",
+      "filename": "IMG_20261013_150621_037.jpg",
+      "sha256": "ee49381450b751ec6f731a3e171cf46a4861a204dae655ef00c0de5b593bced7",
+      "bytes": 2448308,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 15:06:24",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:06:24.000Z",
+      "capturedLocal": "2026-10-13 15:06:24",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 37376,
+          "sha256": "1234e7c42e0207f2a16525f1128402af2b9ac9ea302928aed696f0a1e1e4a64b"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 289830,
+          "sha256": "3fcce7ed89c00696cda2ac0a2ebb8b01ec3f1083ced81d57d5a6ee0c09e564d7"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 804793,
+          "sha256": "d623f96e0a7005d173905f62fabdb57d341920784af9b75ae84519b2540b8c46"
+        }
+      }
+    },
+    {
+      "id": "photo-adf7e7f7ee3f6eb6d275",
+      "filename": "IMG_20261013_150630_038.jpg",
+      "sha256": "adf7e7f7ee3f6eb6d275c967305a9f06b977a921a7622cb4196ba427e2875316",
+      "bytes": 2837334,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 15:06:33",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:06:33.000Z",
+      "capturedLocal": "2026-10-13 15:06:33",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 38516,
+          "sha256": "7a50bc2c8856724b6434adf6e517aa97cac2835c0d4a50945a75073ff142394d"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 331788,
+          "sha256": "de499ca57f99e2fd69b118c6f7e2645db8127b7cf31dba81f8e96d57fe39b7a1"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 977772,
+          "sha256": "d7bdf4b5ac02995c24214dd3b8b40a6bd6fbf9cbd54992e4edc63c8285926d9f"
+        }
+      }
+    },
+    {
+      "id": "photo-cfb9da995523a704aa34",
+      "filename": "IMG_20261013_150806_039.jpg",
+      "sha256": "cfb9da995523a704aa34193a685596b94da29c0841793ffb2fd59372315c8239",
+      "bytes": 2910114,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 15:08:09",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:08:09.000Z",
+      "capturedLocal": "2026-10-13 15:08:09",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 38771,
+          "sha256": "a8fcf0cb0f23d5f2d8d9207c6c60dfd3032737cd0f8f5b8a13d0acac96624980"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 365721,
+          "sha256": "9975e5ecac8a54a1dacf80f5d525159dd782d12ec6ce181df95062e6e94a7efb"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 1061770,
+          "sha256": "c2471d3d43713c0d05bbbbfd34e9af40badd0b1a55fb61c898df35f03dde9173"
+        }
+      }
+    },
+    {
+      "id": "photo-abb4115bfee6cf3dcfaa",
+      "filename": "IMG_20261013_150826_040.jpg",
+      "sha256": "abb4115bfee6cf3dcfaa0e905d8a0c5cf677c9178c41c309cbff3bfcdf976458",
+      "bytes": 2808071,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 15:08:29",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:08:29.000Z",
+      "capturedLocal": "2026-10-13 15:08:29",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 46036,
+          "sha256": "8533c680da698b570de48de7ac6ffacf2ce37ade9ae63e9c12152934e9648752"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 360559,
+          "sha256": "f0ef94a0fa69a4c13a3e73814c9d1c1ca648fe7b46029bd7e2bd9b84cf39df2d"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 1010070,
+          "sha256": "30e3250d5941c2c276f770958533bb4bed31cd8df6515f17eef0d7e0847b0b89"
         }
       }
     },
@@ -5045,39 +4454,113 @@
       }
     },
     {
-      "id": "photo-a44954ca718d85db83a7",
-      "filename": "IMG_20261013_162007_063.jpg",
-      "sha256": "a44954ca718d85db83a7558a853f0a770f3b8be55999bb325abb6016128571e3",
-      "bytes": 2187461,
+      "id": "photo-7564061568fb452bb831",
+      "filename": "IMG_20261013_151149_041.jpg",
+      "sha256": "7564061568fb452bb8312a6383a9a6ecfd6ba8a2ca821a84658b3cf0c78e14aa",
+      "bytes": 2687144,
       "width": 4032,
       "height": 3024,
       "sourceId": "insta360",
       "photographer": "Bulent Sahin",
       "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 16:20:10",
+      "rawCaptureTime": "2026:10:13 15:11:52",
       "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T12:20:10.000Z",
-      "capturedLocal": "2026-10-13 15:20:10",
-      "calibrationStatus": "user-confirmed",
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:11:52.000Z",
+      "capturedLocal": "2026-10-13 15:11:52",
+      "calibrationStatus": "recording-verified",
       "images": {
         "thumbnail": {
           "width": 480,
           "height": 360,
-          "bytes": 36664,
-          "sha256": "628a5527ca304857baa10e1ecfdda48c6f70f3d6aa77c5817a26b33a0db1592c"
+          "bytes": 43019,
+          "sha256": "a9f468a618eb80f7c2416b661d2d02af7926e3431c6f683d82099763f6c4b087"
         },
         "preview": {
           "width": 1800,
           "height": 1350,
-          "bytes": 242589,
-          "sha256": "b7bb2e4932c3c8c7e6adf89bc874503b4520ca236b01844f2b02fa5eaa963acd"
+          "bytes": 338515,
+          "sha256": "189b438517536f89e55559e2e4d0c1d53e3ee0a27150e8535c35f2f22cdd6573"
         },
         "share": {
           "width": 3200,
           "height": 2400,
-          "bytes": 661177,
-          "sha256": "735e3f14c0e96d136261b422146828add46b10d3969632d6e8e983941c54328a"
+          "bytes": 951548,
+          "sha256": "76afc0d51e29355a09fbe2faeceeb0c61f75cb5c4cea9ec27c730bfab7468a27"
+        }
+      }
+    },
+    {
+      "id": "photo-2d732f7162e462459295",
+      "filename": "IMG_20261013_152224_042.jpg",
+      "sha256": "2d732f7162e46245929550552f068de0dea3e2ce6303a07b5c8b2662711e71d8",
+      "bytes": 2689179,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 15:22:27",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:22:27.000Z",
+      "capturedLocal": "2026-10-13 15:22:27",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 45360,
+          "sha256": "8fe99db6536e79647ce5db7d8a613903429a2d90c9a8a0b318d31f45867f3856"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 343661,
+          "sha256": "69699203fa7c306d6db6da2ed9285ee92488d70539a8025cda17d4b532e798b7"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 947121,
+          "sha256": "fd355bdc1617cb2e3f90c0e0a62666791aac8883378c78a71a70faa94e44a7d0"
+        }
+      }
+    },
+    {
+      "id": "photo-86c7fc64a14d66ca57d3",
+      "filename": "IMG_20261013_152231_043.jpg",
+      "sha256": "86c7fc64a14d66ca57d3face19f17b087e17bdf20f58358e443d21c31d2031d9",
+      "bytes": 3029359,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 15:22:34",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:22:34.000Z",
+      "capturedLocal": "2026-10-13 15:22:34",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 42011,
+          "sha256": "bdbcde1e230e79b4a4f289ae99e5b2d6bbb93b4a4837d4946a1c952be4290319"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 365202,
+          "sha256": "8cad0f23a06e3e0d5796c472f2754511b0ba8409a77e44e06bd8054a4fc76cf2"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 1081369,
+          "sha256": "51b7caa154e2356ef7767ae53b430982cdb0b040bf5bf3c0a9adeae35b8d98bb"
         }
       }
     },
@@ -5304,150 +4787,261 @@
       }
     },
     {
-      "id": "photo-593dbc229e5a2a75f9b0",
-      "filename": "IMG_20261013_162802_066.jpg",
-      "sha256": "593dbc229e5a2a75f9b0b30e655fd256f644b403c6a0d28502942694309ce572",
-      "bytes": 8037642,
-      "width": 8064,
-      "height": 4536,
+      "id": "photo-f44ce30fb2d1b6da1ed2",
+      "filename": "IMG_20261013_152444_044.jpg",
+      "sha256": "f44ce30fb2d1b6da1ed2a644aecfbad06cdfb601425ac0543069037fd56afc4f",
+      "bytes": 3600707,
+      "width": 4032,
+      "height": 3024,
       "sourceId": "insta360",
       "photographer": "Bulent Sahin",
       "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 16:28:03",
+      "rawCaptureTime": "2026:10:13 15:24:47",
       "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T12:28:03.000Z",
-      "capturedLocal": "2026-10-13 15:28:03",
-      "calibrationStatus": "user-confirmed",
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:24:47.000Z",
+      "capturedLocal": "2026-10-13 15:24:47",
+      "calibrationStatus": "recording-verified",
       "images": {
         "thumbnail": {
           "width": 480,
-          "height": 270,
-          "bytes": 35887,
-          "sha256": "d0b6d24a6f6d8dc8f2b1ae65fb1a7d6c97fba272c574c3f2501cc8ce3c146d18"
+          "height": 360,
+          "bytes": 46956,
+          "sha256": "fbb849f63325e957236f3a58bfebf00a9d81f59bf8c473c4f084d63d1b5880a4"
         },
         "preview": {
           "width": 1800,
-          "height": 1013,
-          "bytes": 323976,
-          "sha256": "a9198023195d58ed4e5f9315775150e9e9d79f18ecda1d02163f4dcc55fd69ad"
+          "height": 1350,
+          "bytes": 468609,
+          "sha256": "72a130c3d811e7fdfe77b8d6237fea1e492ee4df6b90d45e95053e444600460d"
         },
         "share": {
           "width": 3200,
-          "height": 1800,
-          "bytes": 1040527,
-          "sha256": "a42a227ae9a51b5e235f84df2d590298260beba14f863bd34f1bac7defa3a2e4"
+          "height": 2400,
+          "bytes": 1381806,
+          "sha256": "4edbf25c23d550887b027cdc2ee4ccb3e14f9e9e15316e0f6038a2749c571333"
         }
       }
     },
     {
-      "id": "photo-5a357786ca66b74fb549",
-      "filename": "IMG_20261013_162821_067.jpg",
-      "sha256": "5a357786ca66b74fb5498d959384e8c840e9b1c5846f5007844ac823a0a54e35",
-      "bytes": 8136544,
-      "width": 8064,
-      "height": 4536,
+      "id": "photo-a852e393451e30617765",
+      "filename": "IMG_20261013_152644_045.jpg",
+      "sha256": "a852e393451e30617765ec3412571760a9043d57b7c41cf5c98a8d94f1e2859c",
+      "bytes": 3046365,
+      "width": 4032,
+      "height": 3024,
       "sourceId": "insta360",
       "photographer": "Bulent Sahin",
       "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 16:28:21",
+      "rawCaptureTime": "2026:10:13 15:26:46",
       "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T12:28:21.000Z",
-      "capturedLocal": "2026-10-13 15:28:21",
-      "calibrationStatus": "user-confirmed",
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:26:46.000Z",
+      "capturedLocal": "2026-10-13 15:26:46",
+      "calibrationStatus": "recording-verified",
       "images": {
         "thumbnail": {
           "width": 480,
-          "height": 270,
-          "bytes": 36384,
-          "sha256": "227c19909dea8b9cbe6691ec59a8aa0dd4a1446ea33fd23475305e1b8c5e99d0"
+          "height": 360,
+          "bytes": 44054,
+          "sha256": "32e20a0371760af5766fcb197991a176e949a7aa004594f57bb947e4a0d40dbe"
         },
         "preview": {
           "width": 1800,
-          "height": 1013,
-          "bytes": 329017,
-          "sha256": "5e67a99231eb6d357382eeaeb464d604d4e99b35830805b0a0ac970df5a819b8"
+          "height": 1350,
+          "bytes": 384054,
+          "sha256": "a5da0c037195df71ae744ea37136fa66bb23f0a3af215bfec0a434fc2257dbb5"
         },
         "share": {
           "width": 3200,
-          "height": 1800,
-          "bytes": 1059050,
-          "sha256": "c901f7a691cf7b706b1d95a13ed0ea4d903bdbc5c71f31e45067dcb73077a33e"
+          "height": 2400,
+          "bytes": 1113534,
+          "sha256": "4196c26df5010304d2a2164236fe324ffdf2db681563073a0790a8b640fb3c4c"
         }
       }
     },
     {
-      "id": "photo-b246821916193a81a1c9",
-      "filename": "IMG_20261013_163124_070.jpg",
-      "sha256": "b246821916193a81a1c924a88cdda7ba858d307603339ce69ca79e2d6676adb4",
-      "bytes": 7677690,
-      "width": 8064,
-      "height": 4536,
+      "id": "photo-86dcbee9783887853ea5",
+      "filename": "IMG_20261013_152650_046.jpg",
+      "sha256": "86dcbee9783887853ea52d8ade2a6edeffef445818a20954602f0dfd25087402",
+      "bytes": 3362893,
+      "width": 4032,
+      "height": 3024,
       "sourceId": "insta360",
       "photographer": "Bulent Sahin",
       "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 16:31:24",
+      "rawCaptureTime": "2026:10:13 15:26:52",
       "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T12:31:24.000Z",
-      "capturedLocal": "2026-10-13 15:31:24",
-      "calibrationStatus": "user-confirmed",
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:26:52.000Z",
+      "capturedLocal": "2026-10-13 15:26:52",
+      "calibrationStatus": "recording-verified",
       "images": {
         "thumbnail": {
           "width": 480,
-          "height": 270,
-          "bytes": 32647,
-          "sha256": "c38dde17d702a93dca8a56c016914d79f21822df71490adc41830c83aab96447"
+          "height": 360,
+          "bytes": 43177,
+          "sha256": "60657f31fdcc98a9917510d3e82fb52192785b7bdced8e5a0d1e6079f1fdfe15"
         },
         "preview": {
           "width": 1800,
-          "height": 1013,
-          "bytes": 296451,
-          "sha256": "9365fe0f2ebb5f86de40a65ae0004212937ec481ba8c112f8e1d7271c09481b6"
+          "height": 1350,
+          "bytes": 427811,
+          "sha256": "d440fcc67a9d1540c474c0acd6ed348ddba19361bdbb68c66e0806fd65b3db7c"
         },
         "share": {
           "width": 3200,
-          "height": 1800,
-          "bytes": 974793,
-          "sha256": "1d0d85e276254aebf816c159decc40dd50a647213d3d64dc37ece3292f049b39"
+          "height": 2400,
+          "bytes": 1276537,
+          "sha256": "af7abcb130980e09ad53b7b3f2c8d610133a60a123a8239b81666d18683cf032"
         }
       }
     },
     {
-      "id": "photo-a011802ac15894c82096",
-      "filename": "IMG_20261013_163142_071.jpg",
-      "sha256": "a011802ac15894c8209655cc7e1a8fbab047600301a5dc4e0d7adf945be9cc99",
-      "bytes": 8303149,
-      "width": 8064,
-      "height": 4536,
+      "id": "photo-e8016034b7a1fee10def",
+      "filename": "IMG_20261013_152728_047.jpg",
+      "sha256": "e8016034b7a1fee10deff1c9056837459b9cfd23aacc85ca229d3a6a1854b384",
+      "bytes": 2517855,
+      "width": 4032,
+      "height": 3024,
       "sourceId": "insta360",
       "photographer": "Bulent Sahin",
       "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 16:31:43",
+      "rawCaptureTime": "2026:10:13 15:27:31",
       "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T12:31:43.000Z",
-      "capturedLocal": "2026-10-13 15:31:43",
-      "calibrationStatus": "user-confirmed",
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:27:31.000Z",
+      "capturedLocal": "2026-10-13 15:27:31",
+      "calibrationStatus": "recording-verified",
       "images": {
         "thumbnail": {
           "width": 480,
-          "height": 270,
-          "bytes": 31378,
-          "sha256": "2bbdd834abf00a4af3a7b6f2a4ac2957da7d955887b80a2b06ca74a8d2ae50ca"
+          "height": 360,
+          "bytes": 36500,
+          "sha256": "8eeaf62c8e78e2fdd79a2cd9e63b1b934e62862821bec22609ed18996fd3706c"
         },
         "preview": {
           "width": 1800,
-          "height": 1013,
-          "bytes": 317809,
-          "sha256": "4340e19f5e53000e2a7399f8747494eacf1cfbe723bed67f163ef1272eeacd98"
+          "height": 1350,
+          "bytes": 306840,
+          "sha256": "ca132a1a3b2250b16dc412db6702f60be6d0046f7cdcc824bb7c5f9c8ed216aa"
         },
         "share": {
           "width": 3200,
-          "height": 1800,
-          "bytes": 1073304,
-          "sha256": "11d157a7fe048b7468527af55f8040dfb70687a69e5cc3f425498ff8ada62920"
+          "height": 2400,
+          "bytes": 870928,
+          "sha256": "5f318ac500174da155a2ae689d5be607e8445e1f4697fab1cfff1c566a574691"
+        }
+      }
+    },
+    {
+      "id": "photo-ddf7e7e1c632289fed50",
+      "filename": "IMG_20261013_153421_048.jpg",
+      "sha256": "ddf7e7e1c632289fed5028b0243ee44ae99ee440ffb28ff1bbaf5d56a0f9553f",
+      "bytes": 2152917,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 15:34:24",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:34:24.000Z",
+      "capturedLocal": "2026-10-13 15:34:24",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 36852,
+          "sha256": "4a4f58e13b761d78592637a9a341e194bee2e290d1fa18eec0eaebc54627eb4d"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 243915,
+          "sha256": "1b82dd521e3a6b7f67333c8e25ca20bc6bae13f2d06db168e119c945a3ea3a6d"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 662274,
+          "sha256": "f659e493182a194fa100c80279f674e5fc1051483bf699e24f029d341cdc55c2"
+        }
+      }
+    },
+    {
+      "id": "photo-3892dc850ad6320724bc",
+      "filename": "IMG_20261013_153430_049.jpg",
+      "sha256": "3892dc850ad6320724bcd3ade2f4b46ee999b5d522560fe212b74adf874e1f1a",
+      "bytes": 2146586,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 15:34:33",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:34:33.000Z",
+      "capturedLocal": "2026-10-13 15:34:33",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 35646,
+          "sha256": "6fa89353c9972b527c36b12f00a5d23e9d304614317b9a7d5cc5e69923eba987"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 234651,
+          "sha256": "879a96519fa64a3534274b8427255447d812ab8a742c8284b0a3b45a25a79ee1"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 640044,
+          "sha256": "7b8de9b9c5af3f2d530f9494abf0506902bc824b3dfadce709209e4bfddcb560"
+        }
+      }
+    },
+    {
+      "id": "photo-d3dc28e8420e05a1ff46",
+      "filename": "IMG_20261013_153452_050.jpg",
+      "sha256": "d3dc28e8420e05a1ff46d31343110f3acd76952f892c78a37dc6154c92f59a64",
+      "bytes": 1963086,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 15:34:55",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:34:55.000Z",
+      "capturedLocal": "2026-10-13 15:34:55",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 30472,
+          "sha256": "5d8ed31f7cd316b6c3b5c20f1bb7deaaaf1c33a51b66c33c227c9ebd1f082118"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 197261,
+          "sha256": "67b49296bea76e825ca5c230f6a1d7c94c7bff12d9e82bcdb8198f11065c0d55"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 535047,
+          "sha256": "1a6682b44cdc1341d39b53cbb86c039b70e23e1665463d7eb933f12c4c231a9d"
         }
       }
     },
@@ -5559,6 +5153,43 @@
           "height": 2133,
           "bytes": 620695,
           "sha256": "d32905c39c4a54280d796a23b9cf445ae5338ee4d4d8e7c3e39cbc432c0b3a4c"
+        }
+      }
+    },
+    {
+      "id": "photo-c1bc5facec5e9bda9cbc",
+      "filename": "IMG_20261013_153519_051.jpg",
+      "sha256": "c1bc5facec5e9bda9cbcfd174136729ca4a8cf5d0c21ed3b21151282c6a64c3a",
+      "bytes": 2091933,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 15:35:22",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:35:22.000Z",
+      "capturedLocal": "2026-10-13 15:35:22",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 33401,
+          "sha256": "c871f9dea5471a543fd7db6daa7573c3f6ef266bd1c0f54e68d0d20c6d736fa6"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 220080,
+          "sha256": "4f09662f2b6f27282a154f1f25c009b31dd2892f1cb6c31c133f97fbc7b1bde0"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 600079,
+          "sha256": "6655b9f88af5361a9b12e5f095c4836571eda40a084f25e1c10c3aeb02e8d255"
         }
       }
     },
@@ -5748,43 +5379,6 @@
       }
     },
     {
-      "id": "photo-515ff998c077662878d2",
-      "filename": "IMG_20261013_163618_072.jpg",
-      "sha256": "515ff998c077662878d2a5db8b9d8de732471aae34292abf90ee32b0f7b67949",
-      "bytes": 6752310,
-      "width": 8064,
-      "height": 4536,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 16:36:18",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T12:36:18.000Z",
-      "capturedLocal": "2026-10-13 15:36:18",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 270,
-          "bytes": 28455,
-          "sha256": "876cbfcdb0c1f0032a0c3ed67c8c2f0bf577f0a43cd05fc73d5f96a13ea62fb8"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1013,
-          "bytes": 275013,
-          "sha256": "0d6381faa32aa816a2b5ac15f370c6e1b70c9bcd478c927c2680ec9d0e934d46"
-        },
-        "share": {
-          "width": 3200,
-          "height": 1800,
-          "bytes": 887903,
-          "sha256": "bcdf08e419c5d6d0804f9fe54f320544a2d05537154fb4f6e9be7e633c244377"
-        }
-      }
-    },
-    {
       "id": "photo-fda57615fcd048921fce",
       "filename": "DSCF6694.jpeg",
       "sha256": "fda57615fcd048921fcef4397b7ad5574f48ac8d8a26cf7b8df10210a2acf866",
@@ -5818,6 +5412,43 @@
           "height": 2133,
           "bytes": 512562,
           "sha256": "47a7994d8166d04ac938a506f95805ee6eb1e933462eb1048b7446a6054d989e"
+        }
+      }
+    },
+    {
+      "id": "photo-4ee98602203e60187a94",
+      "filename": "IMG_20261013_153645_054.jpg",
+      "sha256": "4ee98602203e60187a945513455ff53eb307199028fb8cf7f475632abebe14c1",
+      "bytes": 2266789,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 15:36:48",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:36:48.000Z",
+      "capturedLocal": "2026-10-13 15:36:48",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 35591,
+          "sha256": "537e67a9617e3a28f30f975500e6f7eeef45551c61e2bea796a5143533606027"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 258217,
+          "sha256": "01c954623a477ab5bd464318a79aa776d34e6c750227ef81410482b633a5960c"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 709042,
+          "sha256": "a2d6e7e893c361a73e57f2d7ee896434e104c40866640c4625f54eab8e3ebe8d"
         }
       }
     },
@@ -5859,39 +5490,113 @@
       }
     },
     {
-      "id": "photo-9782e04d50abdabada62",
-      "filename": "IMG_20261013_165037_075.jpg",
-      "sha256": "9782e04d50abdabada62e74976a8cd97c3ecb89bde778bd59c91237189fda4ed",
-      "bytes": 7501790,
-      "width": 8064,
-      "height": 4536,
+      "id": "photo-76aaa5841d435eb26dbc",
+      "filename": "IMG_20261013_153723_055.jpg",
+      "sha256": "76aaa5841d435eb26dbc6adce9287e8dbc430ba4e2ab6c40f8b3c022492e2672",
+      "bytes": 2174854,
+      "width": 4032,
+      "height": 3024,
       "sourceId": "insta360",
       "photographer": "Bulent Sahin",
       "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 16:50:38",
+      "rawCaptureTime": "2026:10:13 15:37:26",
       "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T12:50:38.000Z",
-      "capturedLocal": "2026-10-13 15:50:38",
-      "calibrationStatus": "user-confirmed",
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:37:26.000Z",
+      "capturedLocal": "2026-10-13 15:37:26",
+      "calibrationStatus": "recording-verified",
       "images": {
         "thumbnail": {
           "width": 480,
-          "height": 270,
-          "bytes": 30717,
-          "sha256": "3829975fe0fa40b339b50942a7d529064a3b62ca48a69c3abebaed15aa98cd2a"
+          "height": 360,
+          "bytes": 33450,
+          "sha256": "4071e5bc7d5d756a70ee117b3b809786728eb9d7bbaee96b49f63b2b26376a57"
         },
         "preview": {
           "width": 1800,
-          "height": 1013,
-          "bytes": 288374,
-          "sha256": "991d195a478969ff50685b9a6011deff12ca06ec3e4ef0bf06da5712f420f436"
+          "height": 1350,
+          "bytes": 239683,
+          "sha256": "32b3de0ce5f751cb19d3ba4ebb1501bdd200f57acb7225f45f53a07260dd749e"
         },
         "share": {
           "width": 3200,
-          "height": 1800,
-          "bytes": 954860,
-          "sha256": "961075d521a9beca61da5ebae538ee3288c86c90ab8af9bf0e2da6b26f879def"
+          "height": 2400,
+          "bytes": 659475,
+          "sha256": "74c1dbe485fd2550c185f19b1af13b9856e4638ca9cb675b53f6d13e5540b05b"
+        }
+      }
+    },
+    {
+      "id": "photo-ad0f3107764b884a4905",
+      "filename": "IMG_20261013_153728_056.jpg",
+      "sha256": "ad0f3107764b884a4905dd5f781c5ebcb50d3ffdf1beb031d3eddd4c614cbea8",
+      "bytes": 2021962,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 15:37:31",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:37:31.000Z",
+      "capturedLocal": "2026-10-13 15:37:31",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 30349,
+          "sha256": "8609aab3d31c0a39a24130074a0a920c52bbabe0443ce488bd034e3737459ce0"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 209131,
+          "sha256": "150b0857acafdf5120898783e24f841b3585779b0e0061f1db5852bd861c4787"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 573269,
+          "sha256": "ce79a1a24563a079ec6312f670a22892ef26664db23a2e08ada364902bbb0ba3"
+        }
+      }
+    },
+    {
+      "id": "photo-7d606c4529f5edb59172",
+      "filename": "IMG_20261013_153835_057.jpg",
+      "sha256": "7d606c4529f5edb59172dbf8860b996e38d74630344411f314489a2e59cd60c1",
+      "bytes": 2039733,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 15:38:38",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:38:38.000Z",
+      "capturedLocal": "2026-10-13 15:38:38",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 30173,
+          "sha256": "2bd67e7d793dc9ed7a4493ad910cb9bdf72f0b3433f86572de2b22b6a90cb312"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 204211,
+          "sha256": "c8942067ef5f76d6228ff7ac33cb797f917f3d2095715d1ade8a4552b21df2b0"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 569668,
+          "sha256": "d0b939f463353e0c439788d4a800f61cb4d58dd8b252ff040d6b2bc07725795d"
         }
       }
     },
@@ -6007,43 +5712,6 @@
       }
     },
     {
-      "id": "photo-0e2dad6c4d9bf5f81413",
-      "filename": "IMG_20261013_165734_076.jpg",
-      "sha256": "0e2dad6c4d9bf5f814131d6f3930b812378437cdccecf21a5d3d8a9e792d51ea",
-      "bytes": 8289664,
-      "width": 8064,
-      "height": 4536,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 16:57:35",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T12:57:35.000Z",
-      "capturedLocal": "2026-10-13 15:57:35",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 270,
-          "bytes": 35659,
-          "sha256": "b723c4aa883de9d406f3b94ffff83fe7f9ff85c2821014783eb51926357abcbc"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1013,
-          "bytes": 327197,
-          "sha256": "a7a2ed42aefb553b308f1e0062ddb4c6a244088a928e18f7b9b0cebcb0d52d01"
-        },
-        "share": {
-          "width": 3200,
-          "height": 1800,
-          "bytes": 1068861,
-          "sha256": "8273ec8e834db3e09f13c153d03ae942a7a069d44bb191a56c6b92b54663afee"
-        }
-      }
-    },
-    {
       "id": "photo-5dc69af015306027457d",
       "filename": "DSCF6701.jpeg",
       "sha256": "5dc69af015306027457d7a7aa3c2fe451c00b5ba45061b645bad29f0dd54b786",
@@ -6081,261 +5749,39 @@
       }
     },
     {
-      "id": "photo-a517740abac1016d115e",
-      "filename": "IMG_20261013_170234_080.jpg",
-      "sha256": "a517740abac1016d115e0a91679eb5415ef40b411c7c92387043f4bd98e2c986",
-      "bytes": 7176814,
-      "width": 8064,
-      "height": 4536,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 17:02:34",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T13:02:34.000Z",
-      "capturedLocal": "2026-10-13 16:02:34",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 270,
-          "bytes": 29112,
-          "sha256": "4443188d82ebd2d7b6e6c1c880d5a81b8c2aba8875625d14fd29bcf65ef2d051"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1013,
-          "bytes": 272989,
-          "sha256": "5d6b851f873ca8f235afa0fffe37d8b3d074362b3b4680b830d86126d732a1ca"
-        },
-        "share": {
-          "width": 3200,
-          "height": 1800,
-          "bytes": 904597,
-          "sha256": "8b0b64906f5cfdb4e3f28b3eee26bd2d6252c2d5e591b57ffd495cae711952dd"
-        }
-      }
-    },
-    {
-      "id": "photo-04a6864a8e7de77704c9",
-      "filename": "IMG_20261013_170242_081.jpg",
-      "sha256": "04a6864a8e7de77704c9a36d852d17899c3134ee34bff28ce6823e3358edf1de",
-      "bytes": 2198166,
+      "id": "photo-5b5e322c4a380914a7b1",
+      "filename": "IMG_20261013_155947_062.jpg",
+      "sha256": "5b5e322c4a380914a7b1f24a6f42c5e5de92be0f6369fc02b16a67671b553297",
+      "bytes": 2250036,
       "width": 4032,
       "height": 3024,
       "sourceId": "insta360",
       "photographer": "Bulent Sahin",
       "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 17:02:45",
+      "rawCaptureTime": "2026:10:13 15:59:50",
       "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T13:02:45.000Z",
-      "capturedLocal": "2026-10-13 16:02:45",
-      "calibrationStatus": "user-confirmed",
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T12:59:50.000Z",
+      "capturedLocal": "2026-10-13 15:59:50",
+      "calibrationStatus": "recording-verified",
       "images": {
         "thumbnail": {
           "width": 480,
           "height": 360,
-          "bytes": 35093,
-          "sha256": "4864b8299c64d9bd8b543d5dcece673e047355aee0c01b78852be402b9b6b505"
+          "bytes": 36619,
+          "sha256": "f79fbfcc05700f02a2528ee6c892fd10027fbedfed5f91f4985d5fb45bfd8fb6"
         },
         "preview": {
           "width": 1800,
           "height": 1350,
-          "bytes": 245302,
-          "sha256": "45baed863982ea6b8053e16f9b02f007cf3963bd02f32e68655e69b53a01473e"
+          "bytes": 253003,
+          "sha256": "c3998fc797876a5bd08ef549eee6bf7a2823df64404324528d63f34439c097b0"
         },
         "share": {
           "width": 3200,
           "height": 2400,
-          "bytes": 659644,
-          "sha256": "870cdfb147f8a835b3e14080fefbfd14ac9b011c80c482bd675729b0f64a2467"
-        }
-      }
-    },
-    {
-      "id": "photo-566f5e73ea7b52b83b79",
-      "filename": "IMG_20261013_170249_082.jpg",
-      "sha256": "566f5e73ea7b52b83b7972fc08117edd48d64dc19e766596faa674f8a854eeea",
-      "bytes": 2217012,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 17:02:52",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T13:02:52.000Z",
-      "capturedLocal": "2026-10-13 16:02:52",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 34457,
-          "sha256": "0bbeccb9a492008d81221ffb1725a13b916fc26f953a5fdeb4b23a4d5784d8c7"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 246418,
-          "sha256": "b6764365bf73a36f8f54b78076c893292607dbdd1ce91730597ebfb1375fc8b4"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 667706,
-          "sha256": "1e97e40a0484864575c6fc7903c5ff48ab3d03bc891ef5221c9c46b61a36ad3f"
-        }
-      }
-    },
-    {
-      "id": "photo-06f8e9b780191e96346d",
-      "filename": "IMG_20261013_170505_083.jpg",
-      "sha256": "06f8e9b780191e96346dfc8d719a282139993e6cc8301c9b11a2c5de0c3675e8",
-      "bytes": 2064353,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 17:05:08",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T13:05:08.000Z",
-      "capturedLocal": "2026-10-13 16:05:08",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 32332,
-          "sha256": "6aebd4caa58d8a15c76127072b3e8cefe2d81085abca09994ef39f31cccd7527"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 214319,
-          "sha256": "926702aaa781b126c52eefaa427ecddb4936eb5dacef09146f1ae27ae91525b0"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 587159,
-          "sha256": "d8c0d06aa0cd2f4c8e7ca90bbf37d42eca6fe6d24e9eb49f62c6a366379ee70d"
-        }
-      }
-    },
-    {
-      "id": "photo-6f351bdd3d1e7394d450",
-      "filename": "IMG_20261013_170557_084.jpg",
-      "sha256": "6f351bdd3d1e7394d450b12ea30bf9b316ca4222f44259fbff8b38a0e612ad4b",
-      "bytes": 1974219,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 17:06:00",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T13:06:00.000Z",
-      "capturedLocal": "2026-10-13 16:06:00",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 27998,
-          "sha256": "347b400e7edff3fcf1baa86eaa50750d2dd994f6e85623a66d60462d75b571e3"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 189493,
-          "sha256": "71e48c2b32dabdc6c79f5560ff39d4f7fe52a88ebee177ccd65ab384ba14923a"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 532122,
-          "sha256": "9c32fb682858b82bf7636bb2babfb990134cf2ac7e8cb02204d72552740b6b7b"
-        }
-      }
-    },
-    {
-      "id": "photo-fa06f498f57584bcc2a7",
-      "filename": "IMG_20261013_170815_085.jpg",
-      "sha256": "fa06f498f57584bcc2a7066b9d7c5b82f06a4e2995386d0b792d0a7685ab9fdf",
-      "bytes": 2221460,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 17:08:18",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T13:08:18.000Z",
-      "capturedLocal": "2026-10-13 16:08:18",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 35551,
-          "sha256": "b3dba289163dfc8aff2b914cd0625b80d067b334e1ef3b457b0ad471323d6b92"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 244350,
-          "sha256": "ca0c5b2e9cd9b00c5cf75493873c749c76805d691efc1b82efa688731abfe098"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 678552,
-          "sha256": "a6c763320acd803d2dde79d9b4117d8e06516e75ccf315108ecee3e5644efdb0"
-        }
-      }
-    },
-    {
-      "id": "photo-4c2f3eda1fdfbabaea4b",
-      "filename": "IMG_20261013_170820_086.jpg",
-      "sha256": "4c2f3eda1fdfbabaea4b9383c75f9c6ebb4075a8798dd3d8f10550de50fc3eaf",
-      "bytes": 2068371,
-      "width": 4032,
-      "height": 3024,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 17:08:23",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T13:08:23.000Z",
-      "capturedLocal": "2026-10-13 16:08:23",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 360,
-          "bytes": 29386,
-          "sha256": "9b9f42162cb2912d8c056ad5fd1cc4a86e762e0797b404c6c567f420d869ec67"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1350,
-          "bytes": 215315,
-          "sha256": "707171ce054789be7ce0ab663346696e8d45b452c7ade1c98a3fa9af38de7fee"
-        },
-        "share": {
-          "width": 3200,
-          "height": 2400,
-          "bytes": 601703,
-          "sha256": "2851c44f5fb0566103e38a72ff5d8b347e4e383ba61bdfd32a3946e774dcf3ce"
+          "bytes": 694377,
+          "sha256": "07bcf25dbe3ec2f7cf18c6d4fc40a5043b39c09dde3f5c1d874ad98f0bb310ba"
         }
       }
     },
@@ -6377,80 +5823,6 @@
       }
     },
     {
-      "id": "photo-38dca195f6f499feb9f3",
-      "filename": "IMG_20261013_171102_089.jpg",
-      "sha256": "38dca195f6f499feb9f353f3af08f53a5de4933a1cf1c68f0f999670e7e30aa5",
-      "bytes": 6875848,
-      "width": 8064,
-      "height": 4536,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 17:11:02",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T13:11:02.000Z",
-      "capturedLocal": "2026-10-13 16:11:02",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 270,
-          "bytes": 32592,
-          "sha256": "52c78d745df772bcc23f0ec7ba2511bb3e1525704c161435cc48407757e4c1e9"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1013,
-          "bytes": 285820,
-          "sha256": "2ff84d8370d1bfcda29c7d1e3c4f47cecedd03d7917157d5abafe15d0ffb908b"
-        },
-        "share": {
-          "width": 3200,
-          "height": 1800,
-          "bytes": 903313,
-          "sha256": "1a659892a331e153d260ab4e892220e86734d9241fc45ff6c61db5414b6361ce"
-        }
-      }
-    },
-    {
-      "id": "photo-6e73d1872c8148fe174c",
-      "filename": "IMG_20261013_171231_090.jpg",
-      "sha256": "6e73d1872c8148fe174cfbd2ae786fbe74e0763e86d4206dbc990880fe45a42a",
-      "bytes": 8243595,
-      "width": 8064,
-      "height": 4536,
-      "sourceId": "insta360",
-      "photographer": "Bulent Sahin",
-      "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 17:12:31",
-      "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T13:12:31.000Z",
-      "capturedLocal": "2026-10-13 16:12:31",
-      "calibrationStatus": "user-confirmed",
-      "images": {
-        "thumbnail": {
-          "width": 480,
-          "height": 270,
-          "bytes": 33804,
-          "sha256": "6ea3db5c7ddc70711d216d0fbe86939500fe8767549f431ead912843474351d1"
-        },
-        "preview": {
-          "width": 1800,
-          "height": 1013,
-          "bytes": 326184,
-          "sha256": "5485d29a26dde240005d928458d1d9efe6feaa0076ff7552a6f29ef33dcacc9d"
-        },
-        "share": {
-          "width": 3200,
-          "height": 1800,
-          "bytes": 1073922,
-          "sha256": "06942ca320f5fdfcc91edb5297fa00c6bddc826ac8975af21e17add0f422d3f0"
-        }
-      }
-    },
-    {
       "id": "photo-12f84278e680686a5450",
       "filename": "DSCF6703.jpeg",
       "sha256": "12f84278e680686a5450cf5032080e6f96a76d03d6dce85d15006ef3b1a2e868",
@@ -6484,6 +5856,191 @@
           "height": 2133,
           "bytes": 739022,
           "sha256": "4f3999efb16db3f8c51724458cba0c53ba3f0a0165a5efe7d4d5255e1de90b86"
+        }
+      }
+    },
+    {
+      "id": "photo-a44954ca718d85db83a7",
+      "filename": "IMG_20261013_162007_063.jpg",
+      "sha256": "a44954ca718d85db83a7558a853f0a770f3b8be55999bb325abb6016128571e3",
+      "bytes": 2187461,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 16:20:10",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T13:20:10.000Z",
+      "capturedLocal": "2026-10-13 16:20:10",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 36664,
+          "sha256": "628a5527ca304857baa10e1ecfdda48c6f70f3d6aa77c5817a26b33a0db1592c"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 242589,
+          "sha256": "b7bb2e4932c3c8c7e6adf89bc874503b4520ca236b01844f2b02fa5eaa963acd"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 661177,
+          "sha256": "735e3f14c0e96d136261b422146828add46b10d3969632d6e8e983941c54328a"
+        }
+      }
+    },
+    {
+      "id": "photo-593dbc229e5a2a75f9b0",
+      "filename": "IMG_20261013_162802_066.jpg",
+      "sha256": "593dbc229e5a2a75f9b0b30e655fd256f644b403c6a0d28502942694309ce572",
+      "bytes": 8037642,
+      "width": 8064,
+      "height": 4536,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 16:28:03",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T13:28:03.000Z",
+      "capturedLocal": "2026-10-13 16:28:03",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 270,
+          "bytes": 35887,
+          "sha256": "d0b6d24a6f6d8dc8f2b1ae65fb1a7d6c97fba272c574c3f2501cc8ce3c146d18"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1013,
+          "bytes": 323976,
+          "sha256": "a9198023195d58ed4e5f9315775150e9e9d79f18ecda1d02163f4dcc55fd69ad"
+        },
+        "share": {
+          "width": 3200,
+          "height": 1800,
+          "bytes": 1040527,
+          "sha256": "a42a227ae9a51b5e235f84df2d590298260beba14f863bd34f1bac7defa3a2e4"
+        }
+      }
+    },
+    {
+      "id": "photo-5a357786ca66b74fb549",
+      "filename": "IMG_20261013_162821_067.jpg",
+      "sha256": "5a357786ca66b74fb5498d959384e8c840e9b1c5846f5007844ac823a0a54e35",
+      "bytes": 8136544,
+      "width": 8064,
+      "height": 4536,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 16:28:21",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T13:28:21.000Z",
+      "capturedLocal": "2026-10-13 16:28:21",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 270,
+          "bytes": 36384,
+          "sha256": "227c19909dea8b9cbe6691ec59a8aa0dd4a1446ea33fd23475305e1b8c5e99d0"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1013,
+          "bytes": 329017,
+          "sha256": "5e67a99231eb6d357382eeaeb464d604d4e99b35830805b0a0ac970df5a819b8"
+        },
+        "share": {
+          "width": 3200,
+          "height": 1800,
+          "bytes": 1059050,
+          "sha256": "c901f7a691cf7b706b1d95a13ed0ea4d903bdbc5c71f31e45067dcb73077a33e"
+        }
+      }
+    },
+    {
+      "id": "photo-b246821916193a81a1c9",
+      "filename": "IMG_20261013_163124_070.jpg",
+      "sha256": "b246821916193a81a1c924a88cdda7ba858d307603339ce69ca79e2d6676adb4",
+      "bytes": 7677690,
+      "width": 8064,
+      "height": 4536,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 16:31:24",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T13:31:24.000Z",
+      "capturedLocal": "2026-10-13 16:31:24",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 270,
+          "bytes": 32647,
+          "sha256": "c38dde17d702a93dca8a56c016914d79f21822df71490adc41830c83aab96447"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1013,
+          "bytes": 296451,
+          "sha256": "9365fe0f2ebb5f86de40a65ae0004212937ec481ba8c112f8e1d7271c09481b6"
+        },
+        "share": {
+          "width": 3200,
+          "height": 1800,
+          "bytes": 974793,
+          "sha256": "1d0d85e276254aebf816c159decc40dd50a647213d3d64dc37ece3292f049b39"
+        }
+      }
+    },
+    {
+      "id": "photo-a011802ac15894c82096",
+      "filename": "IMG_20261013_163142_071.jpg",
+      "sha256": "a011802ac15894c8209655cc7e1a8fbab047600301a5dc4e0d7adf945be9cc99",
+      "bytes": 8303149,
+      "width": 8064,
+      "height": 4536,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 16:31:43",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T13:31:43.000Z",
+      "capturedLocal": "2026-10-13 16:31:43",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 270,
+          "bytes": 31378,
+          "sha256": "2bbdd834abf00a4af3a7b6f2a4ac2957da7d955887b80a2b06ca74a8d2ae50ca"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1013,
+          "bytes": 317809,
+          "sha256": "4340e19f5e53000e2a7399f8747494eacf1cfbe723bed67f163ef1272eeacd98"
+        },
+        "share": {
+          "width": 3200,
+          "height": 1800,
+          "bytes": 1073304,
+          "sha256": "11d157a7fe048b7468527af55f8040dfb70687a69e5cc3f425498ff8ada62920"
         }
       }
     },
@@ -6525,76 +6082,298 @@
       }
     },
     {
-      "id": "photo-7b159210a08db57293f9",
-      "filename": "IMG_20261013_174356_094.jpg",
-      "sha256": "7b159210a08db57293f978c0d57a6be195a2a135597394b421feee145aca04bb",
-      "bytes": 8177927,
+      "id": "photo-515ff998c077662878d2",
+      "filename": "IMG_20261013_163618_072.jpg",
+      "sha256": "515ff998c077662878d2a5db8b9d8de732471aae34292abf90ee32b0f7b67949",
+      "bytes": 6752310,
       "width": 8064,
       "height": 4536,
       "sourceId": "insta360",
       "photographer": "Bulent Sahin",
       "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 17:43:56",
+      "rawCaptureTime": "2026:10:13 16:36:18",
       "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T13:43:56.000Z",
-      "capturedLocal": "2026-10-13 16:43:56",
-      "calibrationStatus": "user-confirmed",
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T13:36:18.000Z",
+      "capturedLocal": "2026-10-13 16:36:18",
+      "calibrationStatus": "recording-verified",
       "images": {
         "thumbnail": {
           "width": 480,
           "height": 270,
-          "bytes": 35466,
-          "sha256": "7e19fa2c4fe4d4910a76c739c6864f90501430c2700ee51fb30acac45aa5e0c0"
+          "bytes": 28455,
+          "sha256": "876cbfcdb0c1f0032a0c3ed67c8c2f0bf577f0a43cd05fc73d5f96a13ea62fb8"
         },
         "preview": {
           "width": 1800,
           "height": 1013,
-          "bytes": 320269,
-          "sha256": "887bf0024fc24c15be2095192652ba1f29eff128e51930726041617f7225b058"
+          "bytes": 275013,
+          "sha256": "0d6381faa32aa816a2b5ac15f370c6e1b70c9bcd478c927c2680ec9d0e934d46"
         },
         "share": {
           "width": 3200,
           "height": 1800,
-          "bytes": 1072121,
-          "sha256": "15a1c361ccf5383a85819112fdaa92e1e985e369955b39c9d6f3847f8f61eee2"
+          "bytes": 887903,
+          "sha256": "bcdf08e419c5d6d0804f9fe54f320544a2d05537154fb4f6e9be7e633c244377"
         }
       }
     },
     {
-      "id": "photo-8375b8a584524daa1284",
-      "filename": "IMG_20261013_174444_095.jpg",
-      "sha256": "8375b8a584524daa128486e0392a4bc822dc6b22610b71d6d214e572b2105e35",
-      "bytes": 7333882,
+      "id": "photo-9782e04d50abdabada62",
+      "filename": "IMG_20261013_165037_075.jpg",
+      "sha256": "9782e04d50abdabada62e74976a8cd97c3ecb89bde778bd59c91237189fda4ed",
+      "bytes": 7501790,
       "width": 8064,
       "height": 4536,
       "sourceId": "insta360",
       "photographer": "Bulent Sahin",
       "model": "Insta360 Ace Pro",
-      "rawCaptureTime": "2026:10:13 17:44:44",
+      "rawCaptureTime": "2026:10:13 16:50:38",
       "rawTimezoneOffset": null,
-      "clockShiftSeconds": -3600,
-      "capturedAt": "2026-10-13T13:44:44.000Z",
-      "capturedLocal": "2026-10-13 16:44:44",
-      "calibrationStatus": "user-confirmed",
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T13:50:38.000Z",
+      "capturedLocal": "2026-10-13 16:50:38",
+      "calibrationStatus": "recording-verified",
       "images": {
         "thumbnail": {
           "width": 480,
           "height": 270,
-          "bytes": 33259,
-          "sha256": "f4baaf714168264340a449e6616c511fb6f85d11124404012d0a6dcc8b8db609"
+          "bytes": 30717,
+          "sha256": "3829975fe0fa40b339b50942a7d529064a3b62ca48a69c3abebaed15aa98cd2a"
         },
         "preview": {
           "width": 1800,
           "height": 1013,
-          "bytes": 301688,
-          "sha256": "41bd05728e7286c2eacc949d167f62ff425aae48ef4e196d78a023d7f850c3fa"
+          "bytes": 288374,
+          "sha256": "991d195a478969ff50685b9a6011deff12ca06ec3e4ef0bf06da5712f420f436"
         },
         "share": {
           "width": 3200,
           "height": 1800,
-          "bytes": 969236,
-          "sha256": "b56f74563488fda31d53d45c5973daa079d5f16167c95ffe32e5a095f4458c90"
+          "bytes": 954860,
+          "sha256": "961075d521a9beca61da5ebae538ee3288c86c90ab8af9bf0e2da6b26f879def"
+        }
+      }
+    },
+    {
+      "id": "photo-0e2dad6c4d9bf5f81413",
+      "filename": "IMG_20261013_165734_076.jpg",
+      "sha256": "0e2dad6c4d9bf5f814131d6f3930b812378437cdccecf21a5d3d8a9e792d51ea",
+      "bytes": 8289664,
+      "width": 8064,
+      "height": 4536,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 16:57:35",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T13:57:35.000Z",
+      "capturedLocal": "2026-10-13 16:57:35",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 270,
+          "bytes": 35659,
+          "sha256": "b723c4aa883de9d406f3b94ffff83fe7f9ff85c2821014783eb51926357abcbc"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1013,
+          "bytes": 327197,
+          "sha256": "a7a2ed42aefb553b308f1e0062ddb4c6a244088a928e18f7b9b0cebcb0d52d01"
+        },
+        "share": {
+          "width": 3200,
+          "height": 1800,
+          "bytes": 1068861,
+          "sha256": "8273ec8e834db3e09f13c153d03ae942a7a069d44bb191a56c6b92b54663afee"
+        }
+      }
+    },
+    {
+      "id": "photo-a517740abac1016d115e",
+      "filename": "IMG_20261013_170234_080.jpg",
+      "sha256": "a517740abac1016d115e0a91679eb5415ef40b411c7c92387043f4bd98e2c986",
+      "bytes": 7176814,
+      "width": 8064,
+      "height": 4536,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 17:02:34",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T14:02:34.000Z",
+      "capturedLocal": "2026-10-13 17:02:34",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 270,
+          "bytes": 29112,
+          "sha256": "4443188d82ebd2d7b6e6c1c880d5a81b8c2aba8875625d14fd29bcf65ef2d051"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1013,
+          "bytes": 272989,
+          "sha256": "5d6b851f873ca8f235afa0fffe37d8b3d074362b3b4680b830d86126d732a1ca"
+        },
+        "share": {
+          "width": 3200,
+          "height": 1800,
+          "bytes": 904597,
+          "sha256": "8b0b64906f5cfdb4e3f28b3eee26bd2d6252c2d5e591b57ffd495cae711952dd"
+        }
+      }
+    },
+    {
+      "id": "photo-04a6864a8e7de77704c9",
+      "filename": "IMG_20261013_170242_081.jpg",
+      "sha256": "04a6864a8e7de77704c9a36d852d17899c3134ee34bff28ce6823e3358edf1de",
+      "bytes": 2198166,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 17:02:45",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T14:02:45.000Z",
+      "capturedLocal": "2026-10-13 17:02:45",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 35093,
+          "sha256": "4864b8299c64d9bd8b543d5dcece673e047355aee0c01b78852be402b9b6b505"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 245302,
+          "sha256": "45baed863982ea6b8053e16f9b02f007cf3963bd02f32e68655e69b53a01473e"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 659644,
+          "sha256": "870cdfb147f8a835b3e14080fefbfd14ac9b011c80c482bd675729b0f64a2467"
+        }
+      }
+    },
+    {
+      "id": "photo-566f5e73ea7b52b83b79",
+      "filename": "IMG_20261013_170249_082.jpg",
+      "sha256": "566f5e73ea7b52b83b7972fc08117edd48d64dc19e766596faa674f8a854eeea",
+      "bytes": 2217012,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 17:02:52",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T14:02:52.000Z",
+      "capturedLocal": "2026-10-13 17:02:52",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 34457,
+          "sha256": "0bbeccb9a492008d81221ffb1725a13b916fc26f953a5fdeb4b23a4d5784d8c7"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 246418,
+          "sha256": "b6764365bf73a36f8f54b78076c893292607dbdd1ce91730597ebfb1375fc8b4"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 667706,
+          "sha256": "1e97e40a0484864575c6fc7903c5ff48ab3d03bc891ef5221c9c46b61a36ad3f"
+        }
+      }
+    },
+    {
+      "id": "photo-06f8e9b780191e96346d",
+      "filename": "IMG_20261013_170505_083.jpg",
+      "sha256": "06f8e9b780191e96346dfc8d719a282139993e6cc8301c9b11a2c5de0c3675e8",
+      "bytes": 2064353,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 17:05:08",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T14:05:08.000Z",
+      "capturedLocal": "2026-10-13 17:05:08",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 32332,
+          "sha256": "6aebd4caa58d8a15c76127072b3e8cefe2d81085abca09994ef39f31cccd7527"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 214319,
+          "sha256": "926702aaa781b126c52eefaa427ecddb4936eb5dacef09146f1ae27ae91525b0"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 587159,
+          "sha256": "d8c0d06aa0cd2f4c8e7ca90bbf37d42eca6fe6d24e9eb49f62c6a366379ee70d"
+        }
+      }
+    },
+    {
+      "id": "photo-6f351bdd3d1e7394d450",
+      "filename": "IMG_20261013_170557_084.jpg",
+      "sha256": "6f351bdd3d1e7394d450b12ea30bf9b316ca4222f44259fbff8b38a0e612ad4b",
+      "bytes": 1974219,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 17:06:00",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T14:06:00.000Z",
+      "capturedLocal": "2026-10-13 17:06:00",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 27998,
+          "sha256": "347b400e7edff3fcf1baa86eaa50750d2dd994f6e85623a66d60462d75b571e3"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 189493,
+          "sha256": "71e48c2b32dabdc6c79f5560ff39d4f7fe52a88ebee177ccd65ab384ba14923a"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 532122,
+          "sha256": "9c32fb682858b82bf7636bb2babfb990134cf2ac7e8cb02204d72552740b6b7b"
         }
       }
     },
@@ -6895,6 +6674,43 @@
       }
     },
     {
+      "id": "photo-fa06f498f57584bcc2a7",
+      "filename": "IMG_20261013_170815_085.jpg",
+      "sha256": "fa06f498f57584bcc2a7066b9d7c5b82f06a4e2995386d0b792d0a7685ab9fdf",
+      "bytes": 2221460,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 17:08:18",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T14:08:18.000Z",
+      "capturedLocal": "2026-10-13 17:08:18",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 35551,
+          "sha256": "b3dba289163dfc8aff2b914cd0625b80d067b334e1ef3b457b0ad471323d6b92"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 244350,
+          "sha256": "ca0c5b2e9cd9b00c5cf75493873c749c76805d691efc1b82efa688731abfe098"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 678552,
+          "sha256": "a6c763320acd803d2dde79d9b4117d8e06516e75ccf315108ecee3e5644efdb0"
+        }
+      }
+    },
+    {
       "id": "photo-81f62ee8d2c57ef7c133",
       "filename": "DSCF6739.jpeg",
       "sha256": "81f62ee8d2c57ef7c1334f395de4bfb137674dcfca977761c2feb3f767a77b66",
@@ -6969,6 +6785,117 @@
       }
     },
     {
+      "id": "photo-4c2f3eda1fdfbabaea4b",
+      "filename": "IMG_20261013_170820_086.jpg",
+      "sha256": "4c2f3eda1fdfbabaea4b9383c75f9c6ebb4075a8798dd3d8f10550de50fc3eaf",
+      "bytes": 2068371,
+      "width": 4032,
+      "height": 3024,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 17:08:23",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T14:08:23.000Z",
+      "capturedLocal": "2026-10-13 17:08:23",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 360,
+          "bytes": 29386,
+          "sha256": "9b9f42162cb2912d8c056ad5fd1cc4a86e762e0797b404c6c567f420d869ec67"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1350,
+          "bytes": 215315,
+          "sha256": "707171ce054789be7ce0ab663346696e8d45b452c7ade1c98a3fa9af38de7fee"
+        },
+        "share": {
+          "width": 3200,
+          "height": 2400,
+          "bytes": 601703,
+          "sha256": "2851c44f5fb0566103e38a72ff5d8b347e4e383ba61bdfd32a3946e774dcf3ce"
+        }
+      }
+    },
+    {
+      "id": "photo-38dca195f6f499feb9f3",
+      "filename": "IMG_20261013_171102_089.jpg",
+      "sha256": "38dca195f6f499feb9f353f3af08f53a5de4933a1cf1c68f0f999670e7e30aa5",
+      "bytes": 6875848,
+      "width": 8064,
+      "height": 4536,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 17:11:02",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T14:11:02.000Z",
+      "capturedLocal": "2026-10-13 17:11:02",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 270,
+          "bytes": 32592,
+          "sha256": "52c78d745df772bcc23f0ec7ba2511bb3e1525704c161435cc48407757e4c1e9"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1013,
+          "bytes": 285820,
+          "sha256": "2ff84d8370d1bfcda29c7d1e3c4f47cecedd03d7917157d5abafe15d0ffb908b"
+        },
+        "share": {
+          "width": 3200,
+          "height": 1800,
+          "bytes": 903313,
+          "sha256": "1a659892a331e153d260ab4e892220e86734d9241fc45ff6c61db5414b6361ce"
+        }
+      }
+    },
+    {
+      "id": "photo-6e73d1872c8148fe174c",
+      "filename": "IMG_20261013_171231_090.jpg",
+      "sha256": "6e73d1872c8148fe174cfbd2ae786fbe74e0763e86d4206dbc990880fe45a42a",
+      "bytes": 8243595,
+      "width": 8064,
+      "height": 4536,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 17:12:31",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T14:12:31.000Z",
+      "capturedLocal": "2026-10-13 17:12:31",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 270,
+          "bytes": 33804,
+          "sha256": "6ea3db5c7ddc70711d216d0fbe86939500fe8767549f431ead912843474351d1"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1013,
+          "bytes": 326184,
+          "sha256": "5485d29a26dde240005d928458d1d9efe6feaa0076ff7552a6f29ef33dcacc9d"
+        },
+        "share": {
+          "width": 3200,
+          "height": 1800,
+          "bytes": 1073922,
+          "sha256": "06942ca320f5fdfcc91edb5297fa00c6bddc826ac8975af21e17add0f422d3f0"
+        }
+      }
+    },
+    {
       "id": "photo-7e3e1d1a47d7761d8b3e",
       "filename": "DSCF6744.jpeg",
       "sha256": "7e3e1d1a47d7761d8b3ed0fe714f2b246cd4c17b7a83dfc99f7d9d131b62f91d",
@@ -7002,6 +6929,80 @@
           "height": 2133,
           "bytes": 975951,
           "sha256": "f943497f318cebbe034dcf27286c6d13b60750ca5df313a462f7adf254f37099"
+        }
+      }
+    },
+    {
+      "id": "photo-7b159210a08db57293f9",
+      "filename": "IMG_20261013_174356_094.jpg",
+      "sha256": "7b159210a08db57293f978c0d57a6be195a2a135597394b421feee145aca04bb",
+      "bytes": 8177927,
+      "width": 8064,
+      "height": 4536,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 17:43:56",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T14:43:56.000Z",
+      "capturedLocal": "2026-10-13 17:43:56",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 270,
+          "bytes": 35466,
+          "sha256": "7e19fa2c4fe4d4910a76c739c6864f90501430c2700ee51fb30acac45aa5e0c0"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1013,
+          "bytes": 320269,
+          "sha256": "887bf0024fc24c15be2095192652ba1f29eff128e51930726041617f7225b058"
+        },
+        "share": {
+          "width": 3200,
+          "height": 1800,
+          "bytes": 1072121,
+          "sha256": "15a1c361ccf5383a85819112fdaa92e1e985e369955b39c9d6f3847f8f61eee2"
+        }
+      }
+    },
+    {
+      "id": "photo-8375b8a584524daa1284",
+      "filename": "IMG_20261013_174444_095.jpg",
+      "sha256": "8375b8a584524daa128486e0392a4bc822dc6b22610b71d6d214e572b2105e35",
+      "bytes": 7333882,
+      "width": 8064,
+      "height": 4536,
+      "sourceId": "insta360",
+      "photographer": "Bulent Sahin",
+      "model": "Insta360 Ace Pro",
+      "rawCaptureTime": "2026:10:13 17:44:44",
+      "rawTimezoneOffset": null,
+      "clockShiftSeconds": 0,
+      "capturedAt": "2026-10-13T14:44:44.000Z",
+      "capturedLocal": "2026-10-13 17:44:44",
+      "calibrationStatus": "recording-verified",
+      "images": {
+        "thumbnail": {
+          "width": 480,
+          "height": 270,
+          "bytes": 33259,
+          "sha256": "f4baaf714168264340a449e6616c511fb6f85d11124404012d0a6dcc8b8db609"
+        },
+        "preview": {
+          "width": 1800,
+          "height": 1013,
+          "bytes": 301688,
+          "sha256": "41bd05728e7286c2eacc949d167f62ff425aae48ef4e196d78a023d7f850c3fa"
+        },
+        "share": {
+          "width": 3200,
+          "height": 1800,
+          "bytes": 969236,
+          "sha256": "b56f74563488fda31d53d45c5973daa079d5f16167c95ffe32e5a095f4458c90"
         }
       }
     },

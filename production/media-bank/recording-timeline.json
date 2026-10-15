@@ -1,0 +1,248 @@
+{
+  "eventDate": "2026-10-13",
+  "timezone": "Europe/Helsinki",
+  "broadcastStartAt": "2026-10-13T05:51:05Z",
+  "durationSeconds": 29929,
+  "source": "Organizer-provided event livestream: broadcast metadata and timestamped transcript, checked on 15 October 2026. The unlisted reference URL is retained in the local evidence report.",
+  "boundaryToleranceSeconds": 90,
+  "note": "Segments include introductions and handovers. These describe programme context, not the identity of people depicted in a photograph.",
+  "segments": [
+    {
+      "id": "registration",
+      "kind": "registration",
+      "sessionId": "doors-open",
+      "title": "Registration and venue preparation",
+      "startSeconds": -3065,
+      "endSeconds": 0,
+      "talkIds": [],
+      "evidence": "Published doors-open window; before the recording begins."
+    },
+    {
+      "id": "before-opening",
+      "kind": "registration",
+      "sessionId": "doors-open",
+      "title": "Audience arrival before the opening",
+      "startSeconds": 0,
+      "endSeconds": 613,
+      "talkIds": [],
+      "evidence": "The opening address begins at recording 0:10:13."
+    },
+    {
+      "id": "opening",
+      "kind": "opening",
+      "sessionId": "opening",
+      "title": "Opening remarks",
+      "startSeconds": 613,
+      "endSeconds": 1064,
+      "talkIds": [],
+      "evidence": "Opening address at 0:10:13; first-speaker introduction at 0:17:44."
+    },
+    {
+      "id": "mo-talk",
+      "kind": "talk",
+      "sessionId": "industry-perspectives-morning",
+      "title": "Industry perspectives: Mo Khazali",
+      "startSeconds": 1064,
+      "endSeconds": 3298,
+      "talkIds": ["mo-khazali-industry-perspective"],
+      "evidence": "Mo named at 0:18:03; presentation starts at 0:19:05; next introduction at 0:54:58."
+    },
+    {
+      "id": "ohans-talk",
+      "kind": "talk",
+      "sessionId": "industry-perspectives-morning",
+      "title": "Industry perspectives: Ohans Emmanuel",
+      "startSeconds": 3298,
+      "endSeconds": 5350,
+      "talkIds": ["ohans-emmanuel-industry-perspective"],
+      "evidence": "Ohans introduced at 0:55:34; self-introduction at 1:01:21; next introduction at 1:29:10."
+    },
+    {
+      "id": "jenni-talk",
+      "kind": "talk",
+      "sessionId": "industry-perspectives-morning",
+      "title": "Industry perspectives: Jenni Kylmäkoski",
+      "startSeconds": 5350,
+      "endSeconds": 6957,
+      "talkIds": ["jenni-kylmakoski-industry-perspective"],
+      "evidence": "Nokia speaker introduction at 1:29:10; self-introduction at 1:32:03; break announced at 1:55:57."
+    },
+    {
+      "id": "morning-break",
+      "kind": "break",
+      "sessionId": "morning-break",
+      "title": "Morning break",
+      "startSeconds": 6957,
+      "endSeconds": 8401,
+      "talkIds": [],
+      "evidence": "Break announced at 1:55:57; next speaker introduced at 2:20:01."
+    },
+    {
+      "id": "tapio-talk",
+      "kind": "talk",
+      "sessionId": "views-from-academia",
+      "title": "Views from academia: Tapio Pitkäranta",
+      "startSeconds": 8401,
+      "endSeconds": 9798,
+      "talkIds": ["agentic-discovery"],
+      "evidence": "Introduction at 2:20:01; self-introduction at 2:20:24; next introduction at 2:43:18."
+    },
+    {
+      "id": "joongi-talk",
+      "kind": "talk",
+      "sessionId": "views-from-academia",
+      "title": "Views from academia: Joongi Shin",
+      "startSeconds": 9798,
+      "endSeconds": 10985,
+      "talkIds": ["joongi-shin-ui-perspective"],
+      "evidence": "Introduction at 2:43:18; self-introduction and GenUI topic at 2:43:45; Q&A announced at 3:03:05."
+    },
+    {
+      "id": "research-panel",
+      "kind": "panel",
+      "sessionId": "views-from-academia",
+      "title": "Views from academia: Q&A",
+      "startSeconds": 10985,
+      "endSeconds": 13812,
+      "talkIds": ["agentic-discovery", "joongi-shin-ui-perspective"],
+      "evidence": "Q&A announced at 3:03:05; lunch departure announced at 3:50:12."
+    },
+    {
+      "id": "lunch",
+      "kind": "lunch",
+      "sessionId": "lunch-and-posters",
+      "title": "Lunch and posters",
+      "startSeconds": 13812,
+      "endSeconds": 16807,
+      "talkIds": [],
+      "evidence": "Lunch departure at 3:50:12; welcome back at 4:40:07."
+    },
+    {
+      "id": "industry-introduction",
+      "kind": "introduction",
+      "sessionId": "views-from-industry",
+      "title": "Views from industry: session introduction",
+      "startSeconds": 16807,
+      "endSeconds": 16858,
+      "talkIds": [],
+      "evidence": "Session introduction at 4:40:07; first speaker's topic introduced at 4:40:58."
+    },
+    {
+      "id": "jussi-talk",
+      "kind": "talk",
+      "sessionId": "views-from-industry",
+      "title": "Views from industry: Jussi Hacklin",
+      "startSeconds": 16858,
+      "endSeconds": 18132,
+      "talkIds": ["driving-ai-adoption-regulated-environment"],
+      "evidence": "Elisa role and regulated-adoption topic introduced at 4:40:50–4:40:58; presentation at 4:41:13; next introduction at 5:02:12."
+    },
+    {
+      "id": "viljami-talk",
+      "kind": "talk",
+      "sessionId": "views-from-industry",
+      "title": "Views from industry: Viljami Kuosmanen",
+      "startSeconds": 18132,
+      "endSeconds": 19533,
+      "talkIds": ["non-engineers-vibe-code-production"],
+      "evidence": "Introduction at 5:02:12; applause and presentation at 5:02:59; next introduction at 5:25:33."
+    },
+    {
+      "id": "sini-talk",
+      "kind": "talk",
+      "sessionId": "views-from-industry",
+      "title": "Views from industry: Sini Tistelgrén",
+      "startSeconds": 19533,
+      "endSeconds": 21259,
+      "talkIds": ["ai-factory-fundamentals"],
+      "evidence": "Introduction at 5:25:33; self-introduction at 5:26:14; Q&A invitation at 5:54:19."
+    },
+    {
+      "id": "industry-panel",
+      "kind": "panel",
+      "sessionId": "views-from-industry",
+      "title": "Views from industry: Q&A",
+      "startSeconds": 21259,
+      "endSeconds": 22139,
+      "talkIds": [
+        "driving-ai-adoption-regulated-environment",
+        "non-engineers-vibe-code-production",
+        "ai-factory-fundamentals"
+      ],
+      "evidence": "Speakers invited to Q&A at 5:54:19; break announced at 6:08:59. Stage photographs immediately after the announcement may retain panel context."
+    },
+    {
+      "id": "afternoon-break",
+      "kind": "break",
+      "sessionId": "afternoon-break",
+      "title": "Afternoon break and poster discussions",
+      "startSeconds": 22139,
+      "endSeconds": 24223,
+      "talkIds": [],
+      "evidence": "Break announced at 6:08:59; final session's first speaker introduced at 6:43:43."
+    },
+    {
+      "id": "zak-talk",
+      "kind": "talk",
+      "sessionId": "academia",
+      "title": "Academia: Zak Allal",
+      "startSeconds": 24223,
+      "endSeconds": 25531,
+      "talkIds": ["zak-allal-industry-perspective"],
+      "evidence": "Medical-doctor introduction at 6:43:43; Zak named at 6:44:06 and presentation at 6:44:42; next introduction at 7:05:31."
+    },
+    {
+      "id": "waseem-talk",
+      "kind": "talk",
+      "sessionId": "academia",
+      "title": "Academia: Muhammad Waseem",
+      "startSeconds": 25531,
+      "endSeconds": 27429,
+      "talkIds": ["genai-software-engineering"],
+      "evidence": "Muhammad Waseem introduced at 7:06:01; presentation at 7:06:09; final Q&A announced at 7:37:09."
+    },
+    {
+      "id": "final-panel",
+      "kind": "panel",
+      "sessionId": "academia",
+      "title": "Academia: final Q&A",
+      "startSeconds": 27429,
+      "endSeconds": 29470,
+      "talkIds": [
+        "zak-allal-industry-perspective",
+        "genai-software-engineering"
+      ],
+      "evidence": "Final Q&A announced at 7:37:09; session ends at 8:11:10."
+    },
+    {
+      "id": "closing",
+      "kind": "closing",
+      "sessionId": "wrap-up",
+      "title": "Closing remarks and thanks",
+      "startSeconds": 29470,
+      "endSeconds": 29752,
+      "talkIds": [],
+      "evidence": "Closing handover at 8:11:10; group-photo invitation at 8:15:52."
+    },
+    {
+      "id": "group-photo",
+      "kind": "group-photo",
+      "sessionId": "wrap-up",
+      "title": "Speakers, organizers and volunteer group photo",
+      "startSeconds": 29752,
+      "endSeconds": 29853,
+      "talkIds": [],
+      "evidence": "Group invited on stage at 8:15:52; photographer discussion and group posing through 8:17:24."
+    },
+    {
+      "id": "afterparty",
+      "kind": "afterparty",
+      "sessionId": "afterparty",
+      "title": "Afterparty and informal gathering",
+      "startSeconds": 29853,
+      "endSeconds": 43735,
+      "talkIds": [],
+      "evidence": "Afterparty announced at 8:17:33. The end is the published 21:00 finish, not a recorded boundary."
+    }
+  ]
+}

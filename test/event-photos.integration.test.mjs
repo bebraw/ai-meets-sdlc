@@ -46,7 +46,12 @@ test("photo bank publishes licensed derivatives and enforces original access, re
     30,
   );
   assert.equal(
-    catalog.photos.filter((photo) => photo.clockShiftSeconds === -3600).length,
+    catalog.photos.filter(
+      (photo) =>
+        photo.sourceId === "insta360" &&
+        photo.clockShiftSeconds === 0 &&
+        photo.calibrationStatus === "recording-verified",
+    ).length,
     65,
   );
   assert.ok(
@@ -60,6 +65,19 @@ test("photo bank publishes licensed derivatives and enforces original access, re
     /\/Users\/|localFilename|source\.json/,
   );
   assert.equal(catalog.license, "CC BY 4.0");
+  assert.equal(
+    catalog.photos.find(
+      (photo) => photo.filename === "IMG_20261013_141709_015.jpg",
+    ).eventContext.segmentId,
+    "sini-talk",
+  );
+  assert.ok(catalog.photos.every((photo) => photo.eventContext));
+  assert.deepEqual(
+    catalog.photos.find(
+      (photo) => photo.filename === "IMG_20261013_141709_015.jpg",
+    ).eventContext.programmeSpeakerIds,
+    ["sini-tistelgren"],
+  );
   assert.equal((await fetch("/api/admin/photos/catalog")).status, 401);
   assert.equal((await fetch("/api/speaker/photo-bank")).status, 401);
   assert.equal((await fetch(originalPath(fuji))).status, 403);
@@ -154,6 +172,12 @@ test("photo bank publishes licensed derivatives and enforces original access, re
   ).photos.find((photo) => photo.id === fuji.id);
   assert.equal(organizerPhoto.notes, revisionOne.notes);
   const mine = await readCatalog(mo, "/api/speaker/photo-bank");
+  const timingOnly = (await readCatalog(mo)).photos.find(
+    (photo) => photo.filename === "DSCF6589.jpeg",
+  );
+  assert.equal(timingOnly.eventContext.association, "timing-only");
+  assert.equal(timingOnly.originalAvailable, false);
+  assert.equal((await fetch(originalPath(timingOnly), mo)).status, 403);
   assert.ok(
     mine.photos.some(
       (photo) => photo.id === fuji.id && photo.originalAvailable,

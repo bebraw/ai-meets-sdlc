@@ -4,6 +4,7 @@ import { mkdir, readFile, readdir, stat, writeFile } from "node:fs/promises";
 import { spawn } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { photoEventContext } from "../../site/scripts/photo-context.ts";
 
 export const repoRoot = fileURLToPath(new URL("../../", import.meta.url));
 export const categories = [
@@ -160,7 +161,7 @@ export function applyCuration(catalog, curation) {
     ...catalog,
     photos: catalog.photos.map((photo) => {
       const review = curation.photos?.[photo.id] ?? {};
-      return {
+      const reviewed = {
         ...photo,
         category: "uncategorized",
         tags: [],
@@ -172,6 +173,10 @@ export function applyCuration(catalog, curation) {
         associationEvidence: "",
         notes: "",
         ...review,
+      };
+      return {
+        ...reviewed,
+        eventContext: photoEventContext(reviewed, catalog.talks ?? []),
       };
     }),
   };
@@ -200,7 +205,11 @@ export function photoCollections(catalog) {
       title: talk.title,
       relatedTalkId: talk.id,
       photoIds: catalog.photos
-        .filter((photo) => photo.relatedTalkIds.includes(talk.id))
+        .filter((photo) =>
+          (photo.eventContext?.relatedTalkIds ?? photo.relatedTalkIds).includes(
+            talk.id,
+          ),
+        )
         .map((photo) => photo.id),
     })),
     ...catalog.speakers.map((speaker) => ({
@@ -314,9 +323,9 @@ export async function prepare({
       clockShiftSeconds: source.clockShiftSeconds,
       capturedAt,
       capturedLocal: localTimestamp(capturedAt),
-      calibrationStatus: source.clockShiftSeconds
-        ? "user-confirmed"
-        : "exif-timezone",
+      calibrationStatus:
+        source.calibrationStatus ??
+        (source.clockShiftSeconds ? "user-confirmed" : "exif-timezone"),
       images: {},
     };
     for (const [variant, size] of Object.entries(variants)) {
@@ -434,6 +443,11 @@ export async function exportCatalog(catalog, output) {
     "depictedSpeakerIds",
     "associationEvidence",
     "notes",
+    "programmeSegment",
+    "programmeTitle",
+    "talkContextIds",
+    "talkContextSpeakerIds",
+    "contextConfidence",
   ];
   const csv = (value) =>
     `"${String(Array.isArray(value) ? value.join(" | ") : (value ?? "")).replaceAll('"', '""')}"`;
@@ -442,7 +456,20 @@ export async function exportCatalog(catalog, output) {
     [
       fields.map(csv).join(","),
       ...catalog.photos.map((photo) =>
-        fields.map((field) => csv(photo[field])).join(","),
+        fields
+          .map((field) =>
+            csv(
+              {
+                ...photo,
+                programmeSegment: photo.eventContext?.segmentId,
+                programmeTitle: photo.eventContext?.title,
+                talkContextIds: photo.eventContext?.relatedTalkIds,
+                talkContextSpeakerIds: photo.eventContext?.programmeSpeakerIds,
+                contextConfidence: photo.eventContext?.association,
+              }[field],
+            ),
+          )
+          .join(","),
       ),
     ].join("\r\n") + "\r\n",
   );

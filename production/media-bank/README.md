@@ -10,9 +10,11 @@ The original photo folder is read-only input. Generated files stay in
 
 - Fujifilm X-T3: Juho Vepsäläinen; retain the original clock time and EXIF
   timezone (`+03:00`).
-- Insta360 Ace Pro: Bulent Sahin; subtract exactly 3,600 seconds from the
-  recorded clock time, then interpret it as Finnish local time (`+03:00`
-  on the event date).
+- Insta360 Ace Pro: Bulent Sahin; retain the original recorded clock time and
+  interpret it as Finnish local time (`+03:00` on the event date). The initial
+  minus-one-hour correction was removed with the user's approval after
+  checking the livestream's 08:51:05 Finnish start and Sini's introduction
+  at recording 5:26:14 against `IMG_20261013_141709_015.jpg` (14:17:12).
 - Both collections: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
   with the named photographer credited. The user confirmed unrestricted reuse
   under this license.
@@ -51,13 +53,33 @@ Talk associations use visible slide text and stage-sequence context. They do
 not identify people. `depictedSpeakerIds` starts empty and is reserved for
 human-confirmed assignments; the editor requires evidence when setting it.
 `talks.json` preserves the public talk-title snapshot used for this review.
-The corrected timestamps are authoritative; contextual talk associations are
-stored separately and never override the confirmed clock correction.
+`recording-timeline.json` records the actual running order from the livestream's
+broadcast metadata and timestamped introductions, endings and Q&A handovers.
+The published schedule is only a coarse reference: for example, Jenni's talk
+continued past 10:30, and the research Q&A continued past 12:30.
+
+Every photo has `eventContext`: programme segment, session, time bounds, related
+talk context, recording offset when available, and the association basis.
+Existing visual/slide review agrees with the recording for 92 photos; five
+reviewed frames sit within 90 seconds of a handover; six additional stage/audience
+frames have timing-only talk context. The other 85 retain event context such as
+registration, breaks, lunch, closing, group photography or the afterparty.
+Off-stage photos never acquire speaker associations from the clock alone.
+Timing disagreement is retained as `conflict`, rather than silently replacing
+an organizer's reviewed association.
+
+The gallery displays related talk authors and supports searching their names
+and talk titles. These are programme associations, separate from confirmed
+people tags. Timing-only associations do not grant original-download access.
+The recording reference is unlisted, so its URL stays in the ignored local
+evidence report rather than the public gallery or Git.
 
 ## Outputs and collections
 
 - `inventory.json`: immutable import metadata and checksums.
-- `catalog.json` and `catalog.csv`: current metadata plus review decisions.
+- `catalog.json` and `catalog.csv`: current metadata, programme context and
+  review decisions. CSV includes programme segment/title, talk context IDs and
+  association confidence.
 - `collections.json`: highlights, category collections, related-talk collections,
   and any confirmed-person collections.
 - `CREDITS.txt`: photographer and license attribution for each original.
@@ -83,7 +105,8 @@ already-compressed JPEGs without recompressing them.
 To refresh contact sheets and exports after editing:
 
 ```sh
-npm run photos:prepare -- --contact-sheets-only
+npm run photos:metadata
+npm run photos:seed
 ```
 
 Set `MEDIA_BANK_FONT` to a font name or font file if ImageMagick cannot find its
@@ -98,7 +121,7 @@ npm run photos:check
 ```
 
 The browser check uses a temporary copy of review state. It verifies all 188
-source checksums, the 65 Insta360 corrections, categorization and shortlist,
+source checksums, the 65 recording-verified Insta360 times, categorization and shortlist,
 filtering, durable edits, stale-write rejection, local-origin mutation checks,
 human-confirmation requirements, ZIP credits and original downloads, and
 responsive layout/accessibility at 320, 390 and 1,440 px. It leaves source files
@@ -158,6 +181,7 @@ commit, then check the live gallery and protected original endpoints.
 ```sh
 npm run worker:test-build
 node --test test/media-bank.test.mjs test/event-photos.integration.test.mjs
+node --test test/photo-context.test.mjs
 npm run photos:browser-check
 ```
 

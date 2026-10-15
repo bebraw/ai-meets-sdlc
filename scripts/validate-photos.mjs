@@ -111,6 +111,30 @@ try {
     0,
   );
   assert.equal(await page.locator("#person").isVisible(), false);
+  await page.locator("#selection").selectOption("");
+  await page.locator("#search").fill("Sini Tistelgrén");
+  const sini = seed.photos.find(
+    (photo) => photo.filename === "IMG_20261013_141709_015.jpg",
+  );
+  const siniCard = page.locator(`[data-photo-id="${sini.id}"]`);
+  assert.equal(await siniCard.count(), 1);
+  await siniCard.locator(".image-button").click();
+  assert.match(
+    await page.locator("#facts").textContent(),
+    /2026-10-13 14:17:12/,
+  );
+  assert.match(
+    await page.locator("#talk-context").textContent(),
+    /Sini Tistelgrén/,
+  );
+  assert.match(
+    await page.locator("#programme-context").textContent(),
+    /Sini Tistelgrén/,
+  );
+  assert.equal(await page.locator("#confirmed-people").isVisible(), false);
+  await page.getByRole("button", { name: "Close", exact: true }).click();
+  await page.locator("#search").fill("");
+  await page.locator("#selection").selectOption("selected");
   await page.locator("#grid .image-button").first().click();
   assert.equal(
     await page.getByRole("button", { name: "Save photo details" }).isVisible(),

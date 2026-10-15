@@ -338,6 +338,10 @@
         color: var(--muted);
         margin: 0;
       }
+      .card-context {
+        font-size: 13px;
+        margin: 6px 0;
+      }
       .badge {
         display: inline-block;
         border: 1px solid var(--line);
@@ -677,6 +681,9 @@
         <form class="editor" id="editor">
           <h2>Photo details</h2>
           <p class="facts" id="facts"></p>
+          <p class="facts" id="programme-context"></p>
+          <p id="talk-context"></p>
+          <p id="confirmed-people" hidden></p>
           <p class="license" id="credit"></p>
           <div class="downloads">
             <a id="original" href="#">Full resolution</a
@@ -786,6 +793,17 @@
         $(`#${field} option`).value = "";
       const credits = (photo) =>
         `${photo.filename} — SDLCAI, 13 October 2026, Marsio, Espoo. Photo: ${photo.photographer}. ${catalog.license}: ${catalog.licenseUrl}`;
+      const contextTalks = (photo) =>
+        catalog.talks.filter((talk) =>
+          (photo.eventContext?.relatedTalkIds ?? photo.relatedTalkIds).includes(
+            talk.id,
+          ),
+        );
+      const speakerNames = (talks) =>
+        [...new Set(talks.flatMap((talk) => talk.speakerIds))].map(
+          (id) =>
+            catalog.speakers.find((person) => person.id === id)?.name || id,
+        );
       function paint() {
         const params = new URLSearchParams();
         if (mine) params.set("mine", "1");
@@ -824,6 +842,9 @@
                 photo.photographer,
                 ...photo.tags,
                 people,
+                photo.eventContext?.title || "",
+                ...contextTalks(photo).map((talk) => talk.title),
+                ...speakerNames(contextTalks(photo)),
               ]
                 .join(" ")
                 .toLocaleLowerCase()
@@ -835,7 +856,9 @@
             (!$("#selection").value ||
               photo.selection === $("#selection").value) &&
             (!$("#talk").value ||
-              photo.relatedTalkIds.includes($("#talk").value)) &&
+              contextTalks(photo).some(
+                (talk) => talk.id === $("#talk").value,
+              )) &&
             (!$("#person").value ||
               photo.depictedSpeakerIds.includes($("#person").value)) &&
             (!$("#similar").checked || similarIds.has(photo.id))
@@ -896,8 +919,13 @@
             open,
             meta,
             make("p", photo.caption || "Awaiting caption", "card-caption"),
-            make("p", `Photo: ${photo.photographer}`, "card-credit"),
           );
+          const names = speakerNames(contextTalks(photo));
+          if (names.length)
+            card.append(
+              make("p", `Talk context: ${names.join(", ")}`, "card-context"),
+            );
+          card.append(make("p", `Photo: ${photo.photographer}`, "card-credit"));
           $("#grid").append(card);
         }
         const selectedCount = catalog.photos.filter(
@@ -929,6 +957,21 @@
           `SDLCAI seminar photo ${photo.filename}`;
         $("#facts").textContent =
           `${photo.capturedLocal} Finnish time · ${photo.width} × ${photo.height} px${photo.clockShiftSeconds ? " · Camera time corrected −1 hour" : ""}`;
+        $("#programme-context").textContent = photo.eventContext
+          ? `Programme: ${photo.eventContext.title}`
+          : "";
+        const talks = contextTalks(photo);
+        $("#talk-context").textContent = talks.length
+          ? `Related ${talks.length > 1 ? "talks" : "talk"}: ${talks.map((talk) => `${talk.title} (${speakerNames([talk]).join(", ")})`).join("; ")}`
+          : "";
+        const people = photo.depictedSpeakerIds.map(
+          (id) =>
+            catalog.speakers.find((person) => person.id === id)?.name || id,
+        );
+        $("#confirmed-people").hidden = !people.length;
+        $("#confirmed-people").textContent = people.length
+          ? `Confirmed people: ${people.join(", ")}`
+          : "";
         $("#credit").textContent =
           `Photo: ${photo.photographer} / ${catalog.license}`;
         for (const field of [

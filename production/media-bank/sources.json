@@ -17,9 +17,10 @@
       "id": "insta360",
       "model": "Insta360 Ace Pro",
       "photographer": "Bulent Sahin",
-      "clockShiftSeconds": -3600,
+      "clockShiftSeconds": 0,
       "timezoneOffset": "+03:00",
-      "calibration": "User confirmed that the camera was one hour ahead; subtract exactly one hour before interpreting as Finnish local time."
+      "calibration": "User approved removing the earlier minus-one-hour correction after comparing the recording's broadcast start, Sini's introduction at 5:26:14, and IMG_20261013_141709_015.jpg (raw EXIF 14:17:12). The original camera time aligns with the recording at approximately 14:17 Finnish time.",
+      "calibrationStatus": "recording-verified"
     }
   ]
 }

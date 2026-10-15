@@ -66,7 +66,9 @@ try {
   assert.equal(
     catalog.photos.filter(
       (photo) =>
-        photo.sourceId === "insta360" && photo.clockShiftSeconds === -3600,
+        photo.sourceId === "insta360" &&
+        photo.clockShiftSeconds === 0 &&
+        photo.calibrationStatus === "recording-verified",
     ).length,
     65,
   );
@@ -273,7 +275,7 @@ try {
   }
   assert.deepEqual(errors, []);
   console.log(
-    "Photo media bank passed: 188 source checksums, 65 clock corrections, categorization, shortlist, filters, saved edits, stale-write protection, credit-bearing ZIPs, original downloads, responsive layouts and accessibility.",
+    "Photo media bank passed: 188 source checksums, 65 recording-verified camera times, categorization, shortlist, filters, saved edits, stale-write protection, credit-bearing ZIPs, original downloads, responsive layouts and accessibility.",
   );
 } finally {
   await browser?.close();
