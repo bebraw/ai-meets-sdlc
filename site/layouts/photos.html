@@ -884,10 +884,11 @@
           open.append(image);
           open.addEventListener("click", () => show(photo));
           const meta = make("div", undefined, "card-meta");
-          meta.append(
-            make("span", label(photo.category), "badge"),
-            make("span", label(photo.selection), `badge ${photo.selection}`),
-          );
+          meta.append(make("span", label(photo.category), "badge"));
+          if (!hosted || catalog.canEdit)
+            meta.append(
+              make("span", label(photo.selection), `badge ${photo.selection}`),
+            );
           if (similarIds.has(photo.id))
             meta.append(make("span", "Similar frames", "badge"));
           card.append(
