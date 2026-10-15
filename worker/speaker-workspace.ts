@@ -82,7 +82,13 @@ export async function handleSpeakerWorkspaceRequest(
 
   if (url.pathname.startsWith("/api/admin/speakers/slides/")) {
     if (!["GET", "HEAD"].includes(request.method)) {
-      const forbidden = requireAdminMutation(request, "publish-speaker-slides");
+      const action =
+        url.pathname === "/api/admin/speakers/slides/upload"
+          ? "upload-speaker-slides"
+          : request.method === "DELETE"
+            ? "remove-speaker-slides"
+            : "publish-speaker-slides";
+      const forbidden = requireAdminMutation(request, action);
       if (forbidden) return adminSecure(forbidden);
     }
     return adminSecure(await handleAdminSpeakerSlidesRequest(request, env));

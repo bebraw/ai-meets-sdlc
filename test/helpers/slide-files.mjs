@@ -1,5 +1,11 @@
 import { zipSync, strToU8 } from "fflate";
 
+export function htmlSlideBytes(label = "HTML presentation") {
+  return Buffer.from(
+    `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${label}</title></head><body><h1>${label}</h1><script>document.body.dataset.slides = 'ready';</script></body></html>`,
+  );
+}
+
 export function pdfSlideBytes(label = "Presentation slides") {
   const text = label.replace(/[()\\]/gu, "");
   const content = `BT /F1 24 Tf 72 720 Td (${text}) Tj ET`;

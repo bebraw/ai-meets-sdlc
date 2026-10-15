@@ -1,6 +1,7 @@
 import { unzipSync } from "fflate";
 import {
   maxSlideFileBytes,
+  slideContentTypes,
   slideFormatFromFilename,
   type SlideFormat,
   type SpeakerSlideFile,
@@ -35,11 +36,7 @@ interface SlideRow {
 const slideIdPattern = /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/u;
 const publicSlidePattern =
   /^\/media\/talks\/([a-z0-9]+(?:-[a-z0-9]+)*)\/([0-9a-f-]{36})\.pdf$/u;
-const contentTypes = {
-  pdf: "application/pdf",
-  powerpoint:
-    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-} as const;
+const contentTypes = slideContentTypes;
 
 export async function handleSpeakerSlidesRequest(
   request: Request,
@@ -71,20 +68,7 @@ export async function handleSpeakerSlidesRequest(
     return downloadSlide(request, env, row, false);
   }
   if (request.method === "DELETE") {
-    const deleted = await env.INTERESTS.batch<SlideRow>([
-      env.INTERESTS.prepare(
-        `INSERT OR IGNORE INTO speaker_slide_garbage (r2_key, created_at)
-         SELECT r2_key, ?2 FROM speaker_slides WHERE slide_id = ?1`,
-      ).bind(slideId, new Date().toISOString()),
-      env.INTERESTS.prepare(
-        "DELETE FROM speaker_slides WHERE slide_id = ?1 RETURNING *",
-      ).bind(slideId),
-    ]);
-    if (!deleted[1]?.results[0]) return staleSlides();
-    await purgeDeletedSpeakerSlides(env);
-    return json({
-      message: "Slides removed. Any public link has been removed.",
-    });
+    return removeSlide(env, slideId);
   }
   return methodNotAllowed("GET, HEAD, DELETE");
 }
@@ -106,6 +90,20 @@ export async function handleAdminSpeakerSlidesRequest(
   env: Env,
 ): Promise<Response> {
   const url = new URL(request.url);
+  if (url.pathname === "/api/admin/speakers/slides/upload") {
+    if (request.method !== "POST") return methodNotAllowed("POST");
+    const speakerId = url.searchParams.get("speaker_id") ?? "";
+    const canonical = await readCanonicalSpeaker(env, speakerId);
+    if (!canonical)
+      return json({ error: "Choose a speaker before uploading slides." }, 400);
+    return uploadSlides(
+      request,
+      env,
+      speakerId,
+      canonical.content.talks.map(({ id }) => id),
+      true,
+    );
+  }
   if (url.pathname === "/api/admin/speakers/slides/links") {
     if (request.method !== "POST") return methodNotAllowed("POST");
     return saveAdminSlideLink(request, env);
@@ -162,11 +160,27 @@ export async function handleAdminSpeakerSlidesRequest(
   }
   const slideId = url.pathname.slice("/api/admin/speakers/slides/".length);
   if (!slideIdPattern.test(slideId)) return notFound();
-  if (request.method !== "GET" && request.method !== "HEAD") {
-    return methodNotAllowed("GET, HEAD");
-  }
   const row = await readSlide(env, slideId);
-  return row ? downloadSlide(request, env, row, false) : notFound();
+  if (!row) return notFound();
+  if (request.method === "DELETE") return removeSlide(env, slideId);
+  if (request.method === "GET" || request.method === "HEAD")
+    return downloadSlide(request, env, row, false);
+  return methodNotAllowed("GET, HEAD, DELETE");
+}
+
+async function removeSlide(env: Env, slideId: string): Promise<Response> {
+  const deleted = await env.INTERESTS.batch<SlideRow>([
+    env.INTERESTS.prepare(
+      `INSERT OR IGNORE INTO speaker_slide_garbage (r2_key, created_at)
+       SELECT r2_key, ?2 FROM speaker_slides WHERE slide_id = ?1`,
+    ).bind(slideId, new Date().toISOString()),
+    env.INTERESTS.prepare(
+      "DELETE FROM speaker_slides WHERE slide_id = ?1 RETURNING *",
+    ).bind(slideId),
+  ]);
+  if (!deleted[1]?.results[0]) return staleSlides();
+  await purgeDeletedSpeakerSlides(env);
+  return json({ message: "Slides removed. Any public link has been removed." });
 }
 
 export async function readPublishedSlideLinks(
@@ -307,6 +321,7 @@ async function uploadSlides(
   env: Env,
   speakerId: string,
   talkIds: readonly string[],
+  admin = false,
 ): Promise<Response> {
   const params = new URL(request.url).searchParams;
   const talkId = params.get("talk_id") ?? "";
@@ -314,7 +329,7 @@ async function uploadSlides(
   const expectedSlideId = params.get("replaces_slide_id") ?? "";
   const permission = params.get("may_publish") ?? "0";
   if (!talkIds.includes(talkId)) {
-    return json({ error: "Choose one of your assigned talks." }, 400);
+    return json({ error: "Choose one of this speaker's assigned talks." }, 400);
   }
   if (
     !filename ||
@@ -325,8 +340,15 @@ async function uploadSlides(
   )
     return json({ error: "Submit the slides upload form again." }, 400);
   const format = slideFormatFromFilename(filename);
-  if (!format)
-    return json({ error: "Choose a PDF or PowerPoint (.pptx) file." }, 400);
+  if (!format || (!admin && format === "html"))
+    return json(
+      {
+        error: admin
+          ? "Choose a PDF, PowerPoint (.pptx), or HTML file."
+          : "Choose a PDF or PowerPoint (.pptx) file.",
+      },
+      400,
+    );
   const contentType = request.headers
     .get("content-type")
     ?.split(";", 1)[0]
@@ -335,7 +357,7 @@ async function uploadSlides(
     contentType !== contentTypes[format] &&
     contentType !== "application/octet-stream"
   ) {
-    return json({ error: "Upload a PDF or PowerPoint (.pptx) file." }, 415);
+    return json({ error: "The file type does not match its extension." }, 415);
   }
   const bytes = await readSlideBytes(request);
   if (bytes instanceof Response) return bytes;
@@ -343,13 +365,16 @@ async function uploadSlides(
     return json(
       {
         error:
-          "The file is not a valid PDF or PowerPoint (.pptx) presentation.",
+          format === "html"
+            ? "The file is not a valid UTF-8 HTML presentation."
+            : "The file is not a valid PDF or PowerPoint (.pptx) presentation.",
       },
       400,
     );
   }
   const slideId = crypto.randomUUID();
-  const r2Key = `speaker-slides/${talkId}/${slideId}.${format === "pdf" ? "pdf" : "pptx"}`;
+  const extension = format === "powerpoint" ? "pptx" : format;
+  const r2Key = `speaker-slides/${talkId}/${slideId}.${extension}`;
   const uploadedAt = new Date().toISOString();
   const hash = Array.from(
     new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)),
@@ -405,7 +430,7 @@ async function uploadSlides(
       {
         message:
           "Slides uploaded privately. PDF publication is controlled by organizers.",
-        slide: serializeSlide(row, false),
+        slide: serializeSlide(row, admin),
       },
       201,
     );
@@ -483,7 +508,7 @@ async function downloadSlide(
       "cache-control": "no-store",
       "content-type": contentTypes[row.format],
       "content-length": String(file.size),
-      "content-disposition": `attachment; filename="slides.${row.format === "pdf" ? "pdf" : "pptx"}"; filename*=UTF-8''${encodeURIComponent(row.filename).replaceAll("'", "%27")}`,
+      "content-disposition": `attachment; filename="slides.${row.format === "powerpoint" ? "pptx" : row.format}"; filename*=UTF-8''${encodeURIComponent(row.filename).replaceAll("'", "%27")}`,
       "x-content-type-options": "nosniff",
       "content-security-policy": "sandbox; default-src 'none'",
     },
@@ -550,6 +575,17 @@ async function readSlideBytes(
 }
 
 function validSlideFile(bytes: Uint8Array, format: SlideFormat): boolean {
+  if (format === "html") {
+    try {
+      const html = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+      return (
+        !html.includes("\u0000") &&
+        /<(?:!doctype\s+html|html)(?:\s|>)/iu.test(html)
+      );
+    } catch {
+      return false;
+    }
+  }
   if (format === "pdf") {
     return (
       /^%PDF-1\.[0-9]|^%PDF-2\.0/u.test(

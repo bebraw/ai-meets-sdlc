@@ -6,7 +6,285 @@ import {
   receiptAdmin,
   receiptOrigin as origin,
 } from "./helpers/receipt-fixture.mjs";
-import { pdfSlideBytes, powerpointSlideBytes } from "./helpers/slide-files.mjs";
+import {
+  htmlSlideBytes,
+  pdfSlideBytes,
+  powerpointSlideBytes,
+} from "./helpers/slide-files.mjs";
+
+test("admins upload, replace and remove PDF, PowerPoint and standalone HTML for a speaker", async (t) => {
+  const fixture = await createReceiptFixture();
+  t.after(() => fixture.dispose());
+  const { worker, cookies, runSql, env } = fixture;
+  const adminHeaders = {
+    authorization: receiptAdmin,
+    origin,
+    "x-admin-action": "upload-speaker-slides",
+  };
+  const getSpeaker = async () => {
+    const response = await worker.fetch(`${origin}/api/admin/speakers`, {
+      headers: adminHeaders,
+    });
+    return (await response.json()).speakers.find(
+      ({ speaker_id }) => speaker_id === "mo-khazali",
+    );
+  };
+  const talkId = (await getSpeaker()).canonical.talks[0].id;
+  const upload = (overrides = {}, headers = adminHeaders) => {
+    const {
+      bytes = pdfSlideBytes(),
+      contentType = "application/pdf",
+      ...params
+    } = overrides;
+    return worker.fetch(
+      `${origin}/api/admin/speakers/slides/upload?${new URLSearchParams({ speaker_id: "mo-khazali", talk_id: talkId, filename: "slides.pdf", may_publish: "0", ...params })}`,
+      {
+        method: "POST",
+        headers: { ...headers, "content-type": contentType },
+        body: bytes,
+      },
+    );
+  };
+  const publish = (slideId) =>
+    worker.fetch(`${origin}/api/admin/speakers/slides/publication`, {
+      method: "POST",
+      headers: {
+        ...adminHeaders,
+        "content-type": "application/json",
+        "x-admin-action": "publish-speaker-slides",
+      },
+      body: JSON.stringify({ slide_id: slideId, published: true }),
+    });
+  assert.equal((await upload({}, {})).status, 401);
+  assert.equal(
+    (await upload({}, { cookie: cookies.get("mo-khazali"), origin })).status,
+    401,
+  );
+  assert.equal(
+    (await upload({}, { ...adminHeaders, origin: "https://attacker.example" }))
+      .status,
+    403,
+  );
+  assert.equal(
+    (await upload({}, { ...adminHeaders, "x-admin-action": "wrong" })).status,
+    403,
+  );
+  assert.equal((await upload({ speaker_id: "unknown-speaker" })).status, 400);
+  assert.equal((await upload({ talk_id: "unknown-talk" })).status, 400);
+  assert.equal((await upload({ speaker_id: "ohans-emmanuel" })).status, 400);
+  assert.equal((await upload({ filename: "../slides.html" })).status, 400);
+  assert.equal(
+    (
+      await upload({
+        filename: "slides.html",
+        contentType: "application/pdf",
+        bytes: htmlSlideBytes(),
+      })
+    ).status,
+    415,
+  );
+  assert.equal(
+    (
+      await upload({
+        filename: "slides.html",
+        contentType: "text/html",
+        bytes: Buffer.from("not an HTML document"),
+      })
+    ).status,
+    400,
+  );
+  assert.equal(
+    (
+      await upload({
+        filename: "slides.html",
+        contentType: "text/html",
+        bytes: Buffer.from([0xff, 0xfe]),
+      })
+    ).status,
+    400,
+  );
+  assert.equal(
+    (await upload({ bytes: new Uint8Array(25 * 1024 * 1024 + 1) })).status,
+    413,
+  );
+
+  const pdfResponse = await upload({ may_publish: "1" });
+  assert.equal(pdfResponse.status, 201, await pdfResponse.clone().text());
+  const pdf = (await pdfResponse.json()).slide;
+  assert.ok(pdf.download_url.startsWith("/api/admin/speakers/slides/"));
+  assert.equal(pdf.published_at, null);
+  assert.equal((await publish(pdf.slide_id)).status, 200);
+  const publicPdf = (await getSpeaker()).slides.find(
+    ({ format }) => format === "pdf",
+  ).public_url;
+  assert.equal((await worker.fetch(`${origin}${publicPdf}`)).status, 200);
+  // Stale admin forms and speaker forms cannot overwrite a newer revision.
+  assert.equal((await upload()).status, 409);
+  const speakerHeaders = { cookie: cookies.get("mo-khazali"), origin };
+  const speakerUploadUrl = `${origin}/api/speaker/slides?${new URLSearchParams({ talk_id: talkId, filename: "stale.pdf" })}`;
+  assert.equal(
+    (
+      await worker.fetch(speakerUploadUrl, {
+        method: "POST",
+        headers: { ...speakerHeaders, "content-type": "application/pdf" },
+        body: pdfSlideBytes(),
+      })
+    ).status,
+    409,
+  );
+  const replaced = await upload({ replaces_slide_id: pdf.slide_id });
+  assert.equal(replaced.status, 201);
+  const replacement = (await replaced.json()).slide;
+  assert.equal(replacement.may_publish, false);
+  assert.equal(replacement.published_at, null);
+  assert.equal((await worker.fetch(`${origin}${publicPdf}`)).status, 404);
+  assert.equal((await upload({ replaces_slide_id: pdf.slide_id })).status, 409);
+
+  const expectedFiles = [
+    {
+      format: "powerpoint",
+      filename: "venue.PPTX",
+      contentType: "application/octet-stream",
+      bytes: powerpointSlideBytes(),
+    },
+    {
+      format: "html",
+      filename: "deck.HTML",
+      contentType: "text/html; charset=utf-8",
+      bytes: htmlSlideBytes(),
+    },
+  ];
+  for (const { format, ...file } of expectedFiles) {
+    const response = await upload({ ...file, may_publish: "1" });
+    assert.equal(response.status, 201, await response.clone().text());
+    const slide = (await response.json()).slide;
+    assert.equal(slide.format, format);
+    assert.equal(slide.may_publish, false);
+    assert.equal(slide.public_url, null);
+    assert.equal((await publish(slide.slide_id)).status, 400);
+    const download = await worker.fetch(`${origin}${slide.download_url}`, {
+      headers: adminHeaders,
+    });
+    assert.equal(download.status, 200);
+    assert.match(download.headers.get("content-disposition"), /^attachment;/u);
+    assert.equal(download.headers.get("x-content-type-options"), "nosniff");
+    assert.match(download.headers.get("content-security-policy"), /sandbox/u);
+    assert.deepEqual(Buffer.from(await download.arrayBuffer()), file.bytes);
+    const head = await worker.fetch(`${origin}${slide.download_url}`, {
+      method: "HEAD",
+      headers: adminHeaders,
+    });
+    assert.equal(head.status, 200);
+    assert.equal(head.headers.get("content-length"), String(file.bytes.length));
+    assert.equal(await head.text(), "");
+    assert.equal(
+      (await worker.fetch(`${origin}${slide.download_url}`)).status,
+      401,
+    );
+    const speakerDownload = `/api/speaker/slides/${slide.slide_id}`;
+    assert.equal(
+      (
+        await worker.fetch(`${origin}${speakerDownload}`, {
+          headers: { cookie: cookies.get("ohans-emmanuel") },
+        })
+      ).status,
+      404,
+    );
+    const ownDownload = await worker.fetch(`${origin}${speakerDownload}`, {
+      headers: speakerHeaders,
+    });
+    assert.equal(ownDownload.status, 200);
+    assert.deepEqual(Buffer.from(await ownDownload.arrayBuffer()), file.bytes);
+  }
+  let slides = (await getSpeaker()).slides;
+  assert.equal(slides.length, 3);
+  const firstHtml = slides.find(({ format }) => format === "html");
+  const htmlReplacement = await upload({
+    filename: "updated.htm",
+    bytes: htmlSlideBytes("Updated HTML"),
+    contentType: "text/html",
+    replaces_slide_id: firstHtml.slide_id,
+  });
+  assert.equal(htmlReplacement.status, 201);
+  assert.equal(
+    (
+      await worker.fetch(`${origin}${firstHtml.download_url}`, {
+        headers: adminHeaders,
+      })
+    ).status,
+    404,
+  );
+  const noPermission = await publish(replacement.slide_id);
+  assert.equal(noPermission.status, 403);
+  slides = (await getSpeaker()).slides;
+  for (const file of slides) {
+    const url = `${origin}${file.download_url}?speaker_id=mo-khazali`;
+    assert.equal(
+      (
+        await worker.fetch(url, {
+          method: "DELETE",
+          headers: { ...adminHeaders, "x-admin-action": "wrong" },
+        })
+      ).status,
+      403,
+    );
+    assert.equal(
+      (
+        await worker.fetch(url, {
+          method: "DELETE",
+          headers: {
+            ...adminHeaders,
+            "x-admin-action": "remove-speaker-slides",
+            origin: "https://attacker.example",
+          },
+        })
+      ).status,
+      403,
+    );
+    assert.equal(
+      (
+        await worker.fetch(url, {
+          method: "DELETE",
+          headers: {
+            ...adminHeaders,
+            "x-admin-action": "remove-speaker-slides",
+          },
+        })
+      ).status,
+      200,
+    );
+    assert.equal(
+      (await worker.fetch(url, { headers: adminHeaders })).status,
+      404,
+    );
+  }
+  assert.deepEqual((await getSpeaker()).slides, []);
+  assert.equal(
+    (await env.SPEAKER_UPLOADS.list({ prefix: "speaker-slides/" })).objects
+      .length,
+    0,
+  );
+  assert.deepEqual(await runSql("SELECT * FROM speaker_slide_garbage"), []);
+  const events = await runSql(
+    "SELECT actor_type, subject_speaker_id, action FROM activity_events WHERE category = 'Presentation files'",
+  );
+  assert.ok(
+    events.some(
+      ({ actor_type, subject_speaker_id, action }) =>
+        actor_type === "admin" &&
+        subject_speaker_id === "mo-khazali" &&
+        action === "uploaded",
+    ),
+  );
+  assert.ok(
+    events.some(
+      ({ actor_type, subject_speaker_id, action }) =>
+        actor_type === "admin" &&
+        subject_speaker_id === "mo-khazali" &&
+        action === "removed",
+    ),
+  );
+});
 
 test("organizers can publish, update and remove external slide links per public talk", async (t) => {
   const fixture = await createReceiptFixture();

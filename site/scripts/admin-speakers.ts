@@ -1,5 +1,8 @@
 export {};
 import {
+  maxSlideFileBytes,
+  slideContentTypes,
+  slideFormatFromFilename,
   slideFormatLabel,
   type SpeakerSlideFile,
   type SpeakerSlideLink,
@@ -1388,17 +1391,18 @@ function renderSlideFiles(speaker: AdminSpeakerItem): HTMLElement {
       "Presentation files",
     ),
   );
-  if (!speaker.workspace_only) {
-    for (const talk of speaker.canonical.talks)
-      section.appendChild(renderSlideLink(speaker, talk));
-  }
   section.appendChild(
     node(
       "p",
       "text-sm leading-6 text-paper/70",
-      "Download files for venue use. Publish a permitted PDF when post-event material is ready; it will appear beneath the talk on the public schedule. Replacements require publication again.",
+      "Upload files supplied by the speaker for venue use. Publish a permitted PDF when post-event material is ready; it will appear beneath the talk on the public schedule. PowerPoint and HTML files stay private.",
     ),
   );
+  for (const talk of speaker.canonical.talks) {
+    section.appendChild(renderAdminSlideUpload(speaker, talk));
+    if (!speaker.workspace_only)
+      section.appendChild(renderSlideLink(speaker, talk));
+  }
   if (speaker.slides.length === 0) {
     section.appendChild(
       node("p", "text-sm text-paper/60", "No presentation files uploaded."),
@@ -1446,6 +1450,41 @@ function renderSlideFiles(speaker: AdminSpeakerItem): HTMLElement {
     );
     download.href = file.download_url;
     actions.appendChild(download);
+    const remove = reviewButton(
+      `Remove ${slideFormatLabel(file.format)}`,
+      false,
+    );
+    const removeStatus = node("p", "min-h-6 text-sm font-bold");
+    removeStatus.setAttribute("aria-live", "polite");
+    remove.addEventListener("click", async () => {
+      if (
+        !window.confirm(
+          `Remove ${file.filename}? Any public schedule link will also be removed.`,
+        )
+      )
+        return;
+      remove.disabled = true;
+      setEditorStatus(removeStatus, "Removing slides…");
+      const response = await requestJson<{ error?: string; message?: string }>(
+        `${file.download_url}?${new URLSearchParams({ speaker_id: speaker.speaker_id })}`,
+        {
+          method: "DELETE",
+          headers: { "x-admin-action": "remove-speaker-slides" },
+        },
+      );
+      remove.disabled = false;
+      if (!response.ok) {
+        setEditorStatus(
+          removeStatus,
+          response.data.error ?? "Slides could not be removed.",
+          true,
+        );
+        return;
+      }
+      await loadSpeakers();
+      setStatus(response.data.message ?? "Slides removed.");
+    });
+    actions.appendChild(remove);
     if (file.public_url) {
       const link = node(
         "a",
@@ -1515,9 +1554,142 @@ function renderSlideFiles(speaker: AdminSpeakerItem): HTMLElement {
     } else {
       card.appendChild(actions);
     }
+    card.appendChild(removeStatus);
     section.appendChild(card);
   }
   return section;
+}
+
+function renderAdminSlideUpload(
+  speaker: AdminSpeakerItem,
+  talk: AdminSpeakerContent["talks"][number],
+): HTMLElement {
+  const form = node("form", "grid min-w-0 gap-4 border border-paper/40 p-4");
+  form.dataset.adminSlideUpload = talk.id;
+  form.appendChild(
+    node("strong", "uppercase", `${talk.title} / Upload slides`),
+  );
+  const label = node(
+    "label",
+    "grid min-w-0 gap-2 text-sm font-bold uppercase",
+    "Presentation file (PDF, .pptx, or HTML, up to 25 MB)",
+  );
+  const input = node(
+    "input",
+    "min-w-0 w-full border border-paper p-3 font-normal normal-case file:mr-3 file:border-0 file:bg-paper file:px-3 file:py-2 file:font-bold file:text-ink",
+  );
+  input.type = "file";
+  input.accept = ".pdf,.pptx,.html,.htm";
+  input.required = true;
+  label.appendChild(input);
+  form.appendChild(label);
+  form.appendChild(
+    node(
+      "p",
+      "text-sm leading-6 text-paper/70",
+      "Each format has its own slot. Uploading the same format replaces its file and withdraws any published PDF. HTML must be a standalone file and is downloaded for local use.",
+    ),
+  );
+  const permissionLabel = node(
+    "label",
+    "grid grid-cols-[auto_1fr] items-start gap-3 border border-paper/40 p-4",
+  );
+  const permission = node("input", "mt-1 h-5 w-5");
+  permission.type = "checkbox";
+  permissionLabel.appendChild(permission);
+  permissionLabel.appendChild(
+    node(
+      "span",
+      "text-sm leading-6",
+      "The speaker has allowed this PDF to be shared publicly. Upload first, then choose Publish PDF on schedule.",
+    ),
+  );
+  permissionLabel.hidden = true;
+  permission.disabled = true;
+  form.appendChild(permissionLabel);
+  const actions = node("div", "flex flex-wrap items-center gap-3");
+  const upload = reviewButton("Upload slides", true);
+  upload.type = "submit";
+  const status = node("p", "min-h-6 text-sm font-bold");
+  status.setAttribute("aria-live", "polite");
+  actions.appendChild(upload);
+  actions.appendChild(status);
+  form.appendChild(actions);
+  input.addEventListener("change", () => {
+    const file = input.files?.[0];
+    const format = file ? slideFormatFromFilename(file.name) : null;
+    const existing = speaker.slides.find(
+      (item) => item.talk_id === talk.id && item.format === format,
+    );
+    permissionLabel.hidden = format !== "pdf";
+    permission.disabled = format !== "pdf";
+    permission.checked = false;
+    upload.textContent = existing
+      ? `Replace ${slideFormatLabel(existing.format)}`
+      : "Upload slides";
+    setEditorStatus(status, "");
+  });
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+    const file = input.files?.[0];
+    const format = file ? slideFormatFromFilename(file.name) : null;
+    if (!file || !format) {
+      setEditorStatus(
+        status,
+        "Choose a PDF, PowerPoint (.pptx), or HTML file.",
+        true,
+      );
+      return;
+    }
+    if (file.size === 0 || file.size > maxSlideFileBytes) {
+      setEditorStatus(
+        status,
+        "Choose a non-empty file that is 25 MB or smaller.",
+        true,
+      );
+      return;
+    }
+    const existing = speaker.slides.find(
+      (item) => item.talk_id === talk.id && item.format === format,
+    );
+    const params = new URLSearchParams({
+      speaker_id: speaker.speaker_id,
+      talk_id: talk.id,
+      filename: file.name,
+      replaces_slide_id: existing?.slide_id ?? "",
+      may_publish: format === "pdf" && permission.checked ? "1" : "0",
+    });
+    upload.disabled = true;
+    input.disabled = true;
+    permission.disabled = true;
+    setEditorStatus(status, "Uploading slides…");
+    const response = await requestJson<{ error?: string; message?: string }>(
+      `/api/admin/speakers/slides/upload?${params}`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": slideContentTypes[format],
+          "x-admin-action": "upload-speaker-slides",
+        },
+        body: file,
+      },
+    );
+    upload.disabled = false;
+    input.disabled = false;
+    permission.disabled = format !== "pdf";
+    if (!response.ok) {
+      setEditorStatus(
+        status,
+        response.data.error ?? "Slides could not be uploaded.",
+        true,
+      );
+      return;
+    }
+    await loadSpeakers();
+    setStatus(response.data.message ?? "Slides uploaded privately.");
+  });
+  return form;
 }
 
 function renderSlideLink(

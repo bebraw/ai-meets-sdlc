@@ -51,7 +51,10 @@ function renderTalk(
   );
   const talkFiles = files.filter((file) => file.talk_id === talk.id);
   const list = node("div", "grid gap-3");
-  for (const format of ["pdf", "powerpoint"] as const) {
+  const formats = talkFiles.some((file) => file.format === "html")
+    ? (["pdf", "powerpoint", "html"] as const)
+    : (["pdf", "powerpoint"] as const);
+  for (const format of formats) {
     const file = talkFiles.find((item) => item.format === format);
     const item = node("div", "grid min-w-0 gap-2 border-l-4 border-ink pl-4");
     item.appendChild(node("strong", "uppercase", slideFormatLabel(format)));
@@ -177,11 +180,13 @@ function renderTalk(
   input.addEventListener("change", () => {
     const file = input.files?.[0];
     const format = file ? slideFormatFromFilename(file.name) : null;
-    permissionLabel.hidden = format === "powerpoint";
-    permission.disabled = format === "powerpoint";
+    permissionLabel.hidden = format !== "pdf";
+    permission.disabled = format !== "pdf";
     if (format !== "pdf") permission.checked = false;
     upload.textContent =
-      format && talkFiles.some((item) => item.format === format)
+      format &&
+      format !== "html" &&
+      talkFiles.some((item) => item.format === format)
         ? `Replace ${slideFormatLabel(format)}`
         : "Upload slides";
     setStatus(status, "");
@@ -191,7 +196,7 @@ function renderTalk(
     if (!form.reportValidity()) return;
     const file = input.files?.[0];
     const format = file ? slideFormatFromFilename(file.name) : null;
-    if (!file || !format) {
+    if (!file || !format || format === "html") {
       setStatus(status, "Choose a PDF or PowerPoint (.pptx) file.", true);
       return;
     }

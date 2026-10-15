@@ -38,6 +38,7 @@ const adminActions: Record<string, [string, string]> = {
   "/api/admin/speakers/photos/review": ["Speaker photo", "reviewed"],
   "/api/admin/speakers/videos/review": ["Speaker video", "reviewed"],
   "/api/admin/speakers/slides/links": ["Presentation files", "link saved"],
+  "/api/admin/speakers/slides/upload": ["Presentation files", "uploaded"],
   "/api/admin/speakers/slides/publication": [
     "Presentation files",
     "publication updated",
@@ -69,6 +70,7 @@ export function shouldRecordActivity(request: Request): boolean {
     path.startsWith("/api/admin/receipts") ||
     path.startsWith("/api/speaker/receipts/") ||
     path.startsWith("/api/speaker/slides/") ||
+    /^\/api\/admin\/speakers\/slides\/[0-9a-f-]{36}$/iu.test(path) ||
     /^\/api\/speaker\/videos\/[0-9a-f-]{36}\/preview$/iu.test(path),
   );
 }
@@ -127,7 +129,9 @@ export async function recordSuccessfulActivity(
       adminActions[path] ??
       (path.startsWith("/api/admin/volunteers")
         ? ["Volunteer", request.method === "DELETE" ? "deleted" : "saved"]
-        : ["Travel receipt", "managed"]);
+        : path.startsWith("/api/admin/speakers/slides/")
+          ? ["Presentation files", "removed"]
+          : ["Travel receipt", "managed"]);
     const subject =
       body.speaker_id ??
       body.speakerId ??

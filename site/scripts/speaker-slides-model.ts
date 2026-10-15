@@ -1,6 +1,13 @@
 export const maxSlideFileBytes = 25 * 1024 * 1024;
 
-export type SlideFormat = "pdf" | "powerpoint";
+export type SlideFormat = "pdf" | "powerpoint" | "html";
+
+export const slideContentTypes = {
+  pdf: "application/pdf",
+  powerpoint:
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  html: "text/html",
+} as const;
 
 export interface SpeakerSlideLink {
   talk_id: string;
@@ -31,9 +38,11 @@ export function slideFormatFromFilename(filename: string): SlideFormat | null {
     ? "pdf"
     : extension === "pptx"
       ? "powerpoint"
-      : null;
+      : extension === "html" || extension === "htm"
+        ? "html"
+        : null;
 }
 
 export function slideFormatLabel(format: SlideFormat): string {
-  return format === "pdf" ? "PDF" : "PowerPoint";
+  return format === "pdf" ? "PDF" : format === "html" ? "HTML" : "PowerPoint";
 }

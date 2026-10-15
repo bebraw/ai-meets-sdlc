@@ -10,6 +10,7 @@ import {
 import {
   pdfSlideBytes,
   powerpointSlideBytes,
+  htmlSlideBytes,
 } from "../test/helpers/slide-files.mjs";
 
 const fixture = await createReceiptFixture();
@@ -251,6 +252,95 @@ try {
   await schedule.reload();
   assert.equal(await externalLink.getAttribute("href"), updatedSlideUrl);
 
+  const adminUploadForm = admin.locator(
+    `[data-admin-slide-upload="${talkId}"]`,
+  );
+  const adminFileInput = adminUploadForm.getByLabel(
+    "Presentation file (PDF, .pptx, or HTML, up to 25 MB)",
+  );
+  const adminPermission = adminUploadForm.getByRole("checkbox");
+  const uploadAsAdmin = async (
+    name,
+    buffer,
+    mimeType,
+    buttonName,
+    mayPublish = false,
+  ) => {
+    await adminFileInput.setInputFiles({ name, buffer, mimeType });
+    if (mayPublish) await adminPermission.check();
+    const completed = admin.waitForResponse(
+      (response) =>
+        response.url().includes("/api/admin/speakers/slides/upload?") &&
+        response.request().method() === "POST",
+    );
+    await adminUploadForm
+      .getByRole("button", { name: buttonName, exact: true })
+      .click();
+    assert.equal((await completed).status(), 201);
+    await admin.waitForFunction((talkId) => {
+      const input = document.querySelector(
+        `[data-admin-slide-upload="${talkId}"] input[type=file]`,
+      );
+      return input && input.files.length === 0;
+    }, talkId);
+  };
+  await uploadAsAdmin(
+    "speaker-supplied.html",
+    htmlSlideBytes(),
+    "text/html",
+    "Upload slides",
+  );
+  let htmlAdminCard = admin
+    .locator("[data-admin-slide]")
+    .filter({ hasText: "speaker-supplied.html" });
+  assert.equal(
+    await htmlAdminCard.getByRole("button", { name: /Publish/ }).count(),
+    0,
+  );
+  const htmlDownloadEvent = admin.waitForEvent("download");
+  await htmlAdminCard
+    .getByRole("link", { name: "Download HTML", exact: true })
+    .click();
+  const htmlDownload = await htmlDownloadEvent;
+  assert.equal(htmlDownload.suggestedFilename(), "speaker-supplied.html");
+  assert.deepEqual(await readFile(await htmlDownload.path()), htmlSlideBytes());
+  await uploadAsAdmin(
+    "updated.html",
+    htmlSlideBytes("Updated HTML"),
+    "text/html",
+    "Replace HTML",
+  );
+  htmlAdminCard = admin
+    .locator("[data-admin-slide]")
+    .filter({ hasText: "updated.html" });
+  await htmlAdminCard.waitFor();
+  await uploadAsAdmin(
+    "admin-venue.pptx",
+    powerpointSlideBytes(),
+    "application/octet-stream",
+    "Replace PowerPoint",
+  );
+  assert.equal(await adminPermission.isVisible(), false);
+  await speaker.reload();
+  await card
+    .getByRole("link", { name: "Download HTML", exact: true })
+    .waitFor();
+  await setFile("speaker.html", htmlSlideBytes(), "text/html");
+  assert.equal(await permission.isVisible(), false);
+  await card
+    .getByRole("button", { name: "Upload slides", exact: true })
+    .click();
+  await card
+    .getByText("Choose a PDF or PowerPoint (.pptx) file.", { exact: true })
+    .waitFor();
+  await fileInput.setInputFiles([]);
+  await schedule.reload();
+  assert.equal(await publicLink.getAttribute("href"), latestPublicHref);
+  assert.equal(
+    await scheduleTalk.getByRole("link", { name: /HTML|PowerPoint/ }).count(),
+    0,
+  );
+
   const axe = await readFile("node_modules/axe-core/axe.min.js", "utf8");
   for (const width of [1440, 390]) {
     for (const page of [speaker, admin, schedule]) {
@@ -260,7 +350,7 @@ try {
         page === speaker
           ? "[data-speaker-slide-files]"
           : page === admin
-            ? "[data-admin-slide], [data-admin-slide-link]"
+            ? "[data-admin-slide], [data-admin-slide-link], [data-admin-slide-upload]"
             : "[data-schedule-talk]";
       const violations = await page.evaluate(async (selector) => {
         const result = await window.axe.run(selector, {
@@ -289,6 +379,9 @@ try {
     });
     await slideLinkForm.screenshot({
       path: path.join(tmpdir(), `sdlcai-admin-slide-link-${width}.png`),
+    });
+    await adminUploadForm.screenshot({
+      path: path.join(tmpdir(), `sdlcai-admin-slide-upload-${width}.png`),
     });
   }
   await slideLinkForm
@@ -338,9 +431,66 @@ try {
       .count(),
     1,
   );
+  await admin.reload();
+  await uploadAsAdmin(
+    "admin-public.pdf",
+    pdfSlideBytes("Admin PDF"),
+    "application/pdf",
+    "Upload slides",
+    true,
+  );
+  let adminPdfCard = admin
+    .locator("[data-admin-slide]")
+    .filter({ hasText: "admin-public.pdf" });
+  await adminPdfCard
+    .getByRole("button", { name: "Publish PDF on schedule", exact: true })
+    .click();
+  await admin
+    .getByText("PDF published on the schedule.", { exact: true })
+    .waitFor();
+  await schedule.reload();
+  await publicLink.waitFor();
+  const adminPublicHref = await publicLink.getAttribute("href");
+  await uploadAsAdmin(
+    "admin-private.pdf",
+    pdfSlideBytes("Admin replacement"),
+    "application/pdf",
+    "Replace PDF",
+  );
+  assert.equal(
+    (await publicContext.request.get(`${origin}${adminPublicHref}`)).status(),
+    404,
+  );
+  adminPdfCard = admin
+    .locator("[data-admin-slide]")
+    .filter({ hasText: "admin-private.pdf" });
+  assert.equal(
+    await adminPdfCard
+      .getByRole("button", { name: "Publish PDF on schedule", exact: true })
+      .isDisabled(),
+    true,
+  );
+  admin.once("dialog", (dialog) => dialog.accept());
+  await adminPdfCard
+    .getByRole("button", { name: "Remove PDF", exact: true })
+    .click();
+  await admin
+    .getByText("Slides removed. Any public link has been removed.", {
+      exact: true,
+    })
+    .waitFor();
+  await adminPdfCard.waitFor({ state: "detached" });
+  htmlAdminCard = admin
+    .locator("[data-admin-slide]")
+    .filter({ hasText: "updated.html" });
+  admin.once("dialog", (dialog) => dialog.accept());
+  await htmlAdminCard
+    .getByRole("button", { name: "Remove HTML", exact: true })
+    .click();
+  await htmlAdminCard.waitFor({ state: "detached" });
   assert.deepEqual(errors, []);
   console.log(
-    "Speaker PDF/PowerPoint uploads, private downloads, publication, manual slide links, stale edits, replacement, removal, mobile layout and accessibility passed.",
+    "Speaker and admin PDF/PowerPoint uploads, admin standalone HTML uploads, private downloads, publication, manual slide links, stale edits, replacement, removal, mobile layout and accessibility passed.",
   );
 } finally {
   await browser?.close();
