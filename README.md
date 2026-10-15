@@ -308,7 +308,7 @@ with my talk** checkbox records permission for public sharing. PowerPoint files
 remain private for venue use.
 
 Organizers can also upload files supplied by a speaker under each talk's
-**Upload slides** form in `/admin/speakers/`. PDF, PowerPoint (`.pptx`), and
+**Upload file** action in `/admin/speakers/`. PDF, PowerPoint (`.pptx`), and
 standalone HTML (`.html` or `.htm`) files are supported, up to 50 MB each.
 Select the PDF permission checkbox only when the speaker has allowed public
 sharing, then publish it separately. PowerPoint and HTML stay private; HTML
@@ -320,21 +320,27 @@ existing files and publication states.
 The 50 MB limit also requires `0036_increase_speaker_slide_size.sql`. It preserves
 existing files and publication states; the normal deployment applies it.
 
-In `/admin/speakers/`, use **Publish PDF on schedule** when post-event material
+The admin **Presentation** section shows setup, files, and public links in a
+compact list, with each talk title shown once. **Upload file**, **Replace**, and
+**Add public slide link** reveal editors when needed; **Cancel** discards the
+editor's changes. **Setup details** contains venue guidance and its timestamp.
+Each file's **⋯** menu contains its upload details and removal action.
+
+In `/admin/speakers/`, use **Publish** beside a PDF when post-event material
 is ready. The corresponding talk at `/schedule/` gains a **Slides (PDF)** download
-link. **Unpublish PDF**, removal, and replacement immediately withdraw the old
+link. **Unpublish**, removal, and replacement immediately withdraw the old
 download; a replacement PDF requires permission and publication again. The
 public archive outlives speaker login sessions. Apply migration
 `0030_create_speaker_slides.sql` before deployment; `npm run deploy` applies it.
 Run `npm run speaker-slides:browser-check` to verify upload, publication,
 replacement, desktop/mobile layout, and accessibility with isolated storage.
 
-For links supplied separately or after the event, enter **Slide URL (HTTPS)**
-under the talk's **Presentation files** in `/admin/speakers/` and choose **Save
-slide link**. Saving immediately adds a **Slides** link to the public schedule,
-alongside any published PDF. Edit and save the URL to replace it, or use **Remove
-slide link** to withdraw it. Links are independent of speaker uploads and login
-expiry. If another admin tab has changed the link, reload speakers before saving
+For links supplied separately or after the event, choose **Add public slide link**
+under the talk's **Presentation** in `/admin/speakers/`, enter **Slide URL (HTTPS)**,
+and choose **Save slide link**. Saving immediately adds a **Slides** link to the public schedule,
+alongside any published PDF. Use **Edit** to replace the URL, or **Remove link**
+in the link's **⋯** menu to withdraw it. Links are independent of speaker uploads
+and login expiry. If another admin tab has changed the link, reload speakers before saving
 again. Apply `0031_create_speaker_slide_links.sql` before deploying this version;
 `npm run deploy` applies pending migrations.
 

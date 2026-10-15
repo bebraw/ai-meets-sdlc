@@ -902,7 +902,6 @@ function renderSpeaker(speaker: AdminSpeakerItem): HTMLElement {
   article.appendChild(headingRow);
   article.appendChild(renderInvitation(speaker));
   article.appendChild(renderContentEditor(speaker));
-  article.appendChild(renderPresentation(speaker));
   article.appendChild(renderSlideFiles(speaker));
   article.appendChild(renderDinner(speaker));
 
@@ -1383,135 +1382,119 @@ function renderAdminPhotoUpload(speaker: AdminSpeakerItem): HTMLElement {
 }
 
 function renderSlideFiles(speaker: AdminSpeakerItem): HTMLElement {
-  const section = node("section", "grid gap-4 border-t border-paper/40 pt-5");
-  section.appendChild(
-    node(
-      "h4",
-      "font-headline text-2xl font-black uppercase",
-      "Presentation files",
-    ),
+  const section = node(
+    "section",
+    "grid min-w-0 gap-4 border-t border-paper/40 pt-5",
   );
+  section.dataset.adminPresentation = speaker.speaker_id;
   section.appendChild(
-    node(
-      "p",
-      "text-sm leading-6 text-paper/70",
-      "Upload files supplied by the speaker for venue use. Publish a permitted PDF when post-event material is ready; it will appear beneath the talk on the public schedule. PowerPoint and HTML files stay private.",
-    ),
+    node("h4", "font-headline text-2xl font-black uppercase", "Presentation"),
   );
+  section.appendChild(renderPresentation(speaker));
   for (const talk of speaker.canonical.talks) {
-    section.appendChild(renderAdminSlideUpload(speaker, talk));
-    if (!speaker.workspace_only)
-      section.appendChild(renderSlideLink(speaker, talk));
-  }
-  if (speaker.slides.length === 0) {
-    section.appendChild(
-      node("p", "text-sm text-paper/60", "No presentation files uploaded."),
-    );
-  }
-  for (const file of speaker.slides) {
-    const card = node(
-      "article",
-      "grid min-w-0 gap-3 border border-paper/40 p-4",
-    );
-    card.dataset.adminSlide = file.slide_id;
-    const title =
-      speaker.canonical.talks.find(({ id }) => id === file.talk_id)?.title ??
-      file.talk_id;
-    card.appendChild(
-      node(
-        "strong",
-        "uppercase",
-        `${title} / ${slideFormatLabel(file.format)}`,
-      ),
-    );
-    card.appendChild(
-      node(
-        "p",
-        "break-words text-sm text-paper/70",
-        `${file.filename} · ${(file.byte_size / (1024 * 1024)).toFixed(1)} MB · ${formatDate(file.uploaded_at)}`,
-      ),
-    );
-    card.appendChild(
-      node(
-        "p",
-        "text-sm font-bold",
-        file.published_at
-          ? "Published on the schedule"
-          : file.may_publish
-            ? "Private · PDF publication allowed"
-            : "Private · venue use only",
-      ),
-    );
-    const actions = node("div", "flex flex-wrap gap-3");
-    const download = node(
-      "a",
-      "border border-paper px-3 py-2 text-sm font-bold uppercase",
-      `Download ${slideFormatLabel(file.format)}`,
-    );
-    download.href = file.download_url;
-    actions.appendChild(download);
-    const remove = reviewButton(
-      `Remove ${slideFormatLabel(file.format)}`,
-      false,
-    );
-    const removeStatus = node("p", "min-h-6 text-sm font-bold");
-    removeStatus.setAttribute("aria-live", "polite");
-    remove.addEventListener("click", async () => {
-      if (
-        !window.confirm(
-          `Remove ${file.filename}? Any public schedule link will also be removed.`,
-        )
-      )
-        return;
-      remove.disabled = true;
-      setEditorStatus(removeStatus, "Removing slides…");
-      const response = await requestJson<{ error?: string; message?: string }>(
-        `${file.download_url}?${new URLSearchParams({ speaker_id: speaker.speaker_id })}`,
-        {
-          method: "DELETE",
-          headers: { "x-admin-action": "remove-speaker-slides" },
-        },
-      );
-      remove.disabled = false;
-      if (!response.ok) {
-        setEditorStatus(
-          removeStatus,
-          response.data.error ?? "Slides could not be removed.",
-          true,
-        );
-        return;
-      }
-      await loadSpeakers();
-      setStatus(response.data.message ?? "Slides removed.");
-    });
-    actions.appendChild(remove);
-    if (file.public_url) {
-      const link = node(
-        "a",
-        "border border-paper px-3 py-2 text-sm font-bold uppercase",
-        "Public PDF",
-      );
-      link.href = file.public_url;
-      actions.appendChild(link);
+    const group = node("div", "grid min-w-0 gap-2");
+    group.dataset.adminPresentationTalk = talk.id;
+    group.appendChild(node("h5", "text-sm font-bold leading-6", talk.title));
+    const upload = renderAdminSlideUpload(speaker, talk);
+    const files = speaker.slides.filter((file) => file.talk_id === talk.id);
+    if (!files.length)
+      group.appendChild(node("p", "text-sm text-paper/60", "No files yet."));
+    for (const file of files)
+      group.appendChild(renderSlideFile(speaker, file, upload));
+    const link = speaker.workspace_only ? null : renderSlideLink(speaker, talk);
+    if (link?.row) group.appendChild(link.row);
+    const actions = node("div", "flex flex-wrap gap-4 pt-1");
+    const addFile = slideAction("Upload file");
+    addFile.dataset.adminUploadToggle = "";
+    addFile.setAttribute("aria-controls", upload.form.id);
+    addFile.setAttribute("aria-expanded", "false");
+    addFile.addEventListener("click", () => upload.open());
+    actions.appendChild(addFile);
+    if (link && !link.row) {
+      const addLink = slideAction("Add public slide link");
+      addLink.setAttribute("aria-controls", link.form.id);
+      addLink.setAttribute("aria-expanded", "false");
+      addLink.addEventListener("click", link.open);
+      actions.appendChild(addLink);
     }
-    if (file.format === "pdf") {
-      const publish = reviewButton(
-        file.published_at ? "Unpublish PDF" : "Publish PDF on schedule",
-        !file.published_at,
+    group.appendChild(actions);
+    group.appendChild(upload.form);
+    if (link) group.appendChild(link.form);
+    section.appendChild(group);
+  }
+  return section;
+}
+
+function renderSlideFile(
+  speaker: AdminSpeakerItem,
+  file: SpeakerSlideFile,
+  upload: ReturnType<typeof renderAdminSlideUpload>,
+): HTMLElement {
+  const row = node(
+    "article",
+    "grid min-w-0 gap-2 border-b border-paper/20 py-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center",
+  );
+  row.dataset.adminSlide = file.slide_id;
+  const copy = node(
+    "div",
+    "flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1",
+  );
+  copy.appendChild(node("strong", "min-w-0 break-all text-sm", file.filename));
+  copy.appendChild(
+    node(
+      "span",
+      "text-xs text-paper/60",
+      `${(file.byte_size / (1024 * 1024)).toFixed(1)} MB`,
+    ),
+  );
+  copy.appendChild(
+    slideVisibility(file.published_at ? "Published" : "Private"),
+  );
+  row.appendChild(copy);
+  const actions = node("div", "flex flex-wrap items-center gap-2");
+  const download = node(
+    "a",
+    "px-2 py-2 text-sm font-bold underline underline-offset-4",
+    "Download",
+  );
+  download.href = file.download_url;
+  download.setAttribute(
+    "aria-label",
+    `Download ${slideFormatLabel(file.format)}`,
+  );
+  actions.appendChild(download);
+  const replace = slideAction("Replace");
+  replace.setAttribute(
+    "aria-label",
+    `Replace ${slideFormatLabel(file.format)}`,
+  );
+  replace.setAttribute("aria-controls", upload.form.id);
+  replace.setAttribute("aria-expanded", "false");
+  replace.addEventListener("click", () => upload.open(file));
+  actions.appendChild(replace);
+  const status = slideStatus();
+  status.classList.add("sm:col-span-2");
+  if (file.format === "pdf") {
+    const publish = slideAction(file.published_at ? "Unpublish" : "Publish");
+    publish.setAttribute(
+      "aria-label",
+      file.published_at ? "Unpublish PDF" : "Publish PDF on schedule",
+    );
+    publish.disabled =
+      !file.published_at && (!file.may_publish || speaker.workspace_only);
+    if (publish.disabled)
+      publish.title = speaker.workspace_only
+        ? "Private test account: publication is unavailable."
+        : "Speaker permission is needed before publishing.";
+    publish.addEventListener("click", async () => {
+      publish.disabled = true;
+      setSlideStatus(
+        status,
+        file.published_at ? "Unpublishing PDF…" : "Publishing PDF…",
       );
-      publish.disabled =
-        !file.published_at && (!file.may_publish || speaker.workspace_only);
-      const status = node("p", "min-h-6 text-sm font-bold");
-      status.setAttribute("aria-live", "polite");
-      publish.addEventListener("click", async () => {
-        publish.disabled = true;
-        status.textContent = file.published_at
-          ? "Unpublishing PDF…"
-          : "Publishing PDF…";
-        const response = await requestJson<{
-          error?: string;
-          message?: string;
-        }>("/api/admin/speakers/slides/publication", {
+      const response = await requestJson<{ error?: string; message?: string }>(
+        "/api/admin/speakers/slides/publication",
+        {
           method: "POST",
           headers: {
             "content-type": "application/json",
@@ -1521,78 +1504,123 @@ function renderSlideFiles(speaker: AdminSpeakerItem): HTMLElement {
             slide_id: file.slide_id,
             published: !file.published_at,
           }),
-        });
-        publish.disabled = false;
-        status.textContent =
-          response.data.message ??
-          response.data.error ??
-          "Publication could not be saved.";
-        if (response.ok) {
-          await loadSpeakers();
-          setStatus(response.data.message ?? "PDF publication saved.");
-        }
-      });
-      actions.appendChild(publish);
-      card.appendChild(actions);
-      if (!file.may_publish)
-        card.appendChild(
-          node(
-            "p",
-            "text-sm text-paper/70",
-            "The speaker has not allowed public sharing of this PDF.",
-          ),
+        },
+      );
+      publish.disabled = false;
+      if (!response.ok) {
+        setSlideStatus(
+          status,
+          response.data.error ?? "Publication could not be saved.",
+          true,
         );
-      if (speaker.workspace_only)
-        card.appendChild(
-          node(
-            "p",
-            "text-sm text-paper/70",
-            "Private test account: publication is unavailable.",
-          ),
-        );
-      card.appendChild(status);
-    } else {
-      card.appendChild(actions);
-    }
-    card.appendChild(removeStatus);
-    section.appendChild(card);
+        return;
+      }
+      await loadSpeakers();
+      setStatus(response.data.message ?? "PDF publication saved.");
+    });
+    actions.appendChild(publish);
   }
-  return section;
+  const more = slideMoreActions(file.filename);
+  more.body.appendChild(
+    node(
+      "p",
+      "text-xs leading-5 text-paper/70",
+      `Uploaded ${formatDate(file.uploaded_at)}`,
+    ),
+  );
+  more.body.appendChild(
+    node(
+      "p",
+      "text-xs leading-5 text-paper/70",
+      file.format !== "pdf"
+        ? "Private for venue use."
+        : speaker.workspace_only
+          ? "Private test account: publication is unavailable."
+          : file.may_publish
+            ? "Speaker permission recorded for public sharing."
+            : "Speaker permission is needed before publishing.",
+    ),
+  );
+  if (file.public_url) {
+    const publicLink = node(
+      "a",
+      "py-2 text-sm font-bold underline underline-offset-4",
+      "Public PDF",
+    );
+    publicLink.href = file.public_url;
+    more.body.appendChild(publicLink);
+  }
+  const remove = slideAction("Remove file");
+  remove.setAttribute("aria-label", `Remove ${slideFormatLabel(file.format)}`);
+  remove.addEventListener("click", async () => {
+    if (
+      !window.confirm(
+        `Remove ${file.filename}? Any public schedule link will also be removed.`,
+      )
+    )
+      return;
+    remove.disabled = true;
+    more.details.open = false;
+    setSlideStatus(status, "Removing slides…");
+    const response = await requestJson<{ error?: string; message?: string }>(
+      `${file.download_url}?${new URLSearchParams({ speaker_id: speaker.speaker_id })}`,
+      {
+        method: "DELETE",
+        headers: { "x-admin-action": "remove-speaker-slides" },
+      },
+    );
+    remove.disabled = false;
+    if (!response.ok) {
+      setSlideStatus(
+        status,
+        response.data.error ?? "Slides could not be removed.",
+        true,
+      );
+      return;
+    }
+    await loadSpeakers();
+    setStatus(response.data.message ?? "Slides removed.");
+  });
+  more.body.appendChild(remove);
+  actions.appendChild(more.details);
+  row.appendChild(actions);
+  row.appendChild(status);
+  return row;
 }
 
 function renderAdminSlideUpload(
   speaker: AdminSpeakerItem,
   talk: AdminSpeakerContent["talks"][number],
-): HTMLElement {
-  const form = node("form", "grid min-w-0 gap-4 border border-paper/40 p-4");
-  form.dataset.adminSlideUpload = talk.id;
-  form.appendChild(
-    node("strong", "uppercase", `${talk.title} / Upload slides`),
+): { form: HTMLFormElement; open: (file?: SpeakerSlideFile) => void } {
+  const form = node(
+    "form",
+    "grid min-w-0 gap-3 border-l-2 border-paper/40 py-3 pl-4",
   );
+  form.dataset.adminSlideUpload = talk.id;
+  form.id = `slide-upload-${speaker.speaker_id}-${talk.id}`;
+  form.hidden = true;
+  const title = node("strong", "text-sm font-bold uppercase", "Upload file");
+  form.appendChild(title);
   const label = node(
     "label",
-    "grid min-w-0 gap-2 text-sm font-bold uppercase",
+    "grid min-w-0 gap-2 text-sm font-bold",
     "Presentation file (PDF, .pptx, or HTML, up to 50 MB)",
   );
   const input = node(
     "input",
-    "min-w-0 w-full border border-paper p-3 font-normal normal-case file:mr-3 file:border-0 file:bg-paper file:px-3 file:py-2 file:font-bold file:text-ink",
+    "min-w-0 w-full border border-paper/40 p-2 text-sm font-normal file:mr-3 file:border-0 file:bg-paper file:px-3 file:py-2 file:font-bold file:text-ink",
   );
   input.type = "file";
   input.accept = ".pdf,.pptx,.html,.htm";
   input.required = true;
   label.appendChild(input);
   form.appendChild(label);
-  form.appendChild(
-    node(
-      "p",
-      "text-sm leading-6 text-paper/70",
-      "Each format has its own slot. Uploading the same format replaces its file and withdraws any published PDF. HTML must be a standalone file and is downloaded for local use.",
-    ),
-  );
+  const hint = node("p", "text-xs leading-5 text-paper/70");
+  hint.hidden = true;
+  form.appendChild(hint);
   const permissionLabel = node(
     "label",
-    "grid grid-cols-[auto_1fr] items-start gap-3 border border-paper/40 p-4",
+    "grid grid-cols-[auto_1fr] items-start gap-3",
   );
   const permission = node("input", "mt-1 h-5 w-5");
   permission.type = "checkbox";
@@ -1601,21 +1629,32 @@ function renderAdminSlideUpload(
     node(
       "span",
       "text-sm leading-6",
-      "The speaker has allowed this PDF to be shared publicly. Upload first, then choose Publish PDF on schedule.",
+      "The speaker has allowed this PDF to be shared publicly.",
     ),
   );
   permissionLabel.hidden = true;
   permission.disabled = true;
   form.appendChild(permissionLabel);
   const actions = node("div", "flex flex-wrap items-center gap-3");
-  const upload = reviewButton("Upload slides", true);
+  const upload = slideAction("Upload slides", true);
   upload.type = "submit";
-  const status = node("p", "min-h-6 text-sm font-bold");
-  status.setAttribute("aria-live", "polite");
+  const cancel = slideAction("Cancel");
+  const status = slideStatus();
   actions.appendChild(upload);
-  actions.appendChild(status);
+  actions.appendChild(cancel);
   form.appendChild(actions);
-  input.addEventListener("change", () => {
+  form.appendChild(status);
+  let opener: HTMLElement | null = null;
+  let expectedFormat: SpeakerSlideFile["format"] | null = null;
+  const close = () => {
+    form.hidden = true;
+    form.reset();
+    setSlideStatus(status, "");
+    opener?.setAttribute("aria-expanded", "false");
+    opener?.focus();
+  };
+  cancel.addEventListener("click", close);
+  const update = () => {
     const file = input.files?.[0];
     const format = file ? slideFormatFromFilename(file.name) : null;
     const existing = speaker.slides.find(
@@ -1627,23 +1666,39 @@ function renderAdminSlideUpload(
     upload.textContent = existing
       ? `Replace ${slideFormatLabel(existing.format)}`
       : "Upload slides";
-    setEditorStatus(status, "");
-  });
+    const replacement = existing
+      ? `Replaces ${existing.filename}.${existing.published_at ? " Its public download will be removed." : ""} `
+      : "";
+    hint.textContent =
+      replacement +
+      (format === "pdf"
+        ? "Upload stays private until you publish it."
+        : format === "html"
+          ? "Use a standalone HTML file. It stays private and downloads for local use."
+          : format === "powerpoint"
+            ? "Private for venue use."
+            : "");
+    hint.hidden = !hint.textContent;
+    setSlideStatus(status, "");
+  };
+  input.addEventListener("change", update);
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (!form.reportValidity()) return;
     const file = input.files?.[0];
     const format = file ? slideFormatFromFilename(file.name) : null;
-    if (!file || !format) {
-      setEditorStatus(
+    if (!file || !format || (expectedFormat && format !== expectedFormat)) {
+      setSlideStatus(
         status,
-        "Choose a PDF, PowerPoint (.pptx), or HTML file.",
+        expectedFormat
+          ? `Choose a ${slideFormatLabel(expectedFormat)} file to replace this presentation.`
+          : "Choose a PDF, PowerPoint (.pptx), or HTML file.",
         true,
       );
       return;
     }
     if (file.size === 0 || file.size > maxSlideFileBytes) {
-      setEditorStatus(
+      setSlideStatus(
         status,
         "Choose a non-empty file that is 50 MB or smaller.",
         true,
@@ -1661,9 +1716,10 @@ function renderAdminSlideUpload(
       may_publish: format === "pdf" && permission.checked ? "1" : "0",
     });
     upload.disabled = true;
+    cancel.disabled = true;
     input.disabled = true;
     permission.disabled = true;
-    setEditorStatus(status, "Uploading slides…");
+    setSlideStatus(status, "Uploading slides…");
     const response = await requestJson<{ error?: string; message?: string }>(
       `/api/admin/speakers/slides/upload?${params}`,
       {
@@ -1676,10 +1732,11 @@ function renderAdminSlideUpload(
       },
     );
     upload.disabled = false;
+    cancel.disabled = false;
     input.disabled = false;
     permission.disabled = format !== "pdf";
     if (!response.ok) {
-      setEditorStatus(
+      setSlideStatus(
         status,
         response.data.error ?? "Slides could not be uploaded.",
         true,
@@ -1689,32 +1746,54 @@ function renderAdminSlideUpload(
     await loadSpeakers();
     setStatus(response.data.message ?? "Slides uploaded privately.");
   });
-  return form;
+  return {
+    form,
+    open: (file) => {
+      opener?.setAttribute("aria-expanded", "false");
+      opener =
+        document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null;
+      opener?.setAttribute("aria-expanded", "true");
+      form.reset();
+      expectedFormat = file?.format ?? null;
+      input.accept = file
+        ? file.format === "powerpoint"
+          ? ".pptx"
+          : file.format === "html"
+            ? ".html,.htm"
+            : ".pdf"
+        : ".pdf,.pptx,.html,.htm";
+      title.textContent = file
+        ? `Replace ${slideFormatLabel(file.format)}`
+        : "Upload file";
+      update();
+      form.hidden = false;
+      input.focus();
+    },
+  };
 }
 
 function renderSlideLink(
   speaker: AdminSpeakerItem,
   talk: AdminSpeakerContent["talks"][number],
-): HTMLElement {
+): { form: HTMLFormElement; row: HTMLElement | null; open: () => void } {
   const saved = speaker.slide_links.find(({ talk_id }) => talk_id === talk.id);
-  const form = node("form", "grid min-w-0 gap-3 border border-paper/40 p-4");
-  form.dataset.adminSlideLink = talk.id;
-  form.appendChild(node("strong", "uppercase", `${talk.title} / Slide link`));
-  form.appendChild(
-    node(
-      "p",
-      "text-sm leading-6 text-paper/70",
-      "Add a slide link supplied by the speaker. Saving publishes it as Slides on the public schedule. Published PDFs stay available too.",
-    ),
+  const form = node(
+    "form",
+    "grid min-w-0 gap-3 border-l-2 border-paper/40 py-3 pl-4",
   );
+  form.dataset.adminSlideLink = talk.id;
+  form.id = `slide-link-${speaker.speaker_id}-${talk.id}`;
+  form.hidden = true;
   const label = node(
     "label",
-    "grid min-w-0 gap-2 text-sm font-bold uppercase",
+    "grid min-w-0 gap-2 text-sm font-bold",
     "Slide URL (HTTPS)",
   );
   const input = node(
     "input",
-    "min-w-0 w-full border border-paper bg-ink p-3 font-normal normal-case text-paper",
+    "min-w-0 w-full border border-paper/40 bg-ink p-2 text-sm font-normal text-paper",
   );
   input.type = "url";
   input.required = true;
@@ -1723,31 +1802,48 @@ function renderSlideLink(
   input.value = saved?.url ?? "";
   label.appendChild(input);
   form.appendChild(label);
-  const actions = node("div", "flex flex-wrap gap-3");
-  const save = reviewButton("Save slide link", true);
+  form.appendChild(
+    node(
+      "p",
+      "text-xs leading-5 text-paper/70",
+      "Saving publishes this link on the public schedule.",
+    ),
+  );
+  const actions = node("div", "flex flex-wrap items-center gap-3");
+  const save = slideAction("Save slide link", true);
   save.type = "submit";
+  const cancel = slideAction("Cancel");
   actions.appendChild(save);
-  const remove = reviewButton("Remove slide link", false);
-  if (saved) {
-    const open = node(
-      "a",
-      "border border-paper px-3 py-2 text-sm font-bold uppercase",
-      "Open slide link",
-    );
-    open.href = saved.url;
-    actions.appendChild(open);
-    actions.appendChild(remove);
-  }
+  actions.appendChild(cancel);
   form.appendChild(actions);
-  const status = node("p", "min-h-6 text-sm font-bold");
-  status.setAttribute("aria-live", "polite");
+  const status = slideStatus();
   form.appendChild(status);
+  const rowStatus = slideStatus();
+  const remove = slideAction("Remove link");
+  remove.setAttribute("aria-label", "Remove slide link");
+  let opener: HTMLElement | null = null;
+  cancel.addEventListener("click", () => {
+    input.value = saved?.url ?? "";
+    form.hidden = true;
+    setSlideStatus(status, "");
+    opener?.setAttribute("aria-expanded", "false");
+    opener?.focus();
+  });
+  const open = () => {
+    opener =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+    opener?.setAttribute("aria-expanded", "true");
+    form.hidden = false;
+    input.focus();
+  };
   const submit = async (url: string) => {
-    save.disabled = true;
-    remove.disabled = true;
-    input.disabled = true;
-    setEditorStatus(
-      status,
+    const feedback = form.hidden ? rowStatus : status;
+    for (const control of [save, remove, cancel, input])
+      control.disabled = true;
+    setSlideStatus(
+      feedback,
       url ? "Saving slide link…" : "Removing slide link…",
     );
     const response = await requestJson<{ error?: string; message?: string }>(
@@ -1766,12 +1862,11 @@ function renderSlideLink(
         }),
       },
     );
-    save.disabled = false;
-    remove.disabled = false;
-    input.disabled = false;
+    for (const control of [save, remove, cancel, input])
+      control.disabled = false;
     if (!response.ok) {
-      setEditorStatus(
-        status,
+      setSlideStatus(
+        feedback,
         response.data.error ?? "Slide link could not be saved.",
         true,
       );
@@ -1784,8 +1879,111 @@ function renderSlideLink(
     event.preventDefault();
     if (form.reportValidity()) void submit(input.value.trim());
   });
-  remove.addEventListener("click", () => void submit(""));
-  return form;
+  let row: HTMLElement | null = null;
+  if (saved) {
+    row = node(
+      "div",
+      "grid min-w-0 gap-2 border-b border-paper/20 py-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center",
+    );
+    row.dataset.adminSlideLinkRow = talk.id;
+    const copy = node("div", "grid min-w-0 gap-1");
+    const heading = node("div", "flex flex-wrap items-center gap-3");
+    heading.appendChild(node("strong", "text-sm", "Public slide link"));
+    heading.appendChild(slideVisibility("Published"));
+    copy.appendChild(heading);
+    const address = node("p", "truncate text-xs text-paper/60", saved.url);
+    address.title = saved.url;
+    copy.appendChild(address);
+    row.appendChild(copy);
+    const rowActions = node("div", "flex flex-wrap items-center gap-2");
+    const visit = node(
+      "a",
+      "px-2 py-2 text-sm font-bold underline underline-offset-4",
+      "Open",
+    );
+    visit.href = saved.url;
+    visit.setAttribute("aria-label", "Open slide link");
+    rowActions.appendChild(visit);
+    const edit = slideAction("Edit");
+    edit.setAttribute("aria-label", "Edit public slide link");
+    edit.setAttribute("aria-controls", form.id);
+    edit.setAttribute("aria-expanded", "false");
+    edit.addEventListener("click", open);
+    rowActions.appendChild(edit);
+    const more = slideMoreActions("public slide link");
+    remove.addEventListener("click", () => {
+      more.details.open = false;
+      void submit("");
+    });
+    more.body.appendChild(remove);
+    rowActions.appendChild(more.details);
+    row.appendChild(rowActions);
+    rowStatus.classList.add("sm:col-span-2");
+    row.appendChild(rowStatus);
+  }
+  return { form, row, open };
+}
+
+function slideAction(label: string, primary = false): HTMLButtonElement {
+  const button = node(
+    "button",
+    primary
+      ? "border border-paper bg-paper px-3 py-2 text-sm font-bold text-ink disabled:opacity-40"
+      : "px-2 py-2 text-sm font-bold underline underline-offset-4 disabled:no-underline disabled:opacity-40",
+    label,
+  );
+  button.type = "button";
+  return button;
+}
+
+function slideVisibility(label: string): HTMLElement {
+  return node(
+    "span",
+    "w-fit border border-paper/30 px-2 py-1 text-xs font-bold uppercase",
+    label,
+  );
+}
+
+function slideMoreActions(label: string): {
+  details: HTMLDetailsElement;
+  body: HTMLElement;
+} {
+  const details = node("details", "relative ml-auto sm:ml-0");
+  const summary = node(
+    "summary",
+    "cursor-pointer list-none px-3 py-2 text-sm font-bold",
+    "⋯",
+  );
+  summary.setAttribute("aria-label", `More actions for ${label}`);
+  const body = node(
+    "div",
+    "absolute right-0 top-full z-10 mt-1 grid w-56 gap-2 border border-paper bg-ink p-3 text-paper shadow-lg",
+  );
+  details.appendChild(summary);
+  details.appendChild(body);
+  details.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      details.open = false;
+      summary.focus();
+    }
+  });
+  return { details, body };
+}
+
+function slideStatus(): HTMLParagraphElement {
+  const status = node("p", "text-sm font-bold");
+  status.hidden = true;
+  status.setAttribute("aria-live", "polite");
+  return status;
+}
+
+function setSlideStatus(
+  target: HTMLElement,
+  message: string,
+  error = false,
+): void {
+  target.hidden = !message;
+  setEditorStatus(target, message, error);
 }
 
 function renderVideos(speaker: AdminSpeakerItem): HTMLElement {
@@ -2185,116 +2383,74 @@ function renderDinner(speaker: AdminSpeakerItem): HTMLElement {
 }
 
 function renderPresentation(speaker: AdminSpeakerItem): HTMLElement {
-  const section = node("section", "grid gap-3 border-t border-paper/40 pt-5");
-  const heading = node(
-    "div",
-    "grid gap-1 sm:grid-cols-[1fr_auto] sm:items-start",
+  const response = speaker.presentation?.response;
+  if (!response)
+    return node("p", "text-sm text-paper/60", "Setup not provided.");
+  const details = node("details", "min-w-0");
+  details.dataset.adminPresentationSetup = speaker.speaker_id;
+  const summary = node(
+    "summary",
+    "flex cursor-pointer list-none flex-wrap items-center gap-x-3 gap-y-1 text-sm",
   );
-  const copy = node("div", "grid gap-1");
-  copy.appendChild(
+  summary.appendChild(
     node(
-      "h4",
-      "font-headline text-2xl font-black uppercase",
-      "Presentation setup",
+      "strong",
+      "font-bold",
+      response.delivery_method === "own_laptop"
+        ? "Own laptop"
+        : `Materials in advance · ${presentationMaterialLabel(response.material_format)}`,
     ),
   );
-  copy.appendChild(
-    node(
-      "p",
-      "text-xs font-bold uppercase text-paper/60",
-      "Private venue logistics / not published",
-    ),
-  );
-  heading.appendChild(copy);
-
-  if (speaker.presentation?.responded_at) {
-    heading.appendChild(
+  if (response.delivery_method === "own_laptop") {
+    summary.appendChild(
       node(
         "span",
-        "w-fit border border-paper/50 px-3 py-2 text-xs font-bold uppercase",
-        formatDate(speaker.presentation.responded_at),
+        "text-xs font-bold text-red-300 dark:text-red-700",
+        "Needs venue confirmation",
       ),
     );
   }
-
-  section.appendChild(heading);
-  const response = speaker.presentation?.response;
-
-  if (!response) {
-    section.appendChild(
-      node(
-        "p",
-        "text-sm text-paper/60",
-        "No presentation setup has been saved yet.",
-      ),
-    );
-    return section;
-  }
-
+  summary.appendChild(
+    node(
+      "span",
+      "py-2 text-xs text-paper/60 underline underline-offset-4",
+      "Setup details",
+    ),
+  );
+  details.appendChild(summary);
+  const body = node(
+    "div",
+    "mt-2 grid gap-2 border-l border-paper/30 pl-3 text-sm leading-6 text-paper/70",
+  );
   if (response.delivery_method === "own_laptop") {
-    const warning = node(
-      "div",
-      "grid gap-1 border border-red-300 p-4 dark:border-red-700",
-    );
-    warning.appendChild(
+    body.appendChild(
       node(
         "p",
-        "font-bold uppercase text-red-300 dark:text-red-700",
-        "Own laptop",
-      ),
-    );
-    warning.appendChild(
-      node(
-        "p",
-        "text-sm text-paper/70",
+        "",
         "Discouraged by the venue; confirm the connection and changeover plan with the speaker.",
       ),
     );
-    section.appendChild(warning);
-    return section;
   }
-
-  const details = node("dl", "grid gap-px bg-paper/30 sm:grid-cols-2");
-  details.appendChild(
-    logisticsDetail("Delivery", "Material provided in advance"),
-  );
-  details.appendChild(
-    logisticsDetail(
-      "Format",
-      presentationMaterialLabel(response.material_format),
-    ),
-  );
-  section.appendChild(details);
-
   if (response.material_url) {
-    const urlRow = node("div", "grid gap-1 border border-paper/30 p-3");
-    urlRow.appendChild(
-      node(
-        "p",
-        "text-xs font-bold uppercase text-paper/50",
-        "Web presentation",
-      ),
+    const anchor = node(
+      "a",
+      "break-all underline underline-offset-4",
+      response.material_url,
     );
-    const anchor = document.createElement("a");
-    anchor.className = "break-all text-sm underline";
     anchor.href = response.material_url;
     anchor.rel = "noopener";
     anchor.target = "_blank";
-    anchor.textContent = response.material_url;
-    urlRow.appendChild(anchor);
-    section.appendChild(urlRow);
+    body.appendChild(anchor);
   }
-
-  return section;
-}
-
-function logisticsDetail(label: string, value: string): HTMLElement {
-  const item = node("div", "grid gap-1 bg-ink p-3");
-  item.appendChild(
-    node("dt", "text-xs font-bold uppercase text-paper/50", label),
+  body.appendChild(
+    node(
+      "p",
+      "text-xs",
+      `Private venue details${speaker.presentation?.responded_at ? ` · Updated ${formatDate(speaker.presentation.responded_at)}` : ""}`,
+    ),
   );
-  item.appendChild(node("dd", "whitespace-pre-wrap text-sm", value));
-  return item;
+  details.appendChild(body);
+  return details;
 }
 
 function presentationMaterialLabel(

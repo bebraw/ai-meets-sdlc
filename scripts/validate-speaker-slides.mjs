@@ -61,6 +61,19 @@ try {
     page.setDefaultTimeout(15_000);
     page.on("pageerror", (error) => errors.push(error.message));
   }
+  const setupSaved = await fixture.worker.fetch(
+    "https://sdlcai.org/api/speaker/presentation",
+    {
+      method: "POST",
+      headers: {
+        cookie: rawCookie,
+        origin: "https://sdlcai.org",
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ delivery_method: "own_laptop" }),
+    },
+  );
+  assert.equal(setupSaved.status, 200);
   await speaker.goto(`${origin}/speaker/`);
   const card = speaker.locator("[data-slide-talk]").first();
   await card.waitFor();
@@ -94,6 +107,70 @@ try {
   await upload("Upload slides");
   await card.getByText("Private · venue use only", { exact: true }).waitFor();
   await admin.goto(`${origin}/admin/speakers/`);
+  const presentation = admin.locator('[data-admin-presentation="mo-khazali"]');
+  const materials = presentation.locator(
+    `[data-admin-presentation-talk="${talkId}"]`,
+  );
+  const setup = presentation.locator("[data-admin-presentation-setup]");
+  await presentation.waitFor();
+  assert.equal(
+    await presentation
+      .getByText(await card.getByRole("heading", { level: 3 }).textContent(), {
+        exact: true,
+      })
+      .count(),
+    1,
+  );
+  assert.equal(await materials.locator("form:visible").count(), 0);
+  await setup.getByText("Needs venue confirmation", { exact: true }).waitFor();
+  const setupGuidance = setup.getByText(
+    "Discouraged by the venue; confirm the connection and changeover plan with the speaker.",
+    { exact: true },
+  );
+  assert.equal(await setupGuidance.isVisible(), false);
+  await setup.locator("summary").click();
+  assert.equal(await setupGuidance.isVisible(), true);
+  await setup.locator("summary").click();
+  const uploadToggle = materials.getByRole("button", {
+    name: "Upload file",
+    exact: true,
+  });
+  await uploadToggle.click();
+  assert.equal(await uploadToggle.getAttribute("aria-expanded"), "true");
+  await materials
+    .locator("[data-admin-slide-upload]")
+    .getByRole("button", { name: "Cancel", exact: true })
+    .click();
+  assert.equal(await uploadToggle.getAttribute("aria-expanded"), "false");
+  assert.equal(
+    await uploadToggle.evaluate(
+      (element) => element === document.activeElement,
+    ),
+    true,
+  );
+  const addLinkToggle = materials.getByRole("button", {
+    name: "Add public slide link",
+    exact: true,
+  });
+  await addLinkToggle.click();
+  const initialLinkForm = materials.locator("[data-admin-slide-link]");
+  await initialLinkForm
+    .getByLabel("Slide URL (HTTPS)")
+    .fill("https://discard.example.org/");
+  await initialLinkForm
+    .getByRole("button", { name: "Cancel", exact: true })
+    .click();
+  assert.equal(
+    await initialLinkForm.getByLabel("Slide URL (HTTPS)").inputValue(),
+    "",
+  );
+  assert.equal(
+    await addLinkToggle.evaluate(
+      (element) => element === document.activeElement,
+    ),
+    true,
+  );
+  assert.equal(await materials.locator("form:visible").count(), 0);
   let adminCard = admin
     .locator("[data-admin-slide]")
     .filter({ hasText: "venue.pdf" });
@@ -201,11 +278,26 @@ try {
   assert.notEqual(latestPublicHref, firstPublicHref);
 
   const slideLinkForm = admin.locator(`[data-admin-slide-link="${talkId}"]`);
+  const openLinkEditor = async (page) => {
+    const form = page.locator(`[data-admin-slide-link="${talkId}"]`);
+    if (await form.isVisible()) return;
+    const group = page.locator(`[data-admin-presentation-talk="${talkId}"]`);
+    const add = group.getByRole("button", {
+      name: "Add public slide link",
+      exact: true,
+    });
+    if (await add.count()) await add.click();
+    else
+      await group
+        .getByRole("button", { name: "Edit public slide link", exact: true })
+        .click();
+  };
   const externalLink = scheduleTalk.getByRole("link", {
     name: "Slides",
     exact: true,
   });
   const saveLink = async (url) => {
+    await openLinkEditor(admin);
     await slideLinkForm.getByLabel("Slide URL (HTTPS)").fill(url);
     await slideLinkForm
       .getByRole("button", { name: "Save slide link", exact: true })
@@ -227,6 +319,7 @@ try {
   const staleAdmin = await adminContext.newPage();
   await staleAdmin.goto(`${origin}/admin/speakers/`);
   const staleForm = staleAdmin.locator(`[data-admin-slide-link="${talkId}"]`);
+  await openLinkEditor(staleAdmin);
   await staleForm.getByLabel("Slide URL (HTTPS)").waitFor();
   const updatedSlideUrl = "https://slides.example.org/updated";
   await saveLink(updatedSlideUrl);
@@ -266,6 +359,14 @@ try {
     buttonName,
     mayPublish = false,
   ) => {
+    if (buttonName === "Upload slides")
+      await materials
+        .getByRole("button", { name: "Upload file", exact: true })
+        .click();
+    else
+      await materials
+        .getByRole("button", { name: buttonName, exact: true })
+        .click();
     await adminFileInput.setInputFiles({ name, buffer, mimeType });
     if (mayPublish) await adminPermission.check();
     const completed = admin.waitForResponse(
@@ -350,7 +451,7 @@ try {
         page === speaker
           ? "[data-speaker-slide-files]"
           : page === admin
-            ? "[data-admin-slide], [data-admin-slide-link], [data-admin-slide-upload]"
+            ? "[data-admin-presentation]"
             : "[data-schedule-talk]";
       const violations = await page.evaluate(async (selector) => {
         const result = await window.axe.run(selector, {
@@ -377,14 +478,101 @@ try {
     await adminCard.screenshot({
       path: path.join(tmpdir(), `sdlcai-admin-slide-files-${width}.png`),
     });
+    await presentation.screenshot({
+      path: path.join(tmpdir(), `sdlcai-admin-presentation-${width}.png`),
+    });
+    const fileMore = adminCard.locator("summary");
+    assert.equal(
+      await adminCard
+        .getByRole("button", { name: "Remove PDF", exact: true })
+        .isVisible(),
+      false,
+    );
+    await fileMore.click();
+    assert.equal(
+      await adminCard
+        .getByRole("button", { name: "Remove PDF", exact: true })
+        .isVisible(),
+      true,
+    );
+    const menuBounds = await adminCard.locator("summary + div").boundingBox();
+    assert.ok(
+      menuBounds.x >= 0 && menuBounds.x + menuBounds.width <= width,
+      `File menu stays within ${width}px viewport`,
+    );
+    await fileMore.press("Escape");
+    assert.equal(
+      await adminCard
+        .getByRole("button", { name: "Remove PDF", exact: true })
+        .isVisible(),
+      false,
+    );
+    await materials
+      .getByRole("button", { name: "Upload file", exact: true })
+      .click();
+    await openLinkEditor(admin);
+    const expandedViolations = await admin.evaluate(async () => {
+      const result = await window.axe.run("[data-admin-presentation]", {
+        runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21aa"] },
+      });
+      return result.violations.map(({ id, nodes }) => ({
+        id,
+        targets: nodes.map(({ target }) => target),
+      }));
+    });
+    assert.deepEqual(
+      expandedViolations,
+      [],
+      `Expanded slide editors accessibility at ${width}px`,
+    );
     await slideLinkForm.screenshot({
       path: path.join(tmpdir(), `sdlcai-admin-slide-link-${width}.png`),
     });
     await adminUploadForm.screenshot({
       path: path.join(tmpdir(), `sdlcai-admin-slide-upload-${width}.png`),
     });
+    await slideLinkForm
+      .getByRole("button", { name: "Cancel", exact: true })
+      .click();
+    await adminUploadForm
+      .getByRole("button", { name: "Cancel", exact: true })
+      .click();
+    const linkMore = materials.locator("[data-admin-slide-link-row] summary");
+    await linkMore.click();
+    const linkMenuBounds = await materials
+      .locator("[data-admin-slide-link-row] summary + div")
+      .boundingBox();
+    assert.ok(
+      linkMenuBounds.x >= 0 && linkMenuBounds.x + linkMenuBounds.width <= width,
+      `Link menu stays within ${width}px viewport`,
+    );
+    await linkMore.press("Escape");
+    await admin.locator("[data-theme-toggle]").click();
+    const otherThemeViolations = await admin.evaluate(async () => {
+      const result = await window.axe.run("[data-admin-presentation]", {
+        runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21aa"] },
+      });
+      return result.violations.map(({ id, nodes }) => ({
+        id,
+        targets: nodes.map(({ target }) => target),
+      }));
+    });
+    assert.deepEqual(
+      otherThemeViolations,
+      [],
+      `Other theme slide controls accessibility at ${width}px`,
+    );
+    await presentation.screenshot({
+      path: path.join(
+        tmpdir(),
+        `sdlcai-admin-presentation-other-theme-${width}.png`,
+      ),
+    });
+    await admin.locator("[data-theme-toggle]").click();
   }
-  await slideLinkForm
+  const linkRow = materials.locator("[data-admin-slide-link-row]");
+  await linkRow.locator("summary").click();
+  await linkRow
     .getByRole("button", { name: "Remove slide link", exact: true })
     .click();
   await admin
@@ -471,6 +659,7 @@ try {
     true,
   );
   admin.once("dialog", (dialog) => dialog.accept());
+  await adminPdfCard.locator("summary").click();
   await adminPdfCard
     .getByRole("button", { name: "Remove PDF", exact: true })
     .click();
@@ -484,6 +673,7 @@ try {
     .locator("[data-admin-slide]")
     .filter({ hasText: "updated.html" });
   admin.once("dialog", (dialog) => dialog.accept());
+  await htmlAdminCard.locator("summary").click();
   await htmlAdminCard
     .getByRole("button", { name: "Remove HTML", exact: true })
     .click();
