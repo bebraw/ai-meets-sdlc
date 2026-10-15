@@ -109,6 +109,7 @@ try {
     "false",
   );
   await deferred.evaluate(() => localStorage.removeItem("sdlcai-theme"));
+  await deferred.waitForLoadState("networkidle");
   await deferred.close();
 
   const fallbackCatalog = await publicContext.newPage();
@@ -146,6 +147,7 @@ try {
       .isHidden(),
     true,
   );
+  await fallbackCatalog.waitForLoadState("networkidle");
   await fallbackCatalog.close();
   const errors = [];
   const consoleErrors = [];
@@ -319,8 +321,10 @@ try {
     paint: performance.getEntriesByName("first-contentful-paint")[0]?.startTime,
     load: performance.getEntriesByType("navigation")[0].loadEventEnd,
   }));
+  // Presentation timestamps are rounded up to 4ms; resource timestamps retain
+  // finer precision: https://www.w3.org/TR/paint-timing/#mark-paint-timing
   assert.ok(
-    catalogTiming.request >= catalogTiming.paint,
+    catalogTiming.request + 4 >= catalogTiming.paint,
     JSON.stringify(catalogTiming),
   );
   assert.ok(
@@ -690,6 +694,15 @@ try {
     "Hosted photo bank passed: public gallery, organizer edits, licensed ZIP, shared themes, native/fallback fullscreen, keyboard exit/navigation, preserved drafts and accessible desktop/mobile previews.",
   );
 } finally {
+  // Let image response streams finish before closing their browser clients.
+  if (browser)
+    await Promise.all(
+      browser
+        .contexts()
+        .flatMap((context) =>
+          context.pages().map((page) => page.waitForLoadState("networkidle")),
+        ),
+    );
   await browser?.close();
   await fixture.dispose();
 }
