@@ -36,6 +36,7 @@ try {
   const origin = `http://127.0.0.1:${fixture.worker.port}`;
   const publicContext = await browser.newContext({
     viewport: { width: 1440, height: 1000 },
+    colorScheme: "dark",
   });
   const adminContext = await browser.newContext({
     extraHTTPHeaders: { authorization: receiptAdmin },
@@ -53,6 +54,50 @@ try {
     surface.setDefaultTimeout(15000);
   }
   await page.goto(`${origin}/photos/`);
+  const assertTheme = async (surface, theme) => {
+    const state = await surface.evaluate(() => ({
+      theme: document.documentElement.dataset.theme,
+      dark: document.documentElement.classList.contains("dark"),
+      saved: localStorage.getItem("sdlcai-theme"),
+      background: getComputedStyle(document.body).backgroundColor,
+    }));
+    assert.deepEqual(state, {
+      theme,
+      dark: theme === "dark",
+      saved: theme,
+      background: theme === "dark" ? "rgb(16, 16, 16)" : "rgb(246, 244, 239)",
+    });
+    assert.equal(
+      await surface.locator("[data-theme-label]").textContent(),
+      theme === "dark" ? "Light" : "Dark",
+    );
+  };
+  await page
+    .locator("[data-theme-label]")
+    .getByText("Light", { exact: true })
+    .waitFor();
+  await assertTheme(page, "dark");
+  await page.getByRole("button", { name: "Toggle dark mode" }).click();
+  await assertTheme(page, "light");
+  await page.reload();
+  await page
+    .locator("[data-theme-label]")
+    .getByText("Dark", { exact: true })
+    .waitFor();
+  await assertTheme(page, "light");
+  await page.goto(`${origin}/schedule/`);
+  await page
+    .locator("[data-theme-label]")
+    .getByText("Dark", { exact: true })
+    .waitFor();
+  await assertTheme(page, "light");
+  await page.getByRole("button", { name: "Toggle dark mode" }).click();
+  await page.goto(`${origin}/photos/`);
+  await page
+    .locator("[data-theme-label]")
+    .getByText("Light", { exact: true })
+    .waitFor();
+  await assertTheme(page, "dark");
   await page
     .waitForFunction(() => document.querySelectorAll(".card").length === 30)
     .catch(async (error) => {
@@ -114,34 +159,76 @@ try {
     .waitFor();
 
   const axe = await readFile("node_modules/axe-core/axe.min.js", "utf8");
-  for (const width of [1440, 390, 320]) {
-    for (const surface of [page, admin]) {
-      await surface.setViewportSize({ width, height: 1000 });
-      await surface.evaluate(() => document.fonts.ready);
-      assert.equal(
-        await surface.evaluate(
-          () => document.documentElement.scrollWidth <= innerWidth,
-        ),
-        true,
-        `Overflow at ${width}px`,
-      );
-      await surface.addScriptTag({ content: axe });
-      const violations = await surface.evaluate(async () =>
-        (
-          await axe.run(document, {
-            runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21aa"] },
-          })
-        ).violations.map(({ id, nodes }) => ({
-          id,
-          elements: nodes.map((node) => node.target),
-        })),
-      );
-      assert.deepEqual(violations, [], `Accessibility at ${width}px`);
+  for (const theme of ["light", "dark"]) {
+    for (const width of [1440, 390, 320]) {
+      for (const surface of [page, admin]) {
+        if (
+          (await surface.evaluate(
+            () => document.documentElement.dataset.theme,
+          )) !== theme
+        )
+          await surface
+            .getByRole("button", { name: "Toggle dark mode" })
+            .click();
+        await assertTheme(surface, theme);
+        await surface.setViewportSize({ width, height: 1000 });
+        await surface.evaluate(() => document.fonts.ready);
+        assert.equal(
+          await surface.evaluate(
+            () => document.documentElement.scrollWidth <= innerWidth,
+          ),
+          true,
+          `Overflow at ${width}px`,
+        );
+        await surface.addScriptTag({ content: axe });
+        const violations = await surface.evaluate(async () =>
+          (
+            await axe.run(document, {
+              runOnly: {
+                type: "tag",
+                values: ["wcag2a", "wcag2aa", "wcag21aa"],
+              },
+            })
+          ).violations.map(({ id, nodes }) => ({
+            id,
+            elements: nodes.map((node) => node.target),
+          })),
+        );
+        assert.deepEqual(
+          violations,
+          [],
+          `${theme} accessibility at ${width}px`,
+        );
+        if (width === 1440) {
+          await surface.locator("#grid .image-button").first().click();
+          const dialogViolations = await surface.evaluate(async () =>
+            (
+              await axe.run(document, {
+                runOnly: {
+                  type: "tag",
+                  values: ["wcag2a", "wcag2aa", "wcag21aa"],
+                },
+              })
+            ).violations.map(({ id, nodes }) => ({
+              id,
+              elements: nodes.map((node) => node.target),
+            })),
+          );
+          assert.deepEqual(
+            dialogViolations,
+            [],
+            `${theme} photo dialog accessibility`,
+          );
+          await surface
+            .getByRole("button", { name: "Close", exact: true })
+            .click();
+        }
+      }
     }
   }
   assert.deepEqual(errors, []);
   console.log(
-    "Hosted photo bank passed: public gallery, organizer edits, licensed ZIP download, and accessible layouts at 320/390/1440 px.",
+    "Hosted photo bank passed: public gallery, organizer edits, licensed ZIP download, shared theme preference and accessible light/dark layouts and dialogs at 320/390/1440 px.",
   );
 } finally {
   await browser?.close();
