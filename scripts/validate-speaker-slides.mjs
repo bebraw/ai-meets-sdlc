@@ -66,7 +66,7 @@ try {
   await card.waitFor();
   const talkId = await card.getAttribute("data-slide-talk");
   const fileInput = card.getByLabel(
-    "Presentation file (PDF or .pptx, up to 25 MB)",
+    "Presentation file (PDF or .pptx, up to 50 MB)",
   );
   const permission = card.getByRole("checkbox", {
     name: "Allow this PDF to be published with my talk",
@@ -141,7 +141,7 @@ try {
   await card.getByText("Published on the schedule", { exact: true }).waitFor();
   await setFile(
     "venue.pptx",
-    powerpointSlideBytes(),
+    powerpointSlideBytes(28 * 1024 * 1024),
     "application/vnd.openxmlformats-officedocument.presentationml.presentation",
   );
   assert.equal(await permission.isVisible(), false);
@@ -256,7 +256,7 @@ try {
     `[data-admin-slide-upload="${talkId}"]`,
   );
   const adminFileInput = adminUploadForm.getByLabel(
-    "Presentation file (PDF, .pptx, or HTML, up to 25 MB)",
+    "Presentation file (PDF, .pptx, or HTML, up to 50 MB)",
   );
   const adminPermission = adminUploadForm.getByRole("checkbox");
   const uploadAsAdmin = async (

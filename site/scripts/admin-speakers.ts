@@ -1572,7 +1572,7 @@ function renderAdminSlideUpload(
   const label = node(
     "label",
     "grid min-w-0 gap-2 text-sm font-bold uppercase",
-    "Presentation file (PDF, .pptx, or HTML, up to 25 MB)",
+    "Presentation file (PDF, .pptx, or HTML, up to 50 MB)",
   );
   const input = node(
     "input",
@@ -1645,7 +1645,7 @@ function renderAdminSlideUpload(
     if (file.size === 0 || file.size > maxSlideFileBytes) {
       setEditorStatus(
         status,
-        "Choose a non-empty file that is 25 MB or smaller.",
+        "Choose a non-empty file that is 50 MB or smaller.",
         true,
       );
       return;

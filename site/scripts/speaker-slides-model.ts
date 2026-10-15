@@ -1,4 +1,4 @@
-export const maxSlideFileBytes = 25 * 1024 * 1024;
+export const maxSlideFileBytes = 50 * 1024 * 1024;
 
 export type SlideFormat = "pdf" | "powerpoint" | "html";
 

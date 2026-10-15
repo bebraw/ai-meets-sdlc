@@ -124,7 +124,7 @@ function renderTalk(
   const label = node(
     "label",
     "grid gap-2 font-bold uppercase",
-    "Presentation file (PDF or .pptx, up to 25 MB)",
+    "Presentation file (PDF or .pptx, up to 50 MB)",
   );
   const input = node(
     "input",
@@ -203,7 +203,7 @@ function renderTalk(
     if (file.size === 0 || file.size > maxSlideFileBytes) {
       setStatus(
         status,
-        "Choose a non-empty file that is 25 MB or smaller.",
+        "Choose a non-empty file that is 50 MB or smaller.",
         true,
       );
       return;

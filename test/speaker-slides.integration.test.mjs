@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { createHash } from "node:crypto";
 import { zipSync, strToU8 } from "fflate";
 import {
   createReceiptFixture,
@@ -11,6 +12,87 @@ import {
   pdfSlideBytes,
   powerpointSlideBytes,
 } from "./helpers/slide-files.mjs";
+
+test("slide uploads accept a 28 MB PowerPoint and the 50 MB boundary, and reject larger streams", async (t) => {
+  const fixture = await createReceiptFixture();
+  t.after(() => fixture.dispose());
+  const { worker, cookies, runSql } = fixture;
+  const headers = { cookie: cookies.get("mo-khazali"), origin };
+  const workspace = await (
+    await worker.fetch(`${origin}/api/speaker/workspace`, { headers })
+  ).json();
+  const talkId = workspace.content.talks[0].id;
+  const maximum = 50 * 1024 * 1024;
+  const upload = (body, filename, extra = {}) =>
+    worker.fetch(
+      `${origin}/api/speaker/slides?${new URLSearchParams({ talk_id: talkId, filename })}`,
+      {
+        method: "POST",
+        headers: { ...headers, "content-type": "application/octet-stream" },
+        body,
+        ...extra,
+      },
+    );
+  const largePowerPoint = powerpointSlideBytes(28 * 1024 * 1024);
+  const pptxResponse = await upload(largePowerPoint, "28-MB.pptx");
+  assert.equal(pptxResponse.status, 201, await pptxResponse.clone().text());
+  const pptx = (await pptxResponse.json()).slide;
+  assert.equal(pptx.byte_size, largePowerPoint.length);
+  const stored = await runSql(
+    "SELECT byte_size, content_hash FROM speaker_slides WHERE format = 'powerpoint'",
+  );
+  assert.equal(stored[0].byte_size, largePowerPoint.length);
+  assert.equal(
+    stored[0].content_hash,
+    createHash("sha256").update(largePowerPoint).digest("hex"),
+  );
+  const downloaded = await worker.fetch(`${origin}${pptx.download_url}`, {
+    headers,
+  });
+  assert.equal(downloaded.status, 200);
+  const downloadHash = createHash("sha256");
+  for await (const chunk of downloaded.body) downloadHash.update(chunk);
+  assert.equal(downloadHash.digest("hex"), stored[0].content_hash);
+
+  // Pad with PDF whitespace while keeping the header and EOF intact.
+  const pdf = Buffer.alloc(maximum, " ");
+  pdfSlideBytes().copy(pdf);
+  pdf.write("\n%%EOF\n", maximum - 7);
+  const boundary = await upload(pdf, "50-MB.pdf");
+  assert.equal(boundary.status, 201, await boundary.clone().text());
+  const boundarySlide = (await boundary.json()).slide;
+  assert.equal(boundarySlide.byte_size, maximum);
+  const head = await worker.fetch(`${origin}${boundarySlide.download_url}`, {
+    method: "HEAD",
+    headers,
+  });
+  assert.equal(head.status, 200);
+  assert.equal(head.headers.get("content-length"), String(maximum));
+
+  // A chunked upload has no Content-Length: enforce the limit while reading too.
+  let sent = 0;
+  const oversized = new ReadableStream({
+    pull(controller) {
+      const count = Math.min(64 * 1024, maximum + 1 - sent);
+      if (count === 0) {
+        controller.close();
+        return;
+      }
+      controller.enqueue(new Uint8Array(count));
+      sent += count;
+    },
+  });
+  const rejected = await upload(oversized, "oversized.pdf", { duplex: "half" });
+  assert.equal(rejected.status, 413);
+  assert.equal(
+    (await rejected.json()).error,
+    "Slides must be 50 MB or smaller.",
+  );
+  assert.equal(
+    (await runSql("SELECT COUNT(*) AS count FROM speaker_slides"))[0].count,
+    2,
+  );
+});
 
 test("admins upload, replace and remove PDF, PowerPoint and standalone HTML for a speaker", async (t) => {
   const fixture = await createReceiptFixture();
@@ -104,7 +186,7 @@ test("admins upload, replace and remove PDF, PowerPoint and standalone HTML for 
     400,
   );
   assert.equal(
-    (await upload({ bytes: new Uint8Array(25 * 1024 * 1024 + 1) })).status,
+    (await upload({ bytes: new Uint8Array(50 * 1024 * 1024 + 1) })).status,
     413,
   );
 
@@ -475,7 +557,7 @@ test("speaker slides stay private until publication, and replacement withdraws p
     400,
   );
   assert.equal(
-    (await upload({ bytes: new Uint8Array(25 * 1024 * 1024 + 1) })).status,
+    (await upload({ bytes: new Uint8Array(50 * 1024 * 1024 + 1) })).status,
     413,
   );
   assert.equal(

@@ -30,18 +30,29 @@ export function pdfSlideBytes(label = "Presentation slides") {
   return Buffer.from(pdf);
 }
 
-export function powerpointSlideBytes() {
-  return Buffer.from(
-    zipSync({
-      "[Content_Types].xml": strToU8(
-        '<?xml version="1.0" encoding="UTF-8"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/ppt/presentation.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml"/></Types>',
-      ),
-      "_rels/.rels": strToU8(
-        '<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="ppt/presentation.xml"/></Relationships>',
-      ),
-      "ppt/presentation.xml": strToU8(
-        '<?xml version="1.0" encoding="UTF-8"?><p:presentation xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main"><p:sldSz cx="9144000" cy="6858000"/><p:notesSz cx="6858000" cy="9144000"/></p:presentation>',
-      ),
-    }),
-  );
+export function powerpointSlideBytes(byteSize = 0) {
+  const files = {
+    "[Content_Types].xml": strToU8(
+      '<?xml version="1.0" encoding="UTF-8"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/ppt/presentation.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml"/></Types>',
+    ),
+    "_rels/.rels": strToU8(
+      '<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="ppt/presentation.xml"/></Relationships>',
+    ),
+    "ppt/presentation.xml": strToU8(
+      '<?xml version="1.0" encoding="UTF-8"?><p:presentation xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main"><p:sldSz cx="9144000" cy="6858000"/><p:notesSz cx="6858000" cy="9144000"/></p:presentation>',
+    ),
+  };
+  if (byteSize) {
+    const mediaName = "ppt/media/fixture.bin";
+    files[mediaName] = new Uint8Array(0);
+    const overhead = zipSync(files, { level: 0 }).byteLength;
+    assertSlideSize(byteSize, overhead);
+    files[mediaName] = new Uint8Array(byteSize - overhead);
+  }
+  return Buffer.from(zipSync(files, byteSize ? { level: 0 } : {}));
+}
+
+function assertSlideSize(byteSize, minimum) {
+  if (!Number.isInteger(byteSize) || byteSize < minimum)
+    throw new Error(`Fixture must be at least ${minimum} bytes.`);
 }

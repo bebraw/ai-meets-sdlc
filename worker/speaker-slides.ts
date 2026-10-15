@@ -1,4 +1,5 @@
 import { unzipSync } from "fflate";
+import { createHash } from "node:crypto";
 import {
   maxSlideFileBytes,
   slideContentTypes,
@@ -359,8 +360,9 @@ async function uploadSlides(
   ) {
     return json({ error: "The file type does not match its extension." }, 415);
   }
-  const bytes = await readSlideBytes(request);
-  if (bytes instanceof Response) return bytes;
+  const upload = await readSlideBytes(request);
+  if (upload instanceof Response) return upload;
+  const { bytes, hash } = upload;
   if (!validSlideFile(bytes, format)) {
     return json(
       {
@@ -376,10 +378,6 @@ async function uploadSlides(
   const extension = format === "powerpoint" ? "pptx" : format;
   const r2Key = `speaker-slides/${talkId}/${slideId}.${extension}`;
   const uploadedAt = new Date().toISOString();
-  const hash = Array.from(
-    new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)),
-    (value) => value.toString(16).padStart(2, "0"),
-  ).join("");
   await env.SPEAKER_UPLOADS.put(r2Key, bytes, {
     httpMetadata: { contentType: contentTypes[format] },
   });
@@ -537,51 +535,70 @@ export async function purgeDeletedSpeakerSlides(env: Env): Promise<void> {
 
 async function readSlideBytes(
   request: Request,
-): Promise<Uint8Array<ArrayBuffer> | Response> {
+): Promise<{ bytes: Uint8Array<ArrayBuffer>; hash: string } | Response> {
   const length = request.headers.get("content-length");
   if (
     length &&
     (!/^\d+$/u.test(length) || Number(length) > maxSlideFileBytes)
   ) {
-    return json({ error: "Slides must be 25 MB or smaller." }, 413);
+    return json({ error: "Slides must be 50 MB or smaller." }, 413);
   }
   const reader = request.body?.getReader();
   if (!reader) return json({ error: "Choose a presentation file." }, 400);
-  const chunks: Uint8Array[] = [];
+  // Browser File uploads supply a length. Keep a single bounded buffer rather
+  // than retaining all chunks and copying the entire presentation at the end.
+  const bytes = new Uint8Array(
+    length === null ? maxSlideFileBytes : Number(length),
+  );
+  const hash = createHash("sha256");
   let size = 0;
   try {
     while (true) {
       const { value, done } = await reader.read();
       if (done) break;
-      size += value.byteLength;
-      if (size > maxSlideFileBytes) {
+      if (size + value.byteLength > maxSlideFileBytes) {
         await reader.cancel();
-        return json({ error: "Slides must be 25 MB or smaller." }, 413);
+        return json({ error: "Slides must be 50 MB or smaller." }, 413);
       }
-      chunks.push(value);
+      if (size + value.byteLength > bytes.byteLength) {
+        await reader.cancel();
+        return json({ error: "The upload was interrupted. Try again." }, 400);
+      }
+      bytes.set(value, size);
+      hash.update(value);
+      size += value.byteLength;
     }
   } catch {
     return json({ error: "The upload was interrupted. Try again." }, 400);
   } finally {
     reader.releaseLock();
   }
-  const bytes = new Uint8Array(size);
-  let offset = 0;
-  for (const chunk of chunks) {
-    bytes.set(chunk, offset);
-    offset += chunk.byteLength;
-  }
-  return bytes;
+  if (length !== null && size !== Number(length))
+    return json({ error: "The upload was interrupted. Try again." }, 400);
+  return { bytes: bytes.subarray(0, size), hash: hash.digest("hex") };
 }
 
 function validSlideFile(bytes: Uint8Array, format: SlideFormat): boolean {
   if (format === "html") {
     try {
-      const html = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
-      return (
-        !html.includes("\u0000") &&
-        /<(?:!doctype\s+html|html)(?:\s|>)/iu.test(html)
-      );
+      const decoder = new TextDecoder("utf-8", { fatal: true });
+      let previous = "";
+      let hasDocument = false;
+      // Validate text in chunks as well: a full UTF-16 string can use twice the
+      // file size. Keep enough overlap to recognize a split document tag.
+      for (let offset = 0; offset < bytes.length; offset += 64 * 1024) {
+        const text = decoder.decode(
+          bytes.subarray(offset, offset + 64 * 1024),
+          { stream: true },
+        );
+        if (text.includes("\u0000")) return false;
+        hasDocument ||= /<(?:!doctype\s+html|html)(?:\s|>)/iu.test(
+          previous + text,
+        );
+        previous = text.slice(-128);
+      }
+      decoder.decode();
+      return hasDocument;
     } catch {
       return false;
     }

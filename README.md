@@ -301,7 +301,7 @@ Generated media stays in ignored `production/intro/generated/` and `output/intro
 outside public build assets.
 
 Speakers upload PDF and PowerPoint (`.pptx`) files per talk under **Presentation
-files** in `/speaker/`, up to 25 MB per file. Each format has its own slot;
+files** in `/speaker/`, up to 50 MB per file. Each format has its own slot;
 uploading it again replaces that file. Files stay private and are available to
 the talk's speakers and organizers. The optional **Allow this PDF to be published
 with my talk** checkbox records permission for public sharing. PowerPoint files
@@ -309,13 +309,16 @@ remain private for venue use.
 
 Organizers can also upload files supplied by a speaker under each talk's
 **Upload slides** form in `/admin/speakers/`. PDF, PowerPoint (`.pptx`), and
-standalone HTML (`.html` or `.htm`) files are supported, up to 25 MB each.
+standalone HTML (`.html` or `.htm`) files are supported, up to 50 MB each.
 Select the PDF permission checkbox only when the speaker has allowed public
 sharing, then publish it separately. PowerPoint and HTML stay private; HTML
 downloads as a file for local use. Admins can replace or remove any uploaded
 format. Replacements withdraw the old PDF publication and require publishing
 again. Apply `0035_add_html_speaker_slides.sql` before deployment; it preserves
 existing files and publication states.
+
+The 50 MB limit also requires `0036_increase_speaker_slide_size.sql`. It preserves
+existing files and publication states; the normal deployment applies it.
 
 In `/admin/speakers/`, use **Publish PDF on schedule** when post-event material
 is ready. The corresponding talk at `/schedule/` gains a **Slides (PDF)** download
