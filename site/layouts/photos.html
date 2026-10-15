@@ -222,6 +222,7 @@
       }
       .stats {
         display: flex;
+        min-height: 30px;
         flex-wrap: wrap;
         gap: 12px 30px;
         margin-top: 25px;
@@ -728,6 +729,9 @@
         </button>
       </div>
       <div class="status" id="status" role="status"></div>
+      <button type="button" id="retry-catalog" hidden>
+        Retry loading photos
+      </button>
       <div
         class="grid"
         id="grid"
@@ -1361,117 +1365,165 @@
           button.disabled = false;
         }
       };
-      try {
-        const response = await fetch(
-          hosted
-            ? organizer
-              ? "/api/admin/photos/catalog"
-              : mine
-                ? "/api/speaker/photo-bank"
-                : "/api/photos/catalog"
-            : "/api/catalog",
-        );
-        if (!response.ok) throw new Error("Could not load the photo catalog.");
-        catalog = await response.json();
-        if (hosted) {
-          document.querySelector("header > p").textContent = organizer
-            ? "Curate the seminar photo bank. Review captions, choose highlights, and confirm people for their personal collections."
-            : mine
-              ? "Photos associated with your SDLCAI sessions. Download sharing copies or full-resolution files with photographer credits."
-              : "Photographs from SDLCAI at Marsio. Browse the highlights or explore the full collection, then download and share with photographer credit.";
-          const nav = make("nav");
-          nav.setAttribute("aria-label", "Site");
-          nav.style.cssText =
-            "display:flex;flex-wrap:wrap;gap:20px;margin-top:20px";
-          for (const [name, href] of [
-            ["Home", "/"],
-            ["Schedule", "/schedule/"],
-            ["Speakers", "/speakers/"],
-            ["Photos", "/photos/"],
-            ...(organizer ? [["Admin desk", "/admin/"]] : []),
-          ]) {
-            const link = make("a", name);
-            link.href = href;
-            nav.append(link);
-          }
-          document.querySelector("header").append(nav);
-          for (const link of document.querySelectorAll("footer a")) {
-            if (link.getAttribute("href") === "/catalog.json")
-              link.href = organizer
-                ? "/api/admin/photos/catalog"
-                : "/api/photos/catalog";
-            else if (link.getAttribute("href") === "/CREDITS.txt")
-              link.href = "/api/photos/credits";
-            else link.hidden = true;
-          }
-          if (!catalog.canDownloadOriginals)
-            $("#download-size option[value=original]").remove();
-          if (!catalog.canEdit) {
-            for (const node of $("#editor").querySelectorAll(
-              "label, .review-row, details, .related, [type=submit]",
-            ))
-              node.hidden = true;
-            $("#similar").closest("label").hidden = true;
-            const caption = make("p");
-            caption.id = "public-caption";
-            $("#editor h2").after(caption);
-            $("#editor h2").textContent = "Image details";
-            if (
-              !catalog.photos.some((photo) => photo.depictedSpeakerIds.length)
-            )
-              $("#person").closest("label").hidden = true;
-          }
-        }
-        for (const category of catalog.categories) {
-          option($("#category"), category, label(category));
-          option($("#editor").elements.category, category, label(category));
-        }
-        for (const selection of catalog.selections) {
-          option($("#selection"), selection, label(selection));
-          option($("#editor").elements.selection, selection, label(selection));
-        }
-        for (const source of catalog.sources)
-          option($("#photographer"), source.photographer, source.photographer);
-        populateTags();
-        for (const [items, container, filter] of [
-          [catalog.talks, $("#talks"), $("#talk")],
-          [catalog.speakers, $("#people"), $("#person")],
-        ])
-          for (const item of items) {
-            const name =
-              item.name ||
-              `${item.title} (${item.speakerIds.map((id) => catalog.speakers.find((speaker) => speaker.id === id)?.name || id).join(", ")})`;
-            option(filter, item.id, name);
-            const wrapper = make("label", undefined, "check"),
-              checkbox = make("input");
-            checkbox.type = "checkbox";
-            checkbox.value = item.id;
-            wrapper.append(checkbox, make("span", name));
-            container.append(wrapper);
-          }
-        const params = new URLSearchParams(location.search);
-        if (hosted && !organizer && !params.has("selection"))
-          $("#selection").value = "selected";
-        for (const field of [
-          "search",
-          "category",
-          "tag",
-          "photographer",
-          "selection",
-          "talk",
-          "person",
+      // Keep the page shell usable before downloading any photo metadata.
+      if (hosted) {
+        document.querySelector("header > p").textContent = organizer
+          ? "Curate the seminar photo bank. Review captions, choose highlights, and confirm people for their personal collections."
+          : mine
+            ? "Photos associated with your SDLCAI sessions. Download sharing copies or full-resolution files with photographer credits."
+            : "Photographs from SDLCAI at Marsio. Browse the highlights or explore the full collection, then download and share with photographer credit.";
+        const nav = make("nav");
+        nav.setAttribute("aria-label", "Site");
+        nav.style.cssText =
+          "display:flex;flex-wrap:wrap;gap:20px;margin-top:20px";
+        for (const [name, href] of [
+          ["Home", "/"],
+          ["Schedule", "/schedule/"],
+          ["Speakers", "/speakers/"],
+          ["Photos", "/photos/"],
+          ...(organizer ? [["Admin desk", "/admin/"]] : []),
         ]) {
-          if (params.has(field))
-            $(`#${field}`).value =
-              field === "tag"
-                ? params.get(field).toLocaleLowerCase()
-                : params.get(field);
+          const link = make("a", name);
+          link.href = href;
+          nav.append(link);
         }
-        $("#similar").checked = params.get("similar") === "1";
-        paint();
-      } catch (error) {
-        status(error.message, true);
+        document.querySelector("header").append(nav);
+        for (const link of document.querySelectorAll("footer a")) {
+          if (link.getAttribute("href") === "/catalog.json")
+            link.href = organizer
+              ? "/api/admin/photos/catalog"
+              : "/api/photos/catalog";
+          else if (link.getAttribute("href") === "/CREDITS.txt")
+            link.href = "/api/photos/credits";
+          else link.hidden = true;
+        }
       }
+      const catalogControls = [
+        ...document.querySelectorAll(
+          "#filters input, #filters select, #filters button, .toolbar button, .toolbar select",
+        ),
+      ];
+      function catalogPending(pending) {
+        for (const control of catalogControls) control.disabled = pending;
+        $("#grid").setAttribute("aria-busy", String(pending));
+      }
+      async function loadCatalog() {
+        catalogPending(true);
+        $("#retry-catalog").hidden = true;
+        status("Loading photos…");
+        try {
+          const response = await fetch(
+            hosted
+              ? organizer
+                ? "/api/admin/photos/catalog"
+                : mine
+                  ? "/api/speaker/photo-bank"
+                  : "/api/photos/catalog"
+              : "/api/catalog",
+          );
+          if (!response.ok)
+            throw new Error("Could not load the photo catalog.");
+          catalog = await response.json();
+          if (hosted) {
+            if (!catalog.canDownloadOriginals)
+              $("#download-size option[value=original]").remove();
+            if (!catalog.canEdit) {
+              for (const node of $("#editor").querySelectorAll(
+                "label, .review-row, details, .related, [type=submit]",
+              ))
+                node.hidden = true;
+              $("#similar").closest("label").hidden = true;
+              const caption = make("p");
+              caption.id = "public-caption";
+              $("#editor h2").after(caption);
+              $("#editor h2").textContent = "Image details";
+              if (
+                !catalog.photos.some((photo) => photo.depictedSpeakerIds.length)
+              )
+                $("#person").closest("label").hidden = true;
+            }
+          }
+          for (const category of catalog.categories) {
+            option($("#category"), category, label(category));
+            option($("#editor").elements.category, category, label(category));
+          }
+          for (const selection of catalog.selections) {
+            option($("#selection"), selection, label(selection));
+            option(
+              $("#editor").elements.selection,
+              selection,
+              label(selection),
+            );
+          }
+          for (const source of catalog.sources)
+            option(
+              $("#photographer"),
+              source.photographer,
+              source.photographer,
+            );
+          populateTags();
+          for (const [items, container, filter] of [
+            [catalog.talks, $("#talks"), $("#talk")],
+            [catalog.speakers, $("#people"), $("#person")],
+          ])
+            for (const item of items) {
+              const name =
+                item.name ||
+                `${item.title} (${item.speakerIds.map((id) => catalog.speakers.find((speaker) => speaker.id === id)?.name || id).join(", ")})`;
+              option(filter, item.id, name);
+              const wrapper = make("label", undefined, "check"),
+                checkbox = make("input");
+              checkbox.type = "checkbox";
+              checkbox.value = item.id;
+              wrapper.append(checkbox, make("span", name));
+              container.append(wrapper);
+            }
+          const params = new URLSearchParams(location.search);
+          if (hosted && !organizer && !params.has("selection"))
+            $("#selection").value = "selected";
+          for (const field of [
+            "search",
+            "category",
+            "tag",
+            "photographer",
+            "selection",
+            "talk",
+            "person",
+          ]) {
+            if (params.has(field))
+              $(`#${field}`).value =
+                field === "tag"
+                  ? params.get(field).toLocaleLowerCase()
+                  : params.get(field);
+          }
+          $("#similar").checked = params.get("similar") === "1";
+          paint();
+          catalogPending(false);
+          status("");
+        } catch (error) {
+          $("#grid").setAttribute("aria-busy", "false");
+          status(error.message, true);
+          $("#retry-catalog").hidden = false;
+        }
+      }
+      $("#retry-catalog").onclick = loadCatalog;
+      catalogPending(true);
+      status("Loading photos…");
+      // Give the shell a paint before starting the catalog request. The idle
+      // timeout keeps the gallery loading even when the main thread stays busy.
+      await new Promise((resolve) => {
+        const afterLoad = () =>
+          requestAnimationFrame(() =>
+            requestAnimationFrame(() => {
+              if (typeof requestIdleCallback === "function")
+                requestIdleCallback(resolve, { timeout: 1000 });
+              else setTimeout(resolve, 0);
+            }),
+          );
+        if (document.readyState === "complete") afterLoad();
+        else addEventListener("load", afterLoad, { once: true });
+      });
+      await loadCatalog();
       addEventListener("beforeunload", (event) => {
         if (dirty) {
           event.preventDefault();

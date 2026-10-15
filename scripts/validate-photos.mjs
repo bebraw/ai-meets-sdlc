@@ -55,6 +55,96 @@ try {
   });
   const page = await publicContext.newPage(),
     admin = await adminContext.newPage();
+  const deferred = await publicContext.newPage();
+  await deferred.addInitScript(() => {
+    window.requestIdleCallback = (callback) => {
+      window.releaseCatalog = callback;
+    };
+  });
+  const catalogRequests = [];
+  deferred.on("request", (request) => {
+    if (new URL(request.url()).pathname === "/api/photos/catalog")
+      catalogRequests.push(request.url());
+  });
+  await deferred.goto(`${origin}/photos/`);
+  await deferred.waitForFunction(
+    () => typeof window.releaseCatalog === "function",
+  );
+  assert.equal(
+    catalogRequests.length,
+    0,
+    "Catalog waits while the shell renders",
+  );
+  assert.equal(
+    await deferred
+      .getByRole("link", { name: "Schedule", exact: true })
+      .isVisible(),
+    true,
+  );
+  assert.equal(await deferred.locator("#tag").isDisabled(), true);
+  assert.equal(
+    await deferred.locator("#grid").getAttribute("aria-busy"),
+    "true",
+  );
+  assert.equal(
+    await deferred.locator("#status").textContent(),
+    "Loading photos…",
+  );
+  await deferred.getByRole("button", { name: "Toggle dark mode" }).click();
+  assert.equal(
+    await deferred.evaluate(() => document.documentElement.dataset.theme),
+    "light",
+  );
+  await deferred.evaluate(() => window.releaseCatalog());
+  await deferred.waitForFunction(
+    (count) => document.querySelectorAll(".card").length === count,
+    highlightCount,
+  );
+  assert.equal(catalogRequests.length, 1);
+  assert.equal(await deferred.locator("#tag").isEnabled(), true);
+  assert.equal(
+    await deferred.locator("#grid").getAttribute("aria-busy"),
+    "false",
+  );
+  await deferred.evaluate(() => localStorage.removeItem("sdlcai-theme"));
+  await deferred.close();
+
+  const fallbackCatalog = await publicContext.newPage();
+  await fallbackCatalog.addInitScript(() => {
+    window.requestIdleCallback = undefined;
+  });
+  let attempts = 0;
+  await fallbackCatalog.route("**/api/photos/catalog", async (route) => {
+    if (++attempts === 1)
+      await route.fulfill({ status: 503, body: "Temporarily unavailable" });
+    else await route.continue();
+  });
+  await fallbackCatalog.goto(`${origin}/photos/?selection=&tag=coffee`);
+  await fallbackCatalog
+    .getByRole("button", { name: "Retry loading photos" })
+    .waitFor();
+  assert.equal(
+    await fallbackCatalog.locator("#status").textContent(),
+    "Could not load the photo catalog.",
+  );
+  assert.equal(await fallbackCatalog.locator("#tag").isDisabled(), true);
+  await fallbackCatalog
+    .getByRole("button", { name: "Retry loading photos" })
+    .click();
+  await fallbackCatalog.waitForFunction(
+    () => document.querySelectorAll(".card").length > 0,
+  );
+  assert.equal(attempts, 2);
+  assert.equal(await fallbackCatalog.locator("#tag").inputValue(), "coffee");
+  assert.equal(await fallbackCatalog.locator("#selection").inputValue(), "");
+  assert.equal(await fallbackCatalog.locator("#status").textContent(), "");
+  assert.equal(
+    await fallbackCatalog
+      .getByRole("button", { name: "Retry loading photos" })
+      .isHidden(),
+    true,
+  );
+  await fallbackCatalog.close();
   const errors = [];
   const consoleErrors = [];
   for (const surface of [page, admin]) {
@@ -220,6 +310,21 @@ try {
     0,
   );
   assert.equal(await page.locator("#person").isVisible(), false);
+  const catalogTiming = await page.evaluate(() => ({
+    request: performance
+      .getEntriesByType("resource")
+      .find((entry) => entry.name.endsWith("/api/photos/catalog"))?.startTime,
+    paint: performance.getEntriesByName("first-contentful-paint")[0]?.startTime,
+    load: performance.getEntriesByType("navigation")[0].loadEventEnd,
+  }));
+  assert.ok(
+    catalogTiming.request >= catalogTiming.paint,
+    JSON.stringify(catalogTiming),
+  );
+  assert.ok(
+    catalogTiming.request >= catalogTiming.load,
+    JSON.stringify(catalogTiming),
+  );
   const publicTags = [
     ...new Set(
       publicPhotos.flatMap((photo) =>

@@ -185,6 +185,12 @@ The public gallery is at <https://sdlcai.org/photos/> and opens with the 45
 highlights. Clear the selection filter to explore all published alternates.
 Visitors can search, filter, preview, copy attribution, and download sharing
 copies individually or in a ZIP with credits and catalog metadata.
+The catalog request waits until the page has loaded and painted, then starts
+during an idle period with a one-second timeout. Browsers without idle callbacks
+use a timer after the initial paint. Navigation and theme switching remain
+available while photo controls show a loading state. Failed requests offer a
+retry without reloading the page or losing filter URLs. The local review and
+organizer galleries use the same loading behavior.
 The preview's **Full screen** control expands the photograph, using the larger
 sharing image while retaining navigation and photographer credit. Escape or
 **Exit full screen** restores the details panel; **Close** returns to the gallery.
