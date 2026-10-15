@@ -25,32 +25,24 @@
         class="mt-8 grid gap-6 border-y border-ink py-6 md:ml-auto md:max-w-3xl"
       >
         <p class="max-w-3xl text-xl leading-8 text-muted">
-          Revisit the talks from SDLCAI. Find slides and supporting resources,
-          with recordings to follow.
+          Revisit the talks from SDLCAI in programme order. Slides and
+          supporting resources appear with each talk, with recordings to follow.
         </p>
         <div class="flex flex-wrap gap-3">
           <a
             class="inline-flex border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
-            href="#talk-materials"
-            >Browse materials</a
-          >
-          <a
-            class="inline-flex border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper"
             href="#day-flow"
-            >Programme</a
+            >Browse talks &amp; materials</a
           >
         </div>
       </div>
     </div>
   </section>
 
-  <TalkMaterials></TalkMaterials>
-
-  <section class="border-b border-ink">
-    <div
-      class="mx-auto grid max-w-7xl gap-8 px-5 py-16 md:px-8 lg:grid-cols-[14rem_1fr]"
-    >
-      <div>
+  <section id="day-flow" class="border-b border-ink">
+    <span id="talk-materials" aria-hidden="true"></span>
+    <div class="mx-auto grid max-w-7xl gap-8 px-5 py-16 md:px-8">
+      <div class="min-w-0">
         <p class="font-headline text-sm font-black uppercase text-muted">
           Seminar day
         </p>
@@ -58,13 +50,12 @@
           &title="(id 'Programme')"
           &href="(id '#day-flow')"
           &ariaLabel="(id 'Link to programme section')"
-          &className="(id 'mt-3 flex items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl')"
+          &className="(id 'mt-3 flex min-w-0 items-start gap-3 font-headline text-[clamp(2.5rem,8vw,4.5rem)] font-black uppercase leading-none')"
           &anchorClassName="(id 'mt-[0.06em] inline-flex min-h-6 min-w-6 shrink-0 items-center justify-center text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
         ></SectionHeading>
       </div>
       <SeminarSchedule
-        &id="(id 'day-flow')"
-        &className="(id 'grid border border-ink')"
+        &className="(id 'grid min-w-0 border border-ink')"
       ></SeminarSchedule>
     </div>
   </section>

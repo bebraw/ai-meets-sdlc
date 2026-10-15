@@ -7,7 +7,7 @@ import {
   receiptOrigin as origin,
 } from "./helpers/receipt-fixture.mjs";
 
-test("talk materials expose recordings and resources in the index and above closed talk details", async (t) => {
+test("the programme lists each talk once with recordings and resources above closed details", async (t) => {
   const fixture = await createReceiptFixture();
   t.after(() => fixture.dispose());
   const { worker, cookies, runSql } = fixture;
@@ -90,41 +90,36 @@ test("talk materials expose recordings and resources in the index and above clos
   const response = await worker.fetch(`${origin}/schedule/`);
   assert.equal(response.headers.get("x-sdlcai-content-source"), "d1");
   const elements = walk(parse(await response.text()));
-  const indexRow = elements.find(
-    (el) => attr(el, "data-materials-talk") === talkId,
-  );
   const talk = elements.find((el) => attr(el, "data-schedule-talk") === talkId);
-  assert.ok(indexRow);
   assert.ok(talk);
-  for (const row of [indexRow, talk]) {
-    const links = walk(row).filter((el) => el.tagName === "a");
-    assert.ok(
-      links.some(
-        (el) =>
-          attr(el, "href") === "https://video.example.org/talk" &&
-          content(el) === "Watch talk",
-      ),
+  const titles = elements.filter(
+    (el) => attr(el, "data-canonical-talk-title") !== undefined,
+  );
+  const talkIds = titles.map((el) => attr(el, "data-canonical-talk-id"));
+  assert.equal(talkIds.length, new Set(talkIds).size);
+  const links = walk(talk).filter((el) => el.tagName === "a");
+  for (const [url, label] of [
+    ["https://video.example.org/talk", "Watch talk"],
+    [resourceUrl, "Related resource"],
+  ]) {
+    assert.equal(
+      elements.filter((el) => attr(el, "href") === url && content(el) === label)
+        .length,
+      1,
     );
-    assert.ok(
-      links.some(
-        (el) =>
-          attr(el, "href") === resourceUrl &&
-          content(el) === "Related resource",
-      ),
-    );
-    assert.ok(
-      !walk(row).some(
-        (el) => attr(el, "data-talk-materials-pending") !== undefined,
-      ),
-    );
+    assert.ok(links.some((el) => attr(el, "href") === url));
   }
+  assert.ok(
+    !walk(talk).some(
+      (el) => attr(el, "data-talk-materials-pending") !== undefined,
+    ),
+  );
   const details = walk(talk).find((el) => el.tagName === "details");
   assert.ok(details);
   assert.equal(attr(details, "open"), undefined);
   assert.ok(
     !walk(details).some((el) => attr(el, "data-talk-materials") !== undefined),
   );
-  assert.ok(walk(indexRow).some((el) => attr(el, "href") === `#${talkId}`));
   assert.ok(
     elements.some(
       (el) => attr(el, "data-talk-materials-pending") !== undefined,

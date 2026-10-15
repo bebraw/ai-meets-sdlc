@@ -111,14 +111,13 @@ test("schedule saves are atomic, admin-only, and shared by public pages, slides,
         route,
       );
       if (route === "/schedule/") {
-        const materials = nodes.find(
-          (node) => attr(node, "data-materials-group") === group.id,
+        const talks = nodes.filter(
+          (node) =>
+            attr(node, "data-canonical-talk-title") !== undefined &&
+            group.talkIds.includes(attr(node, "data-canonical-talk-id")),
         );
-        assert.ok(materials);
         assert.deepEqual(
-          walk(materials)
-            .map((node) => attr(node, "data-materials-talk"))
-            .filter(Boolean),
+          talks.map((node) => attr(node, "data-canonical-talk-id")),
           group.talkIds,
         );
       }
