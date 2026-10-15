@@ -105,7 +105,11 @@ try {
         `${error.message}; page errors: ${JSON.stringify(errors)}; console: ${JSON.stringify(consoleErrors)}; state: ${JSON.stringify(await page.evaluate(() => ({ url: location.href, count: document.querySelectorAll(".card").length, status: document.querySelector("#status").textContent, selection: document.querySelector("#selection").value })))}`,
       );
     });
-  assert.match(await page.locator("#count").textContent(), /^43 of 188/);
+  assert.equal(
+    await page.locator("#count").textContent(),
+    "43 photos shown · 0 in download selection",
+  );
+  assert.equal(await page.locator("#stats").textContent(), "2photographers");
   assert.equal(
     await page.locator("#download-size option[value=original]").count(),
     0,
@@ -151,6 +155,17 @@ try {
   await page.getByRole("button", { name: "Clear filters" }).click();
   await page.locator("#search").fill(seed.photos[0].filename);
   assert.equal(await page.locator(".card").count(), 1);
+  assert.equal(
+    await page.locator("#count").textContent(),
+    "1 photo shown · 0 in download selection",
+  );
+  const downloadSelection = page.locator(".card input[type=checkbox]");
+  await downloadSelection.check();
+  assert.equal(
+    await page.locator("#count").textContent(),
+    "1 photo shown · 1 in download selection",
+  );
+  await downloadSelection.uncheck();
   await page
     .getByRole("button", { name: "Select visible", exact: true })
     .click();
@@ -166,6 +181,8 @@ try {
   await admin.waitForFunction(
     () => document.querySelectorAll(".card").length === 188,
   );
+  assert.match(await admin.locator("#stats").textContent(), /188photographs/);
+  assert.match(await admin.locator("#count").textContent(), /^188 of 188/);
   await admin.locator("#grid .image-button").first().click();
   await admin.locator('[name="caption"]').fill("Hosted browser check caption");
   await admin.getByRole("button", { name: "Save photo details" }).click();

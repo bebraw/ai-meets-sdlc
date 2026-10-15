@@ -804,6 +804,14 @@
           (id) =>
             catalog.speakers.find((person) => person.id === id)?.name || id,
         );
+      function updateCount() {
+        const count =
+          !hosted || catalog.canEdit
+            ? `${visible.length} of ${catalog.photos.length} photos`
+            : `${visible.length} ${visible.length === 1 ? "photo" : "photos"} shown`;
+        $("#count").textContent =
+          `${count} · ${selected.size} in download selection`;
+      }
       function paint() {
         const params = new URLSearchParams();
         if (mine) params.set("mine", "1");
@@ -864,8 +872,7 @@
             (!$("#similar").checked || similarIds.has(photo.id))
           );
         });
-        $("#count").textContent =
-          `${visible.length} of ${catalog.photos.length} photos · ${selected.size} in download selection`;
+        updateCount();
         $("#grid").replaceChildren();
         if (!visible.length)
           $("#grid").append(
@@ -885,8 +892,7 @@
           );
           check.addEventListener("change", () => {
             check.checked ? selected.add(photo.id) : selected.delete(photo.id);
-            $("#count").textContent =
-              `${visible.length} of ${catalog.photos.length} photos · ${selected.size} in download selection`;
+            updateCount();
           });
           checkLabel.append(check, make("span", photo.filename));
           top.append(
@@ -932,12 +938,16 @@
           (photo) => photo.selection === "selected",
         ).length;
         $("#stats").replaceChildren();
-        for (const [number, text] of [
-          [catalog.photos.length, "photographs"],
-          [catalog.sources.length, "photographers"],
-          [selectedCount, "shortlisted"],
-          [catalog.similarGroups.length, "similar-frame groups"],
-        ]) {
+        const statistics =
+          !hosted || catalog.canEdit
+            ? [
+                [catalog.photos.length, "photographs"],
+                [catalog.sources.length, "photographers"],
+                [selectedCount, "shortlisted"],
+                [catalog.similarGroups.length, "similar-frame groups"],
+              ]
+            : [[catalog.sources.length, "photographers"]];
+        for (const [number, text] of statistics) {
           const item = make("span");
           item.append(make("strong", number), document.createTextNode(text));
           $("#stats").append(item);
