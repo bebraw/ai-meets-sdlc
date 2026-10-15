@@ -43,7 +43,7 @@ test("photo bank publishes licensed derivatives and enforces original access, re
   assert.equal(catalog.photos.length, 188);
   assert.equal(
     catalog.photos.filter((photo) => photo.selection === "selected").length,
-    43,
+    45,
   );
   assert.equal(
     catalog.photos.filter(

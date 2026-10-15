@@ -46,14 +46,21 @@ download. Reload stale drafts before saving; the server rejects conflicting
 edits instead of replacing a newer decision.
 
 The visual review categorizes and captions all 188 photos and shortlists
-43 highlights: two dedicated presentation photos for each of the ten talks,
+45 highlights: two dedicated presentation photos for each of the ten talks,
 two complementary views of each of the three panels, 15 atmospheric photos,
-the group photograph and closing acknowledgements. The atmosphere selection
+the group photograph, two closing acknowledgements and a session introduction
+showcasing the sponsors. The atmosphere selection
 covers arrival, the audience and an audience question, foyer conversations,
 refreshments, venue details, poster displays and the afterparty, including
 the branded SDLCAI Lager cans.
 Other frames are retained as alternates. Similar-frame groups are suggestions
 to compare, not automatic duplicate deletions.
+
+Search **sponsors** in the public gallery for four selected views of the sponsor
+thank-you screen, branded stage, Swarmia/AIMBITION banners and Aalto lettering.
+These photos are also tagged with the visible sponsor names, covering all seven
+sponsors in `site/data/sponsors.json`. Tags describe visible branding; they do
+not identify people.
 
 Talk associations use visible slide text and stage-sequence context. They do
 not identify people. `depictedSpeakerIds` starts empty and is reserved for
@@ -104,7 +111,7 @@ npm run photos:export -- --collection group-photo --size original
 npm run photos:export -- --collection talk-non-engineers-vibe-code-production
 ```
 
-The default export is the 43-photo highlight collection at sharing size.
+The default export is the 45-photo highlight collection at sharing size.
 Use the review interface for arbitrary selections. ZIP creation streams
 already-compressed JPEGs without recompressing them.
 
@@ -135,7 +142,7 @@ and real review decisions unchanged.
 
 ## Hosting integration
 
-The public gallery is at <https://sdlcai.org/photos/> and opens with the 43
+The public gallery is at <https://sdlcai.org/photos/> and opens with the 45
 highlights. Clear the selection filter to explore all published alternates.
 Visitors can search, filter, preview, copy attribution, and download sharing
 copies individually or in a ZIP with credits and catalog metadata.
