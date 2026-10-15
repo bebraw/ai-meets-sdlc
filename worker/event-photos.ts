@@ -1,6 +1,11 @@
 import seed from "../site/data/event-photos.json" with { type: "json" };
 import initial from "../production/media-bank/initial-curation.json" with { type: "json" };
 import { photoEventContext } from "../site/scripts/photo-context.ts";
+import {
+  originalContentType,
+  photoDownloadName,
+  photoObjectFilename,
+} from "../site/scripts/photo-files.ts";
 import * as v from "valibot";
 import { Zip, ZipPassThrough } from "fflate";
 import { hasAdminSession, withAdminSecurityHeaders } from "./admin-auth.ts";
@@ -109,7 +114,7 @@ function isPublished(review: Review): boolean {
   return ["selected", "alternate"].includes(review.selection);
 }
 function objectKey(id: string, variant: string): string {
-  return `event-photos/${seed.eventId}/${id}/${variant}.jpg`;
+  return `event-photos/${seed.eventId}/${id}/${photoObjectFilename(basePhotos.get(id)!.filename, variant)}`;
 }
 function imagePaths(photo: BasePhoto) {
   const image = (variant: "thumbnail" | "preview" | "share") => ({
@@ -183,9 +188,22 @@ async function catalog(
       eventContext: photoEventContext({ ...base, ...review }, seed.talks),
     });
   }
+  const visibleIds = new Set(photos.map((photo) => photo.id));
   return jsonResponse(
     {
       ...seed,
+      sources: seed.sources.filter(
+        (source) =>
+          admin || photos.some((photo) => photo.sourceId === source.id),
+      ),
+      similarGroups: admin
+        ? seed.similarGroups
+        : seed.similarGroups
+            .map((group) => ({
+              ...group,
+              photoIds: group.photoIds.filter((id) => visibleIds.has(id)),
+            }))
+            .filter((group) => group.photoIds.length > 1),
       categories: admin
         ? seed.categories
         : seed.categories.filter((category) => category !== "uncategorized"),
@@ -247,7 +265,10 @@ async function imageResponse(
       ? privateHeaders
       : { "cache-control": "public, max-age=300" },
   );
-  headers.set("content-type", "image/jpeg");
+  headers.set(
+    "content-type",
+    privateImage ? originalContentType(base.filename) : "image/jpeg",
+  );
   headers.set("etag", object.httpEtag);
   headers.set("x-content-type-options", "nosniff");
   headers.set("link", `<${seed.licenseUrl}>; rel="license"`);
@@ -255,7 +276,7 @@ async function imageResponse(
   if (privateImage || url.searchParams.has("download"))
     headers.set(
       "content-disposition",
-      `attachment; filename="${base.filename.replace(/\.jpe?g$/i, "")}${privateImage ? "" : `-${variant}`}.jpg"`,
+      `attachment; filename="${photoDownloadName(base.filename, variant)}"`,
     );
   if (request.headers.get("if-none-match") === object.httpEtag) {
     await body?.body.cancel();
@@ -276,7 +297,11 @@ async function zipResponse(
   if (body instanceof Response) return body;
   const parsed = v.safeParse(
     v.object({
-      ids: v.pipe(v.array(v.string()), v.minLength(1), v.maxLength(188)),
+      ids: v.pipe(
+        v.array(v.string()),
+        v.minLength(1),
+        v.maxLength(seed.photos.length),
+      ),
       variant: v.picklist(["original", "share"]),
     }),
     body,
@@ -323,10 +348,7 @@ async function zipResponse(
         );
         if (!object) throw new Error("Photo unavailable");
         const entry = new ZipPassThrough(
-          photo.filename.replace(
-            /\.jpe?g$/i,
-            `${parsed.output.variant === "share" ? "-share" : ""}.jpg`,
-          ),
+          photoDownloadName(photo.filename, parsed.output.variant),
         );
         zip.add(entry);
         const reader = object.body.getReader();

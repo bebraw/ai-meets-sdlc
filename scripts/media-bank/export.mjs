@@ -8,9 +8,11 @@ import {
   attribution,
   defaultOutput,
   photoCollections,
+  originalFile,
   readJson,
   readCuration,
 } from "./catalog.mjs";
+import { photoDownloadName } from "../../site/scripts/photo-files.ts";
 
 const args = process.argv.slice(2);
 const option = (name, fallback) => {
@@ -34,7 +36,7 @@ if (!collection)
 const photos = catalog.photos.filter((photo) =>
   collection.photoIds.includes(photo.id),
 );
-const { input } = await readJson(path.join(output, "source.json"));
+const sourceManifest = await readJson(path.join(output, "source.json"));
 const directory = path.join(output, "collections");
 await mkdir(directory, { recursive: true });
 const filename = path.join(directory, `${collectionId}-${variant}.zip`);
@@ -52,12 +54,12 @@ const zip = new Zip((error, bytes, final) => {
 try {
   for (const photo of photos) {
     const entry = new ZipPassThrough(
-      `${path.parse(photo.filename).name}${variant === "share" ? "-share" : ""}.jpg`,
+      photoDownloadName(photo.filename, variant),
     );
     zip.add(entry);
     const source =
       variant === "original"
-        ? path.join(input, photo.filename)
+        ? originalFile(photo, sourceManifest)
         : path.join(output, photo.images.share.path);
     for await (const bytes of createReadStream(source)) {
       entry.push(bytes, false);

@@ -3,12 +3,23 @@ import { access, readFile } from "node:fs/promises";
 import { chromium } from "playwright";
 import { unzipSync, strFromU8 } from "fflate";
 import seed from "../site/data/event-photos.json" with { type: "json" };
+import initial from "../production/media-bank/initial-curation.json" with { type: "json" };
+import { photoObjectFilename } from "../site/scripts/photo-files.ts";
 import {
   createReceiptFixture,
   receiptAdmin,
 } from "../test/helpers/receipt-fixture.mjs";
 
 const fixture = await createReceiptFixture();
+const publicPhotos = seed.photos.filter((photo) =>
+  ["selected", "alternate"].includes(initial.photos[photo.id]?.selection),
+);
+const highlightCount = publicPhotos.filter(
+  (photo) => initial.photos[photo.id].selection === "selected",
+).length;
+const photographerCount = new Set(
+  publicPhotos.map((photo) => photo.photographer),
+).size;
 let browser;
 try {
   // A repository-owned sample keeps this check independent of local originals.
@@ -16,7 +27,7 @@ try {
   for (const photo of seed.photos) {
     for (const variant of ["thumbnail", "preview", "share", "original"])
       await fixture.env.SPEAKER_UPLOADS.put(
-        `event-photos/${seed.eventId}/${photo.id}/${variant}.jpg`,
+        `event-photos/${seed.eventId}/${photo.id}/${photoObjectFilename(photo.filename, variant)}`,
         jpeg,
       );
   }
@@ -187,7 +198,10 @@ try {
     .waitFor();
   await assertTheme(page, "dark");
   await page
-    .waitForFunction(() => document.querySelectorAll(".card").length === 45)
+    .waitForFunction(
+      (count) => document.querySelectorAll(".card").length === count,
+      highlightCount,
+    )
     .catch(async (error) => {
       throw new Error(
         `${error.message}; page errors: ${JSON.stringify(errors)}; console: ${JSON.stringify(consoleErrors)}; state: ${JSON.stringify(await page.evaluate(() => ({ url: location.href, count: document.querySelectorAll(".card").length, status: document.querySelector("#status").textContent, selection: document.querySelector("#selection").value })))}`,
@@ -195,9 +209,12 @@ try {
     });
   assert.equal(
     await page.locator("#count").textContent(),
-    "45 photos shown · 0 in download selection",
+    `${highlightCount} photos shown · 0 in download selection`,
   );
-  assert.equal(await page.locator("#stats").textContent(), "2photographers");
+  assert.equal(
+    await page.locator("#stats").textContent(),
+    `${photographerCount}photographers`,
+  );
   assert.equal(
     await page.locator("#download-size option[value=original]").count(),
     0,
@@ -260,7 +277,7 @@ try {
   await page.getByRole("button", { name: "Next photo" }).click();
   await page.getByRole("button", { name: "Close", exact: true }).click();
   await page.locator("#selection").selectOption("");
-  assert.equal(await page.locator(".card").count(), 188);
+  assert.equal(await page.locator(".card").count(), publicPhotos.length);
   await page.locator("#photographer").selectOption("Bulent Sahin");
   assert.equal(await page.locator(".card").count(), 65);
   await page.getByRole("button", { name: "Clear filters" }).click();
@@ -290,10 +307,17 @@ try {
 
   await admin.goto(`${origin}/admin/photos/`);
   await admin.waitForFunction(
-    () => document.querySelectorAll(".card").length === 188,
+    (count) => document.querySelectorAll(".card").length === count,
+    seed.photos.length,
   );
-  assert.match(await admin.locator("#stats").textContent(), /188photographs/);
-  assert.match(await admin.locator("#count").textContent(), /^188 of 188/);
+  assert.match(
+    await admin.locator("#stats").textContent(),
+    new RegExp(`${seed.photos.length}photographs`),
+  );
+  assert.match(
+    await admin.locator("#count").textContent(),
+    new RegExp(`^${seed.photos.length} of ${seed.photos.length}`),
+  );
   await admin.locator("#grid .image-button").first().click();
   await admin.locator('[name="caption"]').fill("Hosted browser check caption");
   await enterFullscreen(admin);

@@ -1,0 +1,53 @@
+{
+  "sourceId": "jaakko",
+  "photographer": "Jaakko Hollmén",
+  "eventDate": "2026-10-13",
+  "photoCount": 126,
+  "formats": {
+    "HEIC": 124,
+    "JPEG": 2
+  },
+  "licenseStatus": "pending-confirmation",
+  "clockShiftSeconds": 0,
+  "timezoneOffset": "+03:00",
+  "highlightCandidateIds": [
+    "photo-8691713079286728dd0a",
+    "photo-60f4b665f40c11ce1646",
+    "photo-0fb6b55a75d99de81edc",
+    "photo-dd354cf93f9bcd3113d4",
+    "photo-1c64174941901222176a",
+    "photo-79b732ec069af43f1ea2",
+    "photo-d5979fdb78f5d31de01d",
+    "photo-819db305d0c36de05de7",
+    "photo-520a62f13fdb6f465aa5",
+    "photo-4ccf387c86253873baa9",
+    "photo-9fdbfddce298c13cff03",
+    "photo-c2fe66d0cd7583383755",
+    "photo-35aa328bf85e250d1901",
+    "photo-eb530c67feec86c21454",
+    "photo-0e2af9301a61589551ee",
+    "photo-386fc5fb22a4c0a8865b",
+    "photo-7c2c990e57cca0ca33dc",
+    "photo-057f52ab2d8940857cb5",
+    "photo-ab126065cdf4a6a94a8f",
+    "photo-e9820ccccd5fd285483c"
+  ],
+  "excludedFiles": [
+    {
+      "filename": "IMG_4613.PNG",
+      "reason": "Q&A page screenshot, not an event photograph"
+    },
+    {
+      "filename": "IMG_4643.PNG",
+      "reason": "Q&A page screenshot, not an event photograph"
+    },
+    {
+      "filename": "IMG_4615.MOV",
+      "reason": "Video retained in the source collection; photo gallery import only"
+    },
+    {
+      "filename": "IMG_4702.MOV",
+      "reason": "Video retained in the source collection; photo gallery import only"
+    }
+  ]
+}

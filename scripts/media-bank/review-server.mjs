@@ -11,11 +11,16 @@ import {
   curationPath as defaultCurationPath,
   defaultOutput,
   exportCatalog,
+  originalFile,
   readJson,
   readCuration,
   repoRoot,
   selections,
 } from "./catalog.mjs";
+import {
+  originalContentType,
+  photoDownloadName,
+} from "../../site/scripts/photo-files.ts";
 
 const args = process.argv.slice(2);
 const option = (name, fallback) => {
@@ -26,7 +31,7 @@ const output = path.resolve(option("--output", defaultOutput));
 const curationPath = path.resolve(option("--curation", defaultCurationPath));
 const port = Number(option("--port", "3010"));
 const inventory = await readJson(path.join(output, "inventory.json"));
-const { input } = await readJson(path.join(output, "source.json"));
+const sourceManifest = await readJson(path.join(output, "source.json"));
 const byId = new Map(inventory.photos.map((photo) => [photo.id, photo]));
 const talkIds = new Set(inventory.talks.map((talk) => talk.id));
 const speakerIds = new Set(inventory.speakers.map((speaker) => speaker.id));
@@ -146,12 +151,9 @@ async function downloadZip(response, ids, variant) {
     for (const photo of selected) {
       const filename =
         variant === "original"
-          ? path.join(input, photo.filename)
+          ? originalFile(photo, sourceManifest)
           : path.join(output, photo.images.share.path);
-      await addFile(
-        `${path.parse(photo.filename).name}${variant === "share" ? "-share" : ""}.jpg`,
-        filename,
-      );
+      await addFile(photoDownloadName(photo.filename, variant), filename);
     }
     const credits = new ZipPassThrough("CREDITS.txt");
     zip.add(credits);
@@ -275,10 +277,12 @@ const server = createServer(async (request, response) => {
         request,
         response,
         variant === "original"
-          ? path.join(input, photo.filename)
+          ? originalFile(photo, sourceManifest)
           : path.join(output, photo.images.share.path),
-        "image/jpeg",
-        `${path.parse(photo.filename).name}${variant === "share" ? "-share" : ""}.jpg`,
+        variant === "original"
+          ? originalContentType(photo.filename)
+          : "image/jpeg",
+        photoDownloadName(photo.filename, variant),
       );
     }
     if (

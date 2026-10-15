@@ -3,7 +3,13 @@ import { createReadStream } from "node:fs";
 import { writeFile, rename } from "node:fs/promises";
 import path from "node:path";
 import { config } from "dotenv";
-import { defaultOutput, readJson, repoRoot, run } from "./catalog.mjs";
+import {
+  defaultOutput,
+  originalFile,
+  readJson,
+  repoRoot,
+  run,
+} from "./catalog.mjs";
 
 config({ quiet: true });
 const args = process.argv.slice(2);
@@ -12,7 +18,7 @@ const output = path.resolve(
   outputIndex < 0 ? defaultOutput : args[outputIndex + 1],
 );
 const plan = await readJson(path.join(output, "upload-plan.json"));
-const { input } = await readJson(path.join(output, "source.json"));
+const source = await readJson(path.join(output, "source.json"));
 const bucket = "ai-meets-sdlc-speaker-uploads";
 if (!args.includes("--remote")) {
   console.log(
@@ -36,7 +42,10 @@ await Promise.allSettled(
       try {
         const filename =
           job.source === "original"
-            ? path.join(input, job.localFilename)
+            ? originalFile(
+                { id: job.photoId, filename: job.localFilename },
+                source,
+              )
             : path.join(output, job.path);
         const hash = createHash("sha256");
         for await (const bytes of createReadStream(filename))
@@ -55,7 +64,7 @@ await Promise.allSettled(
             "--file",
             filename,
             "--content-type",
-            "image/jpeg",
+            job.contentType,
             "--cache-control",
             "private, no-store",
           ]);

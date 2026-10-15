@@ -7,7 +7,40 @@ import {
   findSimilarGroups,
   applyCuration,
   attribution,
+  originalFile,
 } from "../scripts/media-bank/catalog.mjs";
+import {
+  originalContentType,
+  photoDownloadName,
+  photoObjectFilename,
+} from "../site/scripts/photo-files.ts";
+
+test("additional collections preserve original paths and HEIC download formats", () => {
+  const photo = { id: "new-photo", filename: "IMG_4573.HEIC" };
+  assert.equal(
+    originalFile(photo, {
+      input: "/old",
+      originals: { "new-photo": "/new collection/IMG_4573.HEIC" },
+    }),
+    "/new collection/IMG_4573.HEIC",
+  );
+  assert.equal(
+    originalFile({ id: "old", filename: "DSCF.jpg" }, { input: "/old" }),
+    "/old/DSCF.jpg",
+  );
+  assert.equal(originalContentType(photo.filename), "image/heic");
+  assert.equal(photoDownloadName(photo.filename, "original"), "IMG_4573.HEIC");
+  assert.equal(
+    photoDownloadName(photo.filename, "share"),
+    "IMG_4573-share.jpg",
+  );
+  assert.equal(
+    photoObjectFilename(photo.filename, "original"),
+    "original.heic",
+  );
+  assert.equal(photoObjectFilename("DSCF.jpeg", "original"), "original.jpg");
+  assert.equal(photoObjectFilename(photo.filename, "share"), "share.jpg");
+});
 
 test("Insta360 retains its recording-verified Finnish time and normalizes to UTC", () => {
   const source = sources.sources.find((item) => item.id === "insta360");

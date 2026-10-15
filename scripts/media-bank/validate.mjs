@@ -16,7 +16,18 @@ import { spawn } from "node:child_process";
 import path from "node:path";
 import { chromium } from "playwright";
 import { unzipSync } from "fflate";
-import { readCuration, defaultOutput, repoRoot } from "./catalog.mjs";
+import {
+  readCuration,
+  defaultOutput,
+  originalFile,
+  repoRoot,
+} from "./catalog.mjs";
+import seed from "../../site/data/event-photos.json" with { type: "json" };
+import initial from "../../production/media-bank/initial-curation.json" with { type: "json" };
+
+const highlightCount = Object.values(initial.photos).filter(
+  (photo) => photo.selection === "selected",
+).length;
 
 const temporary = await mkdtemp(path.join(tmpdir(), "sdlcai-photo-check-"));
 const port = 3012;
@@ -62,7 +73,7 @@ try {
   }
   assert.ok(response?.ok, "Review server started");
   const catalog = await response.json();
-  assert.equal(catalog.photos.length, 188);
+  assert.equal(catalog.photos.length, seed.photos.length);
   assert.equal(
     catalog.photos.filter(
       (photo) =>
@@ -74,21 +85,22 @@ try {
   );
   assert.equal(
     catalog.photos.filter((photo) => photo.selection === "selected").length,
-    45,
+    highlightCount,
   );
   assert.equal(
     catalog.photos.filter((photo) => photo.category === "uncategorized").length,
     0,
   );
-  assert.equal(new Set(catalog.photos.map((photo) => photo.sha256)).size, 188);
-  const { input } = JSON.parse(
+  assert.equal(
+    new Set(catalog.photos.map((photo) => photo.sha256)).size,
+    seed.photos.length,
+  );
+  const source = JSON.parse(
     await readFile(path.join(temporary, "source.json")),
   );
   for (const photo of catalog.photos) {
     const hash = createHash("sha256");
-    for await (const bytes of createReadStream(
-      path.join(input, photo.filename),
-    ))
+    for await (const bytes of createReadStream(originalFile(photo, source)))
       hash.update(bytes);
     assert.equal(
       hash.digest("hex"),
@@ -138,14 +150,14 @@ try {
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto(origin);
   await page.locator(".card").last().waitFor();
-  assert.equal(await page.locator(".card").count(), 188);
+  assert.equal(await page.locator(".card").count(), seed.photos.length);
   await page.locator("#selection").selectOption("selected");
-  assert.equal(await page.locator(".card").count(), 45);
+  assert.equal(await page.locator(".card").count(), highlightCount);
   await page.reload();
   await page.locator(".card").last().waitFor();
   assert.equal(
     await page.locator(".card").count(),
-    45,
+    highlightCount,
     "Collection filters survive reloads",
   );
   await page
@@ -275,7 +287,7 @@ try {
   }
   assert.deepEqual(errors, []);
   console.log(
-    "Photo media bank passed: 188 source checksums, 65 recording-verified camera times, categorization, shortlist, filters, saved edits, stale-write protection, credit-bearing ZIPs, original downloads, responsive layouts and accessibility.",
+    `Photo media bank passed: ${catalog.photos.length} source checksums, 65 recording-verified camera times, categorization, shortlist, filters, saved edits, stale-write protection, credit-bearing ZIPs, original downloads, responsive layouts and accessibility.`,
   );
 } finally {
   await browser?.close();

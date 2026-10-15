@@ -1,6 +1,11 @@
 # SDLCAI photo media bank
 
-The first collection contains 188 JPEGs from the 13 October 2026 seminar.
+The media bank contains 314 photos from the 13 October 2026 seminar:
+188 JPEGs from the first two collections and 126 photos from Jaakko Hollmén
+(124 HEIC originals and two JPEGs). Jaakko's collection is uploaded privately
+and remains unreviewed in the hosted gallery until its reuse license is confirmed.
+`jaakko-import.json` records its 20 highlight candidates and the four excluded
+files: two Q&A screenshots and two videos retained in the source folder.
 The original photo folder is read-only input. Generated files stay in
 `output/media-bank/`, outside the public site build and Git.
 
@@ -18,11 +23,16 @@ The original photo folder is read-only input. Generated files stay in
 - Both collections: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
   with the named photographer credited. The user confirmed unrestricted reuse
   under this license.
+- Jaakko Hollmén: retain original iPhone/Pixel capture times and EXIF timezone
+  (`+03:00`). Reuse licensing is pending confirmation; the new collection is
+  kept out of the public catalog and downloads in the meantime.
 
 The catalog preserves the raw EXIF timestamp, original timezone value,
 confirmed clock shift, corrected UTC timestamp, and corrected local timestamp.
-The source JPEGs are never rewritten. Full-resolution downloads return those
-unchanged JPEGs; corrected timestamps accompany them in the catalog.
+The source photos are never rewritten. Full-resolution downloads return the
+unchanged source files, including HEIC files with their original filenames and
+file type; corrected timestamps accompany them in the catalog. Public sharing
+downloads are always JPEGs.
 
 ## Prepare and review
 
@@ -32,6 +42,19 @@ Requires Node, the repository's npm dependencies, and ImageMagick (`magick`).
 npm run photos:prepare -- --input /Users/juhovepsalainen/Projects/sdlcai/photos
 npm run photos:review
 ```
+
+Append another credited collection without replacing earlier imports:
+
+```sh
+npm run photos:prepare -- --input "/path/to/new collection" --append --source jaakko
+npm run photos:seed
+```
+
+Configure the photographer in `sources.json` first. `--source` assigns the
+collection's credit independently of its camera models. JPEG and HEIC inputs
+are accepted; screenshots and videos are excluded. Capture timezone mismatches
+stop the import. File checksums deduplicate repeated imports, and the ignored
+`source.json` manifest preserves original paths across separate input folders.
 
 Open <http://127.0.0.1:3010/>. The server binds only to the local machine.
 It supports search; category, photographer, shortlist, talk and person filters;
@@ -45,7 +68,7 @@ This mutable file is ignored by Git. Back it up using the **Back up review decis
 download. Reload stale drafts before saving; the server rejects conflicting
 edits instead of replacing a newer decision.
 
-The visual review categorizes and captions all 188 photos and shortlists
+The published visual review categorizes and captions the first 188 photos and shortlists
 45 highlights: two dedicated presentation photos for each of the ten talks,
 two complementary views of each of the three panels, 15 atmospheric photos,
 the group photograph, two closing acknowledgements and a session introduction
@@ -55,6 +78,12 @@ refreshments, venue details, poster displays and the afterparty, including
 the branded SDLCAI Lager cans.
 Other frames are retained as alternates. Similar-frame groups are suggestions
 to compare, not automatic duplicate deletions.
+
+All 126 Jaakko photos have draft categories, captions, tags and programme context.
+The 20 highlight candidates add talk and panel views, group photography, welcome
+signage, food, branded water and beer, posters and the production desk. Existing
+curation is preserved. Pending entries record their intended editorial selection
+in organizer-only notes and remain unreviewed until licensing is confirmed.
 
 Search **sponsors** in the public gallery for four selected views of the sponsor
 thank-you screen, branded stage, Swarmia/AIMBITION banners and Aalto lettering.
@@ -133,7 +162,7 @@ node --test test/media-bank.test.mjs
 npm run photos:check
 ```
 
-The browser check uses a temporary copy of review state. It verifies all 188
+The browser check uses a temporary copy of review state. It verifies all 314
 source checksums, the 65 recording-verified Insta360 times, categorization and shortlist,
 filtering, durable edits, stale-write rejection, local-origin mutation checks,
 human-confirmation requirements, ZIP credits and original downloads, and
@@ -172,6 +201,8 @@ Originals and derivatives use the existing **private** R2 bucket
 `ai-meets-sdlc-speaker-uploads`, under `event-photos/sdlcai-2026/`. Public images
 are served by the Worker rather than by exposing the bucket. The initial 752
 objects use approximately 797 MB (594 MB originals + 203 MB derivatives).
+Jaakko's 504 additional objects are uploaded to the same private prefix; HEIC
+original keys end in `original.heic`, while derivatives remain JPEGs.
 R2 Standard's 10 GB free allowance covers this set if sufficient account-wide
 allowance remains; beyond the allowance storage is $0.015/GB-month, and R2
 internet egress is free. See [current R2 pricing](https://developers.cloudflare.com/r2/pricing/).

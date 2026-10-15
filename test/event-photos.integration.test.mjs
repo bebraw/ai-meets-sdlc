@@ -3,6 +3,7 @@ import test from "node:test";
 import { unzipSync, strFromU8 } from "fflate";
 import seed from "../site/data/event-photos.json" with { type: "json" };
 import initial from "../production/media-bank/initial-curation.json" with { type: "json" };
+import { photoObjectFilename } from "../site/scripts/photo-files.ts";
 import {
   createReceiptFixture,
   receiptAdmin,
@@ -25,10 +26,12 @@ test("photo bank publishes licensed derivatives and enforces original access, re
   const [fuji, insta] = ["fujifilm", "insta360"].map((sourceId) =>
     seed.photos.find((photo) => photo.sourceId === sourceId),
   );
-  for (const photo of [fuji, insta]) {
+  const heic = seed.photos.find((photo) => /\.heic$/i.test(photo.filename));
+  assert.ok(heic);
+  for (const photo of [fuji, insta, heic]) {
     for (const variant of ["thumbnail", "share", "original"]) {
       await env.SPEAKER_UPLOADS.put(
-        `event-photos/${seed.eventId}/${photo.id}/${variant}.jpg`,
+        `event-photos/${seed.eventId}/${photo.id}/${photoObjectFilename(photo.filename, variant)}`,
         new TextEncoder().encode(`${photo.id}:${variant}`),
       );
     }
@@ -40,10 +43,24 @@ test("photo bank publishes licensed derivatives and enforces original access, re
   );
   assert.match(publicResponse.headers.get("vary"), /Cookie, Authorization/);
   const catalog = await publicResponse.json();
-  assert.equal(catalog.photos.length, 188);
+  const published = Object.values(initial.photos).filter((photo) =>
+    ["selected", "alternate"].includes(photo.selection),
+  );
+  assert.equal(catalog.photos.length, published.length);
+  const visibleIds = new Set(catalog.photos.map((photo) => photo.id));
+  assert.ok(
+    catalog.sources.every((source) =>
+      catalog.photos.some((photo) => photo.sourceId === source.id),
+    ),
+  );
+  assert.ok(
+    catalog.similarGroups.every((group) =>
+      group.photoIds.every((id) => visibleIds.has(id)),
+    ),
+  );
   assert.equal(
     catalog.photos.filter((photo) => photo.selection === "selected").length,
-    45,
+    published.filter((photo) => photo.selection === "selected").length,
   );
   assert.equal(
     catalog.photos.filter(
@@ -218,10 +235,27 @@ test("photo bank publishes licensed derivatives and enforces original access, re
   const originals = unzipSync(
     new Uint8Array(await (await zip([fuji.id], "original", mo)).arrayBuffer()),
   );
-  assert.equal(
-    strFromU8(originals[fuji.filename.replace(/\.jpe?g$/i, ".jpg")]),
-    `${fuji.id}:original`,
+  assert.equal(strFromU8(originals[fuji.filename]), `${fuji.id}:original`);
+  const heicOriginal = await fetch(originalPath(heic), admin);
+  assert.equal(heicOriginal.status, 200);
+  assert.equal(heicOriginal.headers.get("content-type"), "image/heic");
+  assert.match(heicOriginal.headers.get("content-disposition"), /\.HEIC"$/);
+  assert.equal(await heicOriginal.text(), `${heic.id}:original`);
+  assert.equal((await fetch(originalPath(heic))).status, 403);
+  const heicZip = unzipSync(
+    new Uint8Array(
+      await (await zip([heic.id], "original", admin)).arrayBuffer(),
+    ),
   );
+  assert.equal(strFromU8(heicZip[heic.filename]), `${heic.id}:original`);
+  const heicShare = unzipSync(
+    new Uint8Array(await (await zip([heic.id], "share", admin)).arrayBuffer()),
+  );
+  assert.equal(
+    strFromU8(heicShare[heic.filename.replace(/\.heic$/i, "-share.jpg")]),
+    `${heic.id}:share`,
+  );
+  assert.match(strFromU8(heicShare["CREDITS.txt"]), /Jaakko Hollmén/);
 
   const hidden = await save(fuji, { ...saved, selection: "rejected" });
   assert.equal(hidden.status, 200);

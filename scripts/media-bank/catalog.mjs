@@ -5,6 +5,10 @@ import { spawn } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { photoEventContext } from "../../site/scripts/photo-context.ts";
+import {
+  originalContentType,
+  photoObjectFilename,
+} from "../../site/scripts/photo-files.ts";
 
 export const repoRoot = fileURLToPath(new URL("../../", import.meta.url));
 export const categories = [
@@ -63,6 +67,12 @@ export async function readJson(filename, fallback) {
     if (error.code === "ENOENT" && fallback !== undefined) return fallback;
     throw error;
   }
+}
+
+export function originalFile(photo, source) {
+  return (
+    source.originals?.[photo.id] ?? path.join(source.input, photo.filename)
+  );
 }
 
 export async function readCuration(filename = curationPath) {
@@ -242,6 +252,8 @@ export async function prepare({
   input,
   output = defaultOutput,
   magick = "magick",
+  append = false,
+  sourceId,
 }) {
   input = path.resolve(input);
   output = path.resolve(output);
@@ -275,116 +287,152 @@ export async function prepare({
   const previous = await readJson(path.join(output, "inventory.json"), {
     photos: [],
   });
+  const previousSource = append
+    ? await readJson(path.join(output, "source.json"), { input })
+    : { input };
+  const originals = Object.fromEntries(
+    (append ? previous.photos : []).map((photo) => [
+      photo.id,
+      originalFile(photo, previousSource),
+    ]),
+  );
+  const configuredSource = sourceId
+    ? settings.sources.find((source) => source.id === sourceId)
+    : null;
+  if (sourceId && !configuredSource)
+    throw new Error(`Unknown photographer source: ${sourceId}`);
   const byHash = new Map(previous.photos.map((photo) => [photo.sha256, photo]));
   const filenames = (await readdir(input))
-    .filter((name) => /\.(jpe?g)$/i.test(name))
+    .filter((name) => /\.(jpe?g|heic)$/i.test(name))
     .sort();
-  if (!filenames.length) throw new Error("The input folder has no JPEGs.");
-  const photos = await mapConcurrent(filenames, 3, async (filename, index) => {
-    const file = path.join(input, filename);
-    if (!(await stat(file)).isFile())
-      throw new Error(`Not a regular file: ${filename}`);
-    const sha256 = await hashFile(file);
-    const id = `photo-${sha256.slice(0, 20)}`;
-    const metadata = (
-      await run(magick, [
-        "identify",
-        "-quiet",
-        "-ping",
-        "-format",
-        "%w\t%h\t%[EXIF:DateTimeOriginal]\t%[EXIF:Model]\t%[EXIF:OffsetTimeOriginal]",
-        file,
-      ])
-    )
-      .toString()
-      .split("\t");
-    const [width, height, rawCaptureTime, model, rawTimezoneOffset] = metadata;
-    const source = settings.sources.find((item) => item.model === model);
-    if (!source)
-      throw new Error(
-        `No camera/credit configuration for ${filename}: ${model}`,
-      );
-    const capturedAt = correctedTimestamp(rawCaptureTime, source);
-    const derivativeDir = path.join(output, "images", id);
-    await mkdir(derivativeDir, { recursive: true });
-    const cached = byHash.get(sha256);
-    const photo = {
-      id,
-      filename,
-      sha256,
-      bytes: (await stat(file)).size,
-      width: Number(width),
-      height: Number(height),
-      sourceId: source.id,
-      photographer: source.photographer,
-      model,
-      rawCaptureTime,
-      rawTimezoneOffset: rawTimezoneOffset || null,
-      clockShiftSeconds: source.clockShiftSeconds,
-      capturedAt,
-      capturedLocal: localTimestamp(capturedAt),
-      calibrationStatus:
-        source.calibrationStatus ??
-        (source.clockShiftSeconds ? "user-confirmed" : "exif-timezone"),
-      images: {},
-    };
-    for (const [variant, size] of Object.entries(variants)) {
-      const relative = `images/${id}/${variant}.jpg`;
-      const target = path.join(output, relative);
-      let exists = false;
-      try {
-        await stat(target);
-        exists = true;
-      } catch {}
-      if (!exists)
+  if (!filenames.length)
+    throw new Error("The input folder has no JPEG or HEIC photos.");
+  const imported = await mapConcurrent(
+    filenames,
+    3,
+    async (filename, index) => {
+      const file = path.join(input, filename);
+      if (!(await stat(file)).isFile())
+        throw new Error(`Not a regular file: ${filename}`);
+      const sha256 = await hashFile(file);
+      const id = `photo-${sha256.slice(0, 20)}`;
+      if (append && byHash.has(sha256)) return byHash.get(sha256);
+      const metadata = (
         await run(magick, [
+          "identify",
+          "-quiet",
+          "-ping",
+          "-format",
+          "%w\t%h\t%[EXIF:DateTimeOriginal]\t%[EXIF:Model]\t%[EXIF:OffsetTimeOriginal]",
           file,
-          "-auto-orient",
-          "-resize",
-          `${size}x${size}>`,
-          "-strip",
-          "-colorspace",
-          "sRGB",
-          "-sampling-factor",
-          "4:2:0",
-          "-quality",
-          variant === "share" ? "88" : "82",
-          "-set",
-          "comment",
-          attribution(photo, settings, variant),
-          target,
-        ]);
-      const dimensions = (
-        await run(magick, ["identify", "-ping", "-format", "%w %h", target])
+        ])
       )
         .toString()
-        .split(" ")
-        .map(Number);
-      photo.images[variant] = {
-        path: relative,
-        width: dimensions[0],
-        height: dimensions[1],
-        bytes: (await stat(target)).size,
+        .split("\t");
+      const [width, height, rawCaptureTime, model, rawTimezoneOffset] =
+        metadata;
+      const source =
+        configuredSource ??
+        settings.sources.find((item) => item.model === model);
+      if (!source)
+        throw new Error(
+          `No camera/credit configuration for ${filename}: ${model}`,
+        );
+      const capturedAt = correctedTimestamp(rawCaptureTime, source);
+      if (rawTimezoneOffset && rawTimezoneOffset !== source.timezoneOffset)
+        throw new Error(
+          `Unexpected capture timezone for ${filename}: ${rawTimezoneOffset}`,
+        );
+      originals[id] = file;
+      const derivativeDir = path.join(output, "images", id);
+      await mkdir(derivativeDir, { recursive: true });
+      const cached = byHash.get(sha256);
+      const photo = {
+        id,
+        filename,
+        sha256,
+        bytes: (await stat(file)).size,
+        width: Number(width),
+        height: Number(height),
+        sourceId: source.id,
+        photographer: source.photographer,
+        model,
+        rawCaptureTime,
+        rawTimezoneOffset: rawTimezoneOffset || null,
+        clockShiftSeconds: source.clockShiftSeconds,
+        capturedAt,
+        capturedLocal: localTimestamp(capturedAt),
+        calibrationStatus:
+          source.calibrationStatus ??
+          (source.clockShiftSeconds ? "user-confirmed" : "exif-timezone"),
+        images: {},
       };
-    }
-    photo.differenceHash =
-      cached?.differenceHash ??
-      differenceHash(
-        await run(magick, [
-          path.join(derivativeDir, "thumbnail.jpg"),
-          "-colorspace",
-          "gray",
-          "-resize",
-          "9x8!",
-          "-depth",
-          "8",
-          "gray:-",
-        ]),
-      );
-    if ((index + 1) % 20 === 0 || index + 1 === filenames.length)
-      console.log(`Prepared ${index + 1}/${filenames.length} photos`);
-    return photo;
-  });
+      for (const [variant, size] of Object.entries(variants)) {
+        const relative = `images/${id}/${variant}.jpg`;
+        const target = path.join(output, relative);
+        let exists = false;
+        try {
+          await stat(target);
+          exists = true;
+        } catch {}
+        if (!exists)
+          await run(magick, [
+            file,
+            "-auto-orient",
+            "-resize",
+            `${size}x${size}>`,
+            "-strip",
+            "-colorspace",
+            "sRGB",
+            "-sampling-factor",
+            "4:2:0",
+            "-quality",
+            variant === "share" ? "88" : "82",
+            "-set",
+            "comment",
+            attribution(photo, settings, variant),
+            target,
+          ]);
+        const dimensions = (
+          await run(magick, ["identify", "-ping", "-format", "%w %h", target])
+        )
+          .toString()
+          .split(" ")
+          .map(Number);
+        photo.images[variant] = {
+          path: relative,
+          width: dimensions[0],
+          height: dimensions[1],
+          bytes: (await stat(target)).size,
+        };
+      }
+      photo.differenceHash =
+        cached?.differenceHash ??
+        differenceHash(
+          await run(magick, [
+            path.join(derivativeDir, "thumbnail.jpg"),
+            "-colorspace",
+            "gray",
+            "-resize",
+            "9x8!",
+            "-depth",
+            "8",
+            "gray:-",
+          ]),
+        );
+      if ((index + 1) % 20 === 0 || index + 1 === filenames.length)
+        console.log(`Prepared ${index + 1}/${filenames.length} photos`);
+      return photo;
+    },
+  );
+  const photos = [
+    ...new Map(
+      [...(append ? previous.photos : []), ...imported].map((photo) => [
+        photo.id,
+        photo,
+      ]),
+    ).values(),
+  ];
   photos.sort(
     (a, b) =>
       a.capturedAt.localeCompare(b.capturedAt) ||
@@ -408,8 +456,15 @@ export async function prepare({
   await exportCatalog(catalog, output);
   await writeFile(
     path.join(output, "source.json"),
-    JSON.stringify({ input, generatedAt: new Date().toISOString() }, null, 2) +
-      "\n",
+    JSON.stringify(
+      {
+        input: previousSource.input,
+        originals,
+        generatedAt: new Date().toISOString(),
+      },
+      null,
+      2,
+    ) + "\n",
   );
   await contactSheets(catalog, output, magick);
   console.log(
@@ -482,8 +537,8 @@ export async function exportCatalog(catalog, output) {
       photoId: photo.id,
       source: "original",
       localFilename: photo.filename,
-      key: `event-photos/${catalog.eventId}/${photo.id}/original.jpg`,
-      contentType: "image/jpeg",
+      key: `event-photos/${catalog.eventId}/${photo.id}/${photoObjectFilename(photo.filename, "original")}`,
+      contentType: originalContentType(photo.filename),
       access: "private",
       sha256: photo.sha256,
     },
@@ -569,6 +624,12 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       throw new Error(
         "Usage: node scripts/media-bank/catalog.mjs --input /path/to/photos [--output output/media-bank] [--magick magick]",
       );
-    await prepare({ input, output, magick: option("--magick", "magick") });
+    await prepare({
+      input,
+      output,
+      magick: option("--magick", "magick"),
+      append: args.includes("--append"),
+      sourceId: option("--source"),
+    });
   }
 }
