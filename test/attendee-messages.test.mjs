@@ -36,6 +36,89 @@ const send = (f, p, overrides = {}) =>
     ...overrides,
   });
 
+test("shared drafts survive new reads, allow unfinished copy, and never create or send a campaign", async (t) => {
+  const f = await mailingFixture(t);
+  const initial = await call(f, "/draft");
+  assert.equal(initial.headers.get("cache-control"), "no-store");
+  const empty = (await initial.json()).draft;
+  assert.equal(empty.revision, 0);
+  const response = await call(f, "/draft", {
+    subject: "Hi",
+    text_body: "First\r\nthought",
+    revision: empty.revision,
+  });
+  assert.equal(response.status, 200);
+  const saved = (await response.json()).draft;
+  assert.equal(saved.text_body, "First\nthought");
+  assert.equal(saved.revision, 1);
+  assert.deepEqual((await (await call(f, "/draft")).json()).draft, saved);
+  assert.equal(f.messages.length, 0);
+  for (const table of [
+    "attendee_message_campaigns",
+    "attendee_message_deliveries",
+  ])
+    assert.equal(
+      (await f.db.prepare(`SELECT COUNT(*) AS n FROM ${table}`).first()).n,
+      0,
+    );
+  assert.equal(
+    (await call(f, "/preview", { ...saved, category: "operational" })).status,
+    400,
+    "An unfinished draft cannot bypass send validation",
+  );
+  delete f.env.EMAIL;
+  delete f.env.EMAIL_ENCRYPTION_KEY;
+  assert.equal(
+    (await call(f, "/draft", { ...saved, subject: "Still editable" })).status,
+    200,
+    "Drafting is independent of delivery configuration",
+  );
+});
+
+test("draft saves require the admin action, validate copy, and reject stale concurrent edits", async (t) => {
+  const f = await mailingFixture(t);
+  const draft = {
+    subject: "Event follow-up",
+    text_body: "A work in progress",
+    revision: 0,
+  };
+  assert.equal(
+    (
+      await handle(
+        mailRequest(`${endpoint}/draft`, draft, "POST", "wrong-action"),
+        f.env,
+      )
+    ).status,
+    403,
+  );
+  for (const overrides of [
+    { subject: "bad\nsubject" },
+    { subject: "x".repeat(161) },
+    { text_body: "x".repeat(10001) },
+    { revision: -1 },
+    { revision: "0" },
+  ])
+    assert.equal(
+      (await call(f, "/draft", { ...draft, ...overrides })).status,
+      400,
+    );
+  const competing = await Promise.all([
+    call(f, "/draft", { ...draft, subject: "First tab" }),
+    call(f, "/draft", { ...draft, subject: "Second tab" }),
+  ]);
+  assert.deepEqual(competing.map((r) => r.status).sort(), [200, 409]);
+  const saved = (await (await call(f, "/draft")).json()).draft;
+  assert.equal(saved.revision, 1);
+  assert.equal(
+    (await call(f, "/draft", { ...draft, subject: "Stale overwrite" })).status,
+    409,
+  );
+  assert.equal(
+    (await (await call(f, "/draft")).json()).draft.subject,
+    saved.subject,
+  );
+});
+
 test("active attendee messages deduplicate normalized addresses, require a fresh preview, and cannot send marketing", async (t) => {
   const f = await mailingFixture(t);
   await f.roster([

@@ -805,7 +805,13 @@ Apply `0033_add_attendee_messages_and_newsletter.sql` and
 `0034_add_mailrelay_sync.sql` before deploying this
 feature. **Send attendee messages** at `/admin/attendees/` opens
 `/admin/attendee-messages/`. Start with the welcome or follow-up draft, edit the
-copy, send a test to your own address, and preview the message and recipients.
+copy, choose **Save draft** to resume editing on any device, send a test to your
+own address, and preview the message and recipients. The saved draft loads when
+you open the page. Unsaved edits warn before leaving, and stale saves from
+another tab are rejected. Saving a draft never creates a send or stores a
+recipient snapshot. The follow-up template includes feedback, the photo timeline,
+the media bank, recording and presentation materials. Apply migration
+`0040_create_attendee_message_draft.sql`; normal deployment applies it.
 Confirm the review checkbox before sending. This sender is for SDLCAI 2026
 operational information and event follow-up, without future event promotions.
 

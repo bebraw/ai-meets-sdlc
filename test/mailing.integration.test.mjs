@@ -20,6 +20,7 @@ test("mailing admin routes require organizer authentication; feature flag gates 
   t.after(() => f.dispose());
   for (const path of [
     "/api/admin/attendee-messages",
+    "/api/admin/attendee-messages/draft",
     "/api/admin/attendee-messages/deliveries",
     "/api/admin/newsletter",
     "/api/admin/newsletter/mailrelay",

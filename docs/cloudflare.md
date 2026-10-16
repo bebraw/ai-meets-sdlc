@@ -25,7 +25,7 @@ for daily backup export.
 | `SPEAKER_UPLOADS`          | R2              | Stores private reviewed 400x400 speaker WebP derivatives.                         |
 | `IMAGES`                   | Images          | Decodes, crops, strips metadata, and re-encodes portraits.                        |
 | `STREAM`                   | Stream          | Creates private one-time topic-video uploads and previews.                        |
-| `EMAIL`                    | Email Sending   | Sends one separately addressed speaker message at a time.                         |
+| `EMAIL`                    | Email Sending   | Sends separately addressed speaker and attendee event messages.                   |
 | `ADMIN_USERNAME`           | Secret          | Username for the form and scripted Basic auth protecting `/admin/`.               |
 | `ADMIN_PASSWORD`           | Secret          | Password for admin sign-in and signing browser sessions.                          |
 | `TURNSTILE_SITE_KEY`       | Worker var      | Public Turnstile widget site key injected into HTML.                              |
@@ -251,6 +251,12 @@ records used by Google Workspace. Application email will use
 `SDLCAI <info@sdlcai.org>` with `info@sdlcai.org` as the reply-to address. The
 `EMAIL` binding is restricted with
 `allowed_sender_addresses: ["info@sdlcai.org"]`.
+
+Attendee follow-ups use this same binding and `EMAIL_ENCRYPTION_KEY`; no extra
+SMTP credentials or newsletter feature flags are needed. The admin composer
+shows whether the deployed sender binding is configured. Verify delivery with
+**Send test email** before the final audience preview. Saving its shared draft
+uses D1 only and never sends mail.
 
 Google Workspace hosts the real `info@sdlcai.org` mailbox and owns inbound mail
 delivery for the domain. Cloudflare Email Routing is disabled and must not be

@@ -29,6 +29,13 @@ interface History {
   recipient_count: number;
   excluded: Record<string, number>;
   next_offset: number | null;
+  sending: { configured: boolean; from: string };
+}
+interface Draft {
+  subject: string;
+  text_body: string;
+  revision: number;
+  updated_at: string | null;
 }
 interface Preview {
   preview_token: string;
@@ -53,10 +60,18 @@ if (root) setup(root);
 function setup(root: HTMLElement) {
   let preview: Preview | null = null,
     busy = false,
-    historyOffset: number | null = 0;
+    historyOffset: number | null = 0,
+    draftRevision: number | null = null,
+    savedCopy = JSON.stringify({ subject: "", text_body: "" }),
+    savedAt: string | null = null;
   const status = el("p", "Loading current audience…", "font-bold leading-7");
   status.setAttribute("role", "status");
   const audience = el("p", "", "leading-7 text-muted");
+  const sending = el(
+    "p",
+    "Checking email configuration…",
+    "leading-7 text-muted",
+  );
   const intro = el("div", "", "grid gap-3 border border-ink p-5");
   append(
     intro,
@@ -71,6 +86,7 @@ function setup(root: HTMLElement) {
       "max-w-4xl leading-7",
     ),
     audience,
+    sending,
   );
   const form = el(
     "form",
@@ -102,6 +118,15 @@ function setup(root: HTMLElement) {
     el("span", "Message (plain text; web links become clickable)"),
     body,
   );
+  const draftStatus = el(
+    "p",
+    "Loading saved draft…",
+    "text-sm leading-6 text-muted",
+  );
+  draftStatus.setAttribute("role", "status");
+  const saveDraftButton = button("Save draft", () => void saveDraft());
+  const draftActions = el("div", "", "flex flex-wrap items-center gap-4");
+  append(draftActions, saveDraftButton, draftStatus);
   const test = field("Test recipient email", "", "email");
   test.input.maxLength = 254;
   test.input.autocomplete = "email";
@@ -139,6 +164,7 @@ function setup(root: HTMLElement) {
     templates,
     subject.label,
     bodyLabel,
+    draftActions,
     testRow,
     previewButton,
     previewArea,
@@ -192,8 +218,69 @@ function setup(root: HTMLElement) {
     sendButton.disabled = true;
     sendButton.textContent = "Send to attendees";
   }
-  subject.input.addEventListener("input", invalidate);
-  body.addEventListener("input", invalidate);
+  function copy() {
+    return { subject: subject.input.value, text_body: body.value };
+  }
+  function isDirty() {
+    return JSON.stringify(copy()) !== savedCopy;
+  }
+  function updateDraftStatus() {
+    saveDraftButton.disabled = busy || draftRevision === null || !isDirty();
+    draftStatus.textContent = isDirty()
+      ? "Unsaved changes. Save draft to keep editing later."
+      : savedAt
+        ? `Draft saved ${new Date(savedAt).toLocaleString()}. Available to organizers on any device.`
+        : "No saved draft yet.";
+  }
+  function changed() {
+    invalidate();
+    updateDraftStatus();
+  }
+  subject.input.addEventListener("input", changed);
+  body.addEventListener("input", changed);
+  addEventListener("beforeunload", (event) => {
+    if (!isDirty()) return;
+    event.preventDefault();
+    event.returnValue = "";
+  });
+  async function loadDraft() {
+    try {
+      const data = await api<{ draft: Draft }>(`${endpoint}/draft`, action);
+      applyDraft(data.draft);
+    } catch (error) {
+      draftStatus.textContent = message(error);
+    }
+  }
+  function applyDraft(draft: Draft) {
+    subject.input.value = draft.subject;
+    body.value = draft.text_body;
+    draftRevision = draft.revision;
+    savedAt = draft.updated_at;
+    savedCopy = JSON.stringify(copy());
+    updateDraftStatus();
+  }
+  async function saveDraft() {
+    if (busy || draftRevision === null || !isDirty()) return;
+    setBusy(true);
+    draftStatus.textContent = "Saving draft…";
+    try {
+      const data = await api<{ draft: Draft }>(
+        `${endpoint}/draft`,
+        action,
+        "POST",
+        {
+          ...copy(),
+          revision: draftRevision,
+        },
+      );
+      applyDraft(data.draft);
+      status.textContent = "Draft saved. No email was sent.";
+    } catch (error) {
+      draftStatus.textContent = message(error);
+    } finally {
+      setBusy(false);
+    }
+  }
   reviewed.addEventListener("change", () => {
     sendButton.disabled =
       busy || !preview || !preview.recipient_count || !reviewed.checked;
@@ -206,6 +293,7 @@ function setup(root: HTMLElement) {
       control.disabled = value;
     sendButton.disabled =
       value || !preview || !preview.recipient_count || !reviewed.checked;
+    saveDraftButton.disabled = value || draftRevision === null || !isDirty();
     for (const control of historyList.querySelectorAll<HTMLButtonElement>(
       "button",
     ))
@@ -215,12 +303,12 @@ function setup(root: HTMLElement) {
     subject.input.value =
       kind === "welcome"
         ? "Welcome to SDLCAI 2026"
-        : "Thank you for joining SDLCAI 2026";
+        : "Thank you for SDLCAI 2026 — photos, recording and feedback";
     body.value =
       kind === "welcome"
         ? "Hello,\n\nWe're looking forward to seeing you at SDLCAI on 13 October 2026.\n\nVenue: Marsio, Otakaari 2A, 02150 Espoo, Finland.\n\nWe recommend the metro or light rail 15 to Aalto University (Aalto-yliopisto). From the metro, take exit A towards Otaniementie / University at the end of the platform. Walk across Korkeakouluaukio square and cross the light rail tracks. Marsio is the first building on your left after the tracks. The tram stop is also a short walk from Marsio.\n\nLunch is included, along with coffee and pastries during breaks and food at the afterparty. The afterparty is at the same venue.\n\nFind arrival directions and parking information here:\nhttps://sdlcai.org/faq/\n\nSee the schedule and plan your day:\nhttps://sdlcai.org/schedule/\n\nSee you at Marsio!"
-        : "Hello,\n\nThank you for joining SDLCAI 2026. We hope the talks and conversations gave you useful ideas for your work.\n\nYou can revisit the program here:\nhttps://sdlcai.org/schedule/\n\nIf you have questions or feedback about this event, reply to this email. We'd like to hear what you found useful and what we could improve.\n\nThank you for being part of the day!";
-    invalidate();
+        : "Hello everyone,\n\nThank you for joining us at SDLCAI 2026 on 13 October. We hope the talks, panels and conversations gave you useful ideas to take back to your work.\n\nWe'd love to hear what worked well and what we could improve. Share your feedback here:\nhttps://sdlcai.org/feedback/\n\nRevisit the day in photos\nExplore the photo timeline, follow a talk or topic, and download your favourite moments:\nhttps://sdlcai.org/timeline/\n\nYou can also browse the photo media bank:\nhttps://sdlcai.org/photos/\n\nThe photos are shared under CC BY 4.0. Please credit the photographer named beside each photo when you reuse it.\n\nRecording and presentation materials\nWatch the event recording:\nhttps://youtube.com/live/d7POyy6dYFI\n\nFind available slides and other talk materials in the programme:\nhttps://sdlcai.org/schedule/\n\nThank you to our speakers, panellists, partners, volunteers and everyone who contributed to the discussions. It was a pleasure to bring this community together.\n\nThe SDLCAI organising team";
+    changed();
   }
   form.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -356,6 +444,9 @@ function setup(root: HTMLElement) {
     moreHistory.disabled = true;
     try {
       const data = await api<History>(`${endpoint}?offset=${offset}`, action);
+      sending.textContent = data.sending.configured
+        ? `Sender configured: SDLCAI <${data.sending.from}>. Use Send test email to check delivery before sending to attendees.`
+        : "Email sending is not configured. You can save a draft while the sender is being set up.";
       audience.textContent = `${data.recipient_count} eligible unique addresses from active attendee registrations, accepted posters, and volunteers. ${exclusionText(data.excluded)}`;
       if (!offset) historyList.replaceChildren();
       if (!data.campaigns.length && !offset)
@@ -462,7 +553,9 @@ function setup(root: HTMLElement) {
   function outcome(counts: Counts) {
     return `${counts.accepted} accepted / ${counts.pending} pending / ${counts.failed} rejected / ${counts.skipped} skipped / ${counts.unknown} unknown.`;
   }
-  void loadHistory().then(() => {
+  setBusy(true);
+  void Promise.all([loadHistory(), loadDraft()]).then(() => {
+    setBusy(false);
     if (status.textContent === "Loading current audience…")
       status.textContent = "Compose a message or start from a draft below.";
   });

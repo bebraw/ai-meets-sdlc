@@ -104,6 +104,51 @@ try {
         exact: true,
       })
       .waitFor();
+    const savedBody = page.getByLabel(
+      "Message (plain text; web links become clickable)",
+    );
+    await page.getByRole("button", { name: "Use follow-up draft" }).click();
+    assert.match(
+      await savedBody.inputValue(),
+      /https:\/\/sdlcai.org\/feedback\//u,
+    );
+    assert.match(
+      await savedBody.inputValue(),
+      /https:\/\/sdlcai.org\/timeline\//u,
+    );
+    await page.getByRole("button", { name: "Save draft", exact: true }).click();
+    await page
+      .getByText("Draft saved. No email was sent.", { exact: true })
+      .waitFor();
+    const savedSubject = await page
+      .getByLabel("Subject", { exact: true })
+      .inputValue();
+    const savedMessage = await savedBody.inputValue();
+    await page.reload();
+    await page
+      .getByText("Compose a message or start from a draft below.", {
+        exact: true,
+      })
+      .waitFor();
+    assert.equal(
+      await page.getByLabel("Subject", { exact: true }).inputValue(),
+      savedSubject,
+    );
+    assert.equal(await savedBody.inputValue(), savedMessage);
+    assert.equal(
+      await page
+        .getByRole("button", { name: "Send to attendees", exact: true })
+        .isDisabled(),
+      true,
+      "Restored drafts require a fresh preview and confirmation",
+    );
+    assert.equal(await page.getByRole("checkbox").isChecked(), false);
+    assert.equal(
+      simulatedSends,
+      width === 320 ? 0 : 1,
+      "Saving and reloading drafts never sends email",
+    );
+    await visual(`saved-draft-${width}`);
     await page.getByRole("button", { name: "Use welcome draft" }).click();
     assert.match(
       await page
@@ -136,6 +181,10 @@ try {
       .click();
     await send.waitFor();
     await page.getByRole("checkbox").check();
+    await page.getByRole("button", { name: "Save draft", exact: true }).click();
+    await page
+      .getByText("Draft saved. No email was sent.", { exact: true })
+      .waitFor();
     await send.click();
     await page
       .getByText(
@@ -252,7 +301,7 @@ try {
   await visual("subscribers");
   assert.deepEqual(errors, []);
   console.log(
-    "Mailing browser checks passed: desktop/mobile composer, preview invalidation, consent, signup, unsubscribe, layout and accessibility. No real emails sent.",
+    "Mailing browser checks passed: desktop/mobile saved drafts, reload recovery, preview invalidation, consent, signup, unsubscribe, layout and accessibility. No real emails sent.",
   );
   async function visual(name) {
     assert.equal(

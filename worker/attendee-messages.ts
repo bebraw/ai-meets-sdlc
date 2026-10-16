@@ -27,6 +27,7 @@ interface Campaign {
   created_at: string;
 }
 type Copy = { subject: string; text_body: string };
+type Draft = Copy & { revision: number; updated_at: string | null };
 const endpoint = "/api/admin/attendee-messages";
 const unsubscribePath = "/api/attendee-messages/unsubscribe";
 
@@ -94,7 +95,9 @@ export async function handleAttendeeMessages(
       json(
         {
           error:
-            "The message service is unavailable. Check history before continuing a send.",
+            url.pathname === `${endpoint}/draft`
+              ? "The draft service is unavailable. Keep your edits in the form and try saving again."
+              : "The message service is unavailable. Check history before continuing a send.",
         },
         503,
       ),
@@ -106,6 +109,7 @@ async function handle(
   env: Env,
   path: string,
 ): Promise<Response> {
+  if (path === `${endpoint}/draft`) return handleDraft(request, env);
   if (!env.EMAIL_ENCRYPTION_KEY)
     return json({ error: "Email is not configured." }, 503);
   if (path === unsubscribePath) return unsubscribe(request, env);
@@ -130,6 +134,7 @@ async function handle(
     );
     return json({
       campaigns: list,
+      sending: { configured: Boolean(env.EMAIL), from: "info@sdlcai.org" },
       recipient_count: audience.recipients.length,
       excluded: audience.excluded,
       next_offset: campaigns.results.length > 20 ? offset + 20 : null,
@@ -328,6 +333,58 @@ async function handle(
     throw error;
   }
   return json({ campaign_id: id, ...(await campaignCounts(env, id)) }, 201);
+}
+async function handleDraft(request: Request, env: Env): Promise<Response> {
+  if (request.method === "GET") {
+    const draft = await env.INTERESTS.prepare(
+      "SELECT subject, text_body, revision, updated_at FROM attendee_message_draft WHERE id = 1",
+    ).first<Draft>();
+    return json({ draft });
+  }
+  if (request.method !== "POST")
+    return json({ error: "Method not allowed." }, 405);
+  const denied = requireAdminAction(request, "attendee-messages");
+  if (denied) return denied;
+  const body = await readJsonWithinLimit(request, 32 * 1024);
+  if (body instanceof Response) return body;
+  if (
+    !isRecord(body) ||
+    typeof body.subject !== "string" ||
+    body.subject.length > 160 ||
+    /[\r\n\x00-\x1f\x7f]/u.test(body.subject) ||
+    typeof body.text_body !== "string" ||
+    body.text_body.length > 10000 ||
+    !Number.isSafeInteger(body.revision) ||
+    typeof body.revision !== "number" ||
+    body.revision < 0
+  )
+    return json(
+      {
+        error:
+          "Use a subject up to 160 characters and a draft up to 10,000 characters.",
+      },
+      400,
+    );
+  // Incomplete copy is allowed in drafts. Saving never creates a campaign or audience.
+  const draft = await env.INTERESTS.prepare(
+    "UPDATE attendee_message_draft SET subject = ?, text_body = ?, revision = revision + 1, updated_at = ? WHERE id = 1 AND revision = ? RETURNING subject, text_body, revision, updated_at",
+  )
+    .bind(
+      body.subject,
+      body.text_body.replace(/\r\n?/gu, "\n"),
+      new Date().toISOString(),
+      body.revision,
+    )
+    .first<Draft>();
+  if (!draft)
+    return json(
+      {
+        error:
+          "Another tab saved this draft. Copy your edits somewhere safe, then reload before saving again.",
+      },
+      409,
+    );
+  return json({ draft });
 }
 function parseCopy(body: Record<string, unknown>): Copy | null {
   const subject = typeof body.subject === "string" ? body.subject.trim() : "";
