@@ -43,7 +43,7 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 155px;
 }
-html:has(dialog[open]) {
+html:has(.chapter-viewer.immersive) {
   overflow: hidden;
 }
 [hidden] {
@@ -404,17 +404,12 @@ select {
   padding: 10px 15px;
 }
 .photo-programme {
-  width: 83%;
-  margin: 0 0 25px auto;
+  margin: 0 0 15px;
   border-top: 1px solid var(--line);
   padding-top: 14px;
 }
 .photo-programme:empty {
   display: none;
-}
-.chapter-right .photo-programme {
-  margin-left: 0;
-  margin-right: auto;
 }
 .programme-title {
   font-size: 16px;
@@ -448,18 +443,18 @@ select {
 .frame-programme .context-chip {
   padding: 5px 8px;
 }
-#preview-discovery:not(:empty) {
+.viewer-discovery:not(:empty) {
   margin-top: 20px;
   border-top: 1px solid var(--line);
   padding-top: 15px;
 }
-#preview-discovery .photo-programme {
+.viewer-discovery .photo-programme {
   width: 100%;
   border: 0;
   margin: 0 0 12px;
   padding: 0;
 }
-#preview-discovery .programme-title {
+.viewer-discovery .programme-title {
   font-size: 15px;
 }
 .topic-links {
@@ -534,42 +529,88 @@ select {
   margin-top: 15px;
   max-width: 550px;
 }
-.chapter-feature {
+.chapter-viewer {
   width: 83%;
   margin-left: auto;
+  min-width: 0;
 }
-.chapter-right .chapter-feature {
+.chapter-right .chapter-viewer {
   margin-left: 0;
   margin-right: auto;
 }
+.viewer-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--ink);
+}
+.viewer-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.viewer-controls button {
+  padding: 8px 12px;
+  font-size: 13px;
+}
+.viewer-fullscreen {
+  border-color: var(--ink);
+}
 .feature-photo {
   width: 100%;
-  border: 0;
-  padding: 0;
+  aspect-ratio: 1.65;
+  max-height: 62vh;
   overflow: hidden;
   background: var(--map);
 }
 .feature-photo img {
   width: 100%;
-  height: auto;
-  max-height: 760px;
-  object-fit: cover;
-  aspect-ratio: 1.65;
-  transition: transform 0.45s;
-}
-.feature-photo:hover img {
-  transform: scale(1.015);
+  height: 100%;
+  object-fit: contain;
 }
 .chapter-feature figcaption {
-  padding: 14px 0 25px;
+  padding: 14px 0 20px;
   display: flex;
   justify-content: space-between;
   gap: 25px;
   font-size: 15px;
+  overflow-wrap: anywhere;
 }
 .chapter-feature figcaption .credit {
   max-width: 250px;
   flex-shrink: 0;
+}
+.viewer-details {
+  padding-top: 20px;
+  margin-top: 20px;
+  border-top: 1px solid var(--line);
+}
+.viewer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 25px;
+  font-size: 13px;
+  font-weight: 700;
+  padding-top: 20px;
+}
+.viewer-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 .filmstrip {
   display: flex;
@@ -586,10 +627,15 @@ select {
   margin-top: 25px;
 }
 .film-photo {
-  border: 0;
+  border: 3px solid transparent;
   padding: 0;
   width: 100%;
   background: var(--map);
+}
+.film-photo[aria-pressed="true"] {
+  border-color: var(--ink);
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
 }
 .film-photo img {
   width: 100%;
@@ -640,123 +686,49 @@ select {
 .empty {
   padding: 65px 5vw;
 }
-dialog {
-  padding: 0;
-  border: 1px solid var(--line);
-  width: min(1300px, 95vw);
-  max-width: 100vw;
-  max-height: 94vh;
-  background: var(--paper);
-  color: var(--ink);
-}
-dialog::backdrop {
-  background: #000c;
-}
-.preview-shell {
-  min-width: 0;
-}
-.preview-bar {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  background: var(--paper);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  padding: 12px 18px;
-  border-bottom: 1px solid var(--line);
-}
-.preview-bar > span {
-  font-size: 12px;
-  text-transform: uppercase;
-  font-weight: 700;
-}
-.preview-bar > div {
-  display: flex;
-  gap: 6px;
-}
-.preview-bar button {
-  font-size: 13px;
-  padding: 7px 12px;
-}
-.preview-image {
-  background: #080808;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.preview-image img {
-  width: 100%;
-  max-height: 64vh;
-  object-fit: contain;
-}
-.preview-info {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  padding: 22px;
-  gap: 30px;
-}
-.preview-info h2,
-.preview-info p {
-  overflow-wrap: anywhere;
-}
 .fullscreen-credit {
   display: none;
 }
-.preview-info h2 {
-  font-family: Text;
-  text-transform: none;
-  font-size: 22px;
-  line-height: 1.3;
-  margin: 8px 0;
-  max-width: 800px;
-}
-.preview-info p:not(.eyebrow) {
-  font-size: 13px;
-  margin-top: 8px;
-}
-.preview-links {
-  display: grid;
-  gap: 10px;
-  align-content: start;
-  font-size: 12px;
-}
-dialog:fullscreen,
-dialog.immersive {
-  width: 100vw;
-  max-width: none;
-  max-height: none;
-  height: 100dvh;
-  margin: 0;
-  border: 0;
-  overflow: hidden;
-}
-dialog:fullscreen .preview-shell,
-dialog.immersive .preview-shell {
+.chapter-viewer:fullscreen,
+.chapter-viewer.immersive {
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
-  height: 100%;
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: var(--paper);
+  color: var(--ink);
 }
-dialog:fullscreen .preview-image,
-dialog.immersive .preview-image {
+.chapter-viewer.immersive {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+}
+.chapter-viewer:is(:fullscreen, .immersive) .viewer-bar {
+  padding: 12px 18px;
+  border-top: 0;
+}
+.chapter-viewer:is(:fullscreen, .immersive) .chapter-feature {
   min-height: 0;
 }
-dialog:fullscreen .preview-image img,
-dialog.immersive .preview-image img {
+.chapter-viewer:is(:fullscreen, .immersive) .feature-photo {
   height: 100%;
-  max-height: 100%;
+  max-height: none;
+  aspect-ratio: auto;
+  background: #080808;
 }
-dialog:fullscreen .fullscreen-credit,
-dialog.immersive .fullscreen-credit {
+.chapter-viewer:is(:fullscreen, .immersive) .fullscreen-credit {
   display: block;
   padding: 10px 18px;
   font-size: 12px;
   color: var(--muted);
   overflow-wrap: anywhere;
 }
-dialog:fullscreen .preview-info,
-dialog.immersive .preview-info {
+.chapter-viewer:is(:fullscreen, .immersive)
+  :is(figcaption, .filmstrip, .strip-hint, .viewer-details) {
   display: none;
 }
 @media (min-width: 1600px) {
@@ -786,7 +758,7 @@ dialog.immersive .preview-info {
     grid-template-columns: 170px minmax(0, 1fr);
     gap: 25px;
   }
-  .chapter-feature {
+  .chapter-viewer {
     width: 100%;
   }
   .photo-programme {
@@ -798,15 +770,6 @@ dialog.immersive .preview-info {
   }
   .search-label {
     grid-column: 1 / -1;
-  }
-  .preview-info {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-  .preview-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
   }
 }
 @media (max-width: 600px) {
@@ -915,7 +878,7 @@ dialog.immersive .preview-info {
   .chapter-feature figcaption .credit {
     max-width: none;
   }
-  .feature-photo img {
+  .feature-photo {
     aspect-ratio: 1.4;
   }
   .film-frame {
@@ -927,27 +890,15 @@ dialog.immersive .preview-info {
   .film-frame:nth-child(3n + 1) {
     margin-top: 14px;
   }
-  .preview-bar {
-    padding: 10px;
-    flex-wrap: wrap;
+  .viewer-bar {
     gap: 10px;
   }
-  .preview-bar > div {
+  .viewer-controls {
     width: 100%;
-    justify-content: space-between;
-    flex-wrap: wrap;
   }
-  .preview-bar button {
+  .viewer-controls button {
+    flex: 1 1 auto;
     padding: 6px 10px;
-  }
-  .preview-info {
-    padding: 15px;
-  }
-  .preview-info h2 {
-    font-size: 19px;
-  }
-  .preview-image img {
-    max-height: 55vh;
   }
 }
 @media (prefers-reduced-motion: reduce) {

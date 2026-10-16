@@ -117,9 +117,10 @@ const chapters = [
 let catalog,
   photos = [],
   currentPhotos = [],
-  currentIndex = 0,
-  previewOpener,
   stopChapterTracking;
+const activeFrames = new Map();
+let immersiveViewer;
+let immersiveSiblings = [];
 const minutes = (photo) => {
   const [hour, minute, second] = photo.capturedLocal
     .slice(11)
@@ -153,7 +154,7 @@ const image = (photo, hero = false) => {
   img.src = `/${photo.images.thumbnail.path}`;
   if (hero) {
     img.srcset = `${img.src} ${photo.images.thumbnail.width}w, /${photo.images.preview.path} ${photo.images.preview.width}w`;
-    img.sizes = "(min-width: 1000px) 65vw, 95vw";
+    img.sizes = "(min-width: 1600px) 1200px, (min-width: 901px) 75vw, 90vw";
   }
   img.width = photo.images.thumbnail.width;
   img.height = photo.images.thumbnail.height;
@@ -165,18 +166,6 @@ const image = (photo, hero = false) => {
   img.decoding = "async";
   return img;
 };
-function photoButton(photo, className, hero = false) {
-  const button = node("button", className);
-  button.type = "button";
-  button.dataset.photoId = photo.id;
-  button.setAttribute(
-    "aria-label",
-    `Open photo: ${photo.caption || photo.filename}, ${photo.capturedLocal.slice(11, 16)}`,
-  );
-  button.append(image(photo, hero));
-  button.addEventListener("click", () => openPhoto(photo, button));
-  return button;
-}
 function credit(photo) {
   return `Photo: ${photo.photographer} / CC BY 4.0`;
 }
@@ -191,7 +180,6 @@ function applyDiscovery(change, focus = "discovery-status") {
       ?.speakerIds.includes(state.speaker)
   )
     state.talk = "";
-  if ($("#preview").open) $("#preview").close();
   render();
   const target = document.getElementById(focus);
   target?.focus({ preventScroll: true });
@@ -343,7 +331,7 @@ function discoveryControls() {
     node(
       "p",
       "context-note small muted",
-      "Speaker names describe the programme, not verified people in the photograph. Time-based matches are marked in the preview.",
+      "Speaker names describe the programme, not verified people in the photograph. Time-based matches are marked in the photo details.",
     ),
   );
   return section;
@@ -569,49 +557,7 @@ function renderTimeline() {
       ) ||
       group.photos.find((p) => p.width >= p.height) ||
       group.photos[0];
-    const figure = node("figure", "chapter-feature");
-    figure.append(photoButton(feature, "feature-photo", true));
-    const caption = node("figcaption");
-    caption.append(
-      node("p", "", feature.caption || group.title),
-      node(
-        "p",
-        "credit",
-        `${feature.capturedLocal.slice(11, 16)} / ${credit(feature)}`,
-      ),
-    );
-    figure.append(caption);
-    section.append(figure, programmeDetails(feature));
-    const others = group.photos.filter((p) => p !== feature);
-    if (others.length) {
-      const strip = node("div", "filmstrip");
-      strip.tabIndex = 0;
-      strip.setAttribute("role", "group");
-      strip.setAttribute(
-        "aria-label",
-        `More moments: ${group.short}, scroll for more`,
-      );
-      for (const photo of others) {
-        const frame = node("figure", "film-frame");
-        frame.append(photoButton(photo, "film-photo"));
-        const caption = node("figcaption");
-        caption.append(
-          node("span", "frame-time", photo.capturedLocal.slice(11, 16)),
-          node("span", "credit", photo.photographer),
-        );
-        frame.append(caption);
-        frame.append(programmeDetails(photo, true));
-        strip.append(frame);
-      }
-      section.append(
-        strip,
-        node(
-          "p",
-          "strip-hint muted small",
-          "Follow the strip → Open any frame to look closer.",
-        ),
-      );
-    }
+    section.append(chapterViewer(group, feature));
     story.append(section);
   }
   main.append(story, footer());
@@ -658,6 +604,7 @@ function reducedMotion() {
 
 function render() {
   stopChapterTracking?.();
+  exitImmersive();
   currentPhotos = filtered();
   const params = new URLSearchParams();
   if (state.lens !== "all") params.set("lens", state.lens);
@@ -680,147 +627,303 @@ function render() {
     history.replaceState(null, "", location.pathname + location.search);
   }
 }
-function openPhoto(photo, opener) {
-  previewOpener = opener;
-  currentIndex = currentPhotos.findIndex((p) => p.id === photo.id);
-  updatePreview();
-  if (!$("#preview").open) $("#preview").showModal();
-}
-function updatePreview() {
-  const photo = currentPhotos[currentIndex];
-  if (!photo) return;
-  $("#large-photo").src = `/${photo.images.preview.path}`;
-  $("#large-photo").width = photo.images.preview.width;
-  $("#large-photo").height = photo.images.preview.height;
-  $("#large-photo").alt = photo.altText || photo.caption || photo.filename;
-  $("#preview-title").textContent = "SDLCAI / A closer look";
-  $("#preview-time").textContent =
-    `${photo.capturedLocal.slice(11, 16)} / ${photo.category.replaceAll("-", " ")} / Finnish time`;
-  $("#preview-caption").textContent = photo.caption || "A moment from SDLCAI";
-  $("#preview-context").textContent = photo.eventContext
-    ? `${photo.eventContext.association === "timing-only" ? "Time-based programme context" : "Programme context"}: ${photo.eventContext.title}`
-    : "";
-  const discovery = $("#preview-discovery");
-  discovery.replaceChildren();
-  {
-    const talks = photoTalks(photo, catalog);
-    if (talks.length) {
-      discovery.append(
-        node("p", "eyebrow", "Keep exploring"),
-        programmeDetails(photo),
+function photoDiscovery(photo) {
+  const discovery = node("div", "viewer-discovery");
+  const talks = photoTalks(photo, catalog);
+  if (talks.length) {
+    discovery.append(programmeDetails(photo));
+    const links = node("div", "context-chips");
+    for (const talk of talks.length > 1 ? talks : [])
+      links.append(
+        discoveryButton(`Explore talk: ${talk.title} →`, {
+          talk: talk.id,
+          speaker: "",
+        }),
       );
-      const links = node("div", "context-chips");
-      for (const talk of talks.length > 1 ? talks : [])
-        links.append(
-          discoveryButton(`Explore talk: ${talk.title} →`, {
-            talk: talk.id,
-            speaker: "",
-          }),
-        );
-      discovery.append(links);
-    }
-    const threads = node("div", "context-chips topic-links");
-    for (const topic of photoTopics(photo))
-      threads.append(discoveryButton(topic.label, { topic: topic.id }));
-    discovery.append(threads);
-    if (
-      photo.eventContext?.recordingOffsetSeconds != null &&
-      ["talk", "panel"].includes(photo.eventContext.kind)
-    ) {
-      const watch = node(
-        "a",
-        "recording-link",
-        "Watch this moment in the recording ↗",
-      );
-      watch.href = `https://www.youtube.com/watch?v=d7POyy6dYFI&t=${photo.eventContext.recordingOffsetSeconds}s`;
-      watch.target = "_blank";
-      watch.rel = "noreferrer";
-      discovery.append(watch);
-    }
-    discovery.append(
-      node(
-        "p",
-        "small muted",
-        "Programme associations help you explore; they do not identify people in the photograph.",
-      ),
+    discovery.append(links);
+  }
+  const threads = node("div", "context-chips topic-links");
+  for (const topic of photoTopics(photo))
+    threads.append(discoveryButton(topic.label, { topic: topic.id }));
+  discovery.append(threads);
+  if (
+    photo.eventContext?.recordingOffsetSeconds != null &&
+    ["talk", "panel"].includes(photo.eventContext.kind)
+  ) {
+    const watch = node(
+      "a",
+      "recording-link",
+      "Watch this moment in the recording ↗",
     );
+    watch.href = `https://www.youtube.com/watch?v=d7POyy6dYFI&t=${photo.eventContext.recordingOffsetSeconds}s`;
+    watch.target = "_blank";
+    watch.rel = "noreferrer";
+    discovery.append(watch);
   }
-  $("#preview-credit").textContent = credit(photo);
-  $("#fullscreen-credit").textContent = credit(photo);
-  $("#download").href = `/media/event-photos/${photo.id}/share.jpg?download=1`;
-  $("#gallery").href =
-    `/photos/?selection=&search=${encodeURIComponent(photo.filename)}`;
-  $("#previous").disabled = currentIndex <= 0;
-  $("#next").disabled = currentIndex >= currentPhotos.length - 1;
+  return discovery;
 }
-$("#previous").addEventListener("click", () => {
-  if (currentIndex > 0) {
-    currentIndex--;
-    updatePreview();
+
+function chapterViewer(group, feature) {
+  let index = group.photos.findIndex(
+    (photo) => photo.id === (activeFrames.get(group.id) || feature.id),
+  );
+  if (index < 0) index = group.photos.indexOf(feature);
+  const viewer = node("div", "chapter-viewer");
+  viewer.setAttribute("role", "region");
+  viewer.setAttribute("aria-label", `${group.short} photos`);
+  const bar = node("div", "viewer-bar");
+  bar.append(node("span", "eyebrow", `${group.short} / Finnish time`));
+  const buttons = node("div", "viewer-controls");
+  const previous = node("button", "viewer-previous", "← Previous");
+  const next = node("button", "viewer-next", "Next →");
+  const fullscreen = node("button", "viewer-fullscreen", "Full screen");
+  for (const button of [previous, next, fullscreen]) button.type = "button";
+  previous.setAttribute("aria-label", "Previous photo");
+  next.setAttribute("aria-label", "Next photo");
+  fullscreen.setAttribute("aria-pressed", "false");
+  buttons.append(previous, next, fullscreen);
+  bar.append(buttons);
+  const figure = node("figure", "chapter-feature");
+  const stage = node("div", "feature-photo");
+  stage.id = `active-photo-${group.id}`;
+  stage.tabIndex = 0;
+  stage.setAttribute("role", "group");
+  stage.setAttribute(
+    "aria-label",
+    "Active photo. Use left and right arrow keys to browse this chapter.",
+  );
+  const caption = node("figcaption");
+  const description = node("p", "active-caption");
+  const attribution = node("p", "credit active-credit");
+  caption.append(description, attribution);
+  figure.append(stage, caption);
+  const fullCredit = node("p", "fullscreen-credit");
+  const status = node("p", "sr-only");
+  status.setAttribute("role", "status");
+  status.setAttribute("aria-atomic", "true");
+  const strip = node("div", "filmstrip");
+  strip.tabIndex = 0;
+  strip.setAttribute("role", "group");
+  strip.setAttribute(
+    "aria-label",
+    `Choose a photo: ${group.short}, scroll for more`,
+  );
+  const thumbnails = group.photos.map((photo, photoIndex) => {
+    const frame = node("figure", "film-frame");
+    const button = node("button", "film-photo");
+    button.type = "button";
+    button.dataset.photoId = photo.id;
+    button.setAttribute("aria-controls", stage.id);
+    button.setAttribute(
+      "aria-label",
+      `Show photo: ${photo.caption || photo.filename}, ${photo.capturedLocal.slice(11, 16)}`,
+    );
+    button.append(image(photo));
+    button.addEventListener("click", () =>
+      select(photoIndex, { reveal: true }),
+    );
+    frame.append(button);
+    const label = node("figcaption");
+    label.append(
+      node("span", "frame-time", photo.capturedLocal.slice(11, 16)),
+      node("span", "credit", photo.photographer),
+    );
+    frame.append(label, programmeDetails(photo, true));
+    strip.append(frame);
+    return button;
+  });
+  const details = node("div", "viewer-details");
+  const context = node("p", "active-context small muted");
+  const discovery = node("div");
+  const links = node("div", "viewer-links");
+  const download = node("a", "sharing-download", "Download sharing copy ↓");
+  const gallery = node("a", "media-bank-link", "Open in the media bank ↗");
+  gallery.target = "_blank";
+  gallery.rel = "noreferrer";
+  links.append(download, gallery);
+  details.append(context, discovery, links);
+  viewer.append(
+    bar,
+    figure,
+    fullCredit,
+    status,
+    strip,
+    node(
+      "p",
+      "strip-hint muted small",
+      "Follow the strip → Choose a frame to see it here. Arrow keys browse this chapter.",
+    ),
+    details,
+  );
+
+  function select(photoIndex, { reveal = false, announce = true } = {}) {
+    index = photoIndex;
+    const photo = group.photos[index];
+    activeFrames.set(group.id, photo.id);
+    viewer.dataset.activePhotoId = photo.id;
+    const img = image(photo, true);
+    if (isFullscreen(viewer)) img.sizes = "100vw";
+    stage.replaceChildren(img);
+    description.textContent = photo.caption || group.title;
+    attribution.textContent = `${photo.capturedLocal.slice(11, 16)} / ${credit(photo)}`;
+    fullCredit.textContent = `${photo.capturedLocal.slice(11, 16)} / ${credit(photo)}`;
+    context.textContent = photo.eventContext
+      ? `${photo.eventContext.association === "timing-only" ? "Time-based programme context" : "Programme context"}: ${photo.eventContext.title}`
+      : "";
+    context.hidden = !photo.eventContext;
+    discovery.replaceChildren(photoDiscovery(photo));
+    download.href = `/media/event-photos/${photo.id}/share.jpg?download=1`;
+    gallery.href = `/photos/?selection=&search=${encodeURIComponent(photo.filename)}`;
+    previous.disabled = index === 0;
+    next.disabled = index === group.photos.length - 1;
+    thumbnails.forEach((button, i) =>
+      button.setAttribute("aria-pressed", String(i === index)),
+    );
+    if (announce)
+      status.textContent = `${photo.capturedLocal.slice(11, 16)}. ${photo.caption || group.title}. ${credit(photo)}`;
+    revealThumbnail();
+    if (reveal) {
+      const top =
+        parseFloat(
+          getComputedStyle(document.documentElement).scrollPaddingTop,
+        ) || 0;
+      const bounds = stage.getBoundingClientRect();
+      if (bounds.top < top || bounds.top >= innerHeight)
+        viewer.scrollIntoView({
+          block: "start",
+          behavior: reducedMotion() ? "instant" : "smooth",
+        });
+    }
   }
-});
-$("#next").addEventListener("click", () => {
-  if (currentIndex < currentPhotos.length - 1) {
-    currentIndex++;
-    updatePreview();
+  function revealThumbnail(behavior = reducedMotion() ? "instant" : "smooth") {
+    // Keep the selected thumbnail visible without moving the page vertically.
+    const frame = thumbnails[index].parentElement.getBoundingClientRect();
+    const rail = strip.getBoundingClientRect();
+    if (frame.left < rail.left || frame.right > rail.right)
+      strip.scrollTo({
+        left:
+          strip.scrollLeft +
+          (frame.left < rail.left
+            ? frame.left - rail.left
+            : frame.right - rail.right),
+        behavior,
+      });
   }
-});
-$("#close").addEventListener("click", () => $("#preview").close());
-$("#preview").addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && $("#preview").classList.contains("immersive")) {
-    event.preventDefault();
-    exitImmersive();
-    return;
-  }
-  if (event.key === "ArrowLeft" && currentIndex > 0) {
-    event.preventDefault();
-    currentIndex--;
-    updatePreview();
-  }
-  if (event.key === "ArrowRight" && currentIndex < currentPhotos.length - 1) {
-    event.preventDefault();
-    currentIndex++;
-    updatePreview();
-  }
-});
-$("#fullscreen").addEventListener("click", async () => {
-  const preview = $("#preview");
-  if (document.fullscreenElement) {
-    await document.exitFullscreen();
-    return;
-  }
-  if (preview.classList.contains("immersive")) {
-    exitImmersive();
-    return;
-  }
-  if (preview.requestFullscreen) {
-    try {
-      await preview.requestFullscreen();
+  previous.addEventListener("click", () => {
+    select(index - 1);
+    if (previous.disabled) stage.focus({ preventScroll: true });
+  });
+  next.addEventListener("click", () => {
+    select(index + 1);
+    if (next.disabled) stage.focus({ preventScroll: true });
+  });
+  fullscreen.addEventListener("click", async () => {
+    if (document.fullscreenElement === viewer) {
+      await document.exitFullscreen();
+      syncFullscreen();
       return;
-    } catch {}
-  }
-  preview.classList.add("immersive");
-  $("#fullscreen").textContent = "Exit full screen";
-  $("#fullscreen").setAttribute("aria-pressed", "true");
-});
-function exitImmersive() {
-  $("#preview").classList.remove("immersive");
-  $("#fullscreen").textContent = "Full screen";
-  $("#fullscreen").setAttribute("aria-pressed", "false");
+    }
+    if (immersiveViewer === viewer) {
+      exitImmersive();
+      return;
+    }
+    if (viewer.requestFullscreen) {
+      try {
+        await viewer.requestFullscreen();
+        syncFullscreen();
+        return;
+      } catch {}
+    }
+    enterImmersive(viewer);
+  });
+  viewer.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && immersiveViewer === viewer) {
+      event.preventDefault();
+      exitImmersive();
+      return;
+    }
+    if (event.key === "Tab" && immersiveViewer === viewer) {
+      // Only the toolbar and image remain visible in the fullscreen fallback.
+      const focusable = [
+        ...buttons.querySelectorAll("button:not(:disabled)"),
+        stage,
+      ];
+      const first = focusable[0];
+      const last = focusable.at(-1);
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+    if (
+      !event.target.closest(
+        ".film-photo, .feature-photo, .viewer-bar, .filmstrip",
+      )
+    )
+      return;
+    const step =
+      event.key === "ArrowLeft" ? -1 : event.key === "ArrowRight" ? 1 : 0;
+    if (!step) return;
+    event.preventDefault();
+    const target = index + step;
+    if (target < 0 || target >= group.photos.length) return;
+    const inStrip = event.target.closest(".filmstrip");
+    select(target);
+    if (inStrip) thumbnails[target].focus({ preventScroll: true });
+    else if (event.target.disabled) stage.focus({ preventScroll: true });
+  });
+  select(index, { announce: false });
+  requestAnimationFrame(() => {
+    if (viewer.isConnected) revealThumbnail("instant");
+  });
+  return viewer;
 }
-document.addEventListener("fullscreenchange", () => {
-  const fullscreen = Boolean(document.fullscreenElement && $("#preview").open);
-  $("#fullscreen").textContent = fullscreen
-    ? "Exit full screen"
-    : "Full screen";
-  $("#fullscreen").setAttribute("aria-pressed", String(fullscreen));
-});
-$("#preview").addEventListener("close", () => {
-  exitImmersive();
-  if (document.fullscreenElement)
-    void document.exitFullscreen().catch(() => {});
-  if (previewOpener?.isConnected) previewOpener.focus({ preventScroll: true });
-});
+
+function isFullscreen(viewer) {
+  return document.fullscreenElement === viewer || immersiveViewer === viewer;
+}
+function syncFullscreen() {
+  for (const viewer of document.querySelectorAll(".chapter-viewer")) {
+    const active = isFullscreen(viewer);
+    const button = viewer.querySelector(".viewer-fullscreen");
+    button.textContent = active ? "Exit full screen" : "Full screen";
+    button.setAttribute("aria-pressed", String(active));
+    viewer.querySelector(".feature-photo img").sizes = active
+      ? "100vw"
+      : "(min-width: 1600px) 1200px, (min-width: 901px) 75vw, 90vw";
+  }
+}
+function enterImmersive(viewer) {
+  immersiveViewer = viewer;
+  viewer.classList.add("immersive");
+  // Isolate this chapter while preserving the surrounding page and its state.
+  for (
+    let child = viewer;
+    child.parentElement && child !== document.body;
+    child = child.parentElement
+  )
+    for (const sibling of child.parentElement.children)
+      if (sibling !== child && !sibling.inert) {
+        sibling.inert = true;
+        immersiveSiblings.push(sibling);
+      }
+  syncFullscreen();
+  viewer.querySelector(".viewer-fullscreen").focus({ preventScroll: true });
+}
+function exitImmersive() {
+  if (!immersiveViewer) return;
+  const viewer = immersiveViewer;
+  viewer.classList.remove("immersive");
+  immersiveViewer = undefined;
+  for (const sibling of immersiveSiblings) sibling.inert = false;
+  immersiveSiblings = [];
+  syncFullscreen();
+  viewer.querySelector(".viewer-fullscreen").focus({ preventScroll: true });
+}
+document.addEventListener("fullscreenchange", syncFullscreen);
 function themeLabel() {
   $("#theme").textContent =
     document.documentElement.dataset.theme === "dark"

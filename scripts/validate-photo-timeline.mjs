@@ -14,7 +14,7 @@ const catalog = await response.json();
 const highlights = catalog.photos.filter(
   (photo) => photo.selection === "selected",
 );
-const imageCount = (page) => page.locator("button[data-photo-id]").count();
+const imageCount = (page) => page.locator(".film-photo[data-photo-id]").count();
 await mkdir(".cache/timeline-review", { recursive: true });
 let server;
 try {
@@ -146,6 +146,118 @@ try {
     assert.equal(await imageCount(page), highlights.length);
     assert.equal(await page.locator(".chapter").count(), 9);
     assert.equal(
+      await page.locator("dialog, [popover]").count(),
+      0,
+      "Photos stay integrated in their chapter",
+    );
+    const firstViewer = page.locator(".chapter-viewer").first();
+    const secondViewer = page.locator(".chapter-viewer").nth(1);
+    const secondActive = await secondViewer.getAttribute(
+      "data-active-photo-id",
+    );
+    const frames = firstViewer.locator(".film-photo");
+    await frames.first().click();
+    assert.equal(await frames.first().getAttribute("aria-pressed"), "true");
+    assert.equal(
+      await firstViewer
+        .getByRole("button", { name: "Previous photo" })
+        .isDisabled(),
+      true,
+    );
+    const initialBounds = await firstViewer
+      .locator(".feature-photo")
+      .boundingBox();
+    await frames.nth(1).click();
+    const activeId = await frames.nth(1).getAttribute("data-photo-id");
+    const active = highlights.find((photo) => photo.id === activeId);
+    assert.equal(
+      await firstViewer.getAttribute("data-active-photo-id"),
+      active.id,
+    );
+    assert.equal(
+      await firstViewer.locator(".feature-photo img").getAttribute("alt"),
+      active.altText ||
+        active.caption ||
+        `SDLCAI event photo by ${active.photographer}`,
+    );
+    assert.match(
+      await firstViewer.locator(".feature-photo img").getAttribute("srcset"),
+      new RegExp(active.images.preview.path),
+    );
+    assert.equal(
+      await firstViewer.locator(".active-caption").textContent(),
+      active.caption,
+    );
+    assert.equal(
+      await firstViewer.locator(".active-credit").textContent(),
+      `${active.capturedLocal.slice(11, 16)} / Photo: ${active.photographer} / CC BY 4.0`,
+    );
+    assert.equal(
+      await firstViewer.locator(".sharing-download").getAttribute("href"),
+      `/media/event-photos/${active.id}/share.jpg?download=1`,
+    );
+    assert.equal(
+      await firstViewer.locator(".media-bank-link").getAttribute("href"),
+      `/photos/?selection=&search=${encodeURIComponent(active.filename)}`,
+    );
+    assert.equal(
+      await firstViewer.locator('.film-photo[aria-pressed="true"]').count(),
+      1,
+    );
+    assert.equal(
+      await frames.nth(1).getAttribute("aria-controls"),
+      await firstViewer.locator(".feature-photo").getAttribute("id"),
+    );
+    assert.equal(
+      await secondViewer.getAttribute("data-active-photo-id"),
+      secondActive,
+      "Chapters keep independent active photos",
+    );
+    assert.equal(
+      (await firstViewer.locator(".feature-photo").boundingBox()).height,
+      initialBounds.height,
+      "Selecting a frame keeps the image area stable",
+    );
+    await page.locator("#collection").selectOption("all");
+    assert.equal(
+      await firstViewer.getAttribute("data-active-photo-id"),
+      active.id,
+      "Filter rerenders retain a still-available active photo",
+    );
+    await page.locator("#collection").selectOption("highlights");
+    await firstViewer.locator(".feature-photo").focus();
+    await page.keyboard.press("ArrowLeft");
+    assert.equal(
+      await firstViewer.getAttribute("data-active-photo-id"),
+      await frames.first().getAttribute("data-photo-id"),
+    );
+    await page.keyboard.press("ArrowLeft");
+    assert.equal(
+      await firstViewer.getAttribute("data-active-photo-id"),
+      await frames.first().getAttribute("data-photo-id"),
+      "Keyboard navigation stops at the chapter boundary",
+    );
+    await frames.last().click();
+    assert.equal(
+      await firstViewer
+        .getByRole("button", { name: "Next photo" })
+        .isDisabled(),
+      true,
+    );
+    await page.keyboard.press("ArrowRight");
+    assert.equal(
+      await firstViewer.getAttribute("data-active-photo-id"),
+      await frames.last().getAttribute("data-photo-id"),
+    );
+    await page.keyboard.press("ArrowLeft");
+    assert.equal(
+      await firstViewer
+        .locator('.film-photo[aria-pressed="true"]')
+        .evaluate((button) => button === document.activeElement),
+      true,
+      "Arrow keys follow the selected thumbnail",
+    );
+    assert.equal(
       await page.locator('link[rel="canonical"]').getAttribute("href"),
       "https://sdlcai.org/timeline/",
     );
@@ -189,7 +301,7 @@ try {
                   .filter(
                     (el) =>
                       el.scrollWidth > el.clientWidth + 1 &&
-                      !el.closest(".filmstrip, .chapter-track, dialog"),
+                      !el.closest(".filmstrip, .chapter-track"),
                   )
                   .map((el) => ({
                     tag: el.tagName,
@@ -209,7 +321,7 @@ try {
             () => document.documentElement.scrollWidth > innerWidth,
           ),
           false,
-          `${name}: ${width}px ${theme} page overflow: ${JSON.stringify(await page.evaluate(() => [...document.querySelectorAll("body *")].filter((el) => !el.closest(".filmstrip, .chapter-track, dialog") && el.getBoundingClientRect().right > innerWidth + 1).map((el) => ({ tag: el.tagName, class: el.className, width: el.getBoundingClientRect().width }))))}`,
+          `${name}: ${width}px ${theme} page overflow: ${JSON.stringify(await page.evaluate(() => [...document.querySelectorAll("body *")].filter((el) => !el.closest(".filmstrip, .chapter-track") && el.getBoundingClientRect().right > innerWidth + 1).map((el) => ({ tag: el.tagName, class: el.className, width: el.getBoundingClientRect().width }))))}`,
         );
         assert.equal(
           await page
@@ -322,27 +434,28 @@ try {
     await page.locator("#discovery-talk").selectOption({ index: 1 });
     const selectedTalk = await page.locator("#discovery-talk").inputValue();
     assert.equal(new URL(page.url()).searchParams.get("talk"), selectedTalk);
-    await page.locator(".feature-photo").first().click();
-    assert.equal(await page.locator("#preview").isVisible(), true);
+    const talkViewer = page.locator(".chapter-viewer").first();
+    await talkViewer.locator(".film-photo").first().click();
     assert.match(
-      await page.locator("#preview-credit").textContent(),
+      await talkViewer.locator(".active-credit").textContent(),
       /Photo: .+ \/ CC BY 4\.0/,
     );
+    const talkPhotoId = await talkViewer.getAttribute("data-active-photo-id");
+    const talkPhoto = catalog.photos.find((photo) => photo.id === talkPhotoId);
     assert.equal(
-      await page
-        .getByRole("link", { name: "Watch this moment in the recording" })
-        .count(),
-      1,
+      await talkViewer.locator(".recording-link").getAttribute("href"),
+      `https://www.youtube.com/watch?v=d7POyy6dYFI&t=${talkPhoto.eventContext.recordingOffsetSeconds}s`,
     );
     assert.match(
-      await page.locator("#download").getAttribute("href"),
-      /^\/media\/event-photos\/photo-[a-f0-9]{20}\/share\.jpg\?download=1$/,
+      await talkViewer.locator(".active-context").textContent(),
+      new RegExp(
+        talkPhoto.eventContext.title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+      ),
     );
-    const before = await page.locator("#large-photo").getAttribute("src");
-    await page.keyboard.press("ArrowRight");
+    await talkViewer.getByRole("button", { name: "Next photo" }).click();
     assert.notEqual(
-      await page.locator("#large-photo").getAttribute("src"),
-      before,
+      await talkViewer.getAttribute("data-active-photo-id"),
+      talkPhotoId,
     );
     await page.addScriptTag({ content: axe });
     assert.deepEqual(
@@ -351,30 +464,43 @@ try {
       ),
       [],
     );
-    await page
+    await talkViewer
       .getByRole("button", { name: "Full screen", exact: true })
       .click();
-    await page.waitForFunction(
-      () =>
-        Boolean(document.fullscreenElement) ||
-        document.querySelector("#preview").classList.contains("immersive"),
-    );
-    assert.equal(await page.locator("#fullscreen-credit").isVisible(), true);
-    assert.equal(
-      await page.locator("#fullscreen").getAttribute("aria-pressed"),
-      "true",
-    );
-    await page
-      .getByRole("button", { name: "Exit full screen", exact: true })
-      .click();
-    await page.getByRole("button", { name: "Close", exact: true }).click();
-    assert.equal(await page.locator("#preview").isVisible(), false);
-    assert.equal(
-      await page.evaluate(() =>
-        document.activeElement.matches("[data-photo-id]"),
+    await page.waitForFunction(() =>
+      Boolean(
+        document.querySelector('.viewer-fullscreen[aria-pressed="true"]'),
       ),
+    );
+    assert.equal(
+      await talkViewer.locator(".fullscreen-credit").isVisible(),
       true,
     );
+    assert.equal(
+      await talkViewer
+        .locator(".viewer-fullscreen")
+        .getAttribute("aria-pressed"),
+      "true",
+    );
+    await talkViewer.locator(".feature-photo").focus();
+    const fullscreenPhotoId = await talkViewer.getAttribute(
+      "data-active-photo-id",
+    );
+    await page.keyboard.press("ArrowRight");
+    assert.notEqual(
+      await talkViewer.getAttribute("data-active-photo-id"),
+      fullscreenPhotoId,
+      "Fullscreen continues browsing the same chapter",
+    );
+    await talkViewer
+      .getByRole("button", { name: "Exit full screen", exact: true })
+      .click();
+    assert.equal(
+      await talkViewer.isVisible(),
+      true,
+      "Exit returns to the integrated viewer",
+    );
+    assert.equal(await page.locator("dialog, [popover]").count(), 0);
     await page.getByRole("button", { name: "Clear discovery" }).click();
     await page
       .getByRole("button", { name: "Generative UI", exact: true })
@@ -428,44 +554,86 @@ try {
       .click();
     await retryPage.locator(".chapter").first().waitFor();
     assert.equal(await imageCount(retryPage), highlights.length);
-    await retryPage.locator(".feature-photo").first().click();
+    const retryViewer = retryPage.locator(".chapter-viewer").first();
     assert.equal(
-      await retryPage
-        .locator("#preview")
-        .evaluate((dialog) => dialog.scrollWidth > dialog.clientWidth),
+      await retryViewer.evaluate(
+        (viewer) => viewer.scrollWidth > viewer.clientWidth,
+      ),
       false,
-      "Mobile preview controls wrap",
+      "Mobile viewer controls wrap",
     );
-    await retryPage
+    await retryViewer
       .getByRole("button", { name: "Full screen", exact: true })
       .click();
-    assert.match(
-      await retryPage.locator("#preview").getAttribute("class"),
-      /immersive/,
-    );
+    assert.match(await retryViewer.getAttribute("class"), /immersive/);
     assert.equal(
-      await retryPage.locator("#fullscreen-credit").isVisible(),
+      await retryViewer.locator(".fullscreen-credit").isVisible(),
       true,
     );
     assert.equal(
-      await retryPage
-        .locator("#preview")
-        .evaluate((dialog) => dialog.scrollHeight > dialog.clientHeight + 1),
+      await retryViewer.evaluate(
+        (viewer) => viewer.scrollHeight > viewer.clientHeight + 1,
+      ),
       false,
       "Fullscreen keeps the photo, controls and credit in view",
     );
+    assert.equal(
+      await retryPage.locator(".site-bar").evaluate((header) => header.inert),
+      true,
+      "Fallback isolates the active viewer",
+    );
+    await retryViewer.locator(".feature-photo").focus();
+    await retryPage.keyboard.press("Tab");
+    assert.equal(
+      await retryPage.evaluate(() =>
+        document.activeElement.matches(
+          ".viewer-controls button:not(:disabled)",
+        ),
+      ),
+      true,
+      "Focus stays within the fullscreen viewer",
+    );
     await retryPage.keyboard.press("Escape");
     assert.equal(
-      await retryPage.locator("#preview").isVisible(),
+      await retryViewer.isVisible(),
       true,
-      "First Escape exits the fullscreen fallback",
+      "Escape returns to the chapter",
     );
     assert.equal(
-      await retryPage.locator("#fullscreen").getAttribute("aria-pressed"),
+      await retryViewer
+        .locator(".viewer-fullscreen")
+        .getAttribute("aria-pressed"),
       "false",
     );
-    await retryPage.keyboard.press("Escape");
-    assert.equal(await retryPage.locator("#preview").isVisible(), false);
+    assert.equal(
+      await retryPage.locator(".site-bar").evaluate((header) => header.inert),
+      false,
+    );
+    assert.equal(
+      await retryPage.evaluate(() =>
+        document.activeElement.matches(".viewer-fullscreen"),
+      ),
+      true,
+    );
+    const portraitId = highlights.find(
+      (photo) => photo.width < photo.height,
+    )?.id;
+    if (portraitId) {
+      const thumbnail = retryPage.locator(
+        `.film-photo[data-photo-id="${portraitId}"]`,
+      );
+      await thumbnail.click();
+      const viewer = thumbnail.locator(
+        'xpath=ancestor::div[contains(@class,"chapter-viewer")]',
+      );
+      assert.equal(
+        await viewer
+          .locator(".feature-photo img")
+          .evaluate((img) => getComputedStyle(img).objectFit),
+        "contain",
+        "Portrait images remain fully visible",
+      );
+    }
     await retryPage.close();
     assert.deepEqual(assetFailures, [], "All page assets load");
     assert.deepEqual(errors, [], "No browser runtime errors");
@@ -474,7 +642,7 @@ try {
     await closeBrowserServer(server);
     server = undefined;
     console.log(
-      `Photo timeline filters, themes, previews, fullscreen and layouts passed in ${name}.`,
+      `Photo timeline filters, themes, integrated viewers, fullscreen and layouts passed in ${name}.`,
     );
   }
 } finally {
