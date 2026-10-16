@@ -2,6 +2,7 @@ import "./index.ts";
 import "./admin-navigation.ts";
 import {
   feedbackQuestions,
+  feedbackOptions,
   recommendationSummary,
   type FeedbackDashboard,
 } from "../../shared/feedback.ts";
@@ -60,12 +61,8 @@ async function load() {
           "font-bold leading-6",
         ),
       );
-      const options =
-        question.kind === "nps"
-          ? Array.from({ length: 11 }, (_, index) => String(index))
-          : question.kind === "rating"
-            ? ["1", "2", "3", "4", "5"]
-            : question.options;
+      const options = feedbackOptions(question);
+      const scored = options.filter((option) => !option.unscored);
       const answered =
         question.kind === "multiple"
           ? total
@@ -73,7 +70,7 @@ async function load() {
               .filter(
                 (t) =>
                   t.question === question.id &&
-                  options.some((option) => option === t.answer),
+                  scored.some((option) => option.value === t.answer),
               )
               .reduce((count, t) => count + t.count, 0);
       if (question.kind === "nps") {
@@ -153,7 +150,11 @@ async function load() {
       }
       if (question.kind === "rating") {
         const sum = result.totals
-          .filter((t) => t.question === question.id)
+          .filter(
+            (t) =>
+              t.question === question.id &&
+              scored.some((option) => option.value === t.answer),
+          )
           .reduce((value, t) => value + Number(t.answer) * t.count, 0);
         append(
           card,
@@ -163,13 +164,39 @@ async function load() {
             "my-4 font-headline text-4xl font-black",
           ),
         );
+        const unrated = result.totals
+          .filter(
+            (t) =>
+              t.question === question.id &&
+              options.some(
+                (option) => option.unscored && option.value === t.answer,
+              ),
+          )
+          .reduce((sum, t) => sum + t.count, 0);
+        append(
+          card,
+          textElement(
+            "p",
+            `${answered} ${answered === 1 ? "rating" : "ratings"}. ${unrated} ${unrated === 1 ? "response" : "responses"} without a rating, excluded from the average and rating percentages.`,
+            "text-sm leading-6 text-muted",
+          ),
+        );
       }
+      if (question.kind === "multiple")
+        append(
+          card,
+          textElement(
+            "p",
+            "Up to three selections per response. Percentages may total more than 100%.",
+            "mt-3 text-sm leading-6 text-muted",
+          ),
+        );
       const list = document.createElement("ul");
       list.className = "mt-4 grid gap-3";
       for (const option of options) {
         const count =
           result.totals.find(
-            (t) => t.question === question.id && t.answer === option,
+            (t) => t.question === question.id && t.answer === option.value,
           )?.count ?? 0;
         const item = document.createElement("li");
         item.className = "grid grid-cols-[minmax(0,1fr)_auto] gap-x-3 gap-y-1";
@@ -177,12 +204,16 @@ async function load() {
           item,
           textElement(
             "span",
-            question.kind === "rating" ? `${option} / 5` : option,
+            question.kind === "rating" && !option.unscored
+              ? `${option.value} / 5 — ${option.label}`
+              : option.label,
             "text-sm leading-6",
           ),
           textElement(
             "span",
-            `${count} (${answered ? Math.round((count / answered) * 100) : 0}%)`,
+            option.unscored
+              ? `${count} · not rated`
+              : `${count} (${answered ? Math.round((count / answered) * 100) : 0}%)`,
             "text-sm font-bold leading-6",
           ),
         );
@@ -192,7 +223,7 @@ async function load() {
         fill.className = "h-1 bg-ink";
         fill.style.width = `${answered ? Math.min(100, (count / answered) * 100) : 0}%`;
         append(bar, fill);
-        append(item, bar);
+        if (!option.unscored) append(item, bar);
         append(list, item);
       }
       if (question.kind === "nps") {
@@ -219,8 +250,8 @@ async function load() {
     for (const item of result.responses) {
       const details = document.createElement("details");
       details.className = "min-w-0 border border-ink p-5";
-      const comments = ["recommendReason", "best", "improve", "future"].filter(
-        (id) => item.answers[id],
+      const comments = feedbackQuestions.filter(
+        (question) => question.kind === "text" && item.answers[question.id],
       ).length;
       append(
         details,

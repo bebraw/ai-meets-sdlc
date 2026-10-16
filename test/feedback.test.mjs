@@ -47,7 +47,9 @@ function answers(code = "a".repeat(64)) {
     else
       form.set(
         q.id,
-        "A useful event. <script>alert('private comment')</script>",
+        q.showWhen
+          ? ""
+          : "A useful event. <script>alert('private comment')</script>",
       );
   }
   form.set("consent", "yes");
@@ -90,7 +92,7 @@ const count = async (f) =>
       .first()
   )?.count ?? 0;
 
-test("recommendation uses integer 0–10 answers; new forms require an answer and older forms preserve omission", () => {
+test("recommendation uses integer 0–10 answers and stale questionnaires must reload", () => {
   for (let rating = 0; rating <= 10; rating++) {
     const form = answers();
     form.set("recommend", String(rating));
@@ -105,12 +107,12 @@ test("recommendation uses integer 0–10 answers; new forms require an answer an
   form.delete("recommend");
   assert.equal(typeof parseFeedback(form), "string");
   form.delete("formVersion");
-  const legacy = parseFeedback(form);
-  assert.equal(legacy.formVersion, "1");
-  assert.equal(legacy.answers.recommend, undefined);
+  assert.match(parseFeedback(form), /Reload/u);
   form.set("formVersion", "1");
-  assert.equal(parseFeedback(form).answers.recommend, undefined);
-  form.set("formVersion", "3");
+  assert.match(parseFeedback(form), /Reload/u);
+  form.set("formVersion", "2");
+  assert.match(parseFeedback(form), /Reload/u);
+  form.set("formVersion", "4");
   assert.equal(typeof parseFeedback(form), "string");
   form.set("formVersion", feedbackFormVersion);
   form.set("recommend", "9");
@@ -172,30 +174,49 @@ test("NPS uses all answered ratings in its denominator and never invents a zero 
   );
 });
 
-test("legacy and new responses contribute independently to NPS, including withdrawal", async (t) => {
+test("unscored answers and None remain distinct from numeric ratings through submission and withdrawal", async (t) => {
   const f = await fixture(t);
-  captcha(t);
-  const legacy = answers("b".repeat(64));
-  legacy.delete("formVersion");
-  legacy.delete("recommend");
-  legacy.delete("recommendReason");
-  assert.equal((await submit(f, legacy)).status, 200);
-  assert.equal((await own(f, "b".repeat(64))).status, 200);
-  assert.equal(
-    (await (await own(f, "b".repeat(64))).json()).answers.recommend,
-    undefined,
-  );
+  const mock = captcha(t);
+  const obsolete = answers();
+  obsolete.set("formVersion", "2");
+  assert.equal((await submit(f, obsolete)).status, 400);
+  assert.equal(mock.mock.callCount(), 0);
   const current = answers();
   current.set("recommend", "0");
+  current.set("academic", "Did not attend these talks");
+  current.set("industry", "Unable to assess");
+  current.set("networking", "Did not use these opportunities");
+  current.set("valuable", "None");
+  current.set("return", "Definitely not");
   assert.equal((await submit(f, current)).status, 200);
+  const saved = await (await own(f)).json();
+  assert.equal(saved.answers.academic, "Did not attend these talks");
+  assert.deepEqual(saved.answers.valuable, ["None"]);
+  const rated = answers("b".repeat(64));
+  rated.set("valuable", "Other");
+  rated.set("valuableOther", "A private suggestion.");
+  assert.equal((await submit(f, rated)).status, 200);
   let data = await (await dashboard(f)).json();
   assert.equal(await count(f), 2);
+  assert.equal(
+    data.totals.find((t) => t.question === "academic" && t.answer === "4")
+      .count,
+    1,
+  );
+  assert.equal(
+    data.totals.find(
+      (t) =>
+        t.question === "academic" && t.answer === "Did not attend these talks",
+    ).count,
+    1,
+  );
+  assert.ok(!data.totals.some((t) => t.question === "valuableOther"));
   assert.deepEqual(recommendationSummary(data.totals), {
-    answered: 1,
-    promoters: 0,
+    answered: 2,
+    promoters: 1,
     passives: 0,
     detractors: 1,
-    score: -100,
+    score: 0,
   });
   assert.equal((await own(f, "b".repeat(64), "DELETE")).status, 200);
   data = await (await dashboard(f)).json();
@@ -205,6 +226,42 @@ test("legacy and new responses contribute independently to NPS, including withdr
   data = await (await dashboard(f)).json();
   assert.equal(recommendationSummary(data.totals).score, null);
   assert.equal(await count(f), 0);
+});
+
+test("valuable parts allows up to three, an exclusive None and optional details only with Other", () => {
+  const choices = feedbackQuestions.find((q) => q.id === "valuable").options;
+  for (const selected of [
+    [choices[0]],
+    choices.slice(0, 3),
+    ["None"],
+    ["Other"],
+  ]) {
+    const form = answers();
+    form.delete("valuable");
+    for (const value of selected) form.append("valuable", value);
+    assert.deepEqual(parseFeedback(form).answers.valuable, selected);
+  }
+  for (const selected of [
+    [],
+    choices.slice(0, 4),
+    ["None", choices[0]],
+    [choices[0], choices[0]],
+  ]) {
+    const form = answers();
+    form.delete("valuable");
+    for (const value of selected) form.append("valuable", value);
+    assert.equal(typeof parseFeedback(form), "string");
+  }
+  const form = answers();
+  form.set("valuableOther", "An additional suggestion");
+  assert.equal(typeof parseFeedback(form), "string");
+  form.set("valuable", "Other");
+  assert.equal(
+    parseFeedback(form).answers.valuableOther,
+    "An additional suggestion",
+  );
+  form.set("valuableOther", "x".repeat(2001));
+  assert.equal(typeof parseFeedback(form), "string");
 });
 
 test("feedback validates origin, consent, bounded fields and Turnstile configuration, action and hostname", async (t) => {
@@ -238,7 +295,7 @@ test("feedback validates origin, consent, bounded fields and Turnstile configura
     ["noticeVersion", "old"],
     ["overall", "6"],
     ["recommend", "11"],
-    ["formVersion", "3"],
+    ["formVersion", "4"],
     ["valuable", "unknown"],
     ["email", "must-not-store@example.test"],
     ["website", "spam"],

@@ -2,7 +2,9 @@ import "./index.ts";
 import {
   feedbackConsentText,
   feedbackFormVersion,
+  feedbackOptions,
   feedbackSections,
+  parseFeedback,
 } from "../../shared/feedback.ts";
 import {
   append,
@@ -53,6 +55,10 @@ for (const [sectionIndex, section] of feedbackSections.entries()) {
       ),
     );
     if (question.kind === "text") {
+      if (question.showWhen) {
+        fieldset.dataset.dependsOn = question.showWhen.question;
+        fieldset.dataset.dependsValue = question.showWhen.value;
+      }
       const input = document.createElement("textarea");
       input.name = question.id;
       input.id = `feedback-${question.id}`;
@@ -68,20 +74,30 @@ for (const [sectionIndex, section] of feedbackSections.entries()) {
       );
       fieldset.lastElementChild!.id = `feedback-${question.id}-limit`;
     } else {
-      const numeric = question.kind === "rating" || question.kind === "nps";
-      const options =
-        question.kind === "nps"
-          ? Array.from({ length: 11 }, (_, index) => String(index))
-          : question.kind === "rating"
-            ? ["1", "2", "3", "4", "5"]
-            : question.options;
+      const numeric = question.kind === "nps";
+      const options = feedbackOptions(question);
       const choices = document.createElement("div");
+      const unscoredChoices = document.createElement("div");
+      unscoredChoices.className = "mt-2 grid gap-2 sm:grid-cols-2";
       choices.className =
         question.kind === "nps"
           ? "grid grid-cols-6 gap-2 sm:grid-cols-[repeat(11,minmax(0,1fr))]"
           : question.kind === "rating"
-            ? "grid grid-cols-5 gap-2"
+            ? "grid gap-2 sm:grid-cols-2"
             : "grid gap-3";
+      const multipleHint =
+        question.kind === "multiple"
+          ? textElement(
+              "p",
+              "Choose up to three, or None. None cannot be combined with another option.",
+              "mt-2 text-sm text-muted",
+            )
+          : null;
+      if (multipleHint) {
+        multipleHint.id = `feedback-${question.id}-limit`;
+        multipleHint.setAttribute("role", "status");
+        fieldset.setAttribute("aria-describedby", multipleHint.id);
+      }
       for (const option of options) {
         const label = document.createElement("label");
         label.className = numeric
@@ -90,7 +106,7 @@ for (const [sectionIndex, section] of feedbackSections.entries()) {
         const input = document.createElement("input");
         input.type = question.kind === "multiple" ? "checkbox" : "radio";
         input.name = question.id;
-        input.value = option;
+        input.value = option.value;
         input.required = question.kind !== "multiple";
         input.className =
           question.kind === "nps" ? "sr-only" : "h-4 w-4 shrink-0 accent-ink";
@@ -102,11 +118,64 @@ for (const [sectionIndex, section] of feedbackSections.entries()) {
             "focus-within:outline-ink",
           );
         if (!numeric) input.classList.add("mt-1");
-        append(label, input, textElement("span", option));
-        append(choices, label);
+        append(
+          label,
+          input,
+          textElement(
+            "span",
+            question.kind === "rating" && !option.unscored
+              ? `${option.value} — ${option.label}`
+              : option.label,
+          ),
+        );
+        if (question.kind === "multiple")
+          input.addEventListener("change", () => {
+            const inputs = [
+              ...choices.querySelectorAll<HTMLInputElement>("input"),
+            ];
+            if (input.checked) {
+              if (option.value === question.exclusiveOption) {
+                for (const other of inputs)
+                  if (other !== input) other.checked = false;
+              } else {
+                const none = inputs.find(
+                  (other) => other.value === question.exclusiveOption,
+                );
+                if (none) none.checked = false;
+              }
+            }
+            const overLimit =
+              question.maxChoices &&
+              inputs.filter((other) => other.checked).length >
+                question.maxChoices;
+            if (overLimit) input.checked = false;
+            multipleHint!.textContent = overLimit
+              ? "Choose up to three. Deselect an option before choosing another."
+              : "Choose up to three, or None. None cannot be combined with another option.";
+            inputs[0]!.setCustomValidity(
+              inputs.some((other) => other.checked)
+                ? ""
+                : "Choose up to three valuable parts, or None.",
+            );
+          });
+        append(option.unscored ? unscoredChoices : choices, label);
       }
+      if (question.kind === "multiple")
+        choices
+          .querySelector<HTMLInputElement>("input")!
+          .setCustomValidity("Choose up to three valuable parts, or None.");
       append(fieldset, choices);
-      if (numeric) {
+      if (unscoredChoices.children.length)
+        append(
+          fieldset,
+          textElement(
+            "p",
+            "Or, if you cannot give a rating:",
+            "mt-4 border-t border-ink/30 pt-3 text-sm text-muted",
+          ),
+          unscoredChoices,
+        );
+      if (question.kind === "nps") {
         const anchors = textElement(
           "p",
           "",
@@ -114,35 +183,39 @@ for (const [sectionIndex, section] of feedbackSections.entries()) {
         );
         append(
           anchors,
-          textElement(
-            "span",
-            question.kind === "nps" ? "0 — Not at all likely" : "1 — Very poor",
-          ),
-          textElement(
-            "span",
-            question.kind === "nps" ? "10 — Extremely likely" : "5 — Excellent",
-          ),
+          textElement("span", "0 — Not at all likely"),
+          textElement("span", "10 — Extremely likely"),
         );
-        if (question.kind === "nps") {
-          anchors.id = "recommend-scale";
-          fieldset.setAttribute("aria-describedby", anchors.id);
-        }
+        anchors.id = "recommend-scale";
+        fieldset.setAttribute("aria-describedby", anchors.id);
         append(fieldset, anchors);
       }
-      if (question.kind === "multiple")
-        append(
-          fieldset,
-          textElement(
-            "p",
-            "Choose at least one. You can select several.",
-            "mt-2 text-sm text-muted",
-          ),
-        );
+      if (multipleHint) append(fieldset, multipleHint);
     }
     append(group, fieldset);
   }
   append(root, group);
 }
+
+function syncConditionalComments() {
+  for (const fieldset of root.querySelectorAll<HTMLFieldSetElement>(
+    "[data-depends-on]",
+  )) {
+    const enabled = [
+      ...form.querySelectorAll<HTMLInputElement>("input:checked"),
+    ].some(
+      (input) =>
+        input.name === fieldset.dataset.dependsOn &&
+        input.value === fieldset.dataset.dependsValue,
+    );
+    fieldset.hidden = !enabled;
+    const input = fieldset.querySelector<HTMLTextAreaElement>("textarea")!;
+    input.disabled = !enabled;
+    if (!enabled) input.value = "";
+  }
+}
+form.addEventListener("change", syncConditionalComments);
+syncConditionalComments();
 
 const status = form.querySelector<HTMLElement>("[data-feedback-status]")!;
 const submit = form.querySelector<HTMLButtonElement>("button[type=submit]")!;
@@ -187,8 +260,9 @@ form.addEventListener("submit", (event) => {
   event.preventDefault();
   if (!verified || busy || !form.reportValidity()) return;
   const data = new FormData(form);
-  if (!data.getAll("valuable").length) {
-    status.textContent = "Choose at least one valuable part of the programme.";
+  const parsed = parseFeedback(data);
+  if (typeof parsed === "string") {
+    status.textContent = parsed;
     form.querySelector<HTMLInputElement>('[name="valuable"]')!.focus();
     return;
   }

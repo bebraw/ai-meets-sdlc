@@ -94,7 +94,17 @@ try {
       await page.setViewportSize({ width, height: 1000 });
       await page.goto(origin + "/feedback/");
       await page.getByRole("button", { name: "Send feedback" }).waitFor();
-      assert.equal(await page.locator("fieldset").count(), 13);
+      assert.equal(await page.locator("fieldset").count(), 14);
+      assert.equal(
+        await page.locator('textarea[name="valuableOther"]').isVisible(),
+        false,
+      );
+      assert.equal(
+        await page
+          .getByRole("radio", { name: "3 — Moderately valuable", exact: true })
+          .count(),
+        3,
+      );
       for (const theme of ["light", "dark"]) {
         if ((await page.locator("html").getAttribute("data-theme")) !== theme)
           await page.locator("[data-theme-toggle]").click();
@@ -104,6 +114,13 @@ try {
         );
         await settleTheme(page);
         await checkPage(`form-${name}-${width}-${theme}`);
+        if (width !== 768)
+          await page
+            .locator("fieldset")
+            .filter({ has: page.locator('input[name="academic"]') })
+            .screenshot({
+              path: `.cache/feedback-review/scale-${name}-${width}-${theme}.png`,
+            });
       }
     }
     await page.goto(origin + "/feedback/");
@@ -136,7 +153,40 @@ try {
     ])
       await page.locator(`input[name="${id}"][value="4"]`).check();
     await page.locator('input[name="mix"]').first().check();
-    await page.locator('input[name="valuable"]').first().check();
+    const parts = page.locator('input[name="valuable"]');
+    for (const index of [0, 1, 2]) await parts.nth(index).check();
+    await parts.nth(3).click();
+    assert.equal(await parts.nth(3).isChecked(), false);
+    assert.equal(
+      await page.locator('input[name="valuable"]:checked').count(),
+      3,
+    );
+    await parts.nth(2).uncheck();
+    await page.locator('input[name="valuable"][value="Other"]').check();
+    await page
+      .locator('textarea[name="valuableOther"]')
+      .fill("A temporary suggestion");
+    await page.locator('input[name="valuable"][value="None"]').check();
+    assert.equal(
+      await page.locator('input[name="valuable"]:checked').count(),
+      1,
+    );
+    assert.equal(
+      await page.locator('textarea[name="valuableOther"]').isVisible(),
+      false,
+    );
+    assert.equal(
+      await page.locator('textarea[name="valuableOther"]').inputValue(),
+      "",
+    );
+    await page.locator('input[name="valuable"][value="Other"]').check();
+    assert.equal(
+      await page.locator('input[name="valuable"][value="None"]').isChecked(),
+      false,
+    );
+    await page
+      .locator('textarea[name="valuableOther"]')
+      .fill("An additional valuable activity.");
     await page.locator('input[name="return"]').first().check();
     await page
       .getByLabel("What was the best part of SDLCAI 2026?", { exact: true })
@@ -164,6 +214,39 @@ try {
         .count(),
       0,
     );
+    assert.match(
+      await responsePage
+        .locator("[data-feedback-response-answers]")
+        .innerText(),
+      /4 \/ 5 — Very valuable/u,
+    );
+    assert.match(
+      await responsePage
+        .locator("[data-feedback-response-answers]")
+        .innerText(),
+      /An additional valuable activity\./u,
+    );
+    // An attendee who could not assess these areas must not lower averages.
+    await page.goto(origin + "/feedback/");
+    await page.locator('label:has(input[name="recommend"][value="7"])').click();
+    for (const id of ["overall", "industry", "organization"])
+      await page
+        .locator(`input[name="${id}"][value="Unable to assess"]`)
+        .check();
+    await page
+      .locator('input[name="academic"][value="Did not attend these talks"]')
+      .check();
+    await page
+      .locator(
+        'input[name="networking"][value="Did not use these opportunities"]',
+      )
+      .check();
+    await page.locator('input[name="mix"][value="Unable to assess"]').check();
+    await page.locator('input[name="valuable"][value="None"]').check();
+    await page.locator('input[name="return"][value="Definitely not"]').check();
+    await page.locator('input[name="consent"]').check();
+    await page.getByRole("button", { name: "Send feedback" }).click();
+    await page.locator("[data-feedback-thanks]").waitFor({ state: "visible" });
     const admin = await browser.newContext({
       extraHTTPHeaders: {
         authorization: `Basic ${Buffer.from(`${vars.ADMIN_USERNAME}:${vars.ADMIN_PASSWORD}`).toString("base64")}`,
@@ -173,7 +256,7 @@ try {
     await adminPage.goto(origin + "/admin/feedback/");
     await adminPage
       .getByText(
-        "1 response in the totals. 1 individual response within retention.",
+        "2 responses in the totals. 2 individual responses within retention.",
         { exact: true },
       )
       .waitFor();
@@ -183,12 +266,29 @@ try {
     );
     assert.equal(
       await adminPage.locator("[data-feedback-nps]").innerText(),
-      "+100",
+      "+50",
     );
     assert.equal(
       await adminPage.locator("[data-feedback-nps-count]").innerText(),
-      "1 recommendation rating",
+      "2 recommendation ratings",
     );
+    assert.doesNotMatch(
+      await adminPage.locator("[data-feedback-totals]").innerText(),
+      /NaN/u,
+    );
+    const academic = adminPage
+      .locator("[data-feedback-totals] section")
+      .filter({
+        has: adminPage.getByRole("heading", {
+          name: "How valuable were the academic talks you attended?",
+          exact: true,
+        }),
+      });
+    assert.match(
+      await academic.innerText(),
+      /1 rating\. 1 response without a rating/u,
+    );
+    assert.match(await academic.innerText(), /1 \(100%\)/u);
     await adminPage
       .getByText("Recommendation rating distribution · 0–10", { exact: true })
       .click();
@@ -200,7 +300,7 @@ try {
         .count(),
       11,
     );
-    await adminPage.locator("[data-feedback-items] summary").click();
+    await adminPage.locator("[data-feedback-items] summary").last().click();
     assert.match(
       await adminPage.locator("[data-feedback-items]").innerText(),
       /<img src=x/u,
@@ -243,6 +343,26 @@ try {
       .waitFor();
     assert.equal(new URL(responsePage.url()).hash, "");
     await adminPage.getByRole("button", { name: "Refresh results" }).click();
+    await adminPage
+      .getByText(
+        "1 response in the totals. 1 individual response within retention.",
+        { exact: true },
+      )
+      .waitFor();
+    assert.equal(
+      await adminPage.getByText("No ratings yet", { exact: true }).count(),
+      5,
+    );
+    const remaining = adminPage.locator("[data-feedback-items] > details");
+    await remaining.locator("summary").click();
+    assert.doesNotMatch(
+      await remaining.innerText(),
+      /Which other part did you find valuable/u,
+    );
+    await remaining.getByRole("checkbox").check();
+    await remaining
+      .getByRole("button", { name: "Delete response", exact: true })
+      .click();
     await adminPage
       .getByText(
         "0 responses in the totals. 0 individual responses within retention.",

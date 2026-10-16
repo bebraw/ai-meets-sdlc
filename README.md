@@ -603,7 +603,8 @@ for retention and verified restore instructions.
 
 The voluntary SDLCAI 2026 survey is at `/feedback/`, based on the attendee
 Google Form's eleven questions, plus a 0–10 likelihood-to-recommend question
-and an optional reason. `/admin/feedback/` shows private ratings, Net Promoter
+and an optional reason. The revised questionnaire also has an optional comment
+shown when a respondent selects **Other** among valuable parts. `/admin/feedback/` shows private ratings, Net Promoter
 Score (NPS), choice distributions and paginated individual answers. Its public-link button
 provides the generic URL for a later campaign in **Attendee messages**; creating
 the form does not send invitations. Migration `0039_create_visitor_feedback.sql`
@@ -615,10 +616,25 @@ The recommendation question follows [Bain's NPS method](https://www.netpromoters
 promoters minus the percentage of detractors, with **all answered recommendation
 ratings**, including passives, in the denominator. Admin shows the rounded score
 on a −100 to +100 scale, group counts, answer count and the 0–10 distribution.
-Earlier responses without this question are excluded rather than counted as zero.
-Already-open version 1 forms can still submit without it; new version 2 forms
-require a valid 0–10 answer. Withdrawal removes the rating's contribution, while
+The current form requires a valid 0–10 answer. Withdrawal removes the rating's contribution, while
 expiry retains only its independent count, like the other ratings.
+
+Questionnaire version **3** implements the survey-design review: every five-point
+rating has verbal labels, satisfaction and value use distinct scales, and
+non-attendance/unable-to-assess answers are stored as separate non-numeric
+choices. Admin excludes these from rating averages and rating percentages and
+shows their counts separately. Research–industry mix and return-intention choices
+are balanced. Organization is rated on its own. Valuable parts allows up to three
+choices, with separate poster/networking options, **Other**, and an exclusive
+**None**. Other comments are optional, cleared when hidden and never aggregated.
+The improvement prompt asks for one priority. All optional comments retain the
+same privacy controls.
+
+The owner confirmed there were no earlier responses before these revisions.
+No historical comparison UI or data migration is needed. Already-open version 1
+or 2 forms receive a reload message; version 3 is saved with encrypted answers.
+Future wording or scale changes must consider existing responses and retained
+totals before reusing the same aggregate keys.
 
 Treat the score as directional feedback from respondents, with the answer count
 attached to any marketing claim. It does not establish actual referrals or

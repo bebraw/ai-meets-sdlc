@@ -1,5 +1,6 @@
 import {
   feedbackQuestions,
+  feedbackOptions,
   type FeedbackAnswers,
 } from "../../shared/feedback.ts";
 
@@ -20,16 +21,32 @@ export function renderFeedbackAnswers(
 ) {
   root.replaceChildren();
   for (const question of feedbackQuestions) {
+    if (question.kind === "text" && question.showWhen) {
+      const selected = answers[question.showWhen.question];
+      if (
+        !Array.isArray(selected) ||
+        !selected.includes(question.showWhen.value)
+      )
+        continue;
+    }
     const answer = answers[question.id];
+    const option =
+      typeof answer === "string"
+        ? feedbackOptions(question).find((option) => option.value === answer)
+        : undefined;
+    const displayed =
+      option && question.kind === "rating" && !option.unscored
+        ? `${answer} / 5 — ${option.label}`
+        : option?.label || answer;
     const group = document.createElement("div");
     append(group, textElement("h3", question.label, "font-bold"));
     append(
       group,
       textElement(
         "p",
-        Array.isArray(answer)
-          ? answer.join("; ")
-          : answer ||
+        Array.isArray(displayed)
+          ? displayed.join("; ")
+          : displayed ||
               (question.kind === "text"
                 ? "No comment"
                 : "Not answered in this response"),
