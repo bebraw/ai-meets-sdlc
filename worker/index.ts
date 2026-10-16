@@ -7,6 +7,11 @@ export { QaUpdates } from "./qa-updates.ts";
 import { handleBadgeWorkspace } from "./badge-workspace.ts";
 import { handleAttendeesRequest } from "./attendees.ts";
 import { handleAttendeeMessages } from "./attendee-messages.ts";
+import {
+  handleFeedbackRequest,
+  privateFeedbackResponse,
+  purgeExpiredFeedback,
+} from "./feedback.ts";
 import { handleNewsletterRequest, purgeNewsletterData } from "./newsletter.ts";
 import { privateMailResponse } from "./mail-utils.ts";
 import { backupMailingData } from "./mail-backups.ts";
@@ -591,6 +596,9 @@ const innerHandler = {
       return calendarResponse();
     }
 
+    const feedbackResponse = await handleFeedbackRequest(request, env);
+    if (feedbackResponse) return feedbackResponse;
+
     const assetRequest = getAssetRequest(request, url);
     let response = await env.ASSETS.fetch(assetRequest);
 
@@ -664,6 +672,8 @@ const innerHandler = {
       url.pathname === "/event-email/unsubscribe/"
     )
       return privateMailResponse(response);
+    if (url.pathname.startsWith("/feedback/"))
+      return privateFeedbackResponse(response);
     return withStaticAssetCache(response, url);
   },
 
@@ -698,6 +708,7 @@ const innerHandler = {
 
     ctx.waitUntil(purgeExpiredSpeakerWorkspaceData(env));
     ctx.waitUntil(purgeNewsletterData(env));
+    ctx.waitUntil(purgeExpiredFeedback(env));
     ctx.waitUntil(purgeSpeakerReviewDigests(env));
   },
 } satisfies ExportedHandler<Env>;

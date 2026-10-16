@@ -1,0 +1,65 @@
+<BaseLayout
+  &title="(id 'SDLCAI — Your feedback response')"
+  &description="(id 'View or delete your feedback using your private response link.')"
+  &url="(id 'https://sdlcai.org/feedback/response/')"
+  &robots="(id 'noindex,nofollow,noarchive')"
+>
+  <section class="border-b border-ink px-5 py-12 md:px-8 md:py-20">
+    <div class="mx-auto max-w-3xl" data-feedback-response>
+      <p class="font-headline text-sm font-black uppercase text-muted">
+        SDLCAI 2026 / Private response
+      </p>
+      <h1
+        class="mt-4 font-headline text-5xl font-black uppercase leading-none md:text-7xl"
+      >
+        Your feedback
+      </h1>
+      <p data-feedback-response-status role="status" class="mt-6 leading-7">
+        Loading your response…
+      </p>
+      <div data-feedback-response-body hidden class="mt-8 grid gap-6">
+        <p class="leading-7">
+          Only you and the organizers can access this response while you keep
+          your private link to yourself. To change your answers, delete this
+          response and
+          <a class="font-bold underline" href="/feedback/"
+            >fill in the form again</a
+          >.
+        </p>
+        <div data-feedback-response-answers class="grid gap-6"></div>
+        <button
+          data-feedback-download
+          type="button"
+          class="justify-self-start border border-ink px-5 py-3 font-bold"
+        >
+          Download my answers
+        </button>
+        <form data-feedback-delete class="grid gap-4 border-t border-ink pt-6">
+          <label class="flex items-start gap-3 leading-6"
+            ><input
+              class="mt-1 h-5 w-5 shrink-0"
+              type="checkbox"
+              required
+            /><span
+              >Delete my response and withdraw my consent. My answers will also
+              be removed from the totals.</span
+            ></label
+          >
+          <button
+            type="submit"
+            class="justify-self-start border border-ink bg-ink px-5 py-3 font-bold text-paper"
+          >
+            Delete my response
+          </button>
+        </form>
+      </div>
+      <p class="mt-8 text-sm leading-6 text-muted">
+        Raw answers expire after 90 days. Combined totals remain after expiry.
+        <a class="underline" href="/privacy-policy/#visitor-feedback"
+          >Feedback privacy notice</a
+        >.
+      </p>
+      <noscript>Enable JavaScript to use your private response link.</noscript>
+    </div>
+  </section>
+</BaseLayout>

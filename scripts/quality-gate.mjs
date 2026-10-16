@@ -15,6 +15,7 @@ export const browserGroups = {
     "attendees:browser-check",
     "dinner:browser-check",
     "mailing:browser-check",
+    "feedback:browser-check",
   ],
   assets: [
     "badges:browser-check",

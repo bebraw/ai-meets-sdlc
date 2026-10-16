@@ -26,6 +26,13 @@ export const adminWorkspaceGroups = [
           "Send event emails and review acceptance and unsubscribe history.",
       },
       {
+        id: "feedback",
+        label: "Visitor feedback",
+        href: "/admin/feedback/",
+        description:
+          "Review attendee ratings and comments, and share the public feedback form.",
+      },
+      {
         id: "newsletter",
         label: "SDLCAI news",
         href: "/admin/newsletter/",

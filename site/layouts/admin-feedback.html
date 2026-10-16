@@ -1,0 +1,84 @@
+<BaseLayout
+  &title="(id 'SDLCAI — Visitor feedback')"
+  &description="(id 'Private attendee feedback results and comments.')"
+  &url="(id 'https://sdlcai.org/admin/feedback/')"
+  &robots="(id 'noindex,nofollow,noarchive')"
+>
+  <AdminNavigation &current="(id 'feedback')"></AdminNavigation>
+  <AdminPageHeader
+    &eyebrow="(adminEyebrow (id 'feedback'))"
+    &title="(id 'Visitor feedback')"
+    &description="(id 'See what worked, what to improve, and what attendees want next.')"
+  ></AdminPageHeader>
+  <section class="border-b border-ink px-5 py-10 md:px-8">
+    <div class="mx-auto grid max-w-7xl gap-8" data-admin-feedback>
+      <div class="flex flex-wrap items-center gap-4">
+        <a
+          class="border border-ink px-4 py-3 font-bold"
+          href="/feedback/"
+          target="_blank"
+          rel="noopener"
+          >Open public form</a
+        >
+        <button
+          data-feedback-public-copy
+          class="border border-ink px-4 py-3 font-bold"
+          type="button"
+        >
+          Copy public form link
+        </button>
+        <button
+          data-feedback-refresh
+          class="border border-ink px-4 py-3 font-bold"
+          type="button"
+        >
+          Refresh results
+        </button>
+      </div>
+      <p class="max-w-3xl text-sm leading-6 text-muted">
+        Share the public link in
+        <a class="font-bold underline" href="/admin/attendee-messages/"
+          >Attendee messages</a
+        >
+        when ready. Responses are not linked to email recipients. Individual
+        answers and consent records expire after 90 days; only combined rating
+        and choice totals remain. Keep comments inside this workspace.
+      </p>
+      <p data-admin-feedback-status role="status" aria-live="polite">
+        Loading feedback…
+      </p>
+      <div
+        data-feedback-totals
+        class="grid gap-6 md:grid-cols-2 xl:grid-cols-3"
+      ></div>
+      <section class="grid gap-6 border-t border-ink pt-8">
+        <h2 class="font-headline text-3xl font-black uppercase">
+          Individual responses
+        </h2>
+        <p class="text-muted">
+          Available during the 90-day retention period. Comments may contain
+          personal information; delete a response if it should not be kept.
+        </p>
+        <div data-feedback-items class="grid gap-5"></div>
+        <div class="flex flex-wrap gap-3">
+          <button
+            data-feedback-previous
+            type="button"
+            class="border border-ink px-4 py-3 font-bold"
+            hidden
+          >
+            Previous responses</button
+          ><button
+            data-feedback-next
+            type="button"
+            class="border border-ink px-4 py-3 font-bold"
+            hidden
+          >
+            Next responses
+          </button>
+        </div>
+      </section>
+      <noscript>Enable JavaScript to review feedback.</noscript>
+    </div>
+  </section>
+</BaseLayout>

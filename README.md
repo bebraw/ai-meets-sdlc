@@ -599,6 +599,60 @@ runs do not write duplicate objects; status changes reuse existing file copies.
 See [receipt backup and recovery](docs/cloudflare.md#receipt-backup-and-recovery)
 for retention and verified restore instructions.
 
+## Visitor feedback
+
+The voluntary SDLCAI 2026 survey is at `/feedback/`, based on the attendee
+Google Form's eleven questions. `/admin/feedback/` shows private ratings,
+choice distributions and paginated individual answers. Its public-link button
+provides the generic URL for a later campaign in **Attendee messages**; creating
+the form does not send invitations. Migration `0039_create_visitor_feedback.sql`
+adds two D1 tables. Existing encryption, admin authentication and Turnstile
+bindings are reused. Turnstile fails closed when unconfigured.
+
+We collect no attendee, email, IP, user-agent or referrer identifiers with
+answers. Optional comments can still contain personal data. Consent is an
+unchecked, specific opt-in under notice `2026-10-16`; the notice and consent
+are encrypted with the answers. A random 256-bit code generated in the browser
+allows access, JSON download and withdrawal through `/feedback/response/`.
+Only its SHA-256 hash is stored. The code travels in a URL fragment and POST
+body, never in a query string. Losing the private link makes name/email lookup
+impossible. Do not log request bodies, tokens or recipient-bearing URLs.
+
+Raw feedback expires **90 days after submission**, as approved on 16 October 2026. Expired rows are excluded from all reads and deleted by daily cleanup or
+an admin results visit. Independent counts are updated in the submission
+transaction; there are no retained per-response combinations or comments in
+these totals. Withdrawal before expiry atomically removes both the raw row
+and its contribution to the totals, including under concurrent retries.
+Raw feedback is deliberately excluded from the R2 backup jobs and there is no
+admin raw-data export. Keep comments in the authenticated workspace and remove
+unnecessary personal data using **Delete response**.
+
+Cloudflare D1 Time Travel may retain deleted encrypted rows for up to another
+30 days ([D1 limits](https://developers.cloudflare.com/d1/platform/limits/)).
+After any D1 recovery, keep public feedback routes and admin results offline,
+clear **all** restored raw feedback with `DELETE FROM visitor_feedback`, and
+verify the table is empty before reopening. This prevents restoring withdrawn
+or expired comments; restored totals may reflect an older snapshot. Do not
+re-import raw feedback from manual database exports. Account owners must keep
+the [Cloudflare DPA and transfer safeguards](https://www.cloudflare.com/cloudflare-customer-dpa/)
+covered by the controller's processing records and review organizer access.
+The controller and rights contact remain Toska Osuuskunta and
+`info@futurefrontend.com`, as in the existing privacy policy. The dedicated
+notice at `/privacy-policy/#visitor-feedback` covers processing, consent,
+retention, recovery history and rights. This implements concrete GDPR controls;
+it does not replace the controller's legal and organizational responsibilities.
+
+For later personalization, personalize the email greeting while sending the
+same public URL. Do not add email addresses, ticket IDs or campaign identifiers
+to form links or answers, or record which recipient completed the survey.
+This preserves separation between email delivery records and feedback.
+
+Run `node --test test/feedback.test.mjs` for validation, encryption, access,
+concurrency and expiry checks. After `npm run worker:test-build`, run
+`npm run feedback:browser-check` for mobile/desktop, both themes, accessibility,
+submission, private deletion and the protected admin view. Only Turnstile's
+external provider is simulated; all data belongs to isolated local D1 storage.
+
 ## Deployment
 
 Deploy through Cloudflare Workers Builds or locally with:

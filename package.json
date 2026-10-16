@@ -63,7 +63,8 @@
     "event:build": "node scripts/generate-event-feed.mjs",
     "email:export": "node scripts/export-email-assets.mjs",
     "badges:browser-check": "node scripts/validate-badges.mjs",
-    "speaker-slides:browser-check": "node scripts/validate-speaker-slides.mjs"
+    "speaker-slides:browser-check": "node scripts/validate-speaker-slides.mjs",
+    "feedback:browser-check": "node scripts/validate-feedback.mjs"
   },
   "engines": {
     "node": "24.x"

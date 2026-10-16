@@ -354,6 +354,26 @@
       }
     },
     "routes": {
+      "feedback": {
+        "layout": "admin-feedback",
+        "scripts": [
+          {
+            "name": "admin-feedback"
+          }
+        ],
+        "dataSources": {
+          "seminar": {
+            "operation": "seminar"
+          }
+        },
+        "context": {
+          "meta": {
+            "title": "SDLCAI — Visitor feedback",
+            "description": "Private attendee feedback results and comments.",
+            "robots": "noindex,nofollow,noarchive"
+          }
+        }
+      },
       "photos": {
         "layout": "photos",
         "context": {
@@ -886,6 +906,48 @@
     "dataSources": {
       "seminar": {
         "operation": "seminar"
+      }
+    }
+  },
+  "feedback": {
+    "layout": "feedback",
+    "scripts": [
+      {
+        "name": "feedback"
+      }
+    ],
+    "dataSources": {
+      "seminar": {
+        "operation": "seminar"
+      }
+    },
+    "context": {
+      "meta": {
+        "title": "SDLCAI 2026 — Your feedback",
+        "description": "Help shape the next SDLCAI. Share your experience in a voluntary 3–5 minute survey.",
+        "robots": "noindex,nofollow,noarchive"
+      }
+    },
+    "routes": {
+      "response": {
+        "layout": "feedback-response",
+        "scripts": [
+          {
+            "name": "feedback-response"
+          }
+        ],
+        "dataSources": {
+          "seminar": {
+            "operation": "seminar"
+          }
+        },
+        "context": {
+          "meta": {
+            "title": "SDLCAI — Your feedback response",
+            "description": "View or delete your feedback using your private response link.",
+            "robots": "noindex,nofollow,noarchive"
+          }
+        }
       }
     }
   }
