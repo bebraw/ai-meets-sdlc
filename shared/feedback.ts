@@ -1,13 +1,24 @@
 export const feedbackNoticeVersion = "2026-10-16";
+export const feedbackFormVersion = "2";
 export const feedbackRetentionDays = 90;
 export const feedbackConsentText =
   "I agree to Toska Osuuskunta using my answers to evaluate SDLCAI 2026 and improve future events. Participation is voluntary. I can withdraw and delete my response using my private link during the 90-day retention period.";
 
 export const feedbackSections = [
   {
-    title: "The talks",
+    title: "Overall impression & talks",
     description: "How did the programme work for you?",
     questions: [
+      {
+        id: "recommend",
+        label: "How likely are you to recommend SDLCAI 2026 to a colleague?",
+        kind: "nps",
+      },
+      {
+        id: "recommendReason",
+        label: "What is the main reason for your recommendation rating?",
+        kind: "text",
+      },
       {
         id: "overall",
         label: "How would you rate SDLCAI 2026 overall?",
@@ -110,6 +121,7 @@ export type FeedbackSubmission = {
   answers: FeedbackAnswers;
   consent: true;
   noticeVersion: string;
+  formVersion?: "1" | "2";
 };
 export type FeedbackTotal = { question: string; answer: string; count: number };
 export type FeedbackItem = FeedbackSubmission & {
@@ -128,6 +140,7 @@ export function parseFeedback(form: FormData): FeedbackSubmission | string {
     ...feedbackQuestions.map((q) => q.id),
     "consent",
     "noticeVersion",
+    "formVersion",
     "receipt",
     "website",
     "cf-turnstile-response",
@@ -143,6 +156,12 @@ export function parseFeedback(form: FormData): FeedbackSubmission | string {
   )
     return "The privacy notice has changed. Reload the page before submitting.";
   const answers: FeedbackAnswers = {};
+  const formVersion = form.get("formVersion") ?? "1";
+  if (
+    form.getAll("formVersion").length > 1 ||
+    (formVersion !== "1" && formVersion !== feedbackFormVersion)
+  )
+    return "The form has changed. Reload the page before submitting.";
   for (const question of feedbackQuestions) {
     const values = form.getAll(question.id);
     if (values.some((value) => typeof value !== "string"))
@@ -164,6 +183,12 @@ export function parseFeedback(form: FormData): FeedbackSubmission | string {
     if (question.kind === "text") {
       if (value.length > 2000)
         return "Keep each comment within 2,000 characters.";
+    } else if (question.kind === "nps") {
+      // A form already open before this question was introduced can still be
+      // submitted. Omission is preserved, never converted into a zero rating.
+      if (!values.length && formVersion === "1") continue;
+      if (!/^(?:[0-9]|10)$/u.test(value))
+        return "Please choose a recommendation rating from 0 to 10.";
     } else if (question.kind === "rating") {
       if (!/^[1-5]$/u.test(value))
         return "Please rate every question from 1 to 5.";
@@ -171,7 +196,41 @@ export function parseFeedback(form: FormData): FeedbackSubmission | string {
       return "Please answer each required question.";
     answers[question.id] = value;
   }
-  return { answers, consent: true, noticeVersion: feedbackNoticeVersion };
+  return {
+    answers,
+    consent: true,
+    noticeVersion: feedbackNoticeVersion,
+    formVersion,
+  };
+}
+
+export function recommendationSummary(totals: readonly FeedbackTotal[]) {
+  let promoters = 0,
+    passives = 0,
+    detractors = 0;
+  for (const item of totals) {
+    if (
+      item.question !== "recommend" ||
+      !/^(?:[0-9]|10)$/u.test(item.answer) ||
+      !Number.isSafeInteger(item.count) ||
+      item.count < 0
+    )
+      continue;
+    const rating = Number(item.answer);
+    if (rating >= 9) promoters += item.count;
+    else if (rating >= 7) passives += item.count;
+    else detractors += item.count;
+  }
+  const answered = promoters + passives + detractors;
+  return {
+    answered,
+    promoters,
+    passives,
+    detractors,
+    score: answered
+      ? Math.round((100 * (promoters - detractors)) / answered)
+      : null,
+  };
 }
 
 export function feedbackContributions(

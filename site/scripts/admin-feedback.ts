@@ -2,6 +2,7 @@ import "./index.ts";
 import "./admin-navigation.ts";
 import {
   feedbackQuestions,
+  recommendationSummary,
   type FeedbackDashboard,
 } from "../../shared/feedback.ts";
 import {
@@ -47,12 +48,109 @@ async function load() {
     for (const question of feedbackQuestions) {
       if (question.kind === "text") continue;
       const card = document.createElement("section");
-      card.className = "min-w-0 border border-ink p-5";
-      append(card, textElement("h2", question.label, "font-bold leading-6"));
+      card.className =
+        question.kind === "nps"
+          ? "min-w-0 border border-ink p-5 md:col-span-2 xl:col-span-3"
+          : "min-w-0 border border-ink p-5";
+      append(
+        card,
+        textElement(
+          "h2",
+          question.kind === "nps" ? "Net Promoter Score (NPS)" : question.label,
+          "font-bold leading-6",
+        ),
+      );
       const options =
-        question.kind === "rating"
-          ? ["1", "2", "3", "4", "5"]
-          : question.options;
+        question.kind === "nps"
+          ? Array.from({ length: 11 }, (_, index) => String(index))
+          : question.kind === "rating"
+            ? ["1", "2", "3", "4", "5"]
+            : question.options;
+      const answered =
+        question.kind === "multiple"
+          ? total
+          : result.totals
+              .filter(
+                (t) =>
+                  t.question === question.id &&
+                  options.some((option) => option === t.answer),
+              )
+              .reduce((count, t) => count + t.count, 0);
+      if (question.kind === "nps") {
+        const nps = recommendationSummary(result.totals);
+        append(
+          card,
+          textElement("p", question.label, "mt-2 text-muted leading-7"),
+        );
+        const headline = document.createElement("div");
+        headline.className = "my-5 flex flex-wrap items-end gap-x-6 gap-y-2";
+        const score = textElement(
+          "p",
+          nps.score === null ? "—" : `${nps.score > 0 ? "+" : ""}${nps.score}`,
+          "font-headline text-7xl font-black leading-none",
+        );
+        score.dataset.feedbackNps = "";
+        score.setAttribute(
+          "aria-label",
+          nps.score === null
+            ? "No recommendation ratings yet"
+            : `Net Promoter Score: ${nps.score}`,
+        );
+        const count = textElement(
+          "p",
+          `${nps.answered} recommendation ${nps.answered === 1 ? "rating" : "ratings"}`,
+          "pb-1 text-sm font-bold",
+        );
+        count.dataset.feedbackNpsCount = "";
+        append(headline, score, count);
+        append(card, headline);
+        const groups = document.createElement("dl");
+        groups.className =
+          "grid gap-4 border-y border-ink/30 py-4 sm:grid-cols-3";
+        for (const [label, count] of [
+          ["Promoters · 9–10", nps.promoters],
+          ["Passives · 7–8", nps.passives],
+          ["Detractors · 0–6", nps.detractors],
+        ] as const) {
+          const group = document.createElement("div");
+          append(
+            group,
+            textElement("dt", label, "text-sm text-muted"),
+            textElement(
+              "dd",
+              `${count} (${nps.answered ? Math.round((100 * count) / nps.answered) : 0}%)`,
+              "mt-1 text-xl font-bold",
+            ),
+          );
+          append(groups, group);
+        }
+        append(
+          card,
+          groups,
+          textElement(
+            "p",
+            "NPS = % promoters − % detractors, on a scale from −100 to +100. Passives count in the denominator. The score is rounded to a whole number.",
+            "mt-4 text-sm leading-6 text-muted",
+          ),
+        );
+        if (total > nps.answered)
+          append(
+            card,
+            textElement(
+              "p",
+              `${total - nps.answered} ${total - nps.answered === 1 ? "response has" : "responses have"} no recommendation rating and ${total - nps.answered === 1 ? "is" : "are"} excluded from NPS.`,
+              "mt-2 text-sm leading-6 text-muted",
+            ),
+          );
+        append(
+          card,
+          textElement(
+            "p",
+            "Treat this as directional feedback from respondents. A small or self-selected sample may not represent all attendees; compare events only with consistent wording, timing and invitation methods.",
+            "mt-2 text-sm leading-6 text-muted",
+          ),
+        );
+      }
       if (question.kind === "rating") {
         const sum = result.totals
           .filter((t) => t.question === question.id)
@@ -61,7 +159,7 @@ async function load() {
           card,
           textElement(
             "p",
-            total ? `${(sum / total).toFixed(1)} / 5` : "No ratings yet",
+            answered ? `${(sum / answered).toFixed(1)} / 5` : "No ratings yet",
             "my-4 font-headline text-4xl font-black",
           ),
         );
@@ -84,7 +182,7 @@ async function load() {
           ),
           textElement(
             "span",
-            `${count} (${total ? Math.round((count / total) * 100) : 0}%)`,
+            `${count} (${answered ? Math.round((count / answered) * 100) : 0}%)`,
             "text-sm font-bold leading-6",
           ),
         );
@@ -92,12 +190,25 @@ async function load() {
         bar.className = "col-span-2 h-1 bg-ink/10";
         const fill = document.createElement("div");
         fill.className = "h-1 bg-ink";
-        fill.style.width = `${total ? Math.min(100, (count / total) * 100) : 0}%`;
+        fill.style.width = `${answered ? Math.min(100, (count / answered) * 100) : 0}%`;
         append(bar, fill);
         append(item, bar);
         append(list, item);
       }
-      append(card, list);
+      if (question.kind === "nps") {
+        const distribution = document.createElement("details");
+        distribution.className = "mt-5 border-t border-ink/30 pt-4";
+        append(
+          distribution,
+          textElement(
+            "summary",
+            "Recommendation rating distribution · 0–10",
+            "cursor-pointer font-bold leading-6",
+          ),
+          list,
+        );
+        append(card, distribution);
+      } else append(card, list);
       append(totalsRoot, card);
     }
     if (!result.responses.length)
@@ -108,7 +219,7 @@ async function load() {
     for (const item of result.responses) {
       const details = document.createElement("details");
       details.className = "min-w-0 border border-ink p-5";
-      const comments = ["best", "improve", "future"].filter(
+      const comments = ["recommendReason", "best", "improve", "future"].filter(
         (id) => item.answers[id],
       ).length;
       append(

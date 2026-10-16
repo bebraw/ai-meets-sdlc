@@ -602,12 +602,32 @@ for retention and verified restore instructions.
 ## Visitor feedback
 
 The voluntary SDLCAI 2026 survey is at `/feedback/`, based on the attendee
-Google Form's eleven questions. `/admin/feedback/` shows private ratings,
-choice distributions and paginated individual answers. Its public-link button
+Google Form's eleven questions, plus a 0–10 likelihood-to-recommend question
+and an optional reason. `/admin/feedback/` shows private ratings, Net Promoter
+Score (NPS), choice distributions and paginated individual answers. Its public-link button
 provides the generic URL for a later campaign in **Attendee messages**; creating
 the form does not send invitations. Migration `0039_create_visitor_feedback.sql`
 adds two D1 tables. Existing encryption, admin authentication and Turnstile
 bindings are reused. Turnstile fails closed when unconfigured.
+
+The recommendation question follows [Bain's NPS method](https://www.netpromotersystem.com/about/measuring-your-net-promoter-score/):
+9–10 are promoters, 7–8 passives and 0–6 detractors. NPS is the percentage of
+promoters minus the percentage of detractors, with **all answered recommendation
+ratings**, including passives, in the denominator. Admin shows the rounded score
+on a −100 to +100 scale, group counts, answer count and the 0–10 distribution.
+Earlier responses without this question are excluded rather than counted as zero.
+Already-open version 1 forms can still submit without it; new version 2 forms
+require a valid 0–10 answer. Withdrawal removes the rating's contribution, while
+expiry retains only its independent count, like the other ratings.
+
+Treat the score as directional feedback from respondents, with the answer count
+attached to any marketing claim. It does not establish actual referrals or
+represent all attendees. Invite attendees consistently and compare future events
+only with consistent wording, timing and methods; avoid coaching respondents
+toward particular scores. Recommendation comments remain private and are not
+permission to publish testimonials. Bain's [reliability guidance](https://www.bain.com/contentassets/3217eb3c2803449abfd5fb23b06c3db1/loyalty_insights_2_creating_a_reliable_metric.pdf)
+explains sample and response bias; its [follow-up guidance](https://www.netpromotersystem.com/about/history-of-net-promoter/)
+supports asking why.
 
 We collect no attendee, email, IP, user-agent or referrer identifiers with
 answers. Optional comments can still contain personal data. Consent is an

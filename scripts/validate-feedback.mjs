@@ -94,7 +94,7 @@ try {
       await page.setViewportSize({ width, height: 1000 });
       await page.goto(origin + "/feedback/");
       await page.getByRole("button", { name: "Send feedback" }).waitFor();
-      assert.equal(await page.locator("fieldset").count(), 11);
+      assert.equal(await page.locator("fieldset").count(), 13);
       for (const theme of ["light", "dark"]) {
         if ((await page.locator("html").getAttribute("data-theme")) !== theme)
           await page.locator("[data-theme-toggle]").click();
@@ -107,6 +107,26 @@ try {
       }
     }
     await page.goto(origin + "/feedback/");
+    const recommend = page.locator(
+      'label:has(input[name="recommend"][value="9"])',
+    );
+    await recommend.click();
+    // Native radio keyboard navigation also reaches the scale's endpoints.
+    await page
+      .locator('input[name="recommend"][value="9"]')
+      .press("ArrowRight");
+    assert.equal(
+      await page.locator('input[name="recommend"][value="10"]').isChecked(),
+      true,
+    );
+    await page
+      .locator('input[name="recommend"][value="10"]')
+      .press("ArrowLeft");
+    await page
+      .getByLabel("What is the main reason for your recommendation rating?", {
+        exact: true,
+      })
+      .fill("Useful ideas to share with colleagues.");
     for (const id of [
       "overall",
       "academic",
@@ -161,6 +181,25 @@ try {
       await adminPage.getByText("4.0 / 5", { exact: true }).count(),
       5,
     );
+    assert.equal(
+      await adminPage.locator("[data-feedback-nps]").innerText(),
+      "+100",
+    );
+    assert.equal(
+      await adminPage.locator("[data-feedback-nps-count]").innerText(),
+      "1 recommendation rating",
+    );
+    await adminPage
+      .getByText("Recommendation rating distribution · 0–10", { exact: true })
+      .click();
+    assert.equal(
+      await adminPage
+        .locator("[data-feedback-totals] section")
+        .first()
+        .locator("li")
+        .count(),
+      11,
+    );
     await adminPage.locator("[data-feedback-items] summary").click();
     assert.match(
       await adminPage.locator("[data-feedback-items]").innerText(),
@@ -212,7 +251,15 @@ try {
       .waitFor();
     assert.equal(
       await adminPage.locator("[data-feedback-totals] section").count(),
-      8,
+      9,
+    );
+    assert.equal(
+      await adminPage.locator("[data-feedback-nps]").innerText(),
+      "—",
+    );
+    assert.equal(
+      await adminPage.locator("[data-feedback-nps-count]").innerText(),
+      "0 recommendation ratings",
     );
     await adminPage.screenshot({
       path: `.cache/feedback-review/admin-${name}.png`,

@@ -27,7 +27,12 @@ export function renderFeedbackAnswers(
       group,
       textElement(
         "p",
-        Array.isArray(answer) ? answer.join("; ") : answer || "No comment",
+        Array.isArray(answer)
+          ? answer.join("; ")
+          : answer ||
+              (question.kind === "text"
+                ? "No comment"
+                : "Not answered in this response"),
         "mt-2 whitespace-pre-wrap break-words leading-7",
       ),
     );

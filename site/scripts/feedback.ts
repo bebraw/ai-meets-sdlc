@@ -1,6 +1,7 @@
 import "./index.ts";
 import {
   feedbackConsentText,
+  feedbackFormVersion,
   feedbackSections,
 } from "../../shared/feedback.ts";
 import {
@@ -23,6 +24,8 @@ const form = document.querySelector<HTMLFormElement>("[data-feedback-form]")!;
 const root = form.querySelector<HTMLElement>("[data-feedback-questions]")!;
 form.querySelector<HTMLElement>("[data-feedback-consent]")!.textContent =
   feedbackConsentText;
+form.querySelector<HTMLInputElement>('[name="formVersion"]')!.value =
+  feedbackFormVersion;
 for (const [sectionIndex, section] of feedbackSections.entries()) {
   const group = document.createElement("section");
   group.className = "grid gap-7";
@@ -65,31 +68,45 @@ for (const [sectionIndex, section] of feedbackSections.entries()) {
       );
       fieldset.lastElementChild!.id = `feedback-${question.id}-limit`;
     } else {
+      const numeric = question.kind === "rating" || question.kind === "nps";
       const options =
-        question.kind === "rating"
-          ? ["1", "2", "3", "4", "5"]
-          : question.options;
+        question.kind === "nps"
+          ? Array.from({ length: 11 }, (_, index) => String(index))
+          : question.kind === "rating"
+            ? ["1", "2", "3", "4", "5"]
+            : question.options;
       const choices = document.createElement("div");
       choices.className =
-        question.kind === "rating" ? "grid grid-cols-5 gap-2" : "grid gap-3";
+        question.kind === "nps"
+          ? "grid grid-cols-6 gap-2 sm:grid-cols-[repeat(11,minmax(0,1fr))]"
+          : question.kind === "rating"
+            ? "grid grid-cols-5 gap-2"
+            : "grid gap-3";
       for (const option of options) {
         const label = document.createElement("label");
-        label.className =
-          question.kind === "rating"
-            ? "flex min-h-14 cursor-pointer items-center justify-center gap-2 border border-ink p-2 font-bold has-[:checked]:bg-ink has-[:checked]:text-paper"
-            : "flex cursor-pointer items-start gap-3 border border-ink/30 px-4 py-3 leading-6 has-[:checked]:border-ink";
+        label.className = numeric
+          ? "flex min-h-14 cursor-pointer items-center justify-center gap-2 border border-ink p-2 font-bold has-[:checked]:bg-ink has-[:checked]:text-paper"
+          : "flex cursor-pointer items-start gap-3 border border-ink/30 px-4 py-3 leading-6 has-[:checked]:border-ink";
         const input = document.createElement("input");
         input.type = question.kind === "multiple" ? "checkbox" : "radio";
         input.name = question.id;
         input.value = option;
         input.required = question.kind !== "multiple";
-        input.className = "h-4 w-4 shrink-0 accent-ink";
-        if (question.kind !== "rating") input.classList.add("mt-1");
+        input.className =
+          question.kind === "nps" ? "sr-only" : "h-4 w-4 shrink-0 accent-ink";
+        if (question.kind === "nps")
+          label.classList.add(
+            "focus-within:outline",
+            "focus-within:outline-2",
+            "focus-within:outline-offset-2",
+            "focus-within:outline-ink",
+          );
+        if (!numeric) input.classList.add("mt-1");
         append(label, input, textElement("span", option));
         append(choices, label);
       }
       append(fieldset, choices);
-      if (question.kind === "rating") {
+      if (numeric) {
         const anchors = textElement(
           "p",
           "",
@@ -97,9 +114,19 @@ for (const [sectionIndex, section] of feedbackSections.entries()) {
         );
         append(
           anchors,
-          textElement("span", "1 — Very poor"),
-          textElement("span", "5 — Excellent"),
+          textElement(
+            "span",
+            question.kind === "nps" ? "0 — Not at all likely" : "1 — Very poor",
+          ),
+          textElement(
+            "span",
+            question.kind === "nps" ? "10 — Extremely likely" : "5 — Excellent",
+          ),
         );
+        if (question.kind === "nps") {
+          anchors.id = "recommend-scale";
+          fieldset.setAttribute("aria-describedby", anchors.id);
+        }
         append(fieldset, anchors);
       }
       if (question.kind === "multiple")
