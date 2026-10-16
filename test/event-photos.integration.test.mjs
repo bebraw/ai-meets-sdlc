@@ -90,7 +90,11 @@ test("photo bank publishes licensed derivatives and enforces original access, re
   assert.equal(jaakkoPhotos.length, jaakkoImport.photoCount);
   assert.equal(
     jaakkoPhotos.filter((photo) => photo.selection === "selected").length,
-    jaakkoImport.highlightCandidateIds.length,
+    seed.photos.filter(
+      (photo) =>
+        photo.sourceId === "jaakko" &&
+        initial.photos[photo.id].selection === "selected",
+    ).length,
   );
   assert.ok(
     jaakkoPhotos.every((photo) => photo.photographer === "Jaakko Hollmén"),

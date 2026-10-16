@@ -4,8 +4,9 @@ The media bank contains 314 photos from the 13 October 2026 seminar:
 188 JPEGs from the first two collections and 126 photos from Jaakko Hollmén
 (124 HEIC originals and two JPEGs). All three collections are published under
 CC BY 4.0, with credit to the named photographer. Jaakko's collection adds
-20 highlights and 106 alternates after license confirmation on 16 October 2026.
-`jaakko-import.json` records the confirmation, highlights and four excluded
+23 highlights and 103 alternates after license confirmation and visual review
+on 16 October 2026. `jaakko-import.json` records the confirmation, the original
+20 highlight candidates and four excluded
 files: two Q&A screenshots and two videos retained in the source folder.
 The original photo folder is read-only input. Generated files stay in
 `output/media-bank/`, outside the public site build and Git.
@@ -69,7 +70,7 @@ This mutable file is ignored by Git. Back it up using the **Back up review decis
 download. Reload stale drafts before saving; the server rejects conflicting
 edits instead of replacing a newer decision.
 
-The published visual review categorizes and captions the first 188 photos and shortlists
+The initial visual review categorized and captioned the first 188 photos and shortlisted
 45 highlights: two dedicated presentation photos for each of the ten talks,
 two complementary views of each of the three panels, 15 atmospheric photos,
 the group photograph, two closing acknowledgements and a session introduction
@@ -81,9 +82,21 @@ Other frames are retained as alternates. Similar-frame groups are suggestions
 to compare, not automatic duplicate deletions.
 
 All 126 Jaakko photos have reviewed categories, captions, tags and programme context.
-The 20 highlights add talk and panel views, group photography, welcome signage,
-food, branded water and beer, posters and the production desk. The remaining
-106 are published as alternates. Existing curation is preserved.
+The first 20 highlights add talk and panel views, group photography, welcome
+signage, food, branded water and beer, posters and the production desk.
+The broader review also highlights the badges, audience Q&A and production team,
+bringing this collection to 23 highlights and 103 alternates.
+
+The broader review preserves all 65 previous highlights and adds 11 complementary
+frames, bringing the default selection to 76. The four requested additions are
+`DSCF6639.jpeg` (registration desk), `IMG_4692.HEIC` (production team),
+`IMG_4648.HEIC` (audience Q&A) and `DSCF6576.jpeg` (coffee service).
+The seven further additions cover seated audience atmosphere (`DSCF6569.jpeg`),
+badges (`IMG_4590.HEIC`), recording activity (`DSCF6604.jpeg`), conversations in
+the auditorium (`DSCF6616.jpeg`) and lounge (`DSCF6682.jpeg`), the closing recap
+(`IMG_20261013_170242_081.jpg`) and afterparty conversations
+(`IMG_20261013_174444_095.jpg`). Captions describe each setting; visible
+Wunderdog and AIMBITION banners and branded refreshments receive matching tags.
 
 Search **sponsors** in the public gallery for selected views of the sponsor
 thank-you screen, branded stage, Swarmia/AIMBITION banners and Aalto lettering.
@@ -181,7 +194,7 @@ and real review decisions unchanged.
 
 ## Hosting integration
 
-The public gallery is at <https://sdlcai.org/photos/> and opens with the 65
+The public gallery is at <https://sdlcai.org/photos/> and opens with the 76
 highlights. Clear the selection filter to explore all published alternates.
 Visitors can search, filter, preview, copy attribution, and download sharing
 copies individually or in a ZIP with credits and catalog metadata.
@@ -258,3 +271,22 @@ Useful next collections include speaker-confirmed portraits, poster sessions,
 sponsor activity, and selected venue/audience photos for future event promotion.
 Confirmed-person filters become visible in the public gallery once organizers
 have added human-confirmed tags.
+
+The visual review supports these concrete reuse opportunities:
+
+- **Event recap:** a sequence from `IMG_4573.HEIC` (welcome sign),
+  `DSCF6569.jpeg` (audience), `DSCF6586.jpeg` (opening talk), `DSCF6668.jpeg`
+  (panel), `DSCF6576.jpeg` (coffee), `DSCF6682.jpeg` (conversation),
+  `IMG_20261013_170242_081.jpg` (key themes), `DSCF6722.jpeg` (group) and
+  `IMG_20261013_174444_095.jpg` (afterparty). These provide a nine-frame story
+  for a recap article or carousel.
+- **Event team appreciation:** registration (`DSCF6639.jpeg`), recording
+  (`DSCF6604.jpeg`), the production team (`IMG_4692.HEIC`) and badges
+  (`IMG_4590.HEIC`). [Browse selected production photos](https://sdlcai.org/photos/?category=behind-the-scenes).
+- **Sponsor follow-up:** the Wunderdog banner in the audience Q&A, AIMBITION
+  beside the recording activity, Swarmia/AIMBITION beside the stage, and the
+  closing sponsor acknowledgement. [Browse sponsor highlights](https://sdlcai.org/photos/?tag=sponsors).
+- **Vertical social stories:** `IMG_4573.HEIC`, `IMG_4590.HEIC`,
+  `IMG_4648.HEIC`, `IMG_4692.HEIC` and `IMG_4705.HEIC` provide portrait images
+  of the welcome sign, badges, audience, crew and branded drinks. They share
+  the same Jaakko Hollmén credit and CC BY 4.0 license. [Browse portrait highlights](https://sdlcai.org/photos/?tag=portrait-orientation).

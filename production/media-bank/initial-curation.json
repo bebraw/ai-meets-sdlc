@@ -129,8 +129,8 @@
     },
     "photo-bd7396609a8da197f55e": {
       "category": "audience",
-      "caption": "Audience and room atmosphere at SDLCAI.",
-      "altText": "Audience and room atmosphere at SDLCAI.",
+      "caption": "Audience seated beside the tall windows in the Marsio auditorium.",
+      "altText": "Audience seated beside the tall windows in the Marsio auditorium.",
       "tags": [
         "audience",
         "venue",
@@ -139,12 +139,12 @@
         "landscape-orientation",
         "seating"
       ],
-      "selection": "alternate",
+      "selection": "selected",
       "relatedTalkIds": [],
       "depictedSpeakerIds": [],
       "associationEvidence": "",
       "notes": "",
-      "revision": 1
+      "revision": 2
     },
     "photo-32d491cb68151b73d98c": {
       "category": "audience",
@@ -214,24 +214,24 @@
     },
     "photo-d8d787e4d943333177fb": {
       "category": "networking",
-      "caption": "Attendees gathering and talking during the seminar breaks.",
-      "altText": "Attendees gathering and talking during the seminar breaks.",
+      "caption": "Attendees gathering around the coffee and pastry table at Marsio.",
+      "altText": "Attendees talk beside coffee dispensers, cups and trays of pastries in the Marsio foyer.",
       "tags": [
         "community",
-        "break",
         "conversation",
         "buffet",
         "coffee",
         "cups",
         "landscape-orientation",
-        "pastries"
+        "pastries",
+        "refreshments"
       ],
-      "selection": "alternate",
+      "selection": "selected",
       "relatedTalkIds": [],
       "depictedSpeakerIds": [],
       "associationEvidence": "",
       "notes": "",
-      "revision": 1
+      "revision": 2
     },
     "photo-b6155cc00ba5f54e7bfc": {
       "category": "audience",
@@ -636,9 +636,9 @@
       "revision": 1
     },
     "photo-f254614ebf27c3010d34": {
-      "category": "audience",
-      "caption": "Audience and room atmosphere at SDLCAI.",
-      "altText": "Audience and room atmosphere at SDLCAI.",
+      "category": "behind-the-scenes",
+      "caption": "Recording equipment and production controls beside the SDLCAI audience.",
+      "altText": "A tripod-mounted camera, production monitors and a control desk beside the seated audience, with an AIMBITION banner at the side of the room.",
       "tags": [
         "audience",
         "venue",
@@ -649,14 +649,17 @@
         "production",
         "production-desk",
         "seating",
-        "tripod"
+        "tripod",
+        "sponsors",
+        "AIMBITION",
+        "sponsor-banners"
       ],
-      "selection": "alternate",
+      "selection": "selected",
       "relatedTalkIds": [],
       "depictedSpeakerIds": [],
       "associationEvidence": "",
       "notes": "",
-      "revision": 1
+      "revision": 2
     },
     "photo-28ca4a3dd2534faa6050": {
       "category": "audience",
@@ -835,15 +838,22 @@
     },
     "photo-45749165fa84111da0ac": {
       "category": "networking",
-      "caption": "Attendees gathering and talking during the seminar breaks.",
-      "altText": "Attendees gathering and talking during the seminar breaks.",
-      "tags": ["community", "break", "conversation", "landscape-orientation"],
-      "selection": "alternate",
+      "caption": "Attendees talking at standing tables beside the auditorium seating.",
+      "altText": "Attendees talking at standing tables beside the auditorium seating.",
+      "tags": [
+        "community",
+        "break",
+        "conversation",
+        "landscape-orientation",
+        "standing-tables",
+        "auditorium"
+      ],
+      "selection": "selected",
       "relatedTalkIds": [],
       "depictedSpeakerIds": [],
       "associationEvidence": "",
       "notes": "",
-      "revision": 1
+      "revision": 2
     },
     "photo-c33c23a50e1f389dd67c": {
       "category": "venue",
@@ -1112,23 +1122,22 @@
     },
     "photo-42da79c91fd7c8c5958c": {
       "category": "behind-the-scenes",
-      "caption": "Arrival and registration at the seminar venue.",
-      "altText": "Arrival and registration at the seminar venue.",
+      "caption": "The SDLCAI registration desk, with laptops and lanyards.",
+      "altText": "Event staff behind the Marsio registration desk, with laptops and lanyards laid out on the counter.",
       "tags": [
         "registration",
-        "arrival",
         "event-team",
         "landscape-orientation",
         "lanyards",
         "laptop",
         "registration-desk"
       ],
-      "selection": "alternate",
+      "selection": "selected",
       "relatedTalkIds": [],
       "depictedSpeakerIds": [],
       "associationEvidence": "",
       "notes": "",
-      "revision": 1
+      "revision": 2
     },
     "photo-88a4aa88f9e6e54a4db1": {
       "category": "networking",
@@ -2670,21 +2679,26 @@
     },
     "photo-86032de91dd8d9463d75": {
       "category": "networking",
-      "caption": "Attendees gathering and talking during the seminar breaks.",
-      "altText": "Attendees gathering and talking during the seminar breaks.",
+      "caption": "Conversations in the Marsio lounge, with SDLCAI sparkling water on the table.",
+      "altText": "Conversations in the Marsio lounge, with SDLCAI sparkling water on the table.",
       "tags": [
         "community",
         "break",
         "conversation",
         "landscape-orientation",
-        "lounge"
+        "lounge",
+        "refreshments",
+        "branding",
+        "sparkling-water",
+        "event-branding",
+        "cans"
       ],
-      "selection": "alternate",
+      "selection": "selected",
       "relatedTalkIds": [],
       "depictedSpeakerIds": [],
       "associationEvidence": "",
       "notes": "",
-      "revision": 1
+      "revision": 2
     },
     "photo-593dbc229e5a2a75f9b0": {
       "category": "panels",
@@ -3130,21 +3144,21 @@
     },
     "photo-04a6864a8e7de77704c9": {
       "category": "talks",
-      "caption": "The seminar stage during closing remarks and acknowledgements.",
-      "altText": "The seminar stage during closing remarks and acknowledgements.",
+      "caption": "Closing recap of SDLCAI themes: AI in engineering pipelines, quality and review under automation, and leadership for AI adoption.",
+      "altText": "Closing recap of SDLCAI themes: AI in engineering pipelines, quality and review under automation, and leadership for AI adoption.",
       "tags": [
         "closing",
         "stage",
-        "thank-you",
         "landscape-orientation",
-        "presentation-slides"
+        "presentation-slides",
+        "recap"
       ],
-      "selection": "alternate",
+      "selection": "selected",
       "relatedTalkIds": [],
       "depictedSpeakerIds": [],
       "associationEvidence": "",
       "notes": "",
-      "revision": 1
+      "revision": 2
     },
     "photo-566f5e73ea7b52b83b79": {
       "category": "talks",
@@ -3355,22 +3369,28 @@
     },
     "photo-8375b8a584524daa1284": {
       "category": "networking",
-      "caption": "Food and conversations in the Marsio foyer after the programme.",
-      "altText": "Food and conversations in the Marsio foyer after the programme.",
+      "caption": "Afterparty conversations in the Marsio foyer, with SDLCAI Lager and sparkling water on the tables.",
+      "altText": "Afterparty conversations in the Marsio foyer, with SDLCAI Lager and sparkling water on the tables.",
       "tags": [
         "afterparty",
         "community",
         "food",
         "foyer",
         "cafe-tables",
-        "landscape-orientation"
+        "landscape-orientation",
+        "beer",
+        "lager",
+        "sparkling-water",
+        "event-branding",
+        "cans",
+        "refreshments"
       ],
-      "selection": "alternate",
+      "selection": "selected",
       "relatedTalkIds": [],
       "depictedSpeakerIds": [],
       "associationEvidence": "",
       "notes": "",
-      "revision": 1
+      "revision": 2
     },
     "photo-518d12886352dfb7bb55": {
       "category": "group-photo",
@@ -3907,15 +3927,17 @@
         "lanyards",
         "detail",
         "close-up",
-        "portrait-orientation"
+        "portrait-orientation",
+        "branding",
+        "event-branding"
       ],
       "relatedTalkIds": [],
       "notes": "",
       "altText": "Seminar badges and lanyards arranged on a table.",
-      "selection": "alternate",
+      "selection": "selected",
       "depictedSpeakerIds": [],
       "associationEvidence": "",
-      "revision": 2
+      "revision": 3
     },
     "photo-1c64174941901222176a": {
       "category": "networking",
@@ -4918,21 +4940,24 @@
     },
     "photo-d8ea86bad079449b387c": {
       "category": "audience",
-      "caption": "Audience members during the final seminar Q&A.",
+      "caption": "Audience members during the final seminar Q&A, with a Wunderdog banner behind them.",
       "tags": [
         "audience",
         "q-and-a",
         "panel",
         "audience-question",
-        "portrait-orientation"
+        "portrait-orientation",
+        "sponsors",
+        "Wunderdog",
+        "sponsor-banners"
       ],
       "relatedTalkIds": [],
       "notes": "",
-      "altText": "Audience members during the final seminar Q&A.",
-      "selection": "alternate",
+      "altText": "Audience members during the final seminar Q&A, with a Wunderdog banner behind them.",
+      "selection": "selected",
       "depictedSpeakerIds": [],
       "associationEvidence": "",
-      "revision": 2
+      "revision": 3
     },
     "photo-9a3f108c49378f7c6e3e": {
       "category": "talks",
@@ -5675,10 +5700,10 @@
       "relatedTalkIds": [],
       "notes": "",
       "altText": "The seminar production team at the sound and lighting desk.",
-      "selection": "alternate",
+      "selection": "selected",
       "depictedSpeakerIds": [],
       "associationEvidence": "",
-      "revision": 2
+      "revision": 3
     },
     "photo-2c70cc733c246d80d100": {
       "category": "group-photo",
