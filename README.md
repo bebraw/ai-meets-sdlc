@@ -59,7 +59,9 @@ photos, applies confirmed camera clock corrections, and provides curation,
 collections and credited downloads. Start it with `npm run photos:review`
 after preparing the source folder.
 
-The public photo timeline is at `/timeline/`, linked from `/photos/`. Its layout
+The public photo timeline is at `/timeline/`, available as **Photo timeline** in
+the main navigation and footer, in the homepage **A day in frames** card, and
+through the prominent **Explore the photo timeline** button on `/photos/`. Its layout
 is `site/layouts/photo-timeline.html`, with the approved daybook design and
 discovery code in `assets/photo-timeline/`. It loads the anonymous public catalog
 after the page shell paints, starts with highlights and supports chapters,

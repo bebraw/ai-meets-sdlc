@@ -220,6 +220,19 @@
         font-weight: 700;
         font-size: 14px;
       }
+      .timeline-entry {
+        margin-top: 20px;
+        border: 1px solid var(--ink);
+        background: var(--ink);
+        color: var(--paper);
+        padding: 12px 18px;
+        font-weight: 700;
+        text-decoration: none;
+      }
+      .timeline-entry:hover {
+        background: var(--paper);
+        color: var(--ink);
+      }
       .stats {
         display: flex;
         min-height: 30px;
@@ -672,10 +685,10 @@
       <div class="stats" id="stats"></div>
       <a
         id="photo-timeline-link"
+        class="timeline-entry"
         href="/timeline/"
         hidden
-        style="margin-top: 16px; font-weight: 700"
-        >Explore the day in frames</a
+        >Explore the photo timeline</a
       >
     </header>
     <main>

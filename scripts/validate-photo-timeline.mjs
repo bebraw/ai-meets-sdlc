@@ -99,6 +99,48 @@ try {
       )
         assetFailures.push(response.url());
     });
+    for (const width of [320, 900, 1440]) {
+      await page.setViewportSize({ width, height: 1000 });
+      await page.goto(origin + "/");
+      const navigation = page
+        .locator("header")
+        .getByRole("link", { name: "Photo timeline", exact: true });
+      assert.equal(
+        await navigation.count(),
+        1,
+        "One visible timeline entry in the header",
+      );
+      assert.equal(await navigation.getAttribute("href"), "/timeline/");
+      assert.equal(
+        await page
+          .locator("footer")
+          .getByRole("link", { name: "Photo timeline", exact: true })
+          .count(),
+        1,
+      );
+      assert.equal(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth > innerWidth,
+        ),
+        false,
+        "Homepage navigation fits the viewport",
+      );
+      const entry =
+        width === 1440
+          ? page.getByRole("link", {
+              name: "Explore the photo timeline",
+              exact: true,
+            })
+          : navigation;
+      await entry.click();
+      await page.locator(".chapter").first().waitFor();
+      assert.equal(
+        new URL(page.url()).pathname,
+        "/timeline/",
+        "The homepage entry opens the working timeline",
+      );
+    }
+    await page.setViewportSize({ width: 1440, height: 1000 });
     await page.goto(origin + "/timeline/");
     await page.locator(".chapter").first().waitFor();
     assert.equal(await imageCount(page), highlights.length);
@@ -360,7 +402,7 @@ try {
     await page.getByRole("link", { name: "Media bank", exact: true }).click();
     assert.equal(await page.locator("html").getAttribute("data-theme"), theme);
     await page
-      .getByRole("link", { name: "Explore the day in frames", exact: true })
+      .getByRole("link", { name: "Explore the photo timeline", exact: true })
       .click();
     await page.locator(".chapter").first().waitFor();
     assert.equal(await page.locator("html").getAttribute("data-theme"), theme);
