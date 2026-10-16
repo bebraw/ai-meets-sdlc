@@ -3,6 +3,7 @@ import test from "node:test";
 import { unzipSync, strFromU8 } from "fflate";
 import seed from "../site/data/event-photos.json" with { type: "json" };
 import initial from "../production/media-bank/initial-curation.json" with { type: "json" };
+import jaakkoImport from "../production/media-bank/jaakko-import.json" with { type: "json" };
 import { photoObjectFilename } from "../site/scripts/photo-files.ts";
 import {
   createReceiptFixture,
@@ -82,6 +83,18 @@ test("photo bank publishes licensed derivatives and enforces original access, re
     /\/Users\/|localFilename|source\.json/,
   );
   assert.equal(catalog.license, "CC BY 4.0");
+  const jaakkoPhotos = catalog.photos.filter(
+    (photo) => photo.sourceId === "jaakko",
+  );
+  assert.equal(jaakkoImport.licenseStatus, "confirmed");
+  assert.equal(jaakkoPhotos.length, jaakkoImport.photoCount);
+  assert.equal(
+    jaakkoPhotos.filter((photo) => photo.selection === "selected").length,
+    jaakkoImport.highlightCandidateIds.length,
+  );
+  assert.ok(
+    jaakkoPhotos.every((photo) => photo.photographer === "Jaakko Hollmén"),
+  );
   assert.equal(
     catalog.photos.find(
       (photo) => photo.filename === "IMG_20261013_141709_015.jpg",
@@ -143,6 +156,17 @@ test("photo bank publishes licensed derivatives and enforces original access, re
     notes: "Organizer-only note",
     associationEvidence: "Visible slide title",
   };
+  assert.equal(
+    (
+      await save(heic, {
+        ...initial.photos[heic.id],
+        selection: "unreviewed",
+        revision: initial.photos[heic.id].revision - 1,
+      })
+    ).status,
+    409,
+    "Pre-publication drafts cannot overwrite the confirmed publication decision",
+  );
   assert.equal(
     (await save(fuji, revisionOne, { origin: "https://untrusted.test" }))
       .status,
@@ -249,13 +273,14 @@ test("photo bank publishes licensed derivatives and enforces original access, re
   );
   assert.equal(strFromU8(heicZip[heic.filename]), `${heic.id}:original`);
   const heicShare = unzipSync(
-    new Uint8Array(await (await zip([heic.id], "share", admin)).arrayBuffer()),
+    new Uint8Array(await (await zip([heic.id], "share")).arrayBuffer()),
   );
   assert.equal(
     strFromU8(heicShare[heic.filename.replace(/\.heic$/i, "-share.jpg")]),
     `${heic.id}:share`,
   );
   assert.match(strFromU8(heicShare["CREDITS.txt"]), /Jaakko Hollmén/);
+  assert.match(strFromU8(heicShare["CREDITS.txt"]), /CC BY 4\.0/);
 
   const hidden = await save(fuji, { ...saved, selection: "rejected" });
   assert.equal(hidden.status, 200);

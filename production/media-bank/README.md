@@ -2,9 +2,10 @@
 
 The media bank contains 314 photos from the 13 October 2026 seminar:
 188 JPEGs from the first two collections and 126 photos from Jaakko Hollmén
-(124 HEIC originals and two JPEGs). Jaakko's collection is uploaded privately
-and remains unreviewed in the hosted gallery until its reuse license is confirmed.
-`jaakko-import.json` records its 20 highlight candidates and the four excluded
+(124 HEIC originals and two JPEGs). All three collections are published under
+CC BY 4.0, with credit to the named photographer. Jaakko's collection adds
+20 highlights and 106 alternates after license confirmation on 16 October 2026.
+`jaakko-import.json` records the confirmation, highlights and four excluded
 files: two Q&A screenshots and two videos retained in the source folder.
 The original photo folder is read-only input. Generated files stay in
 `output/media-bank/`, outside the public site build and Git.
@@ -20,12 +21,12 @@ The original photo folder is read-only input. Generated files stay in
   minus-one-hour correction was removed with the user's approval after
   checking the livestream's 08:51:05 Finnish start and Sini's introduction
   at recording 5:26:14 against `IMG_20261013_141709_015.jpg` (14:17:12).
-- Both collections: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+- All three collections: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
   with the named photographer credited. The user confirmed unrestricted reuse
   under this license.
 - Jaakko Hollmén: retain original iPhone/Pixel capture times and EXIF timezone
-  (`+03:00`). Reuse licensing is pending confirmation; the new collection is
-  kept out of the public catalog and downloads in the meantime.
+  (`+03:00`). The organizer confirmed CC BY 4.0 with credit to Jaakko Hollmén
+  on 16 October 2026.
 
 The catalog preserves the raw EXIF timestamp, original timezone value,
 confirmed clock shift, corrected UTC timestamp, and corrected local timestamp.
@@ -79,13 +80,12 @@ the branded SDLCAI Lager cans.
 Other frames are retained as alternates. Similar-frame groups are suggestions
 to compare, not automatic duplicate deletions.
 
-All 126 Jaakko photos have draft categories, captions, tags and programme context.
-The 20 highlight candidates add talk and panel views, group photography, welcome
-signage, food, branded water and beer, posters and the production desk. Existing
-curation is preserved. Pending entries record their intended editorial selection
-in organizer-only notes and remain unreviewed until licensing is confirmed.
+All 126 Jaakko photos have reviewed categories, captions, tags and programme context.
+The 20 highlights add talk and panel views, group photography, welcome signage,
+food, branded water and beer, posters and the production desk. The remaining
+106 are published as alternates. Existing curation is preserved.
 
-Search **sponsors** in the public gallery for four selected views of the sponsor
+Search **sponsors** in the public gallery for selected views of the sponsor
 thank-you screen, branded stage, Swarmia/AIMBITION banners and Aalto lettering.
 These photos are also tagged with the visible sponsor names, covering all seven
 sponsors in `site/data/sponsors.json`. Tags describe visible branding; they do
@@ -112,7 +112,7 @@ continued past 10:30, and the research Q&A continued past 12:30.
 
 Every photo has `eventContext`: programme segment, session, time bounds, related
 talk context, recording offset when available, and the association basis.
-Existing visual/slide review agrees with the recording for 92 photos; five
+In the first two collections, visual/slide review agrees with the recording for 92 photos; five
 reviewed frames sit within 90 seconds of a handover; six additional stage/audience
 frames have timing-only talk context. The other 85 retain event context such as
 registration, breaks, lunch, closing, group photography or the afterparty.
@@ -181,7 +181,7 @@ and real review decisions unchanged.
 
 ## Hosting integration
 
-The public gallery is at <https://sdlcai.org/photos/> and opens with the 45
+The public gallery is at <https://sdlcai.org/photos/> and opens with the 65
 highlights. Clear the selection filter to explore all published alternates.
 Visitors can search, filter, preview, copy attribution, and download sharing
 copies individually or in a ZIP with credits and catalog metadata.

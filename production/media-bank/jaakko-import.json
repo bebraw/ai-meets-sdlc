@@ -7,7 +7,7 @@
     "HEIC": 124,
     "JPEG": 2
   },
-  "licenseStatus": "pending-confirmation",
+  "licenseStatus": "confirmed",
   "clockShiftSeconds": 0,
   "timezoneOffset": "+03:00",
   "highlightCandidateIds": [
@@ -49,5 +49,9 @@
       "filename": "IMG_4702.MOV",
       "reason": "Video retained in the source collection; photo gallery import only"
     }
-  ]
+  ],
+  "license": "CC BY 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "licenseConfirmedAt": "2026-10-16",
+  "licenseConfirmation": "Organizer confirmed CC BY 4.0 with credit to Jaakko Hollmén."
 }

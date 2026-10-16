@@ -350,9 +350,29 @@ try {
   );
   assert.equal(
     await page.locator('#tag option[value="welcome-sign"]').count(),
-    0,
+    1,
   );
   await page.locator("#selection").selectOption("");
+  await page.locator("#photographer").selectOption("Jaakko Hollmén");
+  assert.equal(
+    await page.locator(".card").count(),
+    publicPhotos.filter((photo) => photo.sourceId === "jaakko").length,
+  );
+  await page.locator("#tag").selectOption("welcome-sign");
+  assert.equal(await page.locator(".card").count(), 1);
+  await page.locator("#grid .image-button").first().click();
+  assert.equal(
+    await page.locator("#credit").textContent(),
+    "Photo: Jaakko Hollmén / CC BY 4.0",
+  );
+  assert.match(
+    await page.locator("#preview").getAttribute("src"),
+    /\/preview\.jpg$/,
+  );
+  assert.equal(await page.locator("#original").isVisible(), false);
+  await page.getByRole("button", { name: "Close", exact: true }).click();
+  await page.locator("#tag").selectOption("");
+  await page.locator("#photographer").selectOption("");
   for (const tag of [
     "beer",
     "coffee",
