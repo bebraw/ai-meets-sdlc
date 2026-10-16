@@ -130,17 +130,20 @@ img {
   border-bottom: 1px solid var(--ink);
 }
 .brand {
-  display: grid;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 44px;
   width: 44px;
-  font: bold 14px/1 Text;
+  height: 44px;
   text-decoration: none;
-  gap: 2px;
 }
-.brand span {
-  color: var(--paper);
-  background: var(--ink);
-  width: fit-content;
-  padding: 2px 3px;
+.brand img {
+  width: 40px;
+  height: 40px;
+}
+:root[data-theme="dark"] .brand img {
+  filter: invert(1);
 }
 .site-bar nav {
   display: flex;
@@ -792,10 +795,6 @@ select {
   .theme-button {
     font-size: 10px;
     padding: 7px 8px;
-  }
-  .brand {
-    width: 35px;
-    font-size: 11px;
   }
   .intro h1 {
     font-size: clamp(42px, 13vw, 64px);
