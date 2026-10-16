@@ -101,7 +101,10 @@ try {
       );
       assert.equal(
         await page
-          .getByRole("radio", { name: "3 — Moderately valuable", exact: true })
+          .getByRole("button", {
+            name: "Choose 3 — Moderately valuable",
+            exact: true,
+          })
           .count(),
         3,
       );
@@ -121,9 +124,140 @@ try {
             .screenshot({
               path: `.cache/feedback-review/scale-${name}-${width}-${theme}.png`,
             });
+        const rating = page
+          .locator("fieldset")
+          .filter({ has: page.locator("#feedback-overall-rating") });
+        await rating
+          .getByRole("button", {
+            name: "Choose 3 — Neither satisfied nor dissatisfied",
+            exact: true,
+          })
+          .click();
+        if (width !== 768)
+          await rating.screenshot({
+            path: `.cache/feedback-review/slider-${name}-${width}-${theme}.png`,
+          });
+        await rating
+          .getByRole("button", { name: "Clear answer:", exact: false })
+          .click();
       }
     }
     await page.goto(origin + "/feedback/");
+    const overall = page.getByRole("slider", {
+      name: "How satisfied or dissatisfied were you with SDLCAI 2026 overall? *",
+      exact: true,
+    });
+    assert.equal(await page.getByRole("slider").count(), 5);
+    const submittedOverall = () =>
+      page.evaluate(() =>
+        new FormData(document.querySelector("[data-feedback-form]")).getAll(
+          "overall",
+        ),
+      );
+    assert.deepEqual(
+      await submittedOverall(),
+      [],
+      "Untouched sliders have no submitted rating",
+    );
+    await overall.focus();
+    assert.deepEqual(
+      await submittedOverall(),
+      [],
+      "Focus alone must not answer the question",
+    );
+    assert.equal(
+      await overall.evaluate((input) => input.checkValidity()),
+      false,
+      "An unanswered rating requires a choice",
+    );
+    // Clicking the initial midpoint explicitly chooses 3, even if the native
+    // range does not emit input/change for an unchanged value.
+    await overall.click();
+    assert.deepEqual(await submittedOverall(), ["3"]);
+    assert.equal(
+      await overall.getAttribute("aria-valuetext"),
+      "3 / 5 — Neither satisfied nor dissatisfied",
+    );
+    await overall.press("ArrowRight");
+    assert.deepEqual(await submittedOverall(), ["4"]);
+    assert.equal(
+      await page.locator('[data-rating-label="overall"]').textContent(),
+      "4 / 5 — Satisfied",
+    );
+    await overall.press("Home");
+    assert.deepEqual(await submittedOverall(), ["1"]);
+    await overall.press("End");
+    assert.deepEqual(await submittedOverall(), ["5"]);
+    await overall.scrollIntoViewIfNeeded();
+    const track = await overall.boundingBox();
+    assert.ok(track);
+    await page.mouse.move(
+      track.x + track.width - 12,
+      track.y + track.height / 2,
+    );
+    await page.mouse.down();
+    await page.mouse.move(
+      track.x + 12 + (track.width - 24) / 4,
+      track.y + track.height / 2,
+      { steps: 8 },
+    );
+    await page.mouse.up();
+    assert.deepEqual(
+      await submittedOverall(),
+      ["2"],
+      "Dragging selects a discrete step",
+    );
+    await page
+      .locator('input[type="radio"][name="overall"][value="Unable to assess"]')
+      .check();
+    assert.deepEqual(
+      await submittedOverall(),
+      ["Unable to assess"],
+      "Unscored choices replace the numeric answer",
+    );
+    assert.equal(
+      await overall.evaluate((input) => input.checkValidity()),
+      true,
+    );
+    await overall.press("ArrowRight");
+    assert.deepEqual(
+      await submittedOverall(),
+      ["4"],
+      "Using the slider clears the unscored choice",
+    );
+    const overallFieldset = page.locator("fieldset").filter({ has: overall });
+    await overallFieldset
+      .getByRole("button", { name: "Choose 2 — Dissatisfied", exact: true })
+      .click();
+    assert.deepEqual(
+      await submittedOverall(),
+      ["2"],
+      "Number buttons choose the exact value",
+    );
+    await overallFieldset
+      .getByRole("button", { name: "Clear answer:", exact: false })
+      .click();
+    assert.deepEqual(await submittedOverall(), []);
+    assert.equal(
+      await overall.evaluate((input) => input.checkValidity()),
+      false,
+    );
+    assert.equal(await overall.getAttribute("data-answered"), "false");
+    await page
+      .locator('input[type="radio"][name="overall"][value="Unable to assess"]')
+      .check();
+    await page.evaluate(() =>
+      document.querySelector("[data-feedback-form]").reset(),
+    );
+    assert.deepEqual(await submittedOverall(), []);
+    assert.equal(
+      await page.locator('input[type="radio"][name="overall"]').isChecked(),
+      false,
+    );
+    assert.equal(
+      await overall.evaluate((input) => input.checkValidity()),
+      false,
+    );
     const recommend = page.locator(
       'label:has(input[name="recommend"][value="9"])',
     );
@@ -151,7 +285,11 @@ try {
       "organization",
       "networking",
     ])
-      await page.locator(`input[name="${id}"][value="4"]`).check();
+      await page
+        .locator("fieldset")
+        .filter({ has: page.locator(`#feedback-${id}-rating`) })
+        .getByRole("button", { name: /^Choose 4 —/u })
+        .click();
     await page.locator('input[name="mix"]').first().check();
     const parts = page.locator('input[name="valuable"]');
     for (const index of [0, 1, 2]) await parts.nth(index).check();

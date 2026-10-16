@@ -1,4 +1,5 @@
 import "./index.ts";
+import { renderFeedbackRating } from "./feedback-rating.ts";
 import {
   feedbackConsentText,
   feedbackFormVersion,
@@ -73,18 +74,16 @@ for (const [sectionIndex, section] of feedbackSections.entries()) {
         textElement("p", "Up to 2,000 characters.", "mt-2 text-sm text-muted"),
       );
       fieldset.lastElementChild!.id = `feedback-${question.id}-limit`;
+    } else if (question.kind === "rating") {
+      renderFeedbackRating(question, fieldset, form);
     } else {
       const numeric = question.kind === "nps";
       const options = feedbackOptions(question);
       const choices = document.createElement("div");
-      const unscoredChoices = document.createElement("div");
-      unscoredChoices.className = "mt-2 grid gap-2 sm:grid-cols-2";
       choices.className =
         question.kind === "nps"
           ? "grid grid-cols-6 gap-2 sm:grid-cols-[repeat(11,minmax(0,1fr))]"
-          : question.kind === "rating"
-            ? "grid gap-2 sm:grid-cols-2"
-            : "grid gap-3";
+          : "grid gap-3";
       const multipleHint =
         question.kind === "multiple"
           ? textElement(
@@ -118,16 +117,7 @@ for (const [sectionIndex, section] of feedbackSections.entries()) {
             "focus-within:outline-ink",
           );
         if (!numeric) input.classList.add("mt-1");
-        append(
-          label,
-          input,
-          textElement(
-            "span",
-            question.kind === "rating" && !option.unscored
-              ? `${option.value} — ${option.label}`
-              : option.label,
-          ),
-        );
+        append(label, input, textElement("span", option.label));
         if (question.kind === "multiple")
           input.addEventListener("change", () => {
             const inputs = [
@@ -158,23 +148,13 @@ for (const [sectionIndex, section] of feedbackSections.entries()) {
                 : "Choose up to three valuable parts, or None.",
             );
           });
-        append(option.unscored ? unscoredChoices : choices, label);
+        append(choices, label);
       }
       if (question.kind === "multiple")
         choices
           .querySelector<HTMLInputElement>("input")!
           .setCustomValidity("Choose up to three valuable parts, or None.");
       append(fieldset, choices);
-      if (unscoredChoices.children.length)
-        append(
-          fieldset,
-          textElement(
-            "p",
-            "Or, if you cannot give a rating:",
-            "mt-4 border-t border-ink/30 pt-3 text-sm text-muted",
-          ),
-          unscoredChoices,
-        );
       if (question.kind === "nps") {
         const anchors = textElement(
           "p",

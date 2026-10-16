@@ -56,6 +56,104 @@
 }
 
 @layer components {
+  .feedback-rating {
+    min-width: 0;
+    padding: 1rem;
+    border: 1px solid color-mix(in srgb, var(--color-ink) 30%, transparent);
+  }
+
+  .feedback-rating-track {
+    margin-top: 0.75rem;
+    padding-inline: 10px;
+  }
+
+  .feedback-rating-range {
+    appearance: none;
+    display: block;
+    width: 100%;
+    height: 44px;
+    margin: 0;
+    cursor: pointer;
+    background: transparent;
+  }
+
+  .feedback-rating-range:focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 4px;
+  }
+
+  .feedback-rating-range::-webkit-slider-runnable-track {
+    height: 6px;
+    background: linear-gradient(
+      to right,
+      var(--color-ink) var(--rating-progress),
+      color-mix(in srgb, var(--color-ink) 30%, transparent)
+        var(--rating-progress)
+    );
+  }
+
+  .feedback-rating-range::-moz-range-track {
+    height: 6px;
+    background: linear-gradient(
+      to right,
+      var(--color-ink) var(--rating-progress),
+      color-mix(in srgb, var(--color-ink) 30%, transparent)
+        var(--rating-progress)
+    );
+  }
+
+  .feedback-rating-range::-webkit-slider-thumb {
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    margin-top: -9px;
+    border: 2px solid var(--color-paper);
+    border-radius: 50%;
+    background: var(--color-ink);
+    box-shadow: 0 0 0 1px var(--color-ink);
+  }
+
+  .feedback-rating-range::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--color-paper);
+    border-radius: 50%;
+    background: var(--color-ink);
+    box-shadow: 0 0 0 1px var(--color-ink);
+  }
+
+  .feedback-rating-range[data-answered="false"]::-webkit-slider-thumb {
+    opacity: 0;
+  }
+
+  .feedback-rating-range[data-answered="false"]::-moz-range-thumb {
+    opacity: 0;
+  }
+
+  .feedback-rating-numbers {
+    display: flex;
+    justify-content: space-between;
+    gap: 2px;
+  }
+
+  .feedback-rating-number {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border: 1px solid transparent;
+    font-weight: 700;
+  }
+
+  .feedback-rating-number:hover,
+  .feedback-rating-number:focus-visible {
+    border-color: var(--color-ink);
+  }
+
+  .feedback-rating-number[aria-pressed="true"] {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+
   .qa-present-page {
     color-scheme: dark;
     background: #080808;

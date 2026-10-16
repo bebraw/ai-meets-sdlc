@@ -635,8 +635,14 @@ on a −100 to +100 scale, group counts, answer count and the 0–10 distributio
 The current form requires a valid 0–10 answer. Withdrawal removes the rating's contribution, while
 expiry retains only its independent count, like the other ratings.
 
-Questionnaire version **3** implements the survey-design review: every five-point
-rating has verbal labels, satisfaction and value use distinct scales, and
+Questionnaire version **3** implements the survey-design review. Satisfaction
+and value use distinct five-point scales with verbal labels. Each rating uses a
+stepped slider with clickable numbers and a visible description of the chosen
+answer. Untouched sliders submit no midpoint/default
+answer; a rating or separate unscored option must be chosen explicitly. Keyboard
+arrows and Home/End work, and screen readers receive the chosen verbal label.
+Clearing an answer or resetting the form returns it to an unanswered state.
+Numeric ratings and unscored choices remain mutually exclusive, and
 non-attendance/unable-to-assess answers are stored as separate non-numeric
 choices. Admin excludes these from rating averages and rating percentages and
 shows their counts separately. Research–industry mix and return-intention choices
