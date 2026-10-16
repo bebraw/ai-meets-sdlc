@@ -22,6 +22,7 @@
     "photos:seed": "node scripts/media-bank/seed.mjs",
     "photos:metadata": "node scripts/media-bank/metadata.mjs",
     "photos:browser-check": "node scripts/validate-photos.mjs",
+    "timeline:browser-check": "node scripts/validate-photo-timeline.mjs",
     "interests:decrypt": "node scripts/decrypt-interests.mjs",
     "interests:export": "node scripts/export-interest-contacts.mjs",
     "layout:check": "node scripts/validate-layout.mjs",

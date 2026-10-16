@@ -59,6 +59,22 @@ photos, applies confirmed camera clock corrections, and provides curation,
 collections and credited downloads. Start it with `npm run photos:review`
 after preparing the source folder.
 
+The public photo timeline is at `/timeline/`, linked from `/photos/`. Its layout
+is `site/layouts/photo-timeline.html`, with the approved daybook design and
+discovery code in `assets/photo-timeline/`. It loads the anonymous public catalog
+after the page shell paints, starts with highlights and supports chapters,
+speaker programme, talk and topic discovery, photographer filters and shareable
+filtered URLs. Programme associations describe context rather than confirmed
+people in a photo. Previews support keyboard navigation, fullscreen with visible
+photographer credit, and existing sharing-copy downloads. Theme changes use the
+site's `sdlcai-theme` preference. No public archive total is displayed.
+
+Run `npm run timeline:browser-check` after `npm run worker:test-build` for the
+isolated Chromium/WebKit check of filters, previews, credits, themes, catalog
+failure/retry and mobile layouts. It is also part of the CI asset browser group.
+The earlier concepts under `prototypes/photo-exploration/` remain local sketches;
+new production timeline changes belong in the files above.
+
 The [public event feed](docs/event-feed.md) is generated and validated with the
 site at `/event.json`, with its JSON Schema at `/event.schema.json`.
 

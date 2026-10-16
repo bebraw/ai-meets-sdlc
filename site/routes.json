@@ -51,6 +51,15 @@
       }
     }
   },
+  "timeline": {
+    "layout": "photo-timeline",
+    "context": {
+      "meta": {
+        "title": "SDLCAI — A day in frames",
+        "description": "Explore SDLCAI 2026 through a photographic timeline of talks, panels and conversations, shared under CC BY 4.0."
+      }
+    }
+  },
   "schedule": {
     "layout": "schedule",
     "scripts": [{ "name": "index" }],

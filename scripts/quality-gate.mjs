@@ -21,6 +21,7 @@ export const browserGroups = {
     "badges:browser-check",
     "speaker-slides:browser-check",
     "photos:browser-check",
+    "timeline:browser-check",
     "slides:check",
   ],
   presentation: [

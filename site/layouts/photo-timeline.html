@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SDLCAI — A day in frames</title>
+    <link rel="canonical" href="https://sdlcai.org/timeline/" />
+    <meta
+      name="description"
+      content="Relive SDLCAI 2026 in photographs. Follow the day from arrivals to after hours, or explore speakers, talks and topics. Photos shared under CC BY 4.0."
+    />
+    <meta property="og:title" content="SDLCAI — A day in frames" />
+    <meta
+      property="og:description"
+      content="A photographic timeline of SDLCAI 2026. Explore the talks, panels and conversations from Marsio."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sdlcai.org/timeline/" />
+    <meta property="og:image" content="https://sdlcai.org/og.png?v=20260907" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:image" content="https://sdlcai.org/og.png?v=20260907" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <link
+      rel="preload"
+      href="/assets/fonts/FinlandicaHeadline-Black.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="/assets/photo-timeline/styles.css" />
+    <script>
+      (() => {
+        let theme = "light";
+        try {
+          const stored = localStorage.getItem("sdlcai-theme");
+          theme =
+            stored === "dark" || stored === "light"
+              ? stored
+              : matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
+        } catch {}
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.classList.toggle("dark", theme === "dark");
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-bar">
+      <a class="brand" href="/" aria-label="SDLCAI home"
+        ><span>SDLC</span><span>AI</span></a
+      >
+      <nav aria-label="Photos">
+        <a href="/timeline/" aria-current="page">Timeline</a>
+        <a href="/photos/">Media bank</a>
+        <a href="/schedule/">Schedule</a>
+        <a href="/speakers/">Speakers</a>
+      </nav>
+      <button
+        class="theme-button"
+        id="theme"
+        type="button"
+        aria-label="Toggle dark mode"
+      >
+        Dark mode
+      </button>
+    </header>
+    <main id="main" tabindex="-1" aria-busy="true">
+      <div class="loading">
+        <span class="eyebrow">SDLCAI / 13 October 2026</span>
+        <h1>A day<br />in frames.</h1>
+        <p role="status">Opening the photo collection…</p>
+        <noscript
+          ><p>
+            Enable JavaScript to explore the timeline. You can also
+            <a href="/api/photos/credits">download photographer credits</a> or
+            <a href="/schedule/">read the programme</a>.
+          </p></noscript
+        >
+      </div>
+    </main>
+    <dialog id="preview" aria-labelledby="preview-title">
+      <div class="preview-shell">
+        <div class="preview-bar">
+          <span id="preview-title">SDLCAI / A closer look</span>
+          <div>
+            <button type="button" id="previous" aria-label="Previous photo">
+              Prev
+            </button>
+            <button type="button" id="next" aria-label="Next photo">
+              Next
+            </button>
+            <button type="button" id="fullscreen" aria-pressed="false">
+              Full screen
+            </button>
+            <button type="button" id="close">Close</button>
+          </div>
+        </div>
+        <div class="preview-image">
+          <img
+            id="large-photo"
+            alt=""
+            width="1800"
+            height="1200"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <p class="fullscreen-credit" id="fullscreen-credit"></p>
+        <div class="preview-info">
+          <div>
+            <p class="eyebrow" id="preview-time"></p>
+            <h2 id="preview-caption"></h2>
+            <p id="preview-context"></p>
+            <div id="preview-discovery"></div>
+            <p class="credit" id="preview-credit"></p>
+          </div>
+          <div class="preview-links">
+            <a id="download" href="#">Download sharing copy</a>
+            <a id="gallery" href="#" target="_blank" rel="noreferrer"
+              >Open in the media bank</a
+            >
+            <a
+              href="https://creativecommons.org/licenses/by/4.0/"
+              target="_blank"
+              rel="noreferrer"
+              >CC BY 4.0</a
+            >
+          </div>
+        </div>
+      </div>
+    </dialog>
+    <script type="module" src="/assets/photo-timeline/app.js"></script>
+  </body>
+</html>

@@ -670,6 +670,13 @@
         credit.
       </p>
       <div class="stats" id="stats"></div>
+      <a
+        id="photo-timeline-link"
+        href="/timeline/"
+        hidden
+        style="margin-top: 16px; font-weight: 700"
+        >Explore the day in frames</a
+      >
     </header>
     <main>
       <form class="filters" id="filters" role="search">
@@ -1367,6 +1374,7 @@
       };
       // Keep the page shell usable before downloading any photo metadata.
       if (hosted) {
+        $("#photo-timeline-link").hidden = false;
         document.querySelector("header > p").textContent = organizer
           ? "Curate the seminar photo bank. Review captions, choose highlights, and confirm people for their personal collections."
           : mine
@@ -1381,6 +1389,7 @@
           ["Schedule", "/schedule/"],
           ["Speakers", "/speakers/"],
           ["Photos", "/photos/"],
+          ["Photo timeline", "/timeline/"],
           ...(organizer ? [["Admin desk", "/admin/"]] : []),
         ]) {
           const link = make("a", name);

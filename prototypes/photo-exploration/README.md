@@ -1,5 +1,9 @@
 # Photo exploration concepts
 
+The chosen timeline now ships at `/timeline/` on the main site. Its production
+source is `site/layouts/photo-timeline.html` and `assets/photo-timeline/`.
+This folder retains the earlier local concepts for reference; it is not deployed.
+
 Two local, interactive prototypes for choosing a direction before implementing
 a production alternative to the photo bank:
 
