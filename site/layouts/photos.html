@@ -1512,17 +1512,49 @@
       $("#retry-catalog").onclick = loadCatalog;
       catalogPending(true);
       status("Loading photos…");
-      // Give the shell a paint before starting the catalog request. The idle
-      // timeout keeps the gallery loading even when the main thread stays busy.
+      // Rendering callbacks can run while a navigation transition still holds
+      // back the first paint. Observe that paint before scheduling idle work.
+      // Bounded fallbacks also let unsupported/background browsers load photos.
       await new Promise((resolve) => {
+        const idle = () => {
+          if (typeof requestIdleCallback === "function")
+            requestIdleCallback(resolve, { timeout: 1000 });
+          else setTimeout(resolve, 0);
+        };
+        const afterPaint = () => {
+          if (
+            typeof PerformanceObserver !== "function" ||
+            !PerformanceObserver.supportedEntryTypes.includes("paint") ||
+            performance.getEntriesByName("first-contentful-paint").length
+          ) {
+            idle();
+            return;
+          }
+          let finished = false;
+          const observer = new PerformanceObserver((list) => {
+            if (
+              list
+                .getEntries()
+                .some((entry) => entry.name === "first-contentful-paint")
+            )
+              ready();
+          });
+          const ready = () => {
+            if (finished) return;
+            finished = true;
+            clearTimeout(fallback);
+            observer.disconnect();
+            idle();
+          };
+          const fallback = setTimeout(ready, 1000);
+          try {
+            observer.observe({ type: "paint", buffered: true });
+          } catch {
+            ready();
+          }
+        };
         const afterLoad = () =>
-          requestAnimationFrame(() =>
-            requestAnimationFrame(() => {
-              if (typeof requestIdleCallback === "function")
-                requestIdleCallback(resolve, { timeout: 1000 });
-              else setTimeout(resolve, 0);
-            }),
-          );
+          requestAnimationFrame(() => requestAnimationFrame(afterPaint));
         if (document.readyState === "complete") afterLoad();
         else addEventListener("load", afterLoad, { once: true });
       });

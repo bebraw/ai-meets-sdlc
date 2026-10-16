@@ -57,6 +57,24 @@ try {
     admin = await adminContext.newPage();
   const deferred = await publicContext.newPage();
   await deferred.addInitScript(() => {
+    // Model a navigation transition whose first paint arrives after the load
+    // event and animation frames. Idle work must wait for the paint notification.
+    const entries = performance.getEntriesByName.bind(performance);
+    performance.getEntriesByName = (name, ...args) =>
+      name === "first-contentful-paint" ? [] : entries(name, ...args);
+    window.PerformanceObserver = class {
+      static supportedEntryTypes = ["paint"];
+      constructor(callback) {
+        this.callback = callback;
+      }
+      observe() {
+        window.releaseFirstPaint = () =>
+          this.callback({
+            getEntries: () => [{ name: "first-contentful-paint" }],
+          });
+      }
+      disconnect() {}
+    };
     window.requestIdleCallback = (callback) => {
       window.releaseCatalog = callback;
     };
@@ -67,6 +85,19 @@ try {
       catalogRequests.push(request.url());
   });
   await deferred.goto(`${origin}/photos/`);
+  await deferred.waitForFunction(
+    () => typeof window.releaseFirstPaint === "function",
+  );
+  assert.equal(
+    catalogRequests.length,
+    0,
+    "Catalog waits for a delayed first paint",
+  );
+  assert.equal(
+    await deferred.evaluate(() => typeof window.releaseCatalog),
+    "undefined",
+  );
+  await deferred.evaluate(() => window.releaseFirstPaint());
   await deferred.waitForFunction(
     () => typeof window.releaseCatalog === "function",
   );
@@ -115,6 +146,7 @@ try {
   const fallbackCatalog = await publicContext.newPage();
   await fallbackCatalog.addInitScript(() => {
     window.requestIdleCallback = undefined;
+    window.PerformanceObserver = undefined;
   });
   let attempts = 0;
   await fallbackCatalog.route("**/api/photos/catalog", async (route) => {
