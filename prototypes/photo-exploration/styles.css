@@ -308,6 +308,200 @@ select {
   background: var(--paper);
   border-bottom: 1px solid var(--ink);
 }
+.discovery {
+  padding: 30px 5vw 24px;
+  border-bottom: 1px solid var(--ink);
+}
+.discovery-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px 25px;
+}
+.discovery-heading h2 {
+  font-size: clamp(30px, 3vw, 44px);
+  line-height: 1;
+}
+.discovery-heading p {
+  grid-column: 1;
+}
+.copy-view {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  align-self: start;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.discovery-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.75fr) minmax(0, 1.1fr);
+  align-items: end;
+  gap: 24px;
+  margin-top: 25px;
+}
+.search-label {
+  display: grid;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.search-row {
+  display: flex;
+  border: 1px solid var(--ink);
+  min-width: 0;
+}
+.search-row input {
+  font: inherit;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 0;
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border-radius: 0;
+}
+.search-row input::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+.find-photos {
+  flex-shrink: 0;
+  border: 0;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 10px 13px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.discovery-fields .select-label {
+  min-width: 0;
+}
+.discovery-fields select {
+  min-height: 46px;
+  text-overflow: ellipsis;
+}
+.topic-row,
+.context-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.topic-row {
+  margin-top: 24px;
+}
+.topic-row > .eyebrow {
+  margin-right: 8px;
+}
+.topic-chip,
+.context-chip {
+  font-size: 12px;
+  padding: 7px 11px;
+  min-height: 36px;
+  text-align: left;
+  line-height: 1.4;
+}
+.topic-chip[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
+  font-weight: 700;
+}
+.discovery-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 22px;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+.discovery-summary p {
+  overflow-wrap: anywhere;
+}
+.clear-discovery {
+  min-height: 36px;
+  font-size: 12px;
+  padding: 6px 10px;
+}
+.context-note {
+  margin-top: 12px;
+  max-width: 850px;
+}
+.reset-filters {
+  margin: 0 5vw 45px;
+  padding: 10px 15px;
+}
+.photo-programme {
+  width: 83%;
+  margin: 0 0 25px auto;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+.photo-programme:empty {
+  display: none;
+}
+.chapter-right .photo-programme {
+  margin-left: 0;
+  margin-right: auto;
+}
+.programme-title {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+.programme-link {
+  max-width: 100%;
+  text-align: left;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  min-height: 36px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.frame-programme {
+  margin-top: 12px;
+}
+.frame-programme .programme-title {
+  font-size: 13px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.frame-programme .context-chips {
+  gap: 5px;
+}
+.frame-programme .context-chip {
+  padding: 5px 8px;
+}
+#preview-discovery:not(:empty) {
+  margin-top: 20px;
+  border-top: 1px solid var(--line);
+  padding-top: 15px;
+}
+#preview-discovery .photo-programme {
+  width: 100%;
+  border: 0;
+  margin: 0 0 12px;
+  padding: 0;
+}
+#preview-discovery .programme-title {
+  font-size: 15px;
+}
+.topic-links {
+  margin-top: 12px;
+}
+.recording-link {
+  display: inline-block;
+  margin: 15px 0 5px;
+  font-size: 13px;
+  font-weight: 700;
+}
 .chapter-track {
   display: flex;
   overflow-x: auto;
@@ -613,6 +807,10 @@ dialog::backdrop {
   min-width: 0;
 }
 .preview-bar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--paper);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -688,6 +886,7 @@ dialog.immersive .preview-info {
 @media (min-width: 1600px) {
   .intro,
   .explore-controls,
+  .discovery,
   .chapter,
   .prototype-footer {
     padding-left: max(5vw, calc((100vw - 1450px) / 2));
@@ -713,6 +912,16 @@ dialog.immersive .preview-info {
   }
   .chapter-feature {
     width: 100%;
+  }
+  .photo-programme {
+    width: 100%;
+  }
+  .discovery-fields {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 18px;
+  }
+  .search-label {
+    grid-column: 1 / -1;
   }
   .concept-visual {
     height: 250px;
@@ -776,6 +985,29 @@ dialog.immersive .preview-info {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
+  }
+  .discovery {
+    padding: 25px 5vw 20px;
+  }
+  .discovery-heading {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+  .copy-view {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: start;
+  }
+  .discovery-fields {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+  .topic-row > .eyebrow {
+    width: 100%;
+    margin-bottom: 4px;
+  }
+  .topic-chip {
+    min-height: 44px;
   }
   .select-label {
     min-width: 0;

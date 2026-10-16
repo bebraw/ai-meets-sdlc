@@ -25,6 +25,23 @@ programme. They express time context rather than identity in the photograph.
 The atlas uses capture time horizontally and curated categories vertically;
 nearby frames stack, with hover/focus bringing a card forward.
 
+The timeline is the chosen direction. Its second iteration adds:
+
+- Search across speaker names, talk titles, captions, tags and photographers,
+  ignoring case and accents.
+- Speaker programme and talk filters, plus eight topic threads. These intersect
+  with the existing lenses, collection and photographer controls.
+- Talk titles and speaker programme links alongside frames, with further talk
+  and topic exploration inside the preview.
+- Links into the livestream at a frame's calibrated capture time for talks and
+  panels, and URLs that retain discovery filters and the current chapter.
+
+Speaker discovery uses reviewed talk links where available, otherwise programme
+timing. It never treats a scheduled speaker as a confirmed person in a photo;
+the public catalog currently has no confirmed person tags. Time-based matches
+are identified in preview context. Topic threads group existing photo tags;
+they do not add inferred tags to the catalog. No public archive total is shown.
+
 Useful things to try:
 
 1. Find a panel photo, then something from a break.
@@ -33,7 +50,7 @@ Useful things to try:
 4. Compare highlights with the full public collection.
 5. Open a preview and move through neighboring moments with the arrow keys.
 
-Things to decide together: whether the chronology feels meaningful, whether the
-atlas reveals unexpected connections or gets crowded, and whether one direction
-should become primary or the two should be combined. These are concepts, not
-finished production navigation. No total archive size is displayed.
+Try searching for `Sini Tistelgren`, selecting a talk, or following **Generative
+UI**. Open a frame, follow a programme or topic link, and reload a filtered URL.
+The earlier atlas remains available for comparison. These are local concepts,
+not finished production navigation.

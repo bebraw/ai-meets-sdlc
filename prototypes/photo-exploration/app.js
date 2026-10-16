@@ -1,3 +1,11 @@
+import {
+  topics,
+  photoTalks,
+  programmeSpeakers,
+  photoTopics,
+  matchesDiscovery,
+} from "./discovery.js";
+
 const $ = (s) => document.querySelector(s);
 const node = (tag, className = "", text) => {
   const el = document.createElement(tag);
@@ -15,6 +23,10 @@ const state = {
   lens: "all",
   photographer: "",
   chapter: "",
+  query: "",
+  speaker: "",
+  talk: "",
+  topic: "",
   zoom: 1,
 };
 const lenses = [
@@ -138,7 +150,8 @@ const filtered = () =>
     (p) =>
       (state.collection === "all" || p.selection === "selected") &&
       matchesLens(p) &&
-      (!state.photographer || p.photographer === state.photographer),
+      (!state.photographer || p.photographer === state.photographer) &&
+      (mode !== "timeline" || matchesDiscovery(p, state, catalog)),
   );
 const image = (photo, hero = false) => {
   const img = node("img");
@@ -171,6 +184,209 @@ function photoButton(photo, className, hero = false) {
 }
 function credit(photo) {
   return `Photo: ${photo.photographer} / CC BY 4.0`;
+}
+
+function applyDiscovery(change, focus = "discovery-status") {
+  Object.assign(state, change, { chapter: "" });
+  if (
+    state.speaker &&
+    state.talk &&
+    !catalog.talks
+      .find((talk) => talk.id === state.talk)
+      ?.speakerIds.includes(state.speaker)
+  )
+    state.talk = "";
+  if ($("#preview").open) $("#preview").close();
+  render();
+  const target = document.getElementById(focus);
+  target?.focus({ preventScroll: true });
+  if (focus === "discovery-status")
+    target?.scrollIntoView({
+      block: "start",
+      behavior: reducedMotion() ? "instant" : "smooth",
+    });
+}
+
+function discoveryButton(label, change, className = "context-chip") {
+  const button = node("button", className, label);
+  button.type = "button";
+  button.addEventListener("click", () => applyDiscovery(change));
+  return button;
+}
+
+function discoveryControls() {
+  const section = node("section", "discovery");
+  section.setAttribute("aria-labelledby", "discovery-title");
+  const intro = node("div", "discovery-heading");
+  const title = node("h2", "", "Follow an idea.");
+  title.id = "discovery-title";
+  intro.append(
+    title,
+    node(
+      "p",
+      "muted small",
+      "Find a speaker's programme, a talk, or a thread running through the day.",
+    ),
+  );
+  const share = node("button", "copy-view", "Copy this view ↗");
+  share.type = "button";
+  share.addEventListener("click", () => {
+    navigator.clipboard
+      .writeText(location.href)
+      .then(() => {
+        $("#discovery-status").textContent =
+          "View link copied. It includes your filters and chapter.";
+      })
+      .catch(() => {
+        $("#discovery-status").textContent =
+          "Copy the address bar URL to share this view, including its filters and chapter.";
+      });
+  });
+  intro.append(share);
+  section.append(intro);
+  const form = node("form", "discovery-fields");
+  form.setAttribute("role", "search");
+  form.setAttribute("aria-label", "Search the photo timeline");
+  const search = node("div", "search-label");
+  const searchLabel = node("label", "", "Search the day");
+  searchLabel.htmlFor = "discovery-query";
+  const searchRow = node("span", "search-row");
+  const input = node("input");
+  input.type = "search";
+  input.id = "discovery-query";
+  input.name = "q";
+  input.placeholder = "Speaker, talk or topic";
+  input.value = state.query;
+  input.maxLength = 200;
+  const find = node("button", "find-photos", "Find photos →");
+  find.type = "submit";
+  searchRow.append(input, find);
+  search.append(searchLabel, searchRow);
+  form.append(search);
+  for (const [id, label, values, selected] of [
+    [
+      "speaker",
+      "Speaker programme",
+      catalog.speakers
+        .filter((speaker) =>
+          catalog.talks.some((talk) => talk.speakerIds.includes(speaker.id)),
+        )
+        .map((speaker) => [speaker.id, speaker.name])
+        .sort((a, b) => a[1].localeCompare(b[1])),
+      state.speaker,
+    ],
+    [
+      "talk",
+      "Talk",
+      catalog.talks
+        .filter(
+          (talk) => !state.speaker || talk.speakerIds.includes(state.speaker),
+        )
+        .map((talk) => [talk.id, talk.title]),
+      state.talk,
+    ],
+  ]) {
+    const labelNode = node("label", "select-label", label);
+    const select = node("select");
+    select.id = `discovery-${id}`;
+    select.append(
+      new Option(id === "speaker" ? "All speakers" : "All talks", ""),
+    );
+    for (const [value, label] of values)
+      select.append(new Option(label, value));
+    select.value = selected;
+    select.addEventListener("change", () =>
+      applyDiscovery({ [id]: select.value }, select.id),
+    );
+    labelNode.append(select);
+    form.append(labelNode);
+  }
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    applyDiscovery({ query: input.value.trim() }, "discovery-query");
+  });
+  section.append(form);
+  const topicRow = node("div", "topic-row");
+  topicRow.setAttribute("role", "group");
+  topicRow.setAttribute("aria-label", "Explore topics");
+  topicRow.append(node("span", "eyebrow", "Follow a thread"));
+  for (const topic of topics) {
+    const button = discoveryButton(
+      topic.label,
+      { topic: state.topic === topic.id ? "" : topic.id },
+      "topic-chip",
+    );
+    button.setAttribute("aria-pressed", String(state.topic === topic.id));
+    topicRow.append(button);
+  }
+  section.append(topicRow);
+  const summary = node("div", "discovery-summary");
+  const status = node("p", "small");
+  status.id = "discovery-status";
+  status.tabIndex = -1;
+  status.setAttribute("role", "status");
+  const parts = [
+    state.query && `“${state.query}”`,
+    catalog.speakers.find((speaker) => speaker.id === state.speaker)?.name,
+    catalog.talks.find((talk) => talk.id === state.talk)?.title,
+    topics.find((topic) => topic.id === state.topic)?.label,
+  ].filter(Boolean);
+  status.textContent = parts.length
+    ? `${currentPhotos.length ? "Following" : "No photos match"}: ${parts.join(" / ")}`
+    : "The whole day, in chronological order.";
+  summary.append(status);
+  if (parts.length)
+    summary.append(
+      discoveryButton(
+        "Clear discovery ×",
+        { query: "", speaker: "", talk: "", topic: "" },
+        "clear-discovery",
+      ),
+    );
+  section.append(
+    summary,
+    node(
+      "p",
+      "context-note small muted",
+      "Speaker names describe the programme, not verified people in the photograph. Time-based matches are marked in the preview.",
+    ),
+  );
+  return section;
+}
+
+function programmeLabel(photo) {
+  const talks = photoTalks(photo, catalog);
+  return photo.eventContext?.kind === "panel"
+    ? `Panel / ${photo.eventContext.title}`
+    : talks.length === 1
+      ? talks[0].title
+      : photo.caption || "A moment from the day";
+}
+
+function programmeDetails(photo, compact = false) {
+  const details = node("div", compact ? "frame-programme" : "photo-programme");
+  const talks = photoTalks(photo, catalog);
+  if (!talks.length) return details;
+  if (talks.length === 1 && photo.eventContext?.kind !== "panel") {
+    const link = discoveryButton(
+      `${talks[0].title} →`,
+      { talk: talks[0].id, speaker: "" },
+      "programme-title programme-link",
+    );
+    link.setAttribute("aria-label", `Explore talk: ${talks[0].title}`);
+    details.append(link);
+  } else details.append(node("p", "programme-title", programmeLabel(photo)));
+  const people = node("div", "context-chips");
+  for (const speaker of programmeSpeakers(photo, catalog)) {
+    const button = discoveryButton(speaker.name, {
+      speaker: speaker.id,
+      talk: "",
+    });
+    button.setAttribute("aria-label", `Explore ${speaker.name}'s programme`);
+    people.append(button);
+  }
+  details.append(people);
+  return details;
 }
 
 function controls() {
@@ -322,6 +538,7 @@ function renderTimeline() {
       "First coffee. Big questions. Conversations that kept going. Follow the day, or look at it through a different lens.",
     ),
     controls(),
+    discoveryControls(),
   );
   const groups = chapters
     .map((c) => ({
@@ -336,10 +553,24 @@ function renderTimeline() {
       node(
         "p",
         "empty",
-        "There are no photos in this combination. Try another lens or photographer.",
+        "There are no photos in this combination. Clear discovery or try another lens, collection or photographer.",
       ),
       footer(),
     );
+    const reset = discoveryButton(
+      "Reset all filters",
+      {
+        collection: "highlights",
+        lens: "all",
+        photographer: "",
+        query: "",
+        speaker: "",
+        talk: "",
+        topic: "",
+      },
+      "reset-filters",
+    );
+    main.insertBefore(reset, main.lastElementChild);
     return;
   }
   const navigation = node("nav", "chapter-nav");
@@ -373,7 +604,7 @@ function renderTimeline() {
       node(
         "span",
         "eyebrow",
-        `${String(index + 1).padStart(2, "0")} / ${group.short}`,
+        `${String(chapters.findIndex((chapter) => chapter.id === group.id) + 1).padStart(2, "0")} / ${group.short}`,
       ),
       node("span", "big-clock", clock(group.start)),
     );
@@ -382,6 +613,11 @@ function renderTimeline() {
     heading.append(time, title);
     section.append(heading);
     const feature =
+      ((state.speaker || state.talk) &&
+        group.photos.find(
+          (photo) =>
+            photo.eventContext?.kind === "talk" && photo.width >= photo.height,
+        )) ||
       group.photos.find(
         (p) => p.category === group.category && p.width >= p.height,
       ) ||
@@ -399,7 +635,7 @@ function renderTimeline() {
       ),
     );
     figure.append(caption);
-    section.append(figure);
+    section.append(figure, programmeDetails(feature));
     const others = group.photos.filter((p) => p !== feature);
     if (others.length) {
       const strip = node("div", "filmstrip");
@@ -413,6 +649,7 @@ function renderTimeline() {
           node("span", "credit", photo.photographer),
         );
         frame.append(caption);
+        frame.append(programmeDetails(photo, true));
         strip.append(frame);
       }
       section.append(
@@ -433,6 +670,12 @@ function renderTimeline() {
         .filter((e) => e.isIntersecting)
         .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
       if (!active) return;
+      state.chapter = active.target.id;
+      history.replaceState(
+        null,
+        "",
+        location.pathname + location.search + `#${state.chapter}`,
+      );
       for (const link of navigation.querySelectorAll("a")) {
         if (link.dataset.chapter === active.target.id)
           link.setAttribute("aria-current", "location");
@@ -659,15 +902,31 @@ function render() {
   if (state.lens !== "all") params.set("lens", state.lens);
   if (state.collection === "all") params.set("collection", "all");
   if (state.photographer) params.set("photographer", state.photographer);
+  if (mode === "timeline") {
+    if (state.query) params.set("q", state.query);
+    if (state.speaker) params.set("speaker", state.speaker);
+    if (state.talk) params.set("talk", state.talk);
+    if (state.topic) params.set("topic", state.topic);
+  }
   history.replaceState(
     null,
     "",
-    location.pathname + (params.size ? `?${params}` : ""),
+    location.pathname +
+      (params.size ? `?${params}` : "") +
+      (state.chapter ? `#${state.chapter}` : ""),
   );
   document.title = `SDLCAI / ${mode === "timeline" ? "The daybook" : mode === "atlas" ? "The photo atlas" : "Photo exploration prototypes"}`;
   if (mode === "timeline") renderTimeline();
   else if (mode === "atlas") renderAtlas();
   else renderChooser();
+  if (
+    mode === "timeline" &&
+    state.chapter &&
+    !document.getElementById(state.chapter)
+  ) {
+    state.chapter = "";
+    history.replaceState(null, "", location.pathname + location.search);
+  }
 }
 function openPhoto(photo) {
   currentIndex = currentPhotos.findIndex((p) => p.id === photo.id);
@@ -684,8 +943,53 @@ function updatePreview() {
     `${photo.capturedLocal.slice(11, 16)} / ${photo.category.replaceAll("-", " ")} / Finnish time`;
   $("#preview-caption").textContent = photo.caption || "A moment from SDLCAI";
   $("#preview-context").textContent = photo.eventContext
-    ? `Programme context: ${photo.eventContext.title}`
+    ? `${photo.eventContext.association === "timing-only" ? "Time-based programme context" : "Programme context"}: ${photo.eventContext.title}`
     : "";
+  const discovery = $("#preview-discovery");
+  discovery.replaceChildren();
+  if (mode === "timeline") {
+    const talks = photoTalks(photo, catalog);
+    if (talks.length) {
+      discovery.append(
+        node("p", "eyebrow", "Keep exploring"),
+        programmeDetails(photo),
+      );
+      const links = node("div", "context-chips");
+      for (const talk of talks.length > 1 ? talks : [])
+        links.append(
+          discoveryButton(`Explore talk: ${talk.title} →`, {
+            talk: talk.id,
+            speaker: "",
+          }),
+        );
+      discovery.append(links);
+    }
+    const threads = node("div", "context-chips topic-links");
+    for (const topic of photoTopics(photo))
+      threads.append(discoveryButton(topic.label, { topic: topic.id }));
+    discovery.append(threads);
+    if (
+      photo.eventContext?.recordingOffsetSeconds != null &&
+      ["talk", "panel"].includes(photo.eventContext.kind)
+    ) {
+      const watch = node(
+        "a",
+        "recording-link",
+        "Watch this moment in the recording ↗",
+      );
+      watch.href = `https://www.youtube.com/watch?v=d7POyy6dYFI&t=${photo.eventContext.recordingOffsetSeconds}s`;
+      watch.target = "_blank";
+      watch.rel = "noreferrer";
+      discovery.append(watch);
+    }
+    discovery.append(
+      node(
+        "p",
+        "small muted",
+        "Programme associations help you explore; they do not identify people in the photograph.",
+      ),
+    );
+  }
   $("#preview-credit").textContent = credit(photo);
   $("#download").href =
     `https://sdlcai.org/media/event-photos/${photo.id}/share.jpg?download=1`;
@@ -740,12 +1044,14 @@ $("#fullscreen").addEventListener("click", async () => {
   $("#fullscreen").textContent = "Exit full screen";
 });
 document.addEventListener("fullscreenchange", () => {
-  $("#fullscreen").textContent = document.fullscreenElement
-    ? "Exit full screen"
-    : "Full screen";
+  $("#fullscreen").textContent =
+    document.fullscreenElement && $("#preview").open
+      ? "Exit full screen"
+      : "Full screen";
 });
 $("#preview").addEventListener("close", () => {
   $("#preview").classList.remove("immersive");
+  $("#fullscreen").textContent = "Full screen";
   if (document.fullscreenElement) void document.exitFullscreen();
 });
 function themeLabel() {
@@ -789,7 +1095,32 @@ try {
   if (params.get("collection") === "all") state.collection = "all";
   if (photos.some((p) => p.photographer === params.get("photographer")))
     state.photographer = params.get("photographer");
+  if (mode === "timeline") {
+    state.query = (params.get("q") || "").trim().slice(0, 200);
+    if (
+      catalog.speakers.some((speaker) => speaker.id === params.get("speaker"))
+    )
+      state.speaker = params.get("speaker");
+    if (
+      catalog.talks.some(
+        (talk) =>
+          talk.id === params.get("talk") &&
+          (!state.speaker || talk.speakerIds.includes(state.speaker)),
+      )
+    )
+      state.talk = params.get("talk");
+    if (topics.some((topic) => topic.id === params.get("topic")))
+      state.topic = params.get("topic");
+    if (chapters.some((chapter) => `#${chapter.id}` === location.hash))
+      state.chapter = location.hash.slice(1);
+  }
   render();
+  if (mode === "timeline" && state.chapter)
+    requestAnimationFrame(() =>
+      document
+        .getElementById(state.chapter)
+        ?.scrollIntoView({ behavior: "instant" }),
+    );
 } catch (error) {
   $("#main").replaceChildren(node("p", "empty", error.message));
 }

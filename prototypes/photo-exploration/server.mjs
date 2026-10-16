@@ -9,6 +9,7 @@ const files = new Map([
   ["/timeline/", [new URL("index.html", root), "text/html"]],
   ["/atlas/", [new URL("index.html", root), "text/html"]],
   ["/app.js", [new URL("app.js", root), "text/javascript"]],
+  ["/discovery.js", [new URL("discovery.js", root), "text/javascript"]],
   ["/styles.css", [new URL("styles.css", root), "text/css"]],
   [
     "/fonts/headline.woff2",
