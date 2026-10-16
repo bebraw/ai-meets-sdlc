@@ -64,7 +64,8 @@
     "email:export": "node scripts/export-email-assets.mjs",
     "badges:browser-check": "node scripts/validate-badges.mjs",
     "speaker-slides:browser-check": "node scripts/validate-speaker-slides.mjs",
-    "feedback:browser-check": "node scripts/validate-feedback.mjs"
+    "feedback:browser-check": "node scripts/validate-feedback.mjs",
+    "photos:prototypes": "node prototypes/photo-exploration/server.mjs"
   },
   "engines": {
     "node": "24.x"

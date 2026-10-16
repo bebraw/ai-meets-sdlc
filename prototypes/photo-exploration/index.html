@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow,noarchive" />
+    <title>SDLCAI / Photo exploration prototypes</title>
+    <link
+      rel="icon"
+      href="https://sdlcai.org/assets/favicon.svg"
+      type="image/svg+xml"
+    />
+    <link
+      rel="preload"
+      href="/fonts/headline.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <script>
+      try {
+        document.documentElement.dataset.theme =
+          localStorage.getItem("sdlcai-photo-prototype-theme") ||
+          localStorage.getItem("sdlcai-theme") ||
+          "light";
+      } catch {
+        document.documentElement.dataset.theme = "light";
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-bar">
+      <a class="brand" href="/" aria-label="SDLCAI photo prototypes"
+        ><span>SDLC</span><span>AI</span></a
+      >
+      <nav aria-label="Prototype views">
+        <a href="/timeline/" data-nav="timeline">A / Daybook</a
+        ><a href="/atlas/" data-nav="atlas">B / Photo atlas</a>
+      </nav>
+      <button class="theme-button" id="theme" type="button">Dark mode</button>
+    </header>
+    <main id="main" tabindex="-1">
+      <div class="loading" role="status">
+        <span class="eyebrow">SDLCAI / 13 October 2026</span>
+        <h1>A day worth<br />looking back on.</h1>
+        <p>Opening the photo collection…</p>
+      </div>
+    </main>
+    <dialog id="preview" aria-labelledby="preview-title">
+      <div class="preview-shell">
+        <div class="preview-bar">
+          <span id="preview-title"></span>
+          <div>
+            <button type="button" id="previous" aria-label="Previous photo">
+              ←</button
+            ><button type="button" id="next" aria-label="Next photo">→</button
+            ><button type="button" id="fullscreen">Full screen</button
+            ><button type="button" id="close">Close ×</button>
+          </div>
+        </div>
+        <div class="preview-image"><img id="large-photo" alt="" /></div>
+        <div class="preview-info">
+          <div>
+            <p class="eyebrow" id="preview-time"></p>
+            <h2 id="preview-caption"></h2>
+            <p id="preview-context"></p>
+            <p class="credit" id="preview-credit"></p>
+          </div>
+          <div class="preview-links">
+            <a id="download" href="#">Download sharing copy ↗</a
+            ><a id="gallery" href="#" target="_blank" rel="noreferrer"
+              >Open in the media bank ↗</a
+            ><a
+              href="https://creativecommons.org/licenses/by/4.0/"
+              target="_blank"
+              rel="noreferrer"
+              >CC BY 4.0 ↗</a
+            >
+          </div>
+        </div>
+      </div>
+    </dialog>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
