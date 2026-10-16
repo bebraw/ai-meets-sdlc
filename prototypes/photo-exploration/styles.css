@@ -610,7 +610,8 @@ select {
   scrollbar-width: thin;
 }
 .film-frame {
-  flex: 0 0 230px;
+  flex: 0 0 min(230px, 100%);
+  min-width: 0;
 }
 .film-frame:nth-child(3n + 1) {
   margin-top: 25px;
@@ -627,14 +628,18 @@ select {
   object-fit: cover;
 }
 .film-frame figcaption {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
   padding-top: 10px;
   align-items: start;
 }
 .film-frame .credit {
-  text-align: right;
+  flex: 1 1 auto;
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-align: left;
 }
 .frame-time {
   font-size: 14px;
@@ -1059,7 +1064,7 @@ dialog.immersive .preview-info {
     aspect-ratio: 1.4;
   }
   .film-frame {
-    flex-basis: 185px;
+    flex-basis: min(185px, 100%);
   }
   .film-photo img {
     height: 135px;
