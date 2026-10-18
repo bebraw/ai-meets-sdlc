@@ -12,7 +12,7 @@ export const maxPresentationBodyBytes = 8 * 1024;
 
 export const sessionLifetimeMilliseconds = 14 * 24 * 60 * 60 * 1000;
 
-export const magicLinkLifetimeMilliseconds = 15 * 60 * 1000;
+export const magicLinkLifetimeMilliseconds = 24 * 60 * 60 * 1000;
 
 export const loginRequestRetentionMilliseconds = 24 * 60 * 60 * 1000;
 
@@ -30,7 +30,7 @@ export const speakerDinnerConsentText =
   "I consent to Toska Osuuskunta processing this response and, if I attend, sharing only the necessary food information with the dinner caterer. I can withdraw by contacting info@sdlcai.org.";
 
 export const genericLoginMessage =
-  "If that address is assigned to an SDLCAI speaker, a sign-in link is on its way. It expires after 15 minutes. Check your inbox and spam folder.";
+  "If that address is assigned to an SDLCAI speaker, a sign-in link is on its way. It works once and expires after 24 hours, or when workspace access ends if sooner. Check your inbox and spam folder. You can also use a secondary email saved by your organizer.";
 
 export const tokenPattern = /^[A-Za-z0-9_-]{43}$/u;
 

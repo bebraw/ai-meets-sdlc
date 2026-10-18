@@ -153,8 +153,12 @@ export async function requestSpeakerLogin(
     env
       .INTERESTS!.prepare(
         `SELECT
-         contacts.email_ciphertext,
-         contacts.email_iv,
+         CASE WHEN contacts.email_fingerprint = ?1
+           THEN contacts.email_ciphertext ELSE contacts.secondary_email_ciphertext
+         END AS email_ciphertext,
+         CASE WHEN contacts.email_fingerprint = ?1
+           THEN contacts.email_iv ELSE contacts.secondary_email_iv
+         END AS email_iv,
          contacts.retention_until,
          contacts.delivery_status,
          access.speaker_id,
@@ -163,7 +167,7 @@ export async function requestSpeakerLogin(
        FROM speaker_contacts AS contacts
        JOIN speaker_workspace_access AS access
          ON access.speaker_id = contacts.speaker_id
-      WHERE contacts.email_fingerprint = ?1
+      WHERE (contacts.email_fingerprint = ?1 OR contacts.secondary_email_fingerprint = ?1)
         AND contacts.delivery_status = 'active'
         AND contacts.retention_until > ?2
         AND access.revoked_at IS NULL
@@ -270,12 +274,6 @@ export async function requestSpeakerLogin(
       .bind(requestId, emailFingerprint, ipFingerprint, nowIso),
     env
       .INTERESTS!.prepare(
-        `DELETE FROM speaker_magic_links
-          WHERE speaker_id = ?1 AND consumed_at IS NULL`,
-      )
-      .bind(contact.speaker_id),
-    env
-      .INTERESTS!.prepare(
         `INSERT INTO speaker_magic_links (
          token_hash,
          request_id,
@@ -283,8 +281,9 @@ export async function requestSpeakerLogin(
          access_generation,
          created_at,
          expires_at,
-         consumed_at
-       ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, NULL)`,
+         consumed_at,
+         email_fingerprint
+       ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, NULL, ?7)`,
       )
       .bind(
         tokenHash,
@@ -293,6 +292,7 @@ export async function requestSpeakerLogin(
         contact.access_generation,
         nowIso,
         expiresAt.toISOString(),
+        emailFingerprint,
       ),
   ]);
 
@@ -419,7 +419,7 @@ export async function redeemSpeakerInvitation(
         WHERE token_hash = ?1
           AND consumed_at IS NULL
           AND expires_at > ?2
-      RETURNING speaker_id, access_generation`,
+      RETURNING speaker_id, access_generation, email_fingerprint`,
     )
     .bind(magicTokenHash, nowIso)
     .first<SpeakerMagicLinkRow>();
@@ -501,11 +501,20 @@ export async function redeemSpeakerInvitation(
     env
       .INTERESTS!.prepare(
         `UPDATE speaker_contacts
-          SET email_confirmed_at = COALESCE(email_confirmed_at, ?2),
+          SET email_confirmed_at = CASE
+                WHEN ?3 IS NULL OR email_fingerprint = ?3
+                  THEN COALESCE(email_confirmed_at, ?2)
+                ELSE email_confirmed_at
+              END,
+              secondary_email_confirmed_at = CASE
+                WHEN secondary_email_fingerprint = ?3
+                  THEN COALESCE(secondary_email_confirmed_at, ?2)
+                ELSE secondary_email_confirmed_at
+              END,
               updated_at = ?2
         WHERE speaker_id = ?1`,
       )
-      .bind(access.speaker_id, nowIso),
+      .bind(access.speaker_id, nowIso, magicLink?.email_fingerprint ?? null),
     env
       .INTERESTS!.prepare(
         "DELETE FROM speaker_workspace_sessions WHERE expires_at <= ?1",

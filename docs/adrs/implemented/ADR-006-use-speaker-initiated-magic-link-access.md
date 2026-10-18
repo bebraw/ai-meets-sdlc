@@ -21,16 +21,22 @@ not enter the public-content revision or Git publishing workflow.
 
 ## Decision
 
-The organizer assigns one email address to each canonical speaker in the admin
-interface. Saving the mapping does not send mail. A speaker visits `/speaker/`,
-enters that address, completes Turnstile when configured, and receives a
-short-lived, single-use magic link from `info@sdlcai.org`.
+The organizer assigns a primary email and an optional secondary email to each
+canonical speaker in the admin interface. Saving the mapping does not send mail.
+A speaker visits `/speaker/`, enters either address, completes Turnstile when
+configured, and receives a single-use magic link from `info@sdlcai.org` at that
+address. Both addresses are encrypted, unique across all speaker mappings, and
+share contact retention and suppression. Announcement delivery uses only the
+primary address and its existing preferences; signing in through a secondary
+address does not confirm the primary address for promotional email.
 
 Login requests use a generic accepted response for both mapped and unmapped
 addresses. Keyed fingerprints, rather than plaintext addresses or IP
 addresses, support per-address and per-client throttling in D1. Magic-link
 tokens are generated with Web Crypto, stored only as keyed hashes, expire after
-15 minutes, and are consumed before a session is issued. The existing
+24 hours (or the workspace access deadline if sooner), and are consumed before
+a session is issued. Requesting another link does not invalidate an earlier
+unexpired link, allowing for delayed or out-of-order email delivery. The existing
 HTTP-only, secure speaker session cookie remains the authenticated browser
 session.
 
@@ -62,9 +68,11 @@ stale organizer saves, including when a speaker replies concurrently. Attendance
 changes appear in the private activity log without food values. Migration 0024
 adds the encrypted setting and dinner revision to the existing retained record.
 
-Changing a speaker's assigned email revokes existing sessions and outstanding
-magic links for that speaker. Saving the same email does not unnecessarily sign
-the speaker out.
+Changing or removing either assigned address revokes existing sessions and
+outstanding magic links for that speaker. Saving the same addresses does not
+unnecessarily sign the speaker out. Migration 0041 adds secondary email storage,
+database uniqueness guards, and the address fingerprint on magic links to track
+confirmation independently.
 
 ## Trigger
 
@@ -86,6 +94,8 @@ manually created invitations.
 **Negative:**
 
 - The access flow depends on transactional email delivery and abuse controls.
+- The 24-hour link window accommodates corporate email delays and speakers
+  returning later; links remain single-use and contact changes revoke them.
 - The old invitation and shared-dinner routes must be retained until their
   respective access and retention deadlines.
 

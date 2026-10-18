@@ -46,6 +46,8 @@ interface AdminSpeakerItem {
     delivery_status: "active" | "suppressed";
     email: string | null;
     email_confirmed_at: string | null;
+    secondary_email: string | null;
+    secondary_email_confirmed_at: string | null;
     operational_email_enabled: boolean;
     promotion_email_enabled: boolean;
     retention_until: string;
@@ -419,7 +421,8 @@ function renderAnnouncementSpeakers(speakers: AdminSpeakerItem[]): void {
         node(
           "span",
           "text-xs text-paper/60",
-          speaker.contact?.email_confirmed_at
+          speaker.contact?.email_confirmed_at ||
+            speaker.contact?.secondary_email_confirmed_at
             ? "Signed-in operational contact"
             : speaker.contact?.email
               ? "Mapped / not signed in"
@@ -857,7 +860,10 @@ function renderSummary(speakers: AdminSpeakerItem[]): void {
   setCount("contacts", speakers.filter(({ contact }) => contact?.email).length);
   setCount(
     "confirmed",
-    speakers.filter(({ contact }) => contact?.email_confirmed_at).length,
+    speakers.filter(
+      ({ contact }) =>
+        contact?.email_confirmed_at || contact?.secondary_email_confirmed_at,
+    ).length,
   );
   setCount(
     "submitted",
@@ -2299,10 +2305,15 @@ async function submitPhotoReview(
 function renderInvitation(speaker: AdminSpeakerItem): HTMLElement {
   const region = node(
     "form",
-    "grid gap-x-3 gap-y-2 border-t border-paper/40 pt-5 md:grid-cols-[minmax(0,1fr)_auto]",
+    "grid gap-x-3 gap-y-4 border-t border-paper/40 pt-5 md:grid-cols-2",
   ) as HTMLFormElement;
+  region.dataset.adminSpeakerContact = speaker.speaker_id;
   const label = node("label", "grid gap-2 md:col-start-1 md:row-start-1");
-  const labelText = node("span", "font-bold uppercase", "Speaker email");
+  const labelText = node(
+    "span",
+    "font-bold uppercase",
+    "Primary speaker email",
+  );
   const input = document.createElement("input");
   input.className =
     "w-full border border-paper bg-ink px-4 py-3 text-paper outline-none focus:ring-2 focus:ring-paper";
@@ -2310,23 +2321,47 @@ function renderInvitation(speaker: AdminSpeakerItem): HTMLElement {
   input.name = "email";
   input.autocomplete = "email";
   input.required = true;
+  input.maxLength = 254;
   input.value = speaker.contact?.email ?? "";
+  const secondaryLabel = node(
+    "label",
+    "grid gap-2 md:col-start-2 md:row-start-1",
+  );
+  const secondaryInput = document.createElement("input");
+  secondaryInput.className = input.className;
+  secondaryInput.type = "email";
+  secondaryInput.name = "secondary_email";
+  secondaryInput.autocomplete = "email";
+  secondaryInput.maxLength = 254;
+  secondaryInput.value = speaker.contact?.secondary_email ?? "";
+  secondaryLabel.appendChild(
+    node("span", "font-bold uppercase", "Secondary email (optional)"),
+  );
+  secondaryLabel.appendChild(secondaryInput);
+  const guidance = node(
+    "p",
+    "text-xs leading-5 text-paper/70 md:col-span-2 md:row-start-2",
+    "Either address can receive a one-time sign-in link, valid for up to 24 hours. Updates go to the primary email. Leave the secondary email blank to remove it. Changing either address signs the speaker out.",
+  );
   const help = node(
     "span",
-    "text-xs text-paper/60 md:col-start-1 md:row-start-2",
+    "text-xs text-paper/60 md:col-span-2 md:row-start-4",
     invitationHelp(speaker),
   );
+  help.setAttribute("role", "status");
   const button = node(
     "button",
-    "border border-paper bg-paper px-5 py-3 font-bold uppercase text-ink transition hover:bg-ink hover:text-paper disabled:cursor-wait disabled:opacity-60 md:col-start-2 md:row-start-1 md:self-end",
-    "Save email",
+    "w-fit border border-paper bg-paper px-5 py-3 font-bold uppercase text-ink transition hover:bg-ink hover:text-paper disabled:cursor-wait disabled:opacity-60 md:col-span-2 md:row-start-3",
+    "Save emails",
   ) as HTMLButtonElement;
   button.type = "submit";
   label.appendChild(labelText);
   label.appendChild(input);
   region.appendChild(label);
-  region.appendChild(help);
+  region.appendChild(secondaryLabel);
+  region.appendChild(guidance);
   region.appendChild(button);
+  region.appendChild(help);
 
   region.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -2338,6 +2373,7 @@ function renderInvitation(speaker: AdminSpeakerItem): HTMLElement {
       {
         body: JSON.stringify({
           email: input.value,
+          secondary_email: secondaryInput.value,
           speaker_id: speaker.speaker_id,
         }),
         headers: {
@@ -2701,10 +2737,13 @@ async function submitReview(
 function invitationHelp(speaker: AdminSpeakerItem): string {
   if (!speaker.contact?.email)
     return "Add an email so this speaker can request a sign-in link.";
-  if (!speaker.contact.email_confirmed_at) {
+  const signedInAt =
+    speaker.contact.email_confirmed_at ||
+    speaker.contact.secondary_email_confirmed_at;
+  if (!signedInAt) {
     return "Mapped / speaker has not signed in yet.";
   }
-  return `Signed in / ${formatDate(speaker.contact.email_confirmed_at)}`;
+  return `Signed in / ${formatDate(signedInAt)}`;
 }
 
 function revisionLabel(revision: AdminSpeakerRevision | null): string {

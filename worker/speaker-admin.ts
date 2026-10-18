@@ -7,10 +7,6 @@ import {
   isRecord,
   staleCanonicalResponse,
   parseFutureConfigurationDate,
-  normalizeEmail,
-  isLikelyEmail,
-  hashPrivateText,
-  encryptPrivateText,
   hashToken,
   createToken,
   parsePublicOrigin,
@@ -46,6 +42,10 @@ import {
   readAdminSpeakerRecordingLinks,
 } from "./speaker-slides.ts";
 import { validateSpeakerWorkspaceContent } from "./speaker-content-validation.ts";
+import {
+  prepareSpeakerContactEmails,
+  saveSpeakerContactBatch,
+} from "./speaker-contact-emails.ts";
 
 export async function getAdminSpeakers(env: Env): Promise<Response> {
   const configurationError = getConfigurationError(env);
@@ -72,6 +72,9 @@ export async function getAdminSpeakers(env: Env): Promise<Response> {
          email_ciphertext,
          email_iv,
          email_confirmed_at,
+         secondary_email_ciphertext,
+         secondary_email_iv,
+         secondary_email_confirmed_at,
          retention_until,
          operational_email_enabled,
          promotion_email_enabled,
@@ -175,6 +178,7 @@ export async function getAdminSpeakers(env: Env): Promise<Response> {
       const presentationRow = presentations.get(record.speakerId);
       const canonical = record.content;
       let email: string | null = null;
+      let secondaryEmail: string | null = null;
       let dinner: SpeakerDinnerResponseData | null = null;
       let presentation: SpeakerPresentationResponseData | null = null;
 
@@ -185,6 +189,16 @@ export async function getAdminSpeakers(env: Env): Promise<Response> {
             contact.email_iv,
             env.EMAIL_ENCRYPTION_KEY!,
           );
+          if (
+            contact.secondary_email_ciphertext &&
+            contact.secondary_email_iv
+          ) {
+            secondaryEmail = await decryptPrivateText(
+              contact.secondary_email_ciphertext,
+              contact.secondary_email_iv,
+              env.EMAIL_ENCRYPTION_KEY!,
+            );
+          }
         } catch {
           console.error("Unable to decrypt speaker contact", {
             speakerId: record.speakerId,
@@ -231,6 +245,9 @@ export async function getAdminSpeakers(env: Env): Promise<Response> {
               delivery_status: contact.delivery_status,
               email,
               email_confirmed_at: contact.email_confirmed_at,
+              secondary_email: secondaryEmail,
+              secondary_email_confirmed_at:
+                contact.secondary_email_confirmed_at,
               operational_email_enabled:
                 contact.operational_email_enabled === 1,
               promotion_email_enabled: contact.promotion_email_enabled === 1,
@@ -526,64 +543,19 @@ export async function saveSpeakerContact(
 
   const speakerId = typeof body.speaker_id === "string" ? body.speaker_id : "";
   const speaker = await readCanonicalSpeaker(env, speakerId);
-  const email = normalizeEmail(body.email);
-
   if (!speaker) return json({ error: "Choose a valid speaker." }, 400);
 
-  if (!isLikelyEmail(email)) {
-    return json({ error: "Enter a valid speaker email address." }, 400);
-  }
-
-  const emailFingerprint = await hashPrivateText(
-    email,
-    env.EMAIL_ENCRYPTION_KEY!,
-    "email-hash",
-  );
-  const [duplicate, existingContact, existingAccess] = await Promise.all([
-    env
-      .INTERESTS!.prepare(
-        `SELECT speaker_id
-         FROM speaker_contacts
-        WHERE email_fingerprint = ?1 AND speaker_id <> ?2
-        LIMIT 1`,
-      )
-      .bind(emailFingerprint, speakerId)
-      .first<{ speaker_id: string }>(),
-    env
-      .INTERESTS!.prepare(
-        `SELECT email_fingerprint
-         FROM speaker_contacts
-        WHERE speaker_id = ?1
-        LIMIT 1`,
-      )
-      .bind(speakerId)
-      .first<{ email_fingerprint: string }>(),
-    env
-      .INTERESTS!.prepare(
-        `SELECT invite_expires_at, revoked_at
-         FROM speaker_workspace_access
-        WHERE speaker_id = ?1
-        LIMIT 1`,
-      )
-      .bind(speakerId)
-      .first<{ invite_expires_at: string; revoked_at: string | null }>(),
-  ]);
-
-  if (duplicate) {
-    return json(
-      { error: "That email address is already assigned to another speaker." },
-      409,
-    );
-  }
-
-  const encryptedEmail = await encryptPrivateText(
-    email,
-    env.EMAIL_ENCRYPTION_KEY!,
-  );
+  const emails = await prepareSpeakerContactEmails(env, speakerId, body);
+  if (emails instanceof Response) return emails;
+  const existingAccess = await env
+    .INTERESTS!.prepare(
+      `SELECT invite_expires_at, revoked_at
+       FROM speaker_workspace_access WHERE speaker_id = ?1`,
+    )
+    .bind(speakerId)
+    .first<{ invite_expires_at: string; revoked_at: string | null }>();
   const now = new Date().toISOString();
-  const emailChanged = Boolean(
-    existingContact && existingContact.email_fingerprint !== emailFingerprint,
-  );
+  const emailChanged = emails.changed;
   const accessNeedsRotation = Boolean(
     existingAccess &&
     (emailChanged ||
@@ -596,39 +568,7 @@ export async function saveSpeakerContact(
     "speaker-workspace-invite-token",
   );
   const statements: D1PreparedStatement[] = [
-    env
-      .INTERESTS!.prepare(
-        `INSERT INTO speaker_contacts (
-         speaker_id,
-         email_ciphertext,
-         email_iv,
-         email_fingerprint,
-         email_confirmed_at,
-         retention_until,
-         created_at,
-         updated_at
-       ) VALUES (?1, ?2, ?3, ?4, NULL, ?5, ?6, ?6)
-       ON CONFLICT (speaker_id) DO UPDATE SET
-         email_ciphertext = excluded.email_ciphertext,
-         email_iv = excluded.email_iv,
-         email_confirmed_at = CASE
-           WHEN speaker_contacts.email_fingerprint = excluded.email_fingerprint
-             THEN speaker_contacts.email_confirmed_at
-           ELSE NULL
-         END,
-         email_fingerprint = excluded.email_fingerprint,
-         retention_until = excluded.retention_until,
-         delivery_status = 'active',
-         updated_at = excluded.updated_at`,
-      )
-      .bind(
-        speakerId,
-        encryptedEmail.ciphertext,
-        encryptedEmail.iv,
-        emailFingerprint,
-        retentionUntil.toISOString(),
-        now,
-      ),
+    emails.statement(retentionUntil.toISOString(), now),
   ];
 
   if (!existingAccess || accessNeedsRotation) {
@@ -674,7 +614,8 @@ export async function saveSpeakerContact(
     );
   }
 
-  await env.INTERESTS!.batch(statements);
+  const conflict = await saveSpeakerContactBatch(env, statements);
+  if (conflict) return conflict;
 
   return json({
     login_url: `${parsePublicOrigin(env.PUBLIC_SITE_ORIGIN) ?? new URL(request.url).origin}/speaker/`,
@@ -717,37 +658,9 @@ export async function sendSpeakerInvitation(
 
   const speakerId = typeof body.speaker_id === "string" ? body.speaker_id : "";
   const speaker = await readCanonicalSpeaker(env, speakerId);
-  const email = normalizeEmail(body.email);
-
-  if (!speaker) {
-    return json({ error: "Choose a valid speaker." }, 400);
-  }
-
-  if (!isLikelyEmail(email)) {
-    return json({ error: "Enter a valid speaker email address." }, 400);
-  }
-
-  const emailFingerprint = await hashPrivateText(
-    email,
-    env.EMAIL_ENCRYPTION_KEY!,
-    "email-hash",
-  );
-  const duplicate = await env
-    .INTERESTS!.prepare(
-      `SELECT speaker_id
-       FROM speaker_contacts
-      WHERE email_fingerprint = ?1 AND speaker_id <> ?2
-      LIMIT 1`,
-    )
-    .bind(emailFingerprint, speakerId)
-    .first<{ speaker_id: string }>();
-
-  if (duplicate) {
-    return json(
-      { error: "That email address is already assigned to another speaker." },
-      409,
-    );
-  }
+  if (!speaker) return json({ error: "Choose a valid speaker." }, 400);
+  const emails = await prepareSpeakerContactEmails(env, speakerId, body);
+  if (emails instanceof Response) return emails;
 
   const token = createToken();
   const tokenHash = await hashToken(
@@ -755,46 +668,10 @@ export async function sendSpeakerInvitation(
     env.EMAIL_ENCRYPTION_KEY!,
     "speaker-workspace-invite-token",
   );
-  const encryptedEmail = await encryptPrivateText(
-    email,
-    env.EMAIL_ENCRYPTION_KEY!,
-  );
   const now = new Date().toISOString();
 
-  await env.INTERESTS!.batch([
-    env
-      .INTERESTS!.prepare(
-        `INSERT INTO speaker_contacts (
-         speaker_id,
-         email_ciphertext,
-         email_iv,
-         email_fingerprint,
-         email_confirmed_at,
-         retention_until,
-         created_at,
-         updated_at
-       ) VALUES (?1, ?2, ?3, ?4, NULL, ?5, ?6, ?6)
-       ON CONFLICT (speaker_id) DO UPDATE SET
-         email_ciphertext = excluded.email_ciphertext,
-         email_iv = excluded.email_iv,
-         email_confirmed_at = CASE
-           WHEN speaker_contacts.email_fingerprint = excluded.email_fingerprint
-             THEN speaker_contacts.email_confirmed_at
-           ELSE NULL
-         END,
-         email_fingerprint = excluded.email_fingerprint,
-         retention_until = excluded.retention_until,
-         delivery_status = 'active',
-         updated_at = excluded.updated_at`,
-      )
-      .bind(
-        speakerId,
-        encryptedEmail.ciphertext,
-        encryptedEmail.iv,
-        emailFingerprint,
-        retentionUntil.toISOString(),
-        now,
-      ),
+  const conflict = await saveSpeakerContactBatch(env, [
+    emails.statement(retentionUntil.toISOString(), now),
     env
       .INTERESTS!.prepare(
         `INSERT INTO speaker_workspace_access (
@@ -825,6 +702,8 @@ export async function sendSpeakerInvitation(
       .bind(speakerId),
   ]);
 
+  if (conflict) return conflict;
+
   const invitationUrl = `${publicOrigin}/speaker/#${token}`;
 
   try {
@@ -842,7 +721,7 @@ export async function sendSpeakerInvitation(
         invitationUrl,
         speakerName: speaker.content.profile.name,
       }),
-      to: email,
+      to: emails.email,
     });
   } catch (error) {
     console.error("Speaker invitation delivery failed", {

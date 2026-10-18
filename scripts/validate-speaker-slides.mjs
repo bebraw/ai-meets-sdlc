@@ -107,6 +107,32 @@ try {
   await upload("Upload slides");
   await card.getByText("Private · venue use only", { exact: true }).waitFor();
   await admin.goto(`${origin}/admin/speakers/`);
+  const contact = admin.locator(
+    '[data-admin-speaker-contact="ohans-emmanuel"]',
+  );
+  await contact.waitFor();
+  for (const address of ["ohans-backup@example.test", ""]) {
+    await contact.getByLabel("Secondary email (optional)").fill(address);
+    const saved = admin.waitForResponse(
+      (response) =>
+        response.url().includes("/api/admin/speakers/contact") &&
+        response.request().method() === "POST",
+    );
+    await contact
+      .getByRole("button", { name: "Save emails", exact: true })
+      .click();
+    assert.equal((await saved).status(), 200);
+    await admin.reload();
+    await contact.waitFor();
+    assert.equal(
+      await contact.getByLabel("Secondary email (optional)").inputValue(),
+      address,
+    );
+    assert.equal(
+      await contact.getByLabel("Primary speaker email").inputValue(),
+      "ohans-emmanuel@example.test",
+    );
+  }
   const presentation = admin.locator('[data-admin-presentation="mo-khazali"]');
   const materials = presentation.locator(
     `[data-admin-presentation-talk="${talkId}"]`,
@@ -790,7 +816,7 @@ try {
   await htmlAdminCard.waitFor({ state: "detached" });
   assert.deepEqual(errors, []);
   console.log(
-    "Speaker and admin uploads, PDF publication, single programme listing, presentation/resource and recording links, stale edits, replacement, removal, mobile layout and accessibility passed.",
+    "Secondary email save/removal, speaker and admin uploads, PDF publication, single programme listing, presentation/resource and recording links, stale edits, replacement, removal, mobile layout and accessibility passed.",
   );
 } finally {
   await browser?.close();

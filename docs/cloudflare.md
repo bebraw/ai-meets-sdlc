@@ -329,7 +329,19 @@ client-side gating is only a user experience safeguard.
 The public `POST /api/speaker/login` endpoint accepts JSON with `email` and,
 when configured, `turnstile_token`. Valid requests return the same `202`
 response whether or not the address is mapped to a speaker. Known,
-non-throttled addresses receive a 15-minute, single-use link. The link fragment
+non-throttled addresses receive a 24-hour, single-use link, capped at the
+workspace access deadline. Earlier requests remain usable until their own
+expiry, so delayed email is not invalidated by requesting another link.
+Organizers can save an optional encrypted `secondary_email` alongside the
+primary address at `POST /api/admin/speakers/contact`. Either address can request
+sign-in; the email is sent only to the requested address. Changing or removing
+either address revokes existing sessions and links. Omitting `secondary_email`
+preserves it for older clients; an empty string or `null` removes it. Addresses
+are unique across both fields and all speakers. Each address is confirmed
+independently, and announcement delivery continues to use the primary address
+and its existing preferences. Both addresses share contact retention and
+delivery suppression. Migration 0041 adds these fields and database uniqueness
+guards. The link fragment
 is exchanged at `POST /api/speaker/session` for the existing HTTP-only session
 cookie, so the token does not enter HTTP request logs. Authenticated speakers
 read and save encrypted presentation logistics at `GET` and `POST

@@ -21,6 +21,7 @@ export interface SpeakerSessionRow extends SpeakerAccessRow {
 
 export interface SpeakerMagicLinkRow {
   access_generation: number;
+  email_fingerprint: string | null;
   speaker_id: string;
 }
 
@@ -99,6 +100,9 @@ export interface SpeakerContactRow {
   operational_email_enabled: number;
   promotion_email_enabled: number;
   retention_until: string;
+  secondary_email_ciphertext: string | null;
+  secondary_email_confirmed_at: string | null;
+  secondary_email_iv: string | null;
   speaker_id: string;
   updated_at: string;
 }
