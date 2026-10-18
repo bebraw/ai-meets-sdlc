@@ -8,6 +8,8 @@ const origin = "https://sdlcai.org";
 test("the 2026 archive preserves resources, canonical content and legacy links while the homepage promotes signup", async (t) => {
   const fixture = await createWorkerFixture({
     vars: {
+      ADMIN_USERNAME: "archive-test-admin",
+      ADMIN_PASSWORD: "local-archive-test-password",
       NEWSLETTER_ENABLED: "true",
       EMAIL_ENCRYPTION_KEY: "local-archive-test-key",
       TURNSTILE_SITE_KEY: "local-archive-site-key",
