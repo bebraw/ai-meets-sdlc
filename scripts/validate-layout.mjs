@@ -10,6 +10,8 @@ import { closeBrowserServer, runBrowserCheck } from "./layout-browser.mjs";
 const buildDir = path.resolve("build");
 const routes = [
   "/",
+  "/2026/",
+  "/2026/speakers/",
   "/404/",
   "/admin/",
   "/admin/activity/",
@@ -30,12 +32,12 @@ const routes = [
   "/admin/posters/",
   "/admin/speakers/",
   "/contact/",
-  "/faq/",
-  "/for-sponsors/",
-  "/posters/",
+  "/2026/faq/",
+  "/2026/for-sponsors/",
+  "/2026/posters/",
   "/privacy-policy/",
-  "/schedule/",
-  "/photos/",
+  "/2026/schedule/",
+  "/2026/photos/",
   "/admin/photos/",
   "/speaker-dinner/",
   "/speaker-dinner/shared/",
@@ -592,13 +594,13 @@ async function evaluatePageLayout(session) {
       if (route === "/") {
         const title = document.querySelector("h1");
         const intro = document.querySelector("[data-seminar-intro]");
-        const countdown = document.querySelector("aside");
+        const signup = document.querySelector("aside");
 
-        if (!title || !intro || !countdown) {
+        if (!title || !intro || !signup) {
           fail("home-hero-missing-elements", {
             hasTitle: Boolean(title),
             hasIntro: Boolean(intro),
-            hasCountdown: Boolean(countdown),
+            hasSignup: Boolean(signup),
           });
 
           return failures;
@@ -606,14 +608,14 @@ async function evaluatePageLayout(session) {
 
         const titleRect = rectOf(title);
         const introRect = rectOf(intro);
-        const countdownRect = rectOf(countdown);
-        const countdownIsRail = countdownRect.top < titleRect.bottom;
+        const signupRect = rectOf(signup);
+        const signupIsRail = signupRect.top < titleRect.bottom;
 
         if (viewportWidth >= 768 && viewportWidth < 900) {
-          if (countdownIsRail) {
-            fail("home-hero-countdown-rail-too-early", {
+          if (signupIsRail) {
+            fail("home-hero-signup-rail-too-early", {
               titleRect,
-              countdownRect,
+              signupRect,
             });
           }
 
@@ -626,24 +628,34 @@ async function evaluatePageLayout(session) {
         }
 
         if (viewportWidth >= 900) {
-          if (!countdownIsRail) {
-            fail("home-hero-countdown-not-railed", {
+          if (!signupIsRail) {
+            fail("home-hero-signup-not-railed", {
               titleRect,
-              countdownRect,
+              signupRect,
             });
           }
 
-          if (countdownRect.left <= titleRect.left) {
-            fail("home-hero-countdown-not-right-of-title", {
+          if (signupRect.left <= titleRect.left) {
+            fail("home-hero-signup-not-right-of-title", {
               titleRect,
-              countdownRect,
+              signupRect,
             });
           }
         }
 
       }
 
-      if (route === "/for-sponsors/" && viewportWidth < 768) {
+      if (route === "/2026/") {
+        const title = document.querySelector("h1");
+        if (title && title.scrollWidth > title.clientWidth + 1) {
+          fail("archive-title-exceeds-column", {
+            titleRect: rectOf(title),
+            textWidth: title.scrollWidth,
+          });
+        }
+      }
+
+      if (route === "/2026/for-sponsors/" && viewportWidth < 768) {
         const packageTable = document.querySelector("#packages table");
         const scroller = packageTable?.parentElement;
 

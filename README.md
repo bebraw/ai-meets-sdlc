@@ -6,10 +6,18 @@ The site is built with Gustwind and HTMLisp, styled with Tailwind CSS, and
 deployed as a Cloudflare Worker with static assets. The production domain is
 `sdlcai.org`.
 
-The seminar is sold out. The homepage shows a brief sold-out notice and links to
-the YouTube livestream. The tickets page, public registration links, the Tito
-widget, and the old interest-signup form are removed; the event feed has no
-ticket or registration actions.
+The homepage introduces SDLCAI and offers double-confirmed mailing-list signup
+for announcements about the next seminar. The 2026 event lives at `/2026/`, with
+its programme, speaker profiles, photographs, event news and practical details
+under that year. The main navigation links to the archive, contact details and
+email updates. Former resource URLs permanently redirect into `/2026/`, keeping
+query parameters and existing talk/section anchors intact.
+
+Speaker materials still come from canonical D1 records and private R2 storage;
+archiving does not change sharing permission or publication state. Admin tools,
+speaker workspaces, registration access and public media APIs keep their URLs.
+The existing public event feed remains available at `/event.json`, with the same
+2026 dataset also available at `/2026/event.json`.
 
 ## Requirements
 
@@ -59,9 +67,9 @@ photos, applies confirmed camera clock corrections, and provides curation,
 collections and credited downloads. Start it with `npm run photos:review`
 after preparing the source folder.
 
-The public photo timeline is at `/timeline/`, available as **Photo timeline** in
-the main navigation and footer, in the homepage **A day in frames** card, and
-through the prominent **Explore the photo timeline** button on `/photos/`. Its layout
+The public photo timeline is at `/2026/timeline/`, available from the 2026 archive,
+its resource navigation, and the **Explore the photo timeline** button on
+`/2026/photos/`. Its layout
 is `site/layouts/photo-timeline.html`, with the approved daybook design and
 discovery code in `assets/photo-timeline/`. It loads the anonymous public catalog
 after the page shell paints, starts with highlights and supports chapters,
@@ -837,14 +845,14 @@ composer, consent form, and unsubscribe flow at mobile and desktop sizes using
 mocked delivery.
 
 Marketing signup is controlled by `NEWSLETTER_ENABLED` in `wrangler.jsonc`,
-defaulting to `"false"`. While off, homepage/footer signup entry points are
+enabled for the post-event homepage. While off, homepage/footer signup entry points are
 removed and the signup API rejects requests; `/subscribe/` explains that signup
 is closed. Confirmation and unsubscribe links, plus admin consent management,
 continue to work for existing subscriptions. `/admin/newsletter/` shows the flag
 state, subscribers, and consent history. There is no marketing campaign sender.
 
-Mailrelay is the marketing provider integration; signup and syncing remain
-disabled until its SDLCAI account is configured. Cloudflare Email Service
+Mailrelay is the marketing provider integration. Public signup and subscriber
+sync are enabled for the SDLCAI account and group configured below. Cloudflare Email Service
 is used only for transactional event and confirmation emails. The signup
 flow uses the existing Turnstile widget/keys, verifies the `newsletter-signup`
 action and configured hostnames server-side, requires explicit consent, and
@@ -883,8 +891,8 @@ Configure these server-side settings:
 | `MAILRELAY_ACCOUNT_DOMAIN` | `sdlcai.ipzmarketing.com`                                           |
 | `MAILRELAY_GROUP_ID`       | `"1"`, the SDLCAI news group                                        |
 | `MAILRELAY_API_KEY`        | Worker secret, set with `npx wrangler secret put MAILRELAY_API_KEY` |
-| `MAILRELAY_SYNC_ENABLED`   | `"true"` after account/group/key setup; defaults to `"false"`       |
-| `NEWSLETTER_ENABLED`       | Independent public signup flag; still defaults to `"false"`         |
+| `MAILRELAY_SYNC_ENABLED`   | `"true"` for the configured SDLCAI account and group                |
+| `NEWSLETTER_ENABLED`       | Independent public signup flag; enabled (`"true"`)                  |
 
 Keep the account and group dedicated to this mailing purpose. Review Mailrelay's
 processing agreement and the privacy notice before opening signup. Enabling sync

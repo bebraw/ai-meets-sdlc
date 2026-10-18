@@ -7,6 +7,7 @@ const root = path.resolve(import.meta.dirname, "..");
 const sourceDir = path.join(root, "assets/social/source");
 const outputDir = path.join(root, "assets/social/exports");
 const assets = [
+  { name: "sdlcai", label: "SDLCAI / SITE CARD", width: 1200, height: 630 },
   {
     name: "sdlcai-2026-bsky-x",
     label: "BLUESKY / X",
@@ -26,6 +27,11 @@ const assets = [
     height: 1080,
   },
 ];
+const requested = new Set(process.argv.slice(2));
+for (const name of requested) {
+  if (!assets.some((asset) => asset.name === name))
+    throw new Error(`Unknown social asset: ${name}`);
+}
 
 await mkdir(outputDir, { recursive: true });
 const browser = await chromium.launch({
@@ -38,6 +44,7 @@ const browser = await chromium.launch({
 try {
   const page = await browser.newPage({ deviceScaleFactor: 1 });
   for (const asset of assets) {
+    if (requested.size && !requested.has(asset.name)) continue;
     await page.setViewportSize({ width: asset.width, height: asset.height });
     await page.goto(
       pathToFileURL(path.join(sourceDir, `${asset.name}.svg`)).href,
@@ -125,29 +132,31 @@ try {
     );
   }
 
-  const cards = [];
-  for (const asset of assets) {
-    const buffer = await readFile(path.join(outputDir, `${asset.name}.png`));
-    cards.push(
-      `<figure><figcaption>${asset.label} <span>${asset.width} × ${asset.height}</span></figcaption><img src="data:image/png;base64,${buffer.toString("base64")}" alt="${asset.label}" /></figure>`,
-    );
-  }
-  await page.setViewportSize({ width: 1600, height: 1580 });
-  await page.goto("about:blank");
-  await page.setContent(`<!doctype html><html lang="en"><meta charset="utf-8"><title>SDLCAI social graphics</title><style>
+  if (!requested.size) {
+    const cards = [];
+    for (const asset of assets) {
+      const buffer = await readFile(path.join(outputDir, `${asset.name}.png`));
+      cards.push(
+        `<figure><figcaption>${asset.label} <span>${asset.width} × ${asset.height}</span></figcaption><img src="data:image/png;base64,${buffer.toString("base64")}" alt="${asset.label}" /></figure>`,
+      );
+    }
+    await page.setViewportSize({ width: 1600, height: 1580 });
+    await page.goto("about:blank");
+    await page.setContent(`<!doctype html><html lang="en"><meta charset="utf-8"><title>SDLCAI social graphics</title><style>
     * { box-sizing: border-box; } body { margin: 0; padding: 48px; background: #232323; color: #f6f4ef; font: 22px sans-serif; }
     h1 { font-size: 28px; margin: 0 0 36px; } main { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
     figure { margin: 0; } figure:first-child { grid-column: 1 / -1; width: 1120px; }
     figcaption { font-size: 16px; letter-spacing: 1px; margin-bottom: 12px; } span { float: right; color: #b7b0a4; } img { display: block; width: 100%; }
     </style><h1>SDLCAI 2026 / SOCIAL GRAPHICS</h1><main>${cards.join("")}</main></html>`);
-  await page.evaluate(() =>
-    Promise.all([...document.images].map((image) => image.decode())),
-  );
-  await page.screenshot({
-    path: path.join(outputDir, "sdlcai-2026-preview.png"),
-    type: "png",
-    fullPage: true,
-  });
+    await page.evaluate(() =>
+      Promise.all([...document.images].map((image) => image.decode())),
+    );
+    await page.screenshot({
+      path: path.join(outputDir, "sdlcai-2026-preview.png"),
+      type: "png",
+      fullPage: true,
+    });
+  }
 } finally {
   await browser.close();
 }

@@ -84,7 +84,7 @@ try {
     if (new URL(request.url()).pathname === "/api/photos/catalog")
       catalogRequests.push(request.url());
   });
-  await deferred.goto(`${origin}/photos/`);
+  await deferred.goto(`${origin}/2026/photos/`);
   await deferred.waitForFunction(
     () => typeof window.releaseFirstPaint === "function",
   );
@@ -154,7 +154,7 @@ try {
       await route.fulfill({ status: 503, body: "Temporarily unavailable" });
     else await route.continue();
   });
-  await fallbackCatalog.goto(`${origin}/photos/?selection=&tag=coffee`);
+  await fallbackCatalog.goto(`${origin}/2026/photos/?selection=&tag=coffee`);
   await fallbackCatalog
     .getByRole("button", { name: "Retry loading photos" })
     .waitFor();
@@ -278,7 +278,7 @@ try {
       "fullscreen",
     );
   };
-  await page.goto(`${origin}/photos/`);
+  await page.goto(`${origin}/2026/photos/`);
   const assertTheme = async (surface, theme) => {
     const state = await surface.evaluate(() => ({
       theme: document.documentElement.dataset.theme,
@@ -317,7 +317,10 @@ try {
     .waitFor();
   await assertTheme(page, "light");
   await page.getByRole("button", { name: "Toggle dark mode" }).click();
-  await page.getByRole("link", { name: "Photos", exact: true }).first().click();
+  await page
+    .getByRole("link", { name: "Media bank", exact: true })
+    .first()
+    .click();
   await page
     .locator("[data-theme-label]")
     .getByText("Light", { exact: true })
@@ -700,7 +703,7 @@ try {
                 ),
       });
     }, support);
-    await fallback.goto(`${origin}/photos/`);
+    await fallback.goto(`${origin}/2026/photos/`);
     await fallback.locator("#grid .image-button").first().click();
     await fallback.addScriptTag({ content: axe });
     for (const viewport of support === "missing"

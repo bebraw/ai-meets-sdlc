@@ -14,16 +14,16 @@ import { attr, elements, validateFeed } from "./event-feed-validation.mjs";
 import { sourceUpdatedAt } from "./source-updated-at.mjs";
 
 const origin = "https://www.sdlcai.org";
-const home = elements(parse(await readFile("build/index.html", "utf8")));
+const home = elements(parse(await readFile("build/2026/index.html", "utf8")));
 const scheduleNodes = elements(
-  parse(await readFile("build/schedule/index.html", "utf8")),
+  parse(await readFile("build/2026/schedule/index.html", "utf8")),
 );
 const description = home.find((node) => attr(node, "name") === "description");
 const sourceFiles = [
   "site/data/seminar.json",
   "site/data/schedule.json",
   "site/data/speakers.json",
-  "site/layouts/index.html",
+  "site/layouts/archive-2026.html",
   "site/dataSources.ts",
   "site/components/ScheduleRow.html",
   "scripts/generate-event-feed.mjs",
@@ -51,7 +51,7 @@ const sessions = schedule.items.flatMap((item) =>
     return {
       id: talk.id,
       ...sessionContent(talk.title, talk.abstract),
-      url: `${origin}/schedule/#${attr(destination, "id")}`,
+      url: `${origin}/2026/schedule/#${attr(destination, "id")}`,
       speakerIds: talk.speakers,
       topicIds: [item.id],
     };
@@ -82,7 +82,7 @@ const feed = await reviseFeed({
     id: "sdlcai-2026",
     name: seminar.name,
     summary: attr(description, "content"),
-    url: `${origin}/`,
+    url: `${origin}/2026/`,
     startDate: seminar.date.iso,
     timeZone: "Europe/Helsinki",
     venue: {
@@ -98,8 +98,13 @@ const feed = await reviseFeed({
 });
 await validateFeed(feed, schema, "build");
 await writeFile("build/event.json", JSON.stringify(feed, null, 2) + "\n");
+await writeFile("build/2026/event.json", JSON.stringify(feed, null, 2) + "\n");
 await writeFile(
   "build/event.schema.json",
+  JSON.stringify(schema, null, 2) + "\n",
+);
+await writeFile(
+  "build/2026/event.schema.json",
   JSON.stringify(schema, null, 2) + "\n",
 );
 console.log(

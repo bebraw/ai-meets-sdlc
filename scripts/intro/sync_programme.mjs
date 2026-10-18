@@ -8,7 +8,7 @@ import schema from "../../site/data/event.schema.json" with { type: "json" };
 import { attr, elements, textContent } from "../event-feed-validation.mjs";
 
 const sourceURL = "https://sdlcai.org/event.json";
-const scheduleURL = "https://sdlcai.org/schedule/";
+const scheduleURL = "https://sdlcai.org/2026/schedule/";
 const destination = new URL(
   "../../production/intro/live-programme.json",
   import.meta.url,

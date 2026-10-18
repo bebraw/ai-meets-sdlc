@@ -54,7 +54,7 @@ test("Basic auth on the admin page establishes a session for activity API reques
   assert.equal(page.status, 200);
   const session = page.headers.get("set-cookie");
   assert.match(session, /^__Host-sdlcai-admin-session=/);
-  assert.match(session, /Path=\/; HttpOnly; Secure; SameSite=Strict/);
+  assert.match(session, /Path=\/; HttpOnly; Secure; SameSite=Lax/);
 
   const activity = await worker.fetch(`${origin}/api/admin/change-history`, {
     headers: { cookie: session.split(";")[0] },

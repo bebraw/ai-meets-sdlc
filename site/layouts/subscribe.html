@@ -28,101 +28,10 @@
       <div
         class="grid content-center gap-6 border-t border-ink pt-6 md:border-l md:border-t-0 md:pl-10 md:pt-0"
       >
-        <div data-newsletter-disabled>
-          <h2 class="font-headline text-2xl font-black uppercase">
-            Stay connected
-          </h2>
-          <p class="mt-4 leading-7">
-            Email subscriptions are not open yet. Follow
-            <a
-              class="font-bold underline"
-              href="https://www.linkedin.com/company/sdlcai/"
-              >SDLCAI on LinkedIn</a
-            >
-            or
-            <a
-              class="font-bold underline"
-              href="https://bsky.app/profile/sdlcai.org"
-              >Bluesky</a
-            >
-            for updates.
-          </p>
-        </div>
-        <form
-          class="grid gap-5"
-          data-newsletter-entry
-          hidden
-          data-newsletter-form
-          action="/api/newsletter/subscribe"
-          method="post"
-        >
-          <h2 class="font-headline text-2xl font-black uppercase">
-            News to your inbox
-          </h2>
-          <label class="grid gap-2 font-bold" for="newsletter-email"
-            >Email address
-            <input
-              class="min-w-0 w-full border border-ink bg-paper px-4 py-3 font-normal"
-              id="newsletter-email"
-              name="email"
-              type="email"
-              autocomplete="email"
-              maxlength="254"
-              required
-            />
-          </label>
-          <label
-            class="flex items-start gap-3 leading-6"
-            for="newsletter-consent"
-          >
-            <input
-              class="mt-1 h-5 w-5 shrink-0"
-              id="newsletter-consent"
-              name="consent"
-              type="checkbox"
-              value="yes"
-              required
-            />
-            <span
-              >Email me SDLCAI news, including future events. I can unsubscribe
-              at any time.</span
-            >
-          </label>
-          <p class="text-sm leading-6 text-muted">
-            We'll ask you to confirm your email address. Read how we handle your
-            details in our
-            <a class="underline" href="/privacy-policy/#sdlcai-news"
-              >privacy policy</a
-            >.
-          </p>
-          <div
-            class="cf-turnstile"
-            data-newsletter-turnstile
-            data-sitekey="__TURNSTILE_SITE_KEY__"
-            data-action="newsletter-signup"
-            data-callback="onNewsletterTurnstileSuccess"
-            data-expired-callback="onNewsletterTurnstileExpired"
-            data-error-callback="onNewsletterTurnstileError"
-            data-size="flexible"
-          ></div>
-          <button
-            class="border border-ink bg-ink px-5 py-4 font-bold uppercase text-paper hover:bg-paper hover:text-ink disabled:opacity-50"
-            type="submit"
-            disabled
-          >
-            Subscribe to SDLCAI news
-          </button>
-          <p
-            class="min-h-6 leading-7"
-            role="status"
-            aria-live="polite"
-            data-newsletter-status
-          ></p>
-          <noscript
-            >Enable JavaScript to complete the security check and
-            subscribe.</noscript
-          >
-        </form>
+        <h2 class="font-headline text-3xl font-black uppercase">
+          Hear about the next seminar
+        </h2>
+        <NewsletterSignup></NewsletterSignup>
       </div>
     </div>
   </section>

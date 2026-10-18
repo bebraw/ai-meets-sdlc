@@ -289,7 +289,7 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   );
   assert.match(
     loginResponse.headers.get("set-cookie") ?? "",
-    /^__Host-sdlcai-admin-session=v1\.\d{10}\.[A-Za-z0-9_-]{43}\.[A-Za-z0-9_-]{43}; Path=\/; HttpOnly; Secure; SameSite=Strict; Max-Age=604800$/u,
+    /^__Host-sdlcai-admin-session=v1\.\d{10}\.[A-Za-z0-9_-]{43}\.[A-Za-z0-9_-]{43}; Path=\/; HttpOnly; Secure; SameSite=Lax; Max-Age=604800$/u,
   );
   assert.ok(adminCookie);
 
@@ -335,7 +335,7 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
     const sessionHeader = signInRedirect.headers.get("set-cookie") ?? "";
     assert.match(
       sessionHeader,
-      /^__Host-sdlcai-admin-session=v1\..*; Path=\/; HttpOnly; Secure; SameSite=Strict; Max-Age=604800$/u,
+      /^__Host-sdlcai-admin-session=v1\..*; Path=\/; HttpOnly; Secure; SameSite=Lax; Max-Age=604800$/u,
     );
     const assetResponse = await worker.fetch(`${origin}${assetPath}`, {
       headers: { cookie: sessionHeader.split(";", 1)[0] },
@@ -657,6 +657,27 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
     "noindex, nofollow, noarchive",
   );
 
+  // Lax permits return navigations, but even a request carrying a valid session
+  // must not sign an admin out when it originates on another site.
+  for (const requestOrigin of ["https://example.com", null]) {
+    const rejectedLogout = await worker.fetch(`${origin}/admin/logout/`, {
+      method: "POST",
+      headers: {
+        cookie: adminCookie,
+        ...(requestOrigin ? { origin: requestOrigin } : {}),
+      },
+      redirect: "manual",
+    });
+    assert.equal(rejectedLogout.status, 403);
+    assert.equal(rejectedLogout.headers.get("set-cookie"), null);
+  }
+
+  const retainedSession = await worker.fetch(
+    `${origin}/api/admin/poster-proposals`,
+    { headers: { cookie: adminCookie } },
+  );
+  assert.equal(retainedSession.status, 200);
+
   const logoutResponse = await worker.fetch(`${origin}/admin/logout/`, {
     method: "POST",
     headers: { cookie: adminCookie, origin },
@@ -667,7 +688,7 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
   assert.equal(logoutResponse.headers.get("location"), "/admin/login/");
   assert.equal(
     logoutResponse.headers.get("set-cookie"),
-    "__Host-sdlcai-admin-session=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0",
+    "__Host-sdlcai-admin-session=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0",
   );
 
   const dinnerPageResponse = await worker.fetch(`${origin}/speaker-dinner/`, {
@@ -732,7 +753,7 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
     true,
   );
 
-  for (const pathname of ["/schedule/", "/speakers/"]) {
+  for (const pathname of ["/2026/schedule/", "/2026/speakers/"]) {
     const publicPageResponse = await worker.fetch(`${origin}${pathname}`, {
       headers: { accept: "text/html" },
     });

@@ -201,7 +201,7 @@ try {
   await admin
     .getByText("PDF published on the schedule.", { exact: true })
     .waitFor();
-  await schedule.goto(`${origin}/schedule/`);
+  await schedule.goto(`${origin}/2026/schedule/`);
   const scheduleTalk = schedule.locator(`[data-schedule-talk="${talkId}"]`);
   const publicLink = scheduleTalk.getByRole("link", {
     name: "Slides (PDF)",

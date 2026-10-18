@@ -388,11 +388,13 @@ async function createAdminSessionCookie(
   const payload = `v1.${expiresAt}.${nonce}`;
   const signature = await signAdminSession(payload, adminEnv);
 
-  return `${adminSessionCookie}=${payload}.${signature}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${adminSessionLifetimeSeconds}`;
+  // Send the session on top-level return visits, including restored Safari tabs.
+  // State-changing admin requests separately verify their Origin.
+  return `${adminSessionCookie}=${payload}.${signature}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${adminSessionLifetimeSeconds}`;
 }
 
 function clearAdminSessionCookie(): string {
-  return `${adminSessionCookie}=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0`;
+  return `${adminSessionCookie}=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0`;
 }
 
 async function verifyAdminSession(

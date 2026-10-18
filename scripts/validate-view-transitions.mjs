@@ -113,8 +113,8 @@ try {
         try {
           await context.addInitScript(observeTransitions);
           const page = await context.newPage();
-          await page.goto(origin);
-          await page.locator('a[href="/speakers/"]').first().click();
+          await page.goto(`${origin}/2026/`);
+          await page.locator('a[href="/2026/speakers/"]').first().click();
           const report = await reportFor(page);
           if (motion === "reduce") {
             assert.ok(
@@ -123,7 +123,7 @@ try {
             );
           } else {
             assertPageFade(report);
-            await page.locator('a[href="/schedule/"]').first().click();
+            await page.locator('a[href="/2026/schedule/"]').first().click();
             assertPageFade(await reportFor(page));
             await page.goBack();
             assertPageFade(await reportFor(page));

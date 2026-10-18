@@ -33,17 +33,17 @@ const socialLinks = [
 
 export function isCanonicalPublicHtmlPath(pathname: string): boolean {
   return new Set([
-    "/",
+    "/2026/",
     "/admin/slides/",
     "/admin/slides/deck/",
     "/admin/slides/schedule/",
-    "/schedule/",
+    "/2026/schedule/",
     "/slides/deck/",
     "/slides/opening/",
     "/slides/closing/",
     "/slides/",
     "/slides/schedule/",
-    "/speakers/",
+    "/2026/speakers/",
   ]).has(pathname);
 }
 

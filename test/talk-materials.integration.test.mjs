@@ -87,7 +87,7 @@ test("the programme lists each talk once with recordings and resources above clo
     409,
   );
 
-  const response = await worker.fetch(`${origin}/schedule/`);
+  const response = await worker.fetch(`${origin}/2026/schedule/`);
   assert.equal(response.headers.get("x-sdlcai-content-source"), "d1");
   const elements = walk(parse(await response.text()));
   const talk = elements.find((el) => attr(el, "data-schedule-talk") === talkId);
@@ -166,7 +166,7 @@ test("the programme lists each talk once with recordings and resources above clo
     200,
   );
   assert.doesNotMatch(
-    await (await worker.fetch(`${origin}/schedule/`)).text(),
+    await (await worker.fetch(`${origin}/2026/schedule/`)).text(),
     />Watch talk<\/a>/u,
   );
   assert.equal(
@@ -181,7 +181,7 @@ test("the programme lists each talk once with recordings and resources above clo
     200,
   );
   assert.match(
-    await (await worker.fetch(`${origin}/schedule/`)).text(),
+    await (await worker.fetch(`${origin}/2026/schedule/`)).text(),
     />Presentation<\/a>/u,
   );
   const changes = await runSql(

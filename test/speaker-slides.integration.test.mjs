@@ -403,7 +403,7 @@ test("organizers can publish, update and remove external slide links per public 
       }),
     });
   const scheduleHtml = async () => {
-    const response = await worker.fetch(`${origin}/schedule/`);
+    const response = await worker.fetch(`${origin}/2026/schedule/`);
     assert.equal(response.headers.get("cache-control"), "no-store");
     return response.text();
   };
@@ -698,7 +698,7 @@ test("speaker slides stay private until publication, and replacement withdraws p
   assert.equal(published.status, 200, await published.clone().text());
   const publishedSlide = (await published.json()).slide;
   assert.equal(publishedSlide.public_url, publicUrl(allowed));
-  const schedule = await worker.fetch(`${origin}/schedule/`);
+  const schedule = await worker.fetch(`${origin}/2026/schedule/`);
   assert.equal(schedule.headers.get("cache-control"), "no-store");
   assert.match(
     await schedule.text(),
@@ -734,7 +734,7 @@ test("speaker slides stay private until publication, and replacement withdraws p
     404,
   );
   assert.doesNotMatch(
-    await (await worker.fetch(`${origin}/schedule/`)).text(),
+    await (await worker.fetch(`${origin}/2026/schedule/`)).text(),
     /Slides \(PDF\)/u,
   );
   assert.equal((await publish(allowed.slide_id)).status, 200);

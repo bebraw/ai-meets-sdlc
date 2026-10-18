@@ -1,486 +1,110 @@
 <BaseLayout
-  &title="(id 'SDLCAI')"
-  &description="(id 'A one-day seminar on AI across the software development lifecycle. 13 October 2026 at Marsio, Aalto University, with a YouTube livestream.')"
-  &ogDescription="(id 'AI meets SDLC. 13 October 2026 at Marsio, Aalto University, Espoo. Watch live on YouTube.')"
-  &url="(id 'https://sdlcai.org')"
+  &title="(id 'SDLCAI — AI meets SDLC')"
+  &description="(id 'Practical experience and research on AI across the software development lifecycle. Join the mailing list to hear about the next SDLCAI seminar.')"
+  &ogDescription="(id 'A meeting point for software practitioners, engineering leaders and researchers. Hear about the next SDLCAI seminar.')"
+  &url="(id 'https://sdlcai.org/')"
   &ogType="(id 'website')"
-  &eventSchema="(id 'true')"
 >
-  <section class="relative border-b border-ink">
+  <section class="relative overflow-hidden border-b border-ink">
     <div
-      class="absolute -left-20 top-20 h-72 w-72 rounded-full border border-ink/20 text-ink/15 halftone"
+      class="absolute -left-20 top-20 h-72 w-72 rounded-full border border-ink/20 text-ink/10 halftone"
+      aria-hidden="true"
     ></div>
     <div
-      class="relative mx-auto grid max-w-7xl gap-8 overflow-hidden px-5 py-8 sm:px-8 md:py-14 min-[900px]:grid-cols-[minmax(0,1fr)_20rem] min-[900px]:items-start lg:grid-cols-[minmax(0,1fr)_26rem] lg:gap-12"
+      class="relative mx-auto grid max-w-7xl gap-12 px-5 py-12 md:px-8 md:py-20 min-[900px]:grid-cols-[minmax(0,1fr)_22rem] min-[900px]:gap-10 lg:grid-cols-[minmax(0,1fr)_26rem] lg:gap-16"
     >
-      <div class="relative min-w-0">
+      <div class="min-w-0">
         <p
-          class="mb-5 block max-w-xs border border-ink px-3 py-1 text-sm font-bold uppercase leading-tight break-words sm:max-w-sm md:inline-block md:max-w-full"
-          &children="seminar.display.dateVenueLocation"
-        ></p>
+          class="mb-6 font-headline text-sm font-black uppercase tracking-widest text-muted"
+        >
+          Software development / Artificial intelligence
+        </p>
         <h1
-          class="font-headline text-[clamp(3.35rem,15vw,14.5rem)] font-black uppercase leading-[0.72] tracking-normal"
+          class="font-headline text-[clamp(3.25rem,9vw,9rem)] font-black uppercase leading-[0.78]"
         >
-          SDLCAI
+          AI meets<br />SDLC.
         </h1>
-        <div
-          class="mt-7 grid max-w-xs border-y border-ink sm:max-w-sm md:max-w-5xl md:grid-cols-[0.42fr_0.58fr]"
-        >
-          <div class="border-b border-ink py-4 md:border-b-0 md:border-r">
-            <p
-              class="font-headline text-[clamp(2rem,5vw,4.8rem)] font-black uppercase leading-[0.82]"
-            >
-              AI meets SDLC
-            </p>
-          </div>
-          <div class="grid gap-4 py-4 md:pl-6">
-            <p data-seminar-intro class="text-xl leading-tight md:text-2xl">
-              A one-day seminar on AI across the software development lifecycle
-              (SDLC): from planning and coding to testing, delivery, and
-              maintenance.
-            </p>
-            <p class="text-base leading-7 text-muted">
-              Expect concrete cases, technical judgement, and hard questions
-              about engineering quality, delivery, and organizations adopting AI
-              in practice.
-            </p>
-          </div>
-        </div>
-        <div
-          id="tickets"
-          data-registration-status="sold-out"
-          class="mt-6 grid justify-items-start gap-4"
-        >
-          <p class="text-base leading-7 text-muted">
-            In-person tickets are sold out.
+        <div class="mt-8 grid max-w-xl gap-5 border-t border-ink pt-6 md:mt-10">
+          <p
+            data-seminar-intro
+            class="text-xl leading-8 md:text-2xl md:leading-9"
+          >
+            How does AI change the way we plan, build, test and maintain
+            software?
           </p>
-          <div class="flex flex-wrap gap-3">
-            <a
-              class="inline-flex min-h-11 items-center border border-ink bg-ink px-5 py-3 text-base font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
-              href="https://youtube.com/live/d7POyy6dYFI"
-              >Watch live on YouTube</a
-            >
-            <a
-              class="inline-flex min-h-11 items-center border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper"
-              href="/schedule/"
-              >See the program</a
-            >
-          </div>
+          <p class="max-w-lg text-lg leading-8 text-muted">
+            SDLCAI brings software practitioners, engineering leaders and
+            researchers together to share what works, what fails and what comes
+            next.
+          </p>
         </div>
       </div>
-
       <aside
-        class="relative grid max-w-xs gap-5 sm:max-w-sm min-[900px]:max-w-none"
+        id="stay-in-the-loop"
+        class="min-w-0 self-start border border-ink bg-paper p-5 shadow-[8px_8px_0_var(--color-ink)] md:p-7"
+        aria-labelledby="next-seminar"
       >
-        <article class="border border-ink bg-paper p-5">
-          <p class="font-headline text-sm font-black uppercase text-muted">
-            SDLCAI 2026 / In photographs
-          </p>
-          <h2
-            class="mt-3 font-headline text-4xl font-black uppercase leading-none"
-          >
-            A day in frames
-          </h2>
-          <p class="mt-4 text-base leading-7">
-            Revisit the talks, panels and conversations at Marsio. Follow the
-            day or explore a speaker, talk or topic.
-          </p>
-          <a
-            class="mt-5 inline-flex min-h-11 items-center border border-ink bg-ink px-4 py-3 text-sm font-bold uppercase transition hover:bg-paper hover:text-ink text-paper"
-            href="/timeline/"
-            >Explore the photo timeline</a
-          >
-          <a
-            class="mt-4 inline-flex min-h-11 w-fit items-center text-sm font-bold underline underline-offset-4"
-            href="/photos/"
-          >
-            Browse the photo media bank
-          </a>
-        </article>
-        <div
-          data-seminar-countdown
-          data-expires-at="2026-10-13T09:00:00+03:00"
-          class="border border-ink bg-paper p-5 shadow-[12px_12px_0_var(--color-ink)]"
-          hidden
+        <p class="font-headline text-sm font-black uppercase text-muted">
+          The next seminar
+        </p>
+        <h2
+          id="next-seminar"
+          class="mt-3 font-headline text-4xl font-black uppercase leading-none md:text-5xl"
         >
-          <p class="mb-4 font-headline text-sm font-black uppercase">
-            Countdown to seminar
-          </p>
-          <div data-countdown class="grid grid-cols-2 border border-ink">
-            <div class="border-b border-r border-ink p-4">
-              <strong
-                data-countdown-unit="days"
-                class="block font-headline text-6xl font-black leading-none"
-                >000</strong
-              >
-              <span class="text-sm font-bold uppercase text-muted">Days</span>
-            </div>
-            <div class="border-b border-ink p-4">
-              <strong
-                data-countdown-unit="hours"
-                class="block font-headline text-6xl font-black leading-none"
-                >00</strong
-              >
-              <span class="text-sm font-bold uppercase text-muted">Hours</span>
-            </div>
-            <div class="border-r border-ink p-4">
-              <strong
-                data-countdown-unit="minutes"
-                class="block font-headline text-6xl font-black leading-none"
-                >00</strong
-              >
-              <span class="text-sm font-bold uppercase text-muted"
-                >Minutes</span
-              >
-            </div>
-            <div class="p-4">
-              <strong
-                data-countdown-unit="seconds"
-                class="block font-headline text-6xl font-black leading-none"
-                >00</strong
-              >
-              <span class="text-sm font-bold uppercase text-muted"
-                >Seconds</span
-              >
-            </div>
-          </div>
-          <p class="mt-5 text-sm leading-6 text-muted">
-            A focused day at Marsio for teams evaluating where AI belongs in
-            software delivery.
-          </p>
-          <ActionLink
-            &href="(id '/calendar.ics')"
-            &label="(id 'Add to calendar')"
-            &className="(id 'mt-5 inline-flex border border-ink px-4 py-3 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper')"
-          ></ActionLink>
-        </div>
-
-        <article
-          data-meetup-promo
-          data-expires-at="2026-09-22T21:00:00+03:00"
-          class="border border-ink bg-paper p-5"
-          hidden
-        >
-          <p class="font-headline text-sm font-black uppercase text-muted">
-            Upcoming meetup
-          </p>
-          <h2
-            class="mt-3 font-headline text-4xl font-black uppercase leading-none"
-          >
-            SDLCAI #1
-          </h2>
-          <time
-            class="mt-5 block text-base font-bold leading-6"
-            datetime="2026-09-22T17:30:00+03:00"
-          >
-            Tuesday 22 September 2026
-          </time>
-          <p class="mt-1 text-sm leading-6 text-muted">
-            17:30–21:00 / Hive Helsinki
-          </p>
-          <a
-            class="mt-5 inline-flex min-h-11 items-center border border-ink px-4 py-3 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-            href="https://www.meetabit.com/events/sdlcai-1"
-            aria-label="View SDLCAI meetup number 1 details and register on Meetabit"
-          >
-            Details &amp; RSVP on Meetabit
-          </a>
-        </article>
+          Be first<br />to hear.
+        </h2>
+        <p class="mb-6 mt-4 leading-7 text-muted">
+          Join the mailing list and we'll let you know when the next SDLCAI
+          seminar is announced.
+        </p>
+        <NewsletterSignup></NewsletterSignup>
       </aside>
     </div>
   </section>
-
-  <section id="program" class="border-b border-ink bg-ink text-paper">
-    <div
-      class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:px-8 lg:grid-cols-[22rem_1fr]"
-    >
-      <div class="min-w-0">
-        <p class="font-headline text-sm font-black uppercase text-paper/60">
-          Focus
-        </p>
-        <SectionHeading
-          &title="(id 'Where AI meets delivery')"
-          &href="(id '#program')"
-          &ariaLabel="(id 'Link to program section')"
-          &className="(id 'mt-3 flex min-w-0 items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-6xl xl:text-7xl')"
-          &anchorClassName="(id 'mt-[0.06em] inline-flex min-h-6 min-w-6 shrink-0 items-center justify-center text-[0.45em] leading-none text-paper/45 transition hover:text-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-paper')"
-        ></SectionHeading>
-      </div>
-      <div class="grid gap-4 md:grid-cols-3">
-        <TextCard
-          &title="(id 'Why')"
-          &body="(id 'AI is moving from isolated coding assistance into planning, implementation, review, testing, maintenance, and delivery governance. SDLCAI looks at what changes when that shift becomes real.')"
-          &className="(id 'border border-paper p-5')"
-          &titleClassName="(id 'font-headline text-2xl font-black uppercase')"
-          &bodyClassName="(id 'mt-4 leading-7 text-paper/75')"
-        ></TextCard>
-        <TextCard
-          &title="(id 'Who')"
-          &body="(id 'Engineering leaders, software practitioners, researchers, and product teams who need grounded ways to evaluate AI across real software development workflows.')"
-          &className="(id 'border border-paper p-5')"
-          &titleClassName="(id 'font-headline text-2xl font-black uppercase')"
-          &bodyClassName="(id 'mt-4 leading-7 text-paper/75')"
-        ></TextCard>
-        <TextCard
-          &title="(id 'Themes')"
-          &body="(id 'Adoption patterns, technical leverage, evaluation, governance, testing strategy, developer experience, and the organizational changes that follow.')"
-          &className="(id 'border border-paper p-5')"
-          &titleClassName="(id 'font-headline text-2xl font-black uppercase')"
-          &bodyClassName="(id 'mt-4 leading-7 text-paper/75')"
-        ></TextCard>
-      </div>
-    </div>
-  </section>
-
-  <section id="speakers" class="border-b border-ink">
-    <span id="schedule" aria-hidden="true"></span>
-    <div class="mx-auto max-w-7xl px-5 py-16 md:px-8">
-      <div
-        class="grid gap-8 border-b border-ink pb-10 lg:grid-cols-[1fr_1fr] lg:items-end"
-      >
-        <div class="min-w-0">
-          <p class="font-headline text-sm font-black uppercase text-muted">
-            The people behind the ideas
-          </p>
-          <SectionHeading
-            &title="(id 'Meet our speakers')"
-            &href="(id '#speakers')"
-            &ariaLabel="(id 'Link to speakers section')"
-            &className="(id 'mt-3 flex min-w-0 items-start gap-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl')"
-            &anchorClassName="(id 'mt-[0.06em] inline-flex min-h-6 min-w-6 shrink-0 items-center justify-center text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
-          ></SectionHeading>
-        </div>
-        <div class="grid gap-5">
-          <p id="speaker-themes" class="max-w-xl text-xl leading-8 text-muted">
-            Engineering leaders, builders, and researchers share how AI is
-            changing software development, from everyday practice to emerging
-            research.
-          </p>
-          <div class="flex flex-wrap gap-3">
-            <a
-              class="inline-flex min-h-11 items-center border border-ink bg-ink px-5 py-3 text-sm font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
-              href="/speakers/"
-              >All profiles &amp; talks</a
-            >
-            <a
-              class="inline-flex min-h-11 items-center border border-ink px-5 py-3 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
-              href="/schedule/"
-              >Full schedule</a
-            >
-          </div>
-        </div>
-      </div>
-      <div class="mt-10 grid gap-10" data-home-speaker-groups>
-        <noop &foreach="homeSpeakerGroups as group">
-          <section
-            class="grid min-w-0 gap-5 border-b border-ink pb-10 last:border-b-0 last:pb-0 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-8"
-            &aria-labelledby="group.headingId"
-            &data-home-speaker-group="group.id"
-          >
-            <div class="min-w-0">
-              <p class="font-headline text-sm font-black uppercase text-muted">
-                <span &children="group.number"></span> /
-                <span
-                  &children="group.countLabel"
-                  data-home-speaker-count
-                ></span>
-              </p>
-              <h3
-                &id="group.headingId"
-                class="mt-3 font-headline text-3xl font-black uppercase leading-none sm:text-4xl"
-                &children="group.title"
-              ></h3>
-              <p
-                class="mt-4 max-w-xl text-sm leading-6 text-muted"
-                &children="group.description"
-              ></p>
-            </div>
-            <ul
-              class="grid min-w-0 grid-cols-2 gap-3 self-start sm:grid-cols-3 sm:gap-4"
-              data-schedule-kind="speakers"
-              &data-schedule-group="group.id"
-            >
-              <noop &foreach="group.items as speaker">
-                <SpeakerOverviewCard &speaker="speaker"></SpeakerOverviewCard>
-              </noop>
-            </ul>
-          </section>
-        </noop>
-      </div>
-    </div>
-  </section>
-
-  <section id="venue" class="relative border-b border-ink">
-    <div
-      class="absolute inset-y-0 left-0 w-20 text-ink/20 halftone md:w-40"
-    ></div>
-    <div
-      class="relative mx-auto grid max-w-7xl gap-12 px-5 py-16 md:px-8 lg:grid-cols-[1fr_1fr]"
-    >
-      <div class="min-w-0">
-        <p class="font-headline text-sm font-black uppercase text-muted">
-          Venue
-        </p>
-        <SectionHeading
-          &title="(id 'Marsio Saastamoinen Foundation Stage')"
-          &href="(id '#venue')"
-          &ariaLabel="(id 'Link to venue section')"
-          &className="(id 'mt-3 flex min-w-0 items-start gap-3 font-headline text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl xl:text-7xl')"
-          &anchorClassName="(id 'mt-[0.06em] inline-flex min-h-6 min-w-6 shrink-0 items-center justify-center text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
-        ></SectionHeading>
-      </div>
-      <div class="space-y-6">
-        <figure class="border border-ink bg-paper p-3">
-          <LazyImage
-            &src="(id '/assets/marsio-saastamoinen-stage.webp')"
-            &alt="(id 'A panel discussion on the Saastamoinen Foundation Stage')"
-            &className="(id 'aspect-[16/9] w-full object-cover grayscale transition duration-300 hover:grayscale-0 focus:grayscale-0')"
-            &width="(id '1280')"
-            &height="(id '720')"
-          ></LazyImage>
-          <figcaption class="mt-3 text-sm leading-6 text-muted">
-            Photo source:
-            <a class="underline" href="https://studios.aalto.fi/marsio-stage/"
-              >Aalto Studios, Saastamoinen Foundation Stage</a
-            >.
-          </figcaption>
-        </figure>
-        <div class="space-y-6 text-xl leading-8">
-          <p>
-            The seminar takes place on the Saastamoinen Foundation Stage in
-            Marsio at
-            <a class="underline" href="https://www.aalto.fi/"
-              >Aalto University</a
-            >, Otaniemi: a high-production setting for talks, demos, and direct
-            discussion between academia and industry.
-          </p>
-          <p class="font-bold">Address: Marsio, Otakaari 2A, 02150 Espoo</p>
-          <p>
-            See the <a class="underline" href="/faq/">FAQ</a> for public
-            transport, parking, food, and afterparty information.
-          </p>
-          <ActionLink
-            &href="(id 'https://studios.aalto.fi/marsio-stage/')"
-            &label="(id 'View venue details')"
-            &className="(id 'inline-flex border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper')"
-          ></ActionLink>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <section
-    id="organizers"
-    class="overflow-hidden border-b border-ink bg-ink text-paper"
+    id="archive"
+    class="relative overflow-hidden border-b border-ink bg-ink text-paper"
   >
-    <div class="mx-auto max-w-7xl px-5 py-16 md:px-8">
-      <div
-        class="grid gap-10 min-[700px]:grid-cols-[0.84fr_1.16fr] min-[700px]:items-start md:grid-cols-[0.9fr_1.4fr]"
-      >
-        <div>
-          <p class="font-headline text-sm font-black uppercase text-paper/60">
-            Organizers
-          </p>
-          <SectionHeading
-            &title="(id 'Same team as Future Frontend')"
-            &href="(id '#organizers')"
-            &ariaLabel="(id 'Link to organizers section')"
-            &className="(id 'mt-3 flex max-w-xs items-start gap-3 font-headline text-5xl font-black uppercase leading-none min-[700px]:max-w-none min-[700px]:text-4xl md:text-7xl')"
-            &anchorClassName="(id 'mt-[0.06em] inline-flex min-h-6 min-w-6 shrink-0 items-center justify-center text-[0.45em] leading-none text-paper/45 transition hover:text-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper')"
-          ></SectionHeading>
-          <div
-            class="mt-8 max-w-xs space-y-5 text-xl leading-8 text-paper/80 min-[700px]:max-w-none min-[700px]:text-lg min-[700px]:leading-7 md:text-xl md:leading-8"
-          >
-            <p>
-              SDLCAI is organized by Toska Osuuskunta, the cooperative behind
-              <a class="underline" href="https://futurefrontend.com/"
-                >Future Frontend</a
-              >.
-            </p>
-            <p>
-              In addition to this seminar and Future Frontend, the group has
-              previously organized the React Finland and GraphQL Finland
-              conferences.
-            </p>
-          </div>
-        </div>
-        <div>
-          <div
-            data-organizers
-            class="grid max-w-xs grid-cols-2 gap-px border border-paper bg-paper sm:max-w-sm sm:grid-cols-3 min-[700px]:max-w-none"
-          >
-            <noop &foreach="organizerItems as organizer">
-              <OrganizerCard
-                &name="organizer.name"
-                &src="organizer.photo"
-              ></OrganizerCard>
-            </noop>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="sponsors" class="border-b border-ink">
-    <div class="mx-auto max-w-7xl px-5 py-16 md:px-8">
-      <div class="grid gap-10">
-        <SectionHeading
-          &title="(id 'Our sponsors')"
-          &href="(id '#sponsors')"
-          &ariaLabel="(id 'Link to sponsors section')"
-          &className="(id 'flex min-w-0 items-start gap-3 font-headline text-4xl font-black uppercase leading-none sm:text-5xl')"
-          &anchorClassName="(id 'mt-[0.06em] inline-flex min-h-6 min-w-6 shrink-0 items-center justify-center text-[0.45em] leading-none text-muted transition hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-ink')"
-        ></SectionHeading>
-        <div class="sponsor-tiers">
-          <noop &foreach="homeSponsorTiers as tier">
-            <section &class="tier.className" &aria-labelledby="tier.id">
-              <h3
-                &id="tier.id"
-                class="font-headline text-sm font-black uppercase"
-                &children="tier.label"
-              ></h3>
-              <ul class="sponsor-tier-logos">
-                <noop &foreach="tier.items as sponsorItem">
-                  <li>
-                    <SponsorLogo
-                      &className="sponsorItem.homeLogoClassName"
-                      &url="sponsorItem.url"
-                      &logo="sponsorItem.logo"
-                      &logoWidth="sponsorItem.logoWidth"
-                      &logoHeight="sponsorItem.logoHeight"
-                      &name="sponsorItem.name"
-                    ></SponsorLogo>
-                  </li>
-                </noop>
-              </ul>
-            </section>
-          </noop>
-        </div>
-      </div>
-    </div>
-  </section>
-  <section data-newsletter-entry hidden class="border-b border-ink">
     <div
-      class="mx-auto grid max-w-7xl gap-6 px-5 py-12 md:grid-cols-[1fr_auto] md:items-end md:px-8"
+      class="mx-auto grid max-w-7xl gap-8 px-5 py-12 md:grid-cols-[0.8fr_1.2fr] md:items-center md:gap-12 md:px-8 md:py-16"
     >
-      <div>
-        <p class="font-headline text-sm font-black uppercase text-muted">
-          Keep in touch
+      <div
+        aria-hidden="true"
+        class="font-headline text-[clamp(6rem,18vw,14rem)] font-black leading-[0.8]"
+      >
+        2026
+      </div>
+      <div
+        class="min-w-0 border-t border-paper/40 pt-6 md:border-l md:border-t-0 md:pl-10 md:pt-0"
+      >
+        <p class="font-headline text-sm font-black uppercase text-paper/60">
+          The seminar archive
         </p>
         <h2
-          class="mt-3 font-headline text-4xl font-black uppercase leading-none"
+          class="mt-3 font-headline text-4xl font-black uppercase leading-none md:text-5xl"
         >
-          What's next for SDLCAI?
+          A day at Marsio.<br />Ideas to return to.
         </h2>
-        <p class="mt-4 max-w-2xl text-lg leading-8 text-muted">
-          Get SDLCAI news and hear about future events in your inbox.
+        <p class="mt-5 max-w-xl text-lg leading-8 text-paper/75">
+          Revisit the talks, slides and photographs from 13 October 2026 at
+          Aalto University, Espoo.
         </p>
+        <a
+          href="/2026/"
+          class="mt-6 inline-flex min-h-11 items-center gap-6 border border-paper px-5 py-3 font-bold uppercase transition hover:bg-paper hover:text-ink"
+          >Explore SDLCAI 2026
+          <span aria-hidden="true"
+            ><svg
+              aria-hidden="true"
+              class="ml-2 inline h-5 w-5 shrink-0 align-middle"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+            >
+              <path d="M5 19 19 5M5 5h14v14" /></svg></span
+        ></a>
       </div>
-      <a
-        class="inline-flex justify-center border border-ink bg-ink px-5 py-4 font-bold uppercase text-paper hover:bg-paper hover:text-ink"
-        href="/subscribe/"
-        >Subscribe to SDLCAI news</a
-      >
     </div>
   </section>
 </BaseLayout>

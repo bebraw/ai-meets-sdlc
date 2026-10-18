@@ -87,7 +87,7 @@ try {
     (route) =>
       route.fulfill({
         contentType: "application/javascript",
-        body: "const f=document.querySelector('[data-newsletter-form]');const i=document.createElement('input');i.type='hidden';i.name='cf-turnstile-response';i.value='local-test-token';f.append(i);window.turnstile={reset(){}};window.onNewsletterTurnstileSuccess();",
+        body: "const f=document.querySelector('[data-newsletter-form]');const i=document.createElement('input');i.type='hidden';i.name='cf-turnstile-response';i.value='local-test-token';f.append(i);const w=f.querySelector('[data-newsletter-turnstile]');const box=document.createElement('div');box.style.cssText='width:150px;height:140px';box.setAttribute('aria-hidden','true');w.append(box);window.turnstile={reset(){}};window.onNewsletterTurnstileSuccess();",
       }),
   );
   await page.route("**/api/newsletter/subscribe", async (route) => {
@@ -114,7 +114,7 @@ try {
     );
     assert.match(
       await savedBody.inputValue(),
-      /https:\/\/sdlcai.org\/timeline\//u,
+      /https:\/\/sdlcai.org\/2026\/timeline\//u,
     );
     await page.getByRole("button", { name: "Save draft", exact: true }).click();
     await page
@@ -193,20 +193,26 @@ try {
       )
       .waitFor();
 
-    await page.goto(origin + "/subscribe/");
-    await page
-      .getByLabel("Email address", { exact: true })
-      .fill("local@example.test");
-    await page.getByRole("checkbox").check();
-    await visual(`signup-${width}`);
-    await page
-      .getByRole("button", { name: "Subscribe to SDLCAI news" })
-      .click();
-    await page
-      .getByText("Local simulated signup accepted. Check your inbox.", {
-        exact: true,
-      })
-      .waitFor();
+    for (const signupPath of ["/", "/subscribe/"]) {
+      await page.goto(origin + signupPath);
+      await page
+        .getByLabel("Email address", { exact: true })
+        .fill("local@example.test");
+      await page.getByRole("checkbox").check();
+      assert.equal(
+        await page
+          .locator("[data-newsletter-turnstile]")
+          .getAttribute("data-size"),
+        "compact",
+      );
+      await visual(`signup-${signupPath === "/" ? "home" : "page"}-${width}`);
+      await page.getByRole("button", { name: "Join the mailing list" }).click();
+      await page
+        .getByText("Local simulated signup accepted. Check your inbox.", {
+          exact: true,
+        })
+        .waitFor();
+    }
   }
   assert.equal(simulatedSends, 2);
   const token = await signMailToken(

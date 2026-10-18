@@ -38,7 +38,7 @@ test("built feed resolves real fragments and excludes private content", async ()
 test("validation rejects broken fragments, duplicate IDs, bad references and invalid schema", async () => {
   for (const mutate of [
     (feed) => {
-      feed.sessions[0].url = "https://www.sdlcai.org/schedule/#missing";
+      feed.sessions[0].url = "https://www.sdlcai.org/2026/schedule/#missing";
     },
     (feed) => {
       feed.sessions.push(feed.sessions[0]);
@@ -73,12 +73,12 @@ test("validation rejects broken fragments, duplicate IDs, bad references and inv
 test("a changed destination is checked against the element, not HTTP success", async () => {
   const directory = await mkdtemp(path.join(tmpdir(), "event-feed-"));
   try {
-    await mkdir(path.join(directory, "schedule"));
-    await mkdir(path.join(directory, "speakers"));
+    await mkdir(path.join(directory, "2026/schedule"), { recursive: true });
+    await mkdir(path.join(directory, "2026/speakers"), { recursive: true });
     for (const file of [
-      "index.html",
-      "schedule/index.html",
-      "speakers/index.html",
+      "2026/index.html",
+      "2026/schedule/index.html",
+      "2026/speakers/index.html",
     ]) {
       await writeFile(
         path.join(directory, file),
@@ -89,12 +89,12 @@ test("a changed destination is checked against the element, not HTTP success", a
     const originalId = feed.sessions[0].id;
     const previousAnchor = new URL(feed.sessions[0].url).hash.slice(1);
     feed.sessions[0].title = "A new published title";
-    feed.sessions[0].url = "https://www.sdlcai.org/schedule/#new-anchor";
+    feed.sessions[0].url = "https://www.sdlcai.org/2026/schedule/#new-anchor";
     await assert.rejects(
       validateFeed(feed, schema, directory),
       /Missing fragment/,
     );
-    const filename = path.join(directory, "schedule/index.html");
+    const filename = path.join(directory, "2026/schedule/index.html");
     await writeFile(
       filename,
       (await readFile(filename, "utf8")).replace(

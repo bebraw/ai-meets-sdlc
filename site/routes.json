@@ -1,33 +1,11 @@
 {
   "/": {
     "layout": "index",
-    "scripts": [{ "name": "index" }],
-    "dataSources": {
-      "seminar": {
-        "operation": "seminar"
-      },
-      "homeSpeakerGroups": {
-        "operation": "homeSpeakerGroups"
-      },
-      "homeSponsorTiers": {
-        "operation": "homeSponsorTiers"
-      },
-      "organizerItems": {
-        "operation": "organizerItems"
+    "scripts": [
+      {
+        "name": "home"
       }
-    },
-    "context": {
-      "meta": {
-        "title": "SDLCAI",
-        "description": "A one-day seminar at Marsio Saastamoinen Foundation Stage, Aalto University, on how AI is changing software development lifecycles.",
-        "ogEyebrow": "13 October 2026 / Marsio",
-        "ogDescription": "A one-day seminar on how AI is changing the software development lifecycle."
-      }
-    }
-  },
-  "for-sponsors": {
-    "layout": "for-sponsors",
-    "scripts": [{ "name": "index" }],
+    ],
     "dataSources": {
       "seminar": {
         "operation": "seminar"
@@ -35,57 +13,25 @@
     },
     "context": {
       "meta": {
-        "title": "SDLCAI Sponsors",
-        "description": "Sponsorship recruitment for SDLCAI 2026 has closed. Sponsor benefits and practical information for our event partners.",
-        "ogEyebrow": "Our sponsors",
-        "ogDescription": "Thank you to the sponsors supporting SDLCAI 2026 at Aalto University."
-      }
-    }
-  },
-  "photos": {
-    "layout": "photos",
-    "context": {
-      "meta": {
-        "title": "SDLCAI Photo Media Bank",
-        "description": "Photos from SDLCAI 2026, shared under CC BY 4.0."
-      }
-    }
-  },
-  "timeline": {
-    "layout": "photo-timeline",
-    "context": {
-      "meta": {
-        "title": "SDLCAI — A day in frames",
-        "description": "Explore SDLCAI 2026 through a photographic timeline of talks, panels and conversations, shared under CC BY 4.0."
-      }
-    }
-  },
-  "schedule": {
-    "layout": "schedule",
-    "scripts": [{ "name": "index" }],
-    "dataSources": {
-      "seminar": {
-        "operation": "seminar"
-      },
-      "scheduleItems": {
-        "operation": "scheduleItems"
-      }
-    },
-    "context": {
-      "meta": {
-        "title": "SDLCAI Schedule",
-        "description": "Schedule for SDLCAI, a one-day seminar on AI across the software development lifecycle.",
-        "ogEyebrow": "Schedule",
-        "ogDescription": "The SDLCAI seminar schedule for 13 October 2026 at Aalto University."
+        "title": "SDLCAI — AI meets SDLC",
+        "description": "Practical experience and research on AI across the software development lifecycle. Join the mailing list to hear about the next SDLCAI seminar.",
+        "ogEyebrow": "AI meets SDLC",
+        "ogDescription": "A meeting point for software practitioners, engineering leaders and researchers. Hear about the next SDLCAI seminar."
       }
     }
   },
   "slides": {
     "layout": "slide-library",
     "scripts": [
-      { "name": "index" },
-      { "name": "video-download" },
-      { "name": "admin-navigation" }
+      {
+        "name": "index"
+      },
+      {
+        "name": "video-download"
+      },
+      {
+        "name": "admin-navigation"
+      }
     ],
     "dataSources": {
       "seminar": {
@@ -110,12 +56,24 @@
     "routes": {
       "opening": {
         "layout": "slide-opening",
-        "scripts": [{ "name": "opening" }],
+        "scripts": [
+          {
+            "name": "opening"
+          }
+        ],
         "dataSources": {
-          "openingSpeakerGroups": { "operation": "openingSpeakerGroups" },
-          "openingScheduleColumns": { "operation": "openingScheduleColumns" },
-          "openingAfterparty": { "operation": "openingAfterparty" },
-          "homeSponsorTiers": { "operation": "homeSponsorTiers" }
+          "openingSpeakerGroups": {
+            "operation": "openingSpeakerGroups"
+          },
+          "openingScheduleColumns": {
+            "operation": "openingScheduleColumns"
+          },
+          "openingAfterparty": {
+            "operation": "openingAfterparty"
+          },
+          "homeSponsorTiers": {
+            "operation": "homeSponsorTiers"
+          }
         },
         "context": {
           "meta": {
@@ -127,11 +85,21 @@
       },
       "closing": {
         "layout": "slide-closing",
-        "scripts": [{ "name": "slides" }],
+        "scripts": [
+          {
+            "name": "slides"
+          }
+        ],
         "dataSources": {
-          "openingSpeakerGroups": { "operation": "openingSpeakerGroups" },
-          "openingAfterparty": { "operation": "openingAfterparty" },
-          "homeSponsorTiers": { "operation": "homeSponsorTiers" }
+          "openingSpeakerGroups": {
+            "operation": "openingSpeakerGroups"
+          },
+          "openingAfterparty": {
+            "operation": "openingAfterparty"
+          },
+          "homeSponsorTiers": {
+            "operation": "homeSponsorTiers"
+          }
         },
         "context": {
           "meta": {
@@ -143,7 +111,11 @@
       },
       "deck": {
         "layout": "slide-deck",
-        "scripts": [{ "name": "slides" }],
+        "scripts": [
+          {
+            "name": "slides"
+          }
+        ],
         "dataSources": {
           "seminar": {
             "operation": "seminar"
@@ -190,29 +162,18 @@
       }
     }
   },
-  "posters": {
-    "layout": "posters",
-    "scripts": [{ "name": "index" }],
-    "dataSources": {
-      "seminar": {
-        "operation": "seminar"
-      }
-    },
-    "context": {
-      "meta": {
-        "title": "SDLCAI Posters",
-        "description": "The call for posters has closed. Practical information for accepted SDLCAI 2026 poster presenters.",
-        "ogEyebrow": "Posters",
-        "ogDescription": "The call for posters has closed. The poster session takes place on 13 October 2026 at Marsio."
-      }
-    }
-  },
   "admin-slides": {
     "layout": "slides",
     "scripts": [
-      { "name": "index" },
-      { "name": "video-download" },
-      { "name": "admin-navigation" }
+      {
+        "name": "index"
+      },
+      {
+        "name": "video-download"
+      },
+      {
+        "name": "admin-navigation"
+      }
     ],
     "dataSources": {
       "seminar": {
@@ -230,7 +191,11 @@
   },
   "admin-slide-deck": {
     "layout": "slide-deck",
-    "scripts": [{ "name": "slides" }],
+    "scripts": [
+      {
+        "name": "slides"
+      }
+    ],
     "dataSources": {
       "seminar": {
         "operation": "seminar"
@@ -273,65 +238,6 @@
       }
     }
   },
-  "speakers": {
-    "layout": "speakers",
-    "scripts": [{ "name": "index" }],
-    "dataSources": {
-      "seminar": {
-        "operation": "seminar"
-      },
-      "speakerItems": {
-        "operation": "speakerItems"
-      }
-    },
-    "context": {
-      "meta": {
-        "title": "SDLCAI Speakers",
-        "description": "Speakers and themes for SDLCAI, a one-day seminar on AI across the software development lifecycle.",
-        "ogEyebrow": "Speakers",
-        "ogDescription": "Speaker talks and themes for SDLCAI."
-      }
-    }
-  },
-  "announcements": {
-    "layout": "announcements",
-    "scripts": [{ "name": "index" }],
-    "dataSources": {
-      "seminar": {
-        "operation": "seminar"
-      },
-      "announcementItems": {
-        "operation": "announcementItems"
-      }
-    },
-    "context": {
-      "meta": {
-        "title": "SDLCAI Announcements",
-        "description": "Announcements and updates for SDLCAI, a one-day seminar on AI across the software development lifecycle.",
-        "ogEyebrow": "News",
-        "ogDescription": "Official SDLCAI announcements and event updates."
-      }
-    },
-    "expand": {
-      "matchBy": {
-        "indexer": {
-          "operation": "announcementItems"
-        },
-        "slug": "slug",
-        "name": "announcementItems"
-      },
-      "layout": "announcement",
-      "scripts": [{ "name": "index" }],
-      "dataSources": {
-        "seminar": {
-          "operation": "seminar"
-        },
-        "announcementItem": {
-          "operation": "announcementItem"
-        }
-      }
-    }
-  },
   "atom.xml": {
     "layout": "atom",
     "dataSources": {
@@ -348,7 +254,11 @@
   },
   "admin": {
     "layout": "admin",
-    "scripts": [{ "name": "admin-navigation" }],
+    "scripts": [
+      {
+        "name": "admin-navigation"
+      }
+    ],
     "dataSources": {
       "seminar": {
         "operation": "seminar"
@@ -395,7 +305,11 @@
       },
       "login": {
         "layout": "admin-login",
-        "scripts": [{ "name": "index" }],
+        "scripts": [
+          {
+            "name": "index"
+          }
+        ],
         "context": {
           "meta": {
             "title": "SDLCAI Admin Sign In",
@@ -407,7 +321,11 @@
       },
       "speakers": {
         "layout": "admin-speakers",
-        "scripts": [{ "name": "admin-speakers" }],
+        "scripts": [
+          {
+            "name": "admin-speakers"
+          }
+        ],
         "context": {
           "meta": {
             "title": "SDLCAI Admin Speakers",
@@ -419,7 +337,11 @@
       },
       "dinner": {
         "layout": "admin-dinner",
-        "scripts": [{ "name": "index" }],
+        "scripts": [
+          {
+            "name": "index"
+          }
+        ],
         "context": {
           "meta": {
             "title": "SDLCAI Admin Dinner",
@@ -431,7 +353,11 @@
       },
       "receipts": {
         "layout": "admin-receipts",
-        "scripts": [{ "name": "receipts" }],
+        "scripts": [
+          {
+            "name": "receipts"
+          }
+        ],
         "context": {
           "meta": {
             "title": "SDLCAI Admin Travel Receipts",
@@ -441,7 +367,11 @@
       },
       "volunteers": {
         "layout": "admin-volunteers",
-        "scripts": [{ "name": "admin-volunteers" }],
+        "scripts": [
+          {
+            "name": "admin-volunteers"
+          }
+        ],
         "context": {
           "meta": {
             "title": "SDLCAI Admin Volunteers",
@@ -451,7 +381,11 @@
       },
       "schedule": {
         "layout": "admin-schedule",
-        "scripts": [{ "name": "admin-schedule" }],
+        "scripts": [
+          {
+            "name": "admin-schedule"
+          }
+        ],
         "context": {
           "meta": {
             "title": "SDLCAI Admin Schedule",
@@ -461,7 +395,11 @@
       },
       "activity": {
         "layout": "admin-activity",
-        "scripts": [{ "name": "admin-activity" }],
+        "scripts": [
+          {
+            "name": "admin-activity"
+          }
+        ],
         "context": {
           "meta": {
             "title": "SDLCAI Admin Activity",
@@ -471,7 +409,11 @@
       },
       "posters": {
         "layout": "admin-posters",
-        "scripts": [{ "name": "index" }],
+        "scripts": [
+          {
+            "name": "index"
+          }
+        ],
         "context": {
           "meta": {
             "title": "SDLCAI Admin Posters",
@@ -483,7 +425,11 @@
       },
       "interests": {
         "layout": "admin-interests",
-        "scripts": [{ "name": "index" }],
+        "scripts": [
+          {
+            "name": "index"
+          }
+        ],
         "context": {
           "meta": {
             "title": "SDLCAI Admin Interest List",
@@ -495,7 +441,11 @@
       },
       "organizers": {
         "layout": "admin-organizers",
-        "scripts": [{ "name": "admin-organizers" }],
+        "scripts": [
+          {
+            "name": "admin-organizers"
+          }
+        ],
         "context": {
           "meta": {
             "title": "SDLCAI Admin Organizers",
@@ -505,7 +455,11 @@
       },
       "badges": {
         "layout": "admin-badges",
-        "scripts": [{ "name": "admin-badges" }],
+        "scripts": [
+          {
+            "name": "admin-badges"
+          }
+        ],
         "context": {
           "meta": {
             "title": "SDLCAI Admin Badges",
@@ -515,7 +469,11 @@
       },
       "discussion-tables": {
         "layout": "admin-discussion-tables",
-        "scripts": [{ "name": "index" }],
+        "scripts": [
+          {
+            "name": "index"
+          }
+        ],
         "dataSources": {
           "seminar": {
             "operation": "seminar"
@@ -533,10 +491,18 @@
       },
       "venue-signs": {
         "layout": "admin-venue-signs",
-        "scripts": [{ "name": "index" }],
+        "scripts": [
+          {
+            "name": "index"
+          }
+        ],
         "dataSources": {
-          "venueSigns": { "operation": "venueSigns" },
-          "venueSignItems": { "operation": "venueSignItems" }
+          "venueSigns": {
+            "operation": "venueSigns"
+          },
+          "venueSignItems": {
+            "operation": "venueSignItems"
+          }
         },
         "context": {
           "meta": {
@@ -547,7 +513,11 @@
       },
       "intro": {
         "layout": "admin-intro",
-        "scripts": [{ "name": "admin-intro" }],
+        "scripts": [
+          {
+            "name": "admin-intro"
+          }
+        ],
         "context": {
           "meta": {
             "title": "SDLCAI Intro Video",
@@ -558,11 +528,21 @@
       },
       "music": {
         "layout": "admin-music",
-        "scripts": [{ "name": "admin-music" }],
+        "scripts": [
+          {
+            "name": "admin-music"
+          }
+        ],
         "dataSources": {
-          "seminar": { "operation": "seminar" },
-          "musicCatalog": { "operation": "musicCatalog" },
-          "musicTrackItems": { "operation": "musicTrackItems" }
+          "seminar": {
+            "operation": "seminar"
+          },
+          "musicCatalog": {
+            "operation": "musicCatalog"
+          },
+          "musicTrackItems": {
+            "operation": "musicTrackItems"
+          }
         },
         "context": {
           "meta": {
@@ -573,7 +553,11 @@
       },
       "attendees": {
         "layout": "admin-attendees",
-        "scripts": [{ "name": "admin-attendees" }],
+        "scripts": [
+          {
+            "name": "admin-attendees"
+          }
+        ],
         "context": {
           "meta": {
             "title": "SDLCAI Admin Attendees",
@@ -583,7 +567,11 @@
       },
       "attendee-messages": {
         "layout": "admin-attendee-messages",
-        "scripts": [{ "name": "admin-attendee-messages" }],
+        "scripts": [
+          {
+            "name": "admin-attendee-messages"
+          }
+        ],
         "context": {
           "meta": {
             "title": "SDLCAI Attendee Messages",
@@ -593,7 +581,11 @@
       },
       "newsletter": {
         "layout": "admin-newsletter",
-        "scripts": [{ "name": "admin-newsletter" }],
+        "scripts": [
+          {
+            "name": "admin-newsletter"
+          }
+        ],
         "context": {
           "meta": {
             "title": "SDLCAI News Subscribers",
@@ -603,7 +595,14 @@
       },
       "qa": {
         "layout": "admin-qa",
-        "scripts": [{ "name": "index" }, { "name": "qa" }],
+        "scripts": [
+          {
+            "name": "index"
+          },
+          {
+            "name": "qa"
+          }
+        ],
         "context": {
           "meta": {
             "title": "SDLCAI Admin QA",
@@ -620,7 +619,11 @@
   },
   "registration": {
     "layout": "registration",
-    "scripts": [{ "name": "admin-attendees" }],
+    "scripts": [
+      {
+        "name": "admin-attendees"
+      }
+    ],
     "context": {
       "meta": {
         "title": "SDLCAI Registration Desk",
@@ -630,7 +633,11 @@
     "routes": {
       "access": {
         "layout": "registration-access",
-        "scripts": [{ "name": "admin-attendees" }],
+        "scripts": [
+          {
+            "name": "admin-attendees"
+          }
+        ],
         "context": {
           "meta": {
             "title": "SDLCAI Registration Staff Access",
@@ -642,7 +649,11 @@
   },
   "speaker-dinner": {
     "layout": "speaker-dinner",
-    "scripts": [{ "name": "index" }],
+    "scripts": [
+      {
+        "name": "index"
+      }
+    ],
     "dataSources": {
       "seminar": {
         "operation": "seminar"
@@ -659,7 +670,11 @@
     "routes": {
       "shared": {
         "layout": "speaker-dinner",
-        "scripts": [{ "name": "index" }],
+        "scripts": [
+          {
+            "name": "index"
+          }
+        ],
         "dataSources": {
           "seminar": {
             "operation": "seminar"
@@ -678,7 +693,11 @@
   },
   "speaker": {
     "layout": "speaker-workspace",
-    "scripts": [{ "name": "speaker-workspace" }],
+    "scripts": [
+      {
+        "name": "speaker-workspace"
+      }
+    ],
     "dataSources": {
       "seminar": {
         "operation": "seminar"
@@ -695,8 +714,16 @@
   },
   "subscribe": {
     "layout": "subscribe",
-    "scripts": [{ "name": "newsletter" }],
-    "dataSources": { "seminar": { "operation": "seminar" } },
+    "scripts": [
+      {
+        "name": "newsletter"
+      }
+    ],
+    "dataSources": {
+      "seminar": {
+        "operation": "seminar"
+      }
+    },
     "context": {
       "meta": {
         "title": "SDLCAI News",
@@ -706,7 +733,11 @@
     "routes": {
       "confirm": {
         "layout": "email-preferences",
-        "scripts": [{ "name": "email-preferences" }],
+        "scripts": [
+          {
+            "name": "email-preferences"
+          }
+        ],
         "context": {
           "meta": {
             "title": "Confirm SDLCAI News",
@@ -718,7 +749,11 @@
       },
       "unsubscribe": {
         "layout": "email-preferences",
-        "scripts": [{ "name": "email-preferences" }],
+        "scripts": [
+          {
+            "name": "email-preferences"
+          }
+        ],
         "context": {
           "meta": {
             "title": "Unsubscribe from SDLCAI News",
@@ -732,8 +767,16 @@
   },
   "event-email": {
     "layout": "email-preferences",
-    "scripts": [{ "name": "email-preferences" }],
-    "dataSources": { "seminar": { "operation": "seminar" } },
+    "scripts": [
+      {
+        "name": "email-preferences"
+      }
+    ],
+    "dataSources": {
+      "seminar": {
+        "operation": "seminar"
+      }
+    },
     "context": {
       "meta": {
         "title": "SDLCAI Event Email Preferences",
@@ -745,8 +788,16 @@
     "routes": {
       "unsubscribe": {
         "layout": "email-preferences",
-        "scripts": [{ "name": "email-preferences" }],
-        "dataSources": { "seminar": { "operation": "seminar" } },
+        "scripts": [
+          {
+            "name": "email-preferences"
+          }
+        ],
+        "dataSources": {
+          "seminar": {
+            "operation": "seminar"
+          }
+        },
         "context": {
           "meta": {
             "title": "Unsubscribe from SDLCAI Event Emails",
@@ -758,26 +809,13 @@
       }
     }
   },
-  "faq": {
-    "layout": "faq",
-    "scripts": [{ "name": "index" }],
-    "dataSources": {
-      "seminar": {
-        "operation": "seminar"
-      }
-    },
-    "context": {
-      "meta": {
-        "title": "SDLCAI FAQ",
-        "description": "Practical information for SDLCAI 2026: public transport to Marsio, parking, the venue address, food, and the afterparty.",
-        "ogEyebrow": "Plan your visit",
-        "ogDescription": "Find your way to Marsio and get ready for the seminar, food, and afterparty."
-      }
-    }
-  },
   "contact": {
     "layout": "contact",
-    "scripts": [{ "name": "index" }],
+    "scripts": [
+      {
+        "name": "index"
+      }
+    ],
     "dataSources": {
       "seminar": {
         "operation": "seminar"
@@ -794,7 +832,11 @@
   },
   "privacy-policy": {
     "layout": "privacy-policy",
-    "scripts": [{ "name": "index" }],
+    "scripts": [
+      {
+        "name": "index"
+      }
+    ],
     "dataSources": {
       "seminar": {
         "operation": "seminar"
@@ -811,7 +853,11 @@
   },
   "404": {
     "layout": "404",
-    "scripts": [{ "name": "index" }],
+    "scripts": [
+      {
+        "name": "index"
+      }
+    ],
     "dataSources": {
       "seminar": {
         "operation": "seminar"
@@ -828,7 +874,14 @@
   },
   "qa": {
     "layout": "qa",
-    "scripts": [{ "name": "index" }, { "name": "qa" }],
+    "scripts": [
+      {
+        "name": "index"
+      },
+      {
+        "name": "qa"
+      }
+    ],
     "context": {
       "meta": {
         "title": "SDLCAI Q&A",
@@ -838,7 +891,14 @@
     "routes": {
       "moderate": {
         "layout": "qa-moderate",
-        "scripts": [{ "name": "index" }, { "name": "qa" }],
+        "scripts": [
+          {
+            "name": "index"
+          },
+          {
+            "name": "qa"
+          }
+        ],
         "context": {
           "meta": {
             "title": "SDLCAI QA Moderate",
@@ -853,7 +913,14 @@
       },
       "mc": {
         "layout": "qa-mc",
-        "scripts": [{ "name": "index" }, { "name": "qa" }],
+        "scripts": [
+          {
+            "name": "index"
+          },
+          {
+            "name": "qa"
+          }
+        ],
         "context": {
           "meta": {
             "title": "SDLCAI QA MC",
@@ -868,7 +935,14 @@
       },
       "screen": {
         "layout": "qa-screen",
-        "scripts": [{ "name": "index" }, { "name": "qa" }],
+        "scripts": [
+          {
+            "name": "index"
+          },
+          {
+            "name": "qa"
+          }
+        ],
         "context": {
           "meta": {
             "title": "SDLCAI QA Screen",
@@ -883,7 +957,14 @@
       },
       "present": {
         "layout": "qa-present",
-        "scripts": [{ "name": "index" }, { "name": "qa" }],
+        "scripts": [
+          {
+            "name": "index"
+          },
+          {
+            "name": "qa"
+          }
+        ],
         "context": {
           "meta": {
             "title": "SDLCAI QA Present",
@@ -898,7 +979,14 @@
       },
       "access": {
         "layout": "qa-access",
-        "scripts": [{ "name": "index" }, { "name": "qa" }],
+        "scripts": [
+          {
+            "name": "index"
+          },
+          {
+            "name": "qa"
+          }
+        ],
         "context": {
           "meta": {
             "title": "SDLCAI QA Access",
@@ -955,6 +1043,213 @@
             "title": "SDLCAI — Your feedback response",
             "description": "View or delete your feedback using your private response link.",
             "robots": "noindex,nofollow,noarchive"
+          }
+        }
+      }
+    }
+  },
+  "2026": {
+    "layout": "archive-2026",
+    "scripts": [
+      {
+        "name": "index"
+      }
+    ],
+    "dataSources": {
+      "seminar": {
+        "operation": "seminar"
+      },
+      "homeSpeakerGroups": {
+        "operation": "homeSpeakerGroups"
+      },
+      "homeSponsorTiers": {
+        "operation": "homeSponsorTiers"
+      },
+      "organizerItems": {
+        "operation": "organizerItems"
+      }
+    },
+    "context": {
+      "meta": {
+        "title": "SDLCAI 2026 — Seminar archive",
+        "description": "Talks, slides, speakers and photographs from SDLCAI 2026 at Marsio, Aalto University, Espoo.",
+        "ogEyebrow": "2026 archive"
+      }
+    },
+    "routes": {
+      "schedule": {
+        "layout": "schedule",
+        "scripts": [
+          {
+            "name": "index"
+          }
+        ],
+        "dataSources": {
+          "seminar": {
+            "operation": "seminar"
+          },
+          "scheduleItems": {
+            "operation": "scheduleItems"
+          }
+        },
+        "context": {
+          "meta": {
+            "title": "SDLCAI Schedule",
+            "description": "Schedule for SDLCAI, a one-day seminar on AI across the software development lifecycle.",
+            "ogEyebrow": "Schedule",
+            "ogDescription": "The SDLCAI seminar schedule for 13 October 2026 at Aalto University."
+          }
+        }
+      },
+      "speakers": {
+        "layout": "speakers",
+        "scripts": [
+          {
+            "name": "index"
+          }
+        ],
+        "dataSources": {
+          "seminar": {
+            "operation": "seminar"
+          },
+          "speakerItems": {
+            "operation": "speakerItems"
+          }
+        },
+        "context": {
+          "meta": {
+            "title": "SDLCAI Speakers",
+            "description": "Speakers and themes for SDLCAI, a one-day seminar on AI across the software development lifecycle.",
+            "ogEyebrow": "Speakers",
+            "ogDescription": "Speaker talks and themes for SDLCAI."
+          }
+        }
+      },
+      "photos": {
+        "layout": "photos",
+        "context": {
+          "meta": {
+            "title": "SDLCAI Photo Media Bank",
+            "description": "Photos from SDLCAI 2026, shared under CC BY 4.0."
+          }
+        }
+      },
+      "timeline": {
+        "layout": "photo-timeline",
+        "context": {
+          "meta": {
+            "title": "SDLCAI — A day in frames",
+            "description": "Explore SDLCAI 2026 through a photographic timeline of talks, panels and conversations, shared under CC BY 4.0."
+          }
+        }
+      },
+      "announcements": {
+        "layout": "announcements",
+        "scripts": [
+          {
+            "name": "index"
+          }
+        ],
+        "dataSources": {
+          "seminar": {
+            "operation": "seminar"
+          },
+          "announcementItems": {
+            "operation": "announcementItems"
+          }
+        },
+        "context": {
+          "meta": {
+            "title": "SDLCAI Announcements",
+            "description": "Announcements and updates for SDLCAI, a one-day seminar on AI across the software development lifecycle.",
+            "ogEyebrow": "News",
+            "ogDescription": "Official SDLCAI announcements and event updates."
+          }
+        },
+        "expand": {
+          "matchBy": {
+            "indexer": {
+              "operation": "announcementItems"
+            },
+            "slug": "slug",
+            "name": "announcementItems"
+          },
+          "layout": "announcement",
+          "scripts": [
+            {
+              "name": "index"
+            }
+          ],
+          "dataSources": {
+            "seminar": {
+              "operation": "seminar"
+            },
+            "announcementItem": {
+              "operation": "announcementItem"
+            }
+          }
+        }
+      },
+      "faq": {
+        "layout": "faq",
+        "scripts": [
+          {
+            "name": "index"
+          }
+        ],
+        "dataSources": {
+          "seminar": {
+            "operation": "seminar"
+          }
+        },
+        "context": {
+          "meta": {
+            "title": "SDLCAI FAQ",
+            "description": "Practical information for SDLCAI 2026: public transport to Marsio, parking, the venue address, food, and the afterparty.",
+            "ogEyebrow": "Plan your visit",
+            "ogDescription": "Find your way to Marsio and get ready for the seminar, food, and afterparty."
+          }
+        }
+      },
+      "posters": {
+        "layout": "posters",
+        "scripts": [
+          {
+            "name": "index"
+          }
+        ],
+        "dataSources": {
+          "seminar": {
+            "operation": "seminar"
+          }
+        },
+        "context": {
+          "meta": {
+            "title": "SDLCAI Posters",
+            "description": "The call for posters has closed. Practical information for accepted SDLCAI 2026 poster presenters.",
+            "ogEyebrow": "Posters",
+            "ogDescription": "The call for posters has closed. The poster session takes place on 13 October 2026 at Marsio."
+          }
+        }
+      },
+      "for-sponsors": {
+        "layout": "for-sponsors",
+        "scripts": [
+          {
+            "name": "index"
+          }
+        ],
+        "dataSources": {
+          "seminar": {
+            "operation": "seminar"
+          }
+        },
+        "context": {
+          "meta": {
+            "title": "SDLCAI Sponsors",
+            "description": "Sponsorship recruitment for SDLCAI 2026 has closed. Sponsor benefits and practical information for our event partners.",
+            "ogEyebrow": "Our sponsors",
+            "ogDescription": "Thank you to the sponsors supporting SDLCAI 2026 at Aalto University."
           }
         }
       }

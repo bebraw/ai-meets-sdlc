@@ -66,7 +66,7 @@ test("organizers seed the homepage while badge selection stays private; badges l
   response = await send("organizers", "PUT", update);
   assert.equal(response.status, 200);
   assert.equal((await send("organizers", "PUT", update)).status, 409);
-  const homepage = await worker.fetch(`${origin}/`);
+  const homepage = await worker.fetch(`${origin}/2026/`);
   const html = await homepage.text();
   assert.match(html, /Badge &lt;test&gt; person/);
   assert.doesNotMatch(html, /Badge <test>/);
@@ -82,7 +82,7 @@ test("organizers seed the homepage while badge selection stays private; badges l
     200,
   );
   assert.doesNotMatch(
-    await (await worker.fetch(`${origin}/`)).text(),
+    await (await worker.fetch(`${origin}/2026/`)).text(),
     /Badge &lt;test&gt; person/,
   );
   const badge = {

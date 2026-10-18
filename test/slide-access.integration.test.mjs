@@ -21,9 +21,9 @@ test("slide pages and production exports require organizers; speaker graphics re
   const home = await (await fetch("/")).text();
   const header = home.match(/<header\b[^>]*>[\s\S]*?<\/header>/u)[0];
   assert.doesNotMatch(header, /href="\/(slides|for-sponsors)\//u);
-  const schedule = await (await fetch("/schedule/")).text();
+  const schedule = await (await fetch("/2026/schedule/")).text();
   assert.doesNotMatch(schedule, /href="\/slides\//u);
-  const sponsors = await (await fetch("/for-sponsors/")).text();
+  const sponsors = await (await fetch("/2026/for-sponsors/")).text();
   assert.match(sponsors, /Sponsorship recruitment for SDLCAI 2026 has closed/u);
   assert.doesNotMatch(
     sponsors,

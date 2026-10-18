@@ -46,7 +46,7 @@
     {
       "path": "./scripts/og-image-plugin.mjs",
       "options": {
-        "image": "./assets/social/exports/sdlcai-2026-facebook.png"
+        "image": "./assets/social/exports/sdlcai.png"
       }
     },
     {

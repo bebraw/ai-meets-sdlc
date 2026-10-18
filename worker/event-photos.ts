@@ -219,7 +219,7 @@ async function catalog(
 }
 
 function credit(photo: BasePhoto, variant: string): string {
-  return `${photo.filename} — SDLCAI, 13 October 2026, Marsio, Espoo. Photo: ${photo.photographer}. ${seed.license}: ${seed.licenseUrl}. Source: https://sdlcai.org/photos/?search=${encodeURIComponent(photo.filename)}${variant === "original" ? "" : " Resized and re-encoded for sharing."}`;
+  return `${photo.filename} — SDLCAI, 13 October 2026, Marsio, Espoo. Photo: ${photo.photographer}. ${seed.license}: ${seed.licenseUrl}. Source: https://sdlcai.org/2026/photos/?search=${encodeURIComponent(photo.filename)}${variant === "original" ? "" : " Resized and re-encoded for sharing."}`;
 }
 
 async function imageResponse(

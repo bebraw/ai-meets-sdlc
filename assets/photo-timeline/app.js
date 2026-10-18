@@ -445,7 +445,7 @@ function footer() {
   );
   const links = node("div", "footer-links");
   for (const [label, href] of [
-    ["Browse the photo media bank →", "/photos/"],
+    ["Browse the photo media bank →", "/2026/photos/"],
     ["Download photographer credits", "/api/photos/credits"],
     ["CC BY 4.0 licence ↗", "https://creativecommons.org/licenses/by/4.0/"],
     ["Contact", "/contact/"],
@@ -773,7 +773,7 @@ function chapterViewer(group, feature) {
     context.hidden = !photo.eventContext;
     discovery.replaceChildren(photoDiscovery(photo));
     download.href = `/media/event-photos/${photo.id}/share.jpg?download=1`;
-    gallery.href = `/photos/?selection=&search=${encodeURIComponent(photo.filename)}`;
+    gallery.href = `/2026/photos/?selection=&search=${encodeURIComponent(photo.filename)}`;
     previous.disabled = index === 0;
     next.disabled = index === group.photos.length - 1;
     thumbnails.forEach((button, i) =>

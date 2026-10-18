@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">SDLCAI — AI meets SDLC</title>
+  <desc id="description">Practical experience and research on AI across the software development lifecycle. Hear about the next seminar at sdlcai.org.</desc>
+  <defs>
+    <style>
+      @font-face { font-family: "Finlandica Headline"; src: url("../../fonts/FinlandicaHeadline-Black.woff2"); font-weight: 900; }
+      @font-face { font-family: "Finlandica Text"; src: url("../../fonts/FinlandicaText-Regular.woff2"); font-weight: 400; }
+      @font-face { font-family: "Finlandica Text"; src: url("../../fonts/FinlandicaText-Bold.woff2"); font-weight: 700; }
+      text { fill: #f6f4ef; font-family: "Finlandica Text", sans-serif; }
+      .headline { font-family: "Finlandica Headline", sans-serif; font-weight: 900; }
+      .label { font-weight: 700; letter-spacing: 1px; }
+    </style>
+    <pattern id="halftone" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#f6f4ef" opacity=".13" /></pattern>
+  </defs>
+  <rect width="1200" height="630" fill="#101010" />
+  <rect x="18" y="18" width="1164" height="594" fill="none" stroke="#f6f4ef" stroke-width="2" />
+  <circle cx="45" cy="290" r="205" fill="url(#halftone)" stroke="#f6f4ef" stroke-opacity=".2" />
+  <image x="50" y="48" width="68" height="68" href="../../logo.svg" />
+  <text x="144" y="79" font-size="20" class="label" data-safe="144 48 900 70">PRACTICE + RESEARCH + CONVERSATION</text>
+  <text x="144" y="108" font-size="18" fill-opacity=".65" data-safe="144 48 900 70">AI across the software development lifecycle</text>
+  <text x="47" y="298" font-size="150" class="headline" data-safe="44 150 815 160">AI MEETS</text>
+  <text x="47" y="446" font-size="150" class="headline" data-safe="44 300 815 160">SDLC.</text>
+  <path d="M880 154V480" stroke="#f6f4ef" stroke-opacity=".4" />
+  <text x="916" y="218" font-size="19" class="label" data-safe="916 184 240 46">THE NEXT SEMINAR</text>
+  <text x="913" y="304" font-size="53" class="headline" data-safe="910 248 245 68">BE FIRST</text>
+  <text x="913" y="362" font-size="53" class="headline" data-safe="910 308 245 68">TO HEAR.</text>
+  <text x="916" y="426" font-size="21" fill-opacity=".7" data-safe="916 398 240 72">Join the mailing list</text>
+  <path d="M18 502H1182" stroke="#f6f4ef" stroke-width="2" />
+  <text x="50" y="565" font-size="22" class="label" data-safe="48 530 710 54">SEMINARS ON AI &amp; SOFTWARE DEVELOPMENT</text>
+  <text x="1150" y="574" font-size="42" text-anchor="end" class="headline" data-safe="840 526 312 64">SDLCAI.ORG</text>
+</svg>

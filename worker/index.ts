@@ -1,4 +1,5 @@
 import { handleOrganizers, applyOrganizers } from "./organizers.ts";
+import { getArchiveRedirect } from "./archive.ts";
 import { handleEventPhotos, backupEventPhotoReviews } from "./event-photos.ts";
 import { handleIntroVideoRequest } from "./intro-video.ts";
 import { handleQaRequest } from "./qa.ts";
@@ -130,13 +131,16 @@ const innerHandler = {
     ctx: ExecutionContext,
   ): Promise<Response> {
     const url = new URL(request.url);
+    const archiveRedirect = getArchiveRedirect(url);
+    if (archiveRedirect) return Response.redirect(archiveRedirect, 308);
     const emailReview = await handleSpeakerEmailReview(request, env);
     if (emailReview) return emailReview;
-    if (
-      url.pathname === "/event.json" ||
-      url.pathname === "/event.schema.json"
-    ) {
-      return handleEventFeed(request, env);
+    const feedPath = url.pathname.replace(/^\/2026(?=\/event\.)/u, "");
+    if (feedPath === "/event.json" || feedPath === "/event.schema.json") {
+      return handleEventFeed(
+        new Request(new URL(feedPath + url.search, url.origin), request),
+        env,
+      );
     }
     const isAdminProtected = isAdminProtectedPath(url.pathname);
     const isSpeakerSlideExport = isSpeakerSlideExportPath(url.pathname);
@@ -617,7 +621,7 @@ const innerHandler = {
         const [records, schedule, slides] = await Promise.all([
           readPublicCanonicalSpeakers(env),
           readScheduleOrder(env),
-          url.pathname === "/schedule/"
+          url.pathname === "/2026/schedule/"
             ? readPublishedSlideLinks(env)
             : Promise.resolve(new Map<string, PublishedSlideLink[]>()),
         ]);
@@ -642,7 +646,7 @@ const innerHandler = {
       }
     }
 
-    if (url.pathname === "/" && response.ok && request.method !== "HEAD") {
+    if (url.pathname === "/2026/" && response.ok && request.method !== "HEAD") {
       try {
         response = await applyOrganizers(response.clone(), env);
       } catch {

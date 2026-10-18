@@ -170,7 +170,8 @@ export async function handleSpeakerEmailReview(
       return speakerReviewPage({
         title: "Changes approved",
         intro: `${canonical.content.profile.name}’s update is now published. There is nothing else to do for this revision.`,
-        content: '<p><a href="/speakers/">View the published speakers</a></p>',
+        content:
+          '<p><a href="/2026/speakers/">View the published speakers</a></p>',
       });
     }
 

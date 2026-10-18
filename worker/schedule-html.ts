@@ -141,7 +141,7 @@ export async function applyScheduleToResponse(
       if (session) text(element, session.title);
     }
     const linkId = attr(element, "data-talk-schedule-link");
-    if (linkId) setAttr(element, "href", `/schedule/#${linkId}`);
+    if (linkId) setAttr(element, "href", `/2026/schedule/#${linkId}`);
   }
   const headers = new Headers(response.headers);
   headers.delete("content-length");

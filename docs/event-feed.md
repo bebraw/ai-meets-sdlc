@@ -1,7 +1,8 @@
 # Public event feed
 
-`GET https://www.sdlcai.org/event.json` publishes schema version 1. The schema is
-available at `/event.schema.json`. Both endpoints support anonymous cross-origin
+`GET https://www.sdlcai.org/2026/event.json` publishes schema version 1 for the
+2026 archive. The schema is available at `/2026/event.schema.json`. The original
+`/event.json` and `/event.schema.json` endpoints remain compatible aliases. Both endpoints support anonymous cross-origin
 GET/HEAD requests, `Cache-Control: public, max-age=300`, and ETag revalidation.
 
 `npm run build` generates both files and fails on schema errors, duplicate IDs,
@@ -12,7 +13,7 @@ anchors remain intact. Feed URLs are discovered from the rendered website, so
 template anchor changes are picked up in the same build. Preserve old anchors as
 aliases when changing an existing destination where practical.
 
-The seminar, schedule and speaker source data supply the feed. The rendered home
+The seminar, schedule and speaker source data supply the feed. The rendered 2026 archive
 page supplies the event description. Ticket sales are closed and the tickets
 page is removed, so `actions` is empty. Schedule blocks with talks supply topic
 labels and summaries. Individual talk times are

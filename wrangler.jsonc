@@ -78,13 +78,13 @@
     "TURNSTILE_SITE_KEY": "0x4AAAAAADGyYOoRrI5BgaNQ",
     // Hostnames accepted from Turnstile's server-side validation response.
     "TURNSTILE_HOSTNAMES": "sdlcai.org,www.sdlcai.org",
-    // Legacy interest form flag; the sold-out homepage has no signup form.
+    // Keep the former registration-interest form closed.
     "SHOW_INTEREST_FORM": "",
-    // Marketing signup remains closed until the Mailrelay account is ready.
+    // Double-confirmed public signup for future SDLCAI event announcements.
     // Confirmation and unsubscribe links continue to work while disabled.
-    "NEWSLETTER_ENABLED": "false",
+    "NEWSLETTER_ENABLED": "true",
     // Independent switch: existing withdrawals can sync while signup is closed.
-    "MAILRELAY_SYNC_ENABLED": "false",
+    "MAILRELAY_SYNC_ENABLED": "true",
     "MAILRELAY_ACCOUNT_DOMAIN": "sdlcai.ipzmarketing.com",
     "MAILRELAY_GROUP_ID": "1",
     // Set MAILRELAY_API_KEY with wrangler secret put, never in vars.

@@ -23,7 +23,7 @@ The first SDLCAI seminar will be held 13th of October 2026 at Marsio, Aalto Univ
 
 ## Call for sponsors
 
-Sponsors help us keep tickets affordable while adding useful extras such as coffee, a DJ for the afterparty, a photographer, or perhaps a sketch artist. [Our sponsorships begin from 500€.](/for-sponsors/)
+Sponsors help us keep tickets affordable while adding useful extras such as coffee, a DJ for the afterparty, a photographer, or perhaps a sketch artist. [Our sponsorships begin from 500€.](/2026/for-sponsors/)
 
 ## Summary
 

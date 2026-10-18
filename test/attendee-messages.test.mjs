@@ -16,7 +16,8 @@ const endpoint = "/api/admin/attendee-messages";
 const input = {
   category: "operational",
   subject: "Welcome to SDLCAI",
-  text_body: "Find our venue and practical details at https://sdlcai.org/faq/",
+  text_body:
+    "Find our venue and practical details at https://sdlcai.org/2026/faq/",
 };
 const call = (f, path, body) =>
   handle(
@@ -180,7 +181,7 @@ test("active attendee messages deduplicate normalized addresses, require a fresh
     assert.equal(mail.cc, undefined);
     assert.equal(mail.bcc, undefined);
     assert.match(mail.text, /event-email\/unsubscribe\/#token=/u);
-    assert.match(mail.html, /href="https:\/\/sdlcai.org\/faq\/"/u);
+    assert.match(mail.html, /href="https:\/\/sdlcai.org\/2026\/faq\/"/u);
     assert.equal(
       mail.headers["List-Unsubscribe-Post"],
       "List-Unsubscribe=One-Click",
@@ -355,7 +356,7 @@ test("test sends are separate from campaign history and message HTML escapes org
     ...input,
     test_email: "self@example.test",
     text_body:
-      "An event update with <img src=x onerror=alert(1)> and https://sdlcai.org/faq/",
+      "An event update with <img src=x onerror=alert(1)> and https://sdlcai.org/2026/faq/",
   });
   assert.equal(result.status, 200);
   assert.equal(f.messages.length, 1);

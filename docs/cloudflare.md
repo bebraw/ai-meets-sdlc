@@ -441,8 +441,10 @@ manifest and enforces each platform's byte limit.
 The protected admin dashboard at `/admin/` links to focused workspaces at
 `/admin/speakers/`, `/admin/dinner/`, `/admin/posters/`, `/admin/interests/`,
 and `/admin/slides/`. The form at `/admin/login/` validates `ADMIN_USERNAME` and
-`ADMIN_PASSWORD`, then creates a signed, `HttpOnly`, `Secure`, `SameSite=Strict`
-cookie that expires after seven days. Changing either credential invalidates
+`ADMIN_PASSWORD`, then creates a signed, `HttpOnly`, `Secure`, `SameSite=Lax`
+cookie that expires after seven days. `Lax` allows the session on top-level
+return visits, including restored Safari tabs and links from other sites.
+Admin mutations still require same-origin verification. Changing either credential invalidates
 all existing admin sessions. HTTP Basic credentials remain accepted when a
 script supplies them proactively, but the Worker does not send a Basic auth
 challenge. Every `/api/admin/` route and all `/assets/slides/` downloads accept

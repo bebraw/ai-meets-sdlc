@@ -64,3 +64,9 @@ page metadata, and that every generated OG image matches this PNG exactly.
 The existing Bluesky and LinkedIn profile headers remain in this directory's
 root. Presentation-derived social images use the separate
 `npm run slides:export:social` command.
+
+The evergreen site card is `source/sdlcai.svg`, published as `exports/sdlcai.png`
+and copied to each page’s OG URL. It promotes the mailing list without announcing
+a future event date. Regenerate only this card with
+`node scripts/export-promo-assets.mjs sdlcai`. The 2026 promotion cards remain
+available as historical assets.

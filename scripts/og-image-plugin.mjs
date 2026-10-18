@@ -1,12 +1,12 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
-// All pages share one event card. Publish the checked-in PNG verbatim: the
+// All pages share one SDLCAI brand card. Publish the checked-in PNG verbatim: the
 // SVG renderer used previously substituted system fonts on production builds.
 export const plugin = {
   meta: {
     name: "sdlcai-og-image-plugin",
-    description: "Publish the shared event graphic at the existing OG URLs.",
+    description: "Publish the shared SDLCAI graphic at the existing OG URLs.",
   },
   async init({ cwd, options: { image }, outputDirectory }) {
     const data = await readFile(path.resolve(cwd, image));

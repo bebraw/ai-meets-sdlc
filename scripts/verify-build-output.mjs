@@ -16,8 +16,8 @@ const speakerImageBudgetBytes = 50 * 1024;
 const speakerImagesDir = "assets/speakers";
 const venueImageBudgetBytes = 80 * 1024;
 const venueImagePath = "assets/marsio-saastamoinen-stage.webp";
-const ogImagePath = "assets/social/exports/sdlcai-2026-facebook.png";
-const ogImageUrl = "https://sdlcai.org/og.png?v=20260907";
+const ogImagePath = "assets/social/exports/sdlcai.png";
+const ogImageUrl = "https://sdlcai.org/og.png?v=20261018";
 
 try {
   await access(path.join(buildDir, "index.html"));

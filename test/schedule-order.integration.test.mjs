@@ -80,8 +80,8 @@ test("schedule saves are atomic, admin-only, and shared by public pages, slides,
   assert.deepEqual((await read()).groups, groups);
 
   for (const route of [
-    "/",
-    "/schedule/",
+    "/2026/",
+    "/2026/schedule/",
     "/slides/schedule/",
     "/slides/deck/",
     "/slides/opening/",
@@ -110,7 +110,7 @@ test("schedule saves are atomic, admin-only, and shared by public pages, slides,
         group.talkIds,
         route,
       );
-      if (route === "/schedule/") {
+      if (route === "/2026/schedule/") {
         const talks = nodes.filter(
           (node) =>
             attr(node, "data-canonical-talk-title") !== undefined &&
@@ -154,7 +154,7 @@ test("schedule saves are atomic, admin-only, and shared by public pages, slides,
     await worker.fetch(`${origin}/assets/social/speakers.json`, { headers })
   ).json();
   assert.notEqual(oldManifest.version, newManifest.version);
-  const speakerPage = await worker.fetch(`${origin}/speakers/`);
+  const speakerPage = await worker.fetch(`${origin}/2026/speakers/`);
   const speakerNodes = walk(parse(await speakerPage.text()));
   assert.equal(
     text(
@@ -178,9 +178,9 @@ test("schedule saves are atomic, admin-only, and shared by public pages, slides,
   const empty = structuredClone(groups);
   empty[0].talkIds.push(...empty[1].talkIds.splice(0));
   assert.equal((await save(empty, snapshot.revision)).status, 200);
-  const emptyPage = await worker.fetch(`${origin}/schedule/`);
+  const emptyPage = await worker.fetch(`${origin}/2026/schedule/`);
   assert.equal(emptyPage.headers.get("x-sdlcai-content-source"), "d1");
-  const emptyHome = await worker.fetch(`${origin}/`);
+  const emptyHome = await worker.fetch(`${origin}/2026/`);
   assert.equal(emptyHome.headers.get("x-sdlcai-content-source"), "d1");
   const homeNodes = walk(parse(await emptyHome.text()));
   for (const group of empty) {
@@ -209,12 +209,12 @@ test("schedule saves are atomic, admin-only, and shared by public pages, slides,
     t,
     [
       "schedule_order_unavailable",
-      "canonical_public_content_fallback { error: 'Missing schedule order', pathname: '/schedule/' }",
+      "canonical_public_content_fallback { error: 'Missing schedule order', pathname: '/2026/schedule/' }",
     ],
     async () => {
       assert.equal((await worker.fetch(endpoint, { headers })).status, 503);
       assert.equal((await worker.fetch(`${origin}/event.json`)).status, 503);
-      const fallback = await worker.fetch(`${origin}/schedule/`);
+      const fallback = await worker.fetch(`${origin}/2026/schedule/`);
       assert.equal(fallback.status, 200);
       assert.equal(
         fallback.headers.get("x-sdlcai-content-source"),

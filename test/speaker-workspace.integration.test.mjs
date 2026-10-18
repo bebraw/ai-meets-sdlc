@@ -397,13 +397,13 @@ test("speaker invitation sessions, revisions, and automatic publishing stay gove
   assert.equal(submittedWorkspace.canonical_version, 2);
   assert.deepEqual(submittedWorkspace.canonical, proposed);
   assert.match(submittedWorkspace.message, /published/u);
-  const publicAfterSubmit = await worker.fetch(`${origin}/speakers/`);
+  const publicAfterSubmit = await worker.fetch(`${origin}/2026/speakers/`);
   const publicAfterSubmitHtml = await publicAfterSubmit.text();
   assert.match(publicAfterSubmitHtml, /AI migrations you can verify/u);
   assert.match(publicAfterSubmitHtml, /Md Mo Javad Khazali, PhD/u);
   for (const route of [
-    "/",
-    "/schedule/",
+    "/2026/",
+    "/2026/schedule/",
     "/slides/deck/",
     "/slides/schedule/",
   ]) {
@@ -413,7 +413,7 @@ test("speaker invitation sessions, revisions, and automatic publishing stay gove
     assert.equal(response.status, 200);
     const html = await response.text();
     assert.match(html, /Md Mo Javad Khazali, PhD/u);
-    if (route === "/") {
+    if (route === "/2026/") {
       const walk = (node) => [node, ...(node.childNodes ?? []).flatMap(walk)];
       const attr = (node, name) =>
         node.attrs?.find((item) => item.name === name)?.value;
@@ -463,7 +463,7 @@ test("speaker invitation sessions, revisions, and automatic publishing stay gove
           nodes.find((node) => node.tagName === "a"),
           "href",
         ),
-        "/speakers/#mo-khazali",
+        "/2026/speakers/#mo-khazali",
       );
       assert.equal(nodes.filter((node) => node.tagName === "a").length, 1);
     }
@@ -843,7 +843,7 @@ test("speaker invitation sessions, revisions, and automatic publishing stay gove
     "Co-founder and CEO at Coldtea.ai",
   );
 
-  const draftHomeResponse = await worker.fetch(`${origin}/`);
+  const draftHomeResponse = await worker.fetch(`${origin}/2026/`);
   const draftHome = await draftHomeResponse.text();
   assert.equal(draftHomeResponse.status, 200);
   assert.doesNotMatch(draftHome, /An organizer-updated description/u);
@@ -876,7 +876,7 @@ test("speaker invitation sessions, revisions, and automatic publishing stay gove
     "Co-founder and CEO at Coldtea.ai",
   );
 
-  const publicSpeakersResponse = await worker.fetch(`${origin}/speakers/`);
+  const publicSpeakersResponse = await worker.fetch(`${origin}/2026/speakers/`);
   const publicSpeakers = await publicSpeakersResponse.text();
   assert.equal(publicSpeakersResponse.status, 200);
   assert.equal(
@@ -922,7 +922,7 @@ test("speaker invitation sessions, revisions, and automatic publishing stay gove
     1,
   );
 
-  for (const pathname of ["/", "/schedule/"]) {
+  for (const pathname of ["/2026/", "/2026/schedule/"]) {
     const publicPageResponse = await worker.fetch(`${origin}${pathname}`);
     const publicPage = await publicPageResponse.text();
     assert.equal(publicPageResponse.status, 200);
@@ -935,7 +935,7 @@ test("speaker invitation sessions, revisions, and automatic publishing stay gove
       publicSpeakersResponse.headers.get("x-sdlcai-content-version"),
     );
     assert.match(publicPage, /AI product engineering in practice/u);
-    if (pathname === "/schedule/") {
+    if (pathname === "/2026/schedule/") {
       assert.match(
         publicPage,
         /An organizer-updated description about <strong>AI product engineering<\/strong>/u,

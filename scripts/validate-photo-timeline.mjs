@@ -74,7 +74,7 @@ try {
       if (new URL(request.url()).pathname === "/api/photos/catalog")
         requests.push(request.url());
     });
-    await deferred.goto(origin + "/timeline/");
+    await deferred.goto(origin + "/2026/timeline/");
     await deferred.waitForFunction(
       () => typeof window.releaseFirstPaint === "function",
     );
@@ -101,19 +101,19 @@ try {
     });
     for (const width of [320, 900, 1440]) {
       await page.setViewportSize({ width, height: 1000 });
-      await page.goto(origin + "/");
+      await page.goto(origin + "/2026/");
       const navigation = page
-        .locator("header")
+        .getByRole("navigation", { name: "2026 archive", exact: true })
         .getByRole("link", { name: "Photo timeline", exact: true });
       assert.equal(
         await navigation.count(),
         1,
-        "One visible timeline entry in the header",
+        "One timeline entry in the archive navigation",
       );
-      assert.equal(await navigation.getAttribute("href"), "/timeline/");
+      assert.equal(await navigation.getAttribute("href"), "/2026/timeline/");
       assert.equal(
         await page
-          .locator("footer")
+          .getByRole("navigation", { name: "2026 archive", exact: true })
           .getByRole("link", { name: "Photo timeline", exact: true })
           .count(),
         1,
@@ -123,25 +123,24 @@ try {
           () => document.documentElement.scrollWidth > innerWidth,
         ),
         false,
-        "Homepage navigation fits the viewport",
+        "Archive navigation fits the viewport",
       );
       const entry =
         width === 1440
           ? page.getByRole("link", {
-              name: "Explore the photo timeline",
-              exact: true,
+              name: /A day in frames/u,
             })
           : navigation;
       await entry.click();
       await page.locator(".chapter").first().waitFor();
       assert.equal(
         new URL(page.url()).pathname,
-        "/timeline/",
-        "The homepage entry opens the working timeline",
+        "/2026/timeline/",
+        "The archive entry opens the working timeline",
       );
     }
     await page.setViewportSize({ width: 1440, height: 1000 });
-    await page.goto(origin + "/timeline/");
+    await page.goto(origin + "/2026/timeline/");
     await page.locator(".chapter").first().waitFor();
     assert.equal(await imageCount(page), highlights.length);
     assert.equal(await page.locator(".chapter").count(), 9);
@@ -198,7 +197,7 @@ try {
     );
     assert.equal(
       await firstViewer.locator(".media-bank-link").getAttribute("href"),
-      `/photos/?selection=&search=${encodeURIComponent(active.filename)}`,
+      `/2026/photos/?selection=&search=${encodeURIComponent(active.filename)}`,
     );
     assert.equal(
       await firstViewer.locator('.film-photo[aria-pressed="true"]').count(),
@@ -259,7 +258,7 @@ try {
     );
     assert.equal(
       await page.locator('link[rel="canonical"]').getAttribute("href"),
-      "https://sdlcai.org/timeline/",
+      "https://sdlcai.org/2026/timeline/",
     );
     assert.equal(await page.locator('meta[name="robots"]').count(), 0);
     assert.equal(
@@ -274,7 +273,7 @@ try {
     );
     assert.match(
       await (await fixture.worker.fetch(origin + "/sitemap.xml")).text(),
-      /https:\/\/sdlcai.org\/timeline\//,
+      /https:\/\/sdlcai.org\/2026\/timeline\//,
     );
     assert.equal(
       (await fixture.worker.fetch(origin + "/assets/favicon.svg")).status,
@@ -544,7 +543,7 @@ try {
         ? route.fulfill({ status: 503, body: "Unavailable" })
         : route.continue(),
     );
-    await retryPage.goto(origin + "/timeline/");
+    await retryPage.goto(origin + "/2026/timeline/");
     await retryPage
       .getByRole("button", { name: "Retry loading photos" })
       .waitFor();

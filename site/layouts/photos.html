@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta &visibleIf="meta.robots" name="robots" &content="meta.robots" />
-    <link rel="canonical" href="https://sdlcai.org/photos/" />
+    <link rel="canonical" href="https://sdlcai.org/2026/photos/" />
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
     <meta
       name="description"
@@ -686,7 +686,7 @@
       <a
         id="photo-timeline-link"
         class="timeline-entry"
-        href="/timeline/"
+        href="/2026/timeline/"
         hidden
         >Explore the photo timeline</a
       >
@@ -880,7 +880,7 @@
       const label = (value) =>
         ({ dj: "DJ", "q-and-a": "Q&A" })[value] ||
         value.replaceAll("-", " ").replace(/^./, (c) => c.toUpperCase());
-      const hosted = /^\/(admin\/)?photos\/?$/.test(location.pathname);
+      const hosted = /^\/(?:admin|2026)\/photos\/?$/.test(location.pathname);
       const organizer = hosted && location.pathname.startsWith("/admin/");
       const mine =
         hosted && new URLSearchParams(location.search).get("mine") === "1";
@@ -1398,11 +1398,11 @@
         nav.style.cssText =
           "display:flex;flex-wrap:wrap;gap:20px;margin-top:20px";
         for (const [name, href] of [
-          ["Home", "/"],
-          ["Schedule", "/schedule/"],
-          ["Speakers", "/speakers/"],
-          ["Photos", "/photos/"],
-          ["Photo timeline", "/timeline/"],
+          ["2026 archive", "/2026/"],
+          ["Schedule", "/2026/schedule/"],
+          ["Speakers", "/2026/speakers/"],
+          ["Photos", "/2026/photos/"],
+          ["Photo timeline", "/2026/timeline/"],
           ...(organizer ? [["Admin desk", "/admin/"]] : []),
         ]) {
           const link = make("a", name);

@@ -35,7 +35,7 @@ function init() {
     announcementFeed: () => ({
       title: "SDLCAI Announcements",
       description: "Official SDLCAI announcements and event updates.",
-      url: "https://sdlcai.org/announcements/",
+      url: "https://sdlcai.org/2026/announcements/",
       feedUrl: "https://sdlcai.org/atom.xml",
       updated: announcementItems[0]?.modifiedTime ?? new Date().toISOString(),
       items: announcementItems,
@@ -132,7 +132,7 @@ function init() {
               ...speaker,
               anchor: speakerAnchor,
               anchorHref: `#${speakerAnchor}`,
-              speakerHref: `/speakers/#${speakerAnchor}`,
+              speakerHref: `/2026/speakers/#${speakerAnchor}`,
               sessionAnchor: item.anchor,
               scheduleHref: item.scheduleHref,
               sessionTitle: item.title,
@@ -187,8 +187,8 @@ function getAnnouncementItems() {
         author: frontMatter.author,
         eyebrow: frontMatter.eyebrow,
         bodyHtml: raw(renderMarkdown(markdown)),
-        href: `/announcements/${slug}/`,
-        url: `https://sdlcai.org/announcements/${slug}/`,
+        href: `/2026/announcements/${slug}/`,
+        url: `https://sdlcai.org/2026/announcements/${slug}/`,
       };
     })
     .sort((a, b) => b.date.iso.localeCompare(a.date.iso));
@@ -227,7 +227,7 @@ function getAnnouncementItem(announcementItemsBySlug, slug) {
             name: "Toska Osuuskunta",
             url: "https://sdlcai.org/",
           },
-          image: "https://sdlcai.org/og.png?v=20260907",
+          image: "https://sdlcai.org/og.png?v=20261018",
           mainEntityOfPage: {
             "@type": "WebPage",
             "@id": item.url,
@@ -518,7 +518,7 @@ function getScheduleItems(speakersById) {
         return {
           ...speaker,
           anchor: speakerAnchor,
-          speakerHref: `/speakers/#${speakerAnchor}`,
+          speakerHref: `/2026/speakers/#${speakerAnchor}`,
         };
       });
 
@@ -535,7 +535,7 @@ function getScheduleItems(speakersById) {
       talks,
       anchor,
       anchorHref: `#${anchor}`,
-      scheduleHref: `/schedule/#${anchor}`,
+      scheduleHref: `/2026/schedule/#${anchor}`,
     };
   });
 }
