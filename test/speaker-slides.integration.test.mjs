@@ -495,6 +495,104 @@ test("organizers can publish, update and remove external slide links per public 
   assert.ok(changes.some(({ operation }) => operation === "deleted"));
 });
 
+test("organizers can record later permission while publishing the exact existing PDF", async (t) => {
+  const fixture = await createReceiptFixture();
+  t.after(() => fixture.dispose());
+  const { worker, cookies, runSql } = fixture;
+  const speakerHeaders = { cookie: cookies.get("mo-khazali"), origin };
+  const workspace = await (
+    await worker.fetch(`${origin}/api/speaker/workspace`, {
+      headers: speakerHeaders,
+    })
+  ).json();
+  const talkId = workspace.content.talks[0].id;
+  const upload = async (replaces = "") => {
+    const response = await worker.fetch(
+      `${origin}/api/speaker/slides?${new URLSearchParams({ talk_id: talkId, filename: "later-permission.pdf", replaces_slide_id: replaces })}`,
+      {
+        method: "POST",
+        headers: { ...speakerHeaders, "content-type": "application/pdf" },
+        body: pdfSlideBytes(),
+      },
+    );
+    assert.equal(response.status, 201);
+    return (await response.json()).slide;
+  };
+  const original = await upload();
+  const [before] = await runSql("SELECT * FROM speaker_slides");
+  const adminHeaders = {
+    authorization: receiptAdmin,
+    origin,
+    "content-type": "application/json",
+    "x-admin-action": "publish-speaker-slides",
+  };
+  const publish = (body = {}, headers = adminHeaders) =>
+    worker.fetch(`${origin}/api/admin/speakers/slides/publication`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({
+        slide_id: original.slide_id,
+        published: true,
+        ...body,
+      }),
+    });
+  assert.equal((await publish()).status, 403);
+  assert.equal((await publish({ permission_confirmed: false })).status, 403);
+  for (const value of ["true", 1, null])
+    assert.equal((await publish({ permission_confirmed: value })).status, 400);
+  assert.equal(
+    (await publish({ permission_confirmed: true }, speakerHeaders)).status,
+    401,
+  );
+  assert.equal(
+    (
+      await publish(
+        { permission_confirmed: true },
+        { ...adminHeaders, origin: "https://attacker.example" },
+      )
+    ).status,
+    403,
+  );
+  assert.equal(
+    (
+      await publish(
+        { permission_confirmed: true },
+        { ...adminHeaders, "x-admin-action": "wrong" },
+      )
+    ).status,
+    403,
+  );
+  const response = await publish({ permission_confirmed: true });
+  assert.equal(response.status, 200, await response.clone().text());
+  const published = (await response.json()).slide;
+  assert.equal(published.slide_id, original.slide_id);
+  assert.equal(published.may_publish, true);
+  assert.ok(published.published_at);
+  const [after] = await runSql("SELECT * FROM speaker_slides");
+  assert.deepEqual(after, {
+    ...before,
+    may_publish: 1,
+    published_at: published.published_at,
+  });
+  const downloaded = await worker.fetch(`${origin}${published.public_url}`);
+  assert.equal(downloaded.status, 200);
+  assert.deepEqual(
+    Buffer.from(await downloaded.arrayBuffer()),
+    pdfSlideBytes(),
+  );
+  assert.equal((await publish({ published: false })).status, 200);
+  assert.equal((await publish()).status, 200);
+  const replacement = await upload(original.slide_id);
+  assert.equal(replacement.may_publish, false);
+  assert.equal(replacement.published_at, null);
+  assert.equal((await publish({ permission_confirmed: true })).status, 409);
+  assert.equal((await publish({ slide_id: replacement.slide_id })).status, 403);
+  assert.equal(
+    (await worker.fetch(`${origin}${published.public_url}`)).status,
+    404,
+  );
+});
+
 test("speaker slides stay private until publication, and replacement withdraws public files", async (t) => {
   const fixture = await createReceiptFixture();
   t.after(() => fixture.dispose());

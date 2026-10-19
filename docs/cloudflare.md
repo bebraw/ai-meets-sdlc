@@ -366,7 +366,9 @@ objects; presentation files are independent of private contact expiry.
 Organizer downloads use `GET` or `HEAD /api/admin/speakers/slides/:slide_id`.
 `POST /api/admin/speakers/slides/publication` accepts JSON `{ "slide_id": "…",
 "published": true|false }` with `x-admin-action: publish-speaker-slides` and a
-same-origin organizer session. Only a permitted PDF for a public talk can be
+same-origin organizer session. An organizer who obtained permission after upload
+can include `"permission_confirmed": true` when publishing; permission and
+publication are saved together for that exact file revision. Only a permitted PDF for a public talk can be
 published. `/schedule/` inserts links to current published PDFs at
 `/media/talks/:talk_id/:slide_id.pdf`. Every public GET/HEAD rechecks publication
 and sends `Cache-Control: no-store`, so old links stop working after withdrawal,

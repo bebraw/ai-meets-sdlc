@@ -1494,7 +1494,10 @@ function renderSlideFile(
   actions.appendChild(replace);
   const status = slideStatus();
   status.classList.add("sm:col-span-2");
+  let permissionPrompt: HTMLLabelElement | null = null;
   if (file.format === "pdf") {
+    const permission = node("input", "mt-1 h-5 w-5 shrink-0");
+    permission.type = "checkbox";
     const publish = slideAction(file.published_at ? "Unpublish" : "Publish");
     publish.setAttribute(
       "aria-label",
@@ -1505,9 +1508,27 @@ function renderSlideFile(
     if (publish.disabled)
       publish.title = speaker.workspace_only
         ? "Private test account: publication is unavailable."
-        : "Speaker permission is needed before publishing.";
+        : "Confirm the speaker's permission below before publishing.";
+    if (!file.may_publish && !speaker.workspace_only) {
+      permissionPrompt = node(
+        "label",
+        "flex items-start gap-3 text-sm leading-6 sm:col-span-2",
+      );
+      permissionPrompt.appendChild(permission);
+      permissionPrompt.appendChild(
+        node(
+          "span",
+          "",
+          "The speaker has allowed this PDF to be shared publicly.",
+        ),
+      );
+      permission.addEventListener("change", () => {
+        publish.disabled = !permission.checked;
+      });
+    }
     publish.addEventListener("click", async () => {
       publish.disabled = true;
+      permission.disabled = true;
       setSlideStatus(
         status,
         file.published_at ? "Unpublishing PDF…" : "Publishing PDF…",
@@ -1523,10 +1544,14 @@ function renderSlideFile(
           body: JSON.stringify({
             slide_id: file.slide_id,
             published: !file.published_at,
+            permission_confirmed: permission.checked,
           }),
         },
       );
-      publish.disabled = false;
+      permission.disabled = false;
+      publish.disabled =
+        !file.published_at &&
+        (speaker.workspace_only || (!file.may_publish && !permission.checked));
       if (!response.ok) {
         setSlideStatus(
           status,
@@ -1604,6 +1629,7 @@ function renderSlideFile(
   more.body.appendChild(remove);
   actions.appendChild(more.details);
   row.appendChild(actions);
+  if (permissionPrompt) row.appendChild(permissionPrompt);
   row.appendChild(status);
   return row;
 }

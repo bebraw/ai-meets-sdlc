@@ -122,7 +122,9 @@ export async function handleAdminSpeakerSlidesRequest(
       !isRecord(body) ||
       typeof body.slide_id !== "string" ||
       !slideIdPattern.test(body.slide_id) ||
-      typeof body.published !== "boolean"
+      typeof body.published !== "boolean" ||
+      (body.permission_confirmed !== undefined &&
+        typeof body.permission_confirmed !== "boolean")
     ) {
       return json({ error: "Choose a PDF and its publication state." }, 400);
     }
@@ -132,7 +134,7 @@ export async function handleAdminSpeakerSlidesRequest(
       return json({ error: "Only PDF slides can be published." }, 400);
     }
     if (body.published) {
-      if (row.may_publish !== 1) {
+      if (row.may_publish !== 1 && body.permission_confirmed !== true) {
         return json(
           { error: "The speaker has not allowed publication of this PDF." },
           403,
@@ -151,10 +153,15 @@ export async function handleAdminSpeakerSlidesRequest(
       }
     }
     const updated = await env.INTERESTS.prepare(
-      `UPDATE speaker_slides SET published_at = ?2
+      `UPDATE speaker_slides SET published_at = ?2,
+         may_publish = CASE WHEN ?3 = 1 THEN 1 ELSE may_publish END
        WHERE slide_id = ?1 RETURNING *`,
     )
-      .bind(row.slide_id, body.published ? new Date().toISOString() : null)
+      .bind(
+        row.slide_id,
+        body.published ? new Date().toISOString() : null,
+        body.published && body.permission_confirmed === true ? 1 : 0,
+      )
       .first<SlideRow>();
     if (!updated) return staleSlides();
     return json({

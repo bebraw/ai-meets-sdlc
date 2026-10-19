@@ -361,7 +361,10 @@ editor's changes. **Setup details** contains venue guidance and its timestamp.
 Each file's **⋯** menu contains its upload details and removal action.
 
 In `/admin/speakers/`, use **Publish** beside a PDF when post-event material
-is ready. The corresponding talk at `/schedule/` gains a **Slides (PDF)** download
+is ready. If permission was obtained after upload, first select **The speaker
+has allowed this PDF to be shared publicly** below the file. Publishing records
+that permission for the existing PDF without replacing it. The corresponding
+talk at `/schedule/` gains a **Slides (PDF)** download
 link. **Unpublish**, removal, and replacement immediately withdraw the old
 download; a replacement PDF requires permission and publication again. The
 public archive outlives speaker login sessions. Apply migration

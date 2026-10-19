@@ -207,6 +207,40 @@ try {
       .isDisabled(),
     true,
   );
+  const existingSlideId = await adminCard.getAttribute("data-admin-slide");
+  await adminCard
+    .getByRole("checkbox", {
+      name: "The speaker has allowed this PDF to be shared publicly.",
+      exact: true,
+    })
+    .check();
+  await adminCard
+    .getByRole("button", {
+      name: "Publish PDF on schedule",
+      exact: true,
+    })
+    .click();
+  await admin
+    .getByText("PDF published on the schedule.", { exact: true })
+    .waitFor();
+  assert.equal(
+    await adminCard.getAttribute("data-admin-slide"),
+    existingSlideId,
+  );
+  assert.equal(await adminCard.getByRole("checkbox").count(), 0);
+  const existingDownload = await publicContext.request.get(
+    `${origin}/media/talks/${talkId}/${existingSlideId}.pdf`,
+  );
+  assert.equal(existingDownload.status(), 200);
+  assert.deepEqual(await existingDownload.body(), pdfSlideBytes());
+  await adminCard
+    .getByRole("button", { name: "Unpublish PDF", exact: true })
+    .click();
+  await admin
+    .getByText("PDF unpublished. The schedule link has been removed.", {
+      exact: true,
+    })
+    .waitFor();
   await setFile(
     "public.pdf",
     pdfSlideBytes("Public slides"),
