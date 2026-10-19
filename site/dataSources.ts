@@ -10,6 +10,7 @@ import music from "./data/music.json" with { type: "json" };
 import seminarData from "./data/seminar.json" with { type: "json" };
 import speakersData from "./data/speakers.json" with { type: "json" };
 import sponsorsData from "./data/sponsors.json" with { type: "json" };
+import socialMentions from "./data/social-mentions.json" with { type: "json" };
 import { socialRenderPresets } from "../scripts/social-render-presets.mjs";
 import { getSlideTitleClassName } from "./scripts/slide-title.ts";
 import {
@@ -44,6 +45,20 @@ function init() {
     announcementItem: (match) =>
       getAnnouncementItem(announcementItemsBySlug, match.slug),
     seminar: () => seminar,
+    socialMentionGroups: () =>
+      socialMentions.groups.map((group, index) => ({
+        ...group,
+        number: String(index + 1).padStart(2, "0"),
+        href: `#${group.id}`,
+        headingId: `${group.id}-heading`,
+        count: group.mentions.length,
+        mentions: group.mentions.map((mention) => ({
+          ...mention,
+          href: `#${mention.id}`,
+          headingId: `${mention.id}-heading`,
+          permalinkLabel: `Link to mention by ${mention.author}`,
+        })),
+      })),
     venueSigns: () => venueSigns,
     venueSignItems: () =>
       venueSigns.items.map((sign) => ({

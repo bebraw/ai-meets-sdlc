@@ -1,0 +1,898 @@
+{
+  "compiledOn": "2026-10-19",
+  "groups": [
+    {
+      "id": "participant-reflections",
+      "title": "Participant reflections",
+      "description": "What participants took away, from testing and human understanding to organizational change.",
+      "mentions": [
+        {
+          "id": "M01",
+          "author": "Toni Hintikka",
+          "affiliation": "Participant; no speaker/sponsor relationship established",
+          "format": "Post",
+          "summary": "Detailed Finnish reflection on organizational settings, documentation, acceptance criteria and enforced agent boundaries; advocates measuring idea-to-production time, rework, quality and customer impact; recommends the recording.",
+          "context": "Participant reflection, summarized from Finnish.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516792973926502400/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M02",
+          "author": "Kaisa Tirkkonen",
+          "affiliation": "MuniFin; participant",
+          "format": "Post",
+          "summary": "Highlights autonomy between human approval gates, clear problem descriptions, validation and automated testing; thanks speakers and organizers.",
+          "context": "Participant reflection on quality and accountability.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/posts/kaisatirkkonen_sdlcai-ugcPost-7515785042082701314-MnLB/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M03",
+          "author": "Mikko Paloheimo",
+          "affiliation": "SOK; participant",
+          "format": "Post",
+          "summary": "Appreciated testing and quality throughout the talks; took several pages of notes back to his team and organization; valued discussions and networking.",
+          "context": "Reports plans to apply the learning; implementation and resulting benefits have not been established.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7515978209742589954/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M04",
+          "author": "Jenna Kaisanlahti",
+          "affiliation": "Participant; no speaker/sponsor relationship established",
+          "format": "Post",
+          "summary": "Compares AI adoption with remote work: individual efficiency can harm organizational outcomes when implemented poorly; appreciates academic perspectives.",
+          "context": "Participant reflection on organizational effects and the research–practice mix.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7515803139187503104/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M05",
+          "author": "Visa Linkiö",
+          "affiliation": "CTO and AI transformation advisor; participant",
+          "format": "Post",
+          "summary": "Praises the programme from business intent through production and maintenance; discusses moving bottlenecks, broader contributions, code understanding, discovery and leadership.",
+          "context": "Participant reflection. A further comment on curation appears below.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7515819574525743105/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M06",
+          "author": "Heimo Laukkanen",
+          "affiliation": "Participant",
+          "format": "Post",
+          "summary": "Praises the talks and Sini's message that software development fundamentals matter more with AI.",
+          "context": "Event-day reaction. Mikko Vaha adds a qualification about engineering fundamentals below.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7515737443438977024/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M07",
+          "author": "Jaakko Hollmén",
+          "affiliation": "Participant",
+          "format": "Edited post",
+          "summary": "Adds reflections about decentralized AI, people as creators, care for people and human understanding of code.",
+          "context": "This summary covers the addition made after the seminar; the opening of the post was written before it.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/posts/jaakko-hollmen_ai-softwareengineering-sdlc-share-7515430384633991168-sxdn/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M08",
+          "author": "Oskari Liukkonen",
+          "affiliation": "Participant",
+          "format": "Edited post",
+          "summary": "Highlights Mo's automotive analogy and the need to rethink processes through Lean principles.",
+          "context": "Event-related reflection. The discussion also includes comments from Anna Kholina and Ville Takanen.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7515708229541068800/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M09",
+          "author": "Moses Nderemani",
+          "affiliation": "Poster presenter / participant",
+          "format": "Post",
+          "summary": "Praises organization, presentations and conversations; describes his recommender-systems poster and shares its materials.",
+          "context": "Participation as a poster presenter is explicit.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516197982849953792/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M10",
+          "author": "Mikko Vaha",
+          "affiliation": "SOK; participant",
+          "format": "Post",
+          "summary": "Reports insights and ideas to develop at SOK.",
+          "context": "His reported 20+ pages of notes cover both SDLCAI and SOK’s AI conference. His slide criticism is included below.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7515849196101472257/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M11",
+          "author": "Sachin Kundu",
+          "affiliation": "Fractional agentic engineering CTO; participant",
+          "format": "Post",
+          "summary": "Praises organization, conversations and Mo's presentation, but reports no new ideas for an experienced practitioner; criticizes text-heavy slides and AI-factory hype; discusses costs, verification, review queues and changing roles.",
+          "context": "A mixed assessment from an attendee. His praise of one talk coexists with criticism of the programme; his impressions of other attendees are a personal account.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516051648658677760/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M60",
+          "author": "Pasi Vuorio — thematic synthesis",
+          "affiliation": "ModernPath; participant",
+          "format": "Post and linked interactive synthesis",
+          "summary": "Created a thematic synthesis of the ten presentations with Claude, mapping agreement and possible points of debate; praises the presentations and discussions and reports useful ideas for the ModernPath team.",
+          "context": "A participant-created interpretation made with Claude, rather than a speaker-approved transcript. Measured business outcomes have not been established.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7517555941698039809/",
+              "label": "LinkedIn post"
+            },
+            {
+              "url": "https://claude.ai/artifact/NPsfesQhWAJRfeCdPsaUHU",
+              "label": "Thematic synthesis"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "speaker-reflections",
+      "title": "Speaker and research reflections",
+      "description": "Speakers and their institutions reflect on their contributions and the discussions around them.",
+      "mentions": [
+        {
+          "id": "M12",
+          "author": "Mo Khazali",
+          "affiliation": "Theodo; keynote speaker",
+          "format": "Post",
+          "summary": "Uses Lean and automotive lessons to discuss bottlenecks; advocates observing real work and measuring flow, outcomes and customer value; thanks organizers and audience.",
+          "context": "A speaker’s own reflection. The discussion by Theodo colleagues is listed separately below.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516116105598226432/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M13",
+          "author": "Jenni Kylmäkoski",
+          "affiliation": "Nokia; speaker",
+          "format": "Post",
+          "summary": "Appreciates talks without unnecessary hype; highlights Kaizen, Five Whys, AI communities, plan reviews and developer oversight of broader contributions.",
+          "context": "A speaker’s own reflection.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7515786792483155968/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M14",
+          "author": "Viljami Kuosmanen",
+          "affiliation": "Speaker",
+          "format": "Post",
+          "summary": "Describes challenging Q&A about non-engineers contributing to a production codebase; praises the seminar, panel and several other talks.",
+          "context": "A speaker’s account of audience debate; it does not by itself validate the approach presented.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516125075125841920/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M15",
+          "author": "Jussi Hacklin",
+          "affiliation": "Elisa; speaker",
+          "format": "Post",
+          "summary": "Praises talks, discussions and organization after presenting regulated-domain adoption; hopes the event becomes annual.",
+          "context": "A speaker’s own reflection.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7515818248270065664/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M16",
+          "author": "Sini Tistelgrén",
+          "affiliation": "Aimbition cofounder; speaker; brand-sponsor affiliation",
+          "format": "Post",
+          "summary": "Praises sharp audience questions and conversations.",
+          "context": "A speaker’s own reflection, alongside a related post by her company Aimbition.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516075100719263744/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M17",
+          "author": "Tapio Pitkäranta",
+          "affiliation": "Siili Solutions; speaker",
+          "format": "Post",
+          "summary": "Connects his presentation to the Agentic Probe paper and thanks participants for discussions of agentic discovery and engineering.",
+          "context": "A speaker’s research-to-practice follow-up.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7515785869157548032/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M18",
+          "author": "Muhammad Waseem",
+          "affiliation": "GPT-Lab, Tampere University; keynote speaker",
+          "format": "Post",
+          "summary": "Describes valuable industry–academia conversations and ideas to bring back to GPT-Lab.",
+          "context": "A speaker’s personal account, covering the same contribution as GPT-Lab’s institutional recap.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516207861677465602/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M19",
+          "author": "GPT-Lab",
+          "affiliation": "Tampere University; speaker's institution",
+          "format": "Institutional recap",
+          "summary": "Summarizes Waseem's keynote on understanding, review, system safety, architecture and learning as code generation becomes cheaper.",
+          "context": "An institutional account of its own speaker’s contribution.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516091318155206656/",
+              "label": "LinkedIn post"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "company-follow-through",
+      "title": "Sponsor and company follow-through",
+      "description": "Company accounts, event-day notes and reported activity after the seminar. Sponsor relationships are stated with each author.",
+      "mentions": [
+        {
+          "id": "M20",
+          "author": "Wunderdog",
+          "affiliation": "Main / epic sponsor",
+          "format": "Company post",
+          "summary": "Says the event delivered grounded, practical and honest discussion; highlights controlled non-engineer contributions, plan reviews and measured productivity; hopes for another edition.",
+          "context": "The company was the event’s main sponsor.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516831267275964416/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M21",
+          "author": "Wonna — exploring the future of coding",
+          "affiliation": "Technology sponsor; participating company",
+          "format": "Company post",
+          "summary": "Reports two skills under development the following day: quiz-me helps developers maintain application understanding; review-index identifies material for human review. Praises curation, conversations and free content.",
+          "context": "The company reports that most of its staff attended. These are reported experiments; measured long-term benefits have not been established.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516093722963513344/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M22",
+          "author": "Aimbition",
+          "affiliation": "Brand sponsor; Sini's company",
+          "format": "Company post",
+          "summary": "Emphasizes independent checks, accountability, lead time, change failure rate and cost per accepted change.",
+          "context": "A company post related to cofounder and speaker Sini Tistelgrén’s reflection.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516729396876050432/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M23",
+          "author": "Ville Komulainen — morning notes",
+          "affiliation": "Wunderdog CEO; main-sponsor affiliation",
+          "format": "Post / live notes",
+          "summary": "Discusses measured versus perceived productivity and plan reviews.",
+          "context": "Event-day notes from the main sponsor’s CEO; the afternoon notes are a separate entry by the same author.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7515700795099688960/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M24",
+          "author": "Ville Komulainen — afternoon notes",
+          "affiliation": "Wunderdog CEO; main-sponsor affiliation",
+          "format": "Post / live notes",
+          "summary": "Discusses production validation and engineering controls enabling non-engineers to contribute.",
+          "context": "A continuation of the morning notes by the same author.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7515745861080018944/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M25",
+          "author": "Mikko Vallaskivi",
+          "affiliation": "Wunderdog technology lead; main-sponsor affiliation",
+          "format": "Post",
+          "summary": "Says Mo's and Ohans's talks resonated with daily work, solutions and hurdles; mentions meeting people and the sponsor table.",
+          "context": "Event-day presence is explicit; the author works for the main sponsor.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7515727732878630912/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M26",
+          "author": "Ville Komulainen — post-event tech talk",
+          "affiliation": "Wunderdog CEO; main-sponsor affiliation",
+          "format": "Post",
+          "summary": "Reports a facilitated Friday discussion of SDLCAI findings: abstraction in pull requests and technical-design / architecture quality. Recommends continuous adjustment as tools change.",
+          "context": "Reports a company discussion after the seminar. Measured delivery improvements have not been established.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/posts/villekomulainen_in-our-latest-tech-talk-on-friday-we-had-activity-7517815725453893632-fWHo/",
+              "label": "LinkedIn post"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "criticism-and-nuance",
+      "title": "Constructive criticism and nuance",
+      "description": "Questions about the examples, terminology and engineering assumptions discussed during the day. Sachin Kundu’s mixed overall review is also included in participant reflections.",
+      "mentions": [
+        {
+          "id": "M40",
+          "author": "Anssi Lehtelä",
+          "affiliation": "No event affiliation established",
+          "format": "Comment",
+          "summary": "Questions a slide's portrayal of roles, sequential work, late testing and output tracking rather than shared outcomes.",
+          "context": "Attendance is unverified. The photographed slide presented a simplified current-practice baseline, rather than recommending late testing.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7515849195279544320?commentUrn=urn%3Ali%3Acomment%3A%28ugcPost%3A7515849195279544320%2C7516012042332606464%29",
+              "label": "LinkedIn comment"
+            }
+          ]
+        },
+        {
+          "id": "M41",
+          "author": "Mikko Vaha",
+          "affiliation": "SOK",
+          "format": "Reply",
+          "summary": "Agrees with Anssi's concerns and says the slide's problems were why he photographed it.",
+          "context": "This specific criticism coexists with his positive overall reflection. The slide presented a simplified current-practice baseline, rather than recommending late testing.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7515849195279544320?commentUrn=urn%3Ali%3Acomment%3A%28ugcPost%3A7515849195279544320%2C7516012042332606464%29&replyUrn=urn%3Ali%3Acomment%3A%28ugcPost%3A7515849195279544320%2C7516098817939714048%29",
+              "label": "LinkedIn reply"
+            }
+          ]
+        },
+        {
+          "id": "M42",
+          "author": "Mikko Vaha",
+          "affiliation": "SOK",
+          "format": "Comment",
+          "summary": "Observes that engineering fundamentals have always been challenging.",
+          "context": "A participant’s qualification about longstanding engineering challenges.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7515737443438977024?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7515737443438977024%2C7515843629291196416%29",
+              "label": "LinkedIn comment"
+            }
+          ]
+        },
+        {
+          "id": "M43",
+          "author": "Sami Kuhmonen",
+          "affiliation": "No event affiliation established",
+          "format": "Comment and author reply",
+          "summary": "Jokes about a refund / false advertising because deployment checks mean the example was not really vibe coding; Viljami replies about code the author cannot read.",
+          "context": "Attendance is unverified. The exchange reads as humour; no actual refund complaint was established.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516125075125841920?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7516125075125841920%2C7516135874083028995%29",
+              "label": "LinkedIn comment"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "audience-comments",
+      "title": "Presentation and audience comments",
+      "description": "Responses to individual talks, including feedback from a confirmed remote viewer. Attendance is qualified where it could not be established.",
+      "mentions": [
+        {
+          "id": "M30",
+          "author": "Ricardo Sueiras",
+          "affiliation": "Professional viewer; no event affiliation established",
+          "format": "Comment",
+          "summary": "Recommends Mo's session after watching through YouTube.",
+          "context": "Explicitly describes watching the session through YouTube.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516116105598226432?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7516116105598226432%2C7516153429187121153%29",
+              "label": "LinkedIn comment"
+            }
+          ]
+        },
+        {
+          "id": "M31",
+          "author": "Umut Karabudak",
+          "affiliation": "Vaisala",
+          "format": "Comment",
+          "summary": "Praises Mo's energy and insight; Mo confirms they spoke afterwards.",
+          "context": "Mo’s reply corroborates that they spoke after the talk.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516116105598226432?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7516116105598226432%2C7516927207143936000%29",
+              "label": "LinkedIn comment"
+            }
+          ]
+        },
+        {
+          "id": "M32",
+          "author": "Radin Shahdaei",
+          "affiliation": "Aalto University",
+          "format": "Comment",
+          "summary": "Praises Mo's perspective; Mo confirms meeting him.",
+          "context": "Mo’s reply corroborates that they met at the event.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516116105598226432?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7516116105598226432%2C7516176443975077888%29",
+              "label": "LinkedIn comment"
+            }
+          ]
+        },
+        {
+          "id": "M33",
+          "author": "Anna Kholina",
+          "affiliation": "No event affiliation established",
+          "format": "Comment",
+          "summary": "Praises Mo's talk.",
+          "context": "Attendance has not been independently established.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7515708229541068800?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7515708229541068800%2C7515715870380371968%29",
+              "label": "LinkedIn comment"
+            }
+          ]
+        },
+        {
+          "id": "M34",
+          "author": "Ville Takanen",
+          "affiliation": "No event affiliation established",
+          "format": "Reply",
+          "summary": "Singles out the visuals in the discussion under Anna's comment.",
+          "context": "Attendance has not been independently established. The link opens the containing comment thread.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7515708229541068800?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7515708229541068800%2C7515715870380371968%29",
+              "label": "LinkedIn comment thread"
+            }
+          ]
+        },
+        {
+          "id": "M35",
+          "author": "Mikael Hautala",
+          "affiliation": "Iiwari",
+          "format": "Comment and follow-up",
+          "summary": "Praises Viljami's examples and internal communication excerpts; suggests a longer version.",
+          "context": "Feedback on the talk; the link opens the parent post.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516125075125841920/",
+              "label": "LinkedIn parent post"
+            }
+          ]
+        },
+        {
+          "id": "M44",
+          "author": "Jarmo Parkkinen",
+          "affiliation": "No event affiliation established",
+          "format": "Comment",
+          "summary": "Briefly praises Sini's talk.",
+          "context": "Attendance has not been independently established. The link opens the parent post.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516075100719263744/",
+              "label": "LinkedIn parent post"
+            }
+          ]
+        },
+        {
+          "id": "M56",
+          "author": "Jenni Kylmäkoski",
+          "affiliation": "Speaker",
+          "format": "Comment",
+          "summary": "Says Viljami's presentation provoked questions and that people listened carefully.",
+          "context": "A speaker’s observation of audience discussion; the link opens the parent post.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516125075125841920/",
+              "label": "LinkedIn parent post"
+            }
+          ]
+        },
+        {
+          "id": "M57",
+          "author": "Sachin Kundu",
+          "affiliation": "Participant",
+          "format": "Comment and reply",
+          "summary": "Praises Mo's message and slides; thanks him for answering questions and keeping the talk entertaining.",
+          "context": "This praise of Mo’s talk coexists with the author’s mixed overall assessment. The link opens the parent post.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516116105598226432/",
+              "label": "LinkedIn parent post"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "future-format",
+      "title": "Future-format suggestions",
+      "description": "Ideas offered in the discussion about possible future gatherings.",
+      "mentions": [
+        {
+          "id": "M36",
+          "author": "Arslan Sultan",
+          "affiliation": "Lead software engineer; no event affiliation established",
+          "format": "Comment",
+          "summary": "Praises the academic–practitioner mix; asks for teams measuring AI's whole-delivery effects, and expresses interest in meetups.",
+          "context": "Seminar attendance is unverified.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516380213447090177?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7516380213447090177%2C7516551181951889408%29",
+              "label": "LinkedIn comment"
+            }
+          ]
+        },
+        {
+          "id": "M52",
+          "author": "Arslan Sultan",
+          "affiliation": "Lead software engineer",
+          "format": "Follow-up reply",
+          "summary": "Proposes real codebases, real review queues and numbers at the end of a hands-on day; offers to bring practitioner cases.",
+          "context": "Seminar attendance is unverified. This is an offer of a possible contribution, not a confirmed commitment or announced event format.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516380213447090177?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7516380213447090177%2C7516551181951889408%29&replyUrn=urn%3Ali%3Acomment%3A%28activity%3A7516380213447090177%2C7516845995771555842%29",
+              "label": "LinkedIn reply"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "brief-mentions",
+      "title": "Brief participant mentions",
+      "description": "Short event-day reactions and participation signals.",
+      "mentions": [
+        {
+          "id": "M27",
+          "author": "Laura Snellman-Junna",
+          "affiliation": "Wonna; technology-sponsor affiliation",
+          "format": "Post",
+          "summary": "Enthusiastic praise for morning talks and interesting encounters; shares the stream with some event-day humour.",
+          "context": "A brief event-day reaction from an affiliated participant.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7515723882528583681/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M28",
+          "author": "Pirkka Suominen",
+          "affiliation": "Sevendos; states group connections to Aimbition and Wunderdog",
+          "format": "Post",
+          "summary": "Praises gathering, talks and discussions; expresses intention to return next year.",
+          "context": "An event-day reaction with sponsor-group connections stated in the post.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7515785650705444865/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M29",
+          "author": "Pasi Vuorio",
+          "affiliation": "ModernPath",
+          "format": "Post",
+          "summary": "Announces an intention to livepost seminar insights.",
+          "context": "An event-day participation signal. His later thematic synthesis is included among participant reflections.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7515654792740896769/",
+              "label": "LinkedIn post"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "organization-and-curation",
+      "title": "Organization and curation comments",
+      "description": "Comments about the programme, hosting and format.",
+      "mentions": [
+        {
+          "id": "M37",
+          "author": "Visa Linkiö",
+          "affiliation": "Participant",
+          "format": "Reply",
+          "summary": "Explicitly praises speaker choices and the organizer's hosting attitude.",
+          "context": "A further comment by the author of the participant reflection above.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7515819574525743105?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7515819574525743105%2C7515824679560048640%29&replyUrn=urn%3Ali%3Acomment%3A%28activity%3A7515819574525743105%2C7515827450203779073%29",
+              "label": "LinkedIn reply"
+            }
+          ]
+        },
+        {
+          "id": "M53",
+          "author": "Paul James Brennan",
+          "affiliation": "No event affiliation established",
+          "format": "Comment",
+          "summary": "Brief congratulations under Jussi's recap.",
+          "context": "Attendance is unverified. The link opens the parent post.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7515818248270065664/",
+              "label": "LinkedIn parent post"
+            }
+          ]
+        },
+        {
+          "id": "M54",
+          "author": "Carlo Hyvönen",
+          "affiliation": "No event affiliation established",
+          "format": "Comment",
+          "summary": "Brief thanks for organizing under the organizer's retrospective.",
+          "context": "Attendance is unverified. The link opens the parent post.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516380213447090177/",
+              "label": "LinkedIn parent post"
+            }
+          ]
+        },
+        {
+          "id": "M55",
+          "author": "Mo Khazali; Jussi Hacklin; Sini Tistelgrén; Tapio Pitkäranta",
+          "affiliation": "Speakers; Sini also has brand-sponsor affiliation",
+          "format": "Comments",
+          "summary": "Additional thanks in the organizer's retrospective; Mo specifically praises the format and hopes it grows.",
+          "context": "Grouped follow-up comments from speakers already represented here. The link opens the parent post.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516380213447090177/",
+              "label": "LinkedIn parent post"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "recording-access",
+      "title": "Recording access and reach",
+      "description": "Requests and interest in watching later, with viewing status kept explicit.",
+      "mentions": [
+        {
+          "id": "M38",
+          "author": "Esa Vanhanen-Varho",
+          "affiliation": "Lowell; no event affiliation established",
+          "format": "Comment",
+          "summary": "Welcomes being able to watch afterwards.",
+          "context": "Interest in replay access; subsequent viewing is unconfirmed.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516093722963513344?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7516093722963513344%2C7516229850106560512%29",
+              "label": "LinkedIn comment"
+            }
+          ]
+        },
+        {
+          "id": "M39",
+          "author": "Ingo Rockel",
+          "affiliation": "Cloud architect; no event affiliation established",
+          "format": "Comment and author reply",
+          "summary": "Asks for a recording under Viljami's earlier announcement; Viljami supplies a full-day link and talk timestamp.",
+          "context": "The author missed the event; subsequent viewing is unconfirmed.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7515700562173079553?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7515700562173079553%2C7516187777722425344%29",
+              "label": "LinkedIn comment"
+            }
+          ]
+        },
+        {
+          "id": "M58",
+          "author": "Arslan Sultan",
+          "affiliation": "Lead software engineer",
+          "format": "Comment",
+          "summary": "Discusses using AI speed to reveal weaknesses in review, tests and ownership, and says he will watch Sini's recording.",
+          "context": "An intention to watch; attendance and recording viewing are unconfirmed. The link opens the parent post.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516075100719263744/",
+              "label": "LinkedIn parent post"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "affiliated-discussion",
+      "title": "Affiliated discussion",
+      "description": "Contributions by sponsor representatives and a speaker’s colleagues.",
+      "mentions": [
+        {
+          "id": "M45",
+          "author": "Mauno Ahlgren",
+          "affiliation": "Aimbition cofounder; brand-sponsor affiliation",
+          "format": "Comment",
+          "summary": "Agrees with the fundamentals message and emphasizes company reality over hype.",
+          "context": "A sponsor-affiliated contribution to the discussion; the link opens the parent post.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7515737443438977024/",
+              "label": "LinkedIn parent post"
+            }
+          ]
+        },
+        {
+          "id": "M46",
+          "author": "Antoine Bordas",
+          "affiliation": "Theodo; Mo's colleague",
+          "format": "Comment",
+          "summary": "Reinforces measuring AI through flow, quality and customer value and observing real work.",
+          "context": "Discussion by the speaker’s colleague. Attendance is unverified; the link opens the parent post.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516116105598226432/",
+              "label": "LinkedIn parent post"
+            }
+          ]
+        },
+        {
+          "id": "M47",
+          "author": "Ashil Ramjee",
+          "affiliation": "Theodo; Mo's colleague",
+          "format": "Comment",
+          "summary": "Notes that AI can expose process weaknesses without removing other bottlenecks.",
+          "context": "Discussion by the speaker’s colleague. Attendance is unverified; the link opens the parent post.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516116105598226432/",
+              "label": "LinkedIn parent post"
+            }
+          ]
+        },
+        {
+          "id": "M48",
+          "author": "James Haworth Wheatman",
+          "affiliation": "Theodo; Mo's colleague",
+          "format": "Comment",
+          "summary": "Discusses why faster individual processes need not increase system throughput and the value of a visual explanation.",
+          "context": "Discussion by the speaker’s colleague. Attendance is unverified; the link opens the parent post.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516116105598226432/",
+              "label": "LinkedIn parent post"
+            }
+          ]
+        },
+        {
+          "id": "M49",
+          "author": "Fabrice Bernhard",
+          "affiliation": "Theodo cofounder; Mo's colleague",
+          "format": "Comment",
+          "summary": "Thanks Mo for presenting the Lean points.",
+          "context": "An endorsement by the speaker’s colleague. Attendance is unverified; the link opens the parent post.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516116105598226432/",
+              "label": "LinkedIn parent post"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "organizer-context",
+      "title": "Organizer context",
+      "description": "The organizer’s retrospective on the event and its community.",
+      "mentions": [
+        {
+          "id": "M59",
+          "author": "Juho Vepsäläinen",
+          "affiliation": "Organizer / author of the planned blog post",
+          "format": "Retrospective post",
+          "summary": "Reflects on the seminar as an experiment in an academic–practitioner community; thanks contributors and sponsors; invites ideas for future events.",
+          "context": "The organizer’s own retrospective, included as context.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516380213447090177/",
+              "label": "LinkedIn post"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

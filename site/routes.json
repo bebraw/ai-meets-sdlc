@@ -1143,6 +1143,20 @@
           }
         }
       },
+      "social-mentions": {
+        "layout": "social-mentions",
+        "scripts": [{ "name": "index" }],
+        "dataSources": {
+          "socialMentionGroups": { "operation": "socialMentionGroups" }
+        },
+        "context": {
+          "meta": {
+            "title": "SDLCAI 2026 — Social mentions",
+            "description": "Participant reflections, speaker posts, company follow-through and constructive criticism from the conversation around SDLCAI 2026.",
+            "ogEyebrow": "2026 / Social mentions"
+          }
+        }
+      },
       "announcements": {
         "layout": "announcements",
         "scripts": [

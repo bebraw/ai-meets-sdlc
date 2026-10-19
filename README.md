@@ -19,6 +19,17 @@ speaker workspaces, registration access and public media APIs keep their URLs.
 The existing public event feed remains available at `/event.json`, with the same
 2026 dataset also available at `/2026/event.json`.
 
+The public social mentions collection is at `/2026/social-mentions/`, linked
+from the archive and its resource navigation. Its 58 selected posts, comments
+and follow-ups are adapted from the Obsidian register
+`SDLCAI/2026/Social mentions.md` and its companion CSV, compiled through
+19 October 2026. Public summaries and source links live in
+`site/data/social-mentions.json`; the page preserves the register's M-series
+IDs, affiliations, criticism and participation context. The two unverified
+engagement signals and research-only links are omitted. Keep summaries as
+paraphrases and distinguish reported actions from measured outcomes when
+updating the collection.
+
 ## Requirements
 
 - Node 24 or newer. The repository includes `.node-version` for Cloudflare

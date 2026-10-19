@@ -12,6 +12,7 @@ const routes = [
   "/",
   "/2026/",
   "/2026/speakers/",
+  "/2026/social-mentions/",
   "/404/",
   "/admin/",
   "/admin/activity/",

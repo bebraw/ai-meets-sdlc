@@ -1,0 +1,196 @@
+<BaseLayout
+  &archive="(id 'true')"
+  &title="(id 'SDLCAI 2026 — Social mentions')"
+  &description="(id 'Participant reflections, speaker posts, company follow-through and constructive criticism from the conversation around SDLCAI 2026.')"
+  &ogDescription="(id 'What people took away from SDLCAI 2026: reflections, discussion and follow-through, with links to the original posts.')"
+  &url="(id 'https://sdlcai.org/2026/social-mentions/')"
+  &ogType="(id 'website')"
+>
+  <header class="relative overflow-hidden border-b border-ink">
+    <div
+      aria-hidden="true"
+      class="absolute -right-24 top-8 h-80 w-80 rounded-full border border-ink/20 text-ink/10 halftone"
+    ></div>
+    <div
+      class="relative mx-auto grid max-w-7xl gap-8 px-5 py-12 md:px-8 md:py-16 lg:grid-cols-[1fr_1fr] lg:items-end"
+    >
+      <div class="min-w-0">
+        <p class="font-headline text-sm font-black uppercase text-muted">
+          2026 / After the seminar
+        </p>
+        <h1
+          class="mt-4 font-headline text-[clamp(3.5rem,10vw,8rem)] font-black uppercase leading-[0.85]"
+        >
+          Social<br />mentions
+        </h1>
+      </div>
+      <div class="grid gap-5 border-t border-ink pt-6">
+        <p class="text-2xl font-bold leading-8 md:text-3xl md:leading-9">
+          What people took away from SDLCAI.
+        </p>
+        <p class="max-w-xl text-lg leading-8 text-muted">
+          Participant reflections, speaker posts, company follow-through and
+          constructive criticism from the conversation around the seminar on 13
+          October at Marsio, Aalto University.
+        </p>
+        <p class="text-sm font-bold uppercase text-muted">
+          Compiled through <time datetime="2026-10-19">19 October 2026</time>
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <section aria-labelledby="about-heading" class="border-b border-ink">
+    <div
+      class="mx-auto grid max-w-7xl gap-6 px-5 py-8 md:px-8 md:py-10 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-12"
+    >
+      <h2
+        id="about-heading"
+        class="font-headline text-2xl font-black uppercase"
+      >
+        About this collection
+      </h2>
+      <div class="max-w-3xl space-y-4 leading-7 text-muted">
+        <p>
+          These are English paraphrases of selected LinkedIn posts, comments and
+          follow-ups, with links to the originals. Finnish material is
+          summarized in English. Some LinkedIn discussions may require sign-in;
+          links to a parent post or containing thread are labeled accordingly.
+        </p>
+        <p>
+          The collection is a qualitative sample of visible reactions. Authors
+          can appear more than once, and speaker, sponsor and institutional
+          relationships are stated alongside their contributions. It is not a
+          satisfaction survey or a count of independent endorsements. Reported
+          experiments and discussions do not establish measured business impact.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div
+    class="mx-auto grid max-w-7xl gap-12 px-5 py-12 md:px-8 md:py-16 lg:grid-cols-[16rem_minmax(0,1fr)]"
+  >
+    <aside>
+      <nav aria-label="Social mention categories">
+        <h2 class="font-headline text-2xl font-black uppercase">
+          Browse mentions
+        </h2>
+        <ol class="mt-5 border-t border-ink">
+          <noop &foreach="socialMentionGroups as group">
+            <li class="border-b border-ink/20">
+              <a
+                &href="group.href"
+                class="flex min-h-11 items-baseline justify-between gap-4 py-3 text-sm font-bold leading-5 underline-offset-4 hover:underline"
+              >
+                <span &children="group.title"></span>
+                <span
+                  class="shrink-0 font-normal text-muted"
+                  &children="group.count"
+                ></span>
+              </a>
+            </li>
+          </noop>
+        </ol>
+      </nav>
+      <a
+        href="https://www.youtube.com/live/d7POyy6dYFI"
+        class="mt-6 inline-flex min-h-11 items-center font-bold underline underline-offset-4"
+        >Watch the full replay</a
+      >
+    </aside>
+
+    <div class="min-w-0 space-y-16">
+      <noop &foreach="socialMentionGroups as group">
+        <section
+          &id="group.id"
+          &aria-labelledby="group.headingId"
+          class="scroll-mt-6"
+        >
+          <header class="border-b-2 border-ink pb-6">
+            <p class="font-headline text-sm font-black uppercase text-muted">
+              <span &children="group.number"></span> / Social mentions
+            </p>
+            <h2
+              &id="group.headingId"
+              class="mt-3 max-w-2xl font-headline text-4xl font-black uppercase leading-none md:text-5xl"
+              &children="group.title"
+            ></h2>
+            <p
+              class="mt-4 max-w-2xl leading-7 text-muted"
+              &children="group.description"
+            ></p>
+          </header>
+          <ol>
+            <noop &foreach="group.mentions as mention">
+              <li class="border-b border-ink/25">
+                <article
+                  &id="mention.id"
+                  &aria-labelledby="mention.headingId"
+                  class="grid scroll-mt-6 gap-4 py-7 xl:grid-cols-[13rem_minmax(0,1fr)] xl:gap-8"
+                >
+                  <div class="min-w-0">
+                    <h3
+                      &id="mention.headingId"
+                      class="text-xl font-bold leading-7"
+                      &children="mention.author"
+                    ></h3>
+                    <p
+                      class="mt-2 text-sm leading-6 text-muted"
+                      &children="mention.affiliation"
+                    ></p>
+                    <p
+                      class="mt-3 text-xs font-bold uppercase leading-5 text-muted"
+                      &children="mention.format"
+                    ></p>
+                  </div>
+                  <div class="min-w-0">
+                    <p
+                      class="text-lg leading-8"
+                      &children="mention.summary"
+                    ></p>
+                    <p
+                      class="mt-3 text-sm leading-6 text-muted"
+                      &children="mention.context"
+                    ></p>
+                    <div
+                      class="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1 text-sm font-bold"
+                    >
+                      <noop &foreach="mention.sources as source">
+                        <a
+                          &href="source.url"
+                          class="inline-flex min-h-11 items-center underline underline-offset-4"
+                          &children="source.label"
+                        ></a>
+                      </noop>
+                      <a
+                        &href="mention.href"
+                        &aria-label="mention.permalinkLabel"
+                        class="inline-flex min-h-11 items-center text-muted underline underline-offset-4"
+                        &children="mention.id"
+                      ></a>
+                    </div>
+                  </div>
+                </article>
+              </li>
+            </noop>
+          </ol>
+        </section>
+      </noop>
+      <p class="border-t border-ink pt-6 leading-7 text-muted">
+        Revisit the
+        <a
+          href="/2026/schedule/"
+          class="font-bold text-ink underline underline-offset-4"
+          >talks and materials</a
+        >
+        behind these conversations, or explore the
+        <a
+          href="/2026/timeline/"
+          class="font-bold text-ink underline underline-offset-4"
+          >photo timeline</a
+        >.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
