@@ -1239,10 +1239,10 @@
         },
         "context": {
           "meta": {
-            "title": "SDLCAI Posters",
-            "description": "The call for posters has closed. Practical information for accepted SDLCAI 2026 poster presenters.",
-            "ogEyebrow": "Posters",
-            "ogDescription": "The call for posters has closed. The poster session takes place on 13 October 2026 at Marsio."
+            "title": "SDLCAI 2026 — Posters",
+            "description": "Research posters from SDLCAI 2026 on data minimisation and hypermedia for the agentic web, with previews and original A0 PDFs.",
+            "ogEyebrow": "2026 / Posters",
+            "ogDescription": "Explore the SDLCAI 2026 poster archive and download the original research posters."
           }
         }
       },

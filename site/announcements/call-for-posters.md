@@ -34,4 +34,4 @@ Each accepted poster includes one SDLCAI event ticket for its designated present
 
 We selected proposals for their relevance to SDLCAI, specificity, learning value, and contribution to a balanced mix of academic and industry perspectives. Acceptance was rolling: proposals were reviewed as they arrived, and a poster space could be offered before the submission deadline.
 
-**[Practical information for accepted presenters](/2026/posters/#brief)**
+**[View the archived posters](/2026/posters/)**

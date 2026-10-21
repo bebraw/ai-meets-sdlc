@@ -1,81 +1,173 @@
 <BaseLayout
   &archive="(id 'true')"
-  &title="(id 'SDLCAI Posters')"
-  &description="(id 'The call for posters has closed. Practical information for accepted SDLCAI 2026 poster presenters.')"
-  &ogDescription="(id 'The call for posters has closed. The poster session takes place on 13 October 2026 at Marsio.')"
+  &title="(id 'SDLCAI 2026 — Posters')"
+  &description="(id 'Research posters from SDLCAI 2026 on data minimisation and hypermedia for the agentic web, with previews and original A0 PDFs.')"
+  &ogDescription="(id 'Explore the SDLCAI 2026 poster archive and download the original research posters.')"
   &url="(id 'https://sdlcai.org/2026/posters/')"
   &ogType="(id 'website')"
 >
   <section class="border-b border-ink">
     <div class="mx-auto max-w-7xl px-5 py-12 md:px-8 md:py-20">
       <p class="font-headline text-sm font-black uppercase text-muted">
-        SDLCAI 2026
+        2026 / Poster archive
       </p>
       <h1
-        class="mt-3 font-headline text-6xl font-black uppercase leading-none md:text-8xl"
+        class="mt-3 font-headline text-[clamp(3.5rem,12vw,9rem)] font-black uppercase leading-none"
       >
         Posters
       </h1>
       <p id="submit" class="mt-6 max-w-3xl text-xl leading-8 text-muted">
-        The call for posters has closed. The poster session takes place on 13
-        October 2026 from 12:30 to 13:30 at Marsio.
+        Research shared at SDLCAI on 13 October 2026 at Marsio, Aalto
+        University. Browse the previews and read or download the original A0
+        posters.
       </p>
       <a
         class="mt-8 inline-flex min-h-11 items-center border border-ink px-5 py-3 text-base font-bold uppercase transition hover:bg-ink hover:text-paper"
         href="/2026/schedule/"
-        >See the program</a
+        >Explore the talks &amp; slides</a
       >
     </div>
   </section>
 
-  <section id="brief" class="border-b border-ink">
-    <div
-      class="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:px-8 lg:grid-cols-[0.8fr_1.2fr]"
+  <section id="brief" aria-label="Archived posters">
+    <article
+      id="minimum-viable-disclosure"
+      aria-labelledby="disclosure-heading"
+      class="border-b border-ink"
     >
-      <div class="min-w-0">
-        <p class="font-headline text-sm font-black uppercase text-muted">
-          At the venue
-        </p>
-        <h2
-          class="mt-3 font-headline text-5xl font-black uppercase leading-none md:text-7xl"
+      <div
+        class="mx-auto grid max-w-7xl gap-8 px-5 py-12 md:px-8 md:py-16 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:items-center lg:gap-16"
+      >
+        <div class="min-w-0 lg:col-start-2 lg:row-start-1">
+          <p class="font-headline text-sm font-black uppercase text-muted">
+            01 / Data minimisation
+          </p>
+          <h2
+            id="disclosure-heading"
+            class="mt-4 font-headline text-4xl font-black uppercase leading-none md:text-5xl xl:text-6xl"
+          >
+            Minimum Viable Disclosure
+          </h2>
+          <p class="mt-4 text-xl leading-8 text-muted">
+            Measuring the point where more context stops helping
+          </p>
+          <div class="mt-6 border-t border-ink/25 pt-5">
+            <p class="text-lg font-bold">Moses Nderemani</p>
+            <p class="mt-1 leading-7 text-muted">
+              Pervasive Interaction Research Group, Tampere University
+            </p>
+          </div>
+          <p class="mt-6 max-w-xl leading-7 text-muted">
+            Examines how limiting a recommender system’s input data changes
+            recommendation quality and re-identification risk, including the
+            effect of popularity bias.
+          </p>
+          <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-2">
+            <a
+              href="/assets/posters/2026/minimum-viable-disclosure.pdf"
+              aria-label="Read Minimum Viable Disclosure (PDF)"
+              class="inline-flex min-h-11 items-center border border-ink bg-ink px-5 py-3 font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
+              >Read poster (PDF)</a
+            >
+            <a
+              href="/assets/posters/2026/minimum-viable-disclosure.pdf"
+              download
+              aria-label="Download Minimum Viable Disclosure (PDF)"
+              class="inline-flex min-h-11 items-center font-bold underline underline-offset-4"
+              >Download PDF</a
+            >
+          </div>
+          <p class="mt-3 text-sm text-muted">A0 portrait · 386 KB</p>
+        </div>
+        <a
+          href="/assets/posters/2026/minimum-viable-disclosure.pdf"
+          aria-label="Open Minimum Viable Disclosure (PDF)"
+          class="block w-full max-w-lg justify-self-center border border-ink/25 bg-white lg:col-start-1 lg:row-start-1"
         >
-          Bring the finished poster
-        </h2>
+          <img
+            src="/assets/posters/2026/minimum-viable-disclosure.webp"
+            width="991"
+            height="1400"
+            alt=""
+            loading="lazy"
+            decoding="async"
+            class="block h-auto w-full"
+          />
+        </a>
       </div>
-      <ol class="grid gap-px border border-ink bg-ink sm:grid-cols-2">
-        <li class="bg-paper p-5">
+    </article>
+
+    <article
+      id="hypermedia-agentic-web"
+      aria-labelledby="hypermedia-heading"
+      class="border-b border-ink"
+    >
+      <div
+        class="mx-auto grid max-w-7xl gap-8 px-5 py-12 md:px-8 md:py-16 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:items-center lg:gap-16"
+      >
+        <div class="min-w-0 lg:col-start-2 lg:row-start-1">
           <p class="font-headline text-sm font-black uppercase text-muted">
-            01 / Print
+            02 / Agentic web
           </p>
-          <p class="mt-6 text-lg font-bold leading-7">
-            Prepare and bring your own A0 or A1 poster in portrait orientation.
+          <h2
+            id="hypermedia-heading"
+            class="mt-4 font-headline text-4xl font-black uppercase leading-none md:text-5xl xl:text-6xl"
+          >
+            Hypermedia as a Substrate for the Agentic Web
+          </h2>
+          <p class="mt-4 text-xl leading-8 text-muted">
+            From Documents to Affordances
           </p>
-        </li>
-        <li class="bg-paper p-5">
-          <p class="font-headline text-sm font-black uppercase text-muted">
-            02 / Install
+          <ul class="mt-6 space-y-3 border-t border-ink/25 pt-5">
+            <li>
+              <p class="text-lg font-bold">Juho Vepsäläinen</p>
+              <p class="mt-1 leading-7 text-muted">Aalto University</p>
+            </li>
+            <li>
+              <p class="text-lg font-bold">Fernando Miguel Carvalho</p>
+              <p class="mt-1 leading-7 text-muted">
+                ISEL, Instituto Politécnico de Lisboa
+              </p>
+            </li>
+          </ul>
+          <p class="mt-6 max-w-xl leading-7 text-muted">
+            A position paper on exposing currently valid, state-dependent
+            actions through hypermedia, with a shared model for human and agent
+            interfaces.
           </p>
-          <p class="mt-6 text-lg font-bold leading-7">
-            The presenter is responsible for installing the poster at Marsio.
-          </p>
-        </li>
-        <li class="bg-paper p-5">
-          <p class="font-headline text-sm font-black uppercase text-muted">
-            03 / Discuss
-          </p>
-          <p class="mt-6 text-lg font-bold leading-7">
-            Be with your poster during the 12:30–13:30 session on 13 October.
-          </p>
-        </li>
-        <li class="bg-paper p-5">
-          <p class="font-headline text-sm font-black uppercase text-muted">
-            04 / Remove
-          </p>
-          <p class="mt-6 text-lg font-bold leading-7">
-            Take your poster down and remove it from the venue after the event.
-          </p>
-        </li>
-      </ol>
-    </div>
+          <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-2">
+            <a
+              href="/assets/posters/2026/hypermedia-agentic-web.pdf"
+              aria-label="Read Hypermedia as a Substrate for the Agentic Web (PDF)"
+              class="inline-flex min-h-11 items-center border border-ink bg-ink px-5 py-3 font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
+              >Read poster (PDF)</a
+            >
+            <a
+              href="/assets/posters/2026/hypermedia-agentic-web.pdf"
+              download
+              aria-label="Download Hypermedia as a Substrate for the Agentic Web (PDF)"
+              class="inline-flex min-h-11 items-center font-bold underline underline-offset-4"
+              >Download PDF</a
+            >
+          </div>
+          <p class="mt-3 text-sm text-muted">A0 portrait · 61 KB</p>
+        </div>
+        <a
+          href="/assets/posters/2026/hypermedia-agentic-web.pdf"
+          aria-label="Open Hypermedia as a Substrate for the Agentic Web (PDF)"
+          class="block w-full max-w-lg justify-self-center border border-ink/25 bg-white lg:col-start-1 lg:row-start-1"
+        >
+          <img
+            src="/assets/posters/2026/hypermedia-agentic-web.webp"
+            width="991"
+            height="1400"
+            alt=""
+            loading="lazy"
+            decoding="async"
+            class="block h-auto w-full"
+          />
+        </a>
+      </div>
+    </article>
   </section>
 </BaseLayout>

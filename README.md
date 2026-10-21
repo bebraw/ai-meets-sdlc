@@ -33,6 +33,13 @@ and research-only links are omitted. Keep summaries as
 paraphrases and distinguish reported actions from measured outcomes when
 updating the collection.
 
+The public poster archive is at `/2026/posters/`, linked from the 2026 archive
+and its resource navigation. It includes Moses Nderemani's **Minimum Viable
+Disclosure** and Juho Vepsäläinen and Fernando Miguel Carvalho's **Hypermedia as
+a Substrate for the Agentic Web: From Documents to Affordances**. Original A0
+PDFs and WebP previews are stored under `assets/posters/2026/`; the page content
+is in `site/layouts/posters.html`.
+
 ## Requirements
 
 - Node 24 or newer. The repository includes `.node-version` for Cloudflare
