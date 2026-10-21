@@ -1,5 +1,5 @@
 {
-  "compiledOn": "2026-10-19",
+  "compiledOn": "2026-10-21",
   "groups": [
     {
       "id": "participant-reflections",
@@ -177,6 +177,20 @@
               "label": "Thematic synthesis"
             }
           ]
+        },
+        {
+          "id": "M61",
+          "author": "Hilkka Huotari",
+          "affiliation": "Participant with Wonna; technology-sponsor connection disclosed",
+          "format": "Post",
+          "summary": "Would choose SDLCAI over WeAreDevelopers after attending both; values the research–practice mix, varied talks matching their descriptions, absence of unexpected sponsor pitches, manageable scale, food, networking and a ticket under €100; hopes the seminar returns.",
+          "context": "Participant assessment with a sponsor connection. The conference comparison reflects her personal experience. Summarized from Finnish.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/posts/hilkkahuotari_jos-saisin-valita-l%C3%A4htisink%C3%B6-ensi-vuonna-activity-7518166332152897536-Zor1",
+              "label": "LinkedIn post"
+            }
+          ]
         }
       ]
     },
@@ -294,6 +308,34 @@
             {
               "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516091318155206656/",
               "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M64",
+          "author": "Ohans Emmanuel",
+          "affiliation": "Seminar speaker",
+          "format": "Post",
+          "summary": "Praises the organization and fellow speakers; reflects on shipping changes to large brownfield production systems at agent speed while preserving quality, and reports that other teams converged on similar foundational principles.",
+          "context": "Speaker reflection. The post does not establish measured evidence of unchanged incident rates.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/posts/ohans-emmanuel_i-had-a-wonderful-time-speaking-at-the-sdlcai-share-7518226382997581824-77gR/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M65",
+          "author": "Mo Khazali — keynote video follow-up",
+          "affiliation": "Theodo; keynote speaker; author of the reflection above",
+          "format": "Video post",
+          "summary": "Publishes the first excerpt from “1978: The Last Good Year”, contrasting automation investment with improvements to the production system and relating the analogy to AI adoption in software; announces further excerpts.",
+          "context": "Content follow-through from the speaker already represented here. Further excerpts were announced but have not been verified.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/posts/mohammadkhazali_in-1978-gm-had-a-record-year-two-years-ugcPost-7518203726873100288-nkOq/",
+              "label": "LinkedIn video post"
             }
           ]
         }
@@ -597,6 +639,34 @@
               "label": "LinkedIn parent post"
             }
           ]
+        },
+        {
+          "id": "M66",
+          "author": "Niko Kivelä",
+          "affiliation": "SOK; Head of Developer Experience; seminar attendance unverified",
+          "format": "Post",
+          "summary": "Uses Joongi Shin’s talk on generative interfaces to ask whether future services should prioritize humans or AI agents; connects it with a separate SOK AI Conf presentation and considers changes to service interaction.",
+          "context": "Reflection on a programme topic. Attendance and recording viewing are unverified. The SOK AI Conf material comes from a separate event.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/posts/nikokivela_in-the-future-do-you-think-that-systems-share-7518174227867262977-7zJd/",
+              "label": "LinkedIn post"
+            }
+          ]
+        },
+        {
+          "id": "M67",
+          "author": "Tuuli-Marie Tiilikainen",
+          "affiliation": "Organizing team; thanked in Ohans’s post",
+          "format": "Comment",
+          "summary": "Says the team enjoyed Ohans’s talk.",
+          "context": "Organizer-affiliated talk endorsement.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7518226386352898048?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7518226386352898048%2C7518288775945576448%29",
+              "label": "LinkedIn comment"
+            }
+          ]
         }
       ]
     },
@@ -868,6 +938,76 @@
             {
               "url": "https://www.linkedin.com/feed/update/urn:li:activity:7516116105598226432/",
               "label": "LinkedIn parent post"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "follow-up-discussion",
+      "title": "Follow-up discussion — not seminar reviews",
+      "description": "Conceptual exchanges prompted by the posts, with seminar attendance and recording viewing unverified.",
+      "mentions": [
+        {
+          "id": "M68",
+          "author": "Christoph Klink",
+          "affiliation": "Antler; no event affiliation established",
+          "format": "Comment",
+          "summary": "Describes accelerating change as difficult to predict even six weeks ahead and appreciates Ohans’s role in shaping perspectives.",
+          "context": "Discussion under Ohans’s reflection. Attendance and recording viewing are unverified.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7518226386352898048?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7518226386352898048%2C7518290252403507200%29",
+              "label": "LinkedIn comment"
+            }
+          ]
+        },
+        {
+          "id": "M69",
+          "author": "Lauri Suomalainen, with Niko Kivelä’s reply",
+          "affiliation": "Teamit; Lauri’s SOK AI Conf presentation is cited in Niko’s post",
+          "format": "Comment and author reply",
+          "summary": "Asks whether enabling agents is mainly an implementation challenge or a strategy challenge; Niko agrees that the distinction belongs in the thought process.",
+          "context": "One discussion record under Niko Kivelä’s post. Lauri’s presentation was at SOK AI Conf; SDLCAI attendance is unverified. The link opens the containing comment thread.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7518174231231287297?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7518174231231287297%2C7518190677130813440%29",
+              "label": "LinkedIn comment thread"
+            }
+          ]
+        },
+        {
+          "id": "M70",
+          "author": "Niko Nousiainen, with Niko Kivelä’s reply",
+          "affiliation": "Hidden Trail; no event affiliation established",
+          "format": "Comment and author reply",
+          "summary": "Distinguishes humans using AI interfaces from agents using system interfaces and expresses concern about direct AI-to-AI interaction. Niko Kivelä questions the boundary between another agent and a system interface, using an MCP endpoint as an example.",
+          "context": "One conceptual discussion record including the author’s response. Attendance and recording viewing are unverified. The link opens the containing comment thread.",
+          "sources": [
+            {
+              "url": "https://www.linkedin.com/feed/update/urn:li:activity:7518174231231287297?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7518174231231287297%2C7518358970881896448%29",
+              "label": "LinkedIn comment thread"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "website-feedback",
+      "title": "Website feedback",
+      "description": "A reaction to the site’s visual identity, separate from seminar programme feedback.",
+      "mentions": [
+        {
+          "id": "M62",
+          "author": "Sacha Greif",
+          "affiliation": "No event affiliation established",
+          "format": "Bluesky reply",
+          "summary": "Praises SDLCAI’s website design and says any possible AI use was not apparent in its visual language.",
+          "context": "Website-design feedback. Attendance and recording viewing are unverified. Source details are carried from the 20 October research; the reply was not independently reverified in the 21 October refresh.",
+          "sources": [
+            {
+              "url": "https://bsky.app/profile/sachagreif.com/post/3mxsft6otxc2p",
+              "label": "Bluesky reply"
             }
           ]
         }

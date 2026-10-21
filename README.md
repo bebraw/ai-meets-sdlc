@@ -20,13 +20,16 @@ The existing public event feed remains available at `/event.json`, with the same
 2026 dataset also available at `/2026/event.json`.
 
 The public social mentions collection is at `/2026/social-mentions/`, linked
-from the archive and its resource navigation. Its 58 selected posts, comments
+from the archive and its resource navigation. Its 67 selected posts, comments
 and follow-ups are adapted from the Obsidian register
-`SDLCAI/2026/Social mentions.md` and its companion CSV, compiled through
-19 October 2026. Public summaries and source links live in
+`SDLCAI/2026/Social mentions.md`, compiled through 21 October 2026. The companion
+CSV remains the 19 October snapshot; M61–M70 are note-only additions. Public
+summaries and source links live in
 `site/data/social-mentions.json`; the page preserves the register's M-series
-IDs, affiliations, criticism and participation context. The two unverified
-engagement signals and research-only links are omitted. Keep summaries as
+IDs, affiliations, criticism and participation context. Follow-up discussion
+and Bluesky website feedback have separate categories. The two unverified
+engagement signals, the Threads mention with an unverified date and event,
+and research-only links are omitted. Keep summaries as
 paraphrases and distinguish reported actions from measured outcomes when
 updating the collection.
 
