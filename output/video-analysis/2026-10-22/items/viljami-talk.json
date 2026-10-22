@@ -1,0 +1,78 @@
+{
+  "id": "viljami-talk",
+  "shortSummary": "Viljami Kuosmanen describes epilot's experiment giving non-engineers coding agents through Slack. Shared documentation, preview links and engineer review enabled contributions across product, design, support and QA, while a deployment near miss exposed permission gaps and review became a bottleneck.",
+  "longSummary": "Viljami Kuosmanen describes an epilot workflow in which people tag a coding agent in a Slack discussion, receive a pull request and inspect a preview before an engineer reviews the change. Bringing agents into an existing communication channel lowered setup friction and made examples visible across the company. Agents receive codebase conventions and business context through shared documentation. Product managers, designers, customer-success staff and QA then contributed changes and prototypes, sometimes across repositories. Viljami also describes an attempted production deployment that monitoring caught, followed by tighter merge and CI permissions and separation of production access from developer machines. More generated proposals increased the work of review and testing, and rejected pull requests remained part of the process. He reports substantial contribution counts, while explicitly saying he does not yet have strong data establishing a delivery-speed improvement.",
+  "takeaways": [
+    {
+      "point": "Put the agent where work and its context already happen; visible Slack threads also let colleagues learn from one another.",
+      "start": 156,
+      "end": 382
+    },
+    {
+      "point": "A shared body of codebase and business documentation is a central input to useful agent work.",
+      "start": 240,
+      "end": 320
+    },
+    {
+      "point": "Preview links let non-engineers inspect and test a change without a local development setup.",
+      "start": 565,
+      "end": 631
+    },
+    {
+      "point": "Contribution access, merge rights, CI permissions and production access need distinct controls.",
+      "start": 1057,
+      "end": 1178
+    },
+    {
+      "point": "More proposals create review and testing work; a high contribution count does not establish productivity, and some PRs should be discarded.",
+      "start": 1198,
+      "end": 1291
+    }
+  ],
+  "topics": [
+    "non-engineer contributions",
+    "Slack agents",
+    "preview environments",
+    "shared context",
+    "permissions",
+    "code review",
+    "AI adoption"
+  ],
+  "quoteCandidates": [
+    {
+      "text": "Your context is the bottleneck, not the model.",
+      "speaker": "Viljami Kuosmanen"
+    },
+    {
+      "text": "not every PR should ship.",
+      "speaker": "Viljami Kuosmanen"
+    }
+  ],
+  "clipCandidates": [
+    {
+      "title": "Why Slack helped non-engineers contribute",
+      "start": 323,
+      "end": 382,
+      "why": "Three concrete adoption mechanisms: visible examples, an existing work surface and conversational context.",
+      "audience": "Teams introducing agents to product and customer-facing colleagues"
+    },
+    {
+      "title": "The deployment near miss and the permissions it exposed",
+      "start": 1057,
+      "end": 1152,
+      "why": "Connects the incident to engineer review, CI restrictions and sandbox boundaries. Keep the control changes in the excerpt.",
+      "audience": "Engineering managers and platform teams"
+    }
+  ],
+  "reuseAngles": [
+    "A case study on preview-driven contributions from non-engineers",
+    "A paired article with Jenni's Jira incident about agent permissions and observability"
+  ],
+  "editorialCaveats": [
+    "Pull-request counts are reported by the speaker. They should not be turned into a measured productivity gain; the speaker explicitly says he lacks strong speed data.",
+    "The engineer PR rule contains a flagged make-versus-merge ambiguity at 18:17–18:25. Summaries retain the unambiguous requirement for engineer review and the separation of permissions.",
+    "The attempted deployment was caught and stopped; do not describe it as a confirmed production outage or successful unauthorised deployment.",
+    "Product and pricing comparisons describe the speaker's experience during the experiment, not current general product guidance."
+  ],
+  "analysisStatus": "Complete-caption analysis, fresh local quote ASR and sampled-frame review complete; editorial approval pending."
+}

@@ -1,0 +1,6 @@
+# Reproducible media extracts and local review previews.
+*.wav
+*.jpg
+*.png
+*.log
+__pycache__/

@@ -1,0 +1,420 @@
+{
+  "text": "Because if you overpromise something to your customer, deliver some feature to a customer, you probably end up sacrificing the learning as a first mitigation action if you run out of time.",
+  "sentences": [
+    {
+      "text": " Because if you overpromise something to your customer, deliver some feature to a customer, you probably end up sacrificing the learning as a first mitigation action if you run out of time.",
+      "start": 0.4,
+      "end": 15.04,
+      "duration": 14.64,
+      "confidence": 0.809,
+      "tokens": [
+        {
+          "text": " Be",
+          "start": 0.4,
+          "end": 0.64,
+          "duration": 0.24,
+          "confidence": 0.465
+        },
+        {
+          "text": "cause",
+          "start": 0.64,
+          "end": 0.96,
+          "duration": 0.32,
+          "confidence": 0.701
+        },
+        {
+          "text": " if",
+          "start": 0.96,
+          "end": 1.2,
+          "duration": 0.24,
+          "confidence": 0.998
+        },
+        {
+          "text": " you",
+          "start": 1.2,
+          "end": 1.44,
+          "duration": 0.24,
+          "confidence": 0.622
+        },
+        {
+          "text": " over",
+          "start": 1.44,
+          "end": 1.68,
+          "duration": 0.24,
+          "confidence": 0.569
+        },
+        {
+          "text": "pr",
+          "start": 1.84,
+          "end": 2.0,
+          "duration": 0.16,
+          "confidence": 0.506
+        },
+        {
+          "text": "om",
+          "start": 2.0,
+          "end": 2.16,
+          "duration": 0.16,
+          "confidence": 0.636
+        },
+        {
+          "text": "ise",
+          "start": 2.16,
+          "end": 2.32,
+          "duration": 0.16,
+          "confidence": 0.995
+        },
+        {
+          "text": " somet",
+          "start": 2.32,
+          "end": 2.56,
+          "duration": 0.24,
+          "confidence": 0.915
+        },
+        {
+          "text": "hing",
+          "start": 2.56,
+          "end": 2.72,
+          "duration": 0.16,
+          "confidence": 0.991
+        },
+        {
+          "text": " to",
+          "start": 2.72,
+          "end": 2.88,
+          "duration": 0.16,
+          "confidence": 0.988
+        },
+        {
+          "text": " your",
+          "start": 2.88,
+          "end": 3.04,
+          "duration": 0.16,
+          "confidence": 0.975
+        },
+        {
+          "text": " c",
+          "start": 3.04,
+          "end": 3.12,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "ust",
+          "start": 3.12,
+          "end": 3.2,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "om",
+          "start": 3.2,
+          "end": 3.28,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "er",
+          "start": 3.28,
+          "end": 3.44,
+          "duration": 0.16,
+          "confidence": 0.891
+        },
+        {
+          "text": ",",
+          "start": 3.44,
+          "end": 3.6,
+          "duration": 0.16,
+          "confidence": 0.808
+        },
+        {
+          "text": " del",
+          "start": 3.6,
+          "end": 3.84,
+          "duration": 0.24,
+          "confidence": 0.572
+        },
+        {
+          "text": "iver",
+          "start": 3.84,
+          "end": 4.16,
+          "duration": 0.32,
+          "confidence": 0.923
+        },
+        {
+          "text": " some",
+          "start": 4.16,
+          "end": 4.48,
+          "duration": 0.32,
+          "confidence": 0.824
+        },
+        {
+          "text": " fe",
+          "start": 4.72,
+          "end": 4.88,
+          "duration": 0.16,
+          "confidence": 0.946
+        },
+        {
+          "text": "at",
+          "start": 4.88,
+          "end": 5.04,
+          "duration": 0.16,
+          "confidence": 0.937
+        },
+        {
+          "text": "ure",
+          "start": 5.04,
+          "end": 5.2,
+          "duration": 0.16,
+          "confidence": 0.966
+        },
+        {
+          "text": " to",
+          "start": 5.2,
+          "end": 5.36,
+          "duration": 0.16,
+          "confidence": 0.975
+        },
+        {
+          "text": " a",
+          "start": 5.36,
+          "end": 5.6,
+          "duration": 0.24,
+          "confidence": 0.296
+        },
+        {
+          "text": " c",
+          "start": 5.6,
+          "end": 5.68,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "ust",
+          "start": 5.68,
+          "end": 5.92,
+          "duration": 0.24,
+          "confidence": 0.731
+        },
+        {
+          "text": "om",
+          "start": 5.92,
+          "end": 6.24,
+          "duration": 0.32,
+          "confidence": 0.994
+        },
+        {
+          "text": "er",
+          "start": 6.24,
+          "end": 6.56,
+          "duration": 0.32,
+          "confidence": 0.996
+        },
+        {
+          "text": ",",
+          "start": 7.12,
+          "end": 7.44,
+          "duration": 0.32,
+          "confidence": 0.834
+        },
+        {
+          "text": " you",
+          "start": 7.44,
+          "end": 7.76,
+          "duration": 0.32,
+          "confidence": 0.762
+        },
+        {
+          "text": " probab",
+          "start": 7.92,
+          "end": 8.24,
+          "duration": 0.32,
+          "confidence": 0.973
+        },
+        {
+          "text": "ly",
+          "start": 8.24,
+          "end": 8.48,
+          "duration": 0.24,
+          "confidence": 0.914
+        },
+        {
+          "text": " end",
+          "start": 8.48,
+          "end": 8.8,
+          "duration": 0.32,
+          "confidence": 0.796
+        },
+        {
+          "text": " up",
+          "start": 8.8,
+          "end": 8.96,
+          "duration": 0.16,
+          "confidence": 0.986
+        },
+        {
+          "text": " sa",
+          "start": 8.96,
+          "end": 9.12,
+          "duration": 0.16,
+          "confidence": 0.524
+        },
+        {
+          "text": "cri",
+          "start": 9.12,
+          "end": 9.36,
+          "duration": 0.24,
+          "confidence": 0.935
+        },
+        {
+          "text": "fic",
+          "start": 9.36,
+          "end": 9.6,
+          "duration": 0.24,
+          "confidence": 0.987
+        },
+        {
+          "text": "ing",
+          "start": 9.6,
+          "end": 9.76,
+          "duration": 0.16,
+          "confidence": 0.989
+        },
+        {
+          "text": " the",
+          "start": 9.76,
+          "end": 10.0,
+          "duration": 0.24,
+          "confidence": 0.578
+        },
+        {
+          "text": " le",
+          "start": 10.0,
+          "end": 10.08,
+          "duration": 0.08,
+          "confidence": 0.999
+        },
+        {
+          "text": "ar",
+          "start": 10.08,
+          "end": 10.24,
+          "duration": 0.16,
+          "confidence": 0.995
+        },
+        {
+          "text": "ning",
+          "start": 10.24,
+          "end": 10.4,
+          "duration": 0.16,
+          "confidence": 0.945
+        },
+        {
+          "text": " as",
+          "start": 10.4,
+          "end": 10.56,
+          "duration": 0.16,
+          "confidence": 0.986
+        },
+        {
+          "text": " a",
+          "start": 10.56,
+          "end": 10.8,
+          "duration": 0.24,
+          "confidence": 0.76
+        },
+        {
+          "text": " first",
+          "start": 10.8,
+          "end": 11.12,
+          "duration": 0.32,
+          "confidence": 0.841
+        },
+        {
+          "text": " mit",
+          "start": 11.12,
+          "end": 11.36,
+          "duration": 0.24,
+          "confidence": 0.924
+        },
+        {
+          "text": "ig",
+          "start": 11.36,
+          "end": 11.68,
+          "duration": 0.32,
+          "confidence": 0.919
+        },
+        {
+          "text": "ation",
+          "start": 11.68,
+          "end": 12.0,
+          "duration": 0.32,
+          "confidence": 0.921
+        },
+        {
+          "text": " ac",
+          "start": 12.0,
+          "end": 12.32,
+          "duration": 0.32,
+          "confidence": 0.981
+        },
+        {
+          "text": "tion",
+          "start": 12.32,
+          "end": 12.48,
+          "duration": 0.16,
+          "confidence": 0.729
+        },
+        {
+          "text": " if",
+          "start": 12.64,
+          "end": 12.88,
+          "duration": 0.24,
+          "confidence": 0.995
+        },
+        {
+          "text": " you",
+          "start": 12.88,
+          "end": 13.12,
+          "duration": 0.24,
+          "confidence": 0.656
+        },
+        {
+          "text": " run",
+          "start": 13.12,
+          "end": 13.44,
+          "duration": 0.32,
+          "confidence": 0.87
+        },
+        {
+          "text": " out",
+          "start": 13.44,
+          "end": 13.76,
+          "duration": 0.32,
+          "confidence": 0.782
+        },
+        {
+          "text": " of",
+          "start": 13.76,
+          "end": 14.08,
+          "duration": 0.32,
+          "confidence": 0.98
+        },
+        {
+          "text": " time",
+          "start": 14.08,
+          "end": 14.4,
+          "duration": 0.32,
+          "confidence": 0.999
+        },
+        {
+          "text": ".",
+          "start": 14.72,
+          "end": 15.04,
+          "duration": 0.32,
+          "confidence": 0.147
+        }
+      ]
+    }
+  ]
+}

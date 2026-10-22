@@ -1,0 +1,70 @@
+{
+  "id": "mood",
+  "shortSummary": "A 2:08 introduction to SDLCAI 2026, combining talks, research posters, audience discussion and conversations around the seminar. Excerpts from Sini Tistelgrén and Jenni Kylmäkoski connect the event's themes to asking why we build and learning through experience.",
+  "longSummary": "The mood film presents SDLCAI as a meeting point for software practitioners and researchers. The official logo leads into event footage, followed by a music-led sequence of talks, discussion, posters and conversations. Two spoken excerpts give the montage a clear editorial thread: Sini Tistelgrén asks whether what is being built is relevant and valuable, and Jenni Kylmäkoski reflects on learning from mistakes. Sponsor thanks and the SDLCAI website close the film. It is suitable as an archive introduction or channel trailer after approval, with the talks and Q&As supplying the fuller arguments behind its short excerpts.",
+  "takeaways": [
+    {
+      "point": "The film connects software practice, research and conversation rather than presenting a single technical conclusion.",
+      "start": 0,
+      "end": 112
+    },
+    {
+      "point": "Its two spoken messages concern the value of what is built and the learning that comes from experience.",
+      "start": 35.2,
+      "end": 76.8
+    }
+  ],
+  "topics": [
+    "event introduction",
+    "community",
+    "research and practice",
+    "business value",
+    "learning"
+  ],
+  "quoteCandidates": [
+    {
+      "text": "You should really think why you're building this. Is this relevant? Is this actually bringing us some value at the end?",
+      "speaker": "Sini Tistelgrén",
+      "originalContext": {
+        "videoId": "industry-panel",
+        "start": 186.6,
+        "end": 195.08
+      }
+    },
+    {
+      "text": "We should not be afraid of making mistakes because mistakes teach us more.",
+      "speaker": "Jenni Kylmäkoski",
+      "originalContext": {
+        "videoId": "jenni-talk",
+        "start": 1408.6,
+        "end": 1415
+      }
+    }
+  ],
+  "clipCandidates": [
+    {
+      "title": "An introduction to SDLCAI and why we build",
+      "start": 0,
+      "end": 49.616,
+      "why": "An opening sequence with the event identity, activity and Sini's question about value.",
+      "audience": "Prospective viewers and future event attendees"
+    },
+    {
+      "title": "Learning and exchanging ideas",
+      "start": 70.404,
+      "end": 87.22,
+      "why": "A short promotional excerpt centred on Jenni's learning message and the event atmosphere.",
+      "audience": "Social audiences and event promotion"
+    }
+  ],
+  "reuseAngles": [
+    "A channel trailer after approval",
+    "An introductory film on the 2026 archive",
+    "Short event-promotion excerpts with the required credits"
+  ],
+  "editorialCaveats": [
+    "The film is a montage; its excerpts do not substitute for the full talks or Q&A context.",
+    "Derivative excerpts need the music and photograph attribution preserved from the delivery package. Those licences do not automatically cover all seminar footage."
+  ],
+  "analysisStatus": "Complete-caption analysis, fresh local quote ASR and sampled-frame review complete; editorial approval pending."
+}

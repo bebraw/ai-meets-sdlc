@@ -1,0 +1,538 @@
+{
+  "text": "mean that we don't try out new things and then also take them into use when needed. Aim for clarity, not quantity, when it comes to guidelines. So our guidelines are not hundred page documents. It's more like maybe let's",
+  "sentences": [
+    {
+      "text": " mean that we don't try out new things and then also take them into use when needed.",
+      "start": 0.16,
+      "end": 5.84,
+      "duration": 5.68,
+      "confidence": 0.994,
+      "tokens": [
+        {
+          "text": " me",
+          "start": 0.16,
+          "end": 0.32,
+          "duration": 0.16,
+          "confidence": 0.988
+        },
+        {
+          "text": "an",
+          "start": 0.32,
+          "end": 0.4,
+          "duration": 0.08,
+          "confidence": 0.965
+        },
+        {
+          "text": " that",
+          "start": 0.4,
+          "end": 0.56,
+          "duration": 0.16,
+          "confidence": 0.979
+        },
+        {
+          "text": " we",
+          "start": 0.56,
+          "end": 0.64,
+          "duration": 0.08,
+          "confidence": 0.999
+        },
+        {
+          "text": " don",
+          "start": 0.64,
+          "end": 0.72,
+          "duration": 0.08,
+          "confidence": 0.987
+        },
+        {
+          "text": "'",
+          "start": 0.72,
+          "end": 0.8,
+          "duration": 0.08,
+          "confidence": 0.999
+        },
+        {
+          "text": "t",
+          "start": 0.8,
+          "end": 0.96,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " tr",
+          "start": 0.96,
+          "end": 1.04,
+          "duration": 0.08,
+          "confidence": 0.996
+        },
+        {
+          "text": "y",
+          "start": 1.04,
+          "end": 1.2,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " out",
+          "start": 1.2,
+          "end": 1.36,
+          "duration": 0.16,
+          "confidence": 0.997
+        },
+        {
+          "text": " ne",
+          "start": 1.36,
+          "end": 1.44,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "w",
+          "start": 1.44,
+          "end": 1.68,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " th",
+          "start": 1.68,
+          "end": 1.84,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ings",
+          "start": 1.84,
+          "end": 2.08,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " and",
+          "start": 2.08,
+          "end": 2.32,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": " then",
+          "start": 2.32,
+          "end": 2.56,
+          "duration": 0.24,
+          "confidence": 0.984
+        },
+        {
+          "text": " also",
+          "start": 2.56,
+          "end": 2.88,
+          "duration": 0.32,
+          "confidence": 0.99
+        },
+        {
+          "text": " tak",
+          "start": 2.96,
+          "end": 3.12,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": "e",
+          "start": 3.12,
+          "end": 3.28,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " them",
+          "start": 3.28,
+          "end": 3.44,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " into",
+          "start": 3.44,
+          "end": 3.76,
+          "duration": 0.32,
+          "confidence": 0.998
+        },
+        {
+          "text": " use",
+          "start": 3.76,
+          "end": 4.08,
+          "duration": 0.32,
+          "confidence": 0.996
+        },
+        {
+          "text": " when",
+          "start": 4.32,
+          "end": 4.64,
+          "duration": 0.32,
+          "confidence": 0.999
+        },
+        {
+          "text": " need",
+          "start": 4.64,
+          "end": 4.96,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": "ed",
+          "start": 4.96,
+          "end": 5.28,
+          "duration": 0.32,
+          "confidence": 0.998
+        },
+        {
+          "text": ".",
+          "start": 5.52,
+          "end": 5.84,
+          "duration": 0.32,
+          "confidence": 0.989
+        }
+      ]
+    },
+    {
+      "text": " Aim for clarity, not quantity, when it comes to guidelines.",
+      "start": 5.84,
+      "end": 9.28,
+      "duration": 3.44,
+      "confidence": 0.99,
+      "tokens": [
+        {
+          "text": " A",
+          "start": 5.84,
+          "end": 6.08,
+          "duration": 0.24,
+          "confidence": 0.987
+        },
+        {
+          "text": "im",
+          "start": 6.08,
+          "end": 6.24,
+          "duration": 0.16,
+          "confidence": 0.997
+        },
+        {
+          "text": " for",
+          "start": 6.24,
+          "end": 6.4,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " clar",
+          "start": 6.4,
+          "end": 6.72,
+          "duration": 0.32,
+          "confidence": 0.999
+        },
+        {
+          "text": "ity",
+          "start": 6.72,
+          "end": 6.88,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": ",",
+          "start": 6.88,
+          "end": 7.04,
+          "duration": 0.16,
+          "confidence": 0.958
+        },
+        {
+          "text": " not",
+          "start": 7.04,
+          "end": 7.28,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": " qu",
+          "start": 7.28,
+          "end": 7.44,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ant",
+          "start": 7.44,
+          "end": 7.6,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ity",
+          "start": 7.6,
+          "end": 7.76,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": ",",
+          "start": 7.76,
+          "end": 7.92,
+          "duration": 0.16,
+          "confidence": 0.932
+        },
+        {
+          "text": " when",
+          "start": 7.92,
+          "end": 8.08,
+          "duration": 0.16,
+          "confidence": 0.994
+        },
+        {
+          "text": " it",
+          "start": 8.08,
+          "end": 8.24,
+          "duration": 0.16,
+          "confidence": 0.997
+        },
+        {
+          "text": " com",
+          "start": 8.24,
+          "end": 8.32,
+          "duration": 0.08,
+          "confidence": 0.999
+        },
+        {
+          "text": "es",
+          "start": 8.32,
+          "end": 8.4,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " to",
+          "start": 8.4,
+          "end": 8.56,
+          "duration": 0.16,
+          "confidence": 0.998
+        },
+        {
+          "text": " gu",
+          "start": 8.56,
+          "end": 8.72,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "idel",
+          "start": 8.72,
+          "end": 8.96,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "ines",
+          "start": 8.96,
+          "end": 9.2,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 9.2,
+          "end": 9.28,
+          "duration": 0.08,
+          "confidence": 0.941
+        }
+      ]
+    },
+    {
+      "text": " So our guidelines are not hundred page documents.",
+      "start": 9.28,
+      "end": 13.44,
+      "duration": 4.16,
+      "confidence": 0.991,
+      "tokens": [
+        {
+          "text": " So",
+          "start": 9.28,
+          "end": 9.44,
+          "duration": 0.16,
+          "confidence": 0.975
+        },
+        {
+          "text": " our",
+          "start": 9.6,
+          "end": 9.76,
+          "duration": 0.16,
+          "confidence": 0.998
+        },
+        {
+          "text": " gu",
+          "start": 9.76,
+          "end": 9.92,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": "idel",
+          "start": 9.92,
+          "end": 10.16,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "ines",
+          "start": 10.16,
+          "end": 10.4,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " are",
+          "start": 10.4,
+          "end": 10.56,
+          "duration": 0.16,
+          "confidence": 0.998
+        },
+        {
+          "text": " not",
+          "start": 10.56,
+          "end": 10.8,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": " hund",
+          "start": 10.96,
+          "end": 11.2,
+          "duration": 0.24,
+          "confidence": 0.978
+        },
+        {
+          "text": "red",
+          "start": 11.2,
+          "end": 11.36,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " p",
+          "start": 11.84,
+          "end": 12.08,
+          "duration": 0.24,
+          "confidence": 0.977
+        },
+        {
+          "text": "age",
+          "start": 12.08,
+          "end": 12.4,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " doc",
+          "start": 12.4,
+          "end": 12.72,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": "ument",
+          "start": 12.72,
+          "end": 12.96,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "s",
+          "start": 12.96,
+          "end": 13.28,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 13.28,
+          "end": 13.44,
+          "duration": 0.16,
+          "confidence": 0.943
+        }
+      ]
+    },
+    {
+      "text": " It's more like maybe let's",
+      "start": 13.44,
+      "end": 14.8,
+      "duration": 1.36,
+      "confidence": 0.987,
+      "tokens": [
+        {
+          "text": " It",
+          "start": 13.44,
+          "end": 13.52,
+          "duration": 0.08,
+          "confidence": 0.985
+        },
+        {
+          "text": "'",
+          "start": 13.52,
+          "end": 13.6,
+          "duration": 0.08,
+          "confidence": 0.975
+        },
+        {
+          "text": "s",
+          "start": 13.6,
+          "end": 13.76,
+          "duration": 0.16,
+          "confidence": 0.998
+        },
+        {
+          "text": " more",
+          "start": 13.76,
+          "end": 13.92,
+          "duration": 0.16,
+          "confidence": 0.996
+        },
+        {
+          "text": " like",
+          "start": 13.92,
+          "end": 14.16,
+          "duration": 0.24,
+          "confidence": 0.995
+        },
+        {
+          "text": " may",
+          "start": 14.16,
+          "end": 14.32,
+          "duration": 0.16,
+          "confidence": 0.99
+        },
+        {
+          "text": "be",
+          "start": 14.32,
+          "end": 14.48,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " let",
+          "start": 14.48,
+          "end": 14.56,
+          "duration": 0.08,
+          "confidence": 0.984
+        },
+        {
+          "text": "'",
+          "start": 14.56,
+          "end": 14.64,
+          "duration": 0.08,
+          "confidence": 0.951
+        },
+        {
+          "text": "s",
+          "start": 14.64,
+          "end": 14.8,
+          "duration": 0.16,
+          "confidence": 0.999
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,489 @@
+{
+  "text": "Puts it plainly. Reinvest capacity don't reduce headcount. And if we come back to the original headline, the AI factory does not eliminate the fundamentals, it actually runs on them. Thank you.",
+  "sentences": [
+    {
+      "text": " Puts it plainly.",
+      "start": 0.48,
+      "end": 1.6,
+      "duration": 1.12,
+      "confidence": 0.955,
+      "tokens": [
+        {
+          "text": " P",
+          "start": 0.48,
+          "end": 0.56,
+          "duration": 0.08,
+          "confidence": 0.896
+        },
+        {
+          "text": "uts",
+          "start": 0.56,
+          "end": 0.64,
+          "duration": 0.08,
+          "confidence": 0.952
+        },
+        {
+          "text": " it",
+          "start": 0.72,
+          "end": 0.88,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " pla",
+          "start": 0.88,
+          "end": 1.04,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "in",
+          "start": 1.04,
+          "end": 1.2,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ly",
+          "start": 1.2,
+          "end": 1.36,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 1.36,
+          "end": 1.6,
+          "duration": 0.24,
+          "confidence": 0.851
+        }
+      ]
+    },
+    {
+      "text": " Reinvest capacity don't reduce headcount.",
+      "start": 1.6,
+      "end": 5.92,
+      "duration": 4.32,
+      "confidence": 0.99,
+      "tokens": [
+        {
+          "text": " Re",
+          "start": 1.6,
+          "end": 1.76,
+          "duration": 0.16,
+          "confidence": 0.97
+        },
+        {
+          "text": "in",
+          "start": 1.92,
+          "end": 2.08,
+          "duration": 0.16,
+          "confidence": 0.998
+        },
+        {
+          "text": "vest",
+          "start": 2.08,
+          "end": 2.4,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " capac",
+          "start": 2.4,
+          "end": 2.72,
+          "duration": 0.32,
+          "confidence": 0.996
+        },
+        {
+          "text": "ity",
+          "start": 2.72,
+          "end": 3.04,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " don",
+          "start": 3.28,
+          "end": 3.44,
+          "duration": 0.16,
+          "confidence": 0.963
+        },
+        {
+          "text": "'",
+          "start": 3.44,
+          "end": 3.6,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "t",
+          "start": 3.6,
+          "end": 3.68,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " redu",
+          "start": 3.68,
+          "end": 3.92,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "ce",
+          "start": 3.92,
+          "end": 4.16,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " he",
+          "start": 4.16,
+          "end": 4.32,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ad",
+          "start": 4.32,
+          "end": 4.48,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "co",
+          "start": 4.48,
+          "end": 4.72,
+          "duration": 0.24,
+          "confidence": 0.958
+        },
+        {
+          "text": "unt",
+          "start": 4.72,
+          "end": 5.04,
+          "duration": 0.32,
+          "confidence": 0.999
+        },
+        {
+          "text": ".",
+          "start": 5.6,
+          "end": 5.92,
+          "duration": 0.32,
+          "confidence": 0.966
+        }
+      ]
+    },
+    {
+      "text": " And if we come back to the original headline, the AI factory does not eliminate the fundamentals, it actually runs on them.",
+      "start": 5.92,
+      "end": 16.56,
+      "duration": 10.64,
+      "confidence": 0.995,
+      "tokens": [
+        {
+          "text": " And",
+          "start": 5.92,
+          "end": 6.24,
+          "duration": 0.32,
+          "confidence": 0.977
+        },
+        {
+          "text": " if",
+          "start": 6.24,
+          "end": 6.56,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " we",
+          "start": 6.56,
+          "end": 6.8,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " come",
+          "start": 6.8,
+          "end": 7.12,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " back",
+          "start": 7.12,
+          "end": 7.36,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " to",
+          "start": 7.36,
+          "end": 7.68,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " the",
+          "start": 7.68,
+          "end": 8.0,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " origin",
+          "start": 8.32,
+          "end": 8.64,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": "al",
+          "start": 8.96,
+          "end": 9.2,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " he",
+          "start": 9.2,
+          "end": 9.36,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ad",
+          "start": 9.36,
+          "end": 9.6,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "line",
+          "start": 9.6,
+          "end": 9.84,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": ",",
+          "start": 9.84,
+          "end": 10.0,
+          "duration": 0.16,
+          "confidence": 0.942
+        },
+        {
+          "text": " the",
+          "start": 10.0,
+          "end": 10.24,
+          "duration": 0.24,
+          "confidence": 0.997
+        },
+        {
+          "text": " A",
+          "start": 10.24,
+          "end": 10.48,
+          "duration": 0.24,
+          "confidence": 0.997
+        },
+        {
+          "text": "I",
+          "start": 10.48,
+          "end": 10.72,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": " fac",
+          "start": 10.72,
+          "end": 10.96,
+          "duration": 0.24,
+          "confidence": 0.993
+        },
+        {
+          "text": "tor",
+          "start": 10.96,
+          "end": 11.12,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "y",
+          "start": 11.12,
+          "end": 11.28,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " do",
+          "start": 11.28,
+          "end": 11.36,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "es",
+          "start": 11.36,
+          "end": 11.44,
+          "duration": 0.08,
+          "confidence": 0.999
+        },
+        {
+          "text": " not",
+          "start": 11.44,
+          "end": 11.6,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " el",
+          "start": 11.6,
+          "end": 11.76,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "imin",
+          "start": 11.76,
+          "end": 11.84,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "ate",
+          "start": 12.0,
+          "end": 12.16,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " the",
+          "start": 12.16,
+          "end": 12.4,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " fund",
+          "start": 12.4,
+          "end": 12.64,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "ament",
+          "start": 12.64,
+          "end": 12.96,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": "als",
+          "start": 12.96,
+          "end": 13.28,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": ",",
+          "start": 13.28,
+          "end": 13.52,
+          "duration": 0.24,
+          "confidence": 0.919
+        },
+        {
+          "text": " it",
+          "start": 13.52,
+          "end": 13.84,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " actu",
+          "start": 13.84,
+          "end": 14.16,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": "ally",
+          "start": 14.16,
+          "end": 14.4,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " r",
+          "start": 14.4,
+          "end": 14.72,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": "uns",
+          "start": 14.72,
+          "end": 15.04,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " on",
+          "start": 15.04,
+          "end": 15.36,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " them",
+          "start": 15.36,
+          "end": 15.68,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 16.24,
+          "end": 16.56,
+          "duration": 0.32,
+          "confidence": 0.997
+        }
+      ]
+    },
+    {
+      "text": " Thank you.",
+      "start": 16.56,
+      "end": 17.68,
+      "duration": 1.12,
+      "confidence": 0.968,
+      "tokens": [
+        {
+          "text": " Th",
+          "start": 16.56,
+          "end": 16.88,
+          "duration": 0.32,
+          "confidence": 0.942
+        },
+        {
+          "text": "ank",
+          "start": 16.88,
+          "end": 17.2,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " you",
+          "start": 17.2,
+          "end": 17.36,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": ".",
+          "start": 17.36,
+          "end": 17.68,
+          "duration": 0.32,
+          "confidence": 0.934
+        }
+      ]
+    }
+  ]
+}

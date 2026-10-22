@@ -1,0 +1,76 @@
+{
+  "id": "joongi-talk",
+  "shortSummary": "Joongi Shin studies generative UI for people who want to complete a task, rather than design an interface. His comparison of prompts, editable subtask representations and follow-up surveys shows why helping users form and express their intentions matters alongside generating working software.",
+  "longSummary": "Joongi Shin asks whether generative UI approaches developed for designers also help everyday, task-oriented users. He explains the challenge of envisioning what an interface should do and articulating that intention to a model. A study with 30 participants compared prompt-only interaction, editable subtask–UI representations and a prompt-survey approach, examining both interface generation and subsequent use. He reports that subtask–UI interaction felt least usable, while prompt-only interaction felt least aligned with users' intentions. Experiences during generation were associated with perceptions of the resulting interface, and participants' prior experience also mattered. Follow-up questions offered useful support for envisioning and articulation, but could become repetitive or miss what users were trying to achieve. His conclusion is to design for the user's actual goal: help people discover what they need without requiring them to become interface designers.",
+  "takeaways": [
+    {
+      "point": "Task-oriented users and designers have different goals and willingness to edit detailed interface specifications.",
+      "start": 149,
+      "end": 302
+    },
+    {
+      "point": "Envisioning a useful outcome and expressing it in a prompt are separate sources of difficulty.",
+      "start": 412,
+      "end": 504
+    },
+    {
+      "point": "Evaluate the process of generating an interface and the experience of using it, rather than the generated artefact alone.",
+      "start": 728,
+      "end": 790
+    },
+    {
+      "point": "In the reported study, subtask–UI interaction felt least usable and prompt-only interaction felt least aligned with intent.",
+      "start": 790,
+      "end": 932
+    },
+    {
+      "point": "Follow-up questions can reduce articulation effort, but persistent or irrelevant questioning can also obstruct exploration.",
+      "start": 980,
+      "end": 1120
+    }
+  ],
+  "topics": [
+    "generative UI",
+    "human-computer interaction",
+    "user intent",
+    "usability",
+    "user research",
+    "envisioning",
+    "clarification questions"
+  ],
+  "quoteCandidates": [
+    {
+      "text": "what works for designers may not really work for task-oriented users.",
+      "speaker": "Joongi Shin"
+    },
+    {
+      "text": "the prompt-survey approach can also fail.",
+      "speaker": "Joongi Shin"
+    }
+  ],
+  "clipCandidates": [
+    {
+      "title": "Help people envision without making them design",
+      "start": 932,
+      "end": 1036,
+      "why": "Explains the design-versus-use distinction and why prompts or detailed intermediate representations may each leave a gap.",
+      "audience": "Product designers and teams building AI interfaces"
+    },
+    {
+      "title": "When clarification questions get in the user's way",
+      "start": 1036,
+      "end": 1120,
+      "why": "Preserves the limitation of survey-based interaction and the value of showing something before every detail is specified.",
+      "audience": "Builders of assistants and generative UI tools"
+    }
+  ],
+  "reuseAngles": [
+    "An article on the cost of asking users too many clarifying questions",
+    "A research summary distinguishing interface generation from task completion"
+  ],
+  "editorialCaveats": [
+    "The findings concern the described study and measured perceptions; they do not establish that one interaction method is universally best.",
+    "The relationship between effort during generation and later usability perceptions is an association, not a demonstrated causal effect."
+  ],
+  "analysisStatus": "Complete-caption analysis, fresh local quote ASR and sampled-frame review complete; editorial approval pending."
+}

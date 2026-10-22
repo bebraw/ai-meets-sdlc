@@ -1,0 +1,75 @@
+{
+  "id": "industry-panel",
+  "shortSummary": "Jussi Hacklin, Viljami Kuosmanen and Sini Tistelgrén discuss what changes after teams start shipping with agents: review responsibilities, business validation, tool costs, local inference and maintaining system understanding. The Q&A adds useful qualifications to the adoption stories from their talks.",
+  "longSummary": "The industry Q&A moves from access to agents toward the work and controls around their use. Viljami describes generally positive reactions to non-engineer contributions while acknowledging scepticism. The panel distinguishes experimenting with a tool from admitting it to a governed portfolio, and returns to customers as validators of whether a feature is worth building. Review and testing become a larger part of engineering work. The speakers describe different cost models—subscriptions in one setting and token quotas with monitoring and support in another—alongside the infrastructure required for local or hybrid inference. When asked about quality, Viljami distinguishes a greater absolute number of discovered bugs from a lower reported number per release as release frequency rises. Shared documentation and ownership remain important to understanding changes. The closing discussion treats agile practices as evolving rather than identifying one settled replacement process.",
+  "takeaways": [
+    {
+      "point": "A sandbox experiment and a tool approved for a company portfolio can have different constraints and gates.",
+      "start": 71,
+      "end": 134
+    },
+    {
+      "point": "Generating features cheaply does not establish their value; prototypes still need business and customer validation.",
+      "start": 164,
+      "end": 232
+    },
+    {
+      "point": "Review, testing and judging whether a proposed change solves the problem are growing parts of engineering work.",
+      "start": 232,
+      "end": 388
+    },
+    {
+      "point": "Subscription costs, token quotas and local inference require different operational arrangements; no single cost model is presented as universally best.",
+      "start": 390,
+      "end": 672
+    },
+    {
+      "point": "Absolute bug counts and bugs per release can move differently; preserve the denominator when discussing reported quality outcomes.",
+      "start": 674,
+      "end": 814
+    }
+  ],
+  "topics": [
+    "engineering roles",
+    "review workload",
+    "business validation",
+    "token budgets",
+    "local inference",
+    "quality metrics",
+    "shared documentation"
+  ],
+  "quoteCandidates": [
+    {
+      "text": "The engineer still fully owns the code they write, the code they merge.",
+      "speaker": "Viljami Kuosmanen",
+      "attributionBasis": "Continuous answer to the question explicitly addressed to Viljami at 13:34; voice identification has not been independently established."
+    }
+  ],
+  "clipCandidates": [
+    {
+      "title": "Two different ways to manage the cost of agents",
+      "start": 390,
+      "end": 547,
+      "why": "Juxtaposes subscriptions with monitored quotas and support, keeping the organisational context with each approach.",
+      "audience": "Engineering leaders and platform owners"
+    },
+    {
+      "title": "More bugs found and fewer bugs per release can both be true",
+      "start": 674,
+      "end": 814,
+      "why": "A quality question produces a nuanced answer about release frequency, bugs and existing engineering controls.",
+      "audience": "Teams choosing AI delivery metrics"
+    }
+  ],
+  "reuseAngles": [
+    "A metrics explainer paired with Mo's warning about output dashboards",
+    "An article on the engineering work that remains after code generation"
+  ],
+  "editorialCaveats": [
+    "Morale and quality outcomes are speaker-reported observations, not controlled comparisons.",
+    "The opening zero-bugs answer at 11:14 is a joke immediately corrected by the speaker. Do not clip or quote it as a factual claim.",
+    "The panel contains multiple voices without diarised captions. Quote attribution follows the explicitly addressed question and remains a candidate for human confirmation.",
+    "Pricing and forecasts describe the event discussion, not current purchasing advice."
+  ],
+  "analysisStatus": "Complete-caption analysis, fresh local quote ASR and sampled-frame review complete; editorial approval pending."
+}

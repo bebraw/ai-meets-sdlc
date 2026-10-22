@@ -1,0 +1,87 @@
+{
+  "id": "mood",
+  "kind": "mood",
+  "officialTitle": "SDLCAI 2026 — AI in Software Development",
+  "speakerNames": [],
+  "durationSeconds": 127.99453333333334,
+  "videoFile": "exports/mood-v06-4k.mp4",
+  "reviewFile": "review/mood-v06-1080p.mp4",
+  "chapters": [
+    {
+      "outputSeconds": 0,
+      "title": "SDLCAI — AI in software development",
+      "timestamp": "00:00"
+    },
+    {
+      "outputSeconds": 16.783433333333335,
+      "title": "Experience from software teams",
+      "timestamp": "00:16"
+    },
+    {
+      "outputSeconds": 35.20183333333333,
+      "title": "Asking why we build",
+      "timestamp": "00:35"
+    },
+    {
+      "outputSeconds": 49.616233333333334,
+      "title": "Research meets practice",
+      "timestamp": "00:49"
+    },
+    {
+      "outputSeconds": 70.40366666666667,
+      "title": "Learning and exchanging ideas",
+      "timestamp": "01:10"
+    },
+    {
+      "outputSeconds": 87.22046666666667,
+      "title": "Conversations beyond the talks",
+      "timestamp": "01:27"
+    },
+    {
+      "outputSeconds": 112.0119,
+      "title": "Sponsor thanks and follow SDLCAI",
+      "timestamp": "01:52"
+    }
+  ],
+  "existingSummary": null,
+  "captions": {
+    "required": true,
+    "optional": false,
+    "language": "en",
+    "srt": "transcripts/mood-v06/mood.en.srt",
+    "vtt": "transcripts/mood-v06/mood.en.vtt",
+    "qualityReport": "transcripts/mood-v06/mood.caption-qc.json",
+    "listeningReview": "transcripts/mood-v06/mood.listening-review.txt",
+    "reason": "Two contiguous excerpts from the seminar talks and Q&A, with verified text and excerpt timing. Human listening review remains pending."
+  },
+  "captionSHA256": "cec386ece4e2a0291abfc89ef0822686be3c889a63ab8da58bb653f44ffb5513",
+  "mediaBytes": 172461995,
+  "cueCount": 4,
+  "listeningWindows": [],
+  "cues": [
+    {
+      "id": 1,
+      "start": 0.15,
+      "end": 2.0,
+      "text": "[Instrumental music]"
+    },
+    {
+      "id": 2,
+      "start": 35.252,
+      "end": 38.322,
+      "text": "You should really think why you're building this."
+    },
+    {
+      "id": 3,
+      "start": 38.402,
+      "end": 43.502,
+      "text": "Is this relevant? Is this actually bringing us some value at the end?"
+    },
+    {
+      "id": 4,
+      "start": 70.684,
+      "end": 76.48400000000001,
+      "text": "We should not be afraid of making mistakes because mistakes teach us more."
+    }
+  ]
+}

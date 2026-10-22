@@ -1,0 +1,1584 @@
+{
+  "id": "industry-panel",
+  "kind": "qa",
+  "officialTitle": "AI in Software Delivery — Industry Q&A",
+  "speakerNames": [
+    "Jussi Hacklin",
+    "Viljami Kuosmanen",
+    "Sini Tistelgrén"
+  ],
+  "durationSeconds": 991.12,
+  "videoFile": "exports/talks-v02/industry-panel-4k.mp4",
+  "reviewFile": "review/talks-v02/industry-panel-720p.mp4",
+  "chapters": [
+    {
+      "outputSeconds": 0,
+      "title": "Staff morale when non-engineers contribute code",
+      "sourceSeconds": 21387,
+      "timestamp": "00:00"
+    },
+    {
+      "outputSeconds": 71,
+      "title": "Experimenting with tools inside vendor constraints",
+      "sourceSeconds": 21455.82,
+      "timestamp": "01:11"
+    },
+    {
+      "outputSeconds": 137,
+      "title": "Availability of slides and recordings",
+      "sourceSeconds": 21521.58,
+      "timestamp": "02:17"
+    },
+    {
+      "outputSeconds": 164,
+      "title": "Choosing the right work and validating business value",
+      "sourceSeconds": 21548.7,
+      "timestamp": "02:44"
+    },
+    {
+      "outputSeconds": 227,
+      "title": "Review workload and the changing engineer role",
+      "sourceSeconds": 21611.54,
+      "timestamp": "03:47"
+    },
+    {
+      "outputSeconds": 390,
+      "title": "Managing token budgets and subscriptions",
+      "sourceSeconds": 21774.42,
+      "timestamp": "06:30"
+    },
+    {
+      "outputSeconds": 548,
+      "title": "Local inference, security and hybrid infrastructure",
+      "sourceSeconds": 21932.02,
+      "timestamp": "09:08"
+    },
+    {
+      "outputSeconds": 674,
+      "title": "Code quality, bugs and release frequency",
+      "sourceSeconds": 22058.56,
+      "timestamp": "11:14"
+    },
+    {
+      "outputSeconds": 814,
+      "title": "Maintaining mental models and shared documentation",
+      "sourceSeconds": 22198.48,
+      "timestamp": "13:34"
+    },
+    {
+      "outputSeconds": 895,
+      "title": "How agile methods are evolving",
+      "sourceSeconds": 22279.38,
+      "timestamp": "14:55"
+    }
+  ],
+  "materials": [
+    {
+      "label": "Slides (PDF)",
+      "url": "https://www.sdlcai.org/media/talks/driving-ai-adoption-regulated-environment/0b20a9fb-eb1c-42c3-b080-034d9ba4d98e.pdf",
+      "speakerNames": [
+        "Jussi Hacklin"
+      ]
+    },
+    {
+      "label": "Slides (PDF)",
+      "url": "https://www.sdlcai.org/media/talks/non-engineers-vibe-code-production/404574e7-178f-48ea-bca5-02245c74ab6a.pdf",
+      "speakerNames": [
+        "Viljami Kuosmanen"
+      ]
+    },
+    {
+      "label": "Slides (PDF)",
+      "url": "https://www.sdlcai.org/media/talks/ai-factory-fundamentals/f58fdda9-1f7d-4dbb-b060-94eb6a581c49.pdf",
+      "speakerNames": [
+        "Sini Tistelgrén"
+      ]
+    }
+  ],
+  "existingSummary": "Jussi Hacklin, Viljami Kuosmanen and Sini Tistelgrén answer audience questions about AI in software delivery. They discuss staff morale, tool choices in regulated environments, business validation, engineers’ review responsibilities, token budgets and local inference. The discussion also covers code quality, shared documentation and how agile methods are evolving.",
+  "captions": {
+    "language": "en",
+    "srt": "transcripts/final-v02/industry-panel.en.srt",
+    "vtt": "transcripts/final-v02/industry-panel.en.vtt",
+    "qualityReport": "transcripts/final-v02/industry-panel.caption-qc.json",
+    "listeningReview": "transcripts/final-v02/industry-panel.listening-review.txt",
+    "status": "prepared-with-human-listening-review-notes"
+  },
+  "captionSHA256": "31a57fcd46a096f6a68bf2e27dbc7786148330fdd9de6a38107b74a0793fefe2",
+  "mediaBytes": 472942349,
+  "cueCount": 236,
+  "listeningWindows": [
+    {
+      "id": "industry-panel-126",
+      "videoId": "industry-panel",
+      "startSeconds": 875.28,
+      "endSeconds": 883.62,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Context-supported correction still marked for listening: docs.ipad.io → docs.epilot.io",
+      "currentCaptionText": "That's also what engineers use. They read that same documentation. It's actually public. You can go and read it yourself on docs.epilot.io if you are interested. But it hasn't really changed, to be honest.",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/industry-panel.listening-review.json",
+          "entryIndices": [
+            7
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/industry-panel.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                203
+              ],
+              "text": "documentation, that's also what engineers use. They read the same documentation. It's actually public. You can go and read it yourself on docs.epad.io if you are interested. But it hasn't really changed, to be honest. The engineer still fully owns."
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 203,
+              "before": "docs.ipad.io",
+              "after": "docs.epilot.io",
+              "basis": "Verified public documentation host https://docs.epilot.io/ (epilot developer platform), matching the company and talk context."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/industry-panel.listening-review.json",
+          "index": 7
+        }
+      ],
+      "sourceSegments": [
+        203
+      ],
+      "sourceStartSeconds": 22259.28,
+      "sourceEndSeconds": 22267.62
+    }
+  ],
+  "cues": [
+    {
+      "id": 1,
+      "start": 4.06,
+      "end": 10.14,
+      "text": "So for Viljami, what has been the impact for staff morale?"
+    },
+    {
+      "id": 2,
+      "start": 11.34,
+      "end": 15.56,
+      "text": "Yeah, good question. Like I said in the presentation, I think the people who are"
+    },
+    {
+      "id": 3,
+      "start": 15.58,
+      "end": 18.83,
+      "text": "involved with this, who are doing this, especially the non-engineers who are now"
+    },
+    {
+      "id": 4,
+      "start": 18.85,
+      "end": 23.17,
+      "text": "able to directly fix bugs and make changes to the code base, make changes to the"
+    },
+    {
+      "id": 5,
+      "start": 23.27,
+      "end": 25.96,
+      "text": "product, they're chuffed."
+    },
+    {
+      "id": 6,
+      "start": 25.98,
+      "end": 28.6,
+      "text": "They're very happy with this ability."
+    },
+    {
+      "id": 7,
+      "start": 28.62,
+      "end": 33.3,
+      "text": "The engineers also who are now not getting less bug tickets or they're getting a bug"
+    },
+    {
+      "id": 8,
+      "start": 33.7,
+      "end": 36.17,
+      "text": "ticket plus a PR generally that's seen as a good thing but of course we have"
+    },
+    {
+      "id": 9,
+      "start": 36.19,
+      "end": 39.77,
+      "text": "skeptics right so there are people who still are not sure about if this is the"
+    },
+    {
+      "id": 10,
+      "start": 39.79,
+      "end": 44.35,
+      "text": "way to go um so far nobody's left the company because of this so at least that's"
+    },
+    {
+      "id": 11,
+      "start": 44.37,
+      "end": 45.42,
+      "text": "positive so difficult"
+    },
+    {
+      "id": 12,
+      "start": 46.46,
+      "end": 50.74,
+      "text": "question to answer but my own feeling is that it's it's generally it's been a"
+    },
+    {
+      "id": 13,
+      "start": 50.76,
+      "end": 51.93,
+      "text": "positive yes"
+    },
+    {
+      "id": 14,
+      "start": 52.85,
+      "end": 56.67,
+      "text": "let's have an opening break."
+    },
+    {
+      "id": 15,
+      "start": 56.69,
+      "end": 61.85,
+      "text": "Nice. Cheers. Again for"
+    },
+    {
+      "id": 16,
+      "start": 62.69,
+      "end": 64.58,
+      "text": "Viljami, I don't know if it's..."
+    },
+    {
+      "id": 17,
+      "start": 64.6,
+      "end": 66.43,
+      "text": "Is it all Viljami? We can maybe scroll."
+    },
+    {
+      "id": 18,
+      "start": 66.45,
+      "end": 68.2,
+      "text": "Yeah, there are many for Viljami."
+    },
+    {
+      "id": 19,
+      "start": 68.22,
+      "end": 71.02,
+      "text": "First one for Jussi Hacklin."
+    },
+    {
+      "id": 20,
+      "start": 71.82,
+      "end": 77.4,
+      "text": "How can you adjust your sails and choose the best tools if you limit the tools to"
+    },
+    {
+      "id": 21,
+      "start": 77.42,
+      "end": 78.92,
+      "text": "selected vendors?"
+    },
+    {
+      "id": 22,
+      "start": 80.38,
+      "end": 85.83,
+      "text": "Well I think that then that's like the larger question in a sense that of course"
+    },
+    {
+      "id": 23,
+      "start": 85.85,
+      "end": 92.07,
+      "text": "the tools that that we experiment are not limited to a specific vendor so within"
+    },
+    {
+      "id": 24,
+      "start": 92.09,
+      "end": 98.05,
+      "text": "like a sandbox for example you can try whichever but then of course it needs to"
+    },
+    {
+      "id": 25,
+      "start": 98.27000000000001,
+      "end": 103.44,
+      "text": "adhere to certain limitations in the in the end but of course from the experiment"
+    },
+    {
+      "id": 26,
+      "start": 103.56,
+      "end": 107.25999999999999,
+      "text": "point of view I think you need to just have open eyes and then"
+    },
+    {
+      "id": 27,
+      "start": 109.5,
+      "end": 114.56,
+      "text": "then go and experiment because of course also the the tools change how they how"
+    },
+    {
+      "id": 28,
+      "start": 114.64,
+      "end": 119.57,
+      "text": "they handle data and and what sort of safeguards for example those are those"
+    },
+    {
+      "id": 29,
+      "start": 119.59,
+      "end": 124.27,
+      "text": "also change so I don't think that it should be limited from the get-go from the"
+    },
+    {
+      "id": 30,
+      "start": 124.29,
+      "end": 128.97,
+      "text": "experiment point of view then when it goes to the portfolio then you need to have"
+    },
+    {
+      "id": 31,
+      "start": 128.99,
+      "end": 134.82,
+      "text": "certain certain gates that you go through yes thanks"
+    },
+    {
+      "id": 32,
+      "start": 137.57999999999998,
+      "end": 139.46,
+      "text": "one general question"
+    },
+    {
+      "id": 33,
+      "start": 142.3,
+      "end": 147.77,
+      "text": "here good stuff everybody thanks will the slides be available afterwards and"
+    },
+    {
+      "id": 34,
+      "start": 148.97,
+      "end": 155.71,
+      "text": "including videos uh I think we can we will have the screen recording afterwards when"
+    },
+    {
+      "id": 35,
+      "start": 155.73,
+      "end": 157.34,
+      "text": "edited and finished"
+    },
+    {
+      "id": 36,
+      "start": 158.3,
+      "end": 162.73,
+      "text": "and also the slides if you just provide it for us yes then yes"
+    },
+    {
+      "id": 37,
+      "start": 164.7,
+      "end": 171.24,
+      "text": "uh Sini in terms of autonomy who makes"
+    },
+    {
+      "id": 38,
+      "start": 171.42000000000002,
+      "end": 175.52,
+      "text": "sure that the team works in the right and most important things?"
+    },
+    {
+      "id": 39,
+      "start": 175.54,
+      "end": 178.52,
+      "text": "That's a really good question."
+    },
+    {
+      "id": 40,
+      "start": 178.54,
+      "end": 183.37,
+      "text": "Of course, when developing stuff, you should look"
+    },
+    {
+      "id": 41,
+      "start": 184.21,
+      "end": 187.22,
+      "text": "for the business. You should have a business validation."
+    },
+    {
+      "id": 42,
+      "start": 187.24,
+      "end": 189.95,
+      "text": "You should really think why you're building this."
+    },
+    {
+      "id": 43,
+      "start": 190.12,
+      "end": 194.82,
+      "text": "Is this relevant? Is this actually bringing us some value at the end?"
+    },
+    {
+      "id": 44,
+      "start": 194.84,
+      "end": 199.75,
+      "text": "And I think customers are great validators in the sense that now when we are living"
+    },
+    {
+      "id": 45,
+      "start": 199.78,
+      "end": 205.38,
+      "text": "in the times of vibe coding, you can demonstrate the value very fast you can"
+    },
+    {
+      "id": 46,
+      "start": 205.4,
+      "end": 210.25,
+      "text": "create a prototype and you can test it with your existing clientele and then be"
+    },
+    {
+      "id": 47,
+      "start": 210.28,
+      "end": 215.55,
+      "text": "certain that these efforts are actually directed into right features or right"
+    },
+    {
+      "id": 48,
+      "start": 215.65,
+      "end": 220.45,
+      "text": "kinds of products that you are building."
+    },
+    {
+      "id": 49,
+      "start": 220.47,
+      "end": 225.91,
+      "text": "Thanks maybe we can get back to the"
+    },
+    {
+      "id": 50,
+      "start": 226.74,
+      "end": 232.75,
+      "text": "top. For Viljami it seems that your engineers have to review a lot of PRs."
+    },
+    {
+      "id": 51,
+      "start": 232.78,
+      "end": 238.12,
+      "text": "How do you manage that and keep the engineer motivated to review?"
+    },
+    {
+      "id": 52,
+      "start": 238.14,
+      "end": 240.17,
+      "text": "I don't think this is just a question."
+    },
+    {
+      "id": 53,
+      "start": 240.25,
+      "end": 242.44,
+      "text": "Yeah, you can all answer, of course."
+    },
+    {
+      "id": 54,
+      "start": 242.46,
+      "end": 245.11,
+      "text": "Yeah, yeah, but maybe I can start."
+    },
+    {
+      "id": 55,
+      "start": 245.17,
+      "end": 246.78,
+      "text": "So, it is a struggle, right?"
+    },
+    {
+      "id": 56,
+      "start": 246.8,
+      "end": 249.92,
+      "text": "Because I think the jobs have changed quite a bit since, you know, the last"
+    },
+    {
+      "id": 57,
+      "start": 249.94,
+      "end": 254.51,
+      "text": "couple of years. Engineers now have to focus a lot more on the testing part."
+    },
+    {
+      "id": 58,
+      "start": 254.54,
+      "end": 258.7,
+      "text": "It's not just the review even, it's the whole thing that happens after you write"
+    },
+    {
+      "id": 59,
+      "start": 258.72,
+      "end": 262.56,
+      "text": "the code. And if you're an engineer who really enjoyed the coding part, you might"
+    },
+    {
+      "id": 60,
+      "start": 262.58,
+      "end": 266.96,
+      "text": "not feel so great. But our answer at epilot has been that we, from the very"
+    },
+    {
+      "id": 61,
+      "start": 266.98,
+      "end": 272.08,
+      "text": "beginning, hired people who were sort of more motivated by the business problem,"
+    },
+    {
+      "id": 62,
+      "start": 272.11,
+      "end": 275.99,
+      "text": "the kind of, what are we really solving for the user?"
+    },
+    {
+      "id": 63,
+      "start": 276.01,
+      "end": 280.9,
+      "text": "So I don't think they really mind that much having to look at the, maintain the"
+    },
+    {
+      "id": 64,
+      "start": 280.92,
+      "end": 285.87,
+      "text": "code quality, look at whether the solution actually solves the problem."
+    },
+    {
+      "id": 65,
+      "start": 285.89,
+      "end": 290.17,
+      "text": "And I just don't see it as sort of necessarily my job or anyone's job as"
+    },
+    {
+      "id": 66,
+      "start": 290.25,
+      "end": 294.39,
+      "text": "epilot to make sure that the engineers are motivated to review the code because that"
+    },
+    {
+      "id": 67,
+      "start": 294.40999999999997,
+      "end": 298.31,
+      "text": "is at the end of the day what the engineers are there to do so yeah maybe"
+    },
+    {
+      "id": 68,
+      "start": 298.33,
+      "end": 304.05,
+      "text": "yeah yeah yeah it only like has changed the perspective maybe from from the fact"
+    },
+    {
+      "id": 69,
+      "start": 304.07,
+      "end": 307.87,
+      "text": "of like finding out the solutions or something then to evaluate the solution"
+    },
+    {
+      "id": 70,
+      "start": 308.05,
+      "end": 313.45,
+      "text": "that that that agent or something is then proposing but I but I do agree that that"
+    },
+    {
+      "id": 71,
+      "start": 313.54,
+      "end": 319.34,
+      "text": "it's basically just an evolution of the whole role that comes now through this day"
+    },
+    {
+      "id": 72,
+      "start": 319.79,
+      "end": 324.27,
+      "text": "and age. And, of course, the whole developer skill set has been changing for"
+    },
+    {
+      "id": 73,
+      "start": 324.29,
+      "end": 326.86,
+      "text": "how long there has been software engineering."
+    },
+    {
+      "id": 74,
+      "start": 327.06,
+      "end": 330.65,
+      "text": "So it hasn't been like this, for example, one specific language or tool or"
+    },
+    {
+      "id": 75,
+      "start": 330.67,
+      "end": 335.98,
+      "text": "something. It's like this mindset of solving problems through different sort of"
+    },
+    {
+      "id": 76,
+      "start": 336.0,
+      "end": 340.38,
+      "text": "thinking and tools. And I don't think that's like going away."
+    },
+    {
+      "id": 77,
+      "start": 340.86,
+      "end": 341.88,
+      "text": "Yeah, I agree fully."
+    },
+    {
+      "id": 78,
+      "start": 342.0,
+      "end": 347.39,
+      "text": "And I think that in a traditional way, if you have been looking the review work"
+    },
+    {
+      "id": 79,
+      "start": 347.42,
+      "end": 351.33,
+      "text": "nowadays, it might be still a bit different because hopefully you have"
+    },
+    {
+      "id": 80,
+      "start": 351.42,
+      "end": 353.3,
+      "text": "utilized agents along the way."
+    },
+    {
+      "id": 81,
+      "start": 353.6,
+      "end": 357.88,
+      "text": "And like most of the frontier models available today are actually producing a"
+    },
+    {
+      "id": 82,
+      "start": 357.9,
+      "end": 362.27,
+      "text": "lot better code than an average developer actually writes manually."
+    },
+    {
+      "id": 83,
+      "start": 362.86,
+      "end": 364.26,
+      "text": "So speak for yourself. Yeah."
+    },
+    {
+      "id": 84,
+      "start": 368.66,
+      "end": 375.19,
+      "text": "So then the actual reviewable content might be already changing a bit to a"
+    },
+    {
+      "id": 85,
+      "start": 375.38,
+      "end": 379.94,
+      "text": "different direction. And it might be more motivating to look into those reviews than"
+    },
+    {
+      "id": 86,
+      "start": 380.39,
+      "end": 385.38,
+      "text": "maybe 10 years back when you got a load of PRs to review."
+    },
+    {
+      "id": 87,
+      "start": 388.16,
+      "end": 388.96,
+      "text": "Thanks."
+    },
+    {
+      "id": 88,
+      "start": 390.42,
+      "end": 396.96,
+      "text": "Then, how to manage token budgets such way that you can still be effective with your"
+    },
+    {
+      "id": 89,
+      "start": 397.14,
+      "end": 398.69,
+      "text": "agentic development factory?"
+    },
+    {
+      "id": 90,
+      "start": 399.1,
+      "end": 403.85,
+      "text": "How you would manage the situation where you do not have access to Claude or"
+    },
+    {
+      "id": 91,
+      "start": 403.87,
+      "end": 404.67,
+      "text": "OpenAI?"
+    },
+    {
+      "id": 92,
+      "start": 407.08,
+      "end": 408.46,
+      "text": "I can share our approach."
+    },
+    {
+      "id": 93,
+      "start": 409.1,
+      "end": 411.86,
+      "text": "Yeah, go first. It's probably different to yours."
+    },
+    {
+      "id": 94,
+      "start": 412.52,
+      "end": 413.88,
+      "text": "We only do subscriptions."
+    },
+    {
+      "id": 95,
+      "start": 414.14,
+      "end": 417.8,
+      "text": "That's what we've done so far is that there's basically no token budgets at all."
+    },
+    {
+      "id": 96,
+      "start": 417.82,
+      "end": 421.92,
+      "text": "So there's a big part of why we built Leidang, the kind of custom runtime for"
+    },
+    {
+      "id": 97,
+      "start": 422.03,
+      "end": 425.54,
+      "text": "agents, was that we wanted to be able to use the Claude subscriptions and OpenAI"
+    },
+    {
+      "id": 98,
+      "start": 425.56,
+      "end": 426.82,
+      "text": "subscriptions directly."
+    },
+    {
+      "id": 99,
+      "start": 426.84,
+      "end": 430.9,
+      "text": "So we want to avoid kind of, at least so far, that's worked for us pretty well."
+    },
+    {
+      "id": 100,
+      "start": 430.98,
+      "end": 433.44,
+      "text": "So we just have a lot of licenses for our team."
+    },
+    {
+      "id": 101,
+      "start": 434.22,
+      "end": 439.46,
+      "text": "Yeah, for us with the GitHub and the Google, we are in the token world."
+    },
+    {
+      "id": 102,
+      "start": 439.7,
+      "end": 443.0,
+      "text": "And of course, it has taken some adjustment in that."
+    },
+    {
+      "id": 103,
+      "start": 443.36,
+      "end": 448.38,
+      "text": "But how we actually then have managed to work on that has been that, like I"
+    },
+    {
+      "id": 104,
+      "start": 448.42,
+      "end": 453.15,
+      "text": "mentioned in the presentation, that we've set some limits just as a safeguard so"
+    },
+    {
+      "id": 105,
+      "start": 453.17,
+      "end": 455.1,
+      "text": "that nothing bad happens."
+    },
+    {
+      "id": 106,
+      "start": 455.12,
+      "end": 459.95,
+      "text": "And then basically on our communication platform, we set up a channel where you"
+    },
+    {
+      "id": 107,
+      "start": 459.99,
+      "end": 463.39,
+      "text": "could actually ask for more tokens if you run out of quota."
+    },
+    {
+      "id": 108,
+      "start": 463.94,
+      "end": 468.61,
+      "text": "And pretty soon that became this meme place where people are like, could you"
+    },
+    {
+      "id": 109,
+      "start": 468.63,
+      "end": 470.08,
+      "text": "spare some tokens?"
+    },
+    {
+      "id": 110,
+      "start": 471.0,
+      "end": 477.57,
+      "text": "And with us, basically, then it went through one person who was then adding"
+    },
+    {
+      "id": 111,
+      "start": 477.59000000000003,
+      "end": 484.16,
+      "text": "quotas. But, of course, since that person was also head of the SRE team, he also"
+    },
+    {
+      "id": 112,
+      "start": 484.18,
+      "end": 488.69,
+      "text": "automated that. So now we actually have an agent who is then doing that, and we saw"
+    },
+    {
+      "id": 113,
+      "start": 488.71,
+      "end": 493.43,
+      "text": "it as a point to automate in a sense that now there is actually an agent or a bot"
+    },
+    {
+      "id": 114,
+      "start": 493.54,
+      "end": 497.88,
+      "text": "that you can ask, like, what sort of models have I been using, and then where"
+    },
+    {
+      "id": 115,
+      "start": 498.36,
+      "end": 500.72,
+      "text": "am I going with my quota and such."
+    },
+    {
+      "id": 116,
+      "start": 500.8,
+      "end": 502.68,
+      "text": "So it also educates the developers."
+    },
+    {
+      "id": 117,
+      "start": 503.46,
+      "end": 507.7,
+      "text": "So if you just go there and in one day I run out of my quota,"
+    },
+    {
+      "id": 118,
+      "start": 508.54,
+      "end": 512.18,
+      "text": "the bot will actually ask that, why did you just use this expensive model for"
+    },
+    {
+      "id": 119,
+      "start": 512.2,
+      "end": 517.4,
+      "text": "that? So you should maybe use multiple different sort of models and using it also"
+    },
+    {
+      "id": 120,
+      "start": 517.52,
+      "end": 521.08,
+      "text": "to educate the developers and also to automate that."
+    },
+    {
+      "id": 121,
+      "start": 521.28,
+      "end": 526.4,
+      "text": "And I think that in the big picture, the whole token and how to budget those,"
+    },
+    {
+      "id": 122,
+      "start": 526.5,
+      "end": 530.27,
+      "text": "that's still industry is like thinking like, How do we actually then manage that"
+    },
+    {
+      "id": 123,
+      "start": 530.29,
+      "end": 532.09,
+      "text": "in the long run? Where will it land?"
+    },
+    {
+      "id": 124,
+      "start": 532.26,
+      "end": 534.1,
+      "text": "What's the business value that we're getting?"
+    },
+    {
+      "id": 125,
+      "start": 534.12,
+      "end": 538.18,
+      "text": "But I think that the pieces are coming better and better because also the"
+    },
+    {
+      "id": 126,
+      "start": 538.26,
+      "end": 544.84,
+      "text": "monitoring of those and the visibility to the usage per user, per model, per usage"
+    },
+    {
+      "id": 127,
+      "start": 545.32,
+      "end": 547.6,
+      "text": "type are getting better."
+    },
+    {
+      "id": 128,
+      "start": 548.02,
+      "end": 553.7,
+      "text": "But there are also those customers that it's not just about token economics, but"
+    },
+    {
+      "id": 129,
+      "start": 553.72,
+      "end": 555.58,
+      "text": "like security point of view."
+    },
+    {
+      "id": 130,
+      "start": 556.02,
+      "end": 562.7,
+      "text": "So when local inference is your only option and then you are going to use open"
+    },
+    {
+      "id": 131,
+      "start": 562.74,
+      "end": 566.68,
+      "text": "weighted models and what are available and on your own hardware."
+    },
+    {
+      "id": 132,
+      "start": 567.36,
+      "end": 569.88,
+      "text": "And of course, that's another aspect of it all."
+    },
+    {
+      "id": 133,
+      "start": 569.9,
+      "end": 576.52,
+      "text": "I think in many companies where there are like no strict security limitations, but"
+    },
+    {
+      "id": 134,
+      "start": 576.62,
+      "end": 578.42,
+      "text": "they still might want to investigate"
+    },
+    {
+      "id": 135,
+      "start": 578.93,
+      "end": 580.48,
+      "text": "this kind of hybrid model."
+    },
+    {
+      "id": 136,
+      "start": 580.82,
+      "end": 587.56,
+      "text": "So where these frontier models are available and you can use them a"
+    },
+    {
+      "id": 137,
+      "start": 587.67,
+      "end": 593.44,
+      "text": "certain amount, but then you might still use the local inference for certain types"
+    },
+    {
+      "id": 138,
+      "start": 593.46,
+      "end": 596.1,
+      "text": "of works or certain types of loads."
+    },
+    {
+      "id": 139,
+      "start": 596.64,
+      "end": 601.01,
+      "text": "And I think we are going to see a lot more of this in the future years because the"
+    },
+    {
+      "id": 140,
+      "start": 601.03,
+      "end": 606.44,
+      "text": "subscription-based models are now very cheap in the comparison what they're going"
+    },
+    {
+      "id": 141,
+      "start": 606.46,
+      "end": 608.05,
+      "text": "to be in a few years."
+    },
+    {
+      "id": 142,
+      "start": 608.12,
+      "end": 610.68,
+      "text": "And it's going to change the market."
+    },
+    {
+      "id": 143,
+      "start": 610.92,
+      "end": 615.85,
+      "text": "But of course, for those customers who cannot use the frontier models now, it's"
+    },
+    {
+      "id": 144,
+      "start": 615.87,
+      "end": 618.92,
+      "text": "the reality that they're living in now."
+    },
+    {
+      "id": 145,
+      "start": 619.04,
+      "end": 624.4,
+      "text": "And they're going to have to build their own platforms that are secure enough and"
+    },
+    {
+      "id": 146,
+      "start": 624.42,
+      "end": 626.06,
+      "text": "use their own inference."
+    },
+    {
+      "id": 147,
+      "start": 626.94,
+      "end": 633.34,
+      "text": "And maybe to add on that, so I think that's one way to also"
+    },
+    {
+      "id": 148,
+      "start": 633.61,
+      "end": 637.83,
+      "text": "manage the cost, like running on these different tiers whether it's public or"
+    },
+    {
+      "id": 149,
+      "start": 637.93,
+      "end": 642.98,
+      "text": "on-prem or local but but I think that that still requires also development on the"
+    },
+    {
+      "id": 150,
+      "start": 643.08,
+      "end": 648.52,
+      "text": "infrastructure side definitely so so AI gateway or something like that because now"
+    },
+    {
+      "id": 151,
+      "start": 648.72,
+      "end": 652.71,
+      "text": "yes you can set that up but it's definitely a whole lot of tweaking to get"
+    },
+    {
+      "id": 152,
+      "start": 652.73,
+      "end": 657.8,
+      "text": "it get it up and running and you just can't have every developer using half of"
+    },
+    {
+      "id": 153,
+      "start": 657.82,
+      "end": 662.24,
+      "text": "their time to to set up to harness and and now this goes there but but definitely"
+    },
+    {
+      "id": 154,
+      "start": 662.26,
+      "end": 666.31,
+      "text": "it's something that's developing and in half a year it might be that there's like"
+    },
+    {
+      "id": 155,
+      "start": 666.36,
+      "end": 671.66,
+      "text": "AI gateways which is standard and then direct the traffic to where is but we'll"
+    },
+    {
+      "id": 156,
+      "start": 671.8,
+      "end": 672.6,
+      "text": "see"
+    },
+    {
+      "id": 157,
+      "start": 674.56,
+      "end": 681.22,
+      "text": "thank you uh Viljami what do you think about the quality or do you"
+    },
+    {
+      "id": 158,
+      "start": 681.28,
+      "end": 682.83,
+      "text": "know about the code"
+    },
+    {
+      "id": 159,
+      "start": 683.59,
+      "end": 686.99,
+      "text": "quality have you had many bugs or production incidents zero bugs no"
+    },
+    {
+      "id": 160,
+      "start": 687.01,
+      "end": 688.0,
+      "text": "incidents at all"
+    },
+    {
+      "id": 161,
+      "start": 690.16,
+      "end": 696.08,
+      "text": "no no I mean so we do track this stuff um so so in our data what we've found is um"
+    },
+    {
+      "id": 162,
+      "start": 697.04,
+      "end": 702.67,
+      "text": "the the number of bugs um has gone up we're discovering more bugs definitely but"
+    },
+    {
+      "id": 163,
+      "start": 702.69,
+      "end": 706.21,
+      "text": "at the same time also the the velocity has increased so we're doing more releases"
+    },
+    {
+      "id": 164,
+      "start": 706.23,
+      "end": 711.52,
+      "text": "more rapidly towards customers so comparing to the pre-AI era it looks like"
+    },
+    {
+      "id": 165,
+      "start": 711.54,
+      "end": 716.07,
+      "text": "we're doing slightly better like less bugs per release but then again we are"
+    },
+    {
+      "id": 166,
+      "start": 716.09,
+      "end": 718.08,
+      "text": "releasing faster so customers do"
+    },
+    {
+      "id": 167,
+      "start": 718.8,
+      "end": 722.85,
+      "text": "if we're not really good about our release and doing those bug bashes or whatever"
+    },
+    {
+      "id": 168,
+      "start": 723.01,
+      "end": 724.08,
+      "text": "teams call it"
+    },
+    {
+      "id": 169,
+      "start": 726.0,
+      "end": 731.06,
+      "text": "we find it to be very important to actually run those kind of exploratory"
+    },
+    {
+      "id": 170,
+      "start": 731.13,
+      "end": 734.61,
+      "text": "sessions and of course we have a lot of tooling right and we've discussed a lot"
+    },
+    {
+      "id": 171,
+      "start": 734.63,
+      "end": 738.7,
+      "text": "about linters we just got to discuss about the importance of having the pipeline CI"
+    },
+    {
+      "id": 172,
+      "start": 738.72,
+      "end": 742.94,
+      "text": "verifies you know things we have coding standards as part of our agent"
+    },
+    {
+      "id": 173,
+      "start": 742.96,
+      "end": 747.61,
+      "text": "instructions of course we have other agents adversarial agents who are"
+    },
+    {
+      "id": 174,
+      "start": 747.63,
+      "end": 754.28,
+      "text": "commenting on the MRs and giving feedback to every single PR that you open."
+    },
+    {
+      "id": 175,
+      "start": 754.3,
+      "end": 759.09,
+      "text": "So there's a lot of looping around and the tools that you were just discussing that"
+    },
+    {
+      "id": 176,
+      "start": 759.24,
+      "end": 762.3,
+      "text": "we already had in place even before the AI era."
+    },
+    {
+      "id": 177,
+      "start": 762.32,
+      "end": 765.64,
+      "text": "And we are kind of also lucky at epilot because AI came in pretty late."
+    },
+    {
+      "id": 178,
+      "start": 765.66,
+      "end": 770.47,
+      "text": "We had already a pretty mature code base, a very large product and very large code"
+    },
+    {
+      "id": 179,
+      "start": 770.91,
+      "end": 774.54,
+      "text": "base, and those practices from before AI also then picked up."
+    },
+    {
+      "id": 180,
+      "start": 774.56,
+      "end": 777.44,
+      "text": "It learned from what was already there in the code base."
+    },
+    {
+      "id": 181,
+      "start": 777.57,
+      "end": 778.37,
+      "text": "So"
+    },
+    {
+      "id": 182,
+      "start": 778.48,
+      "end": 781.0,
+      "text": "Yeah, I guess that's my answer on code quality."
+    },
+    {
+      "id": 183,
+      "start": 781.98,
+      "end": 783.84,
+      "text": "I think it's a good question for everyone."
+    },
+    {
+      "id": 184,
+      "start": 783.86,
+      "end": 785.76,
+      "text": "AI is amplifying what you already got."
+    },
+    {
+      "id": 185,
+      "start": 786.12,
+      "end": 786.92,
+      "text": "Yes."
+    },
+    {
+      "id": 186,
+      "start": 787.0,
+      "end": 789.54,
+      "text": "Yeah. I agree with both of you."
+    },
+    {
+      "id": 187,
+      "start": 792.32,
+      "end": 798.42,
+      "text": "I think we have time for two questions and then head to some break."
+    },
+    {
+      "id": 188,
+      "start": 802.56,
+      "end": 805.34,
+      "text": "Maybe we have so many for Viljami."
+    },
+    {
+      "id": 189,
+      "start": 808.48,
+      "end": 812.19,
+      "text": "Maybe one for Viljami and one for all."
+    },
+    {
+      "id": 190,
+      "start": 812.21,
+      "end": 814.46,
+      "text": "Of course you can all answer this."
+    },
+    {
+      "id": 191,
+      "start": 814.48,
+      "end": 819.56,
+      "text": "Viljami, how do developers maintain a mental model of the software when patches"
+    },
+    {
+      "id": 192,
+      "start": 819.58,
+      "end": 822.19,
+      "text": "are coming in from outside engineering?"
+    },
+    {
+      "id": 193,
+      "start": 823.36,
+      "end": 828.96,
+      "text": "I don't know. I have to say, personally, I can answer, right?"
+    },
+    {
+      "id": 194,
+      "start": 829.02,
+      "end": 833.65,
+      "text": "So like the code I wrote and the code I still write with AI agents is still the"
+    },
+    {
+      "id": 195,
+      "start": 833.67,
+      "end": 835.9,
+      "text": "same, exactly as before, right?"
+    },
+    {
+      "id": 196,
+      "start": 835.92,
+      "end": 838.24,
+      "text": "So we don't have any special tooling around that."
+    },
+    {
+      "id": 197,
+      "start": 838.26,
+      "end": 842.48,
+      "text": "The only thing that maybe we did add, but I don't know if that answers your question"
+    },
+    {
+      "id": 198,
+      "start": 842.5,
+      "end": 846.3,
+      "text": "about how do the engineers maintain that mental model, but also the agents need to"
+    },
+    {
+      "id": 199,
+      "start": 846.32,
+      "end": 847.8,
+      "text": "maintain that mental model."
+    },
+    {
+      "id": 200,
+      "start": 847.82,
+      "end": 853.8,
+      "text": "So what we specifically do is we run sort of these scanners to our code base and"
+    },
+    {
+      "id": 201,
+      "start": 853.82,
+      "end": 858.18,
+      "text": "then create these indexes into the knowledge base to kind of try to explain"
+    },
+    {
+      "id": 202,
+      "start": 858.2,
+      "end": 860.42,
+      "text": "and understand, okay, what is this repo about?"
+    },
+    {
+      "id": 203,
+      "start": 860.44,
+      "end": 864.02,
+      "text": "Because I did mention we have more than 300 production repositories in our code"
+    },
+    {
+      "id": 204,
+      "start": 864.04,
+      "end": 866.24,
+      "text": "base, so there's a lot to kind of look into."
+    },
+    {
+      "id": 205,
+      "start": 866.66,
+      "end": 870.32,
+      "text": "We maintain basically a lot of documentation, and now that documentation"
+    },
+    {
+      "id": 206,
+      "start": 870.42,
+      "end": 871.79,
+      "text": "is maintained by AI itself."
+    },
+    {
+      "id": 207,
+      "start": 872.2,
+      "end": 873.75,
+      "text": "So we share that documentation."
+    },
+    {
+      "id": 208,
+      "start": 874.04,
+      "end": 875.38,
+      "text": "That's also what engineers use."
+    },
+    {
+      "id": 209,
+      "start": 875.4,
+      "end": 876.68,
+      "text": "They read that same documentation."
+    },
+    {
+      "id": 210,
+      "start": 876.7,
+      "end": 880.74,
+      "text": "It's actually public. You can go and read it yourself on docs.epilot.io if you are"
+    },
+    {
+      "id": 211,
+      "start": 880.76,
+      "end": 881.58,
+      "text": "interested."
+    },
+    {
+      "id": 212,
+      "start": 882.5,
+      "end": 884.34,
+      "text": "But it hasn't really changed, to be honest."
+    },
+    {
+      "id": 213,
+      "start": 884.36,
+      "end": 887.8,
+      "text": "The engineer still fully owns the code they write, the code they merge."
+    },
+    {
+      "id": 214,
+      "start": 887.82,
+      "end": 890.991,
+      "text": "So you build up that mental model as you do that, even if you don't write every"
+    },
+    {
+      "id": 215,
+      "start": 891.011,
+      "end": 891.811,
+      "text": "single line."
+    },
+    {
+      "id": 216,
+      "start": 893.96,
+      "end": 894.76,
+      "text": "Thank you."
+    },
+    {
+      "id": 217,
+      "start": 895.38,
+      "end": 902.22,
+      "text": "Then one last question are you still following agile development methods"
+    },
+    {
+      "id": 218,
+      "start": 902.24,
+      "end": 904.18,
+      "text": "in AI SDLC era"
+    },
+    {
+      "id": 219,
+      "start": 906.34,
+      "end": 911.6,
+      "text": "well if I go first yes because I think that it's also something that is evolving"
+    },
+    {
+      "id": 220,
+      "start": 911.62,
+      "end": 916.25,
+      "text": "uh I don't I don't believe that you just scrap something as good as as agile"
+    },
+    {
+      "id": 221,
+      "start": 916.32,
+      "end": 921.0,
+      "text": "development but it's evolving so so if you like think for example product owner role"
+    },
+    {
+      "id": 222,
+      "start": 921.02,
+      "end": 927.27,
+      "text": "there it's evolving it's going Now, more towards also building prototypes and such,"
+    },
+    {
+      "id": 223,
+      "start": 927.4,
+      "end": 933.04,
+      "text": "but there are so many good things also regarding sprints and retros and things"
+    },
+    {
+      "id": 224,
+      "start": 933.39,
+      "end": 939.25,
+      "text": "like that. So definitely it's more of an evolving thing than abandoning something"
+    },
+    {
+      "id": 225,
+      "start": 939.27,
+      "end": 941.47,
+      "text": "like that. Yeah, I also agree."
+    },
+    {
+      "id": 226,
+      "start": 942.14,
+      "end": 948.02,
+      "text": "I think there's not a single existing model that would be perfect now, but it's"
+    },
+    {
+      "id": 227,
+      "start": 948.04,
+      "end": 950.24,
+      "text": "like a combination of different..."
+    },
+    {
+      "id": 228,
+      "start": 950.26,
+      "end": 953.47,
+      "text": "Some someone might have heard micro waterfall."
+    },
+    {
+      "id": 229,
+      "start": 953.53,
+      "end": 955.68,
+      "text": "It might look a bit like that as well, but"
+    },
+    {
+      "id": 230,
+      "start": 957.22,
+      "end": 963.09,
+      "text": "There are very good things in agile for many roles and like you said Evolving what"
+    },
+    {
+      "id": 231,
+      "start": 963.11,
+      "end": 968.74,
+      "text": "we currently have and nobody still knows what's like what's gonna be ahead How the"
+    },
+    {
+      "id": 232,
+      "start": 968.76,
+      "end": 972.72,
+      "text": "model is gonna look like a year from now"
+    },
+    {
+      "id": 233,
+      "start": 974.04,
+      "end": 976.82,
+      "text": "People over processes working software."
+    },
+    {
+      "id": 234,
+      "start": 976.86,
+      "end": 977.91,
+      "text": "Yeah hundred percent."
+    },
+    {
+      "id": 235,
+      "start": 977.93,
+      "end": 978.73,
+      "text": "Yeah"
+    },
+    {
+      "id": 236,
+      "start": 980.26,
+      "end": 983.9,
+      "text": "Well, thank you. It has been a pleasure."
+    }
+  ]
+}

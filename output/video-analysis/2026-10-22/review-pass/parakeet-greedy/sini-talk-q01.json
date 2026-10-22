@@ -1,0 +1,578 @@
+{
+  "text": "routine changes and then release each change of what type of on its evidence. And whatever writes a change never approves it directly. The audit evidence becomes a byproduct of delivery and audit can test the pipeline itself.",
+  "sentences": [
+    {
+      "text": " routine changes and then release each change of what type of on its evidence.",
+      "start": 0.16,
+      "end": 5.68,
+      "duration": 5.52,
+      "confidence": 0.993,
+      "tokens": [
+        {
+          "text": " ro",
+          "start": 0.16,
+          "end": 0.24,
+          "duration": 0.08,
+          "confidence": 0.952
+        },
+        {
+          "text": "ut",
+          "start": 0.24,
+          "end": 0.32,
+          "duration": 0.08,
+          "confidence": 0.999
+        },
+        {
+          "text": "ine",
+          "start": 0.32,
+          "end": 0.4,
+          "duration": 0.08,
+          "confidence": 0.996
+        },
+        {
+          "text": " ch",
+          "start": 0.48,
+          "end": 0.64,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": "ang",
+          "start": 0.64,
+          "end": 0.8,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "es",
+          "start": 0.8,
+          "end": 1.04,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " and",
+          "start": 1.04,
+          "end": 1.28,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " then",
+          "start": 1.28,
+          "end": 1.52,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " r",
+          "start": 1.52,
+          "end": 1.68,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": "ele",
+          "start": 1.68,
+          "end": 1.92,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "ase",
+          "start": 1.92,
+          "end": 2.08,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " e",
+          "start": 2.08,
+          "end": 2.24,
+          "duration": 0.16,
+          "confidence": 0.998
+        },
+        {
+          "text": "ach",
+          "start": 2.24,
+          "end": 2.48,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " ch",
+          "start": 2.48,
+          "end": 2.72,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "ange",
+          "start": 2.72,
+          "end": 2.88,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " of",
+          "start": 2.88,
+          "end": 3.2,
+          "duration": 0.32,
+          "confidence": 0.994
+        },
+        {
+          "text": " what",
+          "start": 3.2,
+          "end": 3.44,
+          "duration": 0.24,
+          "confidence": 0.988
+        },
+        {
+          "text": " ty",
+          "start": 3.6,
+          "end": 3.68,
+          "duration": 0.08,
+          "confidence": 0.999
+        },
+        {
+          "text": "pe",
+          "start": 3.68,
+          "end": 3.76,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " of",
+          "start": 3.76,
+          "end": 3.92,
+          "duration": 0.16,
+          "confidence": 0.985
+        },
+        {
+          "text": " on",
+          "start": 4.24,
+          "end": 4.4,
+          "duration": 0.16,
+          "confidence": 0.974
+        },
+        {
+          "text": " its",
+          "start": 4.4,
+          "end": 4.64,
+          "duration": 0.24,
+          "confidence": 0.995
+        },
+        {
+          "text": " ev",
+          "start": 4.64,
+          "end": 4.88,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "iden",
+          "start": 4.88,
+          "end": 5.2,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": "ce",
+          "start": 5.2,
+          "end": 5.52,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 5.52,
+          "end": 5.68,
+          "duration": 0.16,
+          "confidence": 0.95
+        }
+      ]
+    },
+    {
+      "text": " And whatever writes a change never approves it directly.",
+      "start": 5.68,
+      "end": 9.52,
+      "duration": 3.84,
+      "confidence": 0.998,
+      "tokens": [
+        {
+          "text": " And",
+          "start": 5.68,
+          "end": 5.92,
+          "duration": 0.24,
+          "confidence": 0.988
+        },
+        {
+          "text": " wh",
+          "start": 5.92,
+          "end": 6.08,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": "ate",
+          "start": 6.08,
+          "end": 6.24,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ver",
+          "start": 6.24,
+          "end": 6.48,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " w",
+          "start": 6.48,
+          "end": 6.56,
+          "duration": 0.08,
+          "confidence": 0.995
+        },
+        {
+          "text": "rit",
+          "start": 6.56,
+          "end": 6.72,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "es",
+          "start": 6.72,
+          "end": 6.88,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " a",
+          "start": 6.88,
+          "end": 7.04,
+          "duration": 0.16,
+          "confidence": 0.985
+        },
+        {
+          "text": " ch",
+          "start": 7.04,
+          "end": 7.2,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ange",
+          "start": 7.2,
+          "end": 7.44,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " ne",
+          "start": 7.44,
+          "end": 7.6,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ver",
+          "start": 7.6,
+          "end": 7.76,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " app",
+          "start": 7.76,
+          "end": 7.92,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "rov",
+          "start": 7.92,
+          "end": 8.16,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "es",
+          "start": 8.16,
+          "end": 8.32,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " it",
+          "start": 8.32,
+          "end": 8.64,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " dire",
+          "start": 8.64,
+          "end": 8.88,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "ct",
+          "start": 8.88,
+          "end": 9.04,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ly",
+          "start": 9.04,
+          "end": 9.28,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 9.28,
+          "end": 9.52,
+          "duration": 0.24,
+          "confidence": 0.99
+        }
+      ]
+    },
+    {
+      "text": " The audit evidence becomes a byproduct of delivery and audit can test the pipeline itself.",
+      "start": 9.52,
+      "end": 14.88,
+      "duration": 5.36,
+      "confidence": 0.996,
+      "tokens": [
+        {
+          "text": " The",
+          "start": 9.52,
+          "end": 9.76,
+          "duration": 0.24,
+          "confidence": 0.997
+        },
+        {
+          "text": " a",
+          "start": 9.76,
+          "end": 9.84,
+          "duration": 0.08,
+          "confidence": 0.998
+        },
+        {
+          "text": "ud",
+          "start": 9.84,
+          "end": 10.08,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "it",
+          "start": 10.08,
+          "end": 10.24,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " ev",
+          "start": 10.24,
+          "end": 10.4,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "iden",
+          "start": 10.4,
+          "end": 10.64,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "ce",
+          "start": 10.64,
+          "end": 10.8,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " be",
+          "start": 10.8,
+          "end": 10.88,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "com",
+          "start": 10.88,
+          "end": 11.12,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "es",
+          "start": 11.12,
+          "end": 11.2,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " a",
+          "start": 11.2,
+          "end": 11.44,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": " by",
+          "start": 11.44,
+          "end": 11.68,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": "pro",
+          "start": 11.68,
+          "end": 11.76,
+          "duration": 0.08,
+          "confidence": 0.936
+        },
+        {
+          "text": "du",
+          "start": 11.76,
+          "end": 11.92,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ct",
+          "start": 11.92,
+          "end": 12.08,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " of",
+          "start": 12.08,
+          "end": 12.24,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " del",
+          "start": 12.24,
+          "end": 12.4,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "iver",
+          "start": 12.4,
+          "end": 12.56,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "y",
+          "start": 12.56,
+          "end": 12.72,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " and",
+          "start": 12.88,
+          "end": 13.12,
+          "duration": 0.24,
+          "confidence": 0.982
+        },
+        {
+          "text": " a",
+          "start": 13.12,
+          "end": 13.2,
+          "duration": 0.08,
+          "confidence": 0.996
+        },
+        {
+          "text": "ud",
+          "start": 13.2,
+          "end": 13.36,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "it",
+          "start": 13.36,
+          "end": 13.52,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " can",
+          "start": 13.52,
+          "end": 13.68,
+          "duration": 0.16,
+          "confidence": 0.998
+        },
+        {
+          "text": " test",
+          "start": 13.68,
+          "end": 13.92,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " the",
+          "start": 13.92,
+          "end": 14.0,
+          "duration": 0.08,
+          "confidence": 0.999
+        },
+        {
+          "text": " pi",
+          "start": 14.0,
+          "end": 14.16,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": "pel",
+          "start": 14.16,
+          "end": 14.32,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ine",
+          "start": 14.32,
+          "end": 14.48,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " its",
+          "start": 14.48,
+          "end": 14.64,
+          "duration": 0.16,
+          "confidence": 0.997
+        },
+        {
+          "text": "elf",
+          "start": 14.64,
+          "end": 14.72,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 14.72,
+          "end": 14.88,
+          "duration": 0.16,
+          "confidence": 0.988
+        }
+      ]
+    }
+  ]
+}

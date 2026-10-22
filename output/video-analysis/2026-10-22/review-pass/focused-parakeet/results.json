@@ -1,0 +1,296 @@
+{
+  "createdAt": "2026-10-22T11:18:44.897194+00:00",
+  "purpose": "Predefined context-sensitivity checks for the four flagged wordings, including the original source of the mood-film excerpt.",
+  "method": "Fresh 16 kHz mono PCM extracts from the final 4K masters, with clause, sentence and wider-context windows. No audio filtering, speech-rate change, wording hints or language prompts. Same Parakeet model as the prior pass; two decoder settings are correlated checks.",
+  "model": "mlx-community/parakeet-tdt-0.6b-v3",
+  "windows": [
+    {
+      "id": "jenni-clause",
+      "case": "jenni",
+      "videoId": "jenni-talk",
+      "window": "clause",
+      "start": 1234.5,
+      "end": 1240,
+      "sourceMaster": "exports/talks-v02/jenni-talk-4k.mp4",
+      "audio": "review-pass/focused-parakeet/jenni-clause.wav",
+      "audioSHA256": "c1de7727bce30a90a3926457a084491a89618fc461f8fc33507af8aa4766a760",
+      "greedy": {
+        "result": "review-pass/focused-parakeet/greedy/jenni-clause.json",
+        "text": "customer, deliver some feature to a customer, you probably"
+      },
+      "beam": {
+        "result": "review-pass/focused-parakeet/beam/jenni-clause.json",
+        "text": ""
+      }
+    },
+    {
+      "id": "jenni-sentence",
+      "case": "jenni",
+      "videoId": "jenni-talk",
+      "window": "sentence",
+      "start": 1231.5,
+      "end": 1250.5,
+      "sourceMaster": "exports/talks-v02/jenni-talk-4k.mp4",
+      "audio": "review-pass/focused-parakeet/jenni-sentence.wav",
+      "audioSHA256": "a1b657e14fddc2f10df9489f627fc30dd36386b1e64bfc0a9edb153ac1777b23",
+      "greedy": {
+        "result": "review-pass/focused-parakeet/greedy/jenni-sentence.json",
+        "text": "Because if you overpromise something to your customer, deliver some feature to a customer, you probably end up sacrificing the learning as a first mitigation action if you run out of time. If I read"
+      },
+      "beam": {
+        "result": "review-pass/focused-parakeet/beam/jenni-sentence.json",
+        "text": "Because if you overpromise something to your customer, deliver some feature to a customer, you probably end up sacrificing the learning as a first mitigation action if you run out of time."
+      }
+    },
+    {
+      "id": "jenni-context",
+      "case": "jenni",
+      "videoId": "jenni-talk",
+      "window": "context",
+      "start": 1210,
+      "end": 1260,
+      "sourceMaster": "exports/talks-v02/jenni-talk-4k.mp4",
+      "audio": "review-pass/focused-parakeet/jenni-context.wav",
+      "audioSHA256": "adbe4681c9cfc9ddccd9a4191b82aeb54323ab725802a980bf771bf7ebfae3df",
+      "greedy": {
+        "result": "review-pass/focused-parakeet/greedy/jenni-context.json",
+        "text": "Release schedules, or do we gain later benefits from these AI learnings? Since the fact is that learning to use AI, it will take time. It means that as leaders we need to take that into account when we define priorities and we make plans. Because if you overpromise something to your customer, deliver some feature to your customer, you probably end up sacrificing the learning as a first mitigation action if you run out of time."
+      },
+      "beam": {
+        "result": "review-pass/focused-parakeet/beam/jenni-context.json",
+        "text": "Release schedules, or do we gain later benefits from these AI learnings? Since the fact is that learning to use AI, it will take time. It means that as leaders, we need to take that into account when we define priorities and we make plans. Because if you overpromise something to your customer, deliver some feature to your customer, you probably end up sacrificing the learning as a first mitigation action if you run out of time."
+      }
+    },
+    {
+      "id": "joongi-clause",
+      "case": "joongi",
+      "videoId": "joongi-talk",
+      "window": "clause",
+      "start": 1048,
+      "end": 1054,
+      "sourceMaster": "exports/talks-v02/joongi-talk-4k.mp4",
+      "audio": "review-pass/focused-parakeet/joongi-clause.wav",
+      "audioSHA256": "3375a7a06f6a2cb3ed03ee363a7427a6818aa4fdedbff5061c02f48ca677fcc7",
+      "greedy": {
+        "result": "review-pass/focused-parakeet/greedy/joongi-clause.json",
+        "text": "I would say the problem survey approach can also fail. This this is also what we observe in our"
+      },
+      "beam": {
+        "result": "review-pass/focused-parakeet/beam/joongi-clause.json",
+        "text": "Um I would say the problem survey approach can also fail. This this is also what we observe in our"
+      }
+    },
+    {
+      "id": "joongi-sentence",
+      "case": "joongi",
+      "videoId": "joongi-talk",
+      "window": "sentence",
+      "start": 1041,
+      "end": 1055,
+      "sourceMaster": "exports/talks-v02/joongi-talk-4k.mp4",
+      "audio": "review-pass/focused-parakeet/joongi-sentence.wav",
+      "audioSHA256": "8beb019d368b86a6ed840cdaabfa3746252bc9899184b6ebeb65508161877c62",
+      "greedy": {
+        "result": "review-pass/focused-parakeet/greedy/joongi-sentence.json",
+        "text": "Then would be the question that the prompt survey approach is to answer. Is the problem solved? I would say the problem survey approach can also fail. This is also what we observe in our study."
+      },
+      "beam": {
+        "result": "review-pass/focused-parakeet/beam/joongi-sentence.json",
+        "text": "aiming for. Then would be the question that the prompt survey approach is to answer. Is the problem solved? I would say the problem survey approach can also fail. This is also what we observe in our study."
+      }
+    },
+    {
+      "id": "joongi-context",
+      "case": "joongi",
+      "videoId": "joongi-talk",
+      "window": "context",
+      "start": 1025,
+      "end": 1075,
+      "sourceMaster": "exports/talks-v02/joongi-talk-4k.mp4",
+      "audio": "review-pass/focused-parakeet/joongi-context.wav",
+      "audioSHA256": "c3ad9d36a5529de1f4b88780c79f297f5c544115665170ab9162211b0e9c7840",
+      "greedy": {
+        "result": "review-pass/focused-parakeet/greedy/joongi-context.json",
+        "text": "Like better interfaces. So people do not really need to discard everything a bit every bit by bit by themselves. A couple of slides to the end. How do we then move forward to achieve the future that GenF UI was aiming for? Then would be the question that the prompt survey approach is to answer, is the problem solved. I would say that problem survey approach can also fail. So sometimes LLM just continuously asks questions like that doesn't really align in with or make sense in the human level or what the user was actually wanting to achieve. For example, they often intentionally ask the very obscure, vague things just to see something uh upfront and then decide based on it."
+      },
+      "beam": {
+        "result": "review-pass/focused-parakeet/beam/joongi-context.json",
+        "text": "Like better interfaces. So people do not really need to describe everything a bit every bit by bit by themselves. A couple of slides to the end. How do we then move forward to achieve the future that General UI was aiming for? Then would be the question that the prompt survey approach is to answer is the problem solved. I would say that problem survey approach can also fail. So sometimes LLM just continuously asks questions like that doesn't really align in with or make sense in the human level or what the user was actually wanting to achieve. For example, they often intentionally ask the very obscure, vague things just to see something up front and then decide based on it."
+      }
+    },
+    {
+      "id": "final-clause",
+      "case": "final",
+      "videoId": "final-panel",
+      "window": "clause",
+      "start": 1538,
+      "end": 1544.5,
+      "sourceMaster": "exports/talks-v02/final-panel-4k.mp4",
+      "audio": "review-pass/focused-parakeet/final-clause.wav",
+      "audioSHA256": "67ef782754e65935886c7e0dc6f1c768a9933a30387e9f97bdfde8ec448b7a56",
+      "greedy": {
+        "result": "review-pass/focused-parakeet/greedy/final-clause.json",
+        "text": "burden and it is not only maintenance burden for uh women but also for the agents as well. They will lose the contact"
+      },
+      "beam": {
+        "result": "review-pass/focused-parakeet/beam/final-clause.json",
+        "text": "burden and it is not only maintenance burden for uh women but also for the agents as well. They will lose the contact"
+      }
+    },
+    {
+      "id": "final-sentence",
+      "case": "final",
+      "videoId": "final-panel",
+      "window": "sentence",
+      "start": 1530,
+      "end": 1551,
+      "sourceMaster": "exports/talks-v02/final-panel-4k.mp4",
+      "audio": "review-pass/focused-parakeet/final-sentence.wav",
+      "audioSHA256": "384bd93bb63c25332707b92719b8b46e5e92e7eb19514d318b858b74debd5981",
+      "greedy": {
+        "result": "review-pass/focused-parakeet/greedy/final-sentence.json",
+        "text": "of code that are not uh that need to clean up. So yeah, I agree with you. Whoever asked the question, yes, maintenance burden. And it is not only maintenance burden for uh women but also for the agents as well. They will lose the context at some point and uh things will not go as you are intending to develop."
+      },
+      "beam": {
+        "result": "review-pass/focused-parakeet/beam/final-sentence.json",
+        "text": "of code that are not uh that need to clean up. So yeah, I agree with you. Whoever asked the question, yes, maintenance burden. And it is not only maintenance burden for uh women but also for the agents as well. They will lose the context at some point and uh things will not go as you are intending to develop."
+      }
+    },
+    {
+      "id": "final-context",
+      "case": "final",
+      "videoId": "final-panel",
+      "window": "context",
+      "start": 1493,
+      "end": 1554,
+      "sourceMaster": "exports/talks-v02/final-panel-4k.mp4",
+      "audio": "review-pass/focused-parakeet/final-context.wav",
+      "audioSHA256": "ef9f36c7fc10aa4bc267b1a6a5521d2e0d71f80e0ca738b85bea99a986ccf9e1",
+      "greedy": {
+        "result": "review-pass/focused-parakeet/greedy/final-context.json",
+        "text": "Absolutely agree. This is. So first thing I uh one of the papers I have write, it was about like uh coding with flow, paying with depth. And this depth was like a kind of maintenance burden. So, yes, at some point, even if you are doing some sort of the wild vibe coding, I'm saying wild wild vibe coding, uh at some point you will feel that okay, we are developing something that is not really necessary. You will find so many files that are unnecessary, so many chunks of code that are not uh that need to clean up. So, yeah, I agree with you, whoever asked the question. Yes, maintenance burden. And it is not only maintenance burden for uh human, but also for the agents as well. They will lose the context at some point, and uh things will not go as you are intending to develop."
+      },
+      "beam": {
+        "result": "review-pass/focused-parakeet/beam/final-context.json",
+        "text": "Absolutely agree. This is. So first thing I uh one of the papers I have write, it was about like uh coding with flow, paying with depth. And this depth was like a kind of maintenance burden. So, yes, at some point, even if you are doing some sort of the wild vibe coding, I'm saying wild vibe coding, uh at some point you will feel that okay, we are developing something that is not really necessary. You will find so many files that are unnecessary, so many chunks of code that are not uh that need to clean up. So, yeah, I agree with you. Whoever asks the question, yes, maintenance burden. And it is not only maintenance burden for uh women, but also for the agents as well. They will lose the context at some point, and uh things will not go as you are intending to develop."
+      }
+    },
+    {
+      "id": "mood-clause",
+      "case": "mood",
+      "videoId": "mood",
+      "window": "clause",
+      "start": 35.2,
+      "end": 43.7,
+      "sourceMaster": "exports/mood-v06-4k.mp4",
+      "audio": "review-pass/focused-parakeet/mood-clause.wav",
+      "audioSHA256": "9434c3d8945da3a1356b4af16ab277198913189d13f6915869e5077e462f57cf",
+      "greedy": {
+        "result": "review-pass/focused-parakeet/greedy/mood-clause.json",
+        "text": "You should really think why you're building this, is is this relevant? Is this actually bringing us uh some value at the end?"
+      },
+      "beam": {
+        "result": "review-pass/focused-parakeet/beam/mood-clause.json",
+        "text": "You should really think why you're building this, is is this relevant? Is this actually bringing us uh some value at the end"
+      }
+    },
+    {
+      "id": "mood-sentence",
+      "case": "mood",
+      "videoId": "mood",
+      "window": "sentence",
+      "start": 30,
+      "end": 49.6,
+      "sourceMaster": "exports/mood-v06-4k.mp4",
+      "audio": "review-pass/focused-parakeet/mood-sentence.wav",
+      "audioSHA256": "de146daeb09cd9cca4302e9aac6652e7a7070e96a84533467b64965e737c1cbc",
+      "greedy": {
+        "result": "review-pass/focused-parakeet/greedy/mood-sentence.json",
+        "text": "You should really think why you're building this, is is this relevant, is this actually bringing us some value at the end."
+      },
+      "beam": {
+        "result": "review-pass/focused-parakeet/beam/mood-sentence.json",
+        "text": "You should really think why we're building this, is this relevant, is this actually bringing us some value at the end."
+      }
+    },
+    {
+      "id": "mood-context",
+      "case": "mood",
+      "videoId": "mood",
+      "window": "context",
+      "start": 0,
+      "end": 49.6,
+      "sourceMaster": "exports/mood-v06-4k.mp4",
+      "audio": "review-pass/focused-parakeet/mood-context.wav",
+      "audioSHA256": "b2cdb57488f3b2d5587d875c18795438a67fca602af202f0cf8c2109daa6d4f8",
+      "greedy": {
+        "result": "review-pass/focused-parakeet/greedy/mood-context.json",
+        "text": "You should really think why you're building this. Is this relevant? Is this actually bringing us some value at the end?"
+      },
+      "beam": {
+        "result": "review-pass/focused-parakeet/beam/mood-context.json",
+        "text": "You should really think why you're building this, is this relevant? Is this actually bringing us some value at the end?"
+      }
+    },
+    {
+      "id": "mood-original-clause",
+      "case": "mood-original",
+      "videoId": "industry-panel",
+      "window": "clause",
+      "start": 187.1,
+      "end": 195.2,
+      "sourceMaster": "exports/talks-v02/industry-panel-4k.mp4",
+      "audio": "review-pass/focused-parakeet/mood-original-clause.wav",
+      "audioSHA256": "0ef6dbb936756708c9d0d85b1cd741e08b4714eccdab09e14356e6df2fa7dd38",
+      "greedy": {
+        "result": "review-pass/focused-parakeet/greedy/mood-original-clause.json",
+        "text": "should really think why we're building this, is is this relevant, is this actually bringing us uh some value at the end?"
+      },
+      "beam": {
+        "result": "review-pass/focused-parakeet/beam/mood-original-clause.json",
+        "text": "should really think why we're building this, is is this relevant, is this actually bringing us uh some value at the end."
+      }
+    },
+    {
+      "id": "mood-original-sentence",
+      "case": "mood-original",
+      "videoId": "industry-panel",
+      "window": "sentence",
+      "start": 183,
+      "end": 196,
+      "sourceMaster": "exports/talks-v02/industry-panel-4k.mp4",
+      "audio": "review-pass/focused-parakeet/mood-original-sentence.wav",
+      "audioSHA256": "aee7be01fee0f786bdb7f1d3fb0404302f7d5cd70fc0815e2922dfd5ddcb9ecb",
+      "greedy": {
+        "result": "review-pass/focused-parakeet/greedy/mood-original-sentence.json",
+        "text": "should you should look for the business, you should have a business validation, you should really think why you're building this, is is this relevant, is this actually bringing us some value at the end? And I think"
+      },
+      "beam": {
+        "result": "review-pass/focused-parakeet/beam/mood-original-sentence.json",
+        "text": "should you should look for the business, you should have a business validation, you should really think why you're building this, is is this relevant, is this actually bringing us some value at the end? And I think"
+      }
+    },
+    {
+      "id": "mood-original-context",
+      "case": "mood-original",
+      "videoId": "industry-panel",
+      "window": "context",
+      "start": 174,
+      "end": 201,
+      "sourceMaster": "exports/talks-v02/industry-panel-4k.mp4",
+      "audio": "review-pass/focused-parakeet/mood-original-context.wav",
+      "audioSHA256": "fdf65872b323ff46bb30bf669620b25c825e73faea522da15588ee46ca8a677c",
+      "greedy": {
+        "result": "review-pass/focused-parakeet/greedy/mood-original-context.json",
+        "text": "and most important things. That's a really good question. Of course, when when developing stuff, you should look for the business. You should have a business validation. You should really think why you're building this, is is this relevant? Is this actually bringing us some value at the end? And I think customers are great validators in in the sense that now when when we are living in the times of why"
+      },
+      "beam": {
+        "result": "review-pass/focused-parakeet/beam/mood-original-context.json",
+        "text": "and most important things? That's a really good question. Of course, when when developing stuff, you should look for the business. You should have a business validation. You should really think why you're building this, is this relevant? Is this actually bringing us some value at the end? And I think customers are great validators in in the sense that now when when we are living in the times of why"
+      }
+    }
+  ],
+  "completedAt": "2026-10-22T11:19:22.244938+00:00",
+  "directListeningPerformed": false,
+  "recordingsUploaded": false
+}

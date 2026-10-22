@@ -1,0 +1,3170 @@
+{
+  "id": "waseem-talk",
+  "kind": "talk",
+  "officialTitle": "Code Was Never the Hard Part. Understanding Was—and Still Is.",
+  "speakerNames": [
+    "Muhammad Waseem"
+  ],
+  "durationSeconds": 1854.0,
+  "videoFile": "exports/talks-v02/waseem-talk-4k.mp4",
+  "reviewFile": "review/talks-v02/waseem-talk-720p.mp4",
+  "chapters": [
+    {
+      "outputSeconds": 0,
+      "title": "Introduction: code is cheap, understanding is not",
+      "sourceSeconds": 25607.12,
+      "timestamp": "00:00"
+    },
+    {
+      "outputSeconds": 302,
+      "title": "Write: faster helpers and a larger scope for mistakes",
+      "sourceSeconds": 25906.54,
+      "timestamp": "05:02"
+    },
+    {
+      "outputSeconds": 429,
+      "title": "Refactoring study: file correctness and repository risks",
+      "sourceSeconds": 26033.92,
+      "timestamp": "07:09"
+    },
+    {
+      "outputSeconds": 661,
+      "title": "Read: understanding and the review bottleneck",
+      "sourceSeconds": 26265.88,
+      "timestamp": "11:01"
+    },
+    {
+      "outputSeconds": 899,
+      "title": "Agent memory, tacit knowledge and decision context",
+      "sourceSeconds": 26503.82,
+      "timestamp": "14:59"
+    },
+    {
+      "outputSeconds": 1018,
+      "title": "Decide: when the next user is another agent",
+      "sourceSeconds": 26622.66,
+      "timestamp": "16:58"
+    },
+    {
+      "outputSeconds": 1271,
+      "title": "Design for replacement and own your data",
+      "sourceSeconds": 26875.7,
+      "timestamp": "21:11"
+    },
+    {
+      "outputSeconds": 1346,
+      "title": "Care: deterministic checks, human review and security",
+      "sourceSeconds": 26950.7,
+      "timestamp": "22:26"
+    },
+    {
+      "outputSeconds": 1599,
+      "title": "Three gates: safe, grounded and measured",
+      "sourceSeconds": 27203.14,
+      "timestamp": "26:39"
+    },
+    {
+      "outputSeconds": 1663,
+      "title": "Takeaways: measure the system and record the why",
+      "sourceSeconds": 27267.28,
+      "timestamp": "27:43"
+    }
+  ],
+  "materials": [
+    {
+      "label": "Slides (PDF)",
+      "url": "https://www.sdlcai.org/media/talks/genai-software-engineering/f491d4b2-18a5-4208-a7b2-19b48c192193.pdf"
+    }
+  ],
+  "talkUrl": "https://www.sdlcai.org/2026/schedule/#genai-software-engineering",
+  "existingSummary": "Muhammad Waseem argues that AI-generated code shifts the bottleneck toward understanding and ownership. He presents a refactoring study, discusses review load and missing decision context, and explores applications whose users are agents. He proposes deterministic and human checks, safe, grounded and measured gates, and recording why decisions are made.",
+  "captions": {
+    "language": "en",
+    "srt": "transcripts/final-v02/waseem-talk.en.srt",
+    "vtt": "transcripts/final-v02/waseem-talk.en.vtt",
+    "qualityReport": "transcripts/final-v02/waseem-talk.caption-qc.json",
+    "listeningReview": "transcripts/final-v02/waseem-talk.listening-review.txt",
+    "status": "prepared-with-human-listening-review-notes"
+  },
+  "captionSHA256": "9740de0f69aecf0c9798eb48a6a77715da4d56dfcdfd8368ee0819e033769ae7",
+  "mediaBytes": 887608844,
+  "cueCount": 430,
+  "listeningWindows": [
+    {
+      "id": "waseem-talk-143",
+      "videoId": "waseem-talk",
+      "startSeconds": 596.18,
+      "endSeconds": 609.64,
+      "priority": "high",
+      "category": "high_impact_wording",
+      "note": "Clarify the refactoring-result phrase it got unknown / this was a connection. The current wording obscures the technical result; preserve until heard clearly.",
+      "currentCaptionText": "kind of story. Something was breaking, fan in classes, fan out classes was broken there. And for some files, this particular file that we are refactoring, it got unknown. This was a connection. And this specific file was not ready to adopt in the repository.",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/waseem-talk.listening-review.json",
+          "entryIndices": [
+            4
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/waseem-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                130,
+                131
+              ],
+              "text": "in classes, out classes was broken there. And for some files, this particular file that we are refactoring, it got unknown. This was a connection. And this specific file was not ready to"
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/waseem-talk.listening-review.json",
+          "index": 4
+        }
+      ],
+      "sourceSegments": [
+        130,
+        131
+      ],
+      "sourceStartSeconds": 26200.3,
+      "sourceEndSeconds": 26213.76
+    },
+    {
+      "id": "waseem-talk-148",
+      "videoId": "waseem-talk",
+      "startSeconds": 1148.26,
+      "endSeconds": 1161.6,
+      "priority": "high",
+      "category": "high_impact_wording",
+      "note": "Confirm API queue. The inferred API key was removed in v02 because full, independent and isolated passes all hear queue and the slides do not settle the word.",
+      "currentCaptionText": "MCP can be used for multiple tools, and then it's performing. Of course, you need to expose the API queue to that. And then you are putting a contract. And then A2A communication, we have a payment gateway that actually support now to agent-based payments.",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/waseem-talk.listening-review.json",
+          "entryIndices": [
+            7,
+            17,
+            18
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/waseem-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                271
+              ],
+              "text": "can be used for a multiple tools and then it's performing. Of course, you need to expose the API queue to that. And then you are putting a contract. And then, at the way,"
+            },
+            {
+              "segments": [
+                273
+              ],
+              "text": "the API queue to that and then you are putting a contract and then at way communication we have a pammet gateway that actually support now to agent best payments and then"
+            },
+            {
+              "segments": [
+                256,
+                271,
+                273
+              ],
+              "text": "because most of our application currently is a screen-based application. But when agents are communicating with another service, as your application, then you need an intent. So, your screens will move through the intents, and your application will move on API and contracts, and then your document that you have, for example, helping guide you ever read and write, or, sorry, you ever write for the human beings, this will go actually to agents and it will act as a knowledge base. So let's see this another visualization here. It will be a kind of thing that you have your agents, they are producing something or they are requesting something, then you have a tool set and then you have other agent"
+            }
+          ]
+        },
+        {
+          "type": "isolatedLocalASR",
+          "model": "Whisper large-v3",
+          "path": "transcripts/priority-checks-v1/comparison-index.json",
+          "checks": [
+            {
+              "id": "waseem-api-key",
+              "text": "We have MCP, MCP can be used for multiple tools, and then it's performing. Of course, you need to expose the API queue to that. And then you are putting a contract, and then at way,"
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 273,
+              "before": "at way communication",
+              "after": "A2A communication",
+              "basis": "Agent-to-agent protocol shown on slide18; phonetic/context match."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/waseem-talk.listening-review.json",
+          "index": 7
+        },
+        {
+          "path": "transcripts/final-v02/waseem-talk.listening-review.json",
+          "index": 17
+        },
+        {
+          "path": "transcripts/final-v02/waseem-talk.listening-review.json",
+          "index": 18
+        }
+      ],
+      "sourceSegments": [
+        271,
+        273
+      ],
+      "sourceStartSeconds": 26752.38,
+      "sourceEndSeconds": 26765.72
+    },
+    {
+      "id": "waseem-talk-144",
+      "videoId": "waseem-talk",
+      "startSeconds": 707.84,
+      "endSeconds": 714.08,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "We attempt to approve may be we tend to approve; listen before changing.",
+      "currentCaptionText": "generating a code, actually read the code before approving it? Usually, no, we attempt to approve the code. We said, okay, yes, look good.",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/waseem-talk.listening-review.json",
+          "entryIndices": [
+            5
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/waseem-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                153
+              ],
+              "text": "Actually read the code before approving it. Usually now we attend to approve the code. We said okay yes, look good. Are you sure? Yes."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/waseem-talk.listening-review.json",
+          "index": 5
+        }
+      ],
+      "sourceSegments": [
+        153
+      ],
+      "sourceStartSeconds": 26311.96,
+      "sourceEndSeconds": 26318.2
+    },
+    {
+      "id": "waseem-talk-145",
+      "videoId": "waseem-talk",
+      "startSeconds": 777.64,
+      "endSeconds": 786.76,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Context-supported correction still marked for listening: CRC++ → C or C++",
+      "currentCaptionText": "Some medical devices, you are writing a code for them. Some mission-critical system, like a C or C++. Can we still trust on the agents?",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/waseem-talk.listening-review.json",
+          "entryIndices": [
+            12
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/waseem-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                176
+              ],
+              "text": "some medical devices, you are like writing a code for them, some mission critical system, like a CRC++. Can we still trust on the exits? So, this."
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 176,
+              "before": "CRC++",
+              "after": "C or C++",
+              "basis": "Programming-language reference in a mission-critical-system example; listening required."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/waseem-talk.listening-review.json",
+          "index": 12
+        }
+      ],
+      "sourceSegments": [
+        176
+      ],
+      "sourceStartSeconds": 26381.76,
+      "sourceEndSeconds": 26390.88
+    },
+    {
+      "id": "waseem-talk-146",
+      "videoId": "waseem-talk",
+      "startSeconds": 936.48,
+      "endSeconds": 944.08,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Confirm memory-tool names Hindsight, Acontext and Mem0. Primary product references and phonetics support these spellings; slides do not list them. Context-supported correction still marked for listening: hand site → Hindsight Context-supported correction still marked for listening: a context → Acontext",
+      "currentCaptionText": "Of course, we have a different solution for the memories now, like a Hindsight, Acontext, Mem0. These are the memory management system that we are using to",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/waseem-talk.listening-review.json",
+          "entryIndices": [
+            0,
+            6,
+            13,
+            14,
+            15
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/waseem-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                225
+              ],
+              "text": "that we have a limited memory. Of course, we have a different solution for the memories now, like a hand side, a context, meme 0. These are the memory management system that we are using to increase the memory."
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 225,
+              "before": "hand site",
+              "after": "Hindsight",
+              "basis": "Agent memory architecture named in https://arxiv.org/abs/2512.12818; phonetic/context match."
+            },
+            {
+              "segment": 225,
+              "before": "a context",
+              "after": "Acontext",
+              "basis": "Agent memory tool at https://docs.acontext.io/; phonetic/context match."
+            },
+            {
+              "segment": 225,
+              "before": "MIM0",
+              "after": "Mem0",
+              "basis": "Canonical memory-system spelling and pronunciation mem-zero at https://docs.mem0.ai/features/contextual-add."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/waseem-talk.listening-review.json",
+          "index": 0
+        },
+        {
+          "path": "transcripts/final-v02/waseem-talk.listening-review.json",
+          "index": 6
+        },
+        {
+          "path": "transcripts/final-v02/waseem-talk.listening-review.json",
+          "index": 13
+        },
+        {
+          "path": "transcripts/final-v02/waseem-talk.listening-review.json",
+          "index": 14
+        },
+        {
+          "path": "transcripts/final-v02/waseem-talk.listening-review.json",
+          "index": 15
+        }
+      ],
+      "sourceSegments": [
+        225
+      ],
+      "sourceStartSeconds": 26540.6,
+      "sourceEndSeconds": 26548.2
+    },
+    {
+      "id": "waseem-talk-147",
+      "videoId": "waseem-talk",
+      "startSeconds": 1080.2,
+      "endSeconds": 1090.22,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Confirm service/protocol terminology in the relevant short passage; source segment groups are split so unrelated intervening speech need not be reviewed.",
+      "currentCaptionText": "All of our applications are ready, because most of our application currently is a screen-based application. But when agents are communicating with another service, as your application, then you need an intent. So your screens will move to the intents.",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/waseem-talk.listening-review.json",
+          "entryIndices": [
+            7,
+            16
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/waseem-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                256
+              ],
+              "text": "because most of our application currently is a screen based application. But when agents are communicating with another service, are your application then you need intent. So your screens will move from a"
+            },
+            {
+              "segments": [
+                256,
+                271,
+                273
+              ],
+              "text": "because most of our application currently is a screen-based application. But when agents are communicating with another service, as your application, then you need an intent. So, your screens will move through the intents, and your application will move on API and contracts, and then your document that you have, for example, helping guide you ever read and write, or, sorry, you ever write for the human beings, this will go actually to agents and it will act as a knowledge base. So let's see this another visualization here. It will be a kind of thing that you have your agents, they are producing something or they are requesting something, then you have a tool set and then you have other agent"
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 256,
+              "before": "Azure application",
+              "after": "as your application",
+              "basis": "Sentence compares an agent calling another service/application; listening required."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/waseem-talk.listening-review.json",
+          "index": 7
+        },
+        {
+          "path": "transcripts/final-v02/waseem-talk.listening-review.json",
+          "index": 16
+        }
+      ],
+      "sourceSegments": [
+        256
+      ],
+      "sourceStartSeconds": 26684.32,
+      "sourceEndSeconds": 26694.34
+    },
+    {
+      "id": "waseem-talk-151",
+      "videoId": "waseem-talk",
+      "startSeconds": 1513.4,
+      "endSeconds": 1524.32,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Context-supported correction still marked for listening: agency is → agent is",
+      "currentCaptionText": "They are known. If you are a developer, you are doing, it's fine. But if your agent is coding on your behalf, it will bring this kind of identity. Of course, we can use some security scanner to identify those things,",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/waseem-talk.listening-review.json",
+          "entryIndices": [
+            19
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/waseem-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                357
+              ],
+              "text": "If you are developers, you are doing, it's fine. But if your agency is coding on your behalf, it will bring this kind of identity. Of course, we can use the sub-scorty scanner to identify those things. But the agents are doing."
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 357,
+              "before": "agency is",
+              "after": "agent is",
+              "basis": "Subject is an AI agent coding on someone’s behalf."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/waseem-talk.listening-review.json",
+          "index": 19
+        }
+      ],
+      "sourceSegments": [
+        357
+      ],
+      "sourceStartSeconds": 27117.52,
+      "sourceEndSeconds": 27128.44
+    },
+    {
+      "id": "waseem-talk-154",
+      "videoId": "waseem-talk",
+      "startSeconds": 1809.44,
+      "endSeconds": 1824.58,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Window or visit-based application may mean wizard-based or widget-based; do not guess without audio.",
+      "currentCaptionText": "But then we did another experiment around that. Okay. We should define the content. And then what we want to achieve from this window or visit-based application, it should be happen behind the scene and finally it give me the reports or whatever",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/waseem-talk.listening-review.json",
+          "entryIndices": [
+            2,
+            10
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/waseem-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                434
+              ],
+              "text": "around that but then we did another experiment around that. Okay we should define the content and then"
+            },
+            {
+              "segments": [
+                436
+              ],
+              "text": "Okay, we should define the content and then what we want to achieve from this window or visit-based application, it should be happened behind the scene and finally it give me the report."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/waseem-talk.listening-review.json",
+          "index": 2
+        },
+        {
+          "path": "transcripts/final-v02/waseem-talk.listening-review.json",
+          "index": 10
+        }
+      ],
+      "sourceSegments": [
+        434,
+        436
+      ],
+      "sourceStartSeconds": 27413.56,
+      "sourceEndSeconds": 27428.7
+    }
+  ],
+  "cues": [
+    {
+      "id": 1,
+      "start": 4.54,
+      "end": 10.2,
+      "text": "Uh evening evening evening I probably know that like you people are a bit tired so"
+    },
+    {
+      "id": 2,
+      "start": 10.22,
+      "end": 16.92,
+      "text": "let's not make so much complicated today presentation so short answer question"
+    },
+    {
+      "id": 3,
+      "start": 16.94,
+      "end": 23.91,
+      "text": "so how many of you are using AI for writing a"
+    },
+    {
+      "id": 4,
+      "start": 23.93,
+      "end": 30.58,
+      "text": "code? Quite many. So how many of you actually read the code before"
+    },
+    {
+      "id": 5,
+      "start": 30.6,
+      "end": 34.02,
+      "text": "shipping to production?"
+    },
+    {
+      "id": 6,
+      "start": 34.2,
+      "end": 37.54,
+      "text": "So many. And you really understand this whole thing?"
+    },
+    {
+      "id": 7,
+      "start": 37.56,
+      "end": 39.02,
+      "text": "Amazing. So good results."
+    },
+    {
+      "id": 8,
+      "start": 39.04,
+      "end": 45.12,
+      "text": "So probably in research, what we feel that there is a gap, that gap is around"
+    },
+    {
+      "id": 9,
+      "start": 45.17,
+      "end": 47.18,
+      "text": "understanding the code."
+    },
+    {
+      "id": 10,
+      "start": 47.2,
+      "end": 50.76,
+      "text": "And we believe that even never writing a code was a problem."
+    },
+    {
+      "id": 11,
+      "start": 51.56,
+      "end": 55.72,
+      "text": "And understanding the code, putting the code on the right place, this was the"
+    },
+    {
+      "id": 12,
+      "start": 55.87,
+      "end": 58.3,
+      "text": "problem. And this is the still problem."
+    },
+    {
+      "id": 13,
+      "start": 58.5,
+      "end": 60.65,
+      "text": "But we have now a bigger issue around that."
+    },
+    {
+      "id": 14,
+      "start": 60.68,
+      "end": 63.68,
+      "text": "So today I am going to defend this whole thing."
+    },
+    {
+      "id": 15,
+      "start": 64.18,
+      "end": 66.16,
+      "text": "Code was never the hard part."
+    },
+    {
+      "id": 16,
+      "start": 66.74,
+      "end": 72.62,
+      "text": "If you see here, what we understand so far, your computing speed is"
+    },
+    {
+      "id": 17,
+      "start": 72.64,
+      "end": 74.18,
+      "text": "increasing."
+    },
+    {
+      "id": 18,
+      "start": 75.1,
+      "end": 77.8,
+      "text": "The cost of the tokens is decreasing."
+    },
+    {
+      "id": 19,
+      "start": 78.4,
+      "end": 84.64,
+      "text": "Some studies say that like 900 times cost is decreased, your LLM cost decreased."
+    },
+    {
+      "id": 20,
+      "start": 84.66,
+      "end": 91.48,
+      "text": "But still we are stuck with using AI, or probably we are using AI just"
+    },
+    {
+      "id": 21,
+      "start": 91.89,
+      "end": 98.67,
+      "text": "for coding. We are not using AI as a component inside our brownfield project."
+    },
+    {
+      "id": 22,
+      "start": 99.28,
+      "end": 100.94,
+      "text": "Why? This is the issue."
+    },
+    {
+      "id": 23,
+      "start": 101.5,
+      "end": 107.88,
+      "text": "And then another thing that we feel, the AI is something like currently our"
+    },
+    {
+      "id": 24,
+      "start": 107.9,
+      "end": 110.22,
+      "text": "processes are not built around that."
+    },
+    {
+      "id": 25,
+      "start": 110.24000000000001,
+      "end": 115.18,
+      "text": "You can see that like AI or the component LLM is a Formula One."
+    },
+    {
+      "id": 26,
+      "start": 115.9,
+      "end": 120.44,
+      "text": "But around that, the traffic, your processes, and so many other things, like,"
+    },
+    {
+      "id": 27,
+      "start": 120.53,
+      "end": 125.62,
+      "text": "for example, handoff, approval queues, status meeting, missing context, and"
+    },
+    {
+      "id": 28,
+      "start": 125.64,
+      "end": 129.49,
+      "text": "unclear ownership of the LLMs is the real problem."
+    },
+    {
+      "id": 29,
+      "start": 130.18,
+      "end": 133.36,
+      "text": "Your AI is stuck somewhere."
+    },
+    {
+      "id": 30,
+      "start": 133.38,
+      "end": 138.53,
+      "text": "And you are just like a speeding and writing of the code."
+    },
+    {
+      "id": 31,
+      "start": 138.57999999999998,
+      "end": 140.62,
+      "text": "Last week, I was in Amsterdam."
+    },
+    {
+      "id": 32,
+      "start": 140.66,
+      "end": 144.4,
+      "text": "Probably some of you was there."
+    },
+    {
+      "id": 33,
+      "start": 144.42000000000002,
+      "end": 147.66,
+      "text": "There was 300 talks in two days."
+    },
+    {
+      "id": 34,
+      "start": 147.68,
+      "end": 154.65,
+      "text": "None of the discussion was around quality of the LLMs, speed of the"
+    },
+    {
+      "id": 35,
+      "start": 154.7,
+      "end": 156.54,
+      "text": "LLM, or having a new LLM."
+    },
+    {
+      "id": 36,
+      "start": 156.56,
+      "end": 162.14,
+      "text": "We all know that big companies will bring the new LLM in a couple of weeks or a"
+    },
+    {
+      "id": 37,
+      "start": 162.16,
+      "end": 163.01,
+      "text": "couple of months."
+    },
+    {
+      "id": 38,
+      "start": 163.8,
+      "end": 165.64,
+      "text": "Most of the discussion was around that."
+    },
+    {
+      "id": 39,
+      "start": 165.66,
+      "end": 168.44,
+      "text": "For example, your AI works in the demo."
+    },
+    {
+      "id": 40,
+      "start": 169.12,
+      "end": 169.92000000000002,
+      "text": "Now what?"
+    },
+    {
+      "id": 41,
+      "start": 170.56,
+      "end": 175.71,
+      "text": "Every night I'm developing a one demo to address some of the unknown problems."
+    },
+    {
+      "id": 42,
+      "start": 176.78,
+      "end": 182.42,
+      "text": "But I'm hardly able to push those development demos into the production"
+    },
+    {
+      "id": 43,
+      "start": 182.44,
+      "end": 185.97,
+      "text": "environment. Or maybe they have some real value around that."
+    },
+    {
+      "id": 44,
+      "start": 186.56,
+      "end": 189.96,
+      "text": "Then LLMs in production, why everything breaks at scale."
+    },
+    {
+      "id": 45,
+      "start": 190.88,
+      "end": 192.4,
+      "text": "You put an LLM in a production."
+    },
+    {
+      "id": 46,
+      "start": 192.42,
+      "end": 196.2,
+      "text": "I'm right now, again, I'm not talking about writing a code with LLM."
+    },
+    {
+      "id": 47,
+      "start": 196.62,
+      "end": 202.29,
+      "text": "I'm here convinced trying to put the message in a way that we are using LLM,"
+    },
+    {
+      "id": 48,
+      "start": 202.31,
+      "end": 205.3,
+      "text": "our agent, as a component of your application."
+    },
+    {
+      "id": 49,
+      "start": 206.16,
+      "end": 210.26,
+      "text": "So working in demo, but when we are putting in a production, how and what will"
+    },
+    {
+      "id": 50,
+      "start": 210.28,
+      "end": 215.98,
+      "text": "happen? Then we have the problem is not an AI adoption, it is an AI integration in"
+    },
+    {
+      "id": 51,
+      "start": 216.0,
+      "end": 217.16,
+      "text": "your existing projects."
+    },
+    {
+      "id": 52,
+      "start": 218.5,
+      "end": 221.0,
+      "text": "Why this is happening? Are we thinking about that?"
+    },
+    {
+      "id": 53,
+      "start": 221.46,
+      "end": 227.3,
+      "text": "So then the AI comes, or the AI arms, race is over, now comes the hard part."
+    },
+    {
+      "id": 54,
+      "start": 227.9,
+      "end": 230.13,
+      "text": "The hard part is that who will own what?"
+    },
+    {
+      "id": 55,
+      "start": 231.2,
+      "end": 237.68,
+      "text": "What is the scope of your agent that you are integrating within your"
+    },
+    {
+      "id": 56,
+      "start": 237.79,
+      "end": 241.13,
+      "text": "process? How you are controlling it?"
+    },
+    {
+      "id": 57,
+      "start": 241.32,
+      "end": 242.62,
+      "text": "What you are providing it?"
+    },
+    {
+      "id": 58,
+      "start": 242.65,
+      "end": 244.57,
+      "text": "So this is the real question."
+    },
+    {
+      "id": 59,
+      "start": 244.9,
+      "end": 247.32,
+      "text": "So here, this is my talk around it."
+    },
+    {
+      "id": 60,
+      "start": 247.34,
+      "end": 250.94,
+      "text": "AI made code cheap. It did not make understanding cheap."
+    },
+    {
+      "id": 61,
+      "start": 250.96,
+      "end": 256.83,
+      "text": "You have a pile of code generated by the AI."
+    },
+    {
+      "id": 62,
+      "start": 257.36,
+      "end": 261.1,
+      "text": "Look here, I'm actually dividing my this talk into the four parts."
+    },
+    {
+      "id": 63,
+      "start": 261.68,
+      "end": 264.63,
+      "text": "One, for example, let's see writing."
+    },
+    {
+      "id": 64,
+      "start": 265.4,
+      "end": 268.35,
+      "text": "We know that AI is super fast writing the code."
+    },
+    {
+      "id": 65,
+      "start": 269.0,
+      "end": 272.93,
+      "text": "Then, reading. Here we will discuss who will read what."
+    },
+    {
+      "id": 66,
+      "start": 275.18,
+      "end": 278.62,
+      "text": "Can we put like AI to read our code?"
+    },
+    {
+      "id": 67,
+      "start": 279.18,
+      "end": 284.33,
+      "text": "Or can human read the AI code and they understand all the consequences around"
+    },
+    {
+      "id": 68,
+      "start": 284.65999999999997,
+      "end": 287.34000000000003,
+      "text": "that? And what kind of problems are going around that?"
+    },
+    {
+      "id": 69,
+      "start": 287.36,
+      "end": 292.51,
+      "text": "And then deciding what we need to decide based on the input that we are getting"
+    },
+    {
+      "id": 70,
+      "start": 292.84000000000003,
+      "end": 299.35,
+      "text": "from our LLM, beloved buddy LLM, and then care what we need to protect."
+    },
+    {
+      "id": 71,
+      "start": 299.88,
+      "end": 301.59,
+      "text": "I will slightly dig down more."
+    },
+    {
+      "id": 72,
+      "start": 302.42,
+      "end": 304.17,
+      "text": "For the writing, we have good news."
+    },
+    {
+      "id": 73,
+      "start": 304.72,
+      "end": 309.7,
+      "text": "Absolutely fine. Everyone is sharing that they are able to produce so much code,"
+    },
+    {
+      "id": 74,
+      "start": 309.72,
+      "end": 316.14,
+      "text": "good quality code, zero buggy code, and maybe adopt like a production-ready code."
+    },
+    {
+      "id": 75,
+      "start": 316.56,
+      "end": 318.92,
+      "text": "But there are several risks."
+    },
+    {
+      "id": 76,
+      "start": 318.98,
+      "end": 324.4,
+      "text": "I think you can actually resonate here that we are writing a couple of things"
+    },
+    {
+      "id": 77,
+      "start": 324.42,
+      "end": 328.94,
+      "text": "here. Okay, sorry, I'm going a bit faster here."
+    },
+    {
+      "id": 78,
+      "start": 330.4,
+      "end": 333.35,
+      "text": "So we are able to use AI for writing a code."
+    },
+    {
+      "id": 79,
+      "start": 333.6,
+      "end": 336.65999999999997,
+      "text": "We are able to choose AI for testing a code."
+    },
+    {
+      "id": 80,
+      "start": 336.68,
+      "end": 342.02,
+      "text": "And our leaders and project managers, they are using the AI for documenting a code."
+    },
+    {
+      "id": 81,
+      "start": 342.04,
+      "end": 345.54,
+      "text": "And some researchers, they are using refactoring the code."
+    },
+    {
+      "id": 82,
+      "start": 346.4,
+      "end": 351.56,
+      "text": "I will share one of the findings of our study that we use the AI for refactoring"
+    },
+    {
+      "id": 83,
+      "start": 351.88,
+      "end": 354.28,
+      "text": "the code, what has actually happened."
+    },
+    {
+      "id": 84,
+      "start": 355.08,
+      "end": 360.52,
+      "text": "But the thing is this, imagine in the last couple of years, we moved from suggestive"
+    },
+    {
+      "id": 85,
+      "start": 360.72,
+      "end": 367.32,
+      "text": "or a co-pilot thing to the fully automated agentic system that are actually"
+    },
+    {
+      "id": 86,
+      "start": 367.34,
+      "end": 370.59,
+      "text": "helping us to write the code in the whole scenario."
+    },
+    {
+      "id": 87,
+      "start": 371.5,
+      "end": 378.29,
+      "text": "But meanwhile, we also find that if we are using a copilot, our problem"
+    },
+    {
+      "id": 88,
+      "start": 378.31,
+      "end": 383.6,
+      "text": "is a kind of ops. Like, your problem still remain on the line level."
+    },
+    {
+      "id": 89,
+      "start": 383.62,
+      "end": 388.27,
+      "text": "But when we are using some sort of the suggestive chat assistant, maybe you are"
+    },
+    {
+      "id": 90,
+      "start": 388.39,
+      "end": 392.28,
+      "text": "writing a function and problem is raising around that."
+    },
+    {
+      "id": 91,
+      "start": 392.3,
+      "end": 398.48,
+      "text": "But once we are using some coding agent, again, it has some limited scope, file"
+    },
+    {
+      "id": 92,
+      "start": 398.78,
+      "end": 400.42,
+      "text": "level, or something like that."
+    },
+    {
+      "id": 93,
+      "start": 400.44,
+      "end": 405.36,
+      "text": "But when you have a whole agentic system orchestrated for the coding and some"
+    },
+    {
+      "id": 94,
+      "start": 405.38,
+      "end": 409.3,
+      "text": "problem are raising, what will be the situation?"
+    },
+    {
+      "id": 95,
+      "start": 410.24,
+      "end": 413.46,
+      "text": "And that agentic system you have defined some are for the requirement"
+    },
+    {
+      "id": 96,
+      "start": 413.48,
+      "end": 418.44,
+      "text": "clarification, some you have defined for design, decision identification."
+    },
+    {
+      "id": 97,
+      "start": 419.32,
+      "end": 423.34,
+      "text": "Some agents are working for the coding, some agents are working with the testing."
+    },
+    {
+      "id": 98,
+      "start": 423.36,
+      "end": 427.82,
+      "text": "Somewhere in this place, you have a problem, then this problem will have a"
+    },
+    {
+      "id": 99,
+      "start": 427.84,
+      "end": 429.04,
+      "text": "ripple effect."
+    },
+    {
+      "id": 100,
+      "start": 429.8,
+      "end": 432.35,
+      "text": "Here I will share the one study that we have done."
+    },
+    {
+      "id": 101,
+      "start": 432.92,
+      "end": 436.54,
+      "text": "We have actually taken 15 open source Java repositories."
+    },
+    {
+      "id": 102,
+      "start": 437.16,
+      "end": 441.83,
+      "text": "Each repository is representing one system, and these repositories consist of"
+    },
+    {
+      "id": 103,
+      "start": 441.85,
+      "end": 443.94,
+      "text": "several thousands of files."
+    },
+    {
+      "id": 104,
+      "start": 444.76,
+      "end": 449.91,
+      "text": "Out of that, we randomly selected, again, we did the random sampling, and we"
+    },
+    {
+      "id": 105,
+      "start": 450.24,
+      "end": 456.08,
+      "text": "identified 10 files from each repository."
+    },
+    {
+      "id": 106,
+      "start": 456.48,
+      "end": 460.96,
+      "text": "Altogether, 150 files we have selected."
+    },
+    {
+      "id": 107,
+      "start": 460.98,
+      "end": 466.06,
+      "text": "And then we choose two approaches with top frontier models."
+    },
+    {
+      "id": 108,
+      "start": 466.1,
+      "end": 471.64,
+      "text": "One was that we developed the agentic system to refactor the file."
+    },
+    {
+      "id": 109,
+      "start": 471.78,
+      "end": 475.3,
+      "text": "And one was that we just said prompt-based system."
+    },
+    {
+      "id": 110,
+      "start": 475.32,
+      "end": 477.34000000000003,
+      "text": "Our input is going to the prompts."
+    },
+    {
+      "id": 111,
+      "start": 477.36,
+      "end": 481.98,
+      "text": "And then it's also start evaluating it."
+    },
+    {
+      "id": 112,
+      "start": 482.0,
+      "end": 486.66,
+      "text": "Results are not so good for us, in a way."
+    },
+    {
+      "id": 113,
+      "start": 486.68,
+      "end": 488.39,
+      "text": "But we found"
+    },
+    {
+      "id": 114,
+      "start": 489.2,
+      "end": 495.54,
+      "text": "that, if you multiply 15 with two combinations, then with 10, you have"
+    },
+    {
+      "id": 115,
+      "start": 495.56,
+      "end": 499.02,
+      "text": "1,500 all combinations."
+    },
+    {
+      "id": 116,
+      "start": 499.04,
+      "end": 504.19,
+      "text": "Out of that, we have found 1,455 candidates."
+    },
+    {
+      "id": 117,
+      "start": 504.4,
+      "end": 511.38,
+      "text": "And these candidates, we tried to refactor with the both agentic system with the chat"
+    },
+    {
+      "id": 118,
+      "start": 511.4,
+      "end": 517.59,
+      "text": "bot. What we found? 93.8% files were risky."
+    },
+    {
+      "id": 119,
+      "start": 517.61,
+      "end": 522.87,
+      "text": "Imagine it like you guys are, of course, definitely you have worked around a"
+    },
+    {
+      "id": 120,
+      "start": 522.89,
+      "end": 527.04,
+      "text": "Java-based system, and you know that these are object-oriented nature of the"
+    },
+    {
+      "id": 121,
+      "start": 527.06,
+      "end": 531.9,
+      "text": "Java-based system. If I am taking one file, this file is connected with several"
+    },
+    {
+      "id": 122,
+      "start": 531.92,
+      "end": 537.37,
+      "text": "other files, and in some places it's connected it with several hundred files."
+    },
+    {
+      "id": 123,
+      "start": 537.41,
+      "end": 541.73,
+      "text": "And LLMs, whatever context we are giving, we are giving an input."
+    },
+    {
+      "id": 124,
+      "start": 542.08,
+      "end": 545.51,
+      "text": "Okay, you need to remove the code smells from this file."
+    },
+    {
+      "id": 125,
+      "start": 545.53,
+      "end": 548.61,
+      "text": "And for example, there is too much coupling."
+    },
+    {
+      "id": 126,
+      "start": 548.77,
+      "end": 553.0,
+      "text": "I'm speaking to the academic guys and also the industrial people."
+    },
+    {
+      "id": 127,
+      "start": 553.02,
+      "end": 555.64,
+      "text": "If you have too much coupling, not good."
+    },
+    {
+      "id": 128,
+      "start": 555.66,
+      "end": 557.73,
+      "text": "Complexities are increasing."
+    },
+    {
+      "id": 129,
+      "start": 557.75,
+      "end": 560.11,
+      "text": "And we want to improve the cohesion."
+    },
+    {
+      "id": 130,
+      "start": 560.18,
+      "end": 567.12,
+      "text": "For example, our one class is, have more than 500 line of code, then we"
+    },
+    {
+      "id": 131,
+      "start": 567.14,
+      "end": 570.96,
+      "text": "said, oh, this is not good, this is not around the design principles, so what"
+    },
+    {
+      "id": 132,
+      "start": 570.98,
+      "end": 576.14,
+      "text": "should we do with it? We put the LLM, and we are asking the LLM, our agentic system,"
+    },
+    {
+      "id": 133,
+      "start": 576.16,
+      "end": 581.95,
+      "text": "yeah, please do this, understand this, don't remove the context, functionality,"
+    },
+    {
+      "id": 134,
+      "start": 582.18,
+      "end": 584.76,
+      "text": "whatever, give me the good file."
+    },
+    {
+      "id": 135,
+      "start": 584.78,
+      "end": 591.27,
+      "text": "The thing, Then what happened with us, we found that 93.8% time there was not this"
+    },
+    {
+      "id": 136,
+      "start": 591.58,
+      "end": 597.47,
+      "text": "kind of story. Something was breaking, fan in classes, fan out classes was broken"
+    },
+    {
+      "id": 137,
+      "start": 597.49,
+      "end": 604.08,
+      "text": "there. And for some files, this particular file that we are refactoring, it got"
+    },
+    {
+      "id": 138,
+      "start": 604.1,
+      "end": 607.61,
+      "text": "unknown. This was a connection."
+    },
+    {
+      "id": 139,
+      "start": 607.64,
+      "end": 614.46,
+      "text": "And this specific file was not ready to adopt in the repository."
+    },
+    {
+      "id": 140,
+      "start": 614.68,
+      "end": 620.78,
+      "text": "So this is what we found with the LangChain plus all the frontier models."
+    },
+    {
+      "id": 141,
+      "start": 620.8,
+      "end": 625.42,
+      "text": "And this story is not actually different for other models as well."
+    },
+    {
+      "id": 142,
+      "start": 625.44,
+      "end": 628.74,
+      "text": "There are several problems around that, why we are happening this."
+    },
+    {
+      "id": 143,
+      "start": 628.76,
+      "end": 631.96,
+      "text": "So we are now investigating that, what are the possible reasons."
+    },
+    {
+      "id": 144,
+      "start": 631.98,
+      "end": 635.22,
+      "text": "One of the reasons is that your agents don't have much memory."
+    },
+    {
+      "id": 145,
+      "start": 635.24,
+      "end": 641.0,
+      "text": "Of course, some of the LLMs are going up to reaching 2 million context window, but"
+    },
+    {
+      "id": 146,
+      "start": 641.05,
+      "end": 644.82,
+      "text": "we We are not able to use that whole context window here."
+    },
+    {
+      "id": 147,
+      "start": 644.86,
+      "end": 651.63,
+      "text": "And then your agents are not completely still, like, ready to perform"
+    },
+    {
+      "id": 148,
+      "start": 651.65,
+      "end": 655.22,
+      "text": "end-to-end tasks independently."
+    },
+    {
+      "id": 149,
+      "start": 655.24,
+      "end": 659.0,
+      "text": "So this is what we feel, what we found in our research."
+    },
+    {
+      "id": 150,
+      "start": 659.08,
+      "end": 661.74,
+      "text": "So this paper will be out very soon."
+    },
+    {
+      "id": 151,
+      "start": 661.76,
+      "end": 663.49,
+      "text": "The second thing was that reading."
+    },
+    {
+      "id": 152,
+      "start": 663.6,
+      "end": 668.14,
+      "text": "If you say that reading, understanding is the bottleneck."
+    },
+    {
+      "id": 153,
+      "start": 668.16,
+      "end": 672.52,
+      "text": "Yes, so many people said that, like, we are understanding the code."
+    },
+    {
+      "id": 154,
+      "start": 673.02,
+      "end": 674.57,
+      "text": "Absolutely agree with you guys."
+    },
+    {
+      "id": 155,
+      "start": 675.6,
+      "end": 679.5,
+      "text": "But the thing is that, are we understanding in the pace of AI is"
+    },
+    {
+      "id": 156,
+      "start": 679.52,
+      "end": 680.74,
+      "text": "generating the code?"
+    },
+    {
+      "id": 157,
+      "start": 683.3,
+      "end": 684.1,
+      "text": "I don't know."
+    },
+    {
+      "id": 158,
+      "start": 684.98,
+      "end": 689.08,
+      "text": "Yes, if I see the code in front of me, I will see that, okay, from where this is"
+    },
+    {
+      "id": 159,
+      "start": 689.1,
+      "end": 690.68,
+      "text": "coming, which is the file."
+    },
+    {
+      "id": 160,
+      "start": 691.1,
+      "end": 693.08,
+      "text": "And I have created the database."
+    },
+    {
+      "id": 161,
+      "start": 693.14,
+      "end": 696.54,
+      "text": "With this database, I have this and this and that, blah, blah, blah."
+    },
+    {
+      "id": 162,
+      "start": 696.68,
+      "end": 703.14,
+      "text": "But how many of you, for example, are using the Cursor when your agent is"
+    },
+    {
+      "id": 163,
+      "start": 703.16,
+      "end": 708.28,
+      "text": "generating a code, actually read the code before approving it?"
+    },
+    {
+      "id": 164,
+      "start": 709.84,
+      "end": 712.07,
+      "text": "Usually, no, we attempt to approve the code."
+    },
+    {
+      "id": 165,
+      "start": 712.64,
+      "end": 714.36,
+      "text": "We said, okay, yes, look good."
+    },
+    {
+      "id": 166,
+      "start": 714.62,
+      "end": 717.52,
+      "text": "Are you sure? Yes. Your agent is saying, yes, I am good."
+    },
+    {
+      "id": 167,
+      "start": 717.74,
+      "end": 718.99,
+      "text": "Then you said approve it."
+    },
+    {
+      "id": 168,
+      "start": 719.58,
+      "end": 721.93,
+      "text": "And these things are coming in your production."
+    },
+    {
+      "id": 169,
+      "start": 722.62,
+      "end": 726.97,
+      "text": "And whenever you see that, like you see so many fascinating features in your end"
+    },
+    {
+      "id": 170,
+      "start": 727.05,
+      "end": 730.43,
+      "text": "product, but most of the time it's overwhelming."
+    },
+    {
+      "id": 171,
+      "start": 731.74,
+      "end": 734.74,
+      "text": "I will say that like things are so much critical here."
+    },
+    {
+      "id": 172,
+      "start": 735.08,
+      "end": 738.07,
+      "text": "We are adopting, we build adoptive nature."
+    },
+    {
+      "id": 173,
+      "start": 738.18,
+      "end": 744.99,
+      "text": "We see something that is not required for the product, but we feel that, okay,"
+    },
+    {
+      "id": 174,
+      "start": 745.01,
+      "end": 747.58,
+      "text": "it should be there. It's an extra feature."
+    },
+    {
+      "id": 175,
+      "start": 748.4,
+      "end": 752.0,
+      "text": "And something you start developing around that."
+    },
+    {
+      "id": 176,
+      "start": 752.02,
+      "end": 756.12,
+      "text": "And by end of the day, you have a really good product."
+    },
+    {
+      "id": 177,
+      "start": 756.14,
+      "end": 760.39,
+      "text": "But will it work in the production with the real customer?"
+    },
+    {
+      "id": 178,
+      "start": 760.52,
+      "end": 767.24,
+      "text": "And this is I'm talking about some sort of content-based application."
+    },
+    {
+      "id": 179,
+      "start": 767.26,
+      "end": 773.09,
+      "text": "But what if we are coding for some critical system, finance-related system,"
+    },
+    {
+      "id": 180,
+      "start": 773.11,
+      "end": 775.49,
+      "text": "and you are putting everything on them?"
+    },
+    {
+      "id": 181,
+      "start": 775.58,
+      "end": 779.62,
+      "text": "Some medical devices, you are writing a code for them."
+    },
+    {
+      "id": 182,
+      "start": 779.64,
+      "end": 784.74,
+      "text": "Some mission-critical system, like a C or C++."
+    },
+    {
+      "id": 183,
+      "start": 784.76,
+      "end": 788.1,
+      "text": "Can we still trust on the agents?"
+    },
+    {
+      "id": 184,
+      "start": 788.12,
+      "end": 791.52,
+      "text": "So these are the questions I'm leaving with you guys."
+    },
+    {
+      "id": 185,
+      "start": 791.54,
+      "end": 795.74,
+      "text": "But whenever we are talking about the reading, here is another question, that"
+    },
+    {
+      "id": 186,
+      "start": 795.79,
+      "end": 800.46,
+      "text": "there is a swarm of the code that we are getting."
+    },
+    {
+      "id": 187,
+      "start": 800.48,
+      "end": 804.49,
+      "text": "When I was preparing this presentation, I got a really good analogy, that when the"
+    },
+    {
+      "id": 188,
+      "start": 804.51,
+      "end": 811.36,
+      "text": "first time printing press was in market, commercializing the things."
+    },
+    {
+      "id": 189,
+      "start": 811.38,
+      "end": 817.76,
+      "text": "And the books were publishing on a so fast speed and people start talking about"
+    },
+    {
+      "id": 190,
+      "start": 818.02,
+      "end": 820.49,
+      "text": "that. Do we really need this?"
+    },
+    {
+      "id": 191,
+      "start": 820.64,
+      "end": 823.56,
+      "text": "We are printing this and something like that."
+    },
+    {
+      "id": 192,
+      "start": 823.58,
+      "end": 828.12,
+      "text": "But over there, people develop a new kind of skills."
+    },
+    {
+      "id": 193,
+      "start": 828.14,
+      "end": 833.12,
+      "text": "Those skills was around summarizing the book, having the contents, looking on"
+    },
+    {
+      "id": 194,
+      "start": 833.18,
+      "end": 837.18,
+      "text": "that, what I need to read it, what I don't need to read it, and from where, like"
+    },
+    {
+      "id": 195,
+      "start": 837.24,
+      "end": 839.11,
+      "text": "indexing. So this was not that."
+    },
+    {
+      "id": 196,
+      "start": 839.82,
+      "end": 844.31,
+      "text": "So you were finding your topic from the abstract and see that, okay, this book is"
+    },
+    {
+      "id": 197,
+      "start": 844.33,
+      "end": 848.14,
+      "text": "interesting to me, and then some going on the contents."
+    },
+    {
+      "id": 198,
+      "start": 848.64,
+      "end": 851.64,
+      "text": "So these things were developed after that."
+    },
+    {
+      "id": 199,
+      "start": 852.46,
+      "end": 857.42,
+      "text": "But look here. Imagine you are working with a team of five people, and now your"
+    },
+    {
+      "id": 200,
+      "start": 857.44,
+      "end": 862.08,
+      "text": "work is reviewing the code and putting in the integration and one of my dear"
+    },
+    {
+      "id": 201,
+      "start": 862.1,
+      "end": 865.5,
+      "text": "colleagues, he was talking about the PRs."
+    },
+    {
+      "id": 202,
+      "start": 865.52,
+      "end": 868.88,
+      "text": "And we have this kind of situation."
+    },
+    {
+      "id": 203,
+      "start": 868.9,
+      "end": 874.05,
+      "text": "Like, your developer are now 10 times more productive, and you have a reviewer over"
+    },
+    {
+      "id": 204,
+      "start": 874.17,
+      "end": 878.89,
+      "text": "there. And this reviewer's task is to review your code."
+    },
+    {
+      "id": 205,
+      "start": 878.92,
+      "end": 882.58,
+      "text": "And eventually, what we found that it's a kind of bottleneck."
+    },
+    {
+      "id": 206,
+      "start": 882.6,
+      "end": 888.28,
+      "text": "If you are using a reviewer here, as a human, he reviews the code, and he is"
+    },
+    {
+      "id": 207,
+      "start": 888.3,
+      "end": 894.1,
+      "text": "doing it properly before putting things in production environment are integrating"
+    },
+    {
+      "id": 208,
+      "start": 894.12,
+      "end": 898.16,
+      "text": "into your GitHub. So, still your speed is getting slow."
+    },
+    {
+      "id": 209,
+      "start": 899.7,
+      "end": 905.56,
+      "text": "Then, we are thinking that if you put the agents over there, what is the problem"
+    },
+    {
+      "id": 210,
+      "start": 905.67,
+      "end": 910.51,
+      "text": "with the agents? It's understanding your code, things so good, giving you the"
+    },
+    {
+      "id": 211,
+      "start": 910.7,
+      "end": 915.75,
+      "text": "context. At some point, agents start hallucinating the things."
+    },
+    {
+      "id": 212,
+      "start": 917.3,
+      "end": 922.19,
+      "text": "These agents may be very good with one file, but you have multiple files in your"
+    },
+    {
+      "id": 213,
+      "start": 922.21,
+      "end": 924.7,
+      "text": "repository. What will happen?"
+    },
+    {
+      "id": 214,
+      "start": 924.72,
+      "end": 926.76,
+      "text": "Their memory will be wiped out."
+    },
+    {
+      "id": 215,
+      "start": 926.84,
+      "end": 932.67,
+      "text": "And next day or next session, this agent actually behave differently."
+    },
+    {
+      "id": 216,
+      "start": 932.78,
+      "end": 935.76,
+      "text": "There is not only this problem that we have a limited memory."
+    },
+    {
+      "id": 217,
+      "start": 935.78,
+      "end": 940.318,
+      "text": "Of course, we have a different solution for the memories now, like a Hindsight,"
+    },
+    {
+      "id": 218,
+      "start": 940.338,
+      "end": 944.93,
+      "text": "Acontext, Mem0. These are the memory management system that we are using to"
+    },
+    {
+      "id": 219,
+      "start": 945.05,
+      "end": 946.34,
+      "text": "increase the memory."
+    },
+    {
+      "id": 220,
+      "start": 946.36,
+      "end": 951.06,
+      "text": "And, of course, we are talking about that, how you are actually, what information you"
+    },
+    {
+      "id": 221,
+      "start": 951.17,
+      "end": 952.34,
+      "text": "really need for the memory."
+    },
+    {
+      "id": 222,
+      "start": 952.36,
+      "end": 954.09,
+      "text": "And then it is stored over there."
+    },
+    {
+      "id": 223,
+      "start": 954.7,
+      "end": 957.6,
+      "text": "Behind the scene, things are working on a knowledge graph."
+    },
+    {
+      "id": 224,
+      "start": 957.64,
+      "end": 960.34,
+      "text": "And now another thing is context graph they are using."
+    },
+    {
+      "id": 225,
+      "start": 961.0,
+      "end": 962.98,
+      "text": "But still, they are limited."
+    },
+    {
+      "id": 226,
+      "start": 963.5,
+      "end": 970.3,
+      "text": "Still, we are not very much ready to trust this whole system."
+    },
+    {
+      "id": 227,
+      "start": 971.48,
+      "end": 973.84,
+      "text": "Beside that, there are other problems."
+    },
+    {
+      "id": 228,
+      "start": 974.54,
+      "end": 980.18,
+      "text": "Your agents only see whatever written and whatever the code is."
+    },
+    {
+      "id": 229,
+      "start": 981.0,
+      "end": 985.44,
+      "text": "Under that, different kind of decision, which was usually tacit knowledge,"
+    },
+    {
+      "id": 230,
+      "start": 986.0,
+      "end": 991.0,
+      "text": "different rationales, rejected option, constraint, who agree and why."
+    },
+    {
+      "id": 231,
+      "start": 991.52,
+      "end": 993.07,
+      "text": "Sometimes it's an untold story."
+    },
+    {
+      "id": 232,
+      "start": 994.52,
+      "end": 998.98,
+      "text": "Your agents are still not able to understand the tacit knowledge, although"
+    },
+    {
+      "id": 233,
+      "start": 999.27,
+      "end": 1002.5,
+      "text": "we are doing in GPT-Lab, we are doing research around that, how you can capture"
+    },
+    {
+      "id": 234,
+      "start": 1002.52,
+      "end": 1003.52,
+      "text": "the tacit knowledge."
+    },
+    {
+      "id": 235,
+      "start": 1004.54,
+      "end": 1009.06,
+      "text": "And, of course, you need a lot of things around that."
+    },
+    {
+      "id": 236,
+      "start": 1009.08,
+      "end": 1015.9,
+      "text": "So overall, this code is a one surface that agent can see"
+    },
+    {
+      "id": 237,
+      "start": 1016.28,
+      "end": 1018.51,
+      "text": "it and agent can read it."
+    },
+    {
+      "id": 238,
+      "start": 1018.54,
+      "end": 1023.98,
+      "text": "One -- let's suppose agents have write the things very good, agents understand your"
+    },
+    {
+      "id": 239,
+      "start": 1024.02,
+      "end": 1028.32,
+      "text": "code in a good way, then it's coming to the decision."
+    },
+    {
+      "id": 240,
+      "start": 1028.34,
+      "end": 1035.14,
+      "text": "Kind of decision your agents will take, especially when your software"
+    },
+    {
+      "id": 241,
+      "start": 1035.57,
+      "end": 1038.0,
+      "text": "development things are changing."
+    },
+    {
+      "id": 242,
+      "start": 1038.02,
+      "end": 1043.76,
+      "text": "I always, again, come up with this very interesting stuff."
+    },
+    {
+      "id": 243,
+      "start": 1043.78,
+      "end": 1050.49,
+      "text": "Currently, if you have developed one application, you have a service online."
+    },
+    {
+      "id": 244,
+      "start": 1050.51,
+      "end": 1057.5,
+      "text": "Fifty-seven percent of your service actually is reached by the agents or"
+    },
+    {
+      "id": 245,
+      "start": 1057.61,
+      "end": 1064.34,
+      "text": "the bot. It's also driving toward us an agentic economy."
+    },
+    {
+      "id": 246,
+      "start": 1064.36,
+      "end": 1070.51,
+      "text": "But the thing is that if your user or customer is another agent, which will"
+    },
+    {
+      "id": 247,
+      "start": 1070.54,
+      "end": 1076.58,
+      "text": "happen and which is start happening, we have a whole stack for that."
+    },
+    {
+      "id": 248,
+      "start": 1076.6,
+      "end": 1080.59,
+      "text": "All of our applications are ready, because most of our application currently is a"
+    },
+    {
+      "id": 249,
+      "start": 1080.61,
+      "end": 1082.18,
+      "text": "screen-based application."
+    },
+    {
+      "id": 250,
+      "start": 1082.2,
+      "end": 1086.89,
+      "text": "But when agents are communicating with another service, as your application, then"
+    },
+    {
+      "id": 251,
+      "start": 1087.01,
+      "end": 1088.22,
+      "text": "you need an intent."
+    },
+    {
+      "id": 252,
+      "start": 1089.4,
+      "end": 1093.1,
+      "text": "So your screens will move to the intents."
+    },
+    {
+      "id": 253,
+      "start": 1093.66,
+      "end": 1098.12,
+      "text": "And your application will move on API and contracts."
+    },
+    {
+      "id": 254,
+      "start": 1098.14,
+      "end": 1103.76,
+      "text": "And then your document that you have, for example, helping guide you have read and"
+    },
+    {
+      "id": 255,
+      "start": 1103.78,
+      "end": 1110.02,
+      "text": "write, sorry, you have write for the human beings, This will go actually to agents,"
+    },
+    {
+      "id": 256,
+      "start": 1110.04,
+      "end": 1113.25,
+      "text": "and it will act as a knowledge base."
+    },
+    {
+      "id": 257,
+      "start": 1113.5,
+      "end": 1118.32,
+      "text": "So let's see this another visualization here."
+    },
+    {
+      "id": 258,
+      "start": 1118.34,
+      "end": 1122.66,
+      "text": "It will be a kind of thing that you have your agents."
+    },
+    {
+      "id": 259,
+      "start": 1122.68,
+      "end": 1125.7,
+      "text": "They are producing something, or they are requesting something."
+    },
+    {
+      "id": 260,
+      "start": 1125.72,
+      "end": 1127.45,
+      "text": "Then you have a tool set."
+    },
+    {
+      "id": 261,
+      "start": 1127.56,
+      "end": 1133.33,
+      "text": "And then you have other agents, agents from other people."
+    },
+    {
+      "id": 262,
+      "start": 1133.36,
+      "end": 1136.86,
+      "text": "And here what I will see that, like, less than a year,"
+    },
+    {
+      "id": 263,
+      "start": 1137.86,
+      "end": 1143.42,
+      "text": "we got the whole infrastructure for doing this agent-to-agent communication."
+    },
+    {
+      "id": 264,
+      "start": 1143.98,
+      "end": 1145.02,
+      "text": "We have MCP."
+    },
+    {
+      "id": 265,
+      "start": 1145.86,
+      "end": 1150.22,
+      "text": "MCP can be used for multiple tools, and then it's performing."
+    },
+    {
+      "id": 266,
+      "start": 1150.26,
+      "end": 1153.21,
+      "text": "Of course, you need to expose the API queue to that."
+    },
+    {
+      "id": 267,
+      "start": 1153.66,
+      "end": 1155.46,
+      "text": "And then you are putting a contract."
+    },
+    {
+      "id": 268,
+      "start": 1155.9,
+      "end": 1161.2,
+      "text": "And then A2A communication, we have a payment gateway that actually support now"
+    },
+    {
+      "id": 269,
+      "start": 1161.22,
+      "end": 1162.82,
+      "text": "to agent-based payments."
+    },
+    {
+      "id": 270,
+      "start": 1163.26,
+      "end": 1165.27,
+      "text": "And then ACP and AAIF."
+    },
+    {
+      "id": 271,
+      "start": 1165.46,
+      "end": 1172.04,
+      "text": "So this is actually your whole stuff that basically is used to develop this"
+    },
+    {
+      "id": 272,
+      "start": 1172.06,
+      "end": 1173.56,
+      "text": "agent-to-agent communication."
+    },
+    {
+      "id": 273,
+      "start": 1174.06,
+      "end": 1180.86,
+      "text": "And in the coming future, this stack will use basically for agent economy."
+    },
+    {
+      "id": 274,
+      "start": 1181.98,
+      "end": 1183.43,
+      "text": "Let's see from another angle."
+    },
+    {
+      "id": 275,
+      "start": 1184.24,
+      "end": 1186.2,
+      "text": "How will it look like in the future?"
+    },
+    {
+      "id": 276,
+      "start": 1186.88,
+      "end": 1189.23,
+      "text": "You as a customer, you need to book some hotel."
+    },
+    {
+      "id": 277,
+      "start": 1190.14,
+      "end": 1193.24,
+      "text": "And then you have one agent on your side and another agent on."
+    },
+    {
+      "id": 278,
+      "start": 1193.26,
+      "end": 1200.08,
+      "text": "Hotel side. You are asking, okay, I have this budget, let's suppose, 130 euro"
+    },
+    {
+      "id": 279,
+      "start": 1200.49,
+      "end": 1201.29,
+      "text": "for the room,"
+    },
+    {
+      "id": 280,
+      "start": 1201.7,
+      "end": 1207.2,
+      "text": "and then the hotel agent say, no, this hotel needs to book in 150."
+    },
+    {
+      "id": 281,
+      "start": 1207.22,
+      "end": 1210.81,
+      "text": "But there is some negotiation, things are happening."
+    },
+    {
+      "id": 282,
+      "start": 1210.83,
+      "end": 1215.64,
+      "text": "Now, your agent actually trying to convince the other agent, I will pay you"
+    },
+    {
+      "id": 283,
+      "start": 1215.93,
+      "end": 1218.45,
+      "text": "the 120 euro or 130 euro."
+    },
+    {
+      "id": 284,
+      "start": 1218.49,
+      "end": 1220.65,
+      "text": "What exactly this thing is that?"
+    },
+    {
+      "id": 285,
+      "start": 1220.98,
+      "end": 1227.01,
+      "text": "For example, here you need to identify who is going to use the agents."
+    },
+    {
+      "id": 286,
+      "start": 1227.1,
+      "end": 1229.18,
+      "text": "The second thing is that, what is the contract?"
+    },
+    {
+      "id": 287,
+      "start": 1229.2,
+      "end": 1235.37,
+      "text": "For example, contract between the two agents, your agent and you, is that I have"
+    },
+    {
+      "id": 288,
+      "start": 1235.49,
+      "end": 1239.18,
+      "text": "to book the hotel for 150, 130 euro."
+    },
+    {
+      "id": 289,
+      "start": 1239.2,
+      "end": 1244.28,
+      "text": "And then hotel and the other side of agent, they said, OK, we will give maximum"
+    },
+    {
+      "id": 290,
+      "start": 1244.3,
+      "end": 1247.83,
+      "text": "up to 130 euro, not less than that."
+    },
+    {
+      "id": 291,
+      "start": 1247.88,
+      "end": 1249.61,
+      "text": "So you are writing a contract."
+    },
+    {
+      "id": 292,
+      "start": 1249.74,
+      "end": 1256.56,
+      "text": "So now, for example, if you like a visualized bigger side, if we have this"
+    },
+    {
+      "id": 293,
+      "start": 1256.58,
+      "end": 1260.39,
+      "text": "kind of agent-based system, we need a contract."
+    },
+    {
+      "id": 294,
+      "start": 1260.52,
+      "end": 1267.19,
+      "text": "What need to choose, where we have to stop it, where we need to come out from the"
+    },
+    {
+      "id": 295,
+      "start": 1267.44,
+      "end": 1271.56,
+      "text": "loop. So these kind of things we need to take care."
+    },
+    {
+      "id": 296,
+      "start": 1271.58,
+      "end": 1275.12,
+      "text": "But there is another question is raising."
+    },
+    {
+      "id": 297,
+      "start": 1275.14,
+      "end": 1279.5,
+      "text": "Let's suppose we are on this stage here."
+    },
+    {
+      "id": 298,
+      "start": 1279.54,
+      "end": 1283.3,
+      "text": "What will we actually own it?"
+    },
+    {
+      "id": 299,
+      "start": 1283.4,
+      "end": 1290.08,
+      "text": "Can we own agents? Can we own the models, or can we use the models,"
+    },
+    {
+      "id": 300,
+      "start": 1290.1,
+      "end": 1292.66,
+      "text": "tools, or infrastructure?"
+    },
+    {
+      "id": 301,
+      "start": 1292.68,
+      "end": 1296.06,
+      "text": "These four things are replaceable."
+    },
+    {
+      "id": 302,
+      "start": 1296.08,
+      "end": 1300.76,
+      "text": "We need to think about that, how we need to design upcoming feature system, when we"
+    },
+    {
+      "id": 303,
+      "start": 1301.05,
+      "end": 1304.38,
+      "text": "have agent-based solutions."
+    },
+    {
+      "id": 304,
+      "start": 1304.42,
+      "end": 1305.87,
+      "text": "So this is replaceable."
+    },
+    {
+      "id": 305,
+      "start": 1305.9,
+      "end": 1311.06,
+      "text": "Your agents, maybe tomorrow the next big model is coming with a huge context window"
+    },
+    {
+      "id": 306,
+      "start": 1311.38,
+      "end": 1315.42,
+      "text": "with a lot of reasoning capability, so many good results on the benchmarks,"
+    },
+    {
+      "id": 307,
+      "start": 1315.44,
+      "end": 1317.84,
+      "text": "you're deciding, I'm going to use this one."
+    },
+    {
+      "id": 308,
+      "start": 1319.72,
+      "end": 1321.17,
+      "text": "So here, it's replaceable."
+    },
+    {
+      "id": 309,
+      "start": 1321.32,
+      "end": 1327.4,
+      "text": "You need to decide that I should design a system in a way that is replaceable."
+    },
+    {
+      "id": 310,
+      "start": 1327.96,
+      "end": 1332.42,
+      "text": "I can replace the tool, I can replace the model, I can replace the agents."
+    },
+    {
+      "id": 311,
+      "start": 1333.16,
+      "end": 1336.5,
+      "text": "I have to own one thing, which is our data."
+    },
+    {
+      "id": 312,
+      "start": 1337.62,
+      "end": 1339.88,
+      "text": "And then knowledge around that data."
+    },
+    {
+      "id": 313,
+      "start": 1340.18,
+      "end": 1343.64,
+      "text": "And different decisions I am making that we need to understand it."
+    },
+    {
+      "id": 314,
+      "start": 1345.28,
+      "end": 1346.08,
+      "text": "Yes."
+    },
+    {
+      "id": 315,
+      "start": 1346.58,
+      "end": 1349.98,
+      "text": "When we have this kind of situation, now the next question is there,"
+    },
+    {
+      "id": 316,
+      "start": 1350.32,
+      "end": 1353.04,
+      "text": "what we must protect in this kind of situation."
+    },
+    {
+      "id": 317,
+      "start": 1354.38,
+      "end": 1356.7,
+      "text": "Things going on next. Just see here."
+    },
+    {
+      "id": 318,
+      "start": 1356.78,
+      "end": 1359.38,
+      "text": "This is like another visualization."
+    },
+    {
+      "id": 319,
+      "start": 1361.32,
+      "end": 1364.74,
+      "text": "We are saying that we should put the guardrails."
+    },
+    {
+      "id": 320,
+      "start": 1364.76,
+      "end": 1367.3,
+      "text": "And those guardrails-- what kind of guardrail?"
+    },
+    {
+      "id": 321,
+      "start": 1367.32,
+      "end": 1371.1,
+      "text": "One guardrail is a machine, like AI, you are putting a guardrail."
+    },
+    {
+      "id": 322,
+      "start": 1371.14,
+      "end": 1373.42,
+      "text": "I was talking last week with one company."
+    },
+    {
+      "id": 323,
+      "start": 1373.44,
+      "end": 1377.1,
+      "text": "They have a really cool mechanism in which, basically, they have some"
+    },
+    {
+      "id": 324,
+      "start": 1377.28,
+      "end": 1380.38,
+      "text": "deterministic check on the AI output."
+    },
+    {
+      "id": 325,
+      "start": 1380.4,
+      "end": 1384.9,
+      "text": "And then whatever is remaining is go to the human side."
+    },
+    {
+      "id": 326,
+      "start": 1384.92,
+      "end": 1388.62,
+      "text": "And then if something is remaining, it's go toward the production."
+    },
+    {
+      "id": 327,
+      "start": 1388.64,
+      "end": 1390.87,
+      "text": "Here I have visualized only this thing."
+    },
+    {
+      "id": 328,
+      "start": 1390.9,
+      "end": 1397.0,
+      "text": "So you need to design a systems in a way that you have a deterministic check on"
+    },
+    {
+      "id": 329,
+      "start": 1397.02,
+      "end": 1400.76,
+      "text": "your AI output. Something pass through there."
+    },
+    {
+      "id": 330,
+      "start": 1400.8,
+      "end": 1403.7,
+      "text": "Something very critical, it should go to the human."
+    },
+    {
+      "id": 331,
+      "start": 1403.72,
+      "end": 1406.26,
+      "text": "Human should evaluate them."
+    },
+    {
+      "id": 332,
+      "start": 1406.28,
+      "end": 1413.1,
+      "text": "And then, probably, your system is ready for release."
+    },
+    {
+      "id": 333,
+      "start": 1413.42,
+      "end": 1419.23,
+      "text": "And there is one problem when we are putting agents or machine at"
+    },
+    {
+      "id": 334,
+      "start": 1419.25,
+      "end": 1426.23,
+      "text": "the end, because agents or your LLM still"
+    },
+    {
+      "id": 335,
+      "start": 1426.27,
+      "end": 1431.22,
+      "text": "are yes, boss. They will play with you like this."
+    },
+    {
+      "id": 336,
+      "start": 1431.24,
+      "end": 1433.11,
+      "text": "For example, ship it on a Friday."
+    },
+    {
+      "id": 337,
+      "start": 1433.23,
+      "end": 1434.82,
+      "text": "Yes, boss, great call."
+    },
+    {
+      "id": 338,
+      "start": 1436.12,
+      "end": 1437.96,
+      "text": "Then you actually, let's not ship it."
+    },
+    {
+      "id": 339,
+      "start": 1437.98,
+      "end": 1440.32,
+      "text": "Yes, boss, even better."
+    },
+    {
+      "id": 340,
+      "start": 1440.43,
+      "end": 1447.11,
+      "text": "And this is something is happening and if you put this"
+    },
+    {
+      "id": 341,
+      "start": 1447.4,
+      "end": 1453.65,
+      "text": "kind of agent by end of your process what will happen whatever you are writing in"
+    },
+    {
+      "id": 342,
+      "start": 1453.67,
+      "end": 1459.83,
+      "text": "the readme file are generated in the readme file are your skills that someone"
+    },
+    {
+      "id": 343,
+      "start": 1459.97,
+      "end": 1464.62,
+      "text": "in a morning is calling that you have created a skill it will follow it this"
+    },
+    {
+      "id": 344,
+      "start": 1464.8,
+      "end": 1469.81,
+      "text": "will follow like that we are doing a one another research around that we are"
+    },
+    {
+      "id": 345,
+      "start": 1470.28,
+      "end": 1474.77,
+      "text": "identifying a silent failure and the The silent failures are something that, like,"
+    },
+    {
+      "id": 346,
+      "start": 1474.96,
+      "end": 1481.12,
+      "text": "you have agents working good, passing the test, but, again, there are hidden places"
+    },
+    {
+      "id": 347,
+      "start": 1481.14,
+      "end": 1482.74,
+      "text": "that are also passed."
+    },
+    {
+      "id": 348,
+      "start": 1482.76,
+      "end": 1485.76,
+      "text": "And these are the security risk and vulnerabilities."
+    },
+    {
+      "id": 349,
+      "start": 1485.88,
+      "end": 1488.8,
+      "text": "We did that experiment and studies under that."
+    },
+    {
+      "id": 350,
+      "start": 1488.82,
+      "end": 1494.56,
+      "text": "And around that, if you see whatever generated with the AI, number one risk"
+    },
+    {
+      "id": 351,
+      "start": 1494.58,
+      "end": 1499.92,
+      "text": "with that, like, prompt injection, the top risk in LLM application."
+    },
+    {
+      "id": 352,
+      "start": 1500.02,
+      "end": 1502.07,
+      "text": "And these are very known risk."
+    },
+    {
+      "id": 353,
+      "start": 1502.16,
+      "end": 1504.56,
+      "text": "Was coming, like, out of the way."
+    },
+    {
+      "id": 354,
+      "start": 1504.7,
+      "end": 1510.22,
+      "text": "And 45% of the AI coding tasks give code with a well-known security flaws."
+    },
+    {
+      "id": 355,
+      "start": 1510.24,
+      "end": 1514.39,
+      "text": "They are known. If you are a developer, you are doing, it's fine."
+    },
+    {
+      "id": 356,
+      "start": 1514.72,
+      "end": 1520.42,
+      "text": "But if your agent is coding on your behalf, it will bring this kind of"
+    },
+    {
+      "id": 357,
+      "start": 1520.44,
+      "end": 1525.33,
+      "text": "identity. Of course, we can use some security scanner to identify those things,"
+    },
+    {
+      "id": 358,
+      "start": 1525.56,
+      "end": 1529.06,
+      "text": "but the agents are too intelligent as well."
+    },
+    {
+      "id": 359,
+      "start": 1529.13,
+      "end": 1536.1,
+      "text": "Then, over 200,000 files, like there was a file folder that"
+    },
+    {
+      "id": 360,
+      "start": 1536.12,
+      "end": 1541.61,
+      "text": "had been created by the agents, specifically in this particular case"
+    },
+    {
+      "id": 361,
+      "start": 1541.63,
+      "end": 1544.8,
+      "text": "study, what they have explored."
+    },
+    {
+      "id": 362,
+      "start": 1544.82,
+      "end": 1550.31,
+      "text": "And those files now are open to use for another bad agent that are roaming around"
+    },
+    {
+      "id": 363,
+      "start": 1550.64,
+      "end": 1554.06,
+      "text": "the world and trying to access your code."
+    },
+    {
+      "id": 364,
+      "start": 1554.08,
+      "end": 1556.6,
+      "text": "This is actually happening with the agents."
+    },
+    {
+      "id": 365,
+      "start": 1556.62,
+      "end": 1562.46,
+      "text": "And you guys are familiar with this OpenAI and Hugging Face"
+    },
+    {
+      "id": 366,
+      "start": 1562.48,
+      "end": 1564.84,
+      "text": "incident. What exactly happened?"
+    },
+    {
+      "id": 367,
+      "start": 1564.86,
+      "end": 1567.2,
+      "text": "Running in the sandbox environment."
+    },
+    {
+      "id": 368,
+      "start": 1567.22,
+      "end": 1572.7,
+      "text": "Then agents identify some vulnerability inside that."
+    },
+    {
+      "id": 369,
+      "start": 1572.72,
+      "end": 1575.67,
+      "text": "And then they run away from the sandbox environment."
+    },
+    {
+      "id": 370,
+      "start": 1575.72,
+      "end": 1582.2,
+      "text": "And after that, it's move on internet, identify some other"
+    },
+    {
+      "id": 371,
+      "start": 1582.31,
+      "end": 1585.1,
+      "text": "agents, created a small army."
+    },
+    {
+      "id": 372,
+      "start": 1585.12,
+      "end": 1591.05,
+      "text": "Even they give a role to each agent and start removing the footprint."
+    },
+    {
+      "id": 373,
+      "start": 1591.12,
+      "end": 1596.27,
+      "text": "This is how we are going toward the agent's learning and self-exploratory"
+    },
+    {
+      "id": 374,
+      "start": 1596.6,
+      "end": 1599.0,
+      "text": "side. But these are the things."
+    },
+    {
+      "id": 375,
+      "start": 1599.02,
+      "end": 1603.35,
+      "text": "Here we are proposing, I am proposing this thing, that whenever we are doing this"
+    },
+    {
+      "id": 376,
+      "start": 1603.37,
+      "end": 1607.08,
+      "text": "kind of development, we should have at least three gates."
+    },
+    {
+      "id": 377,
+      "start": 1607.1,
+      "end": 1609.8,
+      "text": "At least, you were talking about gates today."
+    },
+    {
+      "id": 378,
+      "start": 1609.82,
+      "end": 1615.26,
+      "text": "So first of all, we should check in sandbox environment."
+    },
+    {
+      "id": 379,
+      "start": 1615.28,
+      "end": 1619.2,
+      "text": "Application that we have developed is an AI native application."
+    },
+    {
+      "id": 380,
+      "start": 1619.22,
+      "end": 1622.76,
+      "text": "Or not an AI native application, we have developed with the AI."
+    },
+    {
+      "id": 381,
+      "start": 1622.78,
+      "end": 1627.86,
+      "text": "Is it safe? Can we put in a production environment?"
+    },
+    {
+      "id": 382,
+      "start": 1627.88,
+      "end": 1632.3,
+      "text": "It's really working good in a sandbox environment."
+    },
+    {
+      "id": 383,
+      "start": 1632.32,
+      "end": 1635.18,
+      "text": "Then it should be grounded."
+    },
+    {
+      "id": 384,
+      "start": 1635.2,
+      "end": 1640.78,
+      "text": "It should be grounded in a way that the application that I have developed is real"
+    },
+    {
+      "id": 385,
+      "start": 1640.84,
+      "end": 1645.88,
+      "text": "for this architecture only, for this infrastructure only, or it can be run on"
+    },
+    {
+      "id": 386,
+      "start": 1646.06,
+      "end": 1649.25,
+      "text": "some other infrastructures."
+    },
+    {
+      "id": 387,
+      "start": 1649.34,
+      "end": 1655.25,
+      "text": "And similarly, we should be able to measure the actual value of end"
+    },
+    {
+      "id": 388,
+      "start": 1655.78,
+      "end": 1661.48,
+      "text": "product. Or we are getting a benefit for purpose that we have made this"
+    },
+    {
+      "id": 389,
+      "start": 1661.77,
+      "end": 1667.76,
+      "text": "application. So here, when I'm like now moving toward the closing side, we should"
+    },
+    {
+      "id": 390,
+      "start": 1667.78,
+      "end": 1670.96,
+      "text": "ask three questions to ourselves."
+    },
+    {
+      "id": 391,
+      "start": 1670.98,
+      "end": 1674.64,
+      "text": "That's on this presentation, or maybe what I understand so far."
+    },
+    {
+      "id": 392,
+      "start": 1674.66,
+      "end": 1679.81,
+      "text": "Who on your team still understand the whole system?"
+    },
+    {
+      "id": 393,
+      "start": 1679.92,
+      "end": 1686.37,
+      "text": "If something is breaking, if he or she is able to get access back or can"
+    },
+    {
+      "id": 394,
+      "start": 1686.9,
+      "end": 1693.78,
+      "text": "recover it. When agents make a decision, where is the why"
+    },
+    {
+      "id": 395,
+      "start": 1693.8,
+      "end": 1698.64,
+      "text": "written? So for example, here, agents have made some decision."
+    },
+    {
+      "id": 396,
+      "start": 1698.66,
+      "end": 1702.62,
+      "text": "Do we have something why they have made these decisions?"
+    },
+    {
+      "id": 397,
+      "start": 1702.64,
+      "end": 1707.52,
+      "text": "The next thing is that who will review your code two years from now?"
+    },
+    {
+      "id": 398,
+      "start": 1707.54,
+      "end": 1710.33,
+      "text": "Agents, of course. Can we trust an agent?"
+    },
+    {
+      "id": 399,
+      "start": 1710.36,
+      "end": 1714.02,
+      "text": "Of course. What are the deterministic nature of it?"
+    },
+    {
+      "id": 400,
+      "start": 1714.04,
+      "end": 1717.5,
+      "text": "So again, some of the solution I am proposing here."
+    },
+    {
+      "id": 401,
+      "start": 1717.52,
+      "end": 1723.13,
+      "text": "For example, first of all, measure the system, not the snippet."
+    },
+    {
+      "id": 402,
+      "start": 1723.32,
+      "end": 1725.36,
+      "text": "What is the real impact?"
+    },
+    {
+      "id": 403,
+      "start": 1725.46,
+      "end": 1728.84,
+      "text": "Every company have their own way of measuring the output."
+    },
+    {
+      "id": 404,
+      "start": 1728.86,
+      "end": 1734.96,
+      "text": "They should check that security is yes, everything other are yes."
+    },
+    {
+      "id": 405,
+      "start": 1734.98,
+      "end": 1737.01,
+      "text": "Now we can ship it or not."
+    },
+    {
+      "id": 406,
+      "start": 1737.08,
+      "end": 1739.58,
+      "text": "Then write down the why."
+    },
+    {
+      "id": 407,
+      "start": 1739.6,
+      "end": 1743.36,
+      "text": "Agents have made some decision on your behalf."
+    },
+    {
+      "id": 408,
+      "start": 1743.4,
+      "end": 1747.6,
+      "text": "It's still there. Then grow the skill, not just the speed."
+    },
+    {
+      "id": 409,
+      "start": 1748.16,
+      "end": 1753.67,
+      "text": "So you need a new kind of skills to play with new kind of technology to understand"
+    },
+    {
+      "id": 410,
+      "start": 1753.69,
+      "end": 1756.6,
+      "text": "the things. I will conclude something here more."
+    },
+    {
+      "id": 411,
+      "start": 1757.62,
+      "end": 1764.41,
+      "text": "Our current processes, either agile or adaptive agile or AI native agile, they"
+    },
+    {
+      "id": 412,
+      "start": 1764.81,
+      "end": 1766.94,
+      "text": "are still for the old style system."
+    },
+    {
+      "id": 413,
+      "start": 1767.08,
+      "end": 1770.84,
+      "text": "We are not understanding that this is the new paradigm shift."
+    },
+    {
+      "id": 414,
+      "start": 1770.86,
+      "end": 1777.64,
+      "text": "It's not a kind of thing that is going to be like a adopt or used in the"
+    },
+    {
+      "id": 415,
+      "start": 1777.66,
+      "end": 1783.36,
+      "text": "previous processes. If we are using that, then we will be stuck at some point."
+    },
+    {
+      "id": 416,
+      "start": 1784.26,
+      "end": 1786.84,
+      "text": "But do we really need some sort of the processes?"
+    },
+    {
+      "id": 417,
+      "start": 1787.48,
+      "end": 1791.6,
+      "text": "Are we going toward that our application natures are the user behavior?"
+    },
+    {
+      "id": 418,
+      "start": 1792.18,
+      "end": 1794.52,
+      "text": "Will we change with the new kind of application?"
+    },
+    {
+      "id": 419,
+      "start": 1794.54,
+      "end": 1801.33,
+      "text": "For example, recently we have developed one product in which first we have some"
+    },
+    {
+      "id": 420,
+      "start": 1801.77,
+      "end": 1803.88,
+      "text": "windows or the screen."
+    },
+    {
+      "id": 421,
+      "start": 1803.9,
+      "end": 1808.59,
+      "text": "Yes, go this, this, this, and then you are -- again, we are using AI around that."
+    },
+    {
+      "id": 422,
+      "start": 1808.7,
+      "end": 1811.42,
+      "text": "But then we did another experiment around that."
+    },
+    {
+      "id": 423,
+      "start": 1811.44,
+      "end": 1815.39,
+      "text": "Okay. We should define the content."
+    },
+    {
+      "id": 424,
+      "start": 1815.64,
+      "end": 1821.9,
+      "text": "And then what we want to achieve from this window or visit-based application, it"
+    },
+    {
+      "id": 425,
+      "start": 1821.92,
+      "end": 1827.24,
+      "text": "should be happen behind the scene and finally it give me the reports or whatever"
+    },
+    {
+      "id": 426,
+      "start": 1827.26,
+      "end": 1830.23,
+      "text": "I want from the actual system."
+    },
+    {
+      "id": 427,
+      "start": 1830.25,
+      "end": 1834.24,
+      "text": "So you need to bring this kind of things in your system as well."
+    },
+    {
+      "id": 428,
+      "start": 1834.26,
+      "end": 1838.63,
+      "text": "I will conclude my presentation with these words."
+    },
+    {
+      "id": 429,
+      "start": 1838.65,
+      "end": 1840.55,
+      "text": "Code is cheap now, understanding is not."
+    },
+    {
+      "id": 430,
+      "start": 1840.57,
+      "end": 1842.87,
+      "text": "This is our job. Thank you very much everyone."
+    }
+  ]
+}

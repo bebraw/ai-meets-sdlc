@@ -1,0 +1,3170 @@
+{
+  "id": "ohans-talk",
+  "kind": "talk",
+  "officialTitle": "Zero-trust harnesses for agentic software delivery",
+  "speakerNames": [
+    "Ohans Emmanuel"
+  ],
+  "durationSeconds": 1929.0,
+  "videoFile": "exports/talks-v02/ohans-talk-4k.mp4",
+  "reviewFile": "review/talks-v02/ohans-talk-720p.mp4",
+  "chapters": [
+    {
+      "outputSeconds": 0,
+      "title": "Introduction: what coding agents can and cannot do",
+      "sourceSeconds": 3437,
+      "timestamp": "00:00"
+    },
+    {
+      "outputSeconds": 327,
+      "title": "Software delivery starts with shared intent",
+      "sourceSeconds": 3761.04,
+      "timestamp": "05:27"
+    },
+    {
+      "outputSeconds": 539,
+      "title": "Review implementation plans before pull requests",
+      "sourceSeconds": 3973.74,
+      "timestamp": "08:59"
+    },
+    {
+      "outputSeconds": 687,
+      "title": "Pair models and move review into the build",
+      "sourceSeconds": 4121.58,
+      "timestamp": "11:27"
+    },
+    {
+      "outputSeconds": 889,
+      "title": "Keeping a mental model of the system",
+      "sourceSeconds": 4323.98,
+      "timestamp": "14:49"
+    },
+    {
+      "outputSeconds": 1078,
+      "title": "Independent QA and regression testing",
+      "sourceSeconds": 4512.56,
+      "timestamp": "17:58"
+    },
+    {
+      "outputSeconds": 1329,
+      "title": "Exploratory testing and the test pyramid",
+      "sourceSeconds": 4763.02,
+      "timestamp": "22:09"
+    },
+    {
+      "outputSeconds": 1499,
+      "title": "Post-deployment monitoring across the whole system",
+      "sourceSeconds": 4933.62,
+      "timestamp": "24:59"
+    },
+    {
+      "outputSeconds": 1698,
+      "title": "Persistent agents and feedback into the next plan",
+      "sourceSeconds": 5132.48,
+      "timestamp": "28:18"
+    },
+    {
+      "outputSeconds": 1878,
+      "title": "The complete delivery and verification loop",
+      "sourceSeconds": 5312.32,
+      "timestamp": "31:18"
+    }
+  ],
+  "materials": [],
+  "talkUrl": "https://www.sdlcai.org/2026/schedule/#ohans-emmanuel-industry-perspective",
+  "existingSummary": "Ohans Emmanuel walks through a connected software-delivery workflow: shared intent, implementation-plan review, paired models, visual system understanding, independent QA and production feedback that informs the next change.",
+  "captions": {
+    "language": "en",
+    "srt": "transcripts/final-v02/ohans-talk.en.srt",
+    "vtt": "transcripts/final-v02/ohans-talk.en.vtt",
+    "qualityReport": "transcripts/final-v02/ohans-talk.caption-qc.json",
+    "listeningReview": "transcripts/final-v02/ohans-talk.listening-review.txt",
+    "status": "prepared-with-human-listening-review-notes"
+  },
+  "captionSHA256": "6d7881a31fb0ff7900bf7f9b85708c975979438150ffd06c88d888780a163b32",
+  "mediaBytes": 887398051,
+  "cueCount": 445,
+  "listeningWindows": [
+    {
+      "id": "ohans-talk-008",
+      "videoId": "ohans-talk",
+      "startSeconds": 58.1,
+      "endSeconds": 69.94,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Context-supported correction still marked for listening: waka time → WakaTime",
+      "currentCaptionText": "with coding agents right so this starts here from a software called WakaTime where it says that i've done 99 of my coding over the past months with coding agents i guess like like many of us right and so if you drill further down into the time",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/ohans-talk.listening-review.json",
+          "entryIndices": [
+            13
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/ohans-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                27
+              ],
+              "text": "in agents. So this starts here from a software called Waka-Tai, where it says that after 99% of my code in over the past months, we've code in agents. I guess, like many of us."
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 27,
+              "before": "waka time",
+              "after": "WakaTime",
+              "basis": "Coding time-tracking product"
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/ohans-talk.listening-review.json",
+          "index": 13
+        }
+      ],
+      "sourceSegments": [
+        27
+      ],
+      "sourceStartSeconds": 3492.1,
+      "sourceEndSeconds": 3503.94
+    },
+    {
+      "id": "ohans-talk-015",
+      "videoId": "ohans-talk",
+      "startSeconds": 862.14,
+      "endSeconds": 883.82,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Confirm Aider and Orca in the tool list. Current spellings are contextual/phonetic; Coldtea is corroborated by the visible demonstration. Context-supported correction still marked for listening: header → Aider Context-supported correction still marked for listening: orcar → Orca",
+      "currentCaptionText": "flexibility don't ask me why so the way that this works for us as you can see it's just two models communicating with each other. If you use something like Aider that would also work, if you use something like Orca that's an agentic IDE that would also work. In our case we're using our own agentic IDE Coldtea where we can get these agents to pair like a like a human pair programmer would work in something",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/ohans-talk.listening-review.json",
+          "entryIndices": [
+            8,
+            25,
+            26
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/ohans-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                199,
+                200,
+                201
+              ],
+              "text": "Don't ask me why. So the way that this works for us as you can see is use two models, communicating with each other. If you use something like HEDR, Vowed also work. If you use something like OR CAR, that's an agent ID that would also work. In our case, we're using our own agent ID call T, where we can get this agent's repair like a human pair programmer would work and something together. Brilliant."
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 199,
+              "before": "header",
+              "after": "Aider",
+              "basis": "Contextual inference: two-model coding tool; https://github.com/Aider-AI/aider/blob/main/aider/website/docs/usage/modes.md documents architect/editor two-model mode; spelling still flagged for listening"
+            },
+            {
+              "segment": 200,
+              "before": "agentic ID",
+              "after": "agentic IDE",
+              "basis": "Software-development environment acronym"
+            },
+            {
+              "segment": 200,
+              "before": "orcar",
+              "after": "Orca",
+              "basis": "Both ASR passes phonetic Orca; official product https://www.onorca.dev/docs describes desktop agent IDE"
+            },
+            {
+              "segment": 201,
+              "before": "agentic ID quality",
+              "after": "agentic IDE Coldtea",
+              "basis": "Visible coldtea tool namespaces at source4300s plus speaker company; transcripts/screens/ohans-source-4300.jpg"
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/ohans-talk.listening-review.json",
+          "index": 8
+        },
+        {
+          "path": "transcripts/final-v02/ohans-talk.listening-review.json",
+          "index": 25
+        },
+        {
+          "path": "transcripts/final-v02/ohans-talk.listening-review.json",
+          "index": 26
+        }
+      ],
+      "sourceSegments": [
+        199,
+        200,
+        201
+      ],
+      "sourceStartSeconds": 4296.14,
+      "sourceEndSeconds": 4317.82
+    },
+    {
+      "id": "ohans-talk-024",
+      "videoId": "ohans-talk",
+      "startSeconds": 1616.36,
+      "endSeconds": 1632.88,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Context-supported correction still marked for listening: sentry data dog → Sentry, Datadog",
+      "currentCaptionText": "background agents to start to watch right for whatever breaks okay so the way if whatever software you use today Sentry, Datadog whatever every one of them is trying to sell you their remarkable AI.",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/ohans-talk.listening-review.json",
+          "entryIndices": [
+            22
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/ohans-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                347
+              ],
+              "text": "is background agents to start to watch, right, for whatever breaks. Okay, so the way, if whatever software you use today, century, day to dog, whatever, everyone of them is trying to sell you very remarkable AI. ugh"
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 347,
+              "before": "sentry data dog",
+              "after": "Sentry, Datadog",
+              "basis": "Monitoring products named in context"
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/ohans-talk.listening-review.json",
+          "index": 22
+        }
+      ],
+      "sourceSegments": [
+        347
+      ],
+      "sourceStartSeconds": 5050.36,
+      "sourceEndSeconds": 5066.88
+    },
+    {
+      "id": "ohans-talk-025",
+      "videoId": "ohans-talk",
+      "startSeconds": 1662.22,
+      "endSeconds": 1690.84,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Context-supported correction still marked for listening: versal → Vercel Confirm named tracing/monitoring products. Visible demo evidence supports LangWatch, Vercel and PostHog; exact spoken product names remain worth checking. Context-supported correction still marked for listening: language → LangWatch",
+      "currentCaptionText": "So what we do is we connect all the signals, all the production signals. So if it's a front end, so our sentry, our Vercel, all of that in one place on the back end, the same thing in one place. And even our agent traces, whether that's on LangWatch, on Braintrust, all of these are connected into one place so that this background agent can reason through causalities across the entire thing when things go wrong. This is our preferred way of doing it.",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/ohans-talk.listening-review.json",
+          "entryIndices": [
+            9,
+            23,
+            27,
+            28
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/ohans-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                360
+              ],
+              "text": "we do is we connect all the signals, all the production signals. So if it's all front-end, so our sentry, our versatile, all of that in one place, on the back-end, the same thing, in one place. And even our agent traces, whether that's on land"
+            },
+            {
+              "segments": [
+                361,
+                382
+              ],
+              "text": ""
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 360,
+              "before": "versal",
+              "after": "Vercel",
+              "basis": "Deployment/monitoring product"
+            },
+            {
+              "segment": 361,
+              "before": "language",
+              "after": "LangWatch",
+              "basis": "Contextual inference from explicit LangWatch tooltip in later demo at source5267s; still flagged for listening"
+            },
+            {
+              "segment": 361,
+              "before": "brain trust",
+              "after": "Braintrust",
+              "basis": "Spoken name separated into words; tracing-tool context"
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/ohans-talk.listening-review.json",
+          "index": 9
+        },
+        {
+          "path": "transcripts/final-v02/ohans-talk.listening-review.json",
+          "index": 23
+        },
+        {
+          "path": "transcripts/final-v02/ohans-talk.listening-review.json",
+          "index": 27
+        },
+        {
+          "path": "transcripts/final-v02/ohans-talk.listening-review.json",
+          "index": 28
+        }
+      ],
+      "sourceSegments": [
+        360,
+        361
+      ],
+      "sourceStartSeconds": 5096.22,
+      "sourceEndSeconds": 5124.84
+    },
+    {
+      "id": "ohans-talk-026",
+      "videoId": "ohans-talk",
+      "startSeconds": 1744.16,
+      "endSeconds": 1753.5,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Context-supported correction still marked for listening: processing computer → persistent computer",
+      "currentCaptionText": "But it never really writes or does something catastrophic. So we give this to the persistent computer so it's able to reason through all the causalities. And what happens is when things",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/ohans-talk.listening-review.json",
+          "entryIndices": [
+            24
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/ohans-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                375
+              ],
+              "text": "cut it off, but he never really writes or does something catastrophic. So we gave this to Busses in computer so he's able to read them through all the causality. And what happens is when..."
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 375,
+              "before": "processing computer",
+              "after": "persistent computer",
+              "basis": "Same persistent remote VM described in preceding lines"
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/ohans-talk.listening-review.json",
+          "index": 24
+        }
+      ],
+      "sourceSegments": [
+        375
+      ],
+      "sourceStartSeconds": 5178.16,
+      "sourceEndSeconds": 5187.5
+    },
+    {
+      "id": "ohans-talk-027",
+      "videoId": "ohans-talk",
+      "startSeconds": 1823.66,
+      "endSeconds": 1846.2,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Confirm named tracing/monitoring products. Visible demo evidence supports LangWatch, Vercel and PostHog; exact spoken product names remain worth checking. Context-supported correction still marked for listening: Pulsar → PostHog",
+      "currentCaptionText": "an agent makes a similar error makes a massive, massive, massive difference. So again, for us, that looks like this, like I said, I've got all my tools connected. I've got PostHog, I've got Vercel, I've got CR, sorry, not CR, I've got LangWatch. So all of these connected in one place, we found to do to work pretty well as opposed to just having distinct AI agents for each platform. Because if you think about the work of an incident commander, the really hard thing",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/ohans-talk.listening-review.json",
+          "entryIndices": [
+            9,
+            29
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/ohans-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                361,
+                382
+              ],
+              "text": ""
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 382,
+              "before": "Pulsar",
+              "after": "PostHog",
+              "basis": "Source5263s shows PostHog icon; official https://www.coldtea.ai lists PostHog integration. Context-supported, still flagged for listening"
+            },
+            {
+              "segment": 382,
+              "before": "Verso",
+              "after": "Vercel",
+              "basis": "Source5263s visible Vercel icon plus https://www.coldtea.ai monitoring integration list"
+            },
+            {
+              "segment": 382,
+              "before": "Langward",
+              "after": "LangWatch",
+              "basis": "Source5267s explicit visible tooltip LangWatch - connected; transcripts/screens/ohans-source-5267.jpg"
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/ohans-talk.listening-review.json",
+          "index": 9
+        },
+        {
+          "path": "transcripts/final-v02/ohans-talk.listening-review.json",
+          "index": 29
+        }
+      ],
+      "sourceSegments": [
+        382
+      ],
+      "sourceStartSeconds": 5257.66,
+      "sourceEndSeconds": 5280.2
+    }
+  ],
+  "cues": [
+    {
+      "id": 1,
+      "start": 3.0,
+      "end": 9.83,
+      "text": "You start the day brilliant okay how's everyone doing so the first time I walked"
+    },
+    {
+      "id": 2,
+      "start": 9.85,
+      "end": 15.11,
+      "text": "in here and I thought absolutely beautiful venue and I think the the organization has"
+    },
+    {
+      "id": 3,
+      "start": 15.2,
+      "end": 17.96,
+      "text": "been pretty good so let's just give a round of applause for the organizing team"
+    },
+    {
+      "id": 4,
+      "start": 17.98,
+      "end": 23.52,
+      "text": "I i think they've done a phenomenal job all right so name’s Ohans Emmanuel over"
+    },
+    {
+      "id": 5,
+      "start": 23.62,
+      "end": 27.7,
+      "text": "the next about 25 minutes we're going to talk about zero trust harnesses"
+    },
+    {
+      "id": 6,
+      "start": 28.66,
+      "end": 30.2,
+      "text": "what does that mean we're"
+    },
+    {
+      "id": 7,
+      "start": 30.97,
+      "end": 34.42,
+      "text": "about to find out so like many people"
+    },
+    {
+      "id": 8,
+      "start": 38.02,
+      "end": 39.72,
+      "text": "just one minute technical problems"
+    },
+    {
+      "id": 9,
+      "start": 40.33,
+      "end": 42.5,
+      "text": "of course"
+    },
+    {
+      "id": 10,
+      "start": 45.06,
+      "end": 52.02,
+      "text": "oh there we go all right so like pretty much everyone here i found that over"
+    },
+    {
+      "id": 11,
+      "start": 52.04,
+      "end": 54.46,
+      "text": "the past few months i've worked primarily"
+    },
+    {
+      "id": 12,
+      "start": 55.29,
+      "end": 61.33,
+      "text": "with coding agents right so this starts here from a software called WakaTime where"
+    },
+    {
+      "id": 13,
+      "start": 61.35,
+      "end": 67.94,
+      "text": "it says that i've done 99 of my coding over the past months with coding agents"
+    },
+    {
+      "id": 14,
+      "start": 69.38,
+      "end": 74.56,
+      "text": "i guess like like many of us right and so if you drill further down into the time"
+    },
+    {
+      "id": 15,
+      "start": 74.58,
+      "end": 80.8,
+      "text": "there's days where i go 10 hours 12 hours 14 hours we're a young company so we do"
+    },
+    {
+      "id": 16,
+      "start": 80.82,
+      "end": 82.61,
+      "text": "have to work a bit unreasonable"
+    },
+    {
+      "id": 17,
+      "start": 83.53,
+      "end": 87.46000000000001,
+      "text": "sometimes and it's all you know it's just agents agents agents"
+    },
+    {
+      "id": 18,
+      "start": 88.9,
+      "end": 95.34,
+      "text": "in all of these experience over the past months i've come to the somewhat"
+    },
+    {
+      "id": 19,
+      "start": 95.61,
+      "end": 100.57,
+      "text": "sad realization this is a personal realization that's just for me that i"
+    },
+    {
+      "id": 20,
+      "start": 100.66,
+      "end": 107.19,
+      "text": "think LLMs fundamentally can't write great software now every time i say this there's"
+    },
+    {
+      "id": 21,
+      "start": 107.21000000000001,
+      "end": 112.41,
+      "text": "always there's multiple people who go what the hell are you talking about i'm pretty"
+    },
+    {
+      "id": 22,
+      "start": 112.50999999999999,
+      "end": 118.03999999999999,
+      "text": "sure i can vibe code anything sure you can does it make for great software i don't"
+    },
+    {
+      "id": 23,
+      "start": 118.06,
+      "end": 124.96,
+      "text": "know i don't think so you know you can you can drag me after the talk and give me"
+    },
+    {
+      "id": 24,
+      "start": 124.98,
+      "end": 129.09,
+      "text": "your opinions i'd love to hear it but i just think fundamentally the the"
+    },
+    {
+      "id": 25,
+      "start": 129.11,
+      "end": 133.66,
+      "text": "fundamental architecture LLMs are somewhat broken that's my take it's never it's"
+    },
+    {
+      "id": 26,
+      "start": 133.76,
+      "end": 138.13,
+      "text": "never getting us to AGI that's for damn sure but i know somewhere someone's"
+    },
+    {
+      "id": 27,
+      "start": 138.81,
+      "end": 143.07999999999998,
+      "text": "building something remarkable that will make this all look like a joke perhaps in"
+    },
+    {
+      "id": 28,
+      "start": 143.1,
+      "end": 149.44,
+      "text": "the next few years that's my take every time i do this i also like to get"
+    },
+    {
+      "id": 29,
+      "start": 149.46,
+      "end": 151.5,
+      "text": "everyone's or the room's opinion"
+    },
+    {
+      "id": 30,
+      "start": 152.41,
+      "end": 158.66,
+      "text": "right what do you think about LLMs and writing software in in wars become"
+    },
+    {
+      "id": 31,
+      "start": 159.22,
+      "end": 166.0,
+      "text": "the staple really. So if you scan the code, whatever you say is going to show up"
+    },
+    {
+      "id": 32,
+      "start": 166.02,
+      "end": 167.57999999999998,
+      "text": "on the screen. Be"
+    },
+    {
+      "id": 33,
+      "start": 168.57,
+      "end": 170.96,
+      "text": "responsible. I'm going to read out a few of those."
+    },
+    {
+      "id": 34,
+      "start": 170.98,
+      "end": 175.81,
+      "text": "You're going to see once you scan the QR code."
+    },
+    {
+      "id": 35,
+      "start": 175.82999999999998,
+      "end": 180.32,
+      "text": "Mostly as it relates to writing software."
+    },
+    {
+      "id": 36,
+      "start": 180.34,
+      "end": 186.2,
+      "text": "Yeah. So, you know, we've got a few We can go"
+    },
+    {
+      "id": 37,
+      "start": 186.97,
+      "end": 192.24,
+      "text": "ahead. Someone here says we need people for guidance."
+    },
+    {
+      "id": 38,
+      "start": 192.26,
+      "end": 194.26,
+      "text": "Someone says human vision and direction."
+    },
+    {
+      "id": 39,
+      "start": 194.28,
+      "end": 196.69,
+      "text": "You need to build an environment for them."
+    },
+    {
+      "id": 40,
+      "start": 196.77,
+      "end": 198.76,
+      "text": "They are writing average code."
+    },
+    {
+      "id": 41,
+      "start": 198.86,
+      "end": 201.11,
+      "text": "I'm going to love that person."
+    },
+    {
+      "id": 42,
+      "start": 201.13,
+      "end": 205.26,
+      "text": "Too early to say it's also a very, very good point."
+    },
+    {
+      "id": 43,
+      "start": 205.28,
+      "end": 207.28,
+      "text": "Average by design. I think fundamentally"
+    },
+    {
+      "id": 44,
+      "start": 207.59,
+      "end": 209.34,
+      "text": "that could be correct, right?"
+    },
+    {
+      "id": 45,
+      "start": 209.36,
+      "end": 213.36,
+      "text": "If you think about, okay, Let's not go too deep into the architecture right now."
+    },
+    {
+      "id": 46,
+      "start": 213.57999999999998,
+      "end": 217.14,
+      "text": "We need a world model. That's also, I also agree with that."
+    },
+    {
+      "id": 47,
+      "start": 217.32,
+      "end": 219.34,
+      "text": "I think you need a mix of that."
+    },
+    {
+      "id": 48,
+      "start": 220.4,
+      "end": 222.44,
+      "text": "The never right, what's the funny one?"
+    },
+    {
+      "id": 49,
+      "start": 223.72,
+      "end": 224.86,
+      "text": "Okay, I missed it."
+    },
+    {
+      "id": 50,
+      "start": 227.36,
+      "end": 233.42000000000002,
+      "text": "Ask my mom, is it? So I can't go through all of it, but as I go through the talk,"
+    },
+    {
+      "id": 51,
+      "start": 233.44,
+      "end": 237.49,
+      "text": "they're going to show, the conversations are going to show under still, but let's"
+    },
+    {
+      "id": 52,
+      "start": 237.55,
+      "end": 238.57999999999998,
+      "text": "not get derailed."
+    },
+    {
+      "id": 53,
+      "start": 239.6,
+      "end": 243.5,
+      "text": "So regardless of what you think there's two sides you could potentially take right"
+    },
+    {
+      "id": 54,
+      "start": 243.52,
+      "end": 247.55,
+      "text": "on one hand you could say you know effort agents just suck i'm never going to use"
+    },
+    {
+      "id": 55,
+      "start": 247.57,
+      "end": 250.81,
+      "text": "them on the other hand you could say i really don't care about what you're"
+    },
+    {
+      "id": 56,
+      "start": 250.83,
+      "end": 254.98,
+      "text": "talking about i'm just going to go as fast as i can you know take advantage of this"
+    },
+    {
+      "id": 57,
+      "start": 255.03,
+      "end": 259.62,
+      "text": "well we found as a team to work for us somewhere right in the middle so even"
+    },
+    {
+      "id": 58,
+      "start": 259.64,
+      "end": 265.42,
+      "text": "though i've got my my gripe with LLMs and writing code it just doesn't make sense"
+    },
+    {
+      "id": 59,
+      "start": 265.44,
+      "end": 271.86,
+      "text": "not to use them. So we found a way to find a sweet spot where we think we can get out"
+    },
+    {
+      "id": 60,
+      "start": 271.88,
+      "end": 274.78,
+      "text": "somewhat quality software by my standards."
+    },
+    {
+      "id": 61,
+      "start": 274.8,
+      "end": 277.42,
+      "text": "You're going to have your standards and that's fine."
+    },
+    {
+      "id": 62,
+      "start": 277.44,
+      "end": 282.37,
+      "text": "This talk really is all about bringing these principles together and building on"
+    },
+    {
+      "id": 63,
+      "start": 282.44,
+      "end": 286.26,
+      "text": "top of it to make whatever great software means to you."
+    },
+    {
+      "id": 64,
+      "start": 286.28,
+      "end": 289.14,
+      "text": "Brilliant. My name is Ohans Emmanuel."
+    },
+    {
+      "id": 65,
+      "start": 289.15999999999997,
+      "end": 293.55,
+      "text": "Previously I worked at some of the biggest companies in Europe are architected"
+    },
+    {
+      "id": 66,
+      "start": 293.79,
+      "end": 298.78,
+      "text": "software at HelloFresh for the past four years and I worked at Revolut and back and"
+    },
+    {
+      "id": 67,
+      "start": 298.96,
+      "end": 303.96,
+      "text": "back it goes. And these days the CEO and co-founder of a small well, relatively"
+    },
+    {
+      "id": 68,
+      "start": 303.98,
+      "end": 305.88,
+      "text": "small AI startup called Coldtea."
+    },
+    {
+      "id": 69,
+      "start": 305.91,
+      "end": 307.69,
+      "text": "Right? Enough about me."
+    },
+    {
+      "id": 70,
+      "start": 307.91,
+      "end": 308.71,
+      "text": "Cool."
+    },
+    {
+      "id": 71,
+      "start": 308.96,
+      "end": 309.76,
+      "text": "So, like I said"
+    },
+    {
+      "id": 72,
+      "start": 309.97,
+      "end": 313.8,
+      "text": "earlier, a big part of this talk is not really telling you what to do."
+    },
+    {
+      "id": 73,
+      "start": 314.02,
+      "end": 315.6,
+      "text": "That would be boring, isn't it?"
+    },
+    {
+      "id": 74,
+      "start": 315.62,
+      "end": 319.65,
+      "text": "So, the core of this talk really is understanding the principles that I think"
+    },
+    {
+      "id": 75,
+      "start": 319.67,
+      "end": 323.38,
+      "text": "has worked for us so that you can take them into your engineering organisation"
+    },
+    {
+      "id": 76,
+      "start": 323.4,
+      "end": 324.38,
+      "text": "and run with it."
+    },
+    {
+      "id": 77,
+      "start": 325.48,
+      "end": 326.28,
+      "text": "Cool."
+    },
+    {
+      "id": 78,
+      "start": 327.04,
+      "end": 329.3,
+      "text": "Now, I always start like this."
+    },
+    {
+      "id": 79,
+      "start": 329.72,
+      "end": 334.72,
+      "text": "Any time you speak to anyone now, a very easy statement for them to make is,"
+    },
+    {
+      "id": 80,
+      "start": 335.02,
+      "end": 337.15999999999997,
+      "text": "building is not hard, building is cheap."
+    },
+    {
+      "id": 81,
+      "start": 337.54,
+      "end": 339.9,
+      "text": "And I go, Jesus, what are you on about?"
+    },
+    {
+      "id": 82,
+      "start": 340.22,
+      "end": 341.93,
+      "text": "Building was never the hard part."
+    },
+    {
+      "id": 83,
+      "start": 342.48,
+      "end": 346.1,
+      "text": "Right, so if you worked in the industry, you started off as a junior engineer, at"
+    },
+    {
+      "id": 84,
+      "start": 346.12,
+      "end": 350.76,
+      "text": "some point you go to a staff or principal or distinguished engineer, whatever you"
+    },
+    {
+      "id": 85,
+      "start": 350.78,
+      "end": 352.36,
+      "text": "call it in your organization,"
+    },
+    {
+      "id": 86,
+      "start": 353.24,
+      "end": 354.65999999999997,
+      "text": "you're literally didn't write code."
+    },
+    {
+      "id": 87,
+      "start": 354.68,
+      "end": 359.19,
+      "text": "So when I was at HelloFresh for my first six months as a staff engineer, I barely"
+    },
+    {
+      "id": 88,
+      "start": 359.24,
+      "end": 362.89,
+      "text": "wrote code. And this was pre-AI madness, right?"
+    },
+    {
+      "id": 89,
+      "start": 363.16,
+      "end": 365.62,
+      "text": "So it's never really been about code."
+    },
+    {
+      "id": 90,
+      "start": 366.08,
+      "end": 369.92,
+      "text": "And if you went the manager route, you started off, I don't know, as an"
+    },
+    {
+      "id": 91,
+      "start": 369.94,
+      "end": 372.64,
+      "text": "engineering manager, you got on to VP and CTO."
+    },
+    {
+      "id": 92,
+      "start": 373.62,
+      "end": 374.95,
+      "text": "My CTO never wrote code."
+    },
+    {
+      "id": 93,
+      "start": 375.02,
+      "end": 376.92,
+      "text": "Well, not mine now, but at HelloFresh."
+    },
+    {
+      "id": 94,
+      "start": 377.28,
+      "end": 380.91,
+      "text": "Never wrote code, well, not really, right?"
+    },
+    {
+      "id": 95,
+      "start": 381.02,
+      "end": 387.6,
+      "text": "So economically, the CTO earned way more than I did when I was a senior engineer or"
+    },
+    {
+      "id": 96,
+      "start": 387.75,
+      "end": 390.76,
+      "text": "an engineer cranking out code like a machine."
+    },
+    {
+      "id": 97,
+      "start": 391.36,
+      "end": 393.86,
+      "text": "And honestly, I absolutely loved doing it, right?"
+    },
+    {
+      "id": 98,
+      "start": 393.9,
+      "end": 395.15,
+      "text": "I could go into the zone."
+    },
+    {
+      "id": 99,
+      "start": 395.24,
+      "end": 397.06,
+      "text": "But still, he earned more."
+    },
+    {
+      "id": 100,
+      "start": 397.08,
+      "end": 403.09000000000003,
+      "text": "So economically, we've always associated more to the processes around"
+    },
+    {
+      "id": 101,
+      "start": 403.89,
+      "end": 405.74,
+      "text": "code, not just code."
+    },
+    {
+      "id": 102,
+      "start": 407.28,
+      "end": 411.38,
+      "text": "Right? The point I'm trying to make is code is cheap now, true, but"
+    },
+    {
+      "id": 103,
+      "start": 411.4,
+      "end": 417.15999999999997,
+      "text": "intrinsically, somehow, we've treated it as cheap for the past 10 years."
+    },
+    {
+      "id": 104,
+      "start": 417.39,
+      "end": 423.79,
+      "text": "So at any real scale, it was never really just about the code."
+    },
+    {
+      "id": 105,
+      "start": 423.81,
+      "end": 426.88,
+      "text": "There's more to software than just writing code."
+    },
+    {
+      "id": 106,
+      "start": 426.9,
+      "end": 432.75,
+      "text": "Brilliant. So now I'm going to walk you through a classic software lifecycle, and"
+    },
+    {
+      "id": 107,
+      "start": 432.82,
+      "end": 438.9,
+      "text": "we're going to go through each of these checkpoints and figure out how is it that"
+    },
+    {
+      "id": 108,
+      "start": 438.92,
+      "end": 445.75,
+      "text": "how can you tweak this to fit your model of whatever you think quality software is"
+    },
+    {
+      "id": 109,
+      "start": 445.77,
+      "end": 449.88,
+      "text": "i'm going to again i want this to be as practical as possible it's really not"
+    },
+    {
+      "id": 110,
+      "start": 449.93,
+      "end": 453.65999999999997,
+      "text": "about the tools that i show you i'm going to mention a couple of tools the tools"
+    },
+    {
+      "id": 111,
+      "start": 453.68,
+      "end": 455.24,
+      "text": "don't matter it's really"
+    },
+    {
+      "id": 112,
+      "start": 456.21,
+      "end": 462.72,
+      "text": "about the principles now the first first thing like Mo was saying someone"
+    },
+    {
+      "id": 113,
+      "start": 462.74,
+      "end": 468.65999999999997,
+      "text": "somewhere engineering team designers the product folks you do have to decide what"
+    },
+    {
+      "id": 114,
+      "start": 468.68,
+      "end": 474.02,
+      "text": "to build that's all well and good the only thing we do as a team here is is"
+    },
+    {
+      "id": 115,
+      "start": 474.04,
+      "end": 475.43,
+      "text": "absolutely absolutely"
+    },
+    {
+      "id": 116,
+      "start": 476.35,
+      "end": 481.46,
+      "text": "you must not make that a markdown file that lives in your computer it's just not"
+    },
+    {
+      "id": 117,
+      "start": 481.48,
+      "end": 486.03,
+      "text": "non-negotiable and the reason being that every other part of the lifecycle will"
+    },
+    {
+      "id": 118,
+      "start": 486.05,
+      "end": 491.04,
+      "text": "want to be able to reference that plan or what people will call intent right so"
+    },
+    {
+      "id": 119,
+      "start": 491.33,
+      "end": 495.46,
+      "text": "whatever tool it is you use jira linear doesn't really matter here"
+    },
+    {
+      "id": 120,
+      "start": 496.38,
+      "end": 501.42,
+      "text": "the plan or the intent for what you set out to build as an organization as a team"
+    },
+    {
+      "id": 121,
+      "start": 502.14,
+      "end": 506.68,
+      "text": "cannot be something that leaves an an engineer system right this is the"
+    },
+    {
+      "id": 122,
+      "start": 506.7,
+      "end": 510.19,
+      "text": "foundation of everything we need to be able to reference it further down the"
+    },
+    {
+      "id": 123,
+      "start": 510.21,
+      "end": 511.26,
+      "text": "entire life cycle"
+    },
+    {
+      "id": 124,
+      "start": 513.66,
+      "end": 520.1,
+      "text": "very understandable now typically the part where we all spend a lot of time"
+    },
+    {
+      "id": 125,
+      "start": 520.3,
+      "end": 523.7,
+      "text": "or on socials everyone goes crazy about is"
+    },
+    {
+      "id": 126,
+      "start": 524.53,
+      "end": 530.26,
+      "text": "building orchestrating hundreds of Claudes and and codexes and churning out thousands"
+    },
+    {
+      "id": 127,
+      "start": 530.43,
+      "end": 535.09,
+      "text": "of PRs a month i'm going to completely skip building because everyone's got"
+    },
+    {
+      "id": 128,
+      "start": 535.11,
+      "end": 538.67,
+      "text": "opinionated ways of doing this and i really don't care about building quite"
+    },
+    {
+      "id": 129,
+      "start": 538.69,
+      "end": 541.74,
+      "text": "frankly i think there's more interesting things to talk about"
+    },
+    {
+      "id": 130,
+      "start": 542.05,
+      "end": 549.02,
+      "text": "let's go to review now when it comes to review there's three key things that"
+    },
+    {
+      "id": 131,
+      "start": 549.17,
+      "end": 553.94,
+      "text": "we found to just to just work for us right and i'm going to go into each of them very"
+    },
+    {
+      "id": 132,
+      "start": 553.96,
+      "end": 559.95,
+      "text": "detail but relatively quickly now the first thing is we review implementation"
+    },
+    {
+      "id": 133,
+      "start": 559.97,
+      "end": 560.77,
+      "text": "plans not"
+    },
+    {
+      "id": 134,
+      "start": 561.25,
+      "end": 568.15,
+      "text": "the PRs why if you think about"
+    },
+    {
+      "id": 135,
+      "start": 568.17,
+      "end": 572.63,
+      "text": "it it kind of makes sense right if I've got depending on what field you work in or"
+    },
+    {
+      "id": 136,
+      "start": 572.65,
+      "end": 579.46,
+      "text": "where you build so if you take an example and say front-end engineer right a simple"
+    },
+    {
+      "id": 137,
+      "start": 579.48,
+      "end": 585.66,
+      "text": "this simple decision is like let's use a react query for optimate for optimistic"
+    },
+    {
+      "id": 138,
+      "start": 585.68,
+      "end": 592.07,
+      "text": "caching versus let's do local storage hacks that's just one line that"
+    },
+    {
+      "id": 139,
+      "start": 592.09,
+      "end": 597.24,
+      "text": "yields a thousand lines of code at the PR which is just complete garbage at that"
+    },
+    {
+      "id": 140,
+      "start": 597.32,
+      "end": 602.64,
+      "text": "point right so the earlier you can catch the problem why wouldn't you review the"
+    },
+    {
+      "id": 141,
+      "start": 602.87,
+      "end": 608.52,
+      "text": "plan why why is the obsession on reviewing the PR when you can review what what came"
+    },
+    {
+      "id": 142,
+      "start": 608.54,
+      "end": 613.44,
+      "text": "before that right so as a team one of the things we do to make sure that"
+    },
+    {
+      "id": 143,
+      "start": 614.16,
+      "end": 620.94,
+      "text": "we're on track is we review the plans critically like we do the PRs well to"
+    },
+    {
+      "id": 144,
+      "start": 620.96,
+      "end": 626.19,
+      "text": "be fair the PR is not as much as as we do the plans right and the reason he is"
+    },
+    {
+      "id": 145,
+      "start": 626.21,
+      "end": 632.28,
+      "text": "against was worth said one bad decision at that point it's it's nothing it's easy to"
+    },
+    {
+      "id": 146,
+      "start": 632.36,
+      "end": 637.39,
+      "text": "catch easy to fix easy to change as opposed to a hundred thousand or a hundred"
+    },
+    {
+      "id": 147,
+      "start": 637.41,
+      "end": 638.21,
+      "text": "thousand"
+    },
+    {
+      "id": 148,
+      "start": 638.52,
+      "end": 642.99,
+      "text": "thousands of lines of code that is just completely built on the wrong premise."
+    },
+    {
+      "id": 149,
+      "start": 643.91,
+      "end": 646.52,
+      "text": "Again, I want this to be practical."
+    },
+    {
+      "id": 150,
+      "start": 646.54,
+      "end": 650.78,
+      "text": "I had to redo my slide a little bit to make sure that nothing went wrong with"
+    },
+    {
+      "id": 151,
+      "start": 650.8,
+      "end": 653.58,
+      "text": "live coding. So I've recorded videos here and there."
+    },
+    {
+      "id": 152,
+      "start": 653.6,
+      "end": 659.45,
+      "text": "So you can see the way that we do this is the tool that we use, for example, with"
+    },
+    {
+      "id": 153,
+      "start": 659.47,
+      "end": 665.33,
+      "text": "every task, there is a plan that is tied or coupled to it, and it's shared with the"
+    },
+    {
+      "id": 154,
+      "start": 665.35,
+      "end": 671.66,
+      "text": "entire team, right? When I say plan here, I mostly mean the engineering plan, the"
+    },
+    {
+      "id": 155,
+      "start": 671.68,
+      "end": 674.73,
+      "text": "implementation plan, not essentially the PRD."
+    },
+    {
+      "id": 156,
+      "start": 675.0,
+      "end": 677.18,
+      "text": "That can stay on the task as well."
+    },
+    {
+      "id": 157,
+      "start": 677.52,
+      "end": 683.4,
+      "text": "But we review that plan very critically as a team long before the agents go work in"
+    },
+    {
+      "id": 158,
+      "start": 683.42,
+      "end": 685.12,
+      "text": "it, long before there's a PR."
+    },
+    {
+      "id": 159,
+      "start": 687.58,
+      "end": 688.97,
+      "text": "Now, this has become"
+    },
+    {
+      "id": 160,
+      "start": 689.89,
+      "end": 696.56,
+      "text": "something of... It's become a bit normal to say this right now, But when we started"
+    },
+    {
+      "id": 161,
+      "start": 696.73,
+      "end": 702.54,
+      "text": "doing this, maybe four or five months ago, we just found out that when we paired two"
+    },
+    {
+      "id": 162,
+      "start": 702.56,
+      "end": 706.64,
+      "text": "different models, we could limit bias and get better work done."
+    },
+    {
+      "id": 163,
+      "start": 707.04,
+      "end": 711.63,
+      "text": "So the way that we work, at least on the team, everyone's got access to at least"
+    },
+    {
+      "id": 164,
+      "start": 711.72,
+      "end": 712.7,
+      "text": "two models."
+    },
+    {
+      "id": 165,
+      "start": 713.52,
+      "end": 716.07,
+      "text": "It really doesn't matter what model you use, right?"
+    },
+    {
+      "id": 166,
+      "start": 716.2,
+      "end": 720.9,
+      "text": "But we figure out that for our reviews, we personally, what's worked for us is to"
+    },
+    {
+      "id": 167,
+      "start": 720.92,
+      "end": 726.99,
+      "text": "shift that left. So as opposed to waiting for the PR, we do this review cycle"
+    },
+    {
+      "id": 168,
+      "start": 727.23,
+      "end": 728.94,
+      "text": "actually during the build phase."
+    },
+    {
+      "id": 169,
+      "start": 728.96,
+      "end": 733.24,
+      "text": "There we have full control and can do our review loops."
+    },
+    {
+      "id": 170,
+      "start": 733.26,
+      "end": 737.22,
+      "text": "The way we do this, again, the tool here doesn't matter."
+    },
+    {
+      "id": 171,
+      "start": 737.24,
+      "end": 738.98,
+      "text": "We use Claude and Codex."
+    },
+    {
+      "id": 172,
+      "start": 739.0,
+      "end": 743.26,
+      "text": "We're starting to test out some Chinese models now just 'cause it's getting too"
+    },
+    {
+      "id": 173,
+      "start": 743.28,
+      "end": 746.14,
+      "text": "expensive to keep up with some of these frontier labs."
+    },
+    {
+      "id": 174,
+      "start": 747.42,
+      "end": 748.76,
+      "text": "And so we just work."
+    },
+    {
+      "id": 175,
+      "start": 749.1,
+      "end": 752.25,
+      "text": "I hate the word loop, loop is the right word here unfortunately"
+    },
+    {
+      "id": 176,
+      "start": 752.39,
+      "end": 756.74,
+      "text": "we keep going on and going on until this is fixed now one of the things we've"
+    },
+    {
+      "id": 177,
+      "start": 756.76,
+      "end": 757.56,
+      "text": "noticed"
+    },
+    {
+      "id": 178,
+      "start": 757.82,
+      "end": 762.62,
+      "text": "practically is when you just tell an agent review this PR or review this unit of work"
+    },
+    {
+      "id": 179,
+      "start": 762.64,
+      "end": 768.2,
+      "text": "that can go on for hours and hours just finding nitpicks that make absolutely no"
+    },
+    {
+      "id": 180,
+      "start": 768.22,
+      "end": 772.09,
+      "text": "sense so the way that we've programmed this or the way that we've prompted this"
+    },
+    {
+      "id": 181,
+      "start": 772.11,
+      "end": 778.14,
+      "text": "is to focus primarily on p1s or p2s so direct customer facing things that are"
+    },
+    {
+      "id": 182,
+      "start": 778.16,
+      "end": 784.26,
+      "text": "critical engineering decisions that should be escalated to a human."
+    },
+    {
+      "id": 183,
+      "start": 784.28,
+      "end": 785.73,
+      "text": "Now, this"
+    },
+    {
+      "id": 184,
+      "start": 786.77,
+      "end": 787.88,
+      "text": "is a bit of a hot take."
+    },
+    {
+      "id": 185,
+      "start": 787.9,
+      "end": 789.94,
+      "text": "Because we're a small team, we find"
+    },
+    {
+      "id": 186,
+      "start": 790.75,
+      "end": 796.76,
+      "text": "review tools like CodeRabbit, Graphite to be, well, this has been recorded."
+    },
+    {
+      "id": 187,
+      "start": 797.2,
+      "end": 798.52,
+      "text": "It just doesn't work for us."
+    },
+    {
+      "id": 188,
+      "start": 798.54,
+      "end": 800.9,
+      "text": "Let me mind my language, right?"
+    },
+    {
+      "id": 189,
+      "start": 800.92,
+      "end": 802.86,
+      "text": "We find it to be a bit too late."
+    },
+    {
+      "id": 190,
+      "start": 803.0,
+      "end": 807.55,
+      "text": "If you're a larger organization, I found that this is one of the use cases for this"
+    },
+    {
+      "id": 191,
+      "start": 807.57,
+      "end": 813.21,
+      "text": "is You cannot enforce that an engineer has actually done the work, so you find a way"
+    },
+    {
+      "id": 192,
+      "start": 813.23,
+      "end": 816.62,
+      "text": "to do it at that stage to ensure that quality level."
+    },
+    {
+      "id": 193,
+      "start": 817.22,
+      "end": 821.42,
+      "text": "If you're a smaller team, I think there's lots of different ways to move that left"
+    },
+    {
+      "id": 194,
+      "start": 821.44,
+      "end": 823.53,
+      "text": "and stay in control."
+    },
+    {
+      "id": 195,
+      "start": 823.94,
+      "end": 826.0,
+      "text": "So this is just for us. Again, I want this to be practical."
+    },
+    {
+      "id": 196,
+      "start": 826.02,
+      "end": 827.58,
+      "text": "I'm not saying you didn't use them."
+    },
+    {
+      "id": 197,
+      "start": 827.6,
+      "end": 829.0,
+      "text": "It just doesn't work for us."
+    },
+    {
+      "id": 198,
+      "start": 830.22,
+      "end": 835.19,
+      "text": "I do know that Greptile also released a new feature where they can detect what"
+    },
+    {
+      "id": 199,
+      "start": 835.39,
+      "end": 841.15,
+      "text": "model issued your PR or worked on your PR and use an alternative model to do the"
+    },
+    {
+      "id": 200,
+      "start": 841.19,
+      "end": 846.54,
+      "text": "review we found that this works really really well so it's nicer than starting to"
+    },
+    {
+      "id": 201,
+      "start": 846.56,
+      "end": 852.01,
+      "text": "adopt this as well so again the way that this works for us the terminal is an"
+    },
+    {
+      "id": 202,
+      "start": 852.69,
+      "end": 857.98,
+      "text": "absolute rubbish place to write code but it's what I use because it gives the most"
+    },
+    {
+      "id": 203,
+      "start": 858.36,
+      "end": 863.56,
+      "text": "flexibility don't ask me why so the way that this works for us as you can see it's"
+    },
+    {
+      "id": 204,
+      "start": 863.58,
+      "end": 866.97,
+      "text": "just two models communicating with each other."
+    },
+    {
+      "id": 205,
+      "start": 866.99,
+      "end": 871.13,
+      "text": "If you use something like Aider that would also work, if you use something like Orca"
+    },
+    {
+      "id": 206,
+      "start": 871.15,
+      "end": 873.86,
+      "text": "that's an agentic IDE that would also work."
+    },
+    {
+      "id": 207,
+      "start": 873.94,
+      "end": 879.35,
+      "text": "In our case we're using our own agentic IDE Coldtea where we can get these agents"
+    },
+    {
+      "id": 208,
+      "start": 879.37,
+      "end": 883.2,
+      "text": "to pair like a like a human pair programmer would work in something"
+    },
+    {
+      "id": 209,
+      "start": 884.13,
+      "end": 885.78,
+      "text": "together. Brilliant."
+    },
+    {
+      "id": 210,
+      "start": 885.86,
+      "end": 889.18,
+      "text": "Now perhaps we just added these to our flow,"
+    },
+    {
+      "id": 211,
+      "start": 889.98,
+      "end": 894.85,
+      "text": "I think you saw that a month ago, and it's easily the best thing we've done this"
+    },
+    {
+      "id": 212,
+      "start": 894.87,
+      "end": 899.22,
+      "text": "month, I think. So if you're shipping real fast,"
+    },
+    {
+      "id": 213,
+      "start": 900.04,
+      "end": 902.96,
+      "text": "I think Mo had a slide where there was a guild called,"
+    },
+    {
+      "id": 214,
+      "start": 903.88,
+      "end": 908.06,
+      "text": "I don't know if it was Cognizant or something, but you can't keep up with the"
+    },
+    {
+      "id": 215,
+      "start": 908.43,
+      "end": 910.08,
+      "text": "system that you maintain."
+    },
+    {
+      "id": 216,
+      "start": 910.66,
+      "end": 913.22,
+      "text": "Now, I'm all up for agents writing code."
+    },
+    {
+      "id": 217,
+      "start": 913.5,
+      "end": 918.14,
+      "text": "I do 99% of my work with agents, but I don't want a world where I don't"
+    },
+    {
+      "id": 218,
+      "start": 918.16,
+      "end": 920.09,
+      "text": "understand the system that I maintain."
+    },
+    {
+      "id": 219,
+      "start": 920.32,
+      "end": 922.03,
+      "text": "That is absolutely ridiculous."
+    },
+    {
+      "id": 220,
+      "start": 922.7,
+      "end": 928.47,
+      "text": "If you don't understand the system you maintain, what is that?"
+    },
+    {
+      "id": 221,
+      "start": 928.56,
+      "end": 929.76,
+      "text": "It's no longer a system."
+    },
+    {
+      "id": 222,
+      "start": 929.9,
+      "end": 931.38,
+      "text": "It's just something, right?"
+    },
+    {
+      "id": 223,
+      "start": 931.86,
+      "end": 935.82,
+      "text": "So the way that we've done this is to not also stop us from moving fast."
+    },
+    {
+      "id": 224,
+      "start": 937.08,
+      "end": 941.67,
+      "text": "If you think about code review in the past, pre-AI, if you worked in the"
+    },
+    {
+      "id": 225,
+      "start": 941.76,
+      "end": 942.56,
+      "text": "industry,"
+    },
+    {
+      "id": 226,
+      "start": 942.96,
+      "end": 944.29,
+      "text": "why did we review code?"
+    },
+    {
+      "id": 227,
+      "start": 944.9,
+      "end": 946.23,
+      "text": "It wasn't about some"
+    },
+    {
+      "id": 228,
+      "start": 947.2,
+      "end": 950.25,
+      "text": "colleague telling you to not use an if-else and use a switch."
+    },
+    {
+      "id": 229,
+      "start": 950.4,
+      "end": 951.6,
+      "text": "A linter can catch that."
+    },
+    {
+      "id": 230,
+      "start": 952.22,
+      "end": 953.97,
+      "text": "Why exactly did we review code?"
+    },
+    {
+      "id": 231,
+      "start": 954.88,
+      "end": 956.08,
+      "text": "Primarily a few reasons."
+    },
+    {
+      "id": 232,
+      "start": 956.44,
+      "end": 958.54,
+      "text": "First of all, if you're a more experienced"
+    },
+    {
+      "id": 233,
+      "start": 958.74,
+      "end": 960.84,
+      "text": "engineer, maybe you could catch some bugs."
+    },
+    {
+      "id": 234,
+      "start": 961.02,
+      "end": 966.37,
+      "text": "That's good. To be fair, today you can sort of codify that and have an agent do"
+    },
+    {
+      "id": 235,
+      "start": 966.39,
+      "end": 967.19,
+      "text": "that."
+    },
+    {
+      "id": 236,
+      "start": 968.5,
+      "end": 974.46,
+      "text": "There's one thing you can't codify, though, is having a way to keep a mental"
+    },
+    {
+      "id": 237,
+      "start": 974.48,
+      "end": 976.68,
+      "text": "model of the system you maintain."
+    },
+    {
+      "id": 238,
+      "start": 977.28,
+      "end": 981.24,
+      "text": "Unfortunately, or fortunately, the way that the human brain works is, I'm no"
+    },
+    {
+      "id": 239,
+      "start": 981.32,
+      "end": 984.07,
+      "text": "neuroscientist, and I think there's a doctor somewhere."
+    },
+    {
+      "id": 240,
+      "start": 984.66,
+      "end": 988.95,
+      "text": "But to my knowledge, the way that the brain works is there is some level of"
+    },
+    {
+      "id": 241,
+      "start": 989.02,
+      "end": 993.75,
+      "text": "interaction with the world that is needed to build some sort of mental model of the"
+    },
+    {
+      "id": 242,
+      "start": 994.12,
+      "end": 995.38,
+      "text": "system that you represent."
+    },
+    {
+      "id": 243,
+      "start": 995.4,
+      "end": 1001.62,
+      "text": "If i close my eyes i'm pretty sure that i can still navigate the slide without"
+    },
+    {
+      "id": 244,
+      "start": 1001.64,
+      "end": 1006.09,
+      "text": "looking at this i can feel it i know where it is now the same thing goes with"
+    },
+    {
+      "id": 245,
+      "start": 1006.11,
+      "end": 1010.02,
+      "text": "software unfortunately or fortunately if there is no sort of interaction"
+    },
+    {
+      "id": 246,
+      "start": 1010.85,
+      "end": 1016.48,
+      "text": "with that system and your agents just do the whole thing it's normal that you lose"
+    },
+    {
+      "id": 247,
+      "start": 1016.85,
+      "end": 1022.98,
+      "text": "some sort of sharp mental model of that system now what we've done is we've built"
+    },
+    {
+      "id": 248,
+      "start": 1023.06,
+      "end": 1029.96,
+      "text": "this this thing we open sourced it um it got yeah anyway we open sourced it"
+    },
+    {
+      "id": 249,
+      "start": 1029.98,
+      "end": 1035.47,
+      "text": "but the long and short of it is it is able to take every PR change every"
+    },
+    {
+      "id": 250,
+      "start": 1036.17,
+      "end": 1042.57,
+      "text": "agent work and visually break that down into a visual system so how the"
+    },
+    {
+      "id": 251,
+      "start": 1042.59,
+      "end": 1049.53,
+      "text": "pieces connect Because right now, what I care about mostly is the architecture, the"
+    },
+    {
+      "id": 252,
+      "start": 1049.55,
+      "end": 1053.77,
+      "text": "data flow, the fundamentals, the thing that what I used to do as a staff"
+    },
+    {
+      "id": 253,
+      "start": 1053.79,
+      "end": 1058.54,
+      "text": "principal engineer without writing code, I still care about that because it still"
+    },
+    {
+      "id": 254,
+      "start": 1058.56,
+      "end": 1061.46,
+      "text": "matters, right? And I still want to understand the system."
+    },
+    {
+      "id": 255,
+      "start": 1061.62,
+      "end": 1066.32,
+      "text": "So we built this so that at every point, every engineer, regardless of the PRs,"
+    },
+    {
+      "id": 256,
+      "start": 1066.34,
+      "end": 1070.68,
+      "text": "regardless of how fast we move, we can visually see the system."
+    },
+    {
+      "id": 257,
+      "start": 1071.02,
+      "end": 1073.3,
+      "text": "We can see how all the pieces connect together."
+    },
+    {
+      "id": 258,
+      "start": 1073.32,
+      "end": 1078.05,
+      "text": "Are we can see how the data flows through them and we can always keep a sharp mental"
+    },
+    {
+      "id": 259,
+      "start": 1078.14,
+      "end": 1085.0,
+      "text": "model of the system now once we've done that so we've gone through planning"
+    },
+    {
+      "id": 260,
+      "start": 1085.61,
+      "end": 1092.27,
+      "text": "we've built it all the agents have built it we've done some level of"
+    },
+    {
+      "id": 261,
+      "start": 1092.29,
+      "end": 1097.98,
+      "text": "review then you issue a PR this is where everyone you know spends a lot of"
+    },
+    {
+      "id": 262,
+      "start": 1098.0,
+      "end": 1098.8,
+      "text": "attention"
+    },
+    {
+      "id": 263,
+      "start": 1098.97,
+      "end": 1103.97,
+      "text": "on the PR the PR the PR the PR the PR great um there's a few things we do here"
+    },
+    {
+      "id": 264,
+      "start": 1104.29,
+      "end": 1110.19,
+      "text": "that has worked a lot for us now if you think about quality again whatever"
+    },
+    {
+      "id": 265,
+      "start": 1110.89,
+      "end": 1115.58,
+      "text": "quality means to you the point that you do have to be able to define that for us what"
+    },
+    {
+      "id": 266,
+      "start": 1116.55,
+      "end": 1123.31,
+      "text": "quality means isn't just code quality is ultimately what we ship to the"
+    },
+    {
+      "id": 267,
+      "start": 1123.47,
+      "end": 1129.31,
+      "text": "user is a 10 of a 10 right we don't ship crap to the user it works works, and we"
+    },
+    {
+      "id": 268,
+      "start": 1129.33,
+      "end": 1131.22,
+      "text": "can prove that it works."
+    },
+    {
+      "id": 269,
+      "start": 1131.3,
+      "end": 1135.16,
+      "text": "So there's two things that we do here is we run automated regression"
+    },
+    {
+      "id": 270,
+      "start": 1136.07,
+      "end": 1138.22,
+      "text": "testing via QA agents."
+    },
+    {
+      "id": 271,
+      "start": 1138.24,
+      "end": 1144.68,
+      "text": "That is a mouthful, but what that really means is for every change that we"
+    },
+    {
+      "id": 272,
+      "start": 1145.01,
+      "end": 1148.94,
+      "text": "introduce, we're able to have a preview deployment."
+    },
+    {
+      "id": 273,
+      "start": 1149.03,
+      "end": 1151.72,
+      "text": "This is quite easy to do if you're building a web app."
+    },
+    {
+      "id": 274,
+      "start": 1151.74,
+      "end": 1156.2,
+      "text": "I think it's also fairly easy to do if if you build a back-end service."
+    },
+    {
+      "id": 275,
+      "start": 1156.22,
+      "end": 1158.18,
+      "text": "If you build a mobile app, good luck."
+    },
+    {
+      "id": 276,
+      "start": 1158.2,
+      "end": 1162.93,
+      "text": "It's a bit hard. For mobile apps, some of the organizations that we work with, we"
+    },
+    {
+      "id": 277,
+      "start": 1162.95,
+      "end": 1166.86,
+      "text": "push this further down to what you call a release candidate."
+    },
+    {
+      "id": 278,
+      "start": 1166.88,
+      "end": 1170.9,
+      "text": "So we do this maybe every two weeks or, well, these days, every one week."
+    },
+    {
+      "id": 279,
+      "start": 1170.92,
+      "end": 1177.18,
+      "text": "But if you build a web or back-end service, you absolutely should be doing"
+    },
+    {
+      "id": 280,
+      "start": 1177.55,
+      "end": 1180.0,
+      "text": "something similar. So the same"
+    },
+    {
+      "id": 281,
+      "start": 1180.97,
+      "end": 1185.22,
+      "text": "flows are then driven from the same way that the user would use it."
+    },
+    {
+      "id": 282,
+      "start": 1185.24,
+      "end": 1188.48,
+      "text": "Again, I'm going to show a screenshot or a video of how this works."
+    },
+    {
+      "id": 283,
+      "start": 1188.5,
+      "end": 1189.95,
+      "text": "But an agent drives the"
+    },
+    {
+      "id": 284,
+      "start": 1190.81,
+      "end": 1196.18,
+      "text": "application the same way that your end customer would use it and determines for a"
+    },
+    {
+      "id": 285,
+      "start": 1196.2,
+      "end": 1200.44,
+      "text": "fact that the intent-- again, this is why I said that cannot live on the machine--"
+    },
+    {
+      "id": 286,
+      "start": 1200.46,
+      "end": 1202.21,
+      "text": "the intent is also being referenced"
+    },
+    {
+      "id": 287,
+      "start": 1202.77,
+      "end": 1207.94,
+      "text": "here, is actually being done as we expect it to be done."
+    },
+    {
+      "id": 288,
+      "start": 1207.96,
+      "end": 1212.55,
+      "text": "Now, if you go out to build this, it's easy to say just go ahead and build a"
+    },
+    {
+      "id": 289,
+      "start": 1212.64,
+      "end": 1217.14,
+      "text": "visual QA agent. It's a bit harder than that if you really try and do it."
+    },
+    {
+      "id": 290,
+      "start": 1217.16,
+      "end": 1221.37,
+      "text": "Because if you just do LLMs, if you think about it, you know, I've started my talk"
+    },
+    {
+      "id": 291,
+      "start": 1221.39,
+      "end": 1223.51,
+      "text": "saying LLMs suck to a large extent."
+    },
+    {
+      "id": 292,
+      "start": 1223.9,
+      "end": 1225.25,
+      "text": "If you then trust the most"
+    },
+    {
+      "id": 293,
+      "start": 1226.21,
+      "end": 1231.7,
+      "text": "important part, validating that the application works as it is to an LLM, it's"
+    },
+    {
+      "id": 294,
+      "start": 1231.72,
+      "end": 1233.27,
+      "text": "a bit of a questionable choice."
+    },
+    {
+      "id": 295,
+      "start": 1233.82,
+      "end": 1237.72,
+      "text": "The way that we do this again the tools don't matter as much is we use a tool"
+    },
+    {
+      "id": 296,
+      "start": 1237.74,
+      "end": 1242.55,
+      "text": "called Stagehand that helps us to mix the best parts of LLMs with actual"
+    },
+    {
+      "id": 297,
+      "start": 1242.64,
+      "end": 1247.66,
+      "text": "deterministic assertions going through the code again i'm going to show a video for"
+    },
+    {
+      "id": 298,
+      "start": 1247.73,
+      "end": 1252.46,
+      "text": "that looks like but essentially as the agent goes through as long as you don't"
+    },
+    {
+      "id": 299,
+      "start": 1252.93,
+      "end": 1257.33,
+      "text": "change if nothing has changed the deterministic action that passed before"
+    },
+    {
+      "id": 300,
+      "start": 1257.48,
+      "end": 1262.62,
+      "text": "gets played back and then if i've changed an id or i've changed a label i don't need"
+    },
+    {
+      "id": 301,
+      "start": 1262.64,
+      "end": 1265.42,
+      "text": "to to update my test because the agent can reason through it."
+    },
+    {
+      "id": 302,
+      "start": 1265.44,
+      "end": 1271.23,
+      "text": "Ultimately, what I care about is if I was building a payment app, then my user can"
+    },
+    {
+      "id": 303,
+      "start": 1271.25,
+      "end": 1276.64,
+      "text": "still pay. I don't care that the button says Pay Now or it says Pay Now Later."
+    },
+    {
+      "id": 304,
+      "start": 1276.66,
+      "end": 1279.22,
+      "text": "I actually, to a large extent, don't care."
+    },
+    {
+      "id": 305,
+      "start": 1279.44,
+      "end": 1284.84,
+      "text": "I care about what the user sees and that it functionally works."
+    },
+    {
+      "id": 306,
+      "start": 1284.86,
+      "end": 1290.2,
+      "text": "Again, so visually, the way that this looks is the agent takes on whatever"
+    },
+    {
+      "id": 307,
+      "start": 1290.39,
+      "end": 1296.68,
+      "text": "change it is, runs this and uses it like a user would right so if this was a web"
+    },
+    {
+      "id": 308,
+      "start": 1296.7,
+      "end": 1300.81,
+      "text": "application again extremely easy to do if this was a back-end service you couple it"
+    },
+    {
+      "id": 309,
+      "start": 1300.83,
+      "end": 1304.63,
+      "text": "to the actual client in this case could be a web application and it actually"
+    },
+    {
+      "id": 310,
+      "start": 1305.29,
+      "end": 1309.61,
+      "text": "drives through the application i don't need to babysit this i don't need to watch"
+    },
+    {
+      "id": 311,
+      "start": 1309.63,
+      "end": 1314.42,
+      "text": "this but as a human ultimately on that PR i need to see the proof of work i need to"
+    },
+    {
+      "id": 312,
+      "start": 1314.44,
+      "end": 1319.7,
+      "text": "see that this actually did work and i'm i also care that this is not done by the"
+    },
+    {
+      "id": 313,
+      "start": 1319.72,
+      "end": 1326.51,
+      "text": "implementing agent this is a completely different agent specialized for this use"
+    },
+    {
+      "id": 314,
+      "start": 1326.53,
+      "end": 1333.13,
+      "text": "case now what I said previously works really"
+    },
+    {
+      "id": 315,
+      "start": 1333.15,
+      "end": 1339.56,
+      "text": "well when you know what to test I want to test that as a user if I'm building a"
+    },
+    {
+      "id": 316,
+      "start": 1339.79,
+      "end": 1344.63,
+      "text": "payment service or payment application I want to test that the user goes on here"
+    },
+    {
+      "id": 317,
+      "start": 1344.83,
+      "end": 1350.72,
+      "text": "clicks on pay now and then the payment gets done perfect all by the things that i"
+    },
+    {
+      "id": 318,
+      "start": 1350.74,
+      "end": 1356.14,
+      "text": "i didn't think to test the edge cases that's that's that's where it creeps in so"
+    },
+    {
+      "id": 319,
+      "start": 1356.16,
+      "end": 1360.79,
+      "text": "we do pretty much exactly the same thing but as opposed to the agent having a"
+    },
+    {
+      "id": 320,
+      "start": 1360.81,
+      "end": 1366.39,
+      "text": "predefined set of actions in this case the agent is left to explore different"
+    },
+    {
+      "id": 321,
+      "start": 1366.78,
+      "end": 1371.46,
+      "text": "organizations do this differently but this is similar to what you would call like a"
+    },
+    {
+      "id": 322,
+      "start": 1371.48,
+      "end": 1376.31,
+      "text": "bug bash um if you're familiar where as a human you would go and just try and break"
+    },
+    {
+      "id": 323,
+      "start": 1376.4,
+      "end": 1381.46,
+      "text": "the app and test things it's quite similar we run this in every PR as well something"
+    },
+    {
+      "id": 324,
+      "start": 1381.48,
+      "end": 1385.59,
+      "text": "i didn't say before you're probably asking how the hell do you keep this fast because"
+    },
+    {
+      "id": 325,
+      "start": 1385.61,
+      "end": 1391.6,
+      "text": "if you work as an engineer um i never liked end-to-end tests i i yeah i never"
+    },
+    {
+      "id": 326,
+      "start": 1391.68,
+      "end": 1396.8,
+      "text": "liked them they were too slow they were flaky they just didn't you know it just"
+    },
+    {
+      "id": 327,
+      "start": 1397.05,
+      "end": 1402.49,
+      "text": "sucked the life out of me because I'm on a quick iteration but in"
+    },
+    {
+      "id": 328,
+      "start": 1403.72,
+      "end": 1408.83,
+      "text": "today's world where you can ship a lot faster so when I learned to code or well"
+    },
+    {
+      "id": 329,
+      "start": 1408.85,
+      "end": 1414.39,
+      "text": "I'm not that old but 10-7 years ago whatever it is what you were taught as an"
+    },
+    {
+      "id": 330,
+      "start": 1414.41,
+      "end": 1420.41,
+      "text": "industry or what we were taught was you write as you know as few end-to-end tests"
+    },
+    {
+      "id": 331,
+      "start": 1420.5,
+      "end": 1426.44,
+      "text": "as possible we call this the triangle right you write as much unit tests as"
+    },
+    {
+      "id": 332,
+      "start": 1426.46,
+      "end": 1431.85,
+      "text": "possible a few integration tests and then you know a small subset of end-to-end"
+    },
+    {
+      "id": 333,
+      "start": 1431.87,
+      "end": 1436.56,
+      "text": "tests quite frankly i'm not sure this is still good advice if i'm being honest in"
+    },
+    {
+      "id": 334,
+      "start": 1436.58,
+      "end": 1442.04,
+      "text": "today's world so we flip that a little bit so you will see that i've said nothing"
+    },
+    {
+      "id": 335,
+      "start": 1442.06,
+      "end": 1447.67,
+      "text": "absolutely nothing about unit tests i think agents write shit unit tests so we"
+    },
+    {
+      "id": 336,
+      "start": 1447.69,
+      "end": 1454.58,
+      "text": "focus a lot more on increasing we extend a lot more the"
+    },
+    {
+      "id": 337,
+      "start": 1454.6,
+      "end": 1459.12,
+      "text": "integration on the end-to-end test and we find this to give us a lot more confidence"
+    },
+    {
+      "id": 338,
+      "start": 1459.14,
+      "end": 1462.96,
+      "text": "as opposed to, yeah, stupid unit tests, sorry."
+    },
+    {
+      "id": 339,
+      "start": 1464.2,
+      "end": 1468.68,
+      "text": "So again, similar to what I said before, the agent drives the application like a"
+    },
+    {
+      "id": 340,
+      "start": 1468.7,
+      "end": 1471.22,
+      "text": "real user. The difference here is exploring, right?"
+    },
+    {
+      "id": 341,
+      "start": 1471.24,
+      "end": 1475.26,
+      "text": "It's doing this bug bash type thing to actually figure out if something else is"
+    },
+    {
+      "id": 342,
+      "start": 1475.59,
+      "end": 1477.85,
+      "text": "broken. Now, visually, this looks"
+    },
+    {
+      "id": 343,
+      "start": 1478.62,
+      "end": 1480.18,
+      "text": "similar to what I showed you before."
+    },
+    {
+      "id": 344,
+      "start": 1480.2,
+      "end": 1482.76,
+      "text": "The only difference is there is no direct goal."
+    },
+    {
+      "id": 345,
+      "start": 1483.4,
+      "end": 1485.05,
+      "text": "The agent can go and play around."
+    },
+    {
+      "id": 346,
+      "start": 1485.58,
+      "end": 1491.68,
+      "text": "As an engineer, what we get as a PR on the PR is these URLs that at any point in time"
+    },
+    {
+      "id": 347,
+      "start": 1491.7,
+      "end": 1494.7,
+      "text": "I can click and then figure out what the agent actually did."
+    },
+    {
+      "id": 348,
+      "start": 1495.24,
+      "end": 1499.53,
+      "text": "Well, if it fails and I go look, if I don't, if it doesn't fail, then I'm good."
+    },
+    {
+      "id": 349,
+      "start": 1499.62,
+      "end": 1506.36,
+      "text": "Okay this is the part that i really like to"
+    },
+    {
+      "id": 350,
+      "start": 1506.38,
+      "end": 1512.8,
+      "text": "talk about because when we build software so if you think pre-AI i'm sure"
+    },
+    {
+      "id": 351,
+      "start": 1512.82,
+      "end": 1518.75,
+      "text": "there's a lot of people who who value the art of writing software i loved it you"
+    },
+    {
+      "id": 352,
+      "start": 1518.77,
+      "end": 1523.48,
+      "text": "know i could lock up myself for four hours and just go just get my headphones on i'm"
+    },
+    {
+      "id": 353,
+      "start": 1523.5,
+      "end": 1529.11,
+      "text": "not very social person anyway so it was perfect for me um but regardless of how"
+    },
+    {
+      "id": 354,
+      "start": 1529.13,
+      "end": 1534.96,
+      "text": "brilliant i was or my colleagues were if it's software it's still gonna break you"
+    },
+    {
+      "id": 355,
+      "start": 1534.98,
+      "end": 1539.21,
+      "text": "still had bugs right so you don't have bugs and you go what fucking idiot my"
+    },
+    {
+      "id": 356,
+      "start": 1539.65,
+      "end": 1543.66,
+      "text": "colleague is how could he ship software like this you don't say this do you you"
+    },
+    {
+      "id": 357,
+      "start": 1543.68,
+      "end": 1549.5,
+      "text": "don't right but when we build with agents now we say this a lot right well i say"
+    },
+    {
+      "id": 358,
+      "start": 1549.52,
+      "end": 1554.58,
+      "text": "this a lot i'm like bloody claude you know i actually hate claude sometimes i love it"
+    },
+    {
+      "id": 359,
+      "start": 1554.68,
+      "end": 1558.41,
+      "text": "i hate it sometimes you know i say how can you do such a mess if i don't step in and"
+    },
+    {
+      "id": 360,
+      "start": 1558.43,
+      "end": 1564.71,
+      "text": "review it but if you think about it even the best humans stuff slipped through"
+    },
+    {
+      "id": 361,
+      "start": 1565.55,
+      "end": 1572.48,
+      "text": "right the problem now is it's an accelerated i agree maybe a bit a lot"
+    },
+    {
+      "id": 362,
+      "start": 1572.5,
+      "end": 1577.04,
+      "text": "more accelerated but stuff slips through it's just the nature of software right"
+    },
+    {
+      "id": 363,
+      "start": 1577.06,
+      "end": 1583.88,
+      "text": "what do you then do so the way that we've we've done this is again we try to"
+    },
+    {
+      "id": 364,
+      "start": 1583.9,
+      "end": 1588.52,
+      "text": "connect the entire thing right so now i've talked about build or plan build review"
+    },
+    {
+      "id": 365,
+      "start": 1588.54,
+      "end": 1595.34,
+      "text": "the whole thing again another reason why i emphasize at the very start that the"
+    },
+    {
+      "id": 366,
+      "start": 1595.36,
+      "end": 1599.55,
+      "text": "intent what we started with lived somewhere that can be"
+    },
+    {
+      "id": 367,
+      "start": 1600.28,
+      "end": 1604.6,
+      "text": "referenced through the entire life cycle that plays a big part here right so what"
+    },
+    {
+      "id": 368,
+      "start": 1604.62,
+      "end": 1609.86,
+      "text": "we do is we have this background agents after post deployment after this QA agent"
+    },
+    {
+      "id": 369,
+      "start": 1609.88,
+      "end": 1613.99,
+      "text": "has done this thing every single deployment triggers a signal to these"
+    },
+    {
+      "id": 370,
+      "start": 1614.01,
+      "end": 1619.7,
+      "text": "background agents to start to watch right for whatever breaks okay so the"
+    },
+    {
+      "id": 371,
+      "start": 1620.67,
+      "end": 1627.2,
+      "text": "way if whatever software you use today Sentry,"
+    },
+    {
+      "id": 372,
+      "start": 1627.22,
+      "end": 1632.9,
+      "text": "Datadog whatever every one of them is trying to sell you their remarkable AI."
+    },
+    {
+      "id": 373,
+      "start": 1634.74,
+      "end": 1637.66,
+      "text": "Again, I absolutely love these tools."
+    },
+    {
+      "id": 374,
+      "start": 1637.86,
+      "end": 1639.16,
+      "text": "I promise I'm not a hater."
+    },
+    {
+      "id": 375,
+      "start": 1639.7,
+      "end": 1641.35,
+      "text": "I think they do a phenomenal job."
+    },
+    {
+      "id": 376,
+      "start": 1641.9,
+      "end": 1645.9,
+      "text": "But the point I'm trying to make here is having these disconnected,"
+    },
+    {
+      "id": 377,
+      "start": 1646.88,
+      "end": 1651.82,
+      "text": "I'm not going to mention names, having a disconnected platform A AI and another"
+    },
+    {
+      "id": 378,
+      "start": 1652.05,
+      "end": 1652.85,
+      "text": "disconnected"
+    },
+    {
+      "id": 379,
+      "start": 1653.35,
+      "end": 1655.25,
+      "text": "platform B AI and another disconnected"
+    },
+    {
+      "id": 380,
+      "start": 1655.97,
+      "end": 1657.97,
+      "text": "platform C AI are fine to be an absolute"
+    },
+    {
+      "id": 381,
+      "start": 1658.61,
+      "end": 1659.41,
+      "text": "mess."
+    },
+    {
+      "id": 382,
+      "start": 1659.86,
+      "end": 1663.78,
+      "text": "So what we do is we connect all the signals, all the production signals."
+    },
+    {
+      "id": 383,
+      "start": 1664.22,
+      "end": 1670.14,
+      "text": "So if it's a front end, so our sentry, our Vercel, all of that in one place on the"
+    },
+    {
+      "id": 384,
+      "start": 1670.16,
+      "end": 1672.88,
+      "text": "back end, the same thing in one place."
+    },
+    {
+      "id": 385,
+      "start": 1672.9,
+      "end": 1679.21,
+      "text": "And even our agent traces, whether that's on LangWatch, on Braintrust, all of these"
+    },
+    {
+      "id": 386,
+      "start": 1679.23,
+      "end": 1685.08,
+      "text": "are connected into one place so that this background agent can reason through"
+    },
+    {
+      "id": 387,
+      "start": 1685.1,
+      "end": 1688.83,
+      "text": "causalities across the entire thing when things go wrong."
+    },
+    {
+      "id": 388,
+      "start": 1689.66,
+      "end": 1691.7,
+      "text": "This is our preferred way of doing it."
+    },
+    {
+      "id": 389,
+      "start": 1692.12,
+      "end": 1695.52,
+      "text": "I'm not saying it's the best way, but I think it's pretty damn good."
+    },
+    {
+      "id": 390,
+      "start": 1695.86,
+      "end": 1697.71,
+      "text": "But that's just what's worked for us."
+    },
+    {
+      "id": 391,
+      "start": 1698.48,
+      "end": 1704.69,
+      "text": "Now, if you go on to build this for yourself or your organization, what we"
+    },
+    {
+      "id": 392,
+      "start": 1704.71,
+      "end": 1709.08,
+      "text": "found to work really well for us is that this background agent has something of a"
+    },
+    {
+      "id": 393,
+      "start": 1709.1,
+      "end": 1710.28,
+      "text": "persistent computer."
+    },
+    {
+      "id": 394,
+      "start": 1710.52,
+      "end": 1714.15,
+      "text": "Well, in plain terms, it's a remote VM, right?"
+    },
+    {
+      "id": 395,
+      "start": 1714.46,
+      "end": 1715.62,
+      "text": "That never goes off."
+    },
+    {
+      "id": 396,
+      "start": 1716.4,
+      "end": 1718.3,
+      "text": "And then it's got a couple of skills."
+    },
+    {
+      "id": 397,
+      "start": 1718.32,
+      "end": 1719.75,
+      "text": "And then these platforms"
+    },
+    {
+      "id": 398,
+      "start": 1720.63,
+      "end": 1724.87,
+      "text": "that I just mentioned, all of them have a pretty decent CLI."
+    },
+    {
+      "id": 399,
+      "start": 1725.42,
+      "end": 1729.38,
+      "text": "So these are installed on that virtual machine with minimal scope."
+    },
+    {
+      "id": 400,
+      "start": 1729.7,
+      "end": 1733.43,
+      "text": "So now you're probably going, why would you give an agent access to your"
+    },
+    {
+      "id": 401,
+      "start": 1733.45,
+      "end": 1734.76,
+      "text": "infrastructure?"
+    },
+    {
+      "id": 402,
+      "start": 1735.8,
+      "end": 1737.66,
+      "text": "Well, it's just a read-only scope."
+    },
+    {
+      "id": 403,
+      "start": 1737.84,
+      "end": 1742.8,
+      "text": "So the worst that can happen is it reads a bit too much, and then we cut it off."
+    },
+    {
+      "id": 404,
+      "start": 1742.86,
+      "end": 1746.14,
+      "text": "But it never really writes or does something catastrophic."
+    },
+    {
+      "id": 405,
+      "start": 1746.16,
+      "end": 1747.54,
+      "text": "So we give this to the"
+    },
+    {
+      "id": 406,
+      "start": 1748.47,
+      "end": 1752.02,
+      "text": "persistent computer so it's able to reason through all the causalities."
+    },
+    {
+      "id": 407,
+      "start": 1753.04,
+      "end": 1754.59,
+      "text": "And what happens is when things"
+    },
+    {
+      "id": 408,
+      "start": 1755.35,
+      "end": 1759.49,
+      "text": "go wrong, we then wake up to a fix."
+    },
+    {
+      "id": 409,
+      "start": 1759.74,
+      "end": 1766.18,
+      "text": "Right. Now, an important thing here as well is when you think"
+    },
+    {
+      "id": 410,
+      "start": 1766.41,
+      "end": 1772.87,
+      "text": "about this system, you have to think about"
+    },
+    {
+      "id": 411,
+      "start": 1772.89,
+      "end": 1779.1,
+      "text": "why did that, again, similar to what Mo said before, why did that even break in"
+    },
+    {
+      "id": 412,
+      "start": 1779.12,
+      "end": 1781.14,
+      "text": "the first place? What's happened?"
+    },
+    {
+      "id": 413,
+      "start": 1781.16,
+      "end": 1784.24,
+      "text": "And this is the beauty of having this all connected."
+    },
+    {
+      "id": 414,
+      "start": 1784.26,
+      "end": 1788.57,
+      "text": "So what happens in our case, and again, I'm going to show a video, is when that"
+    },
+    {
+      "id": 415,
+      "start": 1788.59,
+      "end": 1793.56,
+      "text": "fix comes in and it's found the root cause, that gets fed again back to our"
+    },
+    {
+      "id": 416,
+      "start": 1793.78,
+      "end": 1794.81,
+      "text": "task system."
+    },
+    {
+      "id": 417,
+      "start": 1795.88,
+      "end": 1799.85,
+      "text": "And just the way that we can read it, it feels like a fancy UI, but this can be"
+    },
+    {
+      "id": 418,
+      "start": 1799.92,
+      "end": 1804.62,
+      "text": "exported to a markdown since we all love markdowns today, right?"
+    },
+    {
+      "id": 419,
+      "start": 1804.64,
+      "end": 1810.14,
+      "text": "But having this interconnected system all in one place so that the learnings from"
+    },
+    {
+      "id": 420,
+      "start": 1810.24,
+      "end": 1814.84,
+      "text": "monitoring feed back into how you decide where you build next and into the next"
+    },
+    {
+      "id": 421,
+      "start": 1815.04,
+      "end": 1819.35,
+      "text": "plan and into your actual code review for the next time you make a similar error or"
+    },
+    {
+      "id": 422,
+      "start": 1819.37,
+      "end": 1823.8,
+      "text": "an agent makes a similar error makes a massive, massive, massive difference."
+    },
+    {
+      "id": 423,
+      "start": 1825.66,
+      "end": 1829.16,
+      "text": "So again, for us, that looks like this, like I said, I've got all my tools"
+    },
+    {
+      "id": 424,
+      "start": 1829.18,
+      "end": 1833.81,
+      "text": "connected. I've got PostHog, I've got Vercel, I've got CR, sorry, not CR, I've"
+    },
+    {
+      "id": 425,
+      "start": 1833.83,
+      "end": 1838.95,
+      "text": "got LangWatch. So all of these connected in one place, we found to do to work"
+    },
+    {
+      "id": 426,
+      "start": 1838.97,
+      "end": 1844.2,
+      "text": "pretty well as opposed to just having distinct AI agents for each platform."
+    },
+    {
+      "id": 427,
+      "start": 1844.44,
+      "end": 1849.03,
+      "text": "Because if you think about the work of an incident commander, the really hard thing"
+    },
+    {
+      "id": 428,
+      "start": 1849.12,
+      "end": 1852.76,
+      "text": "is that correlation, right, between services, especially if it's a complex"
+    },
+    {
+      "id": 429,
+      "start": 1852.78,
+      "end": 1853.58,
+      "text": "system."
+    },
+    {
+      "id": 430,
+      "start": 1854.16,
+      "end": 1860.3,
+      "text": "And then what happens is you then get like something of a description of the problem"
+    },
+    {
+      "id": 431,
+      "start": 1860.32,
+      "end": 1863.6,
+      "text": "and an implementation plan again."
+    },
+    {
+      "id": 432,
+      "start": 1863.82,
+      "end": 1866.66,
+      "text": "You know, you've probably seen the We Love implementation plans."
+    },
+    {
+      "id": 433,
+      "start": 1866.68,
+      "end": 1871.41,
+      "text": "Again, we review this plan and then we fire off the agents to go fix it."
+    },
+    {
+      "id": 434,
+      "start": 1871.48,
+      "end": 1872.87,
+      "text": "Right. And then"
+    },
+    {
+      "id": 435,
+      "start": 1873.79,
+      "end": 1876.78,
+      "text": "the entire thing just continues on and on."
+    },
+    {
+      "id": 436,
+      "start": 1878.32,
+      "end": 1884.07,
+      "text": "Beautiful. So we've looked at pretty much the whole flow or what the whole flow"
+    },
+    {
+      "id": 437,
+      "start": 1884.09,
+      "end": 1889.21,
+      "text": "looks like for us. We go from plan and then we build and then we review and then"
+    },
+    {
+      "id": 438,
+      "start": 1889.23,
+      "end": 1892.93,
+      "text": "we have a PR. We do all the QA checks and then we do the post-deployment"
+    },
+    {
+      "id": 439,
+      "start": 1892.95,
+      "end": 1893.89,
+      "text": "verification."
+    },
+    {
+      "id": 440,
+      "start": 1894.92,
+      "end": 1899.82,
+      "text": "Again, like I said, the beauty of this is not really doing a phenomenal job at each"
+    },
+    {
+      "id": 441,
+      "start": 1899.84,
+      "end": 1905.72,
+      "text": "of them. Is bringing all of them together and letting the lessons from the last bit"
+    },
+    {
+      "id": 442,
+      "start": 1905.74,
+      "end": 1907.43,
+      "text": "flow back into the first."
+    },
+    {
+      "id": 443,
+      "start": 1907.96,
+      "end": 1911.99,
+      "text": "It's that correlation and that verification at each step is what builds"
+    },
+    {
+      "id": 444,
+      "start": 1912.17,
+      "end": 1914.44,
+      "text": "what I think is decent software."
+    },
+    {
+      "id": 445,
+      "start": 1915.64,
+      "end": 1918.5,
+      "text": "And that's been me. Thank you all for having me."
+    }
+  ]
+}

@@ -1,0 +1,1782 @@
+{
+  "id": "zak-talk",
+  "kind": "talk",
+  "officialTitle": "Medical Breakthroughs and Scientific Discoveries",
+  "speakerNames": [
+    "Zak Allal"
+  ],
+  "durationSeconds": 1255.0,
+  "videoFile": "exports/talks-v02/zak-talk-4k.mp4",
+  "reviewFile": "review/talks-v02/zak-talk-720p.mp4",
+  "chapters": [
+    {
+      "outputSeconds": 0,
+      "title": "Introduction: curiosity across disciplines",
+      "sourceSeconds": 24321.12,
+      "timestamp": "00:00"
+    },
+    {
+      "outputSeconds": 142,
+      "title": "Engineering medical research and the cost of repetition",
+      "sourceSeconds": 24460.9,
+      "timestamp": "02:22"
+    },
+    {
+      "outputSeconds": 331,
+      "title": "Research tools and accessible supercomputers",
+      "sourceSeconds": 24649.56,
+      "timestamp": "05:31"
+    },
+    {
+      "outputSeconds": 463,
+      "title": "Questioning the categories used for human hearing",
+      "sourceSeconds": 24781.34,
+      "timestamp": "07:43"
+    },
+    {
+      "outputSeconds": 603,
+      "title": "High-throughput experiments and the Recursion example",
+      "sourceSeconds": 24921.96,
+      "timestamp": "10:03"
+    },
+    {
+      "outputSeconds": 708,
+      "title": "Building a research operating system with Rust, Julia and C++",
+      "sourceSeconds": 25027.04,
+      "timestamp": "11:48"
+    },
+    {
+      "outputSeconds": 795,
+      "title": "Rechecking the hearing-data premise",
+      "sourceSeconds": 25113.84,
+      "timestamp": "13:15"
+    },
+    {
+      "outputSeconds": 876,
+      "title": "Examining statistical and methodological errors",
+      "sourceSeconds": 25194.22,
+      "timestamp": "14:36"
+    },
+    {
+      "outputSeconds": 981,
+      "title": "The proposed five-dimensional hearing atlas",
+      "sourceSeconds": 25299.62,
+      "timestamp": "16:21"
+    },
+    {
+      "outputSeconds": 1162,
+      "title": "Curiosity, engineering and the closing message",
+      "sourceSeconds": 25481.02,
+      "timestamp": "19:22"
+    }
+  ],
+  "materials": [
+    {
+      "label": "Slides (PDF)",
+      "url": "https://www.sdlcai.org/media/talks/zak-allal-industry-perspective/ca321a78-3c93-4396-b728-07c1805ceae1.pdf"
+    }
+  ],
+  "talkUrl": "https://www.sdlcai.org/2026/schedule/#zak-allal-industry-perspective",
+  "existingSummary": "Zak Allal explains how cheaper, repeatable experiments can change scientific research. Drawing on his work with hearing data, he describes using supercomputers, Rust, Julia and C++ to build a clinical research operating system, challenge existing categories and develop a proposed five-dimensional hearing atlas. He closes with the role of curiosity, careful engineering and knowledge across disciplines.",
+  "captions": {
+    "language": "en",
+    "srt": "transcripts/final-v02/zak-talk.en.srt",
+    "vtt": "transcripts/final-v02/zak-talk.en.vtt",
+    "qualityReport": "transcripts/final-v02/zak-talk.caption-qc.json",
+    "listeningReview": "transcripts/final-v02/zak-talk.listening-review.txt",
+    "status": "prepared-with-human-listening-review-notes"
+  },
+  "captionSHA256": "41c577805e45a6f6cebf4b80570ee127fdf71f795b09ae68bff397f110b03f0e",
+  "mediaBytes": 582083262,
+  "cueCount": 255,
+  "listeningWindows": [
+    {
+      "id": "zak-talk-132",
+      "videoId": "zak-talk",
+      "startSeconds": 669.82,
+      "endSeconds": 680.2,
+      "priority": "high",
+      "category": "high_impact_wording",
+      "note": "Confirm CPUs and CPUs versus CPUs and GPUs. Three local passes repeat CPUs; captions preserve that wording instead of inferring a hardware term.",
+      "currentCaptionText": "off-the-grid sovereign workstations. We have smaller workstations, and on the cloud, we also have CPUs and CPUs that can allow to run some experiments. You can see, for example, the cost on Microsoft Azure is per",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/zak-talk.listening-review.json",
+          "entryIndices": [
+            3
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/zak-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                130
+              ],
+              "text": "now call off the Great Sovereign workstations. We have smaller workstations and on the cloud, we also have CPUs and CPUs that can allow to run some experiments. You can see, for example, the cost on... ..."
+            }
+          ]
+        },
+        {
+          "type": "isolatedLocalASR",
+          "model": "Whisper large-v3",
+          "path": "transcripts/priority-checks-v1/comparison-index.json",
+          "checks": [
+            {
+              "id": "zak-cpu-gpu",
+              "text": "Supercomputers' era started then to become what we currently now call off-the-grid sovereign workstations. We have smaller workstations, and on the cloud, we also have CPUs and CPUs that can allow to run some experiments. You can see, for example, the cost on Microsoft Azure is per hour is around $100."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/zak-talk.listening-review.json",
+          "index": 3
+        }
+      ],
+      "sourceSegments": [
+        130
+      ],
+      "sourceStartSeconds": 24987.94,
+      "sourceEndSeconds": 24998.32
+    },
+    {
+      "id": "zak-talk-129",
+      "videoId": "zak-talk",
+      "startSeconds": 407.08,
+      "endSeconds": 421.22,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Finnish CSC name transcribed Tietekonekeskus; check spoken words rather than substituting a longer official name.",
+      "currentCaptionText": "done. And this is where supercomputers can be extremely helpful for medical research. Recently here in Finland, the Centre for Computer Science Tietekonekeskus, CSC, had launched the Roihu supercomputer",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/zak-talk.listening-review.json",
+          "entryIndices": [
+            1
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/zak-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                85
+              ],
+              "text": "extremely helpful for medical research. Recently here in Finland, the Center for Science for Computer Science, Titicone Keskus, CSC, had launched the Roy Hu Supercomputer, and is access to the and and and"
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/zak-talk.listening-review.json",
+          "index": 1
+        }
+      ],
+      "sourceSegments": [
+        85
+      ],
+      "sourceStartSeconds": 24725.2,
+      "sourceEndSeconds": 24739.34
+    },
+    {
+      "id": "zak-talk-136",
+      "videoId": "zak-talk",
+      "startSeconds": 1005.9,
+      "endSeconds": 1016.4,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Second hearing may contain a discourse marker or segmentation error; listening required. Context-supported correction still marked for listening: Second hearing → Human hearing",
+      "currentCaptionText": "For 140 years, we believed that they were categories. Human hearing is this space, and we can place any of those six categories you can see at the bottom in a map.",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/zak-talk.listening-review.json",
+          "entryIndices": [
+            5,
+            8
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/zak-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                182
+              ],
+              "text": "years, we believed that they were categories. Human hearing is this space and we can place any of those six categories you can see at the bottom in a map."
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 182,
+              "before": "Second hearing",
+              "after": "Human hearing",
+              "basis": "Independent local base.en transcribes Human hearing; matches discussion of the human-hearing space. Listening still pending."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/zak-talk.listening-review.json",
+          "index": 5
+        },
+        {
+          "path": "transcripts/final-v02/zak-talk.listening-review.json",
+          "index": 8
+        }
+      ],
+      "sourceSegments": [
+        182
+      ],
+      "sourceStartSeconds": 25324.02,
+      "sourceEndSeconds": 25334.52
+    }
+  ],
+  "cues": [
+    {
+      "id": 1,
+      "start": 3.84,
+      "end": 8.82,
+      "text": "Thank you, Tuuli, for the introduction and it's a great pleasure to be back here."
+    },
+    {
+      "id": 2,
+      "start": 8.84,
+      "end": 15.82,
+      "text": "I was a speaker a couple of years ago at similar conferences here in Helsinki"
+    },
+    {
+      "id": 3,
+      "start": 15.84,
+      "end": 21.32,
+      "text": "and what I will be talking to you today about are the radical medical"
+    },
+    {
+      "id": 4,
+      "start": 21.34,
+      "end": 24.02,
+      "text": "breakthroughs and exponential scientific"
+    },
+    {
+      "id": 5,
+      "start": 24.86,
+      "end": 27.09,
+      "text": "discoveries and how they happen."
+    },
+    {
+      "id": 6,
+      "start": 28.24,
+      "end": 34.06,
+      "text": "So, as Tuuli said about my background, I define myself as a polymath."
+    },
+    {
+      "id": 7,
+      "start": 34.2,
+      "end": 39.15,
+      "text": "I am a professional medical doctor and a clinical researcher and a technology"
+    },
+    {
+      "id": 8,
+      "start": 39.64,
+      "end": 46.36,
+      "text": "innovator and programmer, and I do geopolitical risk consultancy and"
+    },
+    {
+      "id": 9,
+      "start": 46.38,
+      "end": 48.48,
+      "text": "professional pianist and composer."
+    },
+    {
+      "id": 10,
+      "start": 49.84,
+      "end": 55.0,
+      "text": "And this multidisciplinarity has something to do with those medical breakthroughs."
+    },
+    {
+      "id": 11,
+      "start": 55.66,
+      "end": 61.12,
+      "text": "So lately, you've all been seeing that we've been talking a lot about AI coding,"
+    },
+    {
+      "id": 12,
+      "start": 61.14,
+      "end": 65.42,
+      "text": "vibe coding, efficient software development, and so on."
+    },
+    {
+      "id": 13,
+      "start": 66.36,
+      "end": 70.84,
+      "text": "But I think also we need to talk a little bit more and be a little bit more"
+    },
+    {
+      "id": 14,
+      "start": 70.86,
+      "end": 72.84,
+      "text": "optimistic and uplifting"
+    },
+    {
+      "id": 15,
+      "start": 74.4,
+      "end": 77.03999999999999,
+      "text": "about solving humanity's greatest challenges."
+    },
+    {
+      "id": 16,
+      "start": 77.82,
+      "end": 78.86,
+      "text": "Not this kind."
+    },
+    {
+      "id": 17,
+      "start": 79.56,
+      "end": 84.53999999999999,
+      "text": "This is an article that a friend sent me from Germany just earlier today saying"
+    },
+    {
+      "id": 18,
+      "start": 84.95,
+      "end": 90.75,
+      "text": "that AI researchers are smoking or starting to smoke just to prove that they"
+    },
+    {
+      "id": 19,
+      "start": 90.77,
+      "end": 93.89,
+      "text": "believe that AI will solve their cancer."
+    },
+    {
+      "id": 20,
+      "start": 95.14,
+      "end": 99.32,
+      "text": "Please don't start to smoke if you do not smoke and believe in AI."
+    },
+    {
+      "id": 21,
+      "start": 101.08,
+      "end": 107.97999999999999,
+      "text": "And there's a lot of panic going on, a lot of anxiety about global health as"
+    },
+    {
+      "id": 22,
+      "start": 108.0,
+      "end": 109.72,
+      "text": "well, related to AI."
+    },
+    {
+      "id": 23,
+      "start": 109.74000000000001,
+      "end": 116.58,
+      "text": "And this was an article that was published recently as well, which ranks"
+    },
+    {
+      "id": 24,
+      "start": 116.6,
+      "end": 122.99,
+      "text": "kind of what people expect the most to be the threats to"
+    },
+    {
+      "id": 25,
+      "start": 123.01,
+      "end": 125.88,
+      "text": "health and to global health."
+    },
+    {
+      "id": 26,
+      "start": 126.06,
+      "end": 132.58,
+      "text": "AI was listed there, but it's very shocking to see that most of pandemics"
+    },
+    {
+      "id": 27,
+      "start": 132.6,
+      "end": 138.42000000000002,
+      "text": "and obesity and other diseases actually don't create that much anxiety, despite"
+    },
+    {
+      "id": 28,
+      "start": 138.52,
+      "end": 140.68,
+      "text": "the fact that they kill more."
+    },
+    {
+      "id": 29,
+      "start": 140.7,
+      "end": 146.68,
+      "text": "But what if actually architecture and software engineering can lead to major"
+    },
+    {
+      "id": 30,
+      "start": 146.81,
+      "end": 150.32,
+      "text": "medical breakthroughs without black box AI."
+    },
+    {
+      "id": 31,
+      "start": 150.34,
+      "end": 157.14,
+      "text": "And this is a very important distinction that I make because a lot of the systems"
+    },
+    {
+      "id": 32,
+      "start": 157.16,
+      "end": 161.1,
+      "text": "that are used in medical research and scientific research are using deep"
+    },
+    {
+      "id": 33,
+      "start": 161.12,
+      "end": 167.69,
+      "text": "learning and much more cryptic and black box, non-transparent"
+    },
+    {
+      "id": 34,
+      "start": 167.71,
+      "end": 172.9,
+      "text": "AI. And I will talk to you about the cost of repetition."
+    },
+    {
+      "id": 35,
+      "start": 173.27,
+      "end": 174.43,
+      "text": "If I ask you a"
+    },
+    {
+      "id": 36,
+      "start": 175.2,
+      "end": 177.4,
+      "text": "question, what weather is it today?"
+    },
+    {
+      "id": 37,
+      "start": 177.42000000000002,
+      "end": 184.42,
+      "text": "The simple way to do it would be to actually, you are sitting here,"
+    },
+    {
+      "id": 38,
+      "start": 184.54,
+      "end": 187.0,
+      "text": "you will go check it yourself."
+    },
+    {
+      "id": 39,
+      "start": 187.02,
+      "end": 190.85,
+      "text": "If you don't want to go out, you ask a friend."
+    },
+    {
+      "id": 40,
+      "start": 190.87,
+      "end": 196.15,
+      "text": "If there's no friend, you ask somebody you don't know."
+    },
+    {
+      "id": 41,
+      "start": 196.17000000000002,
+      "end": 202.76,
+      "text": "You go there, you make it, you You check yourself, you see the objective"
+    },
+    {
+      "id": 42,
+      "start": 202.78,
+      "end": 208.42000000000002,
+      "text": "observation. That has cost you one minute walking and calories."
+    },
+    {
+      "id": 43,
+      "start": 208.64,
+      "end": 213.07999999999998,
+      "text": "So it cost you time, effort and energy."
+    },
+    {
+      "id": 44,
+      "start": 213.36,
+      "end": 216.32,
+      "text": "Now what if I asked you to repeat it?"
+    },
+    {
+      "id": 45,
+      "start": 216.34,
+      "end": 223.09,
+      "text": "I ask you to do it once, two times, three times, four"
+    },
+    {
+      "id": 46,
+      "start": 223.11,
+      "end": 228.94,
+      "text": "times. The cost and effort is becoming annoying."
+    },
+    {
+      "id": 47,
+      "start": 228.96,
+      "end": 235.4,
+      "text": "To say a barrier, and it is starting to influence how you feel about"
+    },
+    {
+      "id": 48,
+      "start": 235.42000000000002,
+      "end": 238.35,
+      "text": "repeating it. But I insist,"
+    },
+    {
+      "id": 49,
+      "start": 239.16,
+      "end": 241.95,
+      "text": "you must do it. We have to check it."
+    },
+    {
+      "id": 50,
+      "start": 242.06,
+      "end": 247.41,
+      "text": "Then you don't want to go yourself, you ask a friend this time."
+    },
+    {
+      "id": 51,
+      "start": 247.55,
+      "end": 250.51,
+      "text": "One time, two times, three times, four times."
+    },
+    {
+      "id": 52,
+      "start": 250.63,
+      "end": 255.55,
+      "text": "This also becomes a barrier because Because your friend is annoyed that you"
+    },
+    {
+      "id": 53,
+      "start": 255.79,
+      "end": 258.3,
+      "text": "ask him multiple times to go out."
+    },
+    {
+      "id": 54,
+      "start": 258.32,
+      "end": 261.9,
+      "text": "What if I still tell you you have to repeat it because you need to check?"
+    },
+    {
+      "id": 55,
+      "start": 261.92,
+      "end": 265.51,
+      "text": "You do it one time, two times, three times, four times, this time with someone"
+    },
+    {
+      "id": 56,
+      "start": 265.53,
+      "end": 269.82,
+      "text": "you don't know and someone else you don't know."
+    },
+    {
+      "id": 57,
+      "start": 269.84,
+      "end": 274.29,
+      "text": "So the cost and effort are actually and ultimately"
+    },
+    {
+      "id": 58,
+      "start": 275.18,
+      "end": 281.5,
+      "text": "impact your decision and motivation to repeat the experiment."
+    },
+    {
+      "id": 59,
+      "start": 281.52,
+      "end": 288.33,
+      "text": "This is something that already has been shown with Google bounce and"
+    },
+    {
+      "id": 60,
+      "start": 288.69,
+      "end": 291.64,
+      "text": "how long it takes for a web page to load."
+    },
+    {
+      "id": 61,
+      "start": 291.74,
+      "end": 297.08,
+      "text": "The longer, the more annoying, the higher the bounce rate."
+    },
+    {
+      "id": 62,
+      "start": 297.1,
+      "end": 301.54,
+      "text": "So the question is, what if you want to use a better tool?"
+    },
+    {
+      "id": 63,
+      "start": 301.56,
+      "end": 307.04,
+      "text": "If you want to check the weather, then maybe how about having two criterias?"
+    },
+    {
+      "id": 64,
+      "start": 307.06,
+      "end": 309.94,
+      "text": "You want to check the weather reliably."
+    },
+    {
+      "id": 65,
+      "start": 309.96,
+      "end": 313.44,
+      "text": "You want to check very often."
+    },
+    {
+      "id": 66,
+      "start": 313.46,
+      "end": 320.04,
+      "text": "How about an API? So now you can do it very quickly, efficiently."
+    },
+    {
+      "id": 67,
+      "start": 320.06,
+      "end": 322.62,
+      "text": "It's reliable, and it doesn't annoy you."
+    },
+    {
+      "id": 68,
+      "start": 322.64,
+      "end": 325.82,
+      "text": "It doesn't cost that much, and it's very fast."
+    },
+    {
+      "id": 69,
+      "start": 325.84,
+      "end": 328.5,
+      "text": "And you can get even the cherry on the cake."
+    },
+    {
+      "id": 70,
+      "start": 328.52,
+      "end": 331.42,
+      "text": "You get passive notifications."
+    },
+    {
+      "id": 71,
+      "start": 331.44,
+      "end": 335.46,
+      "text": "This is the current situation with medical research."
+    },
+    {
+      "id": 72,
+      "start": 335.48,
+      "end": 338.88,
+      "text": "The majority of medical research is still stuck in the past."
+    },
+    {
+      "id": 73,
+      "start": 338.9,
+      "end": 342.17,
+      "text": "What do I mean by that?"
+    },
+    {
+      "id": 74,
+      "start": 342.28,
+      "end": 347.08,
+      "text": "Medical research is currently using inadequate tools for what the great"
+    },
+    {
+      "id": 75,
+      "start": 347.1,
+      "end": 350.04,
+      "text": "challenges of medicine and science are."
+    },
+    {
+      "id": 76,
+      "start": 350.17,
+      "end": 356.42,
+      "text": "Most of the research, the majority, uses Python, Jupyter Notebook, Excel"
+    },
+    {
+      "id": 77,
+      "start": 356.44,
+      "end": 360.69,
+      "text": "spreadsheets, and GUI statistical tools."
+    },
+    {
+      "id": 78,
+      "start": 361.04,
+      "end": 366.2,
+      "text": "You formulate your hypothesis, you do your experiment, you get the results, you"
+    },
+    {
+      "id": 79,
+      "start": 366.26,
+      "end": 370.38,
+      "text": "publish them and you do that one at a time."
+    },
+    {
+      "id": 80,
+      "start": 370.4,
+      "end": 377.14,
+      "text": "And because you do it one at a time, the cost to do it and"
+    },
+    {
+      "id": 81,
+      "start": 377.74,
+      "end": 383.07,
+      "text": "repeat it is high. There's a lot of pressure, you have to plan ahead, and this"
+    },
+    {
+      "id": 82,
+      "start": 383.56,
+      "end": 389.87,
+      "text": "causes you to not dare to go for greater challenges."
+    },
+    {
+      "id": 83,
+      "start": 389.89,
+      "end": 395.56,
+      "text": "Just as I explained about the API with the weather, how about you have a tool that"
+    },
+    {
+      "id": 84,
+      "start": 395.58,
+      "end": 401.97,
+      "text": "allows you to repeat, very often, spawn experiments and get them"
+    },
+    {
+      "id": 85,
+      "start": 401.99,
+      "end": 407.62,
+      "text": "done. And this is where supercomputers can be extremely helpful for medical"
+    },
+    {
+      "id": 86,
+      "start": 407.64,
+      "end": 413.5,
+      "text": "research. Recently here in Finland, the Centre for Computer"
+    },
+    {
+      "id": 87,
+      "start": 413.52,
+      "end": 420.35,
+      "text": "Science Tietekonekeskus, CSC, had launched the Roihu"
+    },
+    {
+      "id": 88,
+      "start": 420.37,
+      "end": 421.17,
+      "text": "supercomputer"
+    },
+    {
+      "id": 89,
+      "start": 422.12,
+      "end": 427.89,
+      "text": "and is accessible for any researcher affiliated with the research institution"
+    },
+    {
+      "id": 90,
+      "start": 427.91,
+      "end": 433.15,
+      "text": "and other institutions it's located in Kajaani and they have very very"
+    },
+    {
+      "id": 91,
+      "start": 433.17,
+      "end": 434.74,
+      "text": "interesting specs"
+    },
+    {
+      "id": 92,
+      "start": 436.82,
+      "end": 443.32,
+      "text": "it's been ranked this this the ranking from june of 2026 where it is"
+    },
+    {
+      "id": 93,
+      "start": 443.34,
+      "end": 449.12,
+      "text": "ranked the Roihu-G is 91st in the world."
+    },
+    {
+      "id": 94,
+      "start": 449.14,
+      "end": 450.44,
+      "text": "And this is the top ten."
+    },
+    {
+      "id": 95,
+      "start": 450.46,
+      "end": 454.18,
+      "text": "It's immediately 11th after."
+    },
+    {
+      "id": 96,
+      "start": 454.2,
+      "end": 460.92,
+      "text": "And this supercomputer has been behind a very, very major discovery that I'm"
+    },
+    {
+      "id": 97,
+      "start": 461.02,
+      "end": 462.96,
+      "text": "going to share with you."
+    },
+    {
+      "id": 98,
+      "start": 462.98,
+      "end": 467.65999999999997,
+      "text": "If we look at human hearing in general, and I will keep it very simple, I know"
+    },
+    {
+      "id": 99,
+      "start": 467.76,
+      "end": 473.0,
+      "text": "it's almost the end of the sessions, and I will try to keep it simple."
+    },
+    {
+      "id": 100,
+      "start": 473.02,
+      "end": 479.56,
+      "text": "If we want to explore human hearing, We make them go through this test."
+    },
+    {
+      "id": 101,
+      "start": 479.58,
+      "end": 481.32,
+      "text": "You make them hear beeps."
+    },
+    {
+      "id": 102,
+      "start": 481.34,
+      "end": 486.76,
+      "text": "They give you thumbs up or thumbs down whether they heard that sound or not."
+    },
+    {
+      "id": 103,
+      "start": 486.78,
+      "end": 489.94,
+      "text": "And you keep increasing the volume."
+    },
+    {
+      "id": 104,
+      "start": 489.96,
+      "end": 496.89,
+      "text": "And for about 140 years, researchers have believed that hearing was into these"
+    },
+    {
+      "id": 105,
+      "start": 496.91,
+      "end": 503.03,
+      "text": "types. You either had normal hearing, mild hearing, moderate hearing, severe or"
+    },
+    {
+      "id": 106,
+      "start": 503.05,
+      "end": 507.68,
+      "text": "profound. And this was since 1885."
+    },
+    {
+      "id": 107,
+      "start": 507.7,
+      "end": 509.86,
+      "text": "These were the founding fathers"
+    },
+    {
+      "id": 108,
+      "start": 510.6,
+      "end": 514.1,
+      "text": "of hearing science and otology."
+    },
+    {
+      "id": 109,
+      "start": 514.12,
+      "end": 521.1,
+      "text": "And up to the past 15 years, the AI era, the digital medicine era,"
+    },
+    {
+      "id": 110,
+      "start": 521.12,
+      "end": 527.56,
+      "text": "followed by the AI era, followed what they were already preaching."
+    },
+    {
+      "id": 111,
+      "start": 527.62,
+      "end": 533.2,
+      "text": "The AI research was disagreeing about how many types of hearing there are."
+    },
+    {
+      "id": 112,
+      "start": 533.22,
+      "end": 539.99,
+      "text": "Some said 9, some said 4, some said 11, and they kept disagreeing and each was"
+    },
+    {
+      "id": 113,
+      "start": 540.01,
+      "end": 544.08,
+      "text": "having their own constraints and their own limits."
+    },
+    {
+      "id": 114,
+      "start": 544.1,
+      "end": 548.0,
+      "text": "The same example I gave you about the weather and the API."
+    },
+    {
+      "id": 115,
+      "start": 548.08,
+      "end": 554.76,
+      "text": "Some used a single algorithm, some did not perform validations, some"
+    },
+    {
+      "id": 116,
+      "start": 554.78,
+      "end": 560.66,
+      "text": "didn't even attempt external validations and so on."
+    },
+    {
+      "id": 117,
+      "start": 560.68,
+      "end": 565.8,
+      "text": "So I decided to also run the experiment and see what I would find."
+    },
+    {
+      "id": 118,
+      "start": 565.82,
+      "end": 570.26,
+      "text": "And I followed exactly, more or less, what they were doing and the first time I found"
+    },
+    {
+      "id": 119,
+      "start": 570.36,
+      "end": 577.3,
+      "text": "14 types, then 21, then 6, then 29."
+    },
+    {
+      "id": 120,
+      "start": 577.32,
+      "end": 580.68,
+      "text": "The only difference is that this time I was able to repeat the experiments quite"
+    },
+    {
+      "id": 121,
+      "start": 580.7,
+      "end": 584.08,
+      "text": "quickly because I was on a supercomputer."
+    },
+    {
+      "id": 122,
+      "start": 584.1,
+      "end": 587.36,
+      "text": "And something was off."
+    },
+    {
+      "id": 123,
+      "start": 587.38,
+      "end": 591.87,
+      "text": "Why is it unstable? The human body"
+    },
+    {
+      "id": 124,
+      "start": 592.6,
+      "end": 597.69,
+      "text": "should be stable. Because I had the access to this supercomputer, I wanted to repeat"
+    },
+    {
+      "id": 125,
+      "start": 597.83,
+      "end": 600.29,
+      "text": "the experiment multiple times, and"
+    },
+    {
+      "id": 126,
+      "start": 601.84,
+      "end": 608.38,
+      "text": "something was off. A couple of -- about 13 years ago now, I worked on a project"
+    },
+    {
+      "id": 127,
+      "start": 608.4,
+      "end": 614.091,
+      "text": "called 4D Therapeutics, which now has become Recursion"
+    },
+    {
+      "id": 128,
+      "start": 614.111,
+      "end": 619.64,
+      "text": "Pharmaceuticals. It's a very, very impactful pharma company."
+    },
+    {
+      "id": 129,
+      "start": 619.66,
+      "end": 625.44,
+      "text": "They have a supercomputer that's quite powerful, and they use what we call"
+    },
+    {
+      "id": 130,
+      "start": 625.46,
+      "end": 629.17,
+      "text": "high-throughput pharmaceutical research."
+    },
+    {
+      "id": 131,
+      "start": 629.28,
+      "end": 632.98,
+      "text": "They do computations to try to find molecules, and when they found the"
+    },
+    {
+      "id": 132,
+      "start": 633.01,
+      "end": 639.02,
+      "text": "molecules, they actually spawn a container that's connected to wet lab and to robotic"
+    },
+    {
+      "id": 133,
+      "start": 639.07,
+      "end": 644.34,
+      "text": "arms, and then that gives feedback and it feeds the model and it gives retraining,"
+    },
+    {
+      "id": 134,
+      "start": 644.36,
+      "end": 650.7,
+      "text": "and all that the scientists do is to just spawn the experiment using a YAML config"
+    },
+    {
+      "id": 135,
+      "start": 650.75,
+      "end": 656.02,
+      "text": "and so on. And they had a very interesting stack."
+    },
+    {
+      "id": 136,
+      "start": 656.53,
+      "end": 662.1,
+      "text": "Their supercomputer is currently ranked 93rd in the"
+    },
+    {
+      "id": 137,
+      "start": 662.69,
+      "end": 668.42,
+      "text": "world. Supercomputers' era started then to become what we currently now call"
+    },
+    {
+      "id": 138,
+      "start": 668.65,
+      "end": 671.18,
+      "text": "off-the-grid sovereign workstations."
+    },
+    {
+      "id": 139,
+      "start": 671.2,
+      "end": 677.72,
+      "text": "We have smaller workstations, and on the cloud, we also have CPUs and CPUs that can"
+    },
+    {
+      "id": 140,
+      "start": 677.74,
+      "end": 679.55,
+      "text": "allow to run some experiments."
+    },
+    {
+      "id": 141,
+      "start": 679.57,
+      "end": 686.22,
+      "text": "You can see, for example, the cost on Microsoft Azure is per"
+    },
+    {
+      "id": 142,
+      "start": 686.25,
+      "end": 692.73,
+      "text": "hour is around 100, 154"
+    },
+    {
+      "id": 143,
+      "start": 692.75,
+      "end": 699.36,
+      "text": "compared to Roihu on the CSC is zero."
+    },
+    {
+      "id": 144,
+      "start": 699.38,
+      "end": 705.92,
+      "text": "So, what the recursion was doing in 2015 today is possible with modest means if you"
+    },
+    {
+      "id": 145,
+      "start": 705.94,
+      "end": 708.88,
+      "text": "have access to a supercomputer."
+    },
+    {
+      "id": 146,
+      "start": 708.9,
+      "end": 714.61,
+      "text": "So, I decided to leverage it to its full power using 60 nodes and 47 terabytes of"
+    },
+    {
+      "id": 147,
+      "start": 714.63,
+      "end": 718.76,
+      "text": "RAM with Rust and Julia and C++."
+    },
+    {
+      "id": 148,
+      "start": 718.78,
+      "end": 725.75,
+      "text": "What we did was to create a operating system in which the kernel was in Rust and"
+    },
+    {
+      "id": 149,
+      "start": 725.77,
+      "end": 730.46,
+      "text": "we had an orchestrator and a daemon and then everything that was scientific, all"
+    },
+    {
+      "id": 150,
+      "start": 730.48,
+      "end": 735.22,
+      "text": "the numeric stuff was done in Julia and anything that was graphic and GPU and"
+    },
+    {
+      "id": 151,
+      "start": 735.35,
+      "end": 737.41,
+      "text": "needed some powerhouse was in C++."
+    },
+    {
+      "id": 152,
+      "start": 737.54,
+      "end": 738.87,
+      "text": "We would spawn the"
+    },
+    {
+      "id": 153,
+      "start": 739.68,
+      "end": 744.34,
+      "text": "containers with our own configs with all the environments and so on."
+    },
+    {
+      "id": 154,
+      "start": 744.36,
+      "end": 750.1,
+      "text": "We had a registry and everything was tailored so that it was very performant"
+    },
+    {
+      "id": 155,
+      "start": 750.12,
+      "end": 756.96,
+      "text": "and we handled and treated medical experiments as a git what we did was"
+    },
+    {
+      "id": 156,
+      "start": 757.25,
+      "end": 763.65,
+      "text": "in about two months was about four million hearing tests um that's about a"
+    },
+    {
+      "id": 157,
+      "start": 764.06,
+      "end": 769.96,
+      "text": "million and a half people finland is about four four 5.5 I think million people so"
+    },
+    {
+      "id": 158,
+      "start": 769.98,
+      "end": 776.82,
+      "text": "this is about quarter more or less of finland we digged out a very very huge"
+    },
+    {
+      "id": 159,
+      "start": 776.84,
+      "end": 783.23,
+      "text": "data set of eight countries and that was about 850 000 core hours on the"
+    },
+    {
+      "id": 160,
+      "start": 783.25,
+      "end": 784.52,
+      "text": "supercomputer"
+    },
+    {
+      "id": 161,
+      "start": 786.28,
+      "end": 792.68,
+      "text": "or 102 core years it was quite impressive to see so"
+    },
+    {
+      "id": 162,
+      "start": 795.72,
+      "end": 802.26,
+      "text": "the findings that we found was that in 140 years each one of"
+    },
+    {
+      "id": 163,
+      "start": 802.28,
+      "end": 808.15,
+      "text": "these from the founding fathers all the way to the digital era they assumed"
+    },
+    {
+      "id": 164,
+      "start": 808.17,
+      "end": 809.22,
+      "text": "hearing is categories"
+    },
+    {
+      "id": 165,
+      "start": 812.04,
+      "end": 818.84,
+      "text": "we collected the biggest data set in audiograms in history we ran it through it"
+    },
+    {
+      "id": 166,
+      "start": 819.72,
+      "end": 824.6,
+      "text": "You can see from where it is from, the United States, Australia, South Korea,"
+    },
+    {
+      "id": 167,
+      "start": 825.46,
+      "end": 828.42,
+      "text": "Iran, Turkey, Germany, Denmark, and the UK."
+    },
+    {
+      "id": 168,
+      "start": 829.78,
+      "end": 831.9,
+      "text": "And it covered 62 years."
+    },
+    {
+      "id": 169,
+      "start": 834.66,
+      "end": 838.16,
+      "text": "The results were extremely surprising."
+    },
+    {
+      "id": 170,
+      "start": 838.18,
+      "end": 844.71,
+      "text": "On every large population, in every country, in every era, the conclusion was"
+    },
+    {
+      "id": 171,
+      "start": 844.85,
+      "end": 847.15,
+      "text": "that hearing was not categories."
+    },
+    {
+      "id": 172,
+      "start": 848.66,
+      "end": 855.09,
+      "text": "So when people and researchers for the past 15 years on AI were disagreeing and"
+    },
+    {
+      "id": 173,
+      "start": 855.11,
+      "end": 861.44,
+      "text": "debating if it's 6 or 15 or 11, the premise was wrong in the first place, and"
+    },
+    {
+      "id": 174,
+      "start": 861.46,
+      "end": 863.7,
+      "text": "nobody checked the premise."
+    },
+    {
+      "id": 175,
+      "start": 865.98,
+      "end": 871.39,
+      "text": "So in traditional academia, I would have stopped, published a paper, and said, \"I"
+    },
+    {
+      "id": 176,
+      "start": 871.49,
+      "end": 873.79,
+      "text": "found that hearing is continuous."
+    },
+    {
+      "id": 177,
+      "start": 873.9,
+      "end": 879.55,
+      "text": "It's not a number.\" But I was curious, and I kept digging because checking the"
+    },
+    {
+      "id": 178,
+      "start": 879.57,
+      "end": 882.1,
+      "text": "weather was not costing me that much."
+    },
+    {
+      "id": 179,
+      "start": 882.86,
+      "end": 888.12,
+      "text": "So I wanted to understand why they were wrong and why for so long."
+    },
+    {
+      "id": 180,
+      "start": 888.82,
+      "end": 893.27,
+      "text": "The first mistake they made was that they made a very basic statistical"
+    },
+    {
+      "id": 181,
+      "start": 894.18,
+      "end": 898.04,
+      "text": "error that was described in 1898."
+    },
+    {
+      "id": 182,
+      "start": 899.22,
+      "end": 901.35,
+      "text": "Because hearing tests are"
+    },
+    {
+      "id": 183,
+      "start": 902.06,
+      "end": 908.41,
+      "text": "recorded in five steps, the fact that they were clustering them created"
+    },
+    {
+      "id": 184,
+      "start": 908.81,
+      "end": 910.96,
+      "text": "those false categories."
+    },
+    {
+      "id": 185,
+      "start": 910.98,
+      "end": 915.98,
+      "text": "They were leaking ears, which means that they were mixing the same person's left"
+    },
+    {
+      "id": 186,
+      "start": 916.06,
+      "end": 922.46,
+      "text": "and right ear of the same person, which is some sort of cheating or hallucinating,"
+    },
+    {
+      "id": 187,
+      "start": 922.48,
+      "end": 925.82,
+      "text": "and they were counted as independent observations."
+    },
+    {
+      "id": 188,
+      "start": 926.08,
+      "end": 929.57,
+      "text": "And these were admitted in their own papers."
+    },
+    {
+      "id": 189,
+      "start": 930.07,
+      "end": 934.48,
+      "text": "And they used other methodological errors."
+    },
+    {
+      "id": 190,
+      "start": 934.5,
+      "end": 936.8,
+      "text": "And this is what actually was happening."
+    },
+    {
+      "id": 191,
+      "start": 936.82,
+      "end": 941.74,
+      "text": "This is the map that we have built of human hearing, and this is what they were"
+    },
+    {
+      "id": 192,
+      "start": 941.76,
+      "end": 948.15,
+      "text": "debating. It's exactly the same as if you look at an uncharted map of Europe"
+    },
+    {
+      "id": 193,
+      "start": 948.17,
+      "end": 954.78,
+      "text": "without the borders, and you would be having people disagreeing about where a"
+    },
+    {
+      "id": 194,
+      "start": 954.8,
+      "end": 957.52,
+      "text": "place is or what the place is."
+    },
+    {
+      "id": 195,
+      "start": 957.54,
+      "end": 963.52,
+      "text": "So in this case, deep learning and what they were using misunderstood, was very,"
+    },
+    {
+      "id": 196,
+      "start": 963.54,
+      "end": 969.62,
+      "text": "very misunderstood. And because of the academic pressure, led to a 15 years"
+    },
+    {
+      "id": 197,
+      "start": 969.7,
+      "end": 971.76,
+      "text": "disagreement and debates."
+    },
+    {
+      "id": 198,
+      "start": 971.78,
+      "end": 975.0,
+      "text": "But the premise and the fact was not even considered."
+    },
+    {
+      "id": 199,
+      "start": 975.02,
+      "end": 979.06,
+      "text": "And in fact, the answer was without AI."
+    },
+    {
+      "id": 200,
+      "start": 979.1,
+      "end": 981.48,
+      "text": "So it wasn't even part of the debate."
+    },
+    {
+      "id": 201,
+      "start": 981.5,
+      "end": 988.42,
+      "text": "What we found was that hearing is exactly the equivalent of color."
+    },
+    {
+      "id": 202,
+      "start": 988.44,
+      "end": 992.88,
+      "text": "When you go and change the color, you have RGB, that's three dimensions."
+    },
+    {
+      "id": 203,
+      "start": 992.96,
+      "end": 999.4,
+      "text": "Hearing is five dimensions."
+    },
+    {
+      "id": 204,
+      "start": 999.42,
+      "end": 1002.28,
+      "text": "These are the five dimensions of human hearing."
+    },
+    {
+      "id": 205,
+      "start": 1002.3,
+      "end": 1007.88,
+      "text": "For 140 years, we believed that they were categories."
+    },
+    {
+      "id": 206,
+      "start": 1007.9,
+      "end": 1014.02,
+      "text": "Human hearing is this space, and we can place any of those six categories you can"
+    },
+    {
+      "id": 207,
+      "start": 1014.04,
+      "end": 1020.7,
+      "text": "see at the bottom in a map."
+    },
+    {
+      "id": 208,
+      "start": 1020.72,
+      "end": 1022.83,
+      "text": "And this line you see"
+    },
+    {
+      "id": 209,
+      "start": 1023.62,
+      "end": 1029.3,
+      "text": "travelling is actually an endpoint exactly as a GPS track."
+    },
+    {
+      "id": 210,
+      "start": 1029.32,
+      "end": 1034.81,
+      "text": "Each time you take an audiogram or a hearing test, you're actually measuring"
+    },
+    {
+      "id": 211,
+      "start": 1034.83,
+      "end": 1040.16,
+      "text": "that point. So for example in GPS you have coordinates and altitude, latitude,"
+    },
+    {
+      "id": 212,
+      "start": 1040.18,
+      "end": 1043.34,
+      "text": "longitude and altitude."
+    },
+    {
+      "id": 213,
+      "start": 1043.36,
+      "end": 1045.82,
+      "text": "In hearing you have those five dimensions."
+    },
+    {
+      "id": 214,
+      "start": 1045.84,
+      "end": 1047.17,
+      "text": "And you can track it."
+    },
+    {
+      "id": 215,
+      "start": 1047.3,
+      "end": 1051.74,
+      "text": "So the paper is in preprint and the research was done with the professors"
+    },
+    {
+      "id": 216,
+      "start": 1052.44,
+      "end": 1056.24,
+      "text": "Aarnisalo and Mäkitie from the Helsinki University Hospital."
+    },
+    {
+      "id": 217,
+      "start": 1056.26,
+      "end": 1059.66,
+      "text": "We have already submitted the paper for a major peer review."
+    },
+    {
+      "id": 218,
+      "start": 1059.68,
+      "end": 1064.7,
+      "text": "Then we did the companion validation using Lean 4."
+    },
+    {
+      "id": 219,
+      "start": 1064.72,
+      "end": 1070.94,
+      "text": "And this was the very first mathematical validation of a human sensory system."
+    },
+    {
+      "id": 220,
+      "start": 1070.96,
+      "end": 1077.42,
+      "text": "The only two that were done before was the human cardiac electric conduction and the"
+    },
+    {
+      "id": 221,
+      "start": 1077.44,
+      "end": 1081.34,
+      "text": "glucose homeostasis in 2014."
+    },
+    {
+      "id": 222,
+      "start": 1081.4,
+      "end": 1084.41,
+      "text": "So this is the third one and the first in the human sensory system that has been"
+    },
+    {
+      "id": 223,
+      "start": 1084.43,
+      "end": 1085.84,
+      "text": "done."
+    },
+    {
+      "id": 224,
+      "start": 1086.68,
+      "end": 1092.86,
+      "text": "Today, actually, we submitted our intention to get regulatory qualification"
+    },
+    {
+      "id": 225,
+      "start": 1092.88,
+      "end": 1098.14,
+      "text": "for having this human hearing atlas as a biomarker."
+    },
+    {
+      "id": 226,
+      "start": 1098.16,
+      "end": 1102.6,
+      "text": "And you tell me why, what's the impact after all?"
+    },
+    {
+      "id": 227,
+      "start": 1102.72,
+      "end": 1108.62,
+      "text": "Well, it impacts 1.5 billion people, and this is how."
+    },
+    {
+      "id": 228,
+      "start": 1108.64,
+      "end": 1113.09,
+      "text": "First of all, up until today, when there is research"
+    },
+    {
+      "id": 229,
+      "start": 1113.81,
+      "end": 1117.77,
+      "text": "related to hearing, Everything that is used are those"
+    },
+    {
+      "id": 230,
+      "start": 1118.48,
+      "end": 1122.76,
+      "text": "categories. And it's simply by looking at that graph and saying it's this or it's"
+    },
+    {
+      "id": 231,
+      "start": 1122.86,
+      "end": 1128.58,
+      "text": "that. Now you get five dimensions and you get it with a very precise tracking."
+    },
+    {
+      "id": 232,
+      "start": 1128.6,
+      "end": 1131.18,
+      "text": "This means you can track across time."
+    },
+    {
+      "id": 233,
+      "start": 1131.2,
+      "end": 1137.17,
+      "text": "We can dig out older research done in the 60s, in the 70s, in the"
+    },
+    {
+      "id": 234,
+      "start": 1137.19,
+      "end": 1143.4,
+      "text": "80s, to study again from the very beginning hearing."
+    },
+    {
+      "id": 235,
+      "start": 1143.42,
+      "end": 1147.46,
+      "text": "There's a lot to be done also with the World Health Organization that says that"
+    },
+    {
+      "id": 236,
+      "start": 1147.56,
+      "end": 1148.36,
+      "text": "by 2050"
+    },
+    {
+      "id": 237,
+      "start": 1148.92,
+      "end": 1153.36,
+      "text": "there will be 2.5 billion people that will have some hearing loss."
+    },
+    {
+      "id": 238,
+      "start": 1153.54,
+      "end": 1158.08,
+      "text": "We will hopefully by then be using those five coordinates to track their hearing"
+    },
+    {
+      "id": 239,
+      "start": 1158.1,
+      "end": 1160.63,
+      "text": "state, not just a"
+    },
+    {
+      "id": 240,
+      "start": 1161.94,
+      "end": 1167.36,
+      "text": "category. This whole discovery was piloted by curiosity"
+    },
+    {
+      "id": 241,
+      "start": 1168.41,
+      "end": 1175.3,
+      "text": "first and foremost. Thanks to super computers, thanks to agentic"
+    },
+    {
+      "id": 242,
+      "start": 1175.39,
+      "end": 1181.4,
+      "text": "development, but agentic development would not be doing something like this if you do"
+    },
+    {
+      "id": 243,
+      "start": 1181.42,
+      "end": 1186.97,
+      "text": "not actually leverage an operating system, a clinical research operating system, and"
+    },
+    {
+      "id": 244,
+      "start": 1186.99,
+      "end": 1191.83,
+      "text": "you do actually architecturally well so that you can spawn and replay experiments"
+    },
+    {
+      "id": 245,
+      "start": 1191.85,
+      "end": 1196.0,
+      "text": "and so on. And the key message here from me is that we are living in the most"
+    },
+    {
+      "id": 246,
+      "start": 1196.02,
+      "end": 1198.24,
+      "text": "exciting time of humanity."
+    },
+    {
+      "id": 247,
+      "start": 1198.26,
+      "end": 1203.54,
+      "text": "I have tried very hard to simplify very complex medical information, but I do"
+    },
+    {
+      "id": 248,
+      "start": 1203.56,
+      "end": 1210.12,
+      "text": "believe that AI can be more uplifting, it can be much more"
+    },
+    {
+      "id": 249,
+      "start": 1210.14,
+      "end": 1216.58,
+      "text": "positive outside of the attention economy, and it's very important to follow"
+    },
+    {
+      "id": 250,
+      "start": 1216.6,
+      "end": 1223.04,
+      "text": "intuition and have very basic questions: why is it like this why not"
+    },
+    {
+      "id": 251,
+      "start": 1223.06,
+      "end": 1230.0,
+      "text": "cannot be done um I have a lot of respect uh for those the"
+    },
+    {
+      "id": 252,
+      "start": 1230.02,
+      "end": 1235.39,
+      "text": "super performant languages I think they can match really well with the super"
+    },
+    {
+      "id": 253,
+      "start": 1235.41,
+      "end": 1236.26,
+      "text": "computers"
+    },
+    {
+      "id": 254,
+      "start": 1237.78,
+      "end": 1243.92,
+      "text": "and if you have any questions or comments you are more than welcome to discuss them"
+    },
+    {
+      "id": 255,
+      "start": 1243.94,
+      "end": 1244.89,
+      "text": "with me. Thank you."
+    }
+  ]
+}

@@ -1,0 +1,3753 @@
+{
+  "id": "research-panel",
+  "kind": "qa",
+  "officialTitle": "Agentic Discovery & Generative UI — Q&A",
+  "speakerNames": [
+    "Tapio Pitkäranta",
+    "Joongi Shin"
+  ],
+  "durationSeconds": 2731.0,
+  "videoFile": "exports/talks-v02/research-panel-4k.mp4",
+  "reviewFile": "review/talks-v02/research-panel-720p.mp4",
+  "chapters": [
+    {
+      "outputSeconds": 0,
+      "title": "Can design probes help users envision better interfaces?",
+      "sourceSeconds": 11127,
+      "timestamp": "00:00"
+    },
+    {
+      "outputSeconds": 107,
+      "title": "What prevents organisations from adopting probes?",
+      "sourceSeconds": 11231.36,
+      "timestamp": "01:47"
+    },
+    {
+      "outputSeconds": 219,
+      "title": "Is there enough reliable information for agentic discovery?",
+      "sourceSeconds": 11343.96,
+      "timestamp": "03:39"
+    },
+    {
+      "outputSeconds": 538,
+      "title": "How can AI understand vague user requests?",
+      "sourceSeconds": 11662.44,
+      "timestamp": "08:58"
+    },
+    {
+      "outputSeconds": 672,
+      "title": "Can sensitive information stay secure with AI agents?",
+      "sourceSeconds": 11796.78,
+      "timestamp": "11:12"
+    },
+    {
+      "outputSeconds": 836,
+      "title": "Has the bottleneck really moved from building to discovery?",
+      "sourceSeconds": 11960.9,
+      "timestamp": "13:56"
+    },
+    {
+      "outputSeconds": 1016,
+      "title": "What will children learn from growing up with AI?",
+      "sourceSeconds": 12140.82,
+      "timestamp": "16:56"
+    },
+    {
+      "outputSeconds": 1222,
+      "title": "Who is responsible for accessibility in user-generated UI?",
+      "sourceSeconds": 12346.44,
+      "timestamp": "20:22"
+    },
+    {
+      "outputSeconds": 1493,
+      "title": "Is AI accelerating research or overwhelming peer review?",
+      "sourceSeconds": 12617.32,
+      "timestamp": "24:53"
+    },
+    {
+      "outputSeconds": 1795,
+      "title": "Did the study compare developers and designers?",
+      "sourceSeconds": 12919.0,
+      "timestamp": "29:55"
+    },
+    {
+      "outputSeconds": 1826,
+      "title": "Which tools work for agentic probing?",
+      "sourceSeconds": 12950.76,
+      "timestamp": "30:26"
+    },
+    {
+      "outputSeconds": 1940,
+      "title": "Do silos between product, design and engineering slow delivery?",
+      "sourceSeconds": 13064.44,
+      "timestamp": "32:20"
+    },
+    {
+      "outputSeconds": 2034,
+      "title": "How can agents capture tacit organisational knowledge?",
+      "sourceSeconds": 13158.98,
+      "timestamp": "33:54"
+    },
+    {
+      "outputSeconds": 2199,
+      "title": "Will user attention become the next bottleneck?",
+      "sourceSeconds": 13323.2,
+      "timestamp": "36:39"
+    },
+    {
+      "outputSeconds": 2352,
+      "title": "What roles remain for people as AI capabilities grow?",
+      "sourceSeconds": 13476.5,
+      "timestamp": "39:12"
+    },
+    {
+      "outputSeconds": 2550,
+      "title": "What quality checks should generative UI use?",
+      "sourceSeconds": 13674.26,
+      "timestamp": "42:30"
+    }
+  ],
+  "materials": [
+    {
+      "label": "Related resource",
+      "url": "https://longshoreforrest.github.io/publications/agentic-discovery/",
+      "speakerNames": [
+        "Tapio Pitkäranta"
+      ]
+    },
+    {
+      "label": "Slides (PDF)",
+      "url": "https://www.sdlcai.org/media/talks/joongi-shin-ui-perspective/d18b4c6d-4204-474b-88f9-0ffab2c9abf3.pdf",
+      "speakerNames": [
+        "Joongi Shin"
+      ]
+    }
+  ],
+  "existingSummary": "Tapio Pitkäranta and Joongi Shin answer audience questions on agentic discovery and generative UI, including reliable organisational knowledge, vague user intent, privacy, accessibility, research quality and the changing roles of people and software tools.",
+  "captions": {
+    "language": "en",
+    "srt": "transcripts/final-v02/research-panel.en.srt",
+    "vtt": "transcripts/final-v02/research-panel.en.vtt",
+    "qualityReport": "transcripts/final-v02/research-panel.caption-qc.json",
+    "listeningReview": "transcripts/final-v02/research-panel.listening-review.txt",
+    "status": "prepared-with-human-listening-review-notes"
+  },
+  "captionSHA256": "7eda2984085f053c8474a9a60e2eec9ab301be205505c82bfd61cc92ba50bf4d",
+  "mediaBytes": 1278613467,
+  "cueCount": 505,
+  "listeningWindows": [
+    {
+      "id": "research-panel-066",
+      "videoId": "research-panel",
+      "startSeconds": 739.9,
+      "endSeconds": 768.84,
+      "priority": "high",
+      "category": "high_impact_wording",
+      "note": "Confirm set them versus set up locally. v02 changes only sell to set: independent base.en hears set them, isolated large-v3 hears set up. Preserve the surrounding claim about publicly revealed models as spoken.",
+      "currentCaptionText": "more versus the risk on my side but that's just my lizard brain optimist my just a very short answer would be well one approach is using the local models there are very good ones that's all someone people you know like accidentally revealing the actual like enterprise models to the public you know that you can set them locally I think there was also because of that there's ongoing research how do you mask sensitive",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "entryIndices": [
+            4,
+            24
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/research-panel.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                132
+              ],
+              "text": "might benefit me more versus the risk on my side. But that's just my lizard brain. Look, optimist. My just a very short answer would be, well, one approach is using the local models. There are very good ones."
+            },
+            {
+              "segments": [
+                134,
+                135
+              ],
+              "text": "approaches using the local models. There are very good ones. There's all some people accidentally revealing the actual enterprise models to the public that you can set them locally. I think there was also, because of that, there's ongoing research. How do you mask sensitive information?"
+            }
+          ]
+        },
+        {
+          "type": "isolatedLocalASR",
+          "model": "Whisper large-v3",
+          "path": "transcripts/priority-checks-v1/comparison-index.json",
+          "checks": [
+            {
+              "id": "research-local-models",
+              "text": "my, just a very short answer would be, well, one approach is using the local models. There are very good ones. There's some people, you know, like accidentally revealing the actual like enterprise models to the public that you can set up locally. I think there was also because of that, there's ongoing research, how do you mask sensitive information in your"
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 135,
+              "before": "sell",
+              "after": "set",
+              "basis": "Independent local base.en says set them locally; isolated local large-v3 says set up locally. Only the shared lexical correction is applied; exact phrase remains flagged. Evidence: transcripts/priority-checks-v1/comparison-index.json and transcripts/secondary-checks-v1/research-panel.json."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "index": 4
+        },
+        {
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "index": 24
+        }
+      ],
+      "sourceSegments": [
+        132,
+        134,
+        135
+      ],
+      "sourceStartSeconds": 11863.9,
+      "sourceEndSeconds": 11892.84
+    },
+    {
+      "id": "research-panel-060",
+      "videoId": "research-panel",
+      "startSeconds": 70.74,
+      "endSeconds": 79.86,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Context-supported correction still marked for listening: design problems → design probes",
+      "currentCaptionText": "so basically the key idea is that it shows something to you that you can reflect upon but a lot of times the design probes often just vaguely consider it's just another form of the prototype not specifically designed to help you reflect further upon",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "entryIndices": [
+            29
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/research-panel.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                26
+              ],
+              "text": "doing the design. So basically the key idea is that it shows something to you that you can reflect upon. But a lot of times the design process often just vaguely consider is just another form of the prototype, not specifically designed to help you reflect."
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 26,
+              "before": "design problems",
+              "after": "design probes",
+              "basis": "Defined research term; listen."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "index": 29
+        }
+      ],
+      "sourceSegments": [
+        26
+      ],
+      "sourceStartSeconds": 11194.74,
+      "sourceEndSeconds": 11203.86
+    },
+    {
+      "id": "research-panel-063",
+      "videoId": "research-panel",
+      "startSeconds": 585.2,
+      "endSeconds": 594.4,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "LMQs is unclear; likely LLMs but listen before correction.",
+      "currentCaptionText": "with the world? I think one approach is that LMQs try to build, we can try to build this like a user model of that can have this kind of belief about what this user is wanting, what is their",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "entryIndices": [
+            1,
+            23
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/research-panel.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                111
+              ],
+              "text": "the word. I think one approach is that we can try to build this user model that can have this kind of belief about what this user is."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "index": 1
+        },
+        {
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "index": 23
+        }
+      ],
+      "sourceSegments": [
+        111
+      ],
+      "sourceStartSeconds": 11709.2,
+      "sourceEndSeconds": 11718.4
+    },
+    {
+      "id": "research-panel-069",
+      "videoId": "research-panel",
+      "startSeconds": 1270.1,
+      "endSeconds": 1291.1,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "U.S. issue may be UI issue; inspect question audio. Context-supported correction still marked for listening: U.S. issue → UX issue Context-supported correction still marked for listening: upload the U.S. design → offload the UX design",
+      "currentCaptionText": "I can also clarify, it was my question, the UX issue, if we just compress the question itself, when we offload the UX design to the user, essentially that's a good thing, because people with disabilities have already been creating their own solutions outside the",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "entryIndices": [
+            7,
+            25,
+            32,
+            39
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/research-panel.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                223
+              ],
+              "text": "I can also clarify, give my question. Okay. The UX issue, it will just compress the question itself. When you load the UX design to the UX, essentially that's an"
+            },
+            {
+              "segments": [
+                224
+              ],
+              "text": "is you, it will just compress the person itself. When we upload the U.S. design to the U.S., essentially, that's a good thing, because people with disabilities have already been creating their own solution."
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 223,
+              "before": "U.S. issue",
+              "after": "UX issue",
+              "basis": "Independent base.en hears UX issue; UI/UX needs listening."
+            },
+            {
+              "segment": 224,
+              "before": "upload the U.S. design",
+              "after": "offload the UX design",
+              "basis": "Question is about offloading accessibility work; base.en hears UX issue in preceding sentence. UI/UX still needs listening."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "index": 7
+        },
+        {
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "index": 25
+        },
+        {
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "index": 32
+        },
+        {
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "index": 39
+        }
+      ],
+      "sourceSegments": [
+        223,
+        224
+      ],
+      "sourceStartSeconds": 12394.1,
+      "sourceEndSeconds": 12415.1
+    },
+    {
+      "id": "research-panel-073",
+      "videoId": "research-panel",
+      "startSeconds": 1465.48,
+      "endSeconds": 1475.96,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Context-supported correction still marked for listening: cities and rights → citizens’ rights",
+      "currentCaptionText": "no problem that, you know, somebody just cannot use it. At least accessibility for me means that you have like citizens’ rights in a sense and in AI you need to still have those but perhaps in a bit different form",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "entryIndices": [
+            12,
+            34
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/research-panel.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                261
+              ],
+              "text": "that there's no problem that somebody just cannot use it. At least accessibility for me means that you have like cities and rights in a sense. And in AI you need to still have those."
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 261,
+              "before": "cities and rights",
+              "after": "citizens’ rights",
+              "basis": "Accessibility and rights context; listen."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "index": 12
+        },
+        {
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "index": 34
+        }
+      ],
+      "sourceSegments": [
+        261
+      ],
+      "sourceStartSeconds": 12589.48,
+      "sourceEndSeconds": 12599.96
+    },
+    {
+      "id": "research-panel-076",
+      "videoId": "research-panel",
+      "startSeconds": 1728.34,
+      "endSeconds": 1736.92,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Context-supported correction still marked for listening: organic review → agentic review",
+      "currentCaptionText": "I mean, those are the things that I experienced so far. I don't know if somebody has set up like a really harsh, agentic review. Just try to put your slop in there it's going",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "entryIndices": [
+            35
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/research-panel.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                298
+              ],
+              "text": "I mean, those are the things that I experienced so far. I don't know if somebody has set up like a really harsh, organic behavior. Like, just try to."
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 298,
+              "before": "organic review",
+              "after": "agentic review",
+              "basis": "AI-assisted review context; listen."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "index": 35
+        }
+      ],
+      "sourceSegments": [
+        298
+      ],
+      "sourceStartSeconds": 12852.34,
+      "sourceEndSeconds": 12860.92
+    },
+    {
+      "id": "research-panel-079",
+      "videoId": "research-panel",
+      "startSeconds": 1880.76,
+      "endSeconds": 1893.08,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Context-supported correction still marked for listening: Cloud Codecs → Claude, Codex",
+      "currentCaptionText": "What about you? I also use Claude, Codex a lot, but I also like the idea introduced earlier that you have to make different AIs fight with each",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "entryIndices": [
+            36
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/research-panel.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                320
+              ],
+              "text": "seem to work quite nicely as well. What about June? I also use cloud colleagues a lot, but I also liked the idea, introduced earlier that you have to make different AI slides with each other."
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 320,
+              "before": "Cloud Codecs",
+              "after": "Claude, Codex",
+              "basis": "Product names; listen whether list or Claude Code."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "index": 36
+        }
+      ],
+      "sourceSegments": [
+        320
+      ],
+      "sourceStartSeconds": 13004.76,
+      "sourceEndSeconds": 13017.08
+    },
+    {
+      "id": "research-panel-081",
+      "videoId": "research-panel",
+      "startSeconds": 1922.52,
+      "endSeconds": 1939.16,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "This was unsearched likely host phrase or separate speaker; listen.",
+      "currentCaptionText": "Sometimes it just helps them identify some issues between them each other. So, yeah. I use both of them. Yeah. This was answered.",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "entryIndices": [
+            26
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/research-panel.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                326
+              ],
+              "text": "Sometimes it just helps them identify some issues between them each other. So yeah, I use both of them. Yeah. This was answered. Then..."
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 326,
+              "before": "This was unsearched",
+              "after": "This was answered",
+              "basis": "Independent local base.en transcribes This was answered; response immediately follows a completed answer."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "index": 26
+        }
+      ],
+      "sourceSegments": [
+        326
+      ],
+      "sourceStartSeconds": 13046.52,
+      "sourceEndSeconds": 13063.16
+    },
+    {
+      "id": "research-panel-083",
+      "videoId": "research-panel",
+      "startSeconds": 2118.84,
+      "endSeconds": 2131.6,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "just members looks like memory-related ASR error; listen.",
+      "currentCaptionText": "so is it so that people don't write anything or or how does it work like everything just members typically something is written down so I think there's more available versus what people can get their hands on but then if there's",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "entryIndices": [
+            27
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/research-panel.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                362
+              ],
+              "text": "write anything or how does it work, like everything just members, typically something is written down. So I think there's more available versus what people can get their hands on, but then if there's like information security."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "index": 27
+        }
+      ],
+      "sourceSegments": [
+        362
+      ],
+      "sourceStartSeconds": 13242.84,
+      "sourceEndSeconds": 13255.6
+    },
+    {
+      "id": "research-panel-084",
+      "videoId": "research-panel",
+      "startSeconds": 2175.52,
+      "endSeconds": 2184.56,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Context-supported correction still marked for listening: transform → transformer",
+      "currentCaptionText": "language model that is capturing only the language, what we say, but I think in essence is that the transformer that anything can be encoded, so multimodality could be one way to capture this tacit knowledge.",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "entryIndices": [
+            37
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/research-panel.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                369
+              ],
+              "text": "large language model that is capturing only language, what we say. But I think in a sense, it's the transform that anything can be encoded. So multi-modality could be one way to capture this."
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 369,
+              "before": "transform",
+              "after": "transformer",
+              "basis": "Language versus multimodality architecture; listen."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/research-panel.listening-review.json",
+          "index": 37
+        }
+      ],
+      "sourceSegments": [
+        369
+      ],
+      "sourceStartSeconds": 13299.52,
+      "sourceEndSeconds": 13308.56
+    }
+  ],
+  "cues": [
+    {
+      "id": 1,
+      "start": 3.44,
+      "end": 5.31,
+      "text": "I have one question. Please share."
+    },
+    {
+      "id": 2,
+      "start": 5.36,
+      "end": 9.8,
+      "text": "So Tapio was talking about these probes, design probes."
+    },
+    {
+      "id": 3,
+      "start": 10.48,
+      "end": 15.98,
+      "text": "So the question to Joongi is how do you see this kind of design probes?"
+    },
+    {
+      "id": 4,
+      "start": 16.14,
+      "end": 22.64,
+      "text": "It's interesting to generate the first probes and then use those to improve the"
+    },
+    {
+      "id": 5,
+      "start": 22.89,
+      "end": 24.62,
+      "text": "designs that they have created."
+    },
+    {
+      "id": 6,
+      "start": 25.42,
+      "end": 27.78,
+      "text": "Combining your ideas, what do you see?"
+    },
+    {
+      "id": 7,
+      "start": 28.34,
+      "end": 34.38,
+      "text": "Yes so the question was about design probes and how do you see those you can"
+    },
+    {
+      "id": 8,
+      "start": 34.4,
+      "end": 40.57,
+      "text": "both answer yeah if you like yeah okay so uh thanks for the question so if I"
+    },
+    {
+      "id": 9,
+      "start": 40.59,
+      "end": 45.28,
+      "text": "understood correctly design probe was that it's like an entire framework about the"
+    },
+    {
+      "id": 10,
+      "start": 45.3,
+      "end": 47.24,
+      "text": "problem and the solution space was it"
+    },
+    {
+      "id": 11,
+      "start": 48.18,
+      "end": 53.92,
+      "text": "I think one type of probe can be like a prototype yeah like just a software or as"
+    },
+    {
+      "id": 12,
+      "start": 53.94,
+      "end": 60.15,
+      "text": "you described some kind of UI yeah it's like is this what you mean yes yes yeah so"
+    },
+    {
+      "id": 13,
+      "start": 60.17,
+      "end": 64.85,
+      "text": "um in the definition I think this the design probe can actually could be one of"
+    },
+    {
+      "id": 14,
+      "start": 64.95,
+      "end": 69.56,
+      "text": "the ways of help people to like help them envision without really doing the design"
+    },
+    {
+      "id": 15,
+      "start": 69.58,
+      "end": 73.84,
+      "text": "so basically the key idea is that it shows something to you that you can reflect upon"
+    },
+    {
+      "id": 16,
+      "start": 73.86,
+      "end": 78.3,
+      "text": "but a lot of times the design probes often just vaguely consider it's just another"
+    },
+    {
+      "id": 17,
+      "start": 78.32,
+      "end": 82.96000000000001,
+      "text": "form of the prototype not specifically designed to help you reflect further upon"
+    },
+    {
+      "id": 18,
+      "start": 82.98,
+      "end": 86.5,
+      "text": "so I I think I want to approach to improve, combine these ideas together."
+    },
+    {
+      "id": 19,
+      "start": 86.52,
+      "end": 91.65,
+      "text": "How do you make the design probe that is more like information-enriched that helps"
+    },
+    {
+      "id": 20,
+      "start": 91.67,
+      "end": 93.77000000000001,
+      "text": "me to think about what I want much better?"
+    },
+    {
+      "id": 21,
+      "start": 97.28,
+      "end": 100.64,
+      "text": "Yes. Now we have some actual questions also."
+    },
+    {
+      "id": 22,
+      "start": 101.0,
+      "end": 102.3,
+      "text": "That was actual questions."
+    },
+    {
+      "id": 23,
+      "start": 106.84,
+      "end": 112.78999999999999,
+      "text": "Yes. So what does Tapio see as the biggest challenge in software development to get"
+    },
+    {
+      "id": 24,
+      "start": 112.81,
+      "end": 115.44,
+      "text": "into problem space with probes?"
+    },
+    {
+      "id": 25,
+      "start": 115.6,
+      "end": 119.68,
+      "text": "Well, that was anything to add."
+    },
+    {
+      "id": 26,
+      "start": 121.02,
+      "end": 127.94,
+      "text": "Yeah, it's surprising how many things are slowing down this progress at the moment"
+    },
+    {
+      "id": 27,
+      "start": 127.96,
+      "end": 130.28,
+      "text": "in any organization pretty much."
+    },
+    {
+      "id": 28,
+      "start": 130.9,
+      "end": 137.55,
+      "text": "So any person seems to be having comments like, why I don't need to change so"
+    },
+    {
+      "id": 29,
+      "start": 137.57,
+      "end": 144.16,
+      "text": "much, or somebody didn't give me tokens, or I don't have this information security,"
+    },
+    {
+      "id": 30,
+      "start": 144.18,
+      "end": 145.42000000000002,
+      "text": "et cetera, et cetera."
+    },
+    {
+      "id": 31,
+      "start": 145.8,
+      "end": 151.64,
+      "text": "So like one year ago, I thought that now there's like a chasm of AI"
+    },
+    {
+      "id": 32,
+      "start": 151.66,
+      "end": 156.94,
+      "text": "productivity, and it takes a while for the organizations to sort of catch up."
+    },
+    {
+      "id": 33,
+      "start": 157.64,
+      "end": 164.24,
+      "text": "But now I feel that it's bigger, and they are not catching up as soon as they"
+    },
+    {
+      "id": 34,
+      "start": 164.39,
+      "end": 171.28,
+      "text": "should. So like theoretically, there's less like constraints,"
+    },
+    {
+      "id": 35,
+      "start": 171.56,
+      "end": 176.0,
+      "text": "but then when you in practice sit in any organization then you're like"
+    },
+    {
+      "id": 36,
+      "start": 176.84,
+      "end": 178.59,
+      "text": "oh my god this will take a while"
+    },
+    {
+      "id": 37,
+      "start": 181.88,
+      "end": 188.34,
+      "text": "and also I I think like which I am a bit worried as a finn and as a european that"
+    },
+    {
+      "id": 38,
+      "start": 188.36,
+      "end": 189.16,
+      "text": "we have like"
+    },
+    {
+      "id": 39,
+      "start": 189.72,
+      "end": 194.98,
+      "text": "a lot of regulation and a lot of constraints which is good for many"
+    },
+    {
+      "id": 40,
+      "start": 195.0,
+      "end": 201.87,
+      "text": "purposes but now this time is such that you would also need to change quite fast"
+    },
+    {
+      "id": 41,
+      "start": 201.89,
+      "end": 208.45,
+      "text": "so are we able to keep up so we can see the like chinese and u.s AI"
+    },
+    {
+      "id": 42,
+      "start": 208.47,
+      "end": 210.44,
+      "text": "boom ongoing"
+    },
+    {
+      "id": 43,
+      "start": 212.92000000000002,
+      "end": 216.28,
+      "text": "but where is the sort of european one in the same scale"
+    },
+    {
+      "id": 44,
+      "start": 219.96,
+      "end": 226.77,
+      "text": "thank you we can have next this one okay sort of a continuation yes"
+    },
+    {
+      "id": 45,
+      "start": 226.79,
+      "end": 227.91,
+      "text": "of course"
+    },
+    {
+      "id": 46,
+      "start": 231.24,
+      "end": 235.62,
+      "text": "more extensive backgrounding of the healthcare system yeah you did it by"
+    },
+    {
+      "id": 47,
+      "start": 235.64,
+      "end": 242.52,
+      "text": "agentic search right yeah how do you actually I I I assume it was some kind of"
+    },
+    {
+      "id": 48,
+      "start": 242.65,
+      "end": 244.94,
+      "text": "deep research or something like this"
+    },
+    {
+      "id": 49,
+      "start": 246.76,
+      "end": 252.58,
+      "text": "how did you feel like was there enough reliable huge explicit information"
+    },
+    {
+      "id": 50,
+      "start": 252.6,
+      "end": 259.4,
+      "text": "available about the systemic culture of healthcare in order to build this thing"
+    },
+    {
+      "id": 51,
+      "start": 259.42,
+      "end": 263.38,
+      "text": "because I'm when I'm doing similar undertaking for example in my company"
+    },
+    {
+      "id": 52,
+      "start": 263.4,
+      "end": 268.37,
+      "text": "where is the explicit information of the company for example works that doesn't"
+    },
+    {
+      "id": 53,
+      "start": 268.39,
+      "end": 273.43,
+      "text": "exist it's in people's heads there might be some documentation but there's There's"
+    },
+    {
+      "id": 54,
+      "start": 273.45,
+      "end": 276.28,
+      "text": "nothing that actually builds the whole picture, right?"
+    },
+    {
+      "id": 55,
+      "start": 276.56,
+      "end": 281.76,
+      "text": "And you have to have the whole picture to be able to translate it into some kind of"
+    },
+    {
+      "id": 56,
+      "start": 281.78,
+      "end": 282.74,
+      "text": "agent form."
+    },
+    {
+      "id": 57,
+      "start": 283.6,
+      "end": 286.8,
+      "text": "How do we go about actually crossing this?"
+    },
+    {
+      "id": 58,
+      "start": 287.34000000000003,
+      "end": 289.75,
+      "text": "We don't have enough explicit data."
+    },
+    {
+      "id": 59,
+      "start": 290.28,
+      "end": 292.88,
+      "text": "Did you encounter this with the help of..."
+    },
+    {
+      "id": 60,
+      "start": 292.9,
+      "end": 296.68,
+      "text": "Yes, definitely. Definitely I did."
+    },
+    {
+      "id": 61,
+      "start": 298.15999999999997,
+      "end": 299.79,
+      "text": "That's a very good question."
+    },
+    {
+      "id": 62,
+      "start": 301.12,
+      "end": 307.18,
+      "text": "Well first of all there's quite a lot of public information available actually if"
+    },
+    {
+      "id": 63,
+      "start": 307.2,
+      "end": 311.96,
+      "text": "you have the enough tokens and patience and and some kind of you know loop"
+    },
+    {
+      "id": 64,
+      "start": 311.98,
+      "end": 317.45,
+      "text": "engineering checkpoints that did you find this and did you find that and you know so"
+    },
+    {
+      "id": 65,
+      "start": 317.47,
+      "end": 320.18,
+      "text": "there's more facts that you would sort of"
+    },
+    {
+      "id": 66,
+      "start": 321.2,
+      "end": 327.32,
+      "text": "first encounter and these current agents are not able to find all of that even but"
+    },
+    {
+      "id": 67,
+      "start": 327.54,
+      "end": 332.62,
+      "text": "if you're able to specify that if you didn't find this then sort of fix your"
+    },
+    {
+      "id": 68,
+      "start": 332.64,
+      "end": 339.08,
+      "text": "whatever thing and then you know go on so they are not able to find it enough"
+    },
+    {
+      "id": 69,
+      "start": 339.29,
+      "end": 345.97,
+      "text": "that a professional analyst would be satisfied with that's my sort"
+    },
+    {
+      "id": 70,
+      "start": 346.21,
+      "end": 351.8,
+      "text": "of main impression at the moment but still there is more data and then there's like"
+    },
+    {
+      "id": 71,
+      "start": 351.82,
+      "end": 356.23,
+      "text": "different things which is limiting the amount of data that you would have"
+    },
+    {
+      "id": 72,
+      "start": 356.39,
+      "end": 362.72,
+      "text": "available one is like the some systems like the social media platforms and all of"
+    },
+    {
+      "id": 73,
+      "start": 362.74,
+      "end": 369.3,
+      "text": "those are like actually quite guarded you just cannot get even your own data out"
+    },
+    {
+      "id": 74,
+      "start": 369.43,
+      "end": 376.22,
+      "text": "etc so it's not so open at all and then the final problem which is not solved by"
+    },
+    {
+      "id": 75,
+      "start": 376.24,
+      "end": 383.11,
+      "text": "the AI community at the moment is that like LLMs are quite good um understanding"
+    },
+    {
+      "id": 76,
+      "start": 383.13,
+      "end": 388.82,
+      "text": "text it sort of is able to abstract text in a nice way but not the facts so it"
+    },
+    {
+      "id": 77,
+      "start": 389.05,
+      "end": 395.11,
+      "text": "knows certain bits and pieces but it doesn't sort of have the confidence that"
+    },
+    {
+      "id": 78,
+      "start": 395.15999999999997,
+      "end": 400.78,
+      "text": "you know am I now certain or not so what you would need to construct is some kind"
+    },
+    {
+      "id": 79,
+      "start": 401.01,
+      "end": 407.19,
+      "text": "of meta model which is a combination of like actual facts that you cannot deny and"
+    },
+    {
+      "id": 80,
+      "start": 407.23,
+      "end": 413.21,
+      "text": "then some sort of logic and I haven't seen too many implement or like examples of how"
+    },
+    {
+      "id": 81,
+      "start": 413.23,
+      "end": 418.64,
+      "text": "you actually do that you can iterate and iterate and iterate and finally you're"
+    },
+    {
+      "id": 82,
+      "start": 418.65999999999997,
+      "end": 424.61,
+      "text": "satisfied but I think that's a segment where the current LLMs are sort of falling"
+    },
+    {
+      "id": 83,
+      "start": 424.63,
+      "end": 429.49,
+      "text": "short but the agents and their capabilities would be able to sort of"
+    },
+    {
+      "id": 84,
+      "start": 429.51,
+      "end": 435.9,
+      "text": "fine-tune that kind of fact model until you run out of information basically"
+    },
+    {
+      "id": 85,
+      "start": 443.58,
+      "end": 449.24,
+      "text": "well that's that's part of it at least but like like if if you have like a"
+    },
+    {
+      "id": 86,
+      "start": 449.26,
+      "end": 455.32,
+      "text": "business intelligence system that has all the facts from my enterprise you can you"
+    },
+    {
+      "id": 87,
+      "start": 455.34000000000003,
+      "end": 460.95,
+      "text": "know twist and tweak can have the cubes and whatever we don't have that kind of"
+    },
+    {
+      "id": 88,
+      "start": 461.11,
+      "end": 467.69,
+      "text": "capability with like LLM would or agent would construct that kind of model and"
+    },
+    {
+      "id": 89,
+      "start": 467.71,
+      "end": 469.85,
+      "text": "then it would be coherent"
+    },
+    {
+      "id": 90,
+      "start": 477.1,
+      "end": 477.9,
+      "text": "that is"
+    },
+    {
+      "id": 91,
+      "start": 481.02,
+      "end": 484.54,
+      "text": "yeah well that is a yeah I think that is a sort of"
+    },
+    {
+      "id": 92,
+      "start": 486.54,
+      "end": 493.33,
+      "text": "that is like theoretically that is a twin like in the healthcare like I was"
+    },
+    {
+      "id": 93,
+      "start": 493.35,
+      "end": 500.05,
+      "text": "also doing like healthcare analytics for many years and I acknowledge that this"
+    },
+    {
+      "id": 94,
+      "start": 500.07,
+      "end": 505.81,
+      "text": "kind of agentic search didn't find for example the certain specification that I"
+    },
+    {
+      "id": 95,
+      "start": 505.83,
+      "end": 511.68,
+      "text": "knew was out there which is actually quite precise and they know how to use it and if"
+    },
+    {
+      "id": 96,
+      "start": 511.7,
+      "end": 517.28,
+      "text": "you would construct a digital twin then you essentially need some expert that"
+    },
+    {
+      "id": 97,
+      "start": 517.38,
+      "end": 522.54,
+      "text": "knows that how do you actually do it and then evaluate like what did it do is it"
+    },
+    {
+      "id": 98,
+      "start": 522.65,
+      "end": 524.45,
+      "text": "credible what should be added"
+    },
+    {
+      "id": 99,
+      "start": 526.68,
+      "end": 531.96,
+      "text": "but it's quite good already but it's not sort of real twin"
+    },
+    {
+      "id": 100,
+      "start": 535.08,
+      "end": 536.92,
+      "text": "let's head to next question"
+    },
+    {
+      "id": 101,
+      "start": 538.44,
+      "end": 543.94,
+      "text": "Regarding the future work in Joongi’s"
+    },
+    {
+      "id": 102,
+      "start": 543.96,
+      "end": 550.67,
+      "text": "presentation, how do you think AI will in the future abstractize"
+    },
+    {
+      "id": 103,
+      "start": 550.71,
+      "end": 554.1,
+      "text": "or measure the vagueness of user query?"
+    },
+    {
+      "id": 104,
+      "start": 556.28,
+      "end": 560.28,
+      "text": "That's a very good question."
+    },
+    {
+      "id": 105,
+      "start": 562.68,
+      "end": 568.51,
+      "text": "I think one approach is that at the moment we are thinking in a very detached like a"
+    },
+    {
+      "id": 106,
+      "start": 568.69,
+      "end": 572.4,
+      "text": "conversation systems where I prompt something, I get something, maybe a few"
+    },
+    {
+      "id": 107,
+      "start": 572.42,
+      "end": 577.01,
+      "text": "iterations, that information is like just thrown away, doesn't, AI agents doesn't"
+    },
+    {
+      "id": 108,
+      "start": 577.23,
+      "end": 582.78,
+      "text": "have concerns with what happens before or what you daily do, how do you interact"
+    },
+    {
+      "id": 109,
+      "start": 582.93,
+      "end": 585.72,
+      "text": "with the world? I think one approach is that"
+    },
+    {
+      "id": 110,
+      "start": 587.2,
+      "end": 592.32,
+      "text": "LMQs try to build, we can try to build this like a user model of that can"
+    },
+    {
+      "id": 111,
+      "start": 593.28,
+      "end": 597.36,
+      "text": "have this kind of belief about what this user is wanting, what is their"
+    },
+    {
+      "id": 112,
+      "start": 597.38,
+      "end": 602.61,
+      "text": "preferences, how they actually express their intention into this particular text"
+    },
+    {
+      "id": 113,
+      "start": 602.69,
+      "end": 609.38,
+      "text": "lexical styles. By knowing that, then I assume that we can still have LLMs to"
+    },
+    {
+      "id": 114,
+      "start": 609.4,
+      "end": 614.88,
+      "text": "build upon it to identify, did this person actually mean something as if, like a very"
+    },
+    {
+      "id": 115,
+      "start": 615.09,
+      "end": 619.7,
+      "text": "strong certainty about what they want, or is this something just vaguely exploring"
+    },
+    {
+      "id": 116,
+      "start": 619.72,
+      "end": 625.7,
+      "text": "or not? One of the recent papers I read in the morning, interesting, is that you can"
+    },
+    {
+      "id": 117,
+      "start": 625.72,
+      "end": 631.38,
+      "text": "actually try to measure how people are typing, was there a pause when people were"
+    },
+    {
+      "id": 118,
+      "start": 631.4,
+      "end": 637.52,
+      "text": "writing their prompt, were there exclamation how hard they type, how fast"
+    },
+    {
+      "id": 119,
+      "start": 637.73,
+      "end": 642.33,
+      "text": "they type. That can actually give the AI model about, oh, this person is actually"
+    },
+    {
+      "id": 120,
+      "start": 642.35,
+      "end": 646.62,
+      "text": "thinking, or this person has a very, going through a very difficult cognitive"
+    },
+    {
+      "id": 121,
+      "start": 646.71,
+      "end": 651.85,
+      "text": "activity, so maybe I should change might be able to provide more personalized"
+    },
+    {
+      "id": 122,
+      "start": 651.95,
+      "end": 658.5,
+      "text": "responses to it so I think there is a way there we can try to improve this like a"
+    },
+    {
+      "id": 123,
+      "start": 658.52,
+      "end": 663.38,
+      "text": "prompt based interaction not having users just describe everything so I think having"
+    },
+    {
+      "id": 124,
+      "start": 663.4,
+      "end": 666.69,
+      "text": "this like a user model inside of the system could be one approach"
+    },
+    {
+      "id": 125,
+      "start": 669.34,
+      "end": 670.14,
+      "text": "nice thank you"
+    },
+    {
+      "id": 126,
+      "start": 672.78,
+      "end": 679.56,
+      "text": "next one how can you trust that Anthropic or OpenAI does not steal your company"
+    },
+    {
+      "id": 127,
+      "start": 679.58,
+      "end": 686.36,
+      "text": "ideas or your academic results how to use agents but keep information secure"
+    },
+    {
+      "id": 128,
+      "start": 686.38,
+      "end": 692.91,
+      "text": "you can both I'm sure answer that one can"
+    },
+    {
+      "id": 129,
+      "start": 692.93,
+      "end": 699.37,
+      "text": "you trust I think you have this like lizard"
+    },
+    {
+      "id": 130,
+      "start": 699.41,
+      "end": 705.86,
+      "text": "brain like either you go for it or then you don't and I'm more like the optimist"
+    },
+    {
+      "id": 131,
+      "start": 705.95,
+      "end": 712.07,
+      "text": "that okay since the beginning of when I have been using computers theoretically"
+    },
+    {
+      "id": 132,
+      "start": 712.09,
+      "end": 718.93,
+      "text": "Microsoft could have stolen my data every day they didn't and these large"
+    },
+    {
+      "id": 133,
+      "start": 719.37,
+      "end": 725.54,
+      "text": "companies like Anthropic they're like if they would jeopardize that then the whole"
+    },
+    {
+      "id": 134,
+      "start": 725.56,
+      "end": 732.39,
+      "text": "they have so big risk that I think my risk is much smaller in that scale so I'm"
+    },
+    {
+      "id": 135,
+      "start": 732.41,
+      "end": 738.97,
+      "text": "more like I could even give my whole health data because it might benefit me"
+    },
+    {
+      "id": 136,
+      "start": 738.99,
+      "end": 745.32,
+      "text": "more versus the risk on my side but that's just my lizard brain"
+    },
+    {
+      "id": 137,
+      "start": 745.34,
+      "end": 751.68,
+      "text": "optimist my just a very short"
+    },
+    {
+      "id": 138,
+      "start": 751.7,
+      "end": 757.12,
+      "text": "answer would be well one approach is using the local models there are very good ones"
+    },
+    {
+      "id": 139,
+      "start": 757.14,
+      "end": 761.56,
+      "text": "that's all someone people you know like accidentally revealing the actual like"
+    },
+    {
+      "id": 140,
+      "start": 761.58,
+      "end": 766.82,
+      "text": "enterprise models to the public you know that you can set them locally I think"
+    },
+    {
+      "id": 141,
+      "start": 766.84,
+      "end": 770.7,
+      "text": "there was also because of that there's ongoing research how do you mask sensitive"
+    },
+    {
+      "id": 142,
+      "start": 770.72,
+      "end": 777.44,
+      "text": "information in your interaction or your prompt that is unfortunately I believe"
+    },
+    {
+      "id": 143,
+      "start": 777.46,
+      "end": 782.14,
+      "text": "it's not set into every this like large things models that everyone is available"
+    },
+    {
+      "id": 144,
+      "start": 782.16,
+      "end": 787.62,
+      "text": "to everyone but hopefully in the future there could be some more strong policy or"
+    },
+    {
+      "id": 145,
+      "start": 787.64,
+      "end": 793.64,
+      "text": "techniques to protect some privacy issues yeah and like to continue on that I think"
+    },
+    {
+      "id": 146,
+      "start": 793.66,
+      "end": 798.58,
+      "text": "that's a good point and I would say that there might be an uprise on different"
+    },
+    {
+      "id": 147,
+      "start": 798.6,
+      "end": 805.29,
+      "text": "types of edge AI calculation thingies so like things that you don't want to give"
+    },
+    {
+      "id": 148,
+      "start": 805.31,
+      "end": 810.61,
+      "text": "out but it's quite okay to solve with your laptop in a secure way it doesn't go"
+    },
+    {
+      "id": 149,
+      "start": 810.73,
+      "end": 816.34,
+      "text": "anywhere people have like gpus in all the laptops they're not using it enough we"
+    },
+    {
+      "id": 150,
+      "start": 816.36,
+      "end": 821.63,
+      "text": "could use those for many things not only LLMs but different types of you know"
+    },
+    {
+      "id": 151,
+      "start": 821.79,
+      "end": 824.68,
+      "text": "speech to text or translation or whatever."
+    },
+    {
+      "id": 152,
+      "start": 827.24,
+      "end": 828.04,
+      "text": "Definitely."
+    },
+    {
+      "id": 153,
+      "start": 831.34,
+      "end": 832.14,
+      "text": "Yes."
+    },
+    {
+      "id": 154,
+      "start": 833.66,
+      "end": 836.16,
+      "text": "Then we have the next one."
+    },
+    {
+      "id": 155,
+      "start": 836.9,
+      "end": 841.42,
+      "text": "Building is cheap. Finding the problem is the bottleneck."
+    },
+    {
+      "id": 156,
+      "start": 841.82,
+      "end": 848.76,
+      "text": "How has this really changed now as at the same time a lot of people"
+    },
+    {
+      "id": 157,
+      "start": 848.86,
+      "end": 851.2,
+      "text": "say building has never been a problem?"
+    },
+    {
+      "id": 158,
+      "start": 854.0,
+      "end": 860.89,
+      "text": "Oh sorry what's the question building is cheap finding the problem is the"
+    },
+    {
+      "id": 159,
+      "start": 860.91,
+      "end": 866.44,
+      "text": "bottleneck how has this really changed now as the same time a lot of people say"
+    },
+    {
+      "id": 160,
+      "start": 866.81,
+      "end": 873.17,
+      "text": "building has never been the problem yeah that's a good question I think like what I"
+    },
+    {
+      "id": 161,
+      "start": 873.43,
+      "end": 879.62,
+      "text": "have seen many times is like a broken phone effect like from vision to strategy"
+    },
+    {
+      "id": 162,
+      "start": 879.73,
+      "end": 885.08,
+      "text": "and roadmap and whatever so it's sort of cheap to change like the vision a bit but"
+    },
+    {
+      "id": 163,
+      "start": 885.1,
+      "end": 890.57,
+      "text": "then it when it starts to fall downwards then people might be changing everything"
+    },
+    {
+      "id": 164,
+      "start": 890.59,
+      "end": 894.72,
+      "text": "all the time and thinking yeah it was you know but now we need to throw this away"
+    },
+    {
+      "id": 165,
+      "start": 895.09,
+      "end": 900.02,
+      "text": "because something changed so this was never never the problem but to know what"
+    },
+    {
+      "id": 166,
+      "start": 900.04,
+      "end": 905.24,
+      "text": "so then it's like at least from my point of view the end to end are you able to"
+    },
+    {
+      "id": 167,
+      "start": 905.29,
+      "end": 910.08,
+      "text": "share all the information throughout the process."
+    },
+    {
+      "id": 168,
+      "start": 910.1,
+      "end": 916.48,
+      "text": "At the moment, no, it's not there, at least in our agentic discovery"
+    },
+    {
+      "id": 169,
+      "start": 916.5,
+      "end": 919.77,
+      "text": "hypothesis, that it's not so mature."
+    },
+    {
+      "id": 170,
+      "start": 919.79,
+      "end": 925.94,
+      "text": "And at the moment, the bottleneck definitely pushes upward and downward."
+    },
+    {
+      "id": 171,
+      "start": 928.9,
+      "end": 932.74,
+      "text": "But I think it will take a while to sort of be end to end."
+    },
+    {
+      "id": 172,
+      "start": 935.46,
+      "end": 937.21,
+      "text": "- Does Joongi have anything to add?"
+    },
+    {
+      "id": 173,
+      "start": 939.2,
+      "end": 942.44,
+      "text": "- Whenever I hear this, I have a slightly different thoughts."
+    },
+    {
+      "id": 174,
+      "start": 942.46,
+      "end": 946.76,
+      "text": "Like people saying the problem is always the problem."
+    },
+    {
+      "id": 175,
+      "start": 946.78,
+      "end": 948.98,
+      "text": "Sure, that's how everything starts."
+    },
+    {
+      "id": 176,
+      "start": 949.0,
+      "end": 952.43,
+      "text": "But I think a lot of times the problem actually evolves by you building and"
+    },
+    {
+      "id": 177,
+      "start": 952.45,
+      "end": 956.64,
+      "text": "testing stuff. So I think that's actually one of the limitation where people are"
+    },
+    {
+      "id": 178,
+      "start": 956.66,
+      "end": 961.58,
+      "text": "just dealing in order this building problems to AI, just to get what, receive"
+    },
+    {
+      "id": 179,
+      "start": 961.6,
+      "end": 966.01,
+      "text": "what is generated and try to just, okay, the problem is solved try to end it so I"
+    },
+    {
+      "id": 180,
+      "start": 966.03,
+      "end": 970.82,
+      "text": "think building is still part of the the problem that helps you try to understand"
+    },
+    {
+      "id": 181,
+      "start": 970.84,
+      "end": 976.36,
+      "text": "what the problem is really about so I wouldn't just uh completely abandon what"
+    },
+    {
+      "id": 182,
+      "start": 976.38,
+      "end": 983.24,
+      "text": "practice we have been building up on that's true uh"
+    },
+    {
+      "id": 183,
+      "start": 983.26,
+      "end": 989.6,
+      "text": "then in three minutes they have said that the"
+    },
+    {
+      "id": 184,
+      "start": 989.62,
+      "end": 991.79,
+      "text": "lunch is ready so"
+    },
+    {
+      "id": 185,
+      "start": 992.68,
+      "end": 999.65,
+      "text": "first 70 of you may go if you like but we will keep on"
+    },
+    {
+      "id": 186,
+      "start": 999.73,
+      "end": 1003.16,
+      "text": "this QA still like 15 minutes so"
+    },
+    {
+      "id": 187,
+      "start": 1004.68,
+      "end": 1010.76,
+      "text": "still half an hour it was okay well Juho is the master so"
+    },
+    {
+      "id": 188,
+      "start": 1013.24,
+      "end": 1014.76,
+      "text": "Okay, next question."
+    },
+    {
+      "id": 189,
+      "start": 1016.82,
+      "end": 1023.61,
+      "text": "Tapio, do you think your kids and the next generation are going to be better at"
+    },
+    {
+      "id": 190,
+      "start": 1023.63,
+      "end": 1025.74,
+      "text": "interacting with LLMs?"
+    },
+    {
+      "id": 191,
+      "start": 1026.32,
+      "end": 1033.0,
+      "text": "What needs to be taught versus is being inherently learned by children interacting"
+    },
+    {
+      "id": 192,
+      "start": 1033.02,
+      "end": 1033.82,
+      "text": "with AI?"
+    },
+    {
+      "id": 193,
+      "start": 1036.66,
+      "end": 1039.0,
+      "text": "Yeah, that's a big one."
+    },
+    {
+      "id": 194,
+      "start": 1042.0,
+      "end": 1047.98,
+      "text": "Like for example with the four-year-old"
+    },
+    {
+      "id": 195,
+      "start": 1048.0,
+      "end": 1054.48,
+      "text": "like for her well now now she's like seven but when she was four it was like of"
+    },
+    {
+      "id": 196,
+      "start": 1054.5,
+      "end": 1060.45,
+      "text": "course the phone understands what I'm saying of course it can do these pictures"
+    },
+    {
+      "id": 197,
+      "start": 1060.47,
+      "end": 1067.26,
+      "text": "of course so you just build you know it has always been like that but then"
+    },
+    {
+      "id": 198,
+      "start": 1067.28,
+      "end": 1072.62,
+      "text": "from perspective it's like a big change."
+    },
+    {
+      "id": 199,
+      "start": 1072.99,
+      "end": 1077.66,
+      "text": "Will there be LLMs or what are we going to even call these AI things?"
+    },
+    {
+      "id": 200,
+      "start": 1077.68,
+      "end": 1083.88,
+      "text": "That's a good question and what is the role of what you should be"
+    },
+    {
+      "id": 201,
+      "start": 1084.0,
+      "end": 1084.92,
+      "text": "learning?"
+    },
+    {
+      "id": 202,
+      "start": 1086.68,
+      "end": 1093.65,
+      "text": "Some people are so afraid that kids sort of bypass the difficult part and take a"
+    },
+    {
+      "id": 203,
+      "start": 1093.73,
+      "end": 1095.48,
+      "text": "shortcut with the the LLMs."
+    },
+    {
+      "id": 204,
+      "start": 1095.73,
+      "end": 1101.77,
+      "text": "One of my kids is"
+    },
+    {
+      "id": 205,
+      "start": 1101.84,
+      "end": 1106.66,
+      "text": "learning French. I don't know French."
+    },
+    {
+      "id": 206,
+      "start": 1106.68,
+      "end": 1111.87,
+      "text": "And it hasn't been so motivating to try to teach a person who is not extremely"
+    },
+    {
+      "id": 207,
+      "start": 1112.03,
+      "end": 1117.41,
+      "text": "motivated. But now we figured out a way that, okay, you can build a game that"
+    },
+    {
+      "id": 208,
+      "start": 1117.43,
+      "end": 1124.22,
+      "text": "swallows your French book and teaches you french in a motivated way"
+    },
+    {
+      "id": 209,
+      "start": 1124.24,
+      "end": 1130.55,
+      "text": "he built that he learned the language and said that it was somewhat easy in the"
+    },
+    {
+      "id": 210,
+      "start": 1130.57,
+      "end": 1136.46,
+      "text": "school exam I think that's an example where like even"
+    },
+    {
+      "id": 211,
+      "start": 1136.48,
+      "end": 1143.04,
+      "text": "though you're just asking AI to do it you sort of figured out a way that might be"
+    },
+    {
+      "id": 212,
+      "start": 1143.13,
+      "end": 1148.88,
+      "text": "very beneficial for you in any type of task or learning thing so I think that's"
+    },
+    {
+      "id": 213,
+      "start": 1148.9,
+      "end": 1149.73,
+      "text": "the biggest"
+    },
+    {
+      "id": 214,
+      "start": 1152.22,
+      "end": 1158.35,
+      "text": "change probably that people who have always you know it has always been like"
+    },
+    {
+      "id": 215,
+      "start": 1158.56,
+      "end": 1164.76,
+      "text": "this then they even cannot understand how you could think otherwise like why should"
+    },
+    {
+      "id": 216,
+      "start": 1164.78,
+      "end": 1170.28,
+      "text": "I do something as stupid as that because I can do something which is much motivating"
+    },
+    {
+      "id": 217,
+      "start": 1170.3,
+      "end": 1176.66,
+      "text": "and gets me to the end much faster so again I'm a bit optimistic but I feel that"
+    },
+    {
+      "id": 218,
+      "start": 1176.68,
+      "end": 1182.16,
+      "text": "it's a bit difficult when you just see the kids it's a bit difficult to always"
+    },
+    {
+      "id": 219,
+      "start": 1182.21,
+      "end": 1185.26,
+      "text": "understand how they can be so open-minded"
+    },
+    {
+      "id": 220,
+      "start": 1188.62,
+      "end": 1193.06,
+      "text": "I try to be but still it's like I'm still learning from them"
+    },
+    {
+      "id": 221,
+      "start": 1196.38,
+      "end": 1198.01,
+      "text": "Yeah, good answer."
+    },
+    {
+      "id": 222,
+      "start": 1203.12,
+      "end": 1206.72,
+      "text": "Then, okay, now we have a long question."
+    },
+    {
+      "id": 223,
+      "start": 1209.12,
+      "end": 1210.18,
+      "text": "Is Juho there?"
+    },
+    {
+      "id": 224,
+      "start": 1211.44,
+      "end": 1214.13,
+      "text": "Is it so that we cannot have the questions in here?"
+    },
+    {
+      "id": 225,
+      "start": 1217.34,
+      "end": 1218.62,
+      "text": "Which one is it for?"
+    },
+    {
+      "id": 226,
+      "start": 1219.88,
+      "end": 1221.44,
+      "text": "Well, I can read it out loud."
+    },
+    {
+      "id": 227,
+      "start": 1222.44,
+      "end": 1229.38,
+      "text": "In accessibility, there is a growing shift toward modular user-driven design"
+    },
+    {
+      "id": 228,
+      "start": 1229.4,
+      "end": 1233.32,
+      "text": "where end users assemble their own accommodations."
+    },
+    {
+      "id": 229,
+      "start": 1233.34,
+      "end": 1238.67,
+      "text": "From a product ethics and governance perspective, where does"
+    },
+    {
+      "id": 230,
+      "start": 1238.99,
+      "end": 1245.16,
+      "text": "developer responsibility end and unfair labor"
+    },
+    {
+      "id": 231,
+      "start": 1245.18,
+      "end": 1252.0,
+      "text": "extraction begin? Especially when companies offload baseline accessibility"
+    },
+    {
+      "id": 232,
+      "start": 1252.02,
+      "end": 1256.42,
+      "text": "costs onto the users paying for the product?"
+    },
+    {
+      "id": 233,
+      "start": 1259.98,
+      "end": 1263.42,
+      "text": "I can show you the question."
+    },
+    {
+      "id": 234,
+      "start": 1263.68,
+      "end": 1267.3,
+      "text": "Do you want to? I think..."
+    },
+    {
+      "id": 235,
+      "start": 1272.1,
+      "end": 1279.08,
+      "text": "I can also clarify, it was my question,"
+    },
+    {
+      "id": 236,
+      "start": 1279.1,
+      "end": 1286.08,
+      "text": "the UX issue, if we just compress the question itself, when we offload the UX"
+    },
+    {
+      "id": 237,
+      "start": 1286.1,
+      "end": 1289.91,
+      "text": "design to the user, essentially that's a good thing, because people with"
+    },
+    {
+      "id": 238,
+      "start": 1290.15,
+      "end": 1293.32,
+      "text": "disabilities have already been creating their own solutions outside the"
+    },
+    {
+      "id": 239,
+      "start": 1293.34,
+      "end": 1299.08,
+      "text": "mainstream, because most developers would like accessibility as the last thing, but"
+    },
+    {
+      "id": 240,
+      "start": 1299.1,
+      "end": 1304.53,
+      "text": "But now, even though this looks like a promising thing, that users would now be"
+    },
+    {
+      "id": 241,
+      "start": 1304.64,
+      "end": 1310.14,
+      "text": "able to design their own interfaces easily, it could also be looked at from"
+    },
+    {
+      "id": 242,
+      "start": 1310.16,
+      "end": 1314.57,
+      "text": "the point of view that companies are now running away from the responsibility of"
+    },
+    {
+      "id": 243,
+      "start": 1314.59,
+      "end": 1318.74,
+      "text": "having to comply with accessibility checklists."
+    },
+    {
+      "id": 244,
+      "start": 1318.76,
+      "end": 1324.72,
+      "text": "Because if you take away UI files and give it to the user, technically you can't get"
+    },
+    {
+      "id": 245,
+      "start": 1324.74,
+      "end": 1328.14,
+      "text": "in trouble for designing a UI that is not accessible."
+    },
+    {
+      "id": 246,
+      "start": 1328.16,
+      "end": 1331.5,
+      "text": "So I just wanted you to more or less shed some light."
+    },
+    {
+      "id": 247,
+      "start": 1331.52,
+      "end": 1333.74,
+      "text": "You have a point of view, not an answer."
+    },
+    {
+      "id": 248,
+      "start": 1333.76,
+      "end": 1336.38,
+      "text": "I'm sure there's no answer for this question yet."
+    },
+    {
+      "id": 249,
+      "start": 1336.4,
+      "end": 1341.1,
+      "text": "But what's your point of view, considering you've been looking into this issue quite"
+    },
+    {
+      "id": 250,
+      "start": 1341.22,
+      "end": 1348.12,
+      "text": "a bit? Hm. Or there has to be a validation process for each creative-- Yeah."
+    },
+    {
+      "id": 251,
+      "start": 1354.14,
+      "end": 1360.5,
+      "text": "I have a-- I don't have a concrete answer, but some of thoughts related to what I was"
+    },
+    {
+      "id": 252,
+      "start": 1360.61,
+      "end": 1366.76,
+      "text": "studying here. I think in the end we always need someone to be responsible of"
+    },
+    {
+      "id": 253,
+      "start": 1366.97,
+      "end": 1371.14,
+      "text": "someone creating something or someone did a bad job."
+    },
+    {
+      "id": 254,
+      "start": 1371.16,
+      "end": 1376.14,
+      "text": "I think I'm not sure how we can actually put the rule in there."
+    },
+    {
+      "id": 255,
+      "start": 1376.16,
+      "end": 1381.67,
+      "text": "Can we actually just blame the entire company's fault if whenever the interface"
+    },
+    {
+      "id": 256,
+      "start": 1381.69,
+      "end": 1387.39,
+      "text": "fails because of the company's model, it could be that the user didn't use LLMs"
+    },
+    {
+      "id": 257,
+      "start": 1387.41,
+      "end": 1393.39,
+      "text": "correctly or there could be many ways that people can do it wrong when they are given"
+    },
+    {
+      "id": 258,
+      "start": 1393.41,
+      "end": 1394.86,
+      "text": "this like some technologies."
+    },
+    {
+      "id": 259,
+      "start": 1394.88,
+      "end": 1401.84,
+      "text": "I don't have very good ideas here but maybe one approach is that we try to find"
+    },
+    {
+      "id": 260,
+      "start": 1401.86,
+      "end": 1408.53,
+      "text": "a very concrete or structured way so that people can use it in a good way so they"
+    },
+    {
+      "id": 261,
+      "start": 1408.55,
+      "end": 1413.44,
+      "text": "don't have to fall into some like a misguided path."
+    },
+    {
+      "id": 262,
+      "start": 1416.08,
+      "end": 1422.94,
+      "text": "I'm definitely not an expert on that area but I would say that I have been thinking"
+    },
+    {
+      "id": 263,
+      "start": 1422.96,
+      "end": 1429.9,
+      "text": "like if you would have a very very good AI embedded into the software when you start"
+    },
+    {
+      "id": 264,
+      "start": 1429.92,
+      "end": 1436.03,
+      "text": "building it then first question is that why do you need a user interface at all"
+    },
+    {
+      "id": 265,
+      "start": 1436.19,
+      "end": 1441.9,
+      "text": "like first is like you can just you know speak to the thingy, and then it solves"
+    },
+    {
+      "id": 266,
+      "start": 1442.09,
+      "end": 1445.46,
+      "text": "your problems, and then you can speak back, etc."
+    },
+    {
+      "id": 267,
+      "start": 1445.48,
+      "end": 1452.15,
+      "text": "So one can be like dynamic interfaces, yes, but why would you be"
+    },
+    {
+      "id": 268,
+      "start": 1452.23,
+      "end": 1457.89,
+      "text": "clicking anything? And in the end, then you would need to make sure that such"
+    },
+    {
+      "id": 269,
+      "start": 1458.05,
+      "end": 1464.29,
+      "text": "systems that are used in large scale actually work for everybody, that there's"
+    },
+    {
+      "id": 270,
+      "start": 1464.31,
+      "end": 1467.46,
+      "text": "no problem that, you know, somebody just cannot use it."
+    },
+    {
+      "id": 271,
+      "start": 1467.48,
+      "end": 1473.96,
+      "text": "At least accessibility for me means that you have like citizens’ rights in a sense"
+    },
+    {
+      "id": 272,
+      "start": 1475.56,
+      "end": 1479.97,
+      "text": "and in AI you need to still have those but perhaps in a bit different form"
+    },
+    {
+      "id": 273,
+      "start": 1487.24,
+      "end": 1490.52,
+      "text": "yes next one"
+    },
+    {
+      "id": 274,
+      "start": 1493.32,
+      "end": 1500.18,
+      "text": "as academics has the proliferation of AI tooling made the research process faster"
+    },
+    {
+      "id": 275,
+      "start": 1500.2,
+      "end": 1502.2,
+      "text": "has it introduced risks"
+    },
+    {
+      "id": 276,
+      "start": 1507.0,
+      "end": 1513.94,
+      "text": "do you want to start yeah so uh one of the issue is that like a lot of"
+    },
+    {
+      "id": 277,
+      "start": 1513.96,
+      "end": 1514.76,
+      "text": "this like uh"
+    },
+    {
+      "id": 278,
+      "start": 1515.64,
+      "end": 1522.247,
+      "text": "what was the code the AI uh what is it called that the AI"
+    },
+    {
+      "id": 279,
+      "start": 1522.267,
+      "end": 1528.91,
+      "text": "slop, slop is actually impacting like how we actually foster this academic field uh"
+    },
+    {
+      "id": 280,
+      "start": 1528.93,
+      "end": 1533.92,
+      "text": "like every year we get like a thousands more papers into one each each same"
+    },
+    {
+      "id": 281,
+      "start": 1534.02,
+      "end": 1539.24,
+      "text": "conferences now the problem is that uh this human experts needs to review these"
+    },
+    {
+      "id": 282,
+      "start": 1539.49,
+      "end": 1544.56,
+      "text": "papers try to give a very like a good uh evaluation of it but just the sheer number"
+    },
+    {
+      "id": 283,
+      "start": 1544.76,
+      "end": 1547.99,
+      "text": "of the paper submitted to each conference is just growing everywhere we don't have"
+    },
+    {
+      "id": 284,
+      "start": 1548.01,
+      "end": 1554.39,
+      "text": "that many man powers here so I think we it is definitely introducing some this kind"
+    },
+    {
+      "id": 285,
+      "start": 1554.41,
+      "end": 1560.71,
+      "text": "of quality maintenance risk uh and regarding that we are trying to come up"
+    },
+    {
+      "id": 286,
+      "start": 1560.73,
+      "end": 1566.15,
+      "text": "with some like a better ways of how do we then also use this like AI technology to"
+    },
+    {
+      "id": 287,
+      "start": 1566.17,
+      "end": 1570.95,
+      "text": "filter out AI slops so that only the good high quality papers can be reviewed by"
+    },
+    {
+      "id": 288,
+      "start": 1570.97,
+      "end": 1577.92,
+      "text": "real experts I think we are still on the track to fix this problem yeah"
+    },
+    {
+      "id": 289,
+      "start": 1577.94,
+      "end": 1584.34,
+      "text": "I think that like there has been always always probably like a lot of sort of"
+    },
+    {
+      "id": 290,
+      "start": 1584.36,
+      "end": 1590.34,
+      "text": "seeming seemingly good ideas and now it's probably faster than ever to implement"
+    },
+    {
+      "id": 291,
+      "start": 1590.36,
+      "end": 1597.31,
+      "text": "scientifically looking outputs using AI and then if you use the same type of"
+    },
+    {
+      "id": 292,
+      "start": 1597.33,
+      "end": 1602.69,
+      "text": "approach to review that you need to just review 100 times more then it just doesn't"
+    },
+    {
+      "id": 293,
+      "start": 1602.74,
+      "end": 1609.69,
+      "text": "work but but theoretically I think if we would move away from pdfs"
+    },
+    {
+      "id": 294,
+      "start": 1609.78,
+      "end": 1616.18,
+      "text": "into some notion where you actually link to original sources and"
+    },
+    {
+      "id": 295,
+      "start": 1616.2,
+      "end": 1621.81,
+      "text": "it goes a bit more formal what you're saying then it should be somewhat trivial"
+    },
+    {
+      "id": 296,
+      "start": 1621.97,
+      "end": 1628.67,
+      "text": "to say that if if this is slop or does it have some like novelty"
+    },
+    {
+      "id": 297,
+      "start": 1628.69,
+      "end": 1635.34,
+      "text": "in it or is it just you know slop but we are not there yet we are in the situation"
+    },
+    {
+      "id": 298,
+      "start": 1635.36,
+      "end": 1640.04,
+      "text": "that the review process is stuck so it's like a bottleneck"
+    },
+    {
+      "id": 299,
+      "start": 1645.16,
+      "end": 1645.96,
+      "text": "uh sorry"
+    },
+    {
+      "id": 300,
+      "start": 1650.76,
+      "end": 1655.02,
+      "text": "There are many different kinds."
+    },
+    {
+      "id": 301,
+      "start": 1655.05,
+      "end": 1660.24,
+      "text": "I'm actually an associate chair in a CHI conference, so I am reading the paper"
+    },
+    {
+      "id": 302,
+      "start": 1660.27,
+      "end": 1667.25,
+      "text": "right now. And then, first of the sign is that one of the ways to make"
+    },
+    {
+      "id": 303,
+      "start": 1667.51,
+      "end": 1673.44,
+      "text": "your paper get published is if you have a good teaser image figure in the first"
+    },
+    {
+      "id": 304,
+      "start": 1673.46,
+      "end": 1676.99,
+      "text": "page, then there's a study that shows that the papers will get a higher chance of"
+    },
+    {
+      "id": 305,
+      "start": 1677.01,
+      "end": 1682.02,
+      "text": "being accepted. Accepted and that figure is generated by AI and it's like very a"
+    },
+    {
+      "id": 306,
+      "start": 1682.11,
+      "end": 1687.16,
+      "text": "lot of like a text heavy figures and then there are other cases where the the text"
+    },
+    {
+      "id": 307,
+      "start": 1687.29,
+      "end": 1692.13,
+      "text": "itself is written really well but doesn't really have much contents on it it's just"
+    },
+    {
+      "id": 308,
+      "start": 1692.29,
+      "end": 1697.46,
+      "text": "use some like a heavy technical words just to sound like it's a good interesting"
+    },
+    {
+      "id": 309,
+      "start": 1697.48,
+      "end": 1704.36,
+      "text": "paper another thing I've also found is that I think it sometimes"
+    },
+    {
+      "id": 310,
+      "start": 1704.38,
+      "end": 1710.61,
+      "text": "happens to So maybe if someone used AI to generate the first half of the rest of"
+    },
+    {
+      "id": 311,
+      "start": 1710.63,
+      "end": 1715.26,
+      "text": "paper written by humans, there's a very big distinction that you can actually just"
+    },
+    {
+      "id": 312,
+      "start": 1715.28,
+      "end": 1716.82,
+      "text": "identify really easily."
+    },
+    {
+      "id": 313,
+      "start": 1717.48,
+      "end": 1721.35,
+      "text": "Like some part is written extremely well, and suddenly, oh, what is this paper"
+    },
+    {
+      "id": 314,
+      "start": 1721.37,
+      "end": 1722.88,
+      "text": "suddenly talking about?"
+    },
+    {
+      "id": 315,
+      "start": 1723.38,
+      "end": 1726.13,
+      "text": "So those kind of things that you can start to spot for."
+    },
+    {
+      "id": 316,
+      "start": 1726.34,
+      "end": 1729.21,
+      "text": "I mean, those are the things that I experienced so far."
+    },
+    {
+      "id": 317,
+      "start": 1730.34,
+      "end": 1734.92,
+      "text": "I don't know if somebody has set up like a really harsh, agentic review."
+    },
+    {
+      "id": 318,
+      "start": 1735.12,
+      "end": 1741.9,
+      "text": "Just try to put your slop in there it's going"
+    },
+    {
+      "id": 319,
+      "start": 1741.92,
+      "end": 1748.05,
+      "text": "to be yeah but regarding this like I introduced the wrist I recent I read this"
+    },
+    {
+      "id": 320,
+      "start": 1748.07,
+      "end": 1753.0,
+      "text": "like one paper that was very interesting perspective of why people still would do"
+    },
+    {
+      "id": 321,
+      "start": 1753.07,
+      "end": 1757.99,
+      "text": "science in the era of generative AI because the based on this like agentic"
+    },
+    {
+      "id": 322,
+      "start": 1758.01,
+      "end": 1763.28,
+      "text": "systems if agents AI becomes much powerful that it can also find a problem by itself"
+    },
+    {
+      "id": 323,
+      "start": 1763.3,
+      "end": 1767.38,
+      "text": "the not the sloppy was the most important one and what if we can also solve the"
+    },
+    {
+      "id": 324,
+      "start": 1767.48,
+      "end": 1772.3,
+      "text": "problem why would we even do the science and one of the the authors like a"
+    },
+    {
+      "id": 325,
+      "start": 1772.4,
+      "end": 1776.98,
+      "text": "speculation is that people love doing science by themselves so I think those"
+    },
+    {
+      "id": 326,
+      "start": 1777.23,
+      "end": 1782.04,
+      "text": "kind of internal motivation is or as a human being what we want to do why we are"
+    },
+    {
+      "id": 327,
+      "start": 1782.1,
+      "end": 1785.33,
+      "text": "urged to do that that cannot be just simply ignored because some AI"
+    },
+    {
+      "id": 328,
+      "start": 1785.35,
+      "end": 1790.44,
+      "text": "technologies becomes more competent."
+    },
+    {
+      "id": 329,
+      "start": 1790.46,
+      "end": 1797.24,
+      "text": "Okay. And heading to"
+    },
+    {
+      "id": 330,
+      "start": 1797.26,
+      "end": 1804.12,
+      "text": "the next question, did you assess developers versus designers"
+    },
+    {
+      "id": 331,
+      "start": 1804.14,
+      "end": 1808.1,
+      "text": "at their efficacy of interacting with GenUI?"
+    },
+    {
+      "id": 332,
+      "start": 1808.12,
+      "end": 1814.92,
+      "text": "UI uh um no it wasn't just simply between developer and designers uh it was just"
+    },
+    {
+      "id": 333,
+      "start": 1815.96,
+      "end": 1820.22,
+      "text": "we didn't compare make those kind of distinction in our participants group yeah"
+    },
+    {
+      "id": 334,
+      "start": 1826.76,
+      "end": 1832.88,
+      "text": "uh what are the best tools at the moment for agentic probing the processes"
+    },
+    {
+      "id": 335,
+      "start": 1834.52,
+      "end": 1840.58,
+      "text": "well I think at least the any of the agents like Codex and Claude Code and"
+    },
+    {
+      "id": 336,
+      "start": 1840.6,
+      "end": 1846.74,
+      "text": "GitHub Copilot probably are good for the job depending on what kind of process are"
+    },
+    {
+      "id": 337,
+      "start": 1846.76,
+      "end": 1852.82,
+      "text": "you talking about and what kind of source data you might potentially have available"
+    },
+    {
+      "id": 338,
+      "start": 1852.84,
+      "end": 1859.82,
+      "text": "then the question is that do you specify how you for example model the process"
+    },
+    {
+      "id": 339,
+      "start": 1859.93,
+      "end": 1866.74,
+      "text": "is it of specific kind then it might be a bit of not just the out of the box"
+    },
+    {
+      "id": 340,
+      "start": 1867.01,
+      "end": 1873.71,
+      "text": "tool but it requires a bit of thinking so how do you project that I've been"
+    },
+    {
+      "id": 341,
+      "start": 1873.73,
+      "end": 1879.23,
+      "text": "using mainly Claude Code and Codex myself but the other ones seem to work quite"
+    },
+    {
+      "id": 342,
+      "start": 1879.55,
+      "end": 1880.52,
+      "text": "nicely as well"
+    },
+    {
+      "id": 343,
+      "start": 1882.76,
+      "end": 1888.26,
+      "text": "What about you? I also use Claude, Codex a lot, but I also like the"
+    },
+    {
+      "id": 344,
+      "start": 1888.28,
+      "end": 1894.58,
+      "text": "idea introduced earlier that you have to make different AIs fight with each"
+    },
+    {
+      "id": 345,
+      "start": 1894.6,
+      "end": 1899.1,
+      "text": "other. I think that's actually sometimes giving me very nice ideas because, for"
+    },
+    {
+      "id": 346,
+      "start": 1899.21,
+      "end": 1904.17,
+      "text": "example, Claude is very good at implementations, but it often has like a"
+    },
+    {
+      "id": 347,
+      "start": 1904.25,
+      "end": 1911.23,
+      "text": "very rigid, like it doesn't try to make something that is like illogical Unless"
+    },
+    {
+      "id": 348,
+      "start": 1911.25,
+      "end": 1915.96,
+      "text": "you have to specifically ask for chat, this seems to be making a bit more of the"
+    },
+    {
+      "id": 349,
+      "start": 1916.09,
+      "end": 1920.26,
+      "text": "problem, more loosely type something."
+    },
+    {
+      "id": 350,
+      "start": 1920.28,
+      "end": 1924.98,
+      "text": "Sometimes it just helps them identify some issues between them each other."
+    },
+    {
+      "id": 351,
+      "start": 1925.0,
+      "end": 1930.38,
+      "text": "So, yeah. I use both of them."
+    },
+    {
+      "id": 352,
+      "start": 1930.43,
+      "end": 1937.16,
+      "text": "Yeah. This was answered."
+    },
+    {
+      "id": 353,
+      "start": 1940.44,
+      "end": 1946.5,
+      "text": "Then I have a feeling that ways of working silos between product design and"
+    },
+    {
+      "id": 354,
+      "start": 1946.52,
+      "end": 1952.05,
+      "text": "engineering is the source of the problem in the dev speed"
+    },
+    {
+      "id": 355,
+      "start": 1952.21,
+      "end": 1959.12,
+      "text": "thoughts well at least I fully agree and I think that like if you move"
+    },
+    {
+      "id": 356,
+      "start": 1959.14,
+      "end": 1965.95,
+      "text": "move to like agentic way of creating the software then you need to make"
+    },
+    {
+      "id": 357,
+      "start": 1966.04,
+      "end": 1971.62,
+      "text": "the product design and all the people who are contributing to work in the same way"
+    },
+    {
+      "id": 358,
+      "start": 1971.64,
+      "end": 1976.78,
+      "text": "because the agents cannot read your mind they are reading some repository or some"
+    },
+    {
+      "id": 359,
+      "start": 1976.87,
+      "end": 1983.61,
+      "text": "set of assets and I think that's quite big problem at the moment"
+    },
+    {
+      "id": 360,
+      "start": 1983.7,
+      "end": 1989.84,
+      "text": "that not many of the product and design tools are so easily integratable to such a"
+    },
+    {
+      "id": 361,
+      "start": 1989.86,
+      "end": 1991.95,
+      "text": "fast-paced change process"
+    },
+    {
+      "id": 362,
+      "start": 1995.56,
+      "end": 2000.3,
+      "text": "Do you have anything to add?"
+    },
+    {
+      "id": 363,
+      "start": 2000.84,
+      "end": 2002.18,
+      "text": "I don't have much opinions."
+    },
+    {
+      "id": 364,
+      "start": 2002.2,
+      "end": 2003.53,
+      "text": "Okay, yeah."
+    },
+    {
+      "id": 365,
+      "start": 2005.06,
+      "end": 2005.86,
+      "text": "Yes."
+    },
+    {
+      "id": 366,
+      "start": 2007.38,
+      "end": 2010.66,
+      "text": "Okay, food is ready around 12.15."
+    },
+    {
+      "id": 367,
+      "start": 2011.88,
+      "end": 2015.2,
+      "text": "I don't know if there is space for more, but..."
+    },
+    {
+      "id": 368,
+      "start": 2015.74,
+      "end": 2019.39,
+      "text": "I think we have to go to the questions if we don't have space for people."
+    },
+    {
+      "id": 369,
+      "start": 2019.98,
+      "end": 2020.83,
+      "text": "Yeah, yeah, yeah."
+    },
+    {
+      "id": 370,
+      "start": 2024.5,
+      "end": 2027.86,
+      "text": "But someone could check if they're..."
+    },
+    {
+      "id": 371,
+      "start": 2027.88,
+      "end": 2029.77,
+      "text": "Yeah, okay. Thank you."
+    },
+    {
+      "id": 372,
+      "start": 2032.4,
+      "end": 2033.2,
+      "text": "Yes."
+    },
+    {
+      "id": 373,
+      "start": 2034.98,
+      "end": 2041.1,
+      "text": "Envisioning the future with agents assumes that you have codified"
+    },
+    {
+      "id": 374,
+      "start": 2041.32,
+      "end": 2044.48,
+      "text": "information about how current systems behave."
+    },
+    {
+      "id": 375,
+      "start": 2044.5,
+      "end": 2051.49,
+      "text": "In most organizations, that information is tacit and not written down anywhere."
+    },
+    {
+      "id": 376,
+      "start": 2052.48,
+      "end": 2058.94,
+      "text": "Any practices, how to get it out of people's heads and usable format for"
+    },
+    {
+      "id": 377,
+      "start": 2059.13,
+      "end": 2065.44,
+      "text": "LLMs to combine with explicit knowledge to generate potential ideas?"
+    },
+    {
+      "id": 378,
+      "start": 2065.86,
+      "end": 2067.3,
+      "text": "Easy question. Yes."
+    },
+    {
+      "id": 379,
+      "start": 2068.92,
+      "end": 2075.86,
+      "text": "Well, I think there's probably multiple ways to think about that,"
+    },
+    {
+      "id": 380,
+      "start": 2075.94,
+      "end": 2080.83,
+      "text": "but one way to think about that is that actually you have much more data and"
+    },
+    {
+      "id": 381,
+      "start": 2080.95,
+      "end": 2086.82,
+      "text": "information available than any single person is able to get your hands on you"
+    },
+    {
+      "id": 382,
+      "start": 2086.84,
+      "end": 2091.79,
+      "text": "have a lot of code repositories and databases and whatever things and because"
+    },
+    {
+      "id": 383,
+      "start": 2091.81,
+      "end": 2096.74,
+      "text": "you don't have access then you go interview and then you think that it's not"
+    },
+    {
+      "id": 384,
+      "start": 2096.83,
+      "end": 2102.88,
+      "text": "written anywhere I think quite many things actually are so you should start with a"
+    },
+    {
+      "id": 385,
+      "start": 2102.97,
+      "end": 2109.34,
+      "text": "sort of discovery of all the real information sources and then only after"
+    },
+    {
+      "id": 386,
+      "start": 2109.39,
+      "end": 2114.43,
+      "text": "that you you can check that what are the things that actually don't exist anywhere"
+    },
+    {
+      "id": 387,
+      "start": 2114.45,
+      "end": 2119.79,
+      "text": "so is it so that people don't write anything or or how does it work like"
+    },
+    {
+      "id": 388,
+      "start": 2119.81,
+      "end": 2125.43,
+      "text": "everything just members typically something is written down so I think"
+    },
+    {
+      "id": 389,
+      "start": 2125.45,
+      "end": 2132.11,
+      "text": "there's more available versus what people can get their hands on but then if there's"
+    },
+    {
+      "id": 390,
+      "start": 2132.21,
+      "end": 2138.41,
+      "text": "like information security problems or something which like disallows you of"
+    },
+    {
+      "id": 391,
+      "start": 2138.43,
+      "end": 2145.21,
+      "text": "doing the optimal choice then I agree sort of that in practice you have"
+    },
+    {
+      "id": 392,
+      "start": 2145.23,
+      "end": 2149.3,
+      "text": "that problem in theory it might be much smaller"
+    },
+    {
+      "id": 393,
+      "start": 2154.48,
+      "end": 2161.02,
+      "text": "I'm fascinated by this question I think the like how do you just like"
+    },
+    {
+      "id": 394,
+      "start": 2161.23,
+      "end": 2164.48,
+      "text": "quantify tacit knowledge that's computable, I think that's a very"
+    },
+    {
+      "id": 395,
+      "start": 2164.59,
+      "end": 2166.78,
+      "text": "challenging problem to solve."
+    },
+    {
+      "id": 396,
+      "start": 2166.8,
+      "end": 2173.4,
+      "text": "I think one way of thinking is that we are thinking too much focus as a large"
+    },
+    {
+      "id": 397,
+      "start": 2173.49,
+      "end": 2179.04,
+      "text": "language model that is capturing only the language, what we say, but I think in"
+    },
+    {
+      "id": 398,
+      "start": 2179.06,
+      "end": 2182.56,
+      "text": "essence is that the transformer that anything can be encoded,"
+    },
+    {
+      "id": 399,
+      "start": 2183.28,
+      "end": 2187.2,
+      "text": "so multimodality could be one way to capture this tacit knowledge."
+    },
+    {
+      "id": 400,
+      "start": 2189.44,
+      "end": 2193.04,
+      "text": "This also could mean that like LLM is not enough so"
+    },
+    {
+      "id": 401,
+      "start": 2199.2,
+      "end": 2205.58,
+      "text": "yes then how much new UI and software can"
+    },
+    {
+      "id": 402,
+      "start": 2205.6,
+      "end": 2212.02,
+      "text": "the end user take in and learn is user attention the new bottleneck if software"
+    },
+    {
+      "id": 403,
+      "start": 2212.14,
+      "end": 2219.02,
+      "text": "is solved I'm not sure what you mean by software is solved"
+    },
+    {
+      "id": 404,
+      "start": 2219.44,
+      "end": 2226.44,
+      "text": "Perhaps like producing the software is sort of much faster perhaps."
+    },
+    {
+      "id": 405,
+      "start": 2228.78,
+      "end": 2235.66,
+      "text": "I think, at least how I was thinking is that everyone is already very exposed"
+    },
+    {
+      "id": 406,
+      "start": 2235.68,
+      "end": 2238.72,
+      "text": "to the different designs of interface and software."
+    },
+    {
+      "id": 407,
+      "start": 2239.58,
+      "end": 2245.16,
+      "text": "And there are ways, the way people are designing this is very intuitive to anyone"
+    },
+    {
+      "id": 408,
+      "start": 2245.26,
+      "end": 2250.3,
+      "text": "to use. Like no one would like to design software where people have to learn and"
+    },
+    {
+      "id": 409,
+      "start": 2250.32,
+      "end": 2254.51,
+      "text": "practice a lot. So I think this practice continues into converging into something"
+    },
+    {
+      "id": 410,
+      "start": 2254.82,
+      "end": 2260.09,
+      "text": "that people can just look at the interface and almost immediately see, oh, this"
+    },
+    {
+      "id": 411,
+      "start": 2260.15,
+      "end": 2262.06,
+      "text": "button means doing this task."
+    },
+    {
+      "id": 412,
+      "start": 2262.08,
+      "end": 2267.96,
+      "text": "Or if I, just by looking at the layout, oh, I can find information in particular"
+    },
+    {
+      "id": 413,
+      "start": 2267.98,
+      "end": 2272.0,
+      "text": "corners of it. So I think this process continues."
+    },
+    {
+      "id": 414,
+      "start": 2272.02,
+      "end": 2277.33,
+      "text": "So I don't think the user attention is the bottleneck here."
+    },
+    {
+      "id": 415,
+      "start": 2277.36,
+      "end": 2283.48,
+      "text": "I think probably providing the software still is, I think, a design-level problem."
+    },
+    {
+      "id": 416,
+      "start": 2283.68,
+      "end": 2288.09,
+      "text": "How do you make the interface software that anyone can just grasp almost"
+    },
+    {
+      "id": 417,
+      "start": 2288.25,
+      "end": 2289.8,
+      "text": "immediately and use?"
+    },
+    {
+      "id": 418,
+      "start": 2289.86,
+      "end": 2292.98,
+      "text": "And it's like, what kind of problem is it solving?"
+    },
+    {
+      "id": 419,
+      "start": 2293.6,
+      "end": 2300.2,
+      "text": "So, for example, I created an AI agent to manage my family's calendar."
+    },
+    {
+      "id": 420,
+      "start": 2301.02,
+      "end": 2305.28,
+      "text": "And we have like 150 calendar markings each week."
+    },
+    {
+      "id": 421,
+      "start": 2305.92,
+      "end": 2312.21,
+      "text": "And those are dynamically changing based on whatever random some feeds and and"
+    },
+    {
+      "id": 422,
+      "start": 2312.26,
+      "end": 2317.53,
+      "text": "school messages and and whatever but but I don't use the interface too much but it"
+    },
+    {
+      "id": 423,
+      "start": 2317.59,
+      "end": 2324.31,
+      "text": "just keeps the calendar like perfectly up to date so calendar is old"
+    },
+    {
+      "id": 424,
+      "start": 2324.77,
+      "end": 2331.32,
+      "text": "solution is new so it doesn't require me to change if I would get rid of the"
+    },
+    {
+      "id": 425,
+      "start": 2331.34,
+      "end": 2335.04,
+      "text": "calendar then I would need to figure out some new way"
+    },
+    {
+      "id": 426,
+      "start": 2335.92,
+      "end": 2338.98,
+      "text": "But I think some smart solutions might be like that."
+    },
+    {
+      "id": 427,
+      "start": 2339.32,
+      "end": 2340.94,
+      "text": "So you just make a better system."
+    },
+    {
+      "id": 428,
+      "start": 2340.96,
+      "end": 2343.38,
+      "text": "You don't need to even use any UI."
+    },
+    {
+      "id": 429,
+      "start": 2349.78,
+      "end": 2350.58,
+      "text": "Yes."
+    },
+    {
+      "id": 430,
+      "start": 2352.5,
+      "end": 2359.3,
+      "text": "Recently, AI was presented as a threat destroying any need for humans."
+    },
+    {
+      "id": 431,
+      "start": 2359.32,
+      "end": 2364.84,
+      "text": "Today, people were presented as important creators, dreamers, and essential."
+    },
+    {
+      "id": 432,
+      "start": 2365.72,
+      "end": 2366.52,
+      "text": "What happened?"
+    },
+    {
+      "id": 433,
+      "start": 2369.12,
+      "end": 2370.42,
+      "text": "Very good question."
+    },
+    {
+      "id": 434,
+      "start": 2372.96,
+      "end": 2376.38,
+      "text": "Remember, you have to have the correct answers for this."
+    },
+    {
+      "id": 435,
+      "start": 2379.4,
+      "end": 2384.66,
+      "text": "I think the need for humans is an interesting question."
+    },
+    {
+      "id": 436,
+      "start": 2385.88,
+      "end": 2389.94,
+      "text": "There's quite a lot of stupid activity going around in the world."
+    },
+    {
+      "id": 437,
+      "start": 2390.44,
+      "end": 2396.88,
+      "text": "And when we get rid of that, I think not too many people are missing that too much"
+    },
+    {
+      "id": 438,
+      "start": 2396.94,
+      "end": 2399.24,
+      "text": "if you make something run smarter."
+    },
+    {
+      "id": 439,
+      "start": 2400.58,
+      "end": 2405.72,
+      "text": "So it's not always like if you have a lot of people, then it's like what we should"
+    },
+    {
+      "id": 440,
+      "start": 2405.74,
+      "end": 2407.25,
+      "text": "aim for. It's something else."
+    },
+    {
+      "id": 441,
+      "start": 2409.76,
+      "end": 2414.44,
+      "text": "But then there's this like, how do you see the AI?"
+    },
+    {
+      "id": 442,
+      "start": 2416.46,
+      "end": 2418.34,
+      "text": "Is it some kind of a threat?"
+    },
+    {
+      "id": 443,
+      "start": 2418.36,
+      "end": 2424.45,
+      "text": "I think the threat discussion for me has been a bit like"
+    },
+    {
+      "id": 444,
+      "start": 2424.47,
+      "end": 2431.13,
+      "text": "deluded what actually happens so people have been afraid that there's some"
+    },
+    {
+      "id": 445,
+      "start": 2431.24,
+      "end": 2437.17,
+      "text": "central AI taking over yes you can envision that but in practice like"
+    },
+    {
+      "id": 446,
+      "start": 2437.19,
+      "end": 2443.51,
+      "text": "everybody got the best AI almost for free like 20 euros per month or"
+    },
+    {
+      "id": 447,
+      "start": 2443.53,
+      "end": 2449.34,
+      "text": "something and that's the best that anybody can get your hands on so it's like"
+    },
+    {
+      "id": 448,
+      "start": 2449.85,
+      "end": 2455.94,
+      "text": "very democratized bottom-up not like top-down problem so"
+    },
+    {
+      "id": 449,
+      "start": 2455.96,
+      "end": 2462.62,
+      "text": "probably there's a big threat in in now how do people adapt with this"
+    },
+    {
+      "id": 450,
+      "start": 2462.64,
+      "end": 2468.95,
+      "text": "change as a society yes but I think that the threats that people have been"
+    },
+    {
+      "id": 451,
+      "start": 2469.02,
+      "end": 2474.87,
+      "text": "illustrating haven't sort of at least been so credible for"
+    },
+    {
+      "id": 452,
+      "start": 2475.12,
+      "end": 2480.5,
+      "text": "myself regarding this one of the"
+    },
+    {
+      "id": 453,
+      "start": 2481.62,
+      "end": 2487.6,
+      "text": "opinions that I've seen is that why is this AI considered as a threat to human"
+    },
+    {
+      "id": 454,
+      "start": 2487.62,
+      "end": 2493.53,
+      "text": "society is that because a lot of people can just work with AI instead of a human"
+    },
+    {
+      "id": 455,
+      "start": 2493.85,
+      "end": 2499.0,
+      "text": "so that makes like individuals isolated within their own AI bubbles."
+    },
+    {
+      "id": 456,
+      "start": 2499.02,
+      "end": 2502.37,
+      "text": "I think in that sense, it could be a threat."
+    },
+    {
+      "id": 457,
+      "start": 2502.39,
+      "end": 2505.55,
+      "text": "But also, I have optimistic view here."
+    },
+    {
+      "id": 458,
+      "start": 2505.57,
+      "end": 2510.14,
+      "text": "I think there are reasons that I want to interact with another person."
+    },
+    {
+      "id": 459,
+      "start": 2510.17,
+      "end": 2514.5,
+      "text": "There's also the reason that I want to talk with AI instead of talking with"
+    },
+    {
+      "id": 460,
+      "start": 2514.6,
+      "end": 2519.49,
+      "text": "human. So I think there's different types of agents that we're interacting with."
+    },
+    {
+      "id": 461,
+      "start": 2519.51,
+      "end": 2524.59,
+      "text": "So I'm curious, I'm also, in general, whether those kind of like people isolated"
+    },
+    {
+      "id": 462,
+      "start": 2524.61,
+      "end": 2526.54,
+      "text": "within their own bubble will actually happen."
+    },
+    {
+      "id": 463,
+      "start": 2526.56,
+      "end": 2531.98,
+      "text": "What? Then"
+    },
+    {
+      "id": 464,
+      "start": 2532.0,
+      "end": 2538.86,
+      "text": "lunch."
+    },
+    {
+      "id": 465,
+      "start": 2538.88,
+      "end": 2544.71,
+      "text": "Oh, thank God. I hope you don't hear my"
+    },
+    {
+      "id": 466,
+      "start": 2544.73,
+      "end": 2548.2,
+      "text": "stomach. It's quite loud."
+    },
+    {
+      "id": 467,
+      "start": 2548.22,
+      "end": 2552.68,
+      "text": "Okay, last question."
+    },
+    {
+      "id": 468,
+      "start": 2552.73,
+      "end": 2558.01,
+      "text": "We have two that have two votes."
+    },
+    {
+      "id": 469,
+      "start": 2558.03,
+      "end": 2564.44,
+      "text": "Okay, what quality checks would you use with generative UI?"
+    },
+    {
+      "id": 470,
+      "start": 2564.46,
+      "end": 2569.27,
+      "text": "Quality checks, that's a good question."
+    },
+    {
+      "id": 471,
+      "start": 2569.29,
+      "end": 2574.67,
+      "text": "We didn't actually do that in this study, but actually there has been many, this"
+    },
+    {
+      "id": 472,
+      "start": 2574.74,
+      "end": 2580.36,
+      "text": "This idea of UI automation has been happening like 1980s."
+    },
+    {
+      "id": 473,
+      "start": 2580.38,
+      "end": 2585.02,
+      "text": "So it was still, even beginning from their moment, it was not that we make something"
+    },
+    {
+      "id": 474,
+      "start": 2585.04,
+      "end": 2589.68,
+      "text": "kind of working, but it was that we actually make something work."
+    },
+    {
+      "id": 475,
+      "start": 2589.7,
+      "end": 2594.66,
+      "text": "And then there was a lot of background experts' knowledge about what do you mean"
+    },
+    {
+      "id": 476,
+      "start": 2594.68,
+      "end": 2599.76,
+      "text": "the good design is, how do you also parameterize it so that it is actually"
+    },
+    {
+      "id": 477,
+      "start": 2599.78,
+      "end": 2602.94,
+      "text": "visually pleasing as well, it's actually interactable."
+    },
+    {
+      "id": 478,
+      "start": 2603.02,
+      "end": 2607.46,
+      "text": "Those kind of rules have existed many, many years ago so far."
+    },
+    {
+      "id": 479,
+      "start": 2607.48,
+      "end": 2609.11,
+      "text": "It's still being developed."
+    },
+    {
+      "id": 480,
+      "start": 2609.2,
+      "end": 2614.34,
+      "text": "So I would grasp that knowledge into evaluating what generative UI is."
+    },
+    {
+      "id": 481,
+      "start": 2614.36,
+      "end": 2618.41,
+      "text": "But most importantly, I think the whole idea was that everyone can create"
+    },
+    {
+      "id": 482,
+      "start": 2618.43,
+      "end": 2622.24,
+      "text": "something on their own and evaluate from their own standard."
+    },
+    {
+      "id": 483,
+      "start": 2622.26,
+      "end": 2628.13,
+      "text": "So I think the key problem is that I'm not sure whether we still need this common"
+    },
+    {
+      "id": 484,
+      "start": 2628.15,
+      "end": 2631.44,
+      "text": "standard of what is good design or bad design."
+    },
+    {
+      "id": 485,
+      "start": 2631.46,
+      "end": 2634.06,
+      "text": "Maybe there could be just like a baseline threshold."
+    },
+    {
+      "id": 486,
+      "start": 2634.24,
+      "end": 2637.24,
+      "text": "And from now on, then it would be all individual choices."
+    },
+    {
+      "id": 487,
+      "start": 2643.22,
+      "end": 2646.08,
+      "text": "Tapio, do you have any final words?"
+    },
+    {
+      "id": 488,
+      "start": 2646.84,
+      "end": 2651.1,
+      "text": "Well, I have a quite simple categorization on software."
+    },
+    {
+      "id": 489,
+      "start": 2651.46,
+      "end": 2653.09,
+      "text": "First is like, does it work?"
+    },
+    {
+      "id": 490,
+      "start": 2653.94,
+      "end": 2659.38,
+      "text": "If it doesn't work, then you would need to create some better one that does."
+    },
+    {
+      "id": 491,
+      "start": 2660.12,
+      "end": 2665.52,
+      "text": "And an example would be that my kids, I had a motivation of getting them"
+    },
+    {
+      "id": 492,
+      "start": 2665.54,
+      "end": 2668.9,
+      "text": "individually use buses to go to school."
+    },
+    {
+      "id": 493,
+      "start": 2668.92,
+      "end": 2672.22,
+      "text": "Otherwise, I need to run this logistical equation."
+    },
+    {
+      "id": 494,
+      "start": 2672.8,
+      "end": 2678.94,
+      "text": "But the reittiopas, like the thing that HSL offers, it's just too complex for a"
+    },
+    {
+      "id": 495,
+      "start": 2678.96,
+      "end": 2684.32,
+      "text": "seven-year-old or eight-year-old to do the thing."
+    },
+    {
+      "id": 496,
+      "start": 2684.52,
+      "end": 2685.47,
+      "text": "So it doesn't work."
+    },
+    {
+      "id": 497,
+      "start": 2686.52,
+      "end": 2687.57,
+      "text": "It just doesn't work."
+    },
+    {
+      "id": 498,
+      "start": 2688.4,
+      "end": 2689.6,
+      "text": "So that's the first thing."
+    },
+    {
+      "id": 499,
+      "start": 2689.62,
+      "end": 2694.86,
+      "text": "Then I needed to implement my own software - so that I can get my kids to school"
+    },
+    {
+      "id": 500,
+      "start": 2694.88,
+      "end": 2697.03,
+      "text": "without myself in the loop."
+    },
+    {
+      "id": 501,
+      "start": 2697.06,
+      "end": 2703.66,
+      "text": "Then that works, then they go, then it's like minor tweaks after that."
+    },
+    {
+      "id": 502,
+      "start": 2703.7,
+      "end": 2707.64,
+      "text": "So, it is like, how good is it?"
+    },
+    {
+      "id": 503,
+      "start": 2707.66,
+      "end": 2714.61,
+      "text": "But I think many systems are actually not working - and people are bypassing to some"
+    },
+    {
+      "id": 504,
+      "start": 2714.63,
+      "end": 2716.0,
+      "text": "other solution."
+    },
+    {
+      "id": 505,
+      "start": 2718.94,
+      "end": 2721.81,
+      "text": "Yeah okay thank you"
+    }
+  ]
+}

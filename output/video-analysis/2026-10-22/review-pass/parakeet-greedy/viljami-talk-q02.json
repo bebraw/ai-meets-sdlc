@@ -1,0 +1,629 @@
+{
+  "text": "work for us to do. Uh we use AI in those reviews obviously um but it still takes a lot of time and you have to know not every PR should ship. You saw that a lot of the PRs that the agents actually open, we don't end up shipping. Could be",
+  "sentences": [
+    {
+      "text": " work for us to do.",
+      "start": 0.32,
+      "end": 1.44,
+      "duration": 1.12,
+      "confidence": 0.966,
+      "tokens": [
+        {
+          "text": " work",
+          "start": 0.32,
+          "end": 0.4,
+          "duration": 0.08,
+          "confidence": 0.876
+        },
+        {
+          "text": " for",
+          "start": 0.48,
+          "end": 0.64,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " us",
+          "start": 0.64,
+          "end": 0.8,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " to",
+          "start": 0.8,
+          "end": 1.04,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " do",
+          "start": 1.04,
+          "end": 1.28,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 1.28,
+          "end": 1.44,
+          "duration": 0.16,
+          "confidence": 0.928
+        }
+      ]
+    },
+    {
+      "text": " Uh we use AI in those reviews obviously um but it still takes a lot of time and you have to know not every PR should ship.",
+      "start": 1.44,
+      "end": 8.72,
+      "duration": 7.28,
+      "confidence": 0.991,
+      "tokens": [
+        {
+          "text": " U",
+          "start": 1.44,
+          "end": 1.6,
+          "duration": 0.16,
+          "confidence": 0.911
+        },
+        {
+          "text": "h",
+          "start": 1.6,
+          "end": 1.6,
+          "duration": 0.0,
+          "confidence": 1.0
+        },
+        {
+          "text": " we",
+          "start": 1.68,
+          "end": 1.84,
+          "duration": 0.16,
+          "confidence": 0.998
+        },
+        {
+          "text": " use",
+          "start": 1.84,
+          "end": 2.08,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": " A",
+          "start": 2.08,
+          "end": 2.32,
+          "duration": 0.24,
+          "confidence": 0.992
+        },
+        {
+          "text": "I",
+          "start": 2.32,
+          "end": 2.56,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": " in",
+          "start": 2.56,
+          "end": 2.64,
+          "duration": 0.08,
+          "confidence": 0.992
+        },
+        {
+          "text": " th",
+          "start": 2.64,
+          "end": 2.72,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "ose",
+          "start": 2.72,
+          "end": 2.8,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " re",
+          "start": 2.8,
+          "end": 2.88,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "vie",
+          "start": 2.88,
+          "end": 3.04,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ws",
+          "start": 3.04,
+          "end": 3.2,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " ob",
+          "start": 3.28,
+          "end": 3.36,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "v",
+          "start": 3.36,
+          "end": 3.52,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "io",
+          "start": 3.52,
+          "end": 3.6,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "us",
+          "start": 3.6,
+          "end": 3.68,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "ly",
+          "start": 3.68,
+          "end": 3.84,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " um",
+          "start": 3.92,
+          "end": 4.08,
+          "duration": 0.16,
+          "confidence": 0.918
+        },
+        {
+          "text": " but",
+          "start": 4.24,
+          "end": 4.48,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " it",
+          "start": 4.48,
+          "end": 4.64,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " st",
+          "start": 4.64,
+          "end": 4.8,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ill",
+          "start": 4.8,
+          "end": 4.96,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " tak",
+          "start": 4.96,
+          "end": 5.12,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "es",
+          "start": 5.12,
+          "end": 5.28,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " a",
+          "start": 5.28,
+          "end": 5.44,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " lot",
+          "start": 5.44,
+          "end": 5.68,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " of",
+          "start": 5.68,
+          "end": 6.0,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " time",
+          "start": 6.0,
+          "end": 6.32,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " and",
+          "start": 6.64,
+          "end": 6.96,
+          "duration": 0.32,
+          "confidence": 0.999
+        },
+        {
+          "text": " you",
+          "start": 7.04,
+          "end": 7.2,
+          "duration": 0.16,
+          "confidence": 0.995
+        },
+        {
+          "text": " have",
+          "start": 7.2,
+          "end": 7.28,
+          "duration": 0.08,
+          "confidence": 0.999
+        },
+        {
+          "text": " to",
+          "start": 7.28,
+          "end": 7.44,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " know",
+          "start": 7.44,
+          "end": 7.6,
+          "duration": 0.16,
+          "confidence": 0.997
+        },
+        {
+          "text": " not",
+          "start": 7.68,
+          "end": 7.84,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " ever",
+          "start": 7.84,
+          "end": 7.92,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "y",
+          "start": 7.92,
+          "end": 8.0,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " P",
+          "start": 8.0,
+          "end": 8.16,
+          "duration": 0.16,
+          "confidence": 0.945
+        },
+        {
+          "text": "R",
+          "start": 8.16,
+          "end": 8.32,
+          "duration": 0.16,
+          "confidence": 0.989
+        },
+        {
+          "text": " sho",
+          "start": 8.32,
+          "end": 8.4,
+          "duration": 0.08,
+          "confidence": 0.999
+        },
+        {
+          "text": "uld",
+          "start": 8.4,
+          "end": 8.48,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " s",
+          "start": 8.48,
+          "end": 8.56,
+          "duration": 0.08,
+          "confidence": 0.999
+        },
+        {
+          "text": "hi",
+          "start": 8.56,
+          "end": 8.56,
+          "duration": 0.0,
+          "confidence": 1.0
+        },
+        {
+          "text": "p",
+          "start": 8.56,
+          "end": 8.64,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 8.64,
+          "end": 8.72,
+          "duration": 0.08,
+          "confidence": 0.908
+        }
+      ]
+    },
+    {
+      "text": " You saw that a lot of the PRs that the agents actually open, we don't end up shipping.",
+      "start": 8.72,
+      "end": 13.84,
+      "duration": 5.12,
+      "confidence": 0.989,
+      "tokens": [
+        {
+          "text": " You",
+          "start": 8.72,
+          "end": 8.88,
+          "duration": 0.16,
+          "confidence": 0.988
+        },
+        {
+          "text": " sa",
+          "start": 8.88,
+          "end": 8.96,
+          "duration": 0.08,
+          "confidence": 0.998
+        },
+        {
+          "text": "w",
+          "start": 8.96,
+          "end": 9.04,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " that",
+          "start": 9.04,
+          "end": 9.2,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " a",
+          "start": 9.2,
+          "end": 9.28,
+          "duration": 0.08,
+          "confidence": 0.986
+        },
+        {
+          "text": " lot",
+          "start": 9.28,
+          "end": 9.36,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " of",
+          "start": 9.36,
+          "end": 9.52,
+          "duration": 0.16,
+          "confidence": 0.998
+        },
+        {
+          "text": " the",
+          "start": 9.52,
+          "end": 9.6,
+          "duration": 0.08,
+          "confidence": 0.997
+        },
+        {
+          "text": " P",
+          "start": 9.6,
+          "end": 9.76,
+          "duration": 0.16,
+          "confidence": 0.978
+        },
+        {
+          "text": "R",
+          "start": 9.76,
+          "end": 9.84,
+          "duration": 0.08,
+          "confidence": 0.994
+        },
+        {
+          "text": "s",
+          "start": 9.84,
+          "end": 9.92,
+          "duration": 0.08,
+          "confidence": 0.962
+        },
+        {
+          "text": " that",
+          "start": 10.0,
+          "end": 10.16,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " the",
+          "start": 10.16,
+          "end": 10.48,
+          "duration": 0.32,
+          "confidence": 0.999
+        },
+        {
+          "text": " ag",
+          "start": 10.48,
+          "end": 10.72,
+          "duration": 0.24,
+          "confidence": 0.986
+        },
+        {
+          "text": "ents",
+          "start": 10.72,
+          "end": 10.96,
+          "duration": 0.24,
+          "confidence": 0.99
+        },
+        {
+          "text": " actu",
+          "start": 10.96,
+          "end": 11.12,
+          "duration": 0.16,
+          "confidence": 0.998
+        },
+        {
+          "text": "ally",
+          "start": 11.12,
+          "end": 11.28,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " op",
+          "start": 11.28,
+          "end": 11.52,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "en",
+          "start": 11.52,
+          "end": 11.76,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": ",",
+          "start": 11.76,
+          "end": 11.92,
+          "duration": 0.16,
+          "confidence": 0.892
+        },
+        {
+          "text": " we",
+          "start": 11.92,
+          "end": 12.16,
+          "duration": 0.24,
+          "confidence": 0.992
+        },
+        {
+          "text": " don",
+          "start": 12.16,
+          "end": 12.32,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": "'",
+          "start": 12.32,
+          "end": 12.48,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "t",
+          "start": 12.48,
+          "end": 12.48,
+          "duration": 0.0,
+          "confidence": 1.0
+        },
+        {
+          "text": " end",
+          "start": 12.48,
+          "end": 12.72,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " up",
+          "start": 12.72,
+          "end": 12.96,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " s",
+          "start": 12.96,
+          "end": 13.04,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "hi",
+          "start": 13.04,
+          "end": 13.2,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "pp",
+          "start": 13.2,
+          "end": 13.36,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ing",
+          "start": 13.36,
+          "end": 13.6,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 13.6,
+          "end": 13.84,
+          "duration": 0.24,
+          "confidence": 0.921
+        }
+      ]
+    },
+    {
+      "text": " Could be",
+      "start": 13.84,
+      "end": 14.16,
+      "duration": 0.32,
+      "confidence": 0.968,
+      "tokens": [
+        {
+          "text": " Co",
+          "start": 13.84,
+          "end": 13.92,
+          "duration": 0.08,
+          "confidence": 0.946
+        },
+        {
+          "text": "uld",
+          "start": 13.92,
+          "end": 14.08,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " be",
+          "start": 14.08,
+          "end": 14.16,
+          "duration": 0.08,
+          "confidence": 0.96
+        }
+      ]
+    }
+  ]
+}

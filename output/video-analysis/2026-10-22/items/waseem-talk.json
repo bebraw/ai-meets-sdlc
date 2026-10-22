@@ -1,0 +1,77 @@
+{
+  "id": "waseem-talk",
+  "shortSummary": "Muhammad Waseem argues that AI makes code generation easier while understanding, integration and ownership remain difficult. He examines repository context, decision rationale and agent-facing applications, then proposes deterministic checks, human judgement and gates for safety, architectural fit and measurable value.",
+  "longSummary": "Muhammad Waseem organises the talk around writing, reading, deciding and caring for software. Faster generation expands the scope in which mistakes can propagate, while file-level success can conceal broken relationships elsewhere in a repository. His account of a Java refactoring study motivates attention to dependencies and system-level evaluation. He then examines how review capacity, limited agent memory and unwritten organisational knowledge constrain adoption. Decision reasons, rejected options and ownership are not fully represented by source code. Looking ahead to applications whose users include other agents, he discusses intent, contracts and the ability to replace models, tools and agents while retaining control of data and knowledge. His proposed response combines deterministic checks with human evaluation of consequential cases, and asks whether a change is safe, grounded in its environment and producing the intended value.",
+  "takeaways": [
+    {
+      "point": "Measure whether generated changes fit and preserve the system, rather than judging a file or snippet in isolation.",
+      "start": 429,
+      "end": 661
+    },
+    {
+      "point": "Review and understanding have to keep pace with generated work; more code alone does not remove that constraint.",
+      "start": 661,
+      "end": 898
+    },
+    {
+      "point": "Decision rationale, rejected options, constraints and agreement need to be recorded because code does not contain all organisational knowledge.",
+      "start": 899,
+      "end": 1018
+    },
+    {
+      "point": "Design for replacement of models, tools and agents while retaining ownership of the data and associated knowledge.",
+      "start": 1271,
+      "end": 1346
+    },
+    {
+      "point": "Use deterministic checks, human judgement and explicit gates for safety, architectural grounding and actual value.",
+      "start": 1346,
+      "end": 1447
+    }
+  ],
+  "topics": [
+    "system understanding",
+    "code review",
+    "repository context",
+    "decision records",
+    "agent memory",
+    "replaceable architecture",
+    "verification"
+  ],
+  "quoteCandidates": [
+    {
+      "text": "AI made code cheap. It did not make understanding cheap.",
+      "speaker": "Muhammad Waseem"
+    },
+    {
+      "text": "When agents make a decision, where is the why written?",
+      "speaker": "Muhammad Waseem"
+    }
+  ],
+  "clipCandidates": [
+    {
+      "title": "The knowledge that agents cannot read from code",
+      "start": 899,
+      "end": 1018,
+      "why": "Connects memory limitations with the unwritten reasons, alternatives and constraints behind engineering decisions.",
+      "audience": "Architects and teams maintaining large codebases"
+    },
+    {
+      "title": "Three questions for an AI-assisted software team",
+      "start": 1667,
+      "end": 1764,
+      "why": "A practical closing sequence asks about system understanding, recorded reasons and the skills needed to evaluate changes.",
+      "audience": "Engineering leaders and reviewers"
+    }
+  ],
+  "reuseAngles": [
+    "A programme-page summary focused on system understanding",
+    "A decision-records article paired with the final Q&A and Sini's architecture example"
+  ],
+  "editorialCaveats": [
+    "The refactoring account includes unclear arithmetic, a flagged result phrase and a risk percentage whose exact unit needs the underlying study. Do not reuse it as a general AI defect rate.",
+    "Security anecdotes and numerical risk claims are not independently fact-checked here and are excluded from the reusable summaries.",
+    "Protocol terminology around 19:08–19:21 and the closing application-interface wording remain flagged; no technical term has been inferred from those passages."
+  ],
+  "analysisStatus": "Complete-caption analysis, fresh local quote ASR and sampled-frame review complete; editorial approval pending."
+}

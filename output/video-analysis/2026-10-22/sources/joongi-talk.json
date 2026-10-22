@@ -1,0 +1,1943 @@
+{
+  "id": "joongi-talk",
+  "kind": "talk",
+  "officialTitle": "Generative UI for users, not just for designers",
+  "speakerNames": [
+    "Joongi Shin"
+  ],
+  "durationSeconds": 1162.0,
+  "videoFile": "exports/talks-v02/joongi-talk-4k.mp4",
+  "reviewFile": "review/talks-v02/joongi-talk-720p.mp4",
+  "chapters": [
+    {
+      "outputSeconds": 0,
+      "title": "Introduction: interfaces for everyday tasks",
+      "sourceSeconds": 9868,
+      "timestamp": "00:00"
+    },
+    {
+      "outputSeconds": 103,
+      "title": "The promise of generative UI and the designer–user gap",
+      "sourceSeconds": 9968.02,
+      "timestamp": "01:43"
+    },
+    {
+      "outputSeconds": 297,
+      "title": "How a generative UI system works",
+      "sourceSeconds": 10162.78,
+      "timestamp": "04:57"
+    },
+    {
+      "outputSeconds": 412,
+      "title": "Envisioning and articulating what you need",
+      "sourceSeconds": 10277.14,
+      "timestamp": "06:52"
+    },
+    {
+      "outputSeconds": 504,
+      "title": "Three approaches: prompts, subtasks and surveys",
+      "sourceSeconds": 10369.88,
+      "timestamp": "08:24"
+    },
+    {
+      "outputSeconds": 728,
+      "title": "The study: generating and using interfaces",
+      "sourceSeconds": 10593.98,
+      "timestamp": "12:08"
+    },
+    {
+      "outputSeconds": 790,
+      "title": "Findings: usability, alignment and prior experience",
+      "sourceSeconds": 10655.16,
+      "timestamp": "13:10"
+    },
+    {
+      "outputSeconds": 932,
+      "title": "What the findings mean for task-oriented users",
+      "sourceSeconds": 10797.02,
+      "timestamp": "15:32"
+    },
+    {
+      "outputSeconds": 1035,
+      "title": "When follow-up questions fail",
+      "sourceSeconds": 10900.0,
+      "timestamp": "17:15"
+    },
+    {
+      "outputSeconds": 1121,
+      "title": "Takeaways: help users envision without designing",
+      "sourceSeconds": 10986.92,
+      "timestamp": "18:41"
+    }
+  ],
+  "materials": [
+    {
+      "label": "Slides (PDF)",
+      "url": "https://www.sdlcai.org/media/talks/joongi-shin-ui-perspective/d18b4c6d-4204-474b-88f9-0ffab2c9abf3.pdf"
+    }
+  ],
+  "talkUrl": "https://www.sdlcai.org/2026/schedule/#joongi-shin-ui-perspective",
+  "existingSummary": "Joongi Shin examines generative UI from the perspective of people trying to complete everyday tasks. He compares prompt-only, subtask–UI and prompt-survey approaches in a user study, exploring how design experience, the generation process and follow-up questions affect the resulting experience.",
+  "captions": {
+    "language": "en",
+    "srt": "transcripts/final-v02/joongi-talk.en.srt",
+    "vtt": "transcripts/final-v02/joongi-talk.en.vtt",
+    "qualityReport": "transcripts/final-v02/joongi-talk.caption-qc.json",
+    "listeningReview": "transcripts/final-v02/joongi-talk.listening-review.txt",
+    "status": "prepared-with-human-listening-review-notes"
+  },
+  "captionSHA256": "505851513785e73c77e86d28278606eae5fe054cdae3fba7e66f1dc54ccabfcc",
+  "mediaBytes": 574357899,
+  "cueCount": 263,
+  "listeningWindows": [
+    {
+      "id": "joongi-talk-043",
+      "videoId": "joongi-talk",
+      "startSeconds": 49.82,
+      "endSeconds": 60.14,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Context-supported correction still marked for listening: initiatives → itineraries",
+      "currentCaptionText": "They also go through a list from some blog posts, look at some geographic locations and also try to make some itineraries. And some people, you might also have your own particular ways of planning. Maybe you want to explore these winter activities more systematically, requiring",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/joongi-talk.listening-review.json",
+          "entryIndices": [
+            12
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/joongi-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                21
+              ],
+              "text": "They also go through, at least from some blog post, look at some geographic locations, and also try to make some initiatives. And some people, you might also have your own particular ways of planning. Maybe you want to explore this like,"
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 21,
+              "before": "initiatives",
+              "after": "itineraries",
+              "basis": "Vacation-planning context; listen."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/joongi-talk.listening-review.json",
+          "index": 12
+        }
+      ],
+      "sourceSegments": [
+        21
+      ],
+      "sourceStartSeconds": 9914.82,
+      "sourceEndSeconds": 9925.14
+    },
+    {
+      "id": "joongi-talk-050",
+      "videoId": "joongi-talk",
+      "startSeconds": 497.54,
+      "endSeconds": 506.88,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "AI lab at the end may be AI/LLM; listen before replacement.",
+      "currentCaptionText": "they really wanted and also align it toward the end goal of what they were generating from AI lab. And then coming back to our study, so we compared the three conventional generative",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/joongi-talk.listening-review.json",
+          "entryIndices": [
+            9
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/joongi-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                154
+              ],
+              "text": "Froularing what they were really wanted and also align it with toward the end goal of what they were generating from the other And then in coming back to my study so we compare the three companies"
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/joongi-talk.listening-review.json",
+          "index": 9
+        }
+      ],
+      "sourceSegments": [
+        154
+      ],
+      "sourceStartSeconds": 10362.54,
+      "sourceEndSeconds": 10371.88
+    },
+    {
+      "id": "joongi-talk-053",
+      "videoId": "joongi-talk",
+      "startSeconds": 773.46,
+      "endSeconds": 781.76,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Context-supported correction still marked for listening: daily test → daily task",
+      "currentCaptionText": "So three tasks in a randomized order with a different pairing of each approach. So as you can see, this is a very generic daily task. You don't really need expertise, so we were really trying to look into whether",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/joongi-talk.listening-review.json",
+          "entryIndices": [
+            16
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/joongi-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                238
+              ],
+              "text": "order with a different pairing of each approach. So as you can see, this is a very generate daily test. Like you don't really need like expertise. So we were really trying to look into what."
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 238,
+              "before": "daily test",
+              "after": "daily task",
+              "basis": "Everyday-task experiment slide and grammatical singular context; needs listening."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/joongi-talk.listening-review.json",
+          "index": 16
+        }
+      ],
+      "sourceSegments": [
+        238
+      ],
+      "sourceStartSeconds": 10638.46,
+      "sourceEndSeconds": 10646.76
+    },
+    {
+      "id": "joongi-talk-054",
+      "videoId": "joongi-talk",
+      "startSeconds": 832.7,
+      "endSeconds": 845.08,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Context-supported correction still marked for listening: high F word → high effort",
+      "currentCaptionText": "designers. Second finding is that the impressions formed in UI generation were very strongly associated with the UI use, so if the participants experience any kind of high effort, they also perceive that using the final generated UI was very",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/joongi-talk.listening-review.json",
+          "entryIndices": [
+            5,
+            17
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/joongi-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                249
+              ],
+              "text": "expressions formed in UI generation were very strongly associated with the UI use. So if you ever is the participants experience any kind of like high F word, they also perceive that using the final generator in the UI was very effort for use."
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 249,
+              "before": "high F word",
+              "after": "high effort",
+              "basis": "Workload/effort finding described in slides; listen."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/joongi-talk.listening-review.json",
+          "index": 5
+        },
+        {
+          "path": "transcripts/final-v02/joongi-talk.listening-review.json",
+          "index": 17
+        }
+      ],
+      "sourceSegments": [
+        249
+      ],
+      "sourceStartSeconds": 10697.7,
+      "sourceEndSeconds": 10710.08
+    },
+    {
+      "id": "joongi-talk-055",
+      "videoId": "joongi-talk",
+      "startSeconds": 888.44,
+      "endSeconds": 897.48,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Context-supported correction still marked for listening: trial experience in general UI → prior experience in generative UI",
+      "currentCaptionText": "effortful for the ones with some experience. The one on the right side is showing that prior experience in generative UI for functioning UI actually have some more even",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/joongi-talk.listening-review.json",
+          "entryIndices": [
+            6,
+            18
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/joongi-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                259
+              ],
+              "text": "for the ones with some experience. The one on the right side is showing the trial experience in Gen. UI. For function UI, I actually have some more even similar behaviors across"
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 259,
+              "before": "trial experience in general UI",
+              "after": "prior experience in generative UI",
+              "basis": "Prior-experience study variable; listen."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/joongi-talk.listening-review.json",
+          "index": 6
+        },
+        {
+          "path": "transcripts/final-v02/joongi-talk.listening-review.json",
+          "index": 18
+        }
+      ],
+      "sourceSegments": [
+        259
+      ],
+      "sourceStartSeconds": 10753.44,
+      "sourceEndSeconds": 10762.48
+    }
+  ],
+  "cues": [
+    {
+      "id": 1,
+      "start": 3.26,
+      "end": 5.32,
+      "text": "So my name is Joongi Shin."
+    },
+    {
+      "id": 2,
+      "start": 5.6,
+      "end": 8.1,
+      "text": "I'm a postdoctoral researcher in Aalto University."
+    },
+    {
+      "id": 3,
+      "start": 8.48,
+      "end": 10.7,
+      "text": "My background is human-computer interaction."
+    },
+    {
+      "id": 4,
+      "start": 11.36,
+      "end": 15.84,
+      "text": "And I'm very fascinated about how emerging technologies help people create something,"
+    },
+    {
+      "id": 5,
+      "start": 15.99,
+      "end": 20.9,
+      "text": "but also use something. And I'm here to talk about the generative UI for users,"
+    },
+    {
+      "id": 6,
+      "start": 20.92,
+      "end": 23.19,
+      "text": "not just for designers."
+    },
+    {
+      "id": 7,
+      "start": 23.21,
+      "end": 27.84,
+      "text": "So first of all, I would like everyone to get on to this a bit."
+    },
+    {
+      "id": 8,
+      "start": 27.86,
+      "end": 32.13,
+      "text": "Imagine that you are actually planning a three-day winter vacation in Finland."
+    },
+    {
+      "id": 9,
+      "start": 32.15,
+      "end": 35.78,
+      "text": "How would you do it? What kind of interfaces will you go about?"
+    },
+    {
+      "id": 10,
+      "start": 35.8,
+      "end": 41.96,
+      "text": "I'll let you think of it."
+    },
+    {
+      "id": 11,
+      "start": 41.98,
+      "end": 45.54,
+      "text": "Probably everyone will try to look for some information about what kind of"
+    },
+    {
+      "id": 12,
+      "start": 45.56,
+      "end": 48.2,
+      "text": "activities exist online."
+    },
+    {
+      "id": 13,
+      "start": 48.22,
+      "end": 52.78,
+      "text": "They also go through a list from some blog posts, look at some geographic locations"
+    },
+    {
+      "id": 14,
+      "start": 52.8,
+      "end": 56.44,
+      "text": "and also try to make some itineraries."
+    },
+    {
+      "id": 15,
+      "start": 56.46,
+      "end": 60.04,
+      "text": "And some people, you might also have your own particular ways of planning."
+    },
+    {
+      "id": 16,
+      "start": 60.06,
+      "end": 65.02,
+      "text": "Maybe you want to explore these winter activities more systematically, requiring"
+    },
+    {
+      "id": 17,
+      "start": 65.04,
+      "end": 70.03,
+      "text": "you to position everything in this kind of plot, and when you click the plot, then it"
+    },
+    {
+      "id": 18,
+      "start": 70.05,
+      "end": 74.86,
+      "text": "also shows this kind of further information about the action options."
+    },
+    {
+      "id": 19,
+      "start": 74.88,
+      "end": 80.32,
+      "text": "And wouldn't it be amazing if you can get a functional UI for your task on"
+    },
+    {
+      "id": 20,
+      "start": 80.34,
+      "end": 86.09,
+      "text": "demand? And the generative UI is something that enables creating and using functional"
+    },
+    {
+      "id": 21,
+      "start": 86.11,
+      "end": 90.72,
+      "text": "interfaces on demand, and this is something I'm going to talk about mainly"
+    },
+    {
+      "id": 22,
+      "start": 90.74,
+      "end": 95.49000000000001,
+      "text": "today. But I would like you to think about this not as a software developer or"
+    },
+    {
+      "id": 23,
+      "start": 95.50999999999999,
+      "end": 99.99000000000001,
+      "text": "engineers, but from the user who are actually using this interaction"
+    },
+    {
+      "id": 24,
+      "start": 100.00999999999999,
+      "end": 101.14,
+      "text": "techniques."
+    },
+    {
+      "id": 25,
+      "start": 103.02000000000001,
+      "end": 107.38,
+      "text": "So generative UI is promising a future where anyone can create their own"
+    },
+    {
+      "id": 26,
+      "start": 107.4,
+      "end": 112.91,
+      "text": "interface. So this is the paper published in a very recent year from Google."
+    },
+    {
+      "id": 27,
+      "start": 112.93,
+      "end": 117.7,
+      "text": "So what they say is that the users who use generative UI, they actually do not need"
+    },
+    {
+      "id": 28,
+      "start": 117.72,
+      "end": 119.00999999999999,
+      "text": "the design literacy."
+    },
+    {
+      "id": 29,
+      "start": 119.03,
+      "end": 122.56,
+      "text": "They don't really need to understand what is a good design, bad design."
+    },
+    {
+      "id": 30,
+      "start": 122.58,
+      "end": 126.02,
+      "text": "They don't really need to do coding by themselves."
+    },
+    {
+      "id": 31,
+      "start": 126.04,
+      "end": 131.2,
+      "text": "They just need to describe what they want, what kind of task they need to try to do"
+    },
+    {
+      "id": 32,
+      "start": 131.22,
+      "end": 132.26,
+      "text": "in natural language."
+    },
+    {
+      "id": 33,
+      "start": 133.62,
+      "end": 138.52,
+      "text": "And then some extreme case, the paper and their work, they also demonstrate just by"
+    },
+    {
+      "id": 34,
+      "start": 138.64,
+      "end": 144.32999999999998,
+      "text": "saying history of timekeeping devices to LLM, and then the LLM generate this"
+    },
+    {
+      "id": 35,
+      "start": 144.35,
+      "end": 146.07999999999998,
+      "text": "interactive interface."
+    },
+    {
+      "id": 36,
+      "start": 146.16,
+      "end": 149.32,
+      "text": "So they actually show that this is actually working."
+    },
+    {
+      "id": 37,
+      "start": 149.4,
+      "end": 155.06,
+      "text": "As a researcher, what I'm interested in is, they say anyone, and of course I'm"
+    },
+    {
+      "id": 38,
+      "start": 155.07999999999998,
+      "end": 159.82,
+      "text": "curious, really anyone can do this."
+    },
+    {
+      "id": 39,
+      "start": 159.84,
+      "end": 164.51,
+      "text": "Despite this, a generative UI technology can be really helpful for any other people"
+    },
+    {
+      "id": 40,
+      "start": 164.53,
+      "end": 167.68,
+      "text": "for their daily life, not just for designers or engineers."
+    },
+    {
+      "id": 41,
+      "start": 167.7,
+      "end": 172.12,
+      "text": "When we look at this, how it has been studied is mainly focused on the assisting"
+    },
+    {
+      "id": 42,
+      "start": 172.14,
+      "end": 174.92000000000002,
+      "text": "designers or from designers' perspective."
+    },
+    {
+      "id": 43,
+      "start": 174.94,
+      "end": 180.39,
+      "text": "For example, this paper looks into how generative UI techniques can be used"
+    },
+    {
+      "id": 44,
+      "start": 180.41,
+      "end": 185.59,
+      "text": "across the phase of design practitioners, how they practice design."
+    },
+    {
+      "id": 45,
+      "start": 185.61,
+      "end": 189.18,
+      "text": "And they even find that even for designers, they face a lot of issues when"
+    },
+    {
+      "id": 46,
+      "start": 189.2,
+      "end": 192.37,
+      "text": "they try to go about this generative UI interaction."
+    },
+    {
+      "id": 47,
+      "start": 192.39,
+      "end": 196.88,
+      "text": "They also have to think about what kind of design they want to create, what kind of"
+    },
+    {
+      "id": 48,
+      "start": 196.9,
+      "end": 200.9,
+      "text": "users needs they need to integrate into their interfaces, and how do you validate"
+    },
+    {
+      "id": 49,
+      "start": 200.92000000000002,
+      "end": 205.28,
+      "text": "even if AI generates this interactive interface."
+    },
+    {
+      "id": 50,
+      "start": 207.0,
+      "end": 211.55,
+      "text": "And then some interaction approaches actually has been studied quite a bit to"
+    },
+    {
+      "id": 51,
+      "start": 211.57,
+      "end": 214.51,
+      "text": "also help design UIs much better."
+    },
+    {
+      "id": 52,
+      "start": 214.53,
+      "end": 219.64,
+      "text": "So after you describe something in a prompt, it's mostly a high-level"
+    },
+    {
+      "id": 53,
+      "start": 219.66,
+      "end": 225.32,
+      "text": "description. I want certain interfaces to do certain tasks like planning something,"
+    },
+    {
+      "id": 54,
+      "start": 225.34,
+      "end": 230.3,
+      "text": "exploring something, and then that is not really tied to actual interface design in"
+    },
+    {
+      "id": 55,
+      "start": 230.32,
+      "end": 234.96,
+      "text": "the end. So what this kind of interaction techniques or process are designed for is"
+    },
+    {
+      "id": 56,
+      "start": 234.98,
+      "end": 240.31,
+      "text": "that they try to decompose the prompt into particular UI design specifications so"
+    },
+    {
+      "id": 57,
+      "start": 240.33,
+      "end": 245.54,
+      "text": "that designers does not have to iteratively re-describe everything, but"
+    },
+    {
+      "id": 58,
+      "start": 245.56,
+      "end": 252.56,
+      "text": "edit particular specifications so they can create the interface that's much more"
+    },
+    {
+      "id": 59,
+      "start": 252.67,
+      "end": 256.58,
+      "text": "aligned with what they intended in the beginning."
+    },
+    {
+      "id": 60,
+      "start": 256.6,
+      "end": 262.8,
+      "text": "And then what we want to focus on in this study is that, actually, task-oriented"
+    },
+    {
+      "id": 61,
+      "start": 262.82,
+      "end": 265.38,
+      "text": "users is not the same as designers."
+    },
+    {
+      "id": 62,
+      "start": 265.4,
+      "end": 269.14,
+      "text": "Task-oriented users, they just want to perform their task."
+    },
+    {
+      "id": 63,
+      "start": 269.16,
+      "end": 271.87,
+      "text": "Their goal is not to design some beautiful UI."
+    },
+    {
+      "id": 64,
+      "start": 271.89,
+      "end": 275.04,
+      "text": "They are not really familiar with the interactive design practice."
+    },
+    {
+      "id": 65,
+      "start": 275.06,
+      "end": 279.72,
+      "text": "So this actually brings some gap between what, as a user, what is their goal they"
+    },
+    {
+      "id": 66,
+      "start": 279.74,
+      "end": 284.0,
+      "text": "want to achieve, compared to designer, whose main intentional motivation is to"
+    },
+    {
+      "id": 67,
+      "start": 284.02,
+      "end": 285.78,
+      "text": "actually design the better UIs."
+    },
+    {
+      "id": 68,
+      "start": 287.8,
+      "end": 291.7,
+      "text": "So the research question, in summary, what we explored here is how different"
+    },
+    {
+      "id": 69,
+      "start": 291.72,
+      "end": 296.49,
+      "text": "generative UI approaches support task-oriented users in generating and"
+    },
+    {
+      "id": 70,
+      "start": 296.51,
+      "end": 302.32,
+      "text": "using UIs. But before I go further into my study, I want to just briefly describe how"
+    },
+    {
+      "id": 71,
+      "start": 302.34,
+      "end": 305.18,
+      "text": "the generative UI works."
+    },
+    {
+      "id": 72,
+      "start": 305.2,
+      "end": 310.44,
+      "text": "So a lot of materials are from this paper, the original paper."
+    },
+    {
+      "id": 73,
+      "start": 310.52,
+      "end": 312.38,
+      "text": "And this is the high-level system overview."
+    },
+    {
+      "id": 74,
+      "start": 312.4,
+      "end": 316.6,
+      "text": "And I assume that everyone can recognize very obvious things."
+    },
+    {
+      "id": 75,
+      "start": 316.62,
+      "end": 320.81,
+      "text": "But the author says that there's three most important components."
+    },
+    {
+      "id": 76,
+      "start": 320.83,
+      "end": 326.18,
+      "text": "The first one is the tools, something you can think of it as a server exposing"
+    },
+    {
+      "id": 77,
+      "start": 326.2,
+      "end": 330.92,
+      "text": "several end points so that LLMs can actually do some image searches or find"
+    },
+    {
+      "id": 78,
+      "start": 331.0,
+      "end": 333.48,
+      "text": "information online, create databases, and so on."
+    },
+    {
+      "id": 79,
+      "start": 334.92,
+      "end": 338.82,
+      "text": "The second one is some system instruction."
+    },
+    {
+      "id": 80,
+      "start": 338.84000000000003,
+      "end": 342.72,
+      "text": "This is something probably many of you have known as a system prompt."
+    },
+    {
+      "id": 81,
+      "start": 342.75,
+      "end": 347.37,
+      "text": "I really suggest reading this paper, and then you can find this very, very, very"
+    },
+    {
+      "id": 82,
+      "start": 347.78,
+      "end": 351.96,
+      "text": "exhaustive, lengthy descriptions of it."
+    },
+    {
+      "id": 83,
+      "start": 351.98,
+      "end": 356.27,
+      "text": "And then also describe this like what is the design philosophy of generative UI,"
+    },
+    {
+      "id": 84,
+      "start": 356.29,
+      "end": 358.65999999999997,
+      "text": "how the interface should be created."
+    },
+    {
+      "id": 85,
+      "start": 358.68,
+      "end": 363.86,
+      "text": "Not just like telling AI or yelling at it, why aren't you creating it enough?"
+    },
+    {
+      "id": 86,
+      "start": 363.88,
+      "end": 370.8,
+      "text": "And then in a way, it boils down to these four main components in the system"
+    },
+    {
+      "id": 87,
+      "start": 370.82,
+      "end": 376.06,
+      "text": "prompt. It gives the goal, what is the goal of the the generating UIs, how the"
+    },
+    {
+      "id": 88,
+      "start": 376.08,
+      "end": 382.59,
+      "text": "LLM should plan and think, some example for in-context learning, and some really"
+    },
+    {
+      "id": 89,
+      "start": 382.63,
+      "end": 386.2,
+      "text": "massive sets of like a technique instructions."
+    },
+    {
+      "id": 90,
+      "start": 387.9,
+      "end": 393.12,
+      "text": "And then the third component is the post processor that actually tried to fix the"
+    },
+    {
+      "id": 91,
+      "start": 393.15,
+      "end": 397.54,
+      "text": "errors that the HTML, CSS, or JavaScript code that LLM generates."
+    },
+    {
+      "id": 92,
+      "start": 397.62,
+      "end": 402.38,
+      "text": "And this is the one that's, for example, replacing fake API keys placeholder to"
+    },
+    {
+      "id": 93,
+      "start": 402.4,
+      "end": 406.73,
+      "text": "real API keys, or fixing some bugs and errors."
+    },
+    {
+      "id": 94,
+      "start": 406.75,
+      "end": 412.12,
+      "text": "So this is the high-level conception system overview of the generative UI."
+    },
+    {
+      "id": 95,
+      "start": 412.14,
+      "end": 417.54,
+      "text": "But what I missed is this, like, how is it actually from the user's perspective?"
+    },
+    {
+      "id": 96,
+      "start": 417.56,
+      "end": 421.18,
+      "text": "Someone actually will be describing the prompt."
+    },
+    {
+      "id": 97,
+      "start": 421.26,
+      "end": 425.1,
+      "text": "As a researcher, we always look into what kind of theories exist and what is"
+    },
+    {
+      "id": 98,
+      "start": 425.12,
+      "end": 428.3,
+      "text": "underlying mechanism that enables people to prompt."
+    },
+    {
+      "id": 99,
+      "start": 428.32,
+      "end": 432.53,
+      "text": "And one of the most recent and also promising theory is the Gulf of"
+    },
+    {
+      "id": 100,
+      "start": 432.59,
+      "end": 437.44,
+      "text": "Envisioning, that for people to describe certain their intention on what they want"
+    },
+    {
+      "id": 101,
+      "start": 437.46,
+      "end": 442.25,
+      "text": "to achieve by interacting with LLMs, that actually is challenging, very cognitively"
+    },
+    {
+      "id": 102,
+      "start": 442.32,
+      "end": 446.57,
+      "text": "challenging task. First of all, you have to know what do you want, right?"
+    },
+    {
+      "id": 103,
+      "start": 446.59,
+      "end": 451.13,
+      "text": "You cannot just like tell AI to just create interface, I don't know, that"
+    },
+    {
+      "id": 104,
+      "start": 451.15,
+      "end": 455.62,
+      "text": "wouldn't work. It will generate something, but of course, it wouldn't match with what"
+    },
+    {
+      "id": 105,
+      "start": 455.64,
+      "end": 460.18,
+      "text": "you were thinking. And the second one is that you also have some expertise in"
+    },
+    {
+      "id": 106,
+      "start": 460.2,
+      "end": 463.12,
+      "text": "articulating what you are envisioning."
+    },
+    {
+      "id": 107,
+      "start": 463.2,
+      "end": 468.69,
+      "text": "So imagine that you have this very magical, amazing interfaces that you want"
+    },
+    {
+      "id": 108,
+      "start": 468.73,
+      "end": 473.1,
+      "text": "to achieve. It's just sitting in your head, but you don't really know how to"
+    },
+    {
+      "id": 109,
+      "start": 473.17,
+      "end": 475.69,
+      "text": "describe it in a particular prompts."
+    },
+    {
+      "id": 110,
+      "start": 475.71,
+      "end": 479.88,
+      "text": "Or you don't know how to effectively describe it so the LLM can generate"
+    },
+    {
+      "id": 111,
+      "start": 479.9,
+      "end": 482.95,
+      "text": "something much more aligned with what you wanted it."
+    },
+    {
+      "id": 112,
+      "start": 482.97,
+      "end": 486.72,
+      "text": "So these two are the main gulfs that exist."
+    },
+    {
+      "id": 113,
+      "start": 486.8,
+      "end": 490.8,
+      "text": "And that is actually the reason why we study and design this kind of different"
+    },
+    {
+      "id": 114,
+      "start": 490.82,
+      "end": 496.43,
+      "text": "interaction approaches so that people can design something better by exploring what"
+    },
+    {
+      "id": 115,
+      "start": 496.45,
+      "end": 502.27,
+      "text": "they really wanted and also align it toward the end goal of what they were"
+    },
+    {
+      "id": 116,
+      "start": 502.29,
+      "end": 504.86,
+      "text": "generating from AI lab."
+    },
+    {
+      "id": 117,
+      "start": 504.88,
+      "end": 510.66,
+      "text": "And then coming back to our study, so we compared the three conventional generative"
+    },
+    {
+      "id": 118,
+      "start": 510.68,
+      "end": 516.58,
+      "text": "UI approaches. We selected this particular so they represent the particular ways that"
+    },
+    {
+      "id": 119,
+      "start": 516.6,
+      "end": 521.73,
+      "text": "has been very easily reachable to any other users."
+    },
+    {
+      "id": 120,
+      "start": 521.75,
+      "end": 524.97,
+      "text": "But first of all, we asked this kind of research questions."
+    },
+    {
+      "id": 121,
+      "start": 524.99,
+      "end": 531.36,
+      "text": "So among these approaches, how does it actually affect users in generating UIs?"
+    },
+    {
+      "id": 122,
+      "start": 531.38,
+      "end": 534.52,
+      "text": "How much workload they experience?"
+    },
+    {
+      "id": 123,
+      "start": 534.54,
+      "end": 537.21,
+      "text": "How much usability they perceive?"
+    },
+    {
+      "id": 124,
+      "start": 537.23,
+      "end": 541.85,
+      "text": "How much they perceive that the final UI is aligned with what they intended?"
+    },
+    {
+      "id": 125,
+      "start": 541.87,
+      "end": 546.85,
+      "text": "And what's more importantly, we studied this in the four phases of generating the"
+    },
+    {
+      "id": 126,
+      "start": 546.87,
+      "end": 552.17,
+      "text": "UI and having users to use the UIs to complete the given tasks."
+    },
+    {
+      "id": 127,
+      "start": 552.19,
+      "end": 556.8,
+      "text": "The second one is how do users actually experience the generating UI related to"
+    },
+    {
+      "id": 128,
+      "start": 556.82,
+      "end": 558.84,
+      "text": "their experience of using UIs."
+    },
+    {
+      "id": 129,
+      "start": 558.86,
+      "end": 564.2,
+      "text": "And the last one is how does this user's prior experiences to generate the UI or"
+    },
+    {
+      "id": 130,
+      "start": 564.22,
+      "end": 568.94,
+      "text": "UI/UX design actually affects this overall process."
+    },
+    {
+      "id": 131,
+      "start": 569.02,
+      "end": 575.0,
+      "text": "I'm going to describe a bit more about why we studied these particular things."
+    },
+    {
+      "id": 132,
+      "start": 575.02,
+      "end": 579.43,
+      "text": "First one, what we called as a prompt only as the most like a baseline approach is"
+    },
+    {
+      "id": 133,
+      "start": 579.45,
+      "end": 582.28,
+      "text": "that generating UI by just simply conversing with LLM."
+    },
+    {
+      "id": 134,
+      "start": 582.3,
+      "end": 587.0,
+      "text": "And I believe everyone has some experience of like just simply prompting LLMs to"
+    },
+    {
+      "id": 135,
+      "start": 587.02,
+      "end": 590.56,
+      "text": "generate some code or interfaces like this, right?"
+    },
+    {
+      "id": 136,
+      "start": 590.58,
+      "end": 593.07,
+      "text": "Yeah, so this is anyone can reach this."
+    },
+    {
+      "id": 137,
+      "start": 593.09,
+      "end": 597.61,
+      "text": "The second one is the something that has been studied and very well known to very"
+    },
+    {
+      "id": 138,
+      "start": 597.63,
+      "end": 602.48,
+      "text": "useful for designers, generating UI by editing intermediate representations."
+    },
+    {
+      "id": 139,
+      "start": 602.5,
+      "end": 607.22,
+      "text": "So This is not that I'm just prompting something and just working on the final"
+    },
+    {
+      "id": 140,
+      "start": 607.24,
+      "end": 610.74,
+      "text": "UI. There is this kind of intermediate representation between the prompt and the"
+    },
+    {
+      "id": 141,
+      "start": 610.76,
+      "end": 616.42,
+      "text": "final UI. So as I showed the earlier example, this is as if like a prompt is"
+    },
+    {
+      "id": 142,
+      "start": 616.44,
+      "end": 618.94,
+      "text": "composed into the particular UI design element."
+    },
+    {
+      "id": 143,
+      "start": 618.96,
+      "end": 622.88,
+      "text": "And then that is further edited to generate the final UIs."
+    },
+    {
+      "id": 144,
+      "start": 624.32,
+      "end": 628.84,
+      "text": "And in our study, we built on the cognitive walkthrough theory that when"
+    },
+    {
+      "id": 145,
+      "start": 628.86,
+      "end": 633.94,
+      "text": "people try to learn new UIs, they actually have some particular processes."
+    },
+    {
+      "id": 146,
+      "start": 634.4,
+      "end": 639.08,
+      "text": "They try to decompose their task into subtask in a certain hierarchical format."
+    },
+    {
+      "id": 147,
+      "start": 639.54,
+      "end": 643.87,
+      "text": "They try to understand what kind of actions are available in the generated UIs"
+    },
+    {
+      "id": 148,
+      "start": 643.89,
+      "end": 646.28,
+      "text": "or any UIs that it's facing."
+    },
+    {
+      "id": 149,
+      "start": 646.76,
+      "end": 650.72,
+      "text": "And then they try to map their each subtask and the available actions."
+    },
+    {
+      "id": 150,
+      "start": 650.74,
+      "end": 656.41,
+      "text": "And then they have their own evaluation criteria to understand which mapping works"
+    },
+    {
+      "id": 151,
+      "start": 656.43,
+      "end": 657.23,
+      "text": "the best."
+    },
+    {
+      "id": 152,
+      "start": 657.8,
+      "end": 663.48,
+      "text": "So knowing that theory, We assume that this kind of like having decomposing"
+    },
+    {
+      "id": 153,
+      "start": 663.5,
+      "end": 669.3,
+      "text": "prompt into a subtask and UI pairs, what could be very easy to understand"
+    },
+    {
+      "id": 154,
+      "start": 669.32,
+      "end": 673.8,
+      "text": "representation and something that users can further edit without really learning"
+    },
+    {
+      "id": 155,
+      "start": 673.82,
+      "end": 675.96,
+      "text": "about these technologies."
+    },
+    {
+      "id": 156,
+      "start": 677.48,
+      "end": 681.18,
+      "text": "The third one is the generating UI by answering the LLM’s inquiry."
+    },
+    {
+      "id": 157,
+      "start": 681.2,
+      "end": 686.49,
+      "text": "This is something that you can also find some recent updates in the Claude or"
+    },
+    {
+      "id": 158,
+      "start": 686.51,
+      "end": 691.78,
+      "text": "ChatGPT, whenever you ask it to do something, it would further ask you some"
+    },
+    {
+      "id": 159,
+      "start": 691.8,
+      "end": 695.78,
+      "text": "questions to understand what you really intended for."
+    },
+    {
+      "id": 160,
+      "start": 695.86,
+      "end": 698.9,
+      "text": "So the survey approach is also very promising."
+    },
+    {
+      "id": 161,
+      "start": 698.98,
+      "end": 703.32,
+      "text": "It just generates what LLMs want to ask you and also gives some particular answers"
+    },
+    {
+      "id": 162,
+      "start": 703.34,
+      "end": 705.92,
+      "text": "that it is expecting what the answer would be."
+    },
+    {
+      "id": 163,
+      "start": 707.46,
+      "end": 713.06,
+      "text": "So to test this systematically, so we created this interface where on the left"
+    },
+    {
+      "id": 164,
+      "start": 713.08,
+      "end": 716.56,
+      "text": "side, this particular interaction is shown, and on the right side, the"
+    },
+    {
+      "id": 165,
+      "start": 716.58,
+      "end": 720.64,
+      "text": "generated UI is displayed, so users can actually interact with it and perform the"
+    },
+    {
+      "id": 166,
+      "start": 720.69,
+      "end": 723.14,
+      "text": "task they were assigned to during our experiment."
+    },
+    {
+      "id": 167,
+      "start": 724.6,
+      "end": 727.86,
+      "text": "And this is how each approach was looks like."
+    },
+    {
+      "id": 168,
+      "start": 728.98,
+      "end": 733.0,
+      "text": "A bit of the experiment design before I go into the result."
+    },
+    {
+      "id": 169,
+      "start": 733.08,
+      "end": 736.8,
+      "text": "So we test the participants experience in both generating and using UI."
+    },
+    {
+      "id": 170,
+      "start": 736.82,
+      "end": 740.69,
+      "text": "That is the most, one of the very novelty in this study compared to the other prior"
+    },
+    {
+      "id": 171,
+      "start": 740.71,
+      "end": 743.59,
+      "text": "work that was focusing only the generation part of it."
+    },
+    {
+      "id": 172,
+      "start": 743.61,
+      "end": 747.74,
+      "text": "They didn't really look into how users will actually use or how designers would"
+    },
+    {
+      "id": 173,
+      "start": 747.76,
+      "end": 751.74,
+      "text": "further evaluate what the generated UI would be."
+    },
+    {
+      "id": 174,
+      "start": 751.82,
+      "end": 756.89,
+      "text": "We had 30 participants, and then we intentionally recruited the ones that have"
+    },
+    {
+      "id": 175,
+      "start": 756.91,
+      "end": 761.86,
+      "text": "some experience with or without prior generated UI experiences, so we can also"
+    },
+    {
+      "id": 176,
+      "start": 761.88,
+      "end": 766.55,
+      "text": "compare the -- analyze the impact of the prior experience."
+    },
+    {
+      "id": 177,
+      "start": 766.57,
+      "end": 769.35,
+      "text": "And then these are the tasks that we gave them."
+    },
+    {
+      "id": 178,
+      "start": 769.37,
+      "end": 775.45,
+      "text": "So three tasks in a randomized order with a different pairing of each approach."
+    },
+    {
+      "id": 179,
+      "start": 775.47,
+      "end": 779.75,
+      "text": "So as you can see, this is a very generic daily task."
+    },
+    {
+      "id": 180,
+      "start": 779.77,
+      "end": 784.27,
+      "text": "You don't really need expertise, so we were really trying to look into whether"
+    },
+    {
+      "id": 181,
+      "start": 784.29,
+      "end": 790.15,
+      "text": "this is actually feasibly experienced by generative UI."
+    },
+    {
+      "id": 182,
+      "start": 790.17,
+      "end": 796.98,
+      "text": "So the first findings we made is that the subtask–UI approach felt least usable for"
+    },
+    {
+      "id": 183,
+      "start": 797.0,
+      "end": 800.18,
+      "text": "users and the prompt only felt least aligned."
+    },
+    {
+      "id": 184,
+      "start": 800.2,
+      "end": 804.36,
+      "text": "This actually surprising finding for us because a lot of people find the prompt"
+    },
+    {
+      "id": 185,
+      "start": 804.38,
+      "end": 808.92,
+      "text": "only approach It's very straightforward and easy to use, and our assumption was"
+    },
+    {
+      "id": 186,
+      "start": 808.94,
+      "end": 815.68,
+      "text": "that if you can use it easily, shouldn't it help you align or express your"
+    },
+    {
+      "id": 187,
+      "start": 815.7,
+      "end": 821.25,
+      "text": "ideas much better? Also, subtask–UI failing was also surprising because that"
+    },
+    {
+      "id": 188,
+      "start": 821.27,
+      "end": 828.0,
+      "text": "was the interaction technique that has been shown to be very working well for"
+    },
+    {
+      "id": 189,
+      "start": 828.02,
+      "end": 833.2,
+      "text": "designers. Second finding is that the impressions formed in UI generation were"
+    },
+    {
+      "id": 190,
+      "start": 833.22,
+      "end": 839.12,
+      "text": "very strongly associated with the UI use, so if the participants experience any kind"
+    },
+    {
+      "id": 191,
+      "start": 839.14,
+      "end": 845.78,
+      "text": "of high effort, they also perceive that using the final generated UI was very"
+    },
+    {
+      "id": 192,
+      "start": 845.8,
+      "end": 851.61,
+      "text": "effortful use, despite the quality of UI was not that different between the"
+    },
+    {
+      "id": 193,
+      "start": 851.63,
+      "end": 856.79,
+      "text": "participants. The third last one is that the prior experience actually affected"
+    },
+    {
+      "id": 194,
+      "start": 856.81,
+      "end": 860.87,
+      "text": "using generated UI. Something interesting finding we observed is that if someone has"
+    },
+    {
+      "id": 195,
+      "start": 860.89,
+      "end": 866.92,
+      "text": "an experience in the UI/UX design, they actually perceive less task load when they"
+    },
+    {
+      "id": 196,
+      "start": 866.94,
+      "end": 871.72,
+      "text": "are interacting with trying to generate UIs in the prompt-only approach."
+    },
+    {
+      "id": 197,
+      "start": 871.74,
+      "end": 875.78,
+      "text": "This kind of aligns with the prior finding is that if you have much more expertise,"
+    },
+    {
+      "id": 198,
+      "start": 875.8,
+      "end": 879.98,
+      "text": "then you know what you can actually describe or what you actually want."
+    },
+    {
+      "id": 199,
+      "start": 880.0,
+      "end": 885.8,
+      "text": "So probably our assumption is that that's why this prompt-only approach felt less"
+    },
+    {
+      "id": 200,
+      "start": 885.86,
+      "end": 888.98,
+      "text": "effortful for the ones with some experience."
+    },
+    {
+      "id": 201,
+      "start": 889.0,
+      "end": 892.71,
+      "text": "The one on the right side is showing that prior experience in generative UI for"
+    },
+    {
+      "id": 202,
+      "start": 892.73,
+      "end": 895.48,
+      "text": "functioning UI actually have some more even"
+    },
+    {
+      "id": 203,
+      "start": 898.28,
+      "end": 900.82,
+      "text": "similar behaviors across the approaches."
+    },
+    {
+      "id": 204,
+      "start": 900.84,
+      "end": 905.51,
+      "text": "So if you have an experience, then you tend to perceive that using the generated"
+    },
+    {
+      "id": 205,
+      "start": 905.53,
+      "end": 907.82,
+      "text": "UI is much, much more usable."
+    },
+    {
+      "id": 206,
+      "start": 907.84,
+      "end": 913.56,
+      "text": "We don't have a very clear answer to this, but our assumption was that because you"
+    },
+    {
+      "id": 207,
+      "start": 913.58,
+      "end": 918.93,
+      "text": "know what it is, how much you can expect from the LLMs to to generate how much"
+    },
+    {
+      "id": 208,
+      "start": 918.95,
+      "end": 924.71,
+      "text": "quality of interfaces can be generated, people, maybe they might have some"
+    },
+    {
+      "id": 209,
+      "start": 924.75,
+      "end": 929.96,
+      "text": "different, maybe lower level of expectation compared to the ones who does"
+    },
+    {
+      "id": 210,
+      "start": 929.98,
+      "end": 932.01,
+      "text": "not have experience."
+    },
+    {
+      "id": 211,
+      "start": 932.03,
+      "end": 935.4,
+      "text": "So in the end, what does this all mean to us?"
+    },
+    {
+      "id": 212,
+      "start": 935.46,
+      "end": 939.56,
+      "text": "I think the first insight I can share is that what works for designers may not"
+    },
+    {
+      "id": 213,
+      "start": 939.58,
+      "end": 942.04,
+      "text": "really work for task-oriented users."
+    },
+    {
+      "id": 214,
+      "start": 942.12,
+      "end": 946.67,
+      "text": "So we need to understand what's the difference between designers or engineers"
+    },
+    {
+      "id": 215,
+      "start": 946.69,
+      "end": 950.18,
+      "text": "whose task is or goal is to design something better, who are willing and"
+    },
+    {
+      "id": 216,
+      "start": 950.2,
+      "end": 954.06,
+      "text": "motivated to iteratively work on it, compared to users who just want to get"
+    },
+    {
+      "id": 217,
+      "start": 954.08,
+      "end": 958.42,
+      "text": "something and get their task done."
+    },
+    {
+      "id": 218,
+      "start": 958.44,
+      "end": 963.41,
+      "text": "Second insight is the user needs help envisioning without being made to design."
+    },
+    {
+      "id": 219,
+      "start": 963.5,
+      "end": 966.26,
+      "text": "I think this is a very challenging problem to solve."
+    },
+    {
+      "id": 220,
+      "start": 966.28,
+      "end": 971.16,
+      "text": "So users, of course, they need some help in envisioning because they are not the UI"
+    },
+    {
+      "id": 221,
+      "start": 971.18,
+      "end": 975.55,
+      "text": "design experts or engineers of how things work or what is the better things that"
+    },
+    {
+      "id": 222,
+      "start": 975.57,
+      "end": 980.08,
+      "text": "they can achieve. However, they also do not want to eat like in a very low level"
+    },
+    {
+      "id": 223,
+      "start": 980.1,
+      "end": 983.2,
+      "text": "interact with this kind of intermediate elements."
+    },
+    {
+      "id": 224,
+      "start": 983.22,
+      "end": 987.78,
+      "text": "So in a way prompt only approach was helpful for them so they can just easily"
+    },
+    {
+      "id": 225,
+      "start": 987.8,
+      "end": 992.16,
+      "text": "interact with, but there was no assistance at all because they just have to describe"
+    },
+    {
+      "id": 226,
+      "start": 992.18,
+      "end": 997.27,
+      "text": "everything. So I think we still need to find a way that we can provide this kind"
+    },
+    {
+      "id": 227,
+      "start": 997.29,
+      "end": 1002.38,
+      "text": "of interaction. And The last one is the prompt survey approach worked, and we"
+    },
+    {
+      "id": 228,
+      "start": 1002.4,
+      "end": 1007.04,
+      "text": "believe that this is because it helped envision and reduce articulation effort."
+    },
+    {
+      "id": 229,
+      "start": 1007.12,
+      "end": 1011.84,
+      "text": "So we made this interpretation based on the Gulf of Envisioning earlier as I"
+    },
+    {
+      "id": 230,
+      "start": 1011.86,
+      "end": 1017.08,
+      "text": "described how people need some assistance and how it's actually cognitively"
+    },
+    {
+      "id": 231,
+      "start": 1017.1,
+      "end": 1021.0,
+      "text": "effortful. In the prompt survey approach, LLM pretty much did most of the work,"
+    },
+    {
+      "id": 232,
+      "start": 1021.02,
+      "end": 1023.54,
+      "text": "thinking about, oh, do you actually need this?"
+    },
+    {
+      "id": 233,
+      "start": 1023.56,
+      "end": 1027.14,
+      "text": "What do you mean by you need better interfaces?"
+    },
+    {
+      "id": 234,
+      "start": 1027.16,
+      "end": 1033.39,
+      "text": "So people do not really need to see everything a bit -- every bit by"
+    },
+    {
+      "id": 235,
+      "start": 1033.41,
+      "end": 1036.7,
+      "text": "themselves. Couple of slides to the end."
+    },
+    {
+      "id": 236,
+      "start": 1036.72,
+      "end": 1042.83,
+      "text": "How do we then move forward to achieve the future that generative UI was aiming for?"
+    },
+    {
+      "id": 237,
+      "start": 1042.85,
+      "end": 1046.34,
+      "text": "Then would be the question that the prompt survey approach is the answer, is the"
+    },
+    {
+      "id": 238,
+      "start": 1046.36,
+      "end": 1052.62,
+      "text": "problem solved? I would say the prompt-survey approach can also fail."
+    },
+    {
+      "id": 239,
+      "start": 1052.64,
+      "end": 1054.9,
+      "text": "This is also what we observed in our study."
+    },
+    {
+      "id": 240,
+      "start": 1054.98,
+      "end": 1059.97,
+      "text": "So sometimes LLM just continuously ask questions like that doesn't really align"
+    },
+    {
+      "id": 241,
+      "start": 1059.99,
+      "end": 1064.83,
+      "text": "with or make sense in the human level or what the user was actually wanting to"
+    },
+    {
+      "id": 242,
+      "start": 1064.85,
+      "end": 1069.91,
+      "text": "achieve. For example, they often intentionally ask very obscure, vague"
+    },
+    {
+      "id": 243,
+      "start": 1069.93,
+      "end": 1074.81,
+      "text": "things just to see something up front and then decide based on it."
+    },
+    {
+      "id": 244,
+      "start": 1074.83,
+      "end": 1078.89,
+      "text": "But still in this kind of survey-based approach, LLM will constantly ask like,"
+    },
+    {
+      "id": 245,
+      "start": 1078.91,
+      "end": 1080.78,
+      "text": "oh, do you actually mean this?"
+    },
+    {
+      "id": 246,
+      "start": 1080.8,
+      "end": 1084.14,
+      "text": "Just to have them to concretely define the ideas."
+    },
+    {
+      "id": 247,
+      "start": 1084.22,
+      "end": 1088.62,
+      "text": "And also, there could be the case that LLM does not really-- what LLM asks doesn't"
+    },
+    {
+      "id": 248,
+      "start": 1088.7,
+      "end": 1093.63,
+      "text": "really make sense to the people, despite it is still the part of LLM's approach to"
+    },
+    {
+      "id": 249,
+      "start": 1093.65,
+      "end": 1097.56,
+      "text": "try to understand what this person actually means."
+    },
+    {
+      "id": 250,
+      "start": 1097.58,
+      "end": 1103.24,
+      "text": "So I think the remaining homework for us is that we still need to figure out how"
+    },
+    {
+      "id": 251,
+      "start": 1103.26,
+      "end": 1107.87,
+      "text": "generative UI systems can correctly infer user intention from this kind of vague"
+    },
+    {
+      "id": 252,
+      "start": 1107.89,
+      "end": 1111.02,
+      "text": "prompt without needing people to describe everything."
+    },
+    {
+      "id": 253,
+      "start": 1111.04,
+      "end": 1115.15,
+      "text": "There are very interesting interaction approaches that has been working on this"
+    },
+    {
+      "id": 254,
+      "start": 1115.17,
+      "end": 1119.75,
+      "text": "field, but I will not go into that detail, but please feel free to reach me out to"
+    },
+    {
+      "id": 255,
+      "start": 1119.77,
+      "end": 1120.82,
+      "text": "discuss this more."
+    },
+    {
+      "id": 256,
+      "start": 1121.92,
+      "end": 1125.44,
+      "text": "So as a closing, I would like to make this three point as a takeaway."
+    },
+    {
+      "id": 257,
+      "start": 1125.46,
+      "end": 1131.27,
+      "text": "Generative UI has potential to benefit everyday users beyond designers."
+    },
+    {
+      "id": 258,
+      "start": 1131.29,
+      "end": 1133.95,
+      "text": "And what works for designers may not work for users."
+    },
+    {
+      "id": 259,
+      "start": 1133.97,
+      "end": 1139.21,
+      "text": "So I think if you're interested in studying this field, I really want to"
+    },
+    {
+      "id": 260,
+      "start": 1139.23,
+      "end": 1143.38,
+      "text": "strongly suggest that try to differentiate what is the goal the target users or the"
+    },
+    {
+      "id": 261,
+      "start": 1143.4,
+      "end": 1145.59,
+      "text": "target designers that you are aiming for."
+    },
+    {
+      "id": 262,
+      "start": 1145.61,
+      "end": 1149.7,
+      "text": "And the generative UI should help users envision what they need without making"
+    },
+    {
+      "id": 263,
+      "start": 1149.72,
+      "end": 1151.22,
+      "text": "them design. Thank you."
+    }
+  ]
+}

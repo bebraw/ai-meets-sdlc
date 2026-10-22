@@ -1,0 +1,74 @@
+{
+  "id": "ohans-talk",
+  "shortSummary": "Ohans Emmanuel describes a connected delivery workflow that treats agent output as something to verify. Shared intent, early plan review, paired models, visual system understanding, independent QA and production feedback form a loop from deciding what to build through learning from what ships.",
+  "longSummary": "Ohans Emmanuel presents the practices his team uses to produce software with coding agents while retaining engineering judgement. A plan or statement of intent must remain accessible to the whole team and to later stages of delivery. Reviewing implementation decisions early can catch a wrong premise before it generates a large diff. His team pairs different models during implementation, focusing escalation on consequential issues rather than endless nitpicks. Visual representations of changes help engineers retain a mental model of architecture and data flow. Independent QA agents exercise preview deployments, combining adaptive interaction with deterministic assertions, and exploratory checks look beyond predefined paths. After deployment, monitoring signals are connected across services and agent traces. Findings feed back into tasks and implementation plans, so the value lies in the connected feedback loop as well as in the individual checks.",
+  "takeaways": [
+    {
+      "point": "Keep shared intent accessible throughout delivery so implementation, QA and operations can refer to the same goal.",
+      "start": 423,
+      "end": 541
+    },
+    {
+      "point": "Review implementation decisions early and use model pairing during the build to catch consequential errors before a large diff accumulates.",
+      "start": 542,
+      "end": 784
+    },
+    {
+      "point": "Retain a human understanding of system architecture and data flow even when agents produce most changes.",
+      "start": 889,
+      "end": 1078
+    },
+    {
+      "point": "Separate the implementing agent from QA and combine adaptive checks with deterministic assertions and exploratory testing.",
+      "start": 1078,
+      "end": 1499
+    },
+    {
+      "point": "Connect production signals and feed root-cause learning into the next task, plan and review.",
+      "start": 1499,
+      "end": 1918
+    }
+  ],
+  "topics": [
+    "agent harnesses",
+    "implementation plans",
+    "model pairing",
+    "mental models",
+    "independent QA",
+    "deterministic checks",
+    "production feedback"
+  ],
+  "quoteCandidates": [
+    {
+      "text": "I don't want a world where I don't understand the system that I maintain.",
+      "speaker": "Ohans Emmanuel"
+    }
+  ],
+  "clipCandidates": [
+    {
+      "title": "Review the implementation decision before it becomes a large diff",
+      "start": 542,
+      "end": 637,
+      "why": "A concrete design-choice example explains the case for earlier plan review.",
+      "audience": "Engineers and reviewers working with coding agents"
+    },
+    {
+      "title": "What independent QA needs beyond another model's approval",
+      "start": 1170,
+      "end": 1333,
+      "why": "Connects shared intent, deterministic assertions, user-level checks and evidence from a separate QA agent.",
+      "audience": "QA and platform teams"
+    }
+  ],
+  "reuseAngles": [
+    "An end-to-end checklist for agent-assisted delivery",
+    "A cross-talk article on retaining system understanding while shipping faster"
+  ],
+  "editorialCaveats": [
+    "The workflow describes the speaker's team experience, not a universal benchmark result.",
+    "The argument for reviewing plans does not mean the workflow dispenses with later QA or human evaluation of the change.",
+    "Model pairing and a separate QA agent are techniques for additional scrutiny, not proof that their failure modes are statistically independent.",
+    "Read-only infrastructure access still carries data-disclosure risks; do not reuse the monitoring discussion as a claim that read-only access is harmless."
+  ],
+  "analysisStatus": "Complete-caption analysis, fresh local quote ASR and sampled-frame review complete; editorial approval pending."
+}

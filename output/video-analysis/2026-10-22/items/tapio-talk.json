@@ -1,0 +1,71 @@
+{
+  "id": "tapio-talk",
+  "shortSummary": "Tapio Pitkäranta presents agentic probes as tangible experiments that help people clarify problems and explore solutions. Examples from a probe factory and a healthcare process exercise show how faster implementation can move the bottleneck toward ideas, orchestration and validation.",
+  "longSummary": "Tapio Pitkäranta separates upstream discovery from downstream engineering while treating their boundary as overlapping rather than fixed. In joint research with Leena Pitkäranta, an agentic probe is a tangible artefact that people can inspect, reject and refine. It might be software, a simulation or another representation of a problem or possible solution. Tapio describes workshops where increasing demand moved the bottleneck from generating ideas to implementing them, leading to a small factory in which agents produced probes from submitted requests. He then outlines work in progress using agentic search to map healthcare processes and imagine alternatives. The point of these examples is to support conversation and validation, rather than to treat generated proposals as deployed solutions. As implementation gets faster, deciding what to investigate and judging whether the result satisfies real constraints become more prominent parts of the work.",
+  "takeaways": [
+    {
+      "point": "Discovery and engineering address different questions, and their boundary can overlap.",
+      "start": 138,
+      "end": 291
+    },
+    {
+      "point": "A tangible probe gives people something to react to when their intent is hard to specify in advance.",
+      "start": 754,
+      "end": 847
+    },
+    {
+      "point": "Probes can test the understanding of a problem as well as demonstrate a possible solution.",
+      "start": 754,
+      "end": 875
+    },
+    {
+      "point": "Scaling implementation shifts constraints toward idea generation, orchestration and human validation.",
+      "start": 935,
+      "end": 1068
+    },
+    {
+      "point": "Agentic search can inform alternative process designs, but imagined healthcare workflows remain exploratory proposals.",
+      "start": 1070,
+      "end": 1243
+    }
+  ],
+  "topics": [
+    "agentic discovery",
+    "prototyping",
+    "problem framing",
+    "human validation",
+    "agent orchestration",
+    "organisational bottlenecks"
+  ],
+  "quoteCandidates": [
+    {
+      "text": "I think we meant the probe to be something tangible, which the agent creates pretty much.",
+      "speaker": "Tapio Pitkäranta"
+    }
+  ],
+  "clipCandidates": [
+    {
+      "title": "What an agentic probe is for",
+      "start": 754,
+      "end": 847,
+      "why": "Defines a probe and illustrates how a person can validate a simulated problem or a proposed solution.",
+      "audience": "Product managers, designers and software teams"
+    },
+    {
+      "title": "When the person building the prototypes becomes the bottleneck",
+      "start": 935,
+      "end": 1068,
+      "why": "A workshop story makes the shifting-bottleneck argument concrete and introduces the probe factory.",
+      "audience": "Teams scaling discovery experiments"
+    }
+  ],
+  "reuseAngles": [
+    "A companion explainer on probes as conversation tools",
+    "A cross-session article comparing discovery bottlenecks with review bottlenecks"
+  ],
+  "editorialCaveats": [
+    "Healthcare examples are described as work in progress and imagined process alternatives, not demonstrated clinical outcomes.",
+    "Statements about benchmark progress and the current AI landscape describe the speaker's view at the October 2026 event; they are not independently validated here."
+  ],
+  "analysisStatus": "Complete-caption analysis, fresh local quote ASR and sampled-frame review complete; editorial approval pending."
+}

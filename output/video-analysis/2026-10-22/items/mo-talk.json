@@ -1,0 +1,77 @@
+{
+  "id": "mo-talk",
+  "shortSummary": "Mo Khazali uses automotive and factory-history analogies to argue that AI adoption needs a redesigned delivery system. Shared platforms, daily learning, early quality checks and customer-outcome measures matter more than token consumption or code output alone.",
+  "longSummary": "Mo Khazali compares today's AI adoption with manufacturers investing in automation while leaving their working systems largely unchanged. Through the Detroit, NUMMI and factory-electrification stories, he argues for redesigning the flow of work rather than expecting better tools to repair an organisation by themselves. He applies ideas from the Toyota production system and the Lean Tech Manifesto to software: an AI platform team shares useful building blocks, teams practise daily problem-solving, reference blueprints and deterministic checks catch recurring defects, and the working week is adapted to the team's actual constraints. His examples emphasise learning from friction and feeding local improvements back into the wider organisation. He closes by shifting attention toward what to build and how to measure it: delivery flow, failures, recovery, rework and value for customers, rather than licences, token leaderboards or generated code volume.",
+  "takeaways": [
+    {
+      "point": "Tool adoption and activity measures do not by themselves demonstrate customer value or an improved delivery system.",
+      "start": 403,
+      "end": 754
+    },
+    {
+      "point": "An AI platform team can turn local solutions into shared model access, observability, skills, standards and support.",
+      "start": 1004,
+      "end": 1154
+    },
+    {
+      "point": "Daily experiments and root-cause discussions develop a learning culture beyond a one-off rollout or workshop.",
+      "start": 1155,
+      "end": 1543
+    },
+    {
+      "point": "Reference blueprints and deterministic rules can prevent known classes of mistakes and reduce repeated correction.",
+      "start": 1543,
+      "end": 1731
+    },
+    {
+      "point": "Audit the whole flow and track outcomes, failures, rework and customer value as bottlenecks shift toward deciding what to build.",
+      "start": 1903,
+      "end": 2139
+    }
+  ],
+  "topics": [
+    "lean software delivery",
+    "AI adoption",
+    "platform engineering",
+    "continuous improvement",
+    "quality gates",
+    "delivery metrics",
+    "customer value"
+  ],
+  "quoteCandidates": [
+    {
+      "text": "AI doesn't fix a team, It just amplifies what is existing there.",
+      "speaker": "Mo Khazali"
+    },
+    {
+      "text": "we shouldn't measure AI by the code that it writes, but actually by the bottlenecks that it solves.",
+      "speaker": "Mo Khazali"
+    }
+  ],
+  "clipCandidates": [
+    {
+      "title": "Turn blueprints into checks that catch recurring mistakes",
+      "start": 1589,
+      "end": 1685,
+      "why": "An implementation example connects a reference pattern with deterministic lint rules and early quality gates.",
+      "audience": "Platform teams and engineers building agent harnesses"
+    },
+    {
+      "title": "Measure the bottlenecks AI solves",
+      "start": 2087,
+      "end": 2139,
+      "why": "A compact conclusion links an audit of the delivery flow to better outcome measures.",
+      "audience": "Engineering leaders and event promotion"
+    }
+  ],
+  "reuseAngles": [
+    "An opening essay for the 2026 archive on changing the delivery system",
+    "A practical discussion of outcome metrics paired with Sini and Viljami"
+  ],
+  "editorialCaveats": [
+    "Historical accounts, external productivity studies and quoted industry statements are used as the speaker's argument; their detailed numerical claims are not independently fact-checked here.",
+    "The internal pilot comparison is observational, not a controlled estimate of the effect of AI or process redesign.",
+    "The spoken percentage at 21:34–21:40 differs from the slide. That figure is not included in the reusable summary."
+  ],
+  "analysisStatus": "Complete-caption analysis, fresh local quote ASR and sampled-frame review complete; editorial approval pending."
+}

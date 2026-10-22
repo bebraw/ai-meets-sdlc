@@ -1,0 +1,1778 @@
+{
+  "id": "jussi-talk",
+  "kind": "talk",
+  "officialTitle": "Driving AI adoption above targets in highly regulated environment",
+  "speakerNames": [
+    "Jussi Hacklin"
+  ],
+  "durationSeconds": 1247.0,
+  "videoFile": "exports/talks-v02/jussi-talk-4k.mp4",
+  "reviewFile": "review/talks-v02/jussi-talk-720p.mp4",
+  "chapters": [
+    {
+      "outputSeconds": 0,
+      "title": "Introduction: AI adoption in a regulated company",
+      "sourceSeconds": 16911,
+      "timestamp": "00:00"
+    },
+    {
+      "outputSeconds": 123,
+      "title": "Elisa’s AI journey from 2024 to 2026",
+      "sourceSeconds": 17031.2,
+      "timestamp": "02:03"
+    },
+    {
+      "outputSeconds": 307,
+      "title": "Working with regulation and customer contracts",
+      "sourceSeconds": 17215.46,
+      "timestamp": "05:07"
+    },
+    {
+      "outputSeconds": 452,
+      "title": "Guidance, training and developer communities",
+      "sourceSeconds": 17360.62,
+      "timestamp": "07:32"
+    },
+    {
+      "outputSeconds": 573,
+      "title": "Curating tools and managing token budgets",
+      "sourceSeconds": 17481.4,
+      "timestamp": "09:33"
+    },
+    {
+      "outputSeconds": 688,
+      "title": "Creating room for safe experiments",
+      "sourceSeconds": 17596.54,
+      "timestamp": "11:28"
+    },
+    {
+      "outputSeconds": 741,
+      "title": "Rethinking the software development lifecycle",
+      "sourceSeconds": 17649.6,
+      "timestamp": "12:21"
+    },
+    {
+      "outputSeconds": 839,
+      "title": "A live, secure shared context and feedback loops",
+      "sourceSeconds": 17747.68,
+      "timestamp": "13:59"
+    },
+    {
+      "outputSeconds": 954,
+      "title": "Key lessons: security, people and practical guidance",
+      "sourceSeconds": 17862.84,
+      "timestamp": "15:54"
+    },
+    {
+      "outputSeconds": 1119,
+      "title": "Leadership direction: stay the course and adapt",
+      "sourceSeconds": 18027.18,
+      "timestamp": "18:39"
+    }
+  ],
+  "materials": [
+    {
+      "label": "Slides (PDF)",
+      "url": "https://www.sdlcai.org/media/talks/driving-ai-adoption-regulated-environment/0b20a9fb-eb1c-42c3-b080-034d9ba4d98e.pdf"
+    }
+  ],
+  "talkUrl": "https://www.sdlcai.org/2026/schedule/#driving-ai-adoption-regulated-environment",
+  "existingSummary": "Jussi Hacklin describes Elisa’s AI adoption journey in a regulated environment. He explains how legal collaboration, clear guidance, shared tools, developer communities and bounded experiments support adoption, then discusses live shared context and the leadership needed as the development process changes.",
+  "captions": {
+    "language": "en",
+    "srt": "transcripts/final-v02/jussi-talk.en.srt",
+    "vtt": "transcripts/final-v02/jussi-talk.en.vtt",
+    "qualityReport": "transcripts/final-v02/jussi-talk.caption-qc.json",
+    "listeningReview": "transcripts/final-v02/jussi-talk.listening-review.txt",
+    "status": "prepared-with-human-listening-review-notes"
+  },
+  "captionSHA256": "f3da129782c1a3f8626f002d49bc76dc64aaf49f06a2dde109ff5fa41b969811",
+  "mediaBytes": 605786854,
+  "cueCount": 255,
+  "listeningWindows": [
+    {
+      "id": "jussi-talk-093",
+      "videoId": "jussi-talk",
+      "startSeconds": 196.5,
+      "endSeconds": 213.3,
+      "priority": "high",
+      "category": "high_impact_wording",
+      "note": "Check spoken year 2004 against the 2024 slide timeline. Multiple ASR passes hear 2004, which remains captioned; do not replace the spoken year from the slide alone.",
+      "currentCaptionText": "maintenance and things like that so it really started rolling and and our adaptation also started to really move forward and one of key things in here was that we actually changed our messaging in 2004 we were let's go out and try these tools how different sort of tools work and on 25 we changed it to we believe that",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/jussi-talk.listening-review.json",
+          "entryIndices": [
+            2,
+            3
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/jussi-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                34
+              ],
+              "text": "the testing phase, some of the maintenance and things like that. So it really started rolling and our adaptation also started to really move forward. And one of the key things in here was that we actually changed our messaging. In 2000..."
+            },
+            {
+              "segments": [
+                35
+              ],
+              "text": "and also started to really move forward. And one of the key things in here was that we actually changed our messaging. In 2004, we were, let's go out and try these tools. How different sort of tools work. And on."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/jussi-talk.listening-review.json",
+          "index": 2
+        },
+        {
+          "path": "transcripts/final-v02/jussi-talk.listening-review.json",
+          "index": 3
+        }
+      ],
+      "sourceSegments": [
+        34,
+        35
+      ],
+      "sourceStartSeconds": 17104.5,
+      "sourceEndSeconds": 17121.3
+    },
+    {
+      "id": "jussi-talk-091",
+      "videoId": "jussi-talk",
+      "startSeconds": 102.6,
+      "endSeconds": 113.96,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "regular things likely regulatory things; listen before repair.",
+      "currentCaptionText": "fields. Of course, one important field that we also have is the cybersecurity, and that's also part of the fact why we then have such a regular things and also other restrictions on what sort of tools can we actually also",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/jussi-talk.listening-review.json",
+          "entryIndices": [
+            5
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/jussi-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                21
+              ],
+              "text": "feel that we also have is the cybersecurity and that's also part of the fact why we then have such a regular death things and also other restrictions on what sort of tools can we actually also also use."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/jussi-talk.listening-review.json",
+          "index": 5
+        }
+      ],
+      "sourceSegments": [
+        21
+      ],
+      "sourceStartSeconds": 17010.6,
+      "sourceEndSeconds": 17021.96
+    },
+    {
+      "id": "jussi-talk-095",
+      "videoId": "jussi-talk",
+      "startSeconds": 782.46,
+      "endSeconds": 792.68,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Context-supported correction still marked for listening: AI dream → AI-driven",
+      "currentCaptionText": "taken into the account in this case there are these three three steps so there's the AI-driven product creation software development and then maintenance and operations.",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/jussi-talk.listening-review.json",
+          "entryIndices": [
+            7
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/jussi-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                118
+              ],
+              "text": "sort of concepts that need to be taken into account. In this case, there are these three steps. So there's the AI dream product creation, software development, and then maintenance, and operations, and basically these"
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 118,
+              "before": "AI dream",
+              "after": "AI-driven",
+              "basis": "Exact slide label AI-driven Product Creation; phonetic ASR mismatch."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/jussi-talk.listening-review.json",
+          "index": 7
+        }
+      ],
+      "sourceSegments": [
+        118
+      ],
+      "sourceStartSeconds": 17690.46,
+      "sourceEndSeconds": 17700.68
+    }
+  ],
+  "cues": [
+    {
+      "id": 1,
+      "start": 4.24,
+      "end": 6.23,
+      "text": "All right, hello, everyone."
+    },
+    {
+      "id": 2,
+      "start": 6.25,
+      "end": 10.16,
+      "text": "I can see that everyone's in their post-lunch hibernation, so I reserved"
+    },
+    {
+      "id": 3,
+      "start": 10.18,
+      "end": 13.22,
+      "text": "something light for you, regulation."
+    },
+    {
+      "id": 4,
+      "start": 13.24,
+      "end": 17.99,
+      "text": "But no time for power nap because I promise I don't mention any regulation by"
+    },
+    {
+      "id": 5,
+      "start": 18.01,
+      "end": 23.61,
+      "text": "name, just how we actually manage to drive adoption even though there is"
+    },
+    {
+      "id": 6,
+      "start": 24.16,
+      "end": 29.1,
+      "text": "regulation. A few words about me."
+    },
+    {
+      "id": 7,
+      "start": 29.16,
+      "end": 35.56,
+      "text": "So I'm the chief of software engineering at Elisa and basically why of course I'm"
+    },
+    {
+      "id": 8,
+      "start": 35.58,
+      "end": 42.47,
+      "text": "here is that I'm driving the strategic initiative on how do we get AI to"
+    },
+    {
+      "id": 9,
+      "start": 42.49,
+      "end": 43.58,
+      "text": "use in the"
+    },
+    {
+      "id": 10,
+      "start": 44.36,
+      "end": 47.32,
+      "text": "software development."
+    },
+    {
+      "id": 11,
+      "start": 47.34,
+      "end": 53.88,
+      "text": "Of course Elisa I bet familiar company for many people in here but"
+    },
+    {
+      "id": 12,
+      "start": 54.06,
+      "end": 60.52,
+      "text": "also just as a brief recap and also the talking about the international"
+    },
+    {
+      "id": 13,
+      "start": 60.54,
+      "end": 63.59,
+      "text": "dimension of our operation so basically we're operating"
+    },
+    {
+      "id": 14,
+      "start": 64.3,
+      "end": 70.3,
+      "text": "in the telecom space the home market is is Finland and Estonia and there we serve the"
+    },
+    {
+      "id": 15,
+      "start": 70.46000000000001,
+      "end": 77.0,
+      "text": "consumer and the On the corporate market it's basically private and"
+    },
+    {
+      "id": 16,
+      "start": 77.26,
+      "end": 83.37,
+      "text": "public companies. And then we have the international operation which sets us to"
+    },
+    {
+      "id": 17,
+      "start": 83.39,
+      "end": 89.86,
+      "text": "35 different countries with around 6,000 employees and in"
+    },
+    {
+      "id": 18,
+      "start": 89.88,
+      "end": 91.42,
+      "text": "there we serve different"
+    },
+    {
+      "id": 19,
+      "start": 92.16,
+      "end": 97.81,
+      "text": "sort of companies in industrial automation and such"
+    },
+    {
+      "id": 20,
+      "start": 97.83,
+      "end": 103.3,
+      "text": "fields. Of course, one important field that we also have is the cybersecurity,"
+    },
+    {
+      "id": 21,
+      "start": 103.92,
+      "end": 109.7,
+      "text": "and that's also part of the fact why we then have such a regular things and also"
+    },
+    {
+      "id": 22,
+      "start": 109.72,
+      "end": 115.85,
+      "text": "other restrictions on what sort of tools can we actually also"
+    },
+    {
+      "id": 23,
+      "start": 115.87,
+      "end": 121.58,
+      "text": "use. But I'll go into those then"
+    },
+    {
+      "id": 24,
+      "start": 121.6,
+      "end": 127.82,
+      "text": "next. Setting setting also the scene on on our journey and how it has been"
+    },
+    {
+      "id": 25,
+      "start": 127.84,
+      "end": 133.46,
+      "text": "progressing through the past years so like many other companies back in the 24 we"
+    },
+    {
+      "id": 26,
+      "start": 133.48,
+      "end": 134.68,
+      "text": "started experimenting"
+    },
+    {
+      "id": 27,
+      "start": 135.44,
+      "end": 141.4,
+      "text": "when the first tools started to started to come of course it was mostly coding in"
+    },
+    {
+      "id": 28,
+      "start": 141.42000000000002,
+      "end": 147.42000000000002,
+      "text": "there but already the questions started arising like what can we what sort of"
+    },
+    {
+      "id": 29,
+      "start": 147.47,
+      "end": 153.96,
+      "text": "tools can we use uh where can we send our our data uh what secure and that sort of"
+    },
+    {
+      "id": 30,
+      "start": 154.05,
+      "end": 159.8,
+      "text": "things so there was the early enthusiasm to get into these all of these new tools"
+    },
+    {
+      "id": 31,
+      "start": 159.97,
+      "end": 166.48,
+      "text": "but then also the hesitation like is this actually safe for us to say for us to use"
+    },
+    {
+      "id": 32,
+      "start": 166.5,
+      "end": 173.02,
+      "text": "since we have so much sensitive sensitive data and operations of course"
+    },
+    {
+      "id": 33,
+      "start": 173.2,
+      "end": 179.87,
+      "text": "then moving forward to 25 then we started to also see the team level"
+    },
+    {
+      "id": 34,
+      "start": 180.01,
+      "end": 182.32,
+      "text": "benefits so basically the adaptation"
+    },
+    {
+      "id": 35,
+      "start": 183.06,
+      "end": 189.45,
+      "text": "started to really roll at that time we started to take the the tools to use in in"
+    },
+    {
+      "id": 36,
+      "start": 189.6,
+      "end": 195.87,
+      "text": "the whole SDLC cycle so also including the design phase the testing phase some of the"
+    },
+    {
+      "id": 37,
+      "start": 196.02,
+      "end": 200.91,
+      "text": "maintenance and things like that so it really started rolling and and our"
+    },
+    {
+      "id": 38,
+      "start": 201.07999999999998,
+      "end": 206.27,
+      "text": "adaptation also started to really move forward and one of key things in here was"
+    },
+    {
+      "id": 39,
+      "start": 206.78,
+      "end": 212.0,
+      "text": "that we actually changed our messaging in 2004 we were let's go out and try these"
+    },
+    {
+      "id": 40,
+      "start": 212.19,
+      "end": 217.82999999999998,
+      "text": "tools how different sort of tools work and on 25 we changed it to we believe that"
+    },
+    {
+      "id": 41,
+      "start": 218.0,
+      "end": 224.28,
+      "text": "there is now benefit to be gotten from the AI tools and we expect also that people"
+    },
+    {
+      "id": 42,
+      "start": 224.44,
+      "end": 230.38,
+      "text": "use them so that really started to drive the adaptation we also originally started"
+    },
+    {
+      "id": 43,
+      "start": 230.5,
+      "end": 231.3,
+      "text": "with only"
+    },
+    {
+      "id": 44,
+      "start": 231.78,
+      "end": 237.09,
+      "text": "internal people using them and then we also included the externals, which of"
+    },
+    {
+      "id": 45,
+      "start": 237.11,
+      "end": 238.74,
+      "text": "course also accelerated it."
+    },
+    {
+      "id": 46,
+      "start": 240.9,
+      "end": 246.56,
+      "text": "Then the agents and their usage started to emerge, that's of course a new challenge,"
+    },
+    {
+      "id": 47,
+      "start": 246.74,
+      "end": 252.32,
+      "text": "where can you set the agents free, what sort of agents should you be using and"
+    },
+    {
+      "id": 48,
+      "start": 252.34,
+      "end": 257.55,
+      "text": "such, and then moving to 26, then of course came the token-based billing, which"
+    },
+    {
+      "id": 49,
+      "start": 257.72,
+      "end": 258.92,
+      "text": "of course was then a new"
+    },
+    {
+      "id": 50,
+      "start": 260.19,
+      "end": 266.08,
+      "text": "challenge to to also tackle like how do we then manage the budgeting related to this"
+    },
+    {
+      "id": 51,
+      "start": 266.1,
+      "end": 271.68,
+      "text": "are people using it wisely and such but of course the monitoring tools also evolved"
+    },
+    {
+      "id": 52,
+      "start": 271.7,
+      "end": 278.59000000000003,
+      "text": "in here at the same time and then we also started to see the users outside"
+    },
+    {
+      "id": 53,
+      "start": 279.3,
+      "end": 282.26,
+      "text": "the software development usage"
+    },
+    {
+      "id": 54,
+      "start": 283.22,
+      "end": 287.82,
+      "text": "to also use the tools that were using in there."
+    },
+    {
+      "id": 55,
+      "start": 287.86,
+      "end": 294.49,
+      "text": "And currently over 50% of our code is made with AI and basically the adoption in the"
+    },
+    {
+      "id": 56,
+      "start": 294.51,
+      "end": 299.06,
+      "text": "development staff is basically everyone using it."
+    },
+    {
+      "id": 57,
+      "start": 299.19,
+      "end": 303.78,
+      "text": "So we've been very successful in actually driving it and also measuring it."
+    },
+    {
+      "id": 58,
+      "start": 304.1,
+      "end": 304.9,
+      "text": "But then"
+    },
+    {
+      "id": 59,
+      "start": 305.38,
+      "end": 312.08,
+      "text": "maybe going to the regulatory part so and the hurdles related to do that so"
+    },
+    {
+      "id": 60,
+      "start": 312.1,
+      "end": 317.68,
+      "text": "first one is of course the legal and regulation that comes from the from the"
+    },
+    {
+      "id": 61,
+      "start": 317.7,
+      "end": 324.42,
+      "text": "regulatory bodies themselves and another one then is the customer"
+    },
+    {
+      "id": 62,
+      "start": 324.89,
+      "end": 330.46,
+      "text": "contracts so being a telecom there's a strict regulation on what what do you"
+    },
+    {
+      "id": 63,
+      "start": 330.5,
+      "end": 334.48,
+      "text": "actually need to have for example in finland what can you have in the eu what"
+    },
+    {
+      "id": 64,
+      "start": 334.5,
+      "end": 339.57,
+      "text": "can you have somewhere somewhere else another thing is the customer contracts so"
+    },
+    {
+      "id": 65,
+      "start": 339.59000000000003,
+      "end": 340.43,
+      "text": "if you have a"
+    },
+    {
+      "id": 66,
+      "start": 341.14,
+      "end": 344.37,
+      "text": "corporate contract with a with certain customer it sets a certain set of"
+    },
+    {
+      "id": 67,
+      "start": 344.39,
+      "end": 349.54,
+      "text": "limitations and basically you need to manage all of these if you want to move"
+    },
+    {
+      "id": 68,
+      "start": 349.58,
+      "end": 353.36,
+      "text": "forward it would be very easy just to say that hey it's so strict that we can't"
+    },
+    {
+      "id": 69,
+      "start": 353.38,
+      "end": 357.31,
+      "text": "actually do anything because it's not safe but that's not really an option in"
+    },
+    {
+      "id": 70,
+      "start": 357.38,
+      "end": 362.69,
+      "text": "business you need to keep moving forward so how we tackled that there was the"
+    },
+    {
+      "id": 71,
+      "start": 363.3,
+      "end": 365.13,
+      "text": "active collaboration with the legal department."
+    },
+    {
+      "id": 72,
+      "start": 365.15,
+      "end": 369.53,
+      "text": "Two years ago, very few were familiar with what"
+    },
+    {
+      "id": 73,
+      "start": 369.94,
+      "end": 376.45,
+      "text": "needs to make it happen so that we can actually get all the legal work in"
+    },
+    {
+      "id": 74,
+      "start": 376.47,
+      "end": 382.46,
+      "text": "order. In two years, all the stakeholders have learned a lot and were a lot better"
+    },
+    {
+      "id": 75,
+      "start": 382.48,
+      "end": 385.79,
+      "text": "in that. Another one is the established vendors."
+    },
+    {
+      "id": 76,
+      "start": 385.81,
+      "end": 390.33,
+      "text": "So although that is a limitation, that is also one sense of security."
+    },
+    {
+      "id": 77,
+      "start": 390.35,
+      "end": 394.81,
+      "text": "So for example, in our case, Going with GitHub, going with Google, these sort of"
+    },
+    {
+      "id": 78,
+      "start": 394.86,
+      "end": 401.39,
+      "text": "vendors that we're using otherwise, they can also ensure that"
+    },
+    {
+      "id": 79,
+      "start": 401.74,
+      "end": 405.78,
+      "text": "things are more secure in the longer run."
+    },
+    {
+      "id": 80,
+      "start": 406.9,
+      "end": 408.75,
+      "text": "And then also limit the limitations."
+    },
+    {
+      "id": 81,
+      "start": 409.56,
+      "end": 414.62,
+      "text": "So basically, if there is a specific customer with extremely strict security"
+    },
+    {
+      "id": 82,
+      "start": 414.64,
+      "end": 419.47,
+      "text": "restrictions, we need to just limit the effect of that and not let it affect the"
+    },
+    {
+      "id": 83,
+      "start": 419.49,
+      "end": 424.01,
+      "text": "whole operation. Because that would be then a serious"
+    },
+    {
+      "id": 84,
+      "start": 424.75,
+      "end": 428.14,
+      "text": "hurdle for all the other things."
+    },
+    {
+      "id": 85,
+      "start": 428.28,
+      "end": 431.43,
+      "text": "Because you need to remember that we have the telecom operation, we have"
+    },
+    {
+      "id": 86,
+      "start": 431.45,
+      "end": 436.62,
+      "text": "international software operation, we have streaming services, we have web shops and"
+    },
+    {
+      "id": 87,
+      "start": 436.64,
+      "end": 442.49,
+      "text": "things like that, that compete in a field that the competition is not always"
+    },
+    {
+      "id": 88,
+      "start": 442.94,
+      "end": 445.58,
+      "text": "regulated as hard as a telecom operator."
+    },
+    {
+      "id": 89,
+      "start": 445.6,
+      "end": 451.68,
+      "text": "So it's a tricky thing, but we've managed to play in that pretty well."
+    },
+    {
+      "id": 90,
+      "start": 452.62,
+      "end": 454.5,
+      "text": "Then next, the guidance."
+    },
+    {
+      "id": 91,
+      "start": 454.69,
+      "end": 457.90999999999997,
+      "text": "So, of course, how is this safe to use?"
+    },
+    {
+      "id": 92,
+      "start": 458.68,
+      "end": 461.0,
+      "text": "How do I use these sort of things?"
+    },
+    {
+      "id": 93,
+      "start": 461.15,
+      "end": 464.77,
+      "text": "Well, the first thing was what I mentioned, that we changed the management"
+    },
+    {
+      "id": 94,
+      "start": 464.79,
+      "end": 469.96,
+      "text": "messaging to actually ensure our people that it is encouraged to use this and we"
+    },
+    {
+      "id": 95,
+      "start": 469.98,
+      "end": 471.64,
+      "text": "expect them to be used."
+    },
+    {
+      "id": 96,
+      "start": 471.65999999999997,
+      "end": 478.45,
+      "text": "And that was a very good message towards the people actually doing the development"
+    },
+    {
+      "id": 97,
+      "start": 478.58,
+      "end": 484.52,
+      "text": "themselves. Then we started to expand our development guides, trainings, and things"
+    },
+    {
+      "id": 98,
+      "start": 484.54,
+      "end": 486.96,
+      "text": "like that. Something that we already have."
+    },
+    {
+      "id": 99,
+      "start": 487.02,
+      "end": 492.92,
+      "text": "We have a technology stack that we're building towards and trying to keep that"
+    },
+    {
+      "id": 100,
+      "start": 492.94,
+      "end": 495.96,
+      "text": "intact. We only added AI into that."
+    },
+    {
+      "id": 101,
+      "start": 495.98,
+      "end": 501.35,
+      "text": "So then we had AI development guide and things like that built in that we can then"
+    },
+    {
+      "id": 102,
+      "start": 501.9,
+      "end": 502.7,
+      "text": "distribute."
+    },
+    {
+      "id": 103,
+      "start": 502.86,
+      "end": 507.56,
+      "text": "Also, the training started rolling so that people could get knowledge on how to use"
+    },
+    {
+      "id": 104,
+      "start": 507.58,
+      "end": 513.97,
+      "text": "the AI. And all of this then combined into our development portal Backstage in our"
+    },
+    {
+      "id": 105,
+      "start": 513.99,
+      "end": 520.46,
+      "text": "case, where you can actually then find from one central place the things that are"
+    },
+    {
+      "id": 106,
+      "start": 520.72,
+      "end": 526.24,
+      "text": "relevant. And, of course, then thinking also further ahead that those are files"
+    },
+    {
+      "id": 107,
+      "start": 526.26,
+      "end": 528.82,
+      "text": "that the AI can then also use."
+    },
+    {
+      "id": 108,
+      "start": 529.4,
+      "end": 534.87,
+      "text": "And all of this combines to the developer community that we have, because that's a"
+    },
+    {
+      "id": 109,
+      "start": 534.89,
+      "end": 538.14,
+      "text": "main tool where we can share experiences, where we can"
+    },
+    {
+      "id": 110,
+      "start": 538.86,
+      "end": 539.81,
+      "text": "communicate towards"
+    },
+    {
+      "id": 111,
+      "start": 540.31,
+      "end": 542.91,
+      "text": "developers, and also a place to come"
+    },
+    {
+      "id": 112,
+      "start": 544.06,
+      "end": 544.86,
+      "text": "together."
+    },
+    {
+      "id": 113,
+      "start": 545.88,
+      "end": 549.88,
+      "text": "Another thing is then one place for the management."
+    },
+    {
+      "id": 114,
+      "start": 549.9,
+      "end": 556.3,
+      "text": "In our case the SRE team so since we have a certain set of tools that we want to use"
+    },
+    {
+      "id": 115,
+      "start": 556.4,
+      "end": 561.24,
+      "text": "and monitor how those are being used we needed a one place to handle that and of"
+    },
+    {
+      "id": 116,
+      "start": 561.26,
+      "end": 566.03,
+      "text": "course what's the most obvious place in a tech organization it's the SRE team"
+    },
+    {
+      "id": 117,
+      "start": 566.05,
+      "end": 571.06,
+      "text": "because basically that enables that the distribution and the management is handled"
+    },
+    {
+      "id": 118,
+      "start": 571.12,
+      "end": 577.78,
+      "text": "and also there's automation happening all the time but then that of course"
+    },
+    {
+      "id": 119,
+      "start": 578.04,
+      "end": 578.84,
+      "text": "then comes"
+    },
+    {
+      "id": 120,
+      "start": 579.32,
+      "end": 585.22,
+      "text": "back to the tooling so the third point there and when what tools can I can I use"
+    },
+    {
+      "id": 121,
+      "start": 585.24,
+      "end": 591.84,
+      "text": "so it goes to the to the fact that in our case the GitHub and the Google are"
+    },
+    {
+      "id": 122,
+      "start": 591.93,
+      "end": 598.32,
+      "text": "our selected selected tools in here and we cover the the amount"
+    },
+    {
+      "id": 123,
+      "start": 598.55,
+      "end": 604.38,
+      "text": "of these tools and also the skills and the MCPs that are being used."
+    },
+    {
+      "id": 124,
+      "start": 604.4,
+      "end": 608.7,
+      "text": "But that doesn't say that it would all come from one place."
+    },
+    {
+      "id": 125,
+      "start": 609.02,
+      "end": 612.25,
+      "text": "So that then relates to our development"
+    },
+    {
+      "id": 126,
+      "start": 612.99,
+      "end": 618.28,
+      "text": "community and people doing development so that we can then see that, hey, there's"
+    },
+    {
+      "id": 127,
+      "start": 618.43,
+      "end": 623.82,
+      "text": "actually an MCP server that we could use and let's take that and let everyone use"
+    },
+    {
+      "id": 128,
+      "start": 623.84,
+      "end": 629.65,
+      "text": "that. Or a certain skill, for example, or an agent for accessibility or something"
+    },
+    {
+      "id": 129,
+      "start": 629.79,
+      "end": 635.29,
+      "text": "like that so then collecting these to a central place where everyone can then also"
+    },
+    {
+      "id": 130,
+      "start": 635.32,
+      "end": 641.38,
+      "text": "find those then also monitoring the usage react to deviations and set the limit so"
+    },
+    {
+      "id": 131,
+      "start": 641.58,
+      "end": 645.49,
+      "text": "especially on the token times when everyone was thinking like how much is"
+    },
+    {
+      "id": 132,
+      "start": 645.63,
+      "end": 652.12,
+      "text": "this actually going to cost so having one centralized view on how do we and on where"
+    },
+    {
+      "id": 133,
+      "start": 652.32,
+      "end": 658.49,
+      "text": "are we going and how do we set set this certain limit so for example the limits"
+    },
+    {
+      "id": 134,
+      "start": 658.51,
+      "end": 664.77,
+      "text": "that we set are regarding the quota just so that no one accidentally doesn't go"
+    },
+    {
+      "id": 135,
+      "start": 664.79,
+      "end": 671.27,
+      "text": "over over the quotas with some agents or something like that if you need more then"
+    },
+    {
+      "id": 136,
+      "start": 671.3,
+      "end": 678.17,
+      "text": "you then you just need to request that and also then actively trying out new tools"
+    },
+    {
+      "id": 137,
+      "start": 678.61,
+      "end": 682.58,
+      "text": "because there is so many different sort of developments going on all the time Of"
+    },
+    {
+      "id": 138,
+      "start": 682.6,
+      "end": 687.96,
+      "text": "course, you need to try out new things and find out what works for us."
+    },
+    {
+      "id": 139,
+      "start": 688.54,
+      "end": 690.95,
+      "text": "And that then moves forward to the experiments."
+    },
+    {
+      "id": 140,
+      "start": 691.44,
+      "end": 696.61,
+      "text": "So, of course, again, thinking that everything is so regulated, how can we"
+    },
+    {
+      "id": 141,
+      "start": 696.63,
+      "end": 698.2,
+      "text": "actually try something out?"
+    },
+    {
+      "id": 142,
+      "start": 698.58,
+      "end": 702.72,
+      "text": "And trying things out, for example, on brownfield is usually very difficult"
+    },
+    {
+      "id": 143,
+      "start": 703.2,
+      "end": 707.05,
+      "text": "because then you get so many different constraints and different sort of"
+    },
+    {
+      "id": 144,
+      "start": 708.04,
+      "end": 711.58,
+      "text": "specifications and things that it's very hard to try those out."
+    },
+    {
+      "id": 145,
+      "start": 711.6,
+      "end": 716.71,
+      "text": "But in those cases, then create sandbox for greenfield development and try"
+    },
+    {
+      "id": 146,
+      "start": 716.73,
+      "end": 719.76,
+      "text": "parallel development streams, for example."
+    },
+    {
+      "id": 147,
+      "start": 720.2,
+      "end": 724.14,
+      "text": "In our case, it might be a small team that is then developing something that is"
+    },
+    {
+      "id": 148,
+      "start": 724.16,
+      "end": 726.72,
+      "text": "completely new on some completely new way."
+    },
+    {
+      "id": 149,
+      "start": 727.16,
+      "end": 733.55,
+      "text": "And then we try to relate all of that to the bigger development organization and"
+    },
+    {
+      "id": 150,
+      "start": 733.67,
+      "end": 739.18,
+      "text": "try to evolve our SDLC cycle then through that."
+    },
+    {
+      "id": 151,
+      "start": 741.6,
+      "end": 747.66,
+      "text": "And in the end, it goes to the fact of like the whole SDLC cycle is evolving and"
+    },
+    {
+      "id": 152,
+      "start": 747.86,
+      "end": 748.68,
+      "text": "transforming."
+    },
+    {
+      "id": 153,
+      "start": 749.38,
+      "end": 754.24,
+      "text": "So first, it was the AI-assisted coding that we started with."
+    },
+    {
+      "id": 154,
+      "start": 754.38,
+      "end": 761.34,
+      "text": "Then we went to the whole cycle regarding the implementation and the"
+    },
+    {
+      "id": 155,
+      "start": 761.36,
+      "end": 764.2,
+      "text": "testing and the maintenance and everything like that."
+    },
+    {
+      "id": 156,
+      "start": 764.22,
+      "end": 770.74,
+      "text": "But now since the development is so fast we started to think that that maybe the"
+    },
+    {
+      "id": 157,
+      "start": 770.91,
+      "end": 775.53,
+      "text": "old cycle with all the specific steps is not relevant anymore like we've also heard"
+    },
+    {
+      "id": 158,
+      "start": 775.55,
+      "end": 781.79,
+      "text": "from the talks today so that there's this different sort of concepts that need to be"
+    },
+    {
+      "id": 159,
+      "start": 781.81,
+      "end": 787.58,
+      "text": "taken into the account in this case there are these three three steps so there's the"
+    },
+    {
+      "id": 160,
+      "start": 787.6,
+      "end": 789.6,
+      "text": "AI-driven product creation software"
+    },
+    {
+      "id": 161,
+      "start": 790.38,
+      "end": 793.24,
+      "text": "development and then maintenance and operations."
+    },
+    {
+      "id": 162,
+      "start": 793.7,
+      "end": 796.88,
+      "text": "And basically, these overlap depending on the case."
+    },
+    {
+      "id": 163,
+      "start": 797.64,
+      "end": 803.45,
+      "text": "So, for example, the product creation, if we think of making a small"
+    },
+    {
+      "id": 164,
+      "start": 803.63,
+      "end": 808.93,
+      "text": "dashboard for internal use, for example, then the product creation is the whole"
+    },
+    {
+      "id": 165,
+      "start": 808.95,
+      "end": 814.48,
+      "text": "SDLC cycle. You just prompt something, put it in an Excel file, and then you get it."
+    },
+    {
+      "id": 166,
+      "start": 814.5,
+      "end": 819.52,
+      "text": "But then if you think of some bigger system, like a new feature for the CRM or"
+    },
+    {
+      "id": 167,
+      "start": 819.54,
+      "end": 824.4,
+      "text": "the customer service channels or something like that then of course you first do the"
+    },
+    {
+      "id": 168,
+      "start": 824.53,
+      "end": 829.71,
+      "text": "product creation for example discussing with with an agent on what sort of the"
+    },
+    {
+      "id": 169,
+      "start": 829.97,
+      "end": 834.03,
+      "text": "feature should it be what sort of epic story should it have and then moving to"
+    },
+    {
+      "id": 170,
+      "start": 834.13,
+      "end": 838.79,
+      "text": "the software development part and then in the end putting it into the production"
+    },
+    {
+      "id": 171,
+      "start": 839.06,
+      "end": 844.15,
+      "text": "with the maintenance and operations and then the overlying the fourth layer there"
+    },
+    {
+      "id": 172,
+      "start": 844.32,
+      "end": 850.01,
+      "text": "the live and secure shared context So that's, of course, very important for"
+    },
+    {
+      "id": 173,
+      "start": 850.03,
+      "end": 855.16,
+      "text": "overall the decision making on all of those three steps for the AI."
+    },
+    {
+      "id": 174,
+      "start": 856.52,
+      "end": 861.46,
+      "text": "And with that, that practically means our internal sources, whether it's the"
+    },
+    {
+      "id": 175,
+      "start": 861.51,
+      "end": 866.62,
+      "text": "ticketing system, whether it's something like Confluence or the Backstage or the"
+    },
+    {
+      "id": 176,
+      "start": 866.8,
+      "end": 872.74,
+      "text": "guides or everything that's related, where we have information regarding the company,"
+    },
+    {
+      "id": 177,
+      "start": 872.76,
+      "end": 874.67,
+      "text": "the way that we want to develop, and"
+    },
+    {
+      "id": 178,
+      "start": 875.38,
+      "end": 879.1,
+      "text": "what do we actually want to build."
+    },
+    {
+      "id": 179,
+      "start": 879.12,
+      "end": 882.67,
+      "text": "So we want to build those step by step."
+    },
+    {
+      "id": 180,
+      "start": 882.69,
+      "end": 888.59,
+      "text": "Some might say that it's the world model, it's a very big word for that, but"
+    },
+    {
+      "id": 181,
+      "start": 888.61,
+      "end": 893.62,
+      "text": "building it piece by piece so that then we can use that on all the stages of the"
+    },
+    {
+      "id": 182,
+      "start": 893.64,
+      "end": 897.76,
+      "text": "development. And it's actually something that we share then if we we look at our"
+    },
+    {
+      "id": 183,
+      "start": 897.78,
+      "end": 903.5,
+      "text": "data and analytics department so it's another place where we have this shared"
+    },
+    {
+      "id": 184,
+      "start": 903.63,
+      "end": 910.4,
+      "text": "context that we can use with agents and in a secure way and I think that"
+    },
+    {
+      "id": 185,
+      "start": 910.42,
+      "end": 915.33,
+      "text": "one key word there also is the live because like more and more we go to the"
+    },
+    {
+      "id": 186,
+      "start": 915.35,
+      "end": 922.02,
+      "text": "live systems more and more there should be self-healing things"
+    },
+    {
+      "id": 187,
+      "start": 922.11,
+      "end": 923.18,
+      "text": "so when some"
+    },
+    {
+      "id": 188,
+      "start": 923.96,
+      "end": 930.94,
+      "text": "anomaly or defect comes up then it actually gets also fixed right away and"
+    },
+    {
+      "id": 189,
+      "start": 931.47,
+      "end": 937.99,
+      "text": "like in all good processes there's also the feedback loop so basically"
+    },
+    {
+      "id": 190,
+      "start": 938.08,
+      "end": 944.5,
+      "text": "we want to see that once we create one product with this sort of a cycle then the"
+    },
+    {
+      "id": 191,
+      "start": 944.72,
+      "end": 950.3,
+      "text": "next ones also learn from those iterations, and it evolves and gets better"
+    },
+    {
+      "id": 192,
+      "start": 950.32,
+      "end": 952.02,
+      "text": "one by one."
+    },
+    {
+      "id": 193,
+      "start": 954.84,
+      "end": 959.98,
+      "text": "So, then some key learnings along the way."
+    },
+    {
+      "id": 194,
+      "start": 960.6,
+      "end": 966.14,
+      "text": "So, the regulation is a challenge, but it's not a roadblock."
+    },
+    {
+      "id": 195,
+      "start": 966.96,
+      "end": 971.7,
+      "text": "So, there's definitely things how you can stay within the regulation because it's"
+    },
+    {
+      "id": 196,
+      "start": 972.23,
+      "end": 977.69,
+      "text": "very difficult to change that, And we definitely don't want to break it because"
+    },
+    {
+      "id": 197,
+      "start": 977.71,
+      "end": 984.64,
+      "text": "like for our type of a company, our whole company relies on us being reliable"
+    },
+    {
+      "id": 198,
+      "start": 984.66,
+      "end": 985.91,
+      "text": "and secure."
+    },
+    {
+      "id": 199,
+      "start": 987.46,
+      "end": 989.7,
+      "text": "Build the security from the day one."
+    },
+    {
+      "id": 200,
+      "start": 989.72,
+      "end": 996.12,
+      "text": "So whether it's the first AI tool that you take into the use, the models, the"
+    },
+    {
+      "id": 201,
+      "start": 996.23,
+      "end": 999.2,
+      "text": "context, anything like that."
+    },
+    {
+      "id": 202,
+      "start": 999.28,
+      "end": 1004.42,
+      "text": "And when you see that those components are secure, then the whole also becomes"
+    },
+    {
+      "id": 203,
+      "start": 1005.2,
+      "end": 1010.18,
+      "text": "secure. So you can't just add it later that now we've gathered all of these"
+    },
+    {
+      "id": 204,
+      "start": 1010.5,
+      "end": 1014.9,
+      "text": "different sort of tools and contexts and everything and now we make them secure."
+    },
+    {
+      "id": 205,
+      "start": 1014.92,
+      "end": 1016.6,
+      "text": "It doesn't work that way."
+    },
+    {
+      "id": 206,
+      "start": 1016.62,
+      "end": 1021.78,
+      "text": "You need to have them piece by piece and then the end result is automatically"
+    },
+    {
+      "id": 207,
+      "start": 1022.54,
+      "end": 1024.98,
+      "text": "also secure. Then limit the limitations."
+    },
+    {
+      "id": 208,
+      "start": 1025.0,
+      "end": 1030.21,
+      "text": "So whenever there's extremely high security demands, then serve that"
+    },
+    {
+      "id": 209,
+      "start": 1030.92,
+      "end": 1033.36,
+      "text": "area separately the"
+    },
+    {
+      "id": 210,
+      "start": 1034.41,
+      "end": 1039.07,
+      "text": "best that you can. But don't expand that to the whole operation, because then that"
+    },
+    {
+      "id": 211,
+      "start": 1039.09,
+      "end": 1042.12,
+      "text": "would then only grind it to a much slower pace."
+    },
+    {
+      "id": 212,
+      "start": 1042.78,
+      "end": 1047.12,
+      "text": "Then the people side, it's mostly about the people."
+    },
+    {
+      "id": 213,
+      "start": 1047.62,
+      "end": 1053.68,
+      "text": "So even though there's technology involved in all the phases during the past two"
+    },
+    {
+      "id": 214,
+      "start": 1053.88,
+      "end": 1059.36,
+      "text": "years, it is about the people and about the community that we can build."
+    },
+    {
+      "id": 215,
+      "start": 1059.38,
+      "end": 1064.52,
+      "text": "And for example, in there, we've then asked our community for developer"
+    },
+    {
+      "id": 216,
+      "start": 1065.3,
+      "end": 1069.04,
+      "text": "survey. Like, how do they feel about the tools?"
+    },
+    {
+      "id": 217,
+      "start": 1069.52,
+      "end": 1072.2,
+      "text": "Do they feel that they have the competence to use it?"
+    },
+    {
+      "id": 218,
+      "start": 1072.4,
+      "end": 1075.61,
+      "text": "Do they feel that they know the limitations and where to use it and things"
+    },
+    {
+      "id": 219,
+      "start": 1075.63,
+      "end": 1079.1,
+      "text": "like that? And then we actually get information from there."
+    },
+    {
+      "id": 220,
+      "start": 1079.3,
+      "end": 1082.53,
+      "text": "And also that helps us build the whole."
+    },
+    {
+      "id": 221,
+      "start": 1083.78,
+      "end": 1086.48,
+      "text": "Curate the tools, manage the portfolio and experiment."
+    },
+    {
+      "id": 222,
+      "start": 1087.04,
+      "end": 1091.32,
+      "text": "So like mentioned, it is a certain portfolio that we have, but it doesn't"
+    },
+    {
+      "id": 223,
+      "start": 1091.34,
+      "end": 1096.26,
+      "text": "mean that we don't try out new things and then also take them into use when needed."
+    },
+    {
+      "id": 224,
+      "start": 1097.32,
+      "end": 1100.26,
+      "text": "Aim for clarity, not quantity when it comes to guidelines."
+    },
+    {
+      "id": 225,
+      "start": 1100.32,
+      "end": 1104.36,
+      "text": "So our guidelines are not 100 page documents."
+    },
+    {
+      "id": 226,
+      "start": 1104.74,
+      "end": 1110.18,
+      "text": "It's more like maybe, let's say, five pages that then get also read."
+    },
+    {
+      "id": 227,
+      "start": 1110.2,
+      "end": 1116.27,
+      "text": "And of course, then keeping them in a format that AI can also use those."
+    },
+    {
+      "id": 228,
+      "start": 1119.18,
+      "end": 1121.59,
+      "text": "Direction, the last and final point."
+    },
+    {
+      "id": 229,
+      "start": 1121.71,
+      "end": 1127.47,
+      "text": "And of course, coming from the management side, this is also very, very crucial in a"
+    },
+    {
+      "id": 230,
+      "start": 1127.62,
+      "end": 1130.17,
+      "text": "sense that management need to create the direction."
+    },
+    {
+      "id": 231,
+      "start": 1130.64,
+      "end": 1136.01,
+      "text": "So if the management is like just go and use AI everywhere, then people get"
+    },
+    {
+      "id": 232,
+      "start": 1136.56,
+      "end": 1139.62,
+      "text": "hesitant and don't know what to actually do."
+    },
+    {
+      "id": 233,
+      "start": 1139.64,
+      "end": 1144.16,
+      "text": "Some forerunners go and adapt all the possible tools, but then on the bigger"
+    },
+    {
+      "id": 234,
+      "start": 1144.28,
+      "end": 1148.56,
+      "text": "picture, people might feel that, hey, I wasn't actually comfortable and am I"
+    },
+    {
+      "id": 235,
+      "start": 1149.1,
+      "end": 1152.4,
+      "text": "responsible if something goes wrong and how that happens?"
+    },
+    {
+      "id": 236,
+      "start": 1152.64,
+      "end": 1157.14,
+      "text": "You need to set a clear direction that this is actually what is expected and this"
+    },
+    {
+      "id": 237,
+      "start": 1157.28,
+      "end": 1159.44,
+      "text": "is the direction that we're going."
+    },
+    {
+      "id": 238,
+      "start": 1160.46,
+      "end": 1165.06,
+      "text": "And regarding this, don't underestimate the amount of repetition that you also"
+    },
+    {
+      "id": 239,
+      "start": 1165.1,
+      "end": 1166.6,
+      "text": "need to do with this message."
+    },
+    {
+      "id": 240,
+      "start": 1167.06,
+      "end": 1171.84,
+      "text": "Because the world is changing so fast, you just need to keep on repeating and"
+    },
+    {
+      "id": 241,
+      "start": 1171.86,
+      "end": 1174.18,
+      "text": "repeating it again and again."
+    },
+    {
+      "id": 242,
+      "start": 1175.14,
+      "end": 1179.04,
+      "text": "And then the final point, stay the course, but adjust the sails."
+    },
+    {
+      "id": 243,
+      "start": 1179.06,
+      "end": 1185.85,
+      "text": "Like if we look half a year back, did we know this much about how the agents"
+    },
+    {
+      "id": 244,
+      "start": 1185.98,
+      "end": 1190.57,
+      "text": "would affect, how much the tokens would affect, what are the new models capable of"
+    },
+    {
+      "id": 245,
+      "start": 1190.59,
+      "end": 1192.94,
+      "text": "doing or not capable of doing?"
+    },
+    {
+      "id": 246,
+      "start": 1193.76,
+      "end": 1197.82,
+      "text": "Well, to some extent we did, but of course it's very hard to estimate then what it"
+    },
+    {
+      "id": 247,
+      "start": 1197.84,
+      "end": 1200.9,
+      "text": "will be then, for example, in the next year."
+    },
+    {
+      "id": 248,
+      "start": 1201.26,
+      "end": 1204.46,
+      "text": "But that still doesn't mean that we should change the course."
+    },
+    {
+      "id": 249,
+      "start": 1204.48,
+      "end": 1210.74,
+      "text": "We should keep the course of taking the maximum amount of benefit from the AI, but"
+    },
+    {
+      "id": 250,
+      "start": 1210.76,
+      "end": 1215.06,
+      "text": "adjust the sails. So basically being flexible in a sense that actually this"
+    },
+    {
+      "id": 251,
+      "start": 1215.08,
+      "end": 1216.84,
+      "text": "tool doesn't serve us anymore."
+    },
+    {
+      "id": 252,
+      "start": 1217.1,
+      "end": 1222.39,
+      "text": "Or now this tool actually gives us better security or compliance to somewhere."
+    },
+    {
+      "id": 253,
+      "start": 1222.62,
+      "end": 1229.59,
+      "text": "And now let's take that into the use and then spread the AI to the operation that"
+    },
+    {
+      "id": 254,
+      "start": 1229.61,
+      "end": 1230.41,
+      "text": "way."
+    },
+    {
+      "id": 255,
+      "start": 1233.58,
+      "end": 1237.52,
+      "text": "So that's me. Thank you so much for listening."
+    }
+  ]
+}

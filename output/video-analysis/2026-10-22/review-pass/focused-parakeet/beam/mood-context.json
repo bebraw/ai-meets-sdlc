@@ -1,0 +1,282 @@
+{
+  "text": "You should really think why you're building this, is this relevant? Is this actually bringing us some value at the end?",
+  "sentences": [
+    {
+      "text": " You should really think why you're building this, is this relevant?",
+      "start": 35.52,
+      "end": 39.76,
+      "duration": 4.24,
+      "confidence": 0.75,
+      "tokens": [
+        {
+          "text": " You",
+          "start": 35.52,
+          "end": 35.68,
+          "duration": 0.16,
+          "confidence": 0.917
+        },
+        {
+          "text": " sho",
+          "start": 35.68,
+          "end": 35.76,
+          "duration": 0.08,
+          "confidence": 0.92
+        },
+        {
+          "text": "uld",
+          "start": 35.76,
+          "end": 36.0,
+          "duration": 0.24,
+          "confidence": 0.768
+        },
+        {
+          "text": " really",
+          "start": 36.0,
+          "end": 36.32,
+          "duration": 0.32,
+          "confidence": 0.751
+        },
+        {
+          "text": " think",
+          "start": 36.32,
+          "end": 36.64,
+          "duration": 0.32,
+          "confidence": 0.989
+        },
+        {
+          "text": " wh",
+          "start": 37.28,
+          "end": 37.44,
+          "duration": 0.16,
+          "confidence": 0.905
+        },
+        {
+          "text": "y",
+          "start": 37.44,
+          "end": 37.6,
+          "duration": 0.16,
+          "confidence": 0.722
+        },
+        {
+          "text": " you",
+          "start": 37.6,
+          "end": 37.68,
+          "duration": 0.08,
+          "confidence": 0.426
+        },
+        {
+          "text": "'",
+          "start": 37.68,
+          "end": 37.84,
+          "duration": 0.16,
+          "confidence": 0.518
+        },
+        {
+          "text": "re",
+          "start": 37.84,
+          "end": 37.92,
+          "duration": 0.08,
+          "confidence": 0.973
+        },
+        {
+          "text": " bu",
+          "start": 37.92,
+          "end": 38.0,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "ild",
+          "start": 38.0,
+          "end": 38.08,
+          "duration": 0.08,
+          "confidence": 0.695
+        },
+        {
+          "text": "ing",
+          "start": 38.08,
+          "end": 38.32,
+          "duration": 0.24,
+          "confidence": 0.457
+        },
+        {
+          "text": " this",
+          "start": 38.32,
+          "end": 38.48,
+          "duration": 0.16,
+          "confidence": 0.96
+        },
+        {
+          "text": ",",
+          "start": 38.48,
+          "end": 38.56,
+          "duration": 0.08,
+          "confidence": 0.286
+        },
+        {
+          "text": " is",
+          "start": 38.56,
+          "end": 38.8,
+          "duration": 0.24,
+          "confidence": 0.529
+        },
+        {
+          "text": " this",
+          "start": 38.96,
+          "end": 39.2,
+          "duration": 0.24,
+          "confidence": 0.921
+        },
+        {
+          "text": " r",
+          "start": 39.2,
+          "end": 39.28,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "ele",
+          "start": 39.28,
+          "end": 39.36,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "v",
+          "start": 39.36,
+          "end": 39.44,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "ant",
+          "start": 39.44,
+          "end": 39.6,
+          "duration": 0.16,
+          "confidence": 0.968
+        },
+        {
+          "text": "?",
+          "start": 39.6,
+          "end": 39.76,
+          "duration": 0.16,
+          "confidence": 0.639
+        }
+      ]
+    },
+    {
+      "text": " Is this actually bringing us some value at the end?",
+      "start": 39.76,
+      "end": 44.56,
+      "duration": 4.8,
+      "confidence": 0.842,
+      "tokens": [
+        {
+          "text": " Is",
+          "start": 39.76,
+          "end": 39.92,
+          "duration": 0.16,
+          "confidence": 0.964
+        },
+        {
+          "text": " this",
+          "start": 39.92,
+          "end": 40.16,
+          "duration": 0.24,
+          "confidence": 0.899
+        },
+        {
+          "text": " actu",
+          "start": 40.16,
+          "end": 40.32,
+          "duration": 0.16,
+          "confidence": 0.929
+        },
+        {
+          "text": "ally",
+          "start": 40.32,
+          "end": 40.56,
+          "duration": 0.24,
+          "confidence": 0.967
+        },
+        {
+          "text": " br",
+          "start": 40.56,
+          "end": 40.72,
+          "duration": 0.16,
+          "confidence": 0.919
+        },
+        {
+          "text": "ing",
+          "start": 40.72,
+          "end": 40.88,
+          "duration": 0.16,
+          "confidence": 0.925
+        },
+        {
+          "text": "ing",
+          "start": 40.88,
+          "end": 41.2,
+          "duration": 0.32,
+          "confidence": 0.867
+        },
+        {
+          "text": " us",
+          "start": 41.2,
+          "end": 41.44,
+          "duration": 0.24,
+          "confidence": 0.845
+        },
+        {
+          "text": " some",
+          "start": 41.84,
+          "end": 42.16,
+          "duration": 0.32,
+          "confidence": 0.911
+        },
+        {
+          "text": " val",
+          "start": 42.16,
+          "end": 42.4,
+          "duration": 0.24,
+          "confidence": 0.726
+        },
+        {
+          "text": "ue",
+          "start": 42.4,
+          "end": 42.64,
+          "duration": 0.24,
+          "confidence": 0.466
+        },
+        {
+          "text": " at",
+          "start": 42.64,
+          "end": 42.96,
+          "duration": 0.32,
+          "confidence": 0.831
+        },
+        {
+          "text": " the",
+          "start": 42.96,
+          "end": 43.28,
+          "duration": 0.32,
+          "confidence": 0.973
+        },
+        {
+          "text": " end",
+          "start": 43.28,
+          "end": 43.6,
+          "duration": 0.32,
+          "confidence": 0.979
+        },
+        {
+          "text": "?",
+          "start": 44.24,
+          "end": 44.56,
+          "duration": 0.32,
+          "confidence": 0.641
+        }
+      ]
+    }
+  ]
+}

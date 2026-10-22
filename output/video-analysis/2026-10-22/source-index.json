@@ -1,0 +1,1330 @@
+{
+  "productionRoot": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18",
+  "publicationPackage": "metadata/upload-package-final-v08.json",
+  "timebase": "Edited video seconds; title cards are already included.",
+  "items": [
+    {
+      "id": "mo-talk",
+      "kind": "talk",
+      "officialTitle": "1978: The Last Good Year",
+      "speakerNames": [
+        "Mo Khazali"
+      ],
+      "durationSeconds": 2150.0,
+      "videoFile": "exports/talks-v02/mo-talk-4k.mp4",
+      "reviewFile": "review/talks-v02/mo-talk-720p.mp4",
+      "chapters": [
+        {
+          "outputSeconds": 0,
+          "title": "Opening film and introduction",
+          "sourceSeconds": 1185.0,
+          "timestamp": "00:00"
+        },
+        {
+          "outputSeconds": 97,
+          "title": "Detroit in 1978: why automation was not enough",
+          "sourceSeconds": 1279.66,
+          "timestamp": "01:37"
+        },
+        {
+          "outputSeconds": 403,
+          "title": "AI adoption and misleading productivity metrics",
+          "sourceSeconds": 1585.82,
+          "timestamp": "06:43"
+        },
+        {
+          "outputSeconds": 755,
+          "title": "Redesigning the system: from steam engines to NUMMI",
+          "sourceSeconds": 1937.78,
+          "timestamp": "12:35"
+        },
+        {
+          "outputSeconds": 1001,
+          "title": "Building an AI platform team",
+          "sourceSeconds": 2183.88,
+          "timestamp": "16:41"
+        },
+        {
+          "outputSeconds": 1155,
+          "title": "Kaizen and a learning organisation",
+          "sourceSeconds": 2337.3,
+          "timestamp": "19:15"
+        },
+        {
+          "outputSeconds": 1540,
+          "title": "Right first time: blueprints and quality gates",
+          "sourceSeconds": 2722.74,
+          "timestamp": "25:40"
+        },
+        {
+          "outputSeconds": 1731,
+          "title": "Just in time: redesigning the development week",
+          "sourceSeconds": 2913.74,
+          "timestamp": "28:51"
+        },
+        {
+          "outputSeconds": 1903,
+          "title": "Measuring outcomes and building the right thing",
+          "sourceSeconds": 3085.06,
+          "timestamp": "31:43"
+        },
+        {
+          "outputSeconds": 2087,
+          "title": "Takeaways: audit the flow and measure outcomes",
+          "sourceSeconds": 3269.2,
+          "timestamp": "34:47"
+        }
+      ],
+      "materials": [
+        {
+          "label": "Slides (PDF)",
+          "url": "https://www.sdlcai.org/media/talks/mo-khazali-industry-perspective/f2ba9ef0-a8bd-4062-b4dc-5c779e707405.pdf"
+        },
+        {
+          "label": "Presentation",
+          "url": "https://sdlcai-1978-film.mojavad.workers.dev/presenter"
+        }
+      ],
+      "talkUrl": "https://www.sdlcai.org/2026/schedule/#mo-khazali-industry-perspective",
+      "existingSummary": "Mo Khazali compares AI adoption with the automotive industry’s automation push, then applies lean principles to software delivery: shared platforms, continuous learning, quality gates and measures of customer value.",
+      "captions": {
+        "language": "en",
+        "srt": "transcripts/final-v02/mo-talk.en.srt",
+        "vtt": "transcripts/final-v02/mo-talk.en.vtt",
+        "qualityReport": "transcripts/final-v02/mo-talk.caption-qc.json",
+        "listeningReview": "transcripts/final-v02/mo-talk.listening-review.txt",
+        "status": "prepared-with-human-listening-review-notes"
+      },
+      "captionSHA256": "1438adb23046c3dbd33d061f461a38d6ec7de6311cb838ec0a8477fb8cd1f820",
+      "mediaBytes": 1023332708,
+      "cueCount": 631
+    },
+    {
+      "id": "ohans-talk",
+      "kind": "talk",
+      "officialTitle": "Zero-trust harnesses for agentic software delivery",
+      "speakerNames": [
+        "Ohans Emmanuel"
+      ],
+      "durationSeconds": 1929.0,
+      "videoFile": "exports/talks-v02/ohans-talk-4k.mp4",
+      "reviewFile": "review/talks-v02/ohans-talk-720p.mp4",
+      "chapters": [
+        {
+          "outputSeconds": 0,
+          "title": "Introduction: what coding agents can and cannot do",
+          "sourceSeconds": 3437,
+          "timestamp": "00:00"
+        },
+        {
+          "outputSeconds": 327,
+          "title": "Software delivery starts with shared intent",
+          "sourceSeconds": 3761.04,
+          "timestamp": "05:27"
+        },
+        {
+          "outputSeconds": 539,
+          "title": "Review implementation plans before pull requests",
+          "sourceSeconds": 3973.74,
+          "timestamp": "08:59"
+        },
+        {
+          "outputSeconds": 687,
+          "title": "Pair models and move review into the build",
+          "sourceSeconds": 4121.58,
+          "timestamp": "11:27"
+        },
+        {
+          "outputSeconds": 889,
+          "title": "Keeping a mental model of the system",
+          "sourceSeconds": 4323.98,
+          "timestamp": "14:49"
+        },
+        {
+          "outputSeconds": 1078,
+          "title": "Independent QA and regression testing",
+          "sourceSeconds": 4512.56,
+          "timestamp": "17:58"
+        },
+        {
+          "outputSeconds": 1329,
+          "title": "Exploratory testing and the test pyramid",
+          "sourceSeconds": 4763.02,
+          "timestamp": "22:09"
+        },
+        {
+          "outputSeconds": 1499,
+          "title": "Post-deployment monitoring across the whole system",
+          "sourceSeconds": 4933.62,
+          "timestamp": "24:59"
+        },
+        {
+          "outputSeconds": 1698,
+          "title": "Persistent agents and feedback into the next plan",
+          "sourceSeconds": 5132.48,
+          "timestamp": "28:18"
+        },
+        {
+          "outputSeconds": 1878,
+          "title": "The complete delivery and verification loop",
+          "sourceSeconds": 5312.32,
+          "timestamp": "31:18"
+        }
+      ],
+      "materials": [],
+      "talkUrl": "https://www.sdlcai.org/2026/schedule/#ohans-emmanuel-industry-perspective",
+      "existingSummary": "Ohans Emmanuel walks through a connected software-delivery workflow: shared intent, implementation-plan review, paired models, visual system understanding, independent QA and production feedback that informs the next change.",
+      "captions": {
+        "language": "en",
+        "srt": "transcripts/final-v02/ohans-talk.en.srt",
+        "vtt": "transcripts/final-v02/ohans-talk.en.vtt",
+        "qualityReport": "transcripts/final-v02/ohans-talk.caption-qc.json",
+        "listeningReview": "transcripts/final-v02/ohans-talk.listening-review.txt",
+        "status": "prepared-with-human-listening-review-notes"
+      },
+      "captionSHA256": "6d7881a31fb0ff7900bf7f9b85708c975979438150ffd06c88d888780a163b32",
+      "mediaBytes": 887398051,
+      "cueCount": 445
+    },
+    {
+      "id": "jenni-talk",
+      "kind": "talk",
+      "officialTitle": "Why Leaders Should Use AI Themselves and Eat Their Own Dog Food?",
+      "speakerNames": [
+        "Jenni Kylmäkoski"
+      ],
+      "durationSeconds": 1530.0,
+      "videoFile": "exports/talks-v02/jenni-talk-4k.mp4",
+      "reviewFile": "review/talks-v02/jenni-talk-720p.mp4",
+      "chapters": [
+        {
+          "outputSeconds": 0,
+          "title": "Introduction: why leaders need firsthand AI experience",
+          "sourceSeconds": 5473,
+          "timestamp": "00:00"
+        },
+        {
+          "outputSeconds": 341,
+          "title": "Using AI to build tools for leadership",
+          "sourceSeconds": 5811.78,
+          "timestamp": "05:41"
+        },
+        {
+          "outputSeconds": 543,
+          "title": "Developer experience and getting started",
+          "sourceSeconds": 6013.32,
+          "timestamp": "09:03"
+        },
+        {
+          "outputSeconds": 690,
+          "title": "Experimentation, sharing and empathy",
+          "sourceSeconds": 6160.66,
+          "timestamp": "11:30"
+        },
+        {
+          "outputSeconds": 826,
+          "title": "Building a reusable AI toolbox",
+          "sourceSeconds": 6296.0,
+          "timestamp": "13:46"
+        },
+        {
+          "outputSeconds": 960,
+          "title": "A Jira mistake: permissions, logging and guardrails",
+          "sourceSeconds": 6430.92,
+          "timestamp": "16:00"
+        },
+        {
+          "outputSeconds": 1160,
+          "title": "Making time for learning and setting priorities",
+          "sourceSeconds": 6630.12,
+          "timestamp": "19:20"
+        },
+        {
+          "outputSeconds": 1250,
+          "title": "Treating AI assets as a product",
+          "sourceSeconds": 6720.02,
+          "timestamp": "20:50"
+        },
+        {
+          "outputSeconds": 1381,
+          "title": "Six lessons and a path to better leadership",
+          "sourceSeconds": 6851.6,
+          "timestamp": "23:01"
+        }
+      ],
+      "materials": [
+        {
+          "label": "Slides (PDF)",
+          "url": "https://www.sdlcai.org/media/talks/jenni-kylmakoski-industry-perspective/d6658bed-6f24-4668-b331-b70df7bd7f55.pdf"
+        }
+      ],
+      "talkUrl": "https://www.sdlcai.org/2026/schedule/#jenni-kylmakoski-industry-perspective",
+      "existingSummary": "Jenni Kylmäkoski shares what she learned by using AI to build her own leadership tools at Nokia: improving developer experience, making time to learn, adding guardrails and treating AI assets as maintained products. A Jira mishap illustrates why firsthand experience matters for leading the change.",
+      "captions": {
+        "language": "en",
+        "srt": "transcripts/final-v02/jenni-talk.en.srt",
+        "vtt": "transcripts/final-v02/jenni-talk.en.vtt",
+        "qualityReport": "transcripts/final-v02/jenni-talk.caption-qc.json",
+        "listeningReview": "transcripts/final-v02/jenni-talk.listening-review.txt",
+        "status": "prepared-with-human-listening-review-notes"
+      },
+      "captionSHA256": "ce6b3713d2513e59d6a40de5512c02bc0710d2b4d484d43987e37f20130b3fc8",
+      "mediaBytes": 725704474,
+      "cueCount": 298
+    },
+    {
+      "id": "tapio-talk",
+      "kind": "talk",
+      "officialTitle": "The Agentic Probe: The Instrument of Agentic Discovery & Engineering",
+      "speakerNames": [
+        "Tapio Pitkäranta"
+      ],
+      "durationSeconds": 1359.0,
+      "videoFile": "exports/talks-v02/tapio-talk-4k.mp4",
+      "reviewFile": "review/talks-v02/tapio-talk-720p.mp4",
+      "chapters": [
+        {
+          "outputSeconds": 0,
+          "title": "Introduction and the research behind agentic probes",
+          "sourceSeconds": 8466,
+          "timestamp": "00:00"
+        },
+        {
+          "outputSeconds": 138,
+          "title": "The shift from agentic engineering to discovery",
+          "sourceSeconds": 8601.68,
+          "timestamp": "02:18"
+        },
+        {
+          "outputSeconds": 345,
+          "title": "A personal view of the current AI landscape",
+          "sourceSeconds": 8808.0,
+          "timestamp": "05:45"
+        },
+        {
+          "outputSeconds": 652,
+          "title": "Mapping discovery onto development processes",
+          "sourceSeconds": 9115.46,
+          "timestamp": "10:52"
+        },
+        {
+          "outputSeconds": 754,
+          "title": "Agentic probes: making problems and solutions tangible",
+          "sourceSeconds": 9217.38,
+          "timestamp": "12:34"
+        },
+        {
+          "outputSeconds": 869,
+          "title": "Agentic search and evidence gathering",
+          "sourceSeconds": 9332.46,
+          "timestamp": "14:29"
+        },
+        {
+          "outputSeconds": 929,
+          "title": "Experiments: building a probe factory",
+          "sourceSeconds": 9392.06,
+          "timestamp": "15:29"
+        },
+        {
+          "outputSeconds": 1070,
+          "title": "Exploring healthcare processes with agents",
+          "sourceSeconds": 9533.4,
+          "timestamp": "17:50"
+        },
+        {
+          "outputSeconds": 1243,
+          "title": "Takeaways: discovery, engineering and moving bottlenecks",
+          "sourceSeconds": 9706.52,
+          "timestamp": "20:43"
+        }
+      ],
+      "materials": [
+        {
+          "label": "Related resource",
+          "url": "https://longshoreforrest.github.io/publications/agentic-discovery/"
+        }
+      ],
+      "talkUrl": "https://www.sdlcai.org/2026/schedule/#agentic-discovery",
+      "existingSummary": "Tapio Pitkäranta presents agentic probes as tangible experiments for exploring problems and testing possible solutions. Drawing on research with Leena Pitkäranta, he describes a probe factory, agentic search and a healthcare process example, while asking how discovery changes as implementation becomes faster.",
+      "captions": {
+        "language": "en",
+        "srt": "transcripts/final-v02/tapio-talk.en.srt",
+        "vtt": "transcripts/final-v02/tapio-talk.en.vtt",
+        "qualityReport": "transcripts/final-v02/tapio-talk.caption-qc.json",
+        "listeningReview": "transcripts/final-v02/tapio-talk.listening-review.txt",
+        "status": "prepared-with-human-listening-review-notes"
+      },
+      "captionSHA256": "048ab8578e67f836d19f4f89dca2e3a63a6f59e6fbbd9c018634f88558d6edb6",
+      "mediaBytes": 600515129,
+      "cueCount": 267
+    },
+    {
+      "id": "joongi-talk",
+      "kind": "talk",
+      "officialTitle": "Generative UI for users, not just for designers",
+      "speakerNames": [
+        "Joongi Shin"
+      ],
+      "durationSeconds": 1162.0,
+      "videoFile": "exports/talks-v02/joongi-talk-4k.mp4",
+      "reviewFile": "review/talks-v02/joongi-talk-720p.mp4",
+      "chapters": [
+        {
+          "outputSeconds": 0,
+          "title": "Introduction: interfaces for everyday tasks",
+          "sourceSeconds": 9868,
+          "timestamp": "00:00"
+        },
+        {
+          "outputSeconds": 103,
+          "title": "The promise of generative UI and the designer–user gap",
+          "sourceSeconds": 9968.02,
+          "timestamp": "01:43"
+        },
+        {
+          "outputSeconds": 297,
+          "title": "How a generative UI system works",
+          "sourceSeconds": 10162.78,
+          "timestamp": "04:57"
+        },
+        {
+          "outputSeconds": 412,
+          "title": "Envisioning and articulating what you need",
+          "sourceSeconds": 10277.14,
+          "timestamp": "06:52"
+        },
+        {
+          "outputSeconds": 504,
+          "title": "Three approaches: prompts, subtasks and surveys",
+          "sourceSeconds": 10369.88,
+          "timestamp": "08:24"
+        },
+        {
+          "outputSeconds": 728,
+          "title": "The study: generating and using interfaces",
+          "sourceSeconds": 10593.98,
+          "timestamp": "12:08"
+        },
+        {
+          "outputSeconds": 790,
+          "title": "Findings: usability, alignment and prior experience",
+          "sourceSeconds": 10655.16,
+          "timestamp": "13:10"
+        },
+        {
+          "outputSeconds": 932,
+          "title": "What the findings mean for task-oriented users",
+          "sourceSeconds": 10797.02,
+          "timestamp": "15:32"
+        },
+        {
+          "outputSeconds": 1035,
+          "title": "When follow-up questions fail",
+          "sourceSeconds": 10900.0,
+          "timestamp": "17:15"
+        },
+        {
+          "outputSeconds": 1121,
+          "title": "Takeaways: help users envision without designing",
+          "sourceSeconds": 10986.92,
+          "timestamp": "18:41"
+        }
+      ],
+      "materials": [
+        {
+          "label": "Slides (PDF)",
+          "url": "https://www.sdlcai.org/media/talks/joongi-shin-ui-perspective/d18b4c6d-4204-474b-88f9-0ffab2c9abf3.pdf"
+        }
+      ],
+      "talkUrl": "https://www.sdlcai.org/2026/schedule/#joongi-shin-ui-perspective",
+      "existingSummary": "Joongi Shin examines generative UI from the perspective of people trying to complete everyday tasks. He compares prompt-only, subtask–UI and prompt-survey approaches in a user study, exploring how design experience, the generation process and follow-up questions affect the resulting experience.",
+      "captions": {
+        "language": "en",
+        "srt": "transcripts/final-v02/joongi-talk.en.srt",
+        "vtt": "transcripts/final-v02/joongi-talk.en.vtt",
+        "qualityReport": "transcripts/final-v02/joongi-talk.caption-qc.json",
+        "listeningReview": "transcripts/final-v02/joongi-talk.listening-review.txt",
+        "status": "prepared-with-human-listening-review-notes"
+      },
+      "captionSHA256": "505851513785e73c77e86d28278606eae5fe054cdae3fba7e66f1dc54ccabfcc",
+      "mediaBytes": 574357899,
+      "cueCount": 263
+    },
+    {
+      "id": "jussi-talk",
+      "kind": "talk",
+      "officialTitle": "Driving AI adoption above targets in highly regulated environment",
+      "speakerNames": [
+        "Jussi Hacklin"
+      ],
+      "durationSeconds": 1247.0,
+      "videoFile": "exports/talks-v02/jussi-talk-4k.mp4",
+      "reviewFile": "review/talks-v02/jussi-talk-720p.mp4",
+      "chapters": [
+        {
+          "outputSeconds": 0,
+          "title": "Introduction: AI adoption in a regulated company",
+          "sourceSeconds": 16911,
+          "timestamp": "00:00"
+        },
+        {
+          "outputSeconds": 123,
+          "title": "Elisa’s AI journey from 2024 to 2026",
+          "sourceSeconds": 17031.2,
+          "timestamp": "02:03"
+        },
+        {
+          "outputSeconds": 307,
+          "title": "Working with regulation and customer contracts",
+          "sourceSeconds": 17215.46,
+          "timestamp": "05:07"
+        },
+        {
+          "outputSeconds": 452,
+          "title": "Guidance, training and developer communities",
+          "sourceSeconds": 17360.62,
+          "timestamp": "07:32"
+        },
+        {
+          "outputSeconds": 573,
+          "title": "Curating tools and managing token budgets",
+          "sourceSeconds": 17481.4,
+          "timestamp": "09:33"
+        },
+        {
+          "outputSeconds": 688,
+          "title": "Creating room for safe experiments",
+          "sourceSeconds": 17596.54,
+          "timestamp": "11:28"
+        },
+        {
+          "outputSeconds": 741,
+          "title": "Rethinking the software development lifecycle",
+          "sourceSeconds": 17649.6,
+          "timestamp": "12:21"
+        },
+        {
+          "outputSeconds": 839,
+          "title": "A live, secure shared context and feedback loops",
+          "sourceSeconds": 17747.68,
+          "timestamp": "13:59"
+        },
+        {
+          "outputSeconds": 954,
+          "title": "Key lessons: security, people and practical guidance",
+          "sourceSeconds": 17862.84,
+          "timestamp": "15:54"
+        },
+        {
+          "outputSeconds": 1119,
+          "title": "Leadership direction: stay the course and adapt",
+          "sourceSeconds": 18027.18,
+          "timestamp": "18:39"
+        }
+      ],
+      "materials": [
+        {
+          "label": "Slides (PDF)",
+          "url": "https://www.sdlcai.org/media/talks/driving-ai-adoption-regulated-environment/0b20a9fb-eb1c-42c3-b080-034d9ba4d98e.pdf"
+        }
+      ],
+      "talkUrl": "https://www.sdlcai.org/2026/schedule/#driving-ai-adoption-regulated-environment",
+      "existingSummary": "Jussi Hacklin describes Elisa’s AI adoption journey in a regulated environment. He explains how legal collaboration, clear guidance, shared tools, developer communities and bounded experiments support adoption, then discusses live shared context and the leadership needed as the development process changes.",
+      "captions": {
+        "language": "en",
+        "srt": "transcripts/final-v02/jussi-talk.en.srt",
+        "vtt": "transcripts/final-v02/jussi-talk.en.vtt",
+        "qualityReport": "transcripts/final-v02/jussi-talk.caption-qc.json",
+        "listeningReview": "transcripts/final-v02/jussi-talk.listening-review.txt",
+        "status": "prepared-with-human-listening-review-notes"
+      },
+      "captionSHA256": "f3da129782c1a3f8626f002d49bc76dc64aaf49f06a2dde109ff5fa41b969811",
+      "mediaBytes": 605786854,
+      "cueCount": 255
+    },
+    {
+      "id": "viljami-talk",
+      "kind": "talk",
+      "officialTitle": "I Let Non-Engineers Vibe-Code Our Production Codebase",
+      "speakerNames": [
+        "Viljami Kuosmanen"
+      ],
+      "durationSeconds": 1335.0,
+      "videoFile": "exports/talks-v02/viljami-talk-4k.mp4",
+      "reviewFile": "review/talks-v02/viljami-talk-720p.mp4",
+      "chapters": [
+        {
+          "outputSeconds": 0,
+          "title": "Introduction: opening the codebase to non-engineers",
+          "sourceSeconds": 18227,
+          "timestamp": "00:00"
+        },
+        {
+          "outputSeconds": 156,
+          "title": "The Slack coworker and pull-request workflow",
+          "sourceSeconds": 18380.58,
+          "timestamp": "02:36"
+        },
+        {
+          "outputSeconds": 240,
+          "title": "Giving agents codebase and business context",
+          "sourceSeconds": 18464.62,
+          "timestamp": "04:00"
+        },
+        {
+          "outputSeconds": 323,
+          "title": "Why Slack helped adoption spread",
+          "sourceSeconds": 18547.54,
+          "timestamp": "05:23"
+        },
+        {
+          "outputSeconds": 384,
+          "title": "Building Leidang and an agent-agnostic runtime",
+          "sourceSeconds": 18608.48,
+          "timestamp": "06:24"
+        },
+        {
+          "outputSeconds": 471,
+          "title": "Background agents and automatic triage",
+          "sourceSeconds": 18695.64,
+          "timestamp": "07:51"
+        },
+        {
+          "outputSeconds": 518,
+          "title": "Non-engineers, preview links and adoption numbers",
+          "sourceSeconds": 18742.78,
+          "timestamp": "08:38"
+        },
+        {
+          "outputSeconds": 730,
+          "title": "Examples from product, design, support and QA",
+          "sourceSeconds": 18954.34,
+          "timestamp": "12:10"
+        },
+        {
+          "outputSeconds": 1055,
+          "title": "A deployment near miss, guardrails and review bottlenecks",
+          "sourceSeconds": 19279.34,
+          "timestamp": "17:35"
+        },
+        {
+          "outputSeconds": 1246,
+          "title": "Four lessons: coworker, access, guardrails and context",
+          "sourceSeconds": 19470.56,
+          "timestamp": "20:46"
+        }
+      ],
+      "materials": [
+        {
+          "label": "Slides (PDF)",
+          "url": "https://www.sdlcai.org/media/talks/non-engineers-vibe-code-production/404574e7-178f-48ea-bca5-02245c74ab6a.pdf"
+        }
+      ],
+      "talkUrl": "https://www.sdlcai.org/2026/schedule/#non-engineers-vibe-code-production",
+      "existingSummary": "Viljami Kuosmanen shares epilot’s experiment giving product managers, designers and customer-success staff access to coding agents in Slack. He shows real contributions, explains why shared context and preview links matter, and describes a deployment near miss that led to tighter permissions and engineer review.",
+      "captions": {
+        "language": "en",
+        "srt": "transcripts/final-v02/viljami-talk.en.srt",
+        "vtt": "transcripts/final-v02/viljami-talk.en.vtt",
+        "qualityReport": "transcripts/final-v02/viljami-talk.caption-qc.json",
+        "listeningReview": "transcripts/final-v02/viljami-talk.listening-review.txt",
+        "status": "prepared-with-human-listening-review-notes"
+      },
+      "captionSHA256": "b7e0e9f2efe7f70679caca05e74d499ffb0e1d8bdaccae7f6c061439d1006d2a",
+      "mediaBytes": 629114543,
+      "cueCount": 392
+    },
+    {
+      "id": "sini-talk",
+      "kind": "talk",
+      "officialTitle": "AI Factory doesn't eliminate the fundamentals",
+      "speakerNames": [
+        "Sini Tistelgrén"
+      ],
+      "durationSeconds": 1690.0,
+      "videoFile": "exports/talks-v02/sini-talk-4k.mp4",
+      "reviewFile": "review/talks-v02/sini-talk-720p.mp4",
+      "chapters": [
+        {
+          "outputSeconds": 0,
+          "title": "Introduction: AI adoption across the SDLC",
+          "sourceSeconds": 19613,
+          "timestamp": "00:00"
+        },
+        {
+          "outputSeconds": 94,
+          "title": "Why a fast prototype still takes time to reach production",
+          "sourceSeconds": 19704.38,
+          "timestamp": "01:34"
+        },
+        {
+          "outputSeconds": 240,
+          "title": "Three different meanings of using AI",
+          "sourceSeconds": 19850.96,
+          "timestamp": "04:00"
+        },
+        {
+          "outputSeconds": 390,
+          "title": "The AI factory: six stations and six fundamentals",
+          "sourceSeconds": 20000.28,
+          "timestamp": "06:30"
+        },
+        {
+          "outputSeconds": 580,
+          "title": "Making enterprise architecture readable to agents",
+          "sourceSeconds": 20190.0,
+          "timestamp": "09:40"
+        },
+        {
+          "outputSeconds": 831,
+          "title": "Assessment findings and risk moving downstream",
+          "sourceSeconds": 20441.1,
+          "timestamp": "13:51"
+        },
+        {
+          "outputSeconds": 1131,
+          "title": "Following one change through the factory",
+          "sourceSeconds": 20741.56,
+          "timestamp": "18:51"
+        },
+        {
+          "outputSeconds": 1307,
+          "title": "Making controls and audit evidence executable",
+          "sourceSeconds": 20917.82,
+          "timestamp": "21:47"
+        },
+        {
+          "outputSeconds": 1397,
+          "title": "Autonomy levels, prototypes and changing roles",
+          "sourceSeconds": 21007.86,
+          "timestamp": "23:17"
+        },
+        {
+          "outputSeconds": 1568,
+          "title": "Where to start and where to reinvest the time saved",
+          "sourceSeconds": 21178.82,
+          "timestamp": "26:08"
+        }
+      ],
+      "materials": [
+        {
+          "label": "Slides (PDF)",
+          "url": "https://www.sdlcai.org/media/talks/ai-factory-fundamentals/f58fdda9-1f7d-4dbb-b060-94eb6a581c49.pdf"
+        }
+      ],
+      "talkUrl": "https://www.sdlcai.org/2026/schedule/#ai-factory-fundamentals",
+      "existingSummary": "Sini Tistelgrén argues that an AI factory depends on clear intent, sound architecture, security, independent verification, ownership and operational feedback. She follows a change through six delivery stages and explains how enterprises can turn existing controls into executable checks while reshaping roles and measuring outcomes.",
+      "captions": {
+        "language": "en",
+        "srt": "transcripts/final-v02/sini-talk.en.srt",
+        "vtt": "transcripts/final-v02/sini-talk.en.vtt",
+        "qualityReport": "transcripts/final-v02/sini-talk.caption-qc.json",
+        "listeningReview": "transcripts/final-v02/sini-talk.listening-review.txt",
+        "status": "prepared-with-human-listening-review-notes"
+      },
+      "captionSHA256": "6656b2db89e27e48b2d344464afe112fd55e89cc934478b833fc24c0ae4edffe",
+      "mediaBytes": 805031792,
+      "cueCount": 360
+    },
+    {
+      "id": "zak-talk",
+      "kind": "talk",
+      "officialTitle": "Medical Breakthroughs and Scientific Discoveries",
+      "speakerNames": [
+        "Zak Allal"
+      ],
+      "durationSeconds": 1255.0,
+      "videoFile": "exports/talks-v02/zak-talk-4k.mp4",
+      "reviewFile": "review/talks-v02/zak-talk-720p.mp4",
+      "chapters": [
+        {
+          "outputSeconds": 0,
+          "title": "Introduction: curiosity across disciplines",
+          "sourceSeconds": 24321.12,
+          "timestamp": "00:00"
+        },
+        {
+          "outputSeconds": 142,
+          "title": "Engineering medical research and the cost of repetition",
+          "sourceSeconds": 24460.9,
+          "timestamp": "02:22"
+        },
+        {
+          "outputSeconds": 331,
+          "title": "Research tools and accessible supercomputers",
+          "sourceSeconds": 24649.56,
+          "timestamp": "05:31"
+        },
+        {
+          "outputSeconds": 463,
+          "title": "Questioning the categories used for human hearing",
+          "sourceSeconds": 24781.34,
+          "timestamp": "07:43"
+        },
+        {
+          "outputSeconds": 603,
+          "title": "High-throughput experiments and the Recursion example",
+          "sourceSeconds": 24921.96,
+          "timestamp": "10:03"
+        },
+        {
+          "outputSeconds": 708,
+          "title": "Building a research operating system with Rust, Julia and C++",
+          "sourceSeconds": 25027.04,
+          "timestamp": "11:48"
+        },
+        {
+          "outputSeconds": 795,
+          "title": "Rechecking the hearing-data premise",
+          "sourceSeconds": 25113.84,
+          "timestamp": "13:15"
+        },
+        {
+          "outputSeconds": 876,
+          "title": "Examining statistical and methodological errors",
+          "sourceSeconds": 25194.22,
+          "timestamp": "14:36"
+        },
+        {
+          "outputSeconds": 981,
+          "title": "The proposed five-dimensional hearing atlas",
+          "sourceSeconds": 25299.62,
+          "timestamp": "16:21"
+        },
+        {
+          "outputSeconds": 1162,
+          "title": "Curiosity, engineering and the closing message",
+          "sourceSeconds": 25481.02,
+          "timestamp": "19:22"
+        }
+      ],
+      "materials": [
+        {
+          "label": "Slides (PDF)",
+          "url": "https://www.sdlcai.org/media/talks/zak-allal-industry-perspective/ca321a78-3c93-4396-b728-07c1805ceae1.pdf"
+        }
+      ],
+      "talkUrl": "https://www.sdlcai.org/2026/schedule/#zak-allal-industry-perspective",
+      "existingSummary": "Zak Allal explains how cheaper, repeatable experiments can change scientific research. Drawing on his work with hearing data, he describes using supercomputers, Rust, Julia and C++ to build a clinical research operating system, challenge existing categories and develop a proposed five-dimensional hearing atlas. He closes with the role of curiosity, careful engineering and knowledge across disciplines.",
+      "captions": {
+        "language": "en",
+        "srt": "transcripts/final-v02/zak-talk.en.srt",
+        "vtt": "transcripts/final-v02/zak-talk.en.vtt",
+        "qualityReport": "transcripts/final-v02/zak-talk.caption-qc.json",
+        "listeningReview": "transcripts/final-v02/zak-talk.listening-review.txt",
+        "status": "prepared-with-human-listening-review-notes"
+      },
+      "captionSHA256": "41c577805e45a6f6cebf4b80570ee127fdf71f795b09ae68bff397f110b03f0e",
+      "mediaBytes": 582083262,
+      "cueCount": 255
+    },
+    {
+      "id": "waseem-talk",
+      "kind": "talk",
+      "officialTitle": "Code Was Never the Hard Part. Understanding Was—and Still Is.",
+      "speakerNames": [
+        "Muhammad Waseem"
+      ],
+      "durationSeconds": 1854.0,
+      "videoFile": "exports/talks-v02/waseem-talk-4k.mp4",
+      "reviewFile": "review/talks-v02/waseem-talk-720p.mp4",
+      "chapters": [
+        {
+          "outputSeconds": 0,
+          "title": "Introduction: code is cheap, understanding is not",
+          "sourceSeconds": 25607.12,
+          "timestamp": "00:00"
+        },
+        {
+          "outputSeconds": 302,
+          "title": "Write: faster helpers and a larger scope for mistakes",
+          "sourceSeconds": 25906.54,
+          "timestamp": "05:02"
+        },
+        {
+          "outputSeconds": 429,
+          "title": "Refactoring study: file correctness and repository risks",
+          "sourceSeconds": 26033.92,
+          "timestamp": "07:09"
+        },
+        {
+          "outputSeconds": 661,
+          "title": "Read: understanding and the review bottleneck",
+          "sourceSeconds": 26265.88,
+          "timestamp": "11:01"
+        },
+        {
+          "outputSeconds": 899,
+          "title": "Agent memory, tacit knowledge and decision context",
+          "sourceSeconds": 26503.82,
+          "timestamp": "14:59"
+        },
+        {
+          "outputSeconds": 1018,
+          "title": "Decide: when the next user is another agent",
+          "sourceSeconds": 26622.66,
+          "timestamp": "16:58"
+        },
+        {
+          "outputSeconds": 1271,
+          "title": "Design for replacement and own your data",
+          "sourceSeconds": 26875.7,
+          "timestamp": "21:11"
+        },
+        {
+          "outputSeconds": 1346,
+          "title": "Care: deterministic checks, human review and security",
+          "sourceSeconds": 26950.7,
+          "timestamp": "22:26"
+        },
+        {
+          "outputSeconds": 1599,
+          "title": "Three gates: safe, grounded and measured",
+          "sourceSeconds": 27203.14,
+          "timestamp": "26:39"
+        },
+        {
+          "outputSeconds": 1663,
+          "title": "Takeaways: measure the system and record the why",
+          "sourceSeconds": 27267.28,
+          "timestamp": "27:43"
+        }
+      ],
+      "materials": [
+        {
+          "label": "Slides (PDF)",
+          "url": "https://www.sdlcai.org/media/talks/genai-software-engineering/f491d4b2-18a5-4208-a7b2-19b48c192193.pdf"
+        }
+      ],
+      "talkUrl": "https://www.sdlcai.org/2026/schedule/#genai-software-engineering",
+      "existingSummary": "Muhammad Waseem argues that AI-generated code shifts the bottleneck toward understanding and ownership. He presents a refactoring study, discusses review load and missing decision context, and explores applications whose users are agents. He proposes deterministic and human checks, safe, grounded and measured gates, and recording why decisions are made.",
+      "captions": {
+        "language": "en",
+        "srt": "transcripts/final-v02/waseem-talk.en.srt",
+        "vtt": "transcripts/final-v02/waseem-talk.en.vtt",
+        "qualityReport": "transcripts/final-v02/waseem-talk.caption-qc.json",
+        "listeningReview": "transcripts/final-v02/waseem-talk.listening-review.txt",
+        "status": "prepared-with-human-listening-review-notes"
+      },
+      "captionSHA256": "9740de0f69aecf0c9798eb48a6a77715da4d56dfcdfd8368ee0819e033769ae7",
+      "mediaBytes": 887608844,
+      "cueCount": 430
+    },
+    {
+      "id": "research-panel",
+      "kind": "qa",
+      "officialTitle": "Agentic Discovery & Generative UI — Q&A",
+      "speakerNames": [
+        "Tapio Pitkäranta",
+        "Joongi Shin"
+      ],
+      "durationSeconds": 2731.0,
+      "videoFile": "exports/talks-v02/research-panel-4k.mp4",
+      "reviewFile": "review/talks-v02/research-panel-720p.mp4",
+      "chapters": [
+        {
+          "outputSeconds": 0,
+          "title": "Can design probes help users envision better interfaces?",
+          "sourceSeconds": 11127,
+          "timestamp": "00:00"
+        },
+        {
+          "outputSeconds": 107,
+          "title": "What prevents organisations from adopting probes?",
+          "sourceSeconds": 11231.36,
+          "timestamp": "01:47"
+        },
+        {
+          "outputSeconds": 219,
+          "title": "Is there enough reliable information for agentic discovery?",
+          "sourceSeconds": 11343.96,
+          "timestamp": "03:39"
+        },
+        {
+          "outputSeconds": 538,
+          "title": "How can AI understand vague user requests?",
+          "sourceSeconds": 11662.44,
+          "timestamp": "08:58"
+        },
+        {
+          "outputSeconds": 672,
+          "title": "Can sensitive information stay secure with AI agents?",
+          "sourceSeconds": 11796.78,
+          "timestamp": "11:12"
+        },
+        {
+          "outputSeconds": 836,
+          "title": "Has the bottleneck really moved from building to discovery?",
+          "sourceSeconds": 11960.9,
+          "timestamp": "13:56"
+        },
+        {
+          "outputSeconds": 1016,
+          "title": "What will children learn from growing up with AI?",
+          "sourceSeconds": 12140.82,
+          "timestamp": "16:56"
+        },
+        {
+          "outputSeconds": 1222,
+          "title": "Who is responsible for accessibility in user-generated UI?",
+          "sourceSeconds": 12346.44,
+          "timestamp": "20:22"
+        },
+        {
+          "outputSeconds": 1493,
+          "title": "Is AI accelerating research or overwhelming peer review?",
+          "sourceSeconds": 12617.32,
+          "timestamp": "24:53"
+        },
+        {
+          "outputSeconds": 1795,
+          "title": "Did the study compare developers and designers?",
+          "sourceSeconds": 12919.0,
+          "timestamp": "29:55"
+        },
+        {
+          "outputSeconds": 1826,
+          "title": "Which tools work for agentic probing?",
+          "sourceSeconds": 12950.76,
+          "timestamp": "30:26"
+        },
+        {
+          "outputSeconds": 1940,
+          "title": "Do silos between product, design and engineering slow delivery?",
+          "sourceSeconds": 13064.44,
+          "timestamp": "32:20"
+        },
+        {
+          "outputSeconds": 2034,
+          "title": "How can agents capture tacit organisational knowledge?",
+          "sourceSeconds": 13158.98,
+          "timestamp": "33:54"
+        },
+        {
+          "outputSeconds": 2199,
+          "title": "Will user attention become the next bottleneck?",
+          "sourceSeconds": 13323.2,
+          "timestamp": "36:39"
+        },
+        {
+          "outputSeconds": 2352,
+          "title": "What roles remain for people as AI capabilities grow?",
+          "sourceSeconds": 13476.5,
+          "timestamp": "39:12"
+        },
+        {
+          "outputSeconds": 2550,
+          "title": "What quality checks should generative UI use?",
+          "sourceSeconds": 13674.26,
+          "timestamp": "42:30"
+        }
+      ],
+      "materials": [
+        {
+          "label": "Related resource",
+          "url": "https://longshoreforrest.github.io/publications/agentic-discovery/",
+          "speakerNames": [
+            "Tapio Pitkäranta"
+          ]
+        },
+        {
+          "label": "Slides (PDF)",
+          "url": "https://www.sdlcai.org/media/talks/joongi-shin-ui-perspective/d18b4c6d-4204-474b-88f9-0ffab2c9abf3.pdf",
+          "speakerNames": [
+            "Joongi Shin"
+          ]
+        }
+      ],
+      "existingSummary": "Tapio Pitkäranta and Joongi Shin answer audience questions on agentic discovery and generative UI, including reliable organisational knowledge, vague user intent, privacy, accessibility, research quality and the changing roles of people and software tools.",
+      "captions": {
+        "language": "en",
+        "srt": "transcripts/final-v02/research-panel.en.srt",
+        "vtt": "transcripts/final-v02/research-panel.en.vtt",
+        "qualityReport": "transcripts/final-v02/research-panel.caption-qc.json",
+        "listeningReview": "transcripts/final-v02/research-panel.listening-review.txt",
+        "status": "prepared-with-human-listening-review-notes"
+      },
+      "captionSHA256": "7eda2984085f053c8474a9a60e2eec9ab301be205505c82bfd61cc92ba50bf4d",
+      "mediaBytes": 1278613467,
+      "cueCount": 505
+    },
+    {
+      "id": "industry-panel",
+      "kind": "qa",
+      "officialTitle": "AI in Software Delivery — Industry Q&A",
+      "speakerNames": [
+        "Jussi Hacklin",
+        "Viljami Kuosmanen",
+        "Sini Tistelgrén"
+      ],
+      "durationSeconds": 991.12,
+      "videoFile": "exports/talks-v02/industry-panel-4k.mp4",
+      "reviewFile": "review/talks-v02/industry-panel-720p.mp4",
+      "chapters": [
+        {
+          "outputSeconds": 0,
+          "title": "Staff morale when non-engineers contribute code",
+          "sourceSeconds": 21387,
+          "timestamp": "00:00"
+        },
+        {
+          "outputSeconds": 71,
+          "title": "Experimenting with tools inside vendor constraints",
+          "sourceSeconds": 21455.82,
+          "timestamp": "01:11"
+        },
+        {
+          "outputSeconds": 137,
+          "title": "Availability of slides and recordings",
+          "sourceSeconds": 21521.58,
+          "timestamp": "02:17"
+        },
+        {
+          "outputSeconds": 164,
+          "title": "Choosing the right work and validating business value",
+          "sourceSeconds": 21548.7,
+          "timestamp": "02:44"
+        },
+        {
+          "outputSeconds": 227,
+          "title": "Review workload and the changing engineer role",
+          "sourceSeconds": 21611.54,
+          "timestamp": "03:47"
+        },
+        {
+          "outputSeconds": 390,
+          "title": "Managing token budgets and subscriptions",
+          "sourceSeconds": 21774.42,
+          "timestamp": "06:30"
+        },
+        {
+          "outputSeconds": 548,
+          "title": "Local inference, security and hybrid infrastructure",
+          "sourceSeconds": 21932.02,
+          "timestamp": "09:08"
+        },
+        {
+          "outputSeconds": 674,
+          "title": "Code quality, bugs and release frequency",
+          "sourceSeconds": 22058.56,
+          "timestamp": "11:14"
+        },
+        {
+          "outputSeconds": 814,
+          "title": "Maintaining mental models and shared documentation",
+          "sourceSeconds": 22198.48,
+          "timestamp": "13:34"
+        },
+        {
+          "outputSeconds": 895,
+          "title": "How agile methods are evolving",
+          "sourceSeconds": 22279.38,
+          "timestamp": "14:55"
+        }
+      ],
+      "materials": [
+        {
+          "label": "Slides (PDF)",
+          "url": "https://www.sdlcai.org/media/talks/driving-ai-adoption-regulated-environment/0b20a9fb-eb1c-42c3-b080-034d9ba4d98e.pdf",
+          "speakerNames": [
+            "Jussi Hacklin"
+          ]
+        },
+        {
+          "label": "Slides (PDF)",
+          "url": "https://www.sdlcai.org/media/talks/non-engineers-vibe-code-production/404574e7-178f-48ea-bca5-02245c74ab6a.pdf",
+          "speakerNames": [
+            "Viljami Kuosmanen"
+          ]
+        },
+        {
+          "label": "Slides (PDF)",
+          "url": "https://www.sdlcai.org/media/talks/ai-factory-fundamentals/f58fdda9-1f7d-4dbb-b060-94eb6a581c49.pdf",
+          "speakerNames": [
+            "Sini Tistelgrén"
+          ]
+        }
+      ],
+      "existingSummary": "Jussi Hacklin, Viljami Kuosmanen and Sini Tistelgrén answer audience questions about AI in software delivery. They discuss staff morale, tool choices in regulated environments, business validation, engineers’ review responsibilities, token budgets and local inference. The discussion also covers code quality, shared documentation and how agile methods are evolving.",
+      "captions": {
+        "language": "en",
+        "srt": "transcripts/final-v02/industry-panel.en.srt",
+        "vtt": "transcripts/final-v02/industry-panel.en.vtt",
+        "qualityReport": "transcripts/final-v02/industry-panel.caption-qc.json",
+        "listeningReview": "transcripts/final-v02/industry-panel.listening-review.txt",
+        "status": "prepared-with-human-listening-review-notes"
+      },
+      "captionSHA256": "31a57fcd46a096f6a68bf2e27dbc7786148330fdd9de6a38107b74a0793fefe2",
+      "mediaBytes": 472942349,
+      "cueCount": 236
+    },
+    {
+      "id": "final-panel",
+      "kind": "qa",
+      "officialTitle": "AI, Scientific Discovery & Software Engineering — Q&A",
+      "speakerNames": [
+        "Zak Allal",
+        "Muhammad Waseem"
+      ],
+      "durationSeconds": 2008.0,
+      "videoFile": "exports/talks-v02/final-panel-4k.mp4",
+      "reviewFile": "review/talks-v02/final-panel-720p.mp4",
+      "chapters": [
+        {
+          "outputSeconds": 0,
+          "title": "What does continuous hearing mean?",
+          "sourceSeconds": 27514.12,
+          "timestamp": "00:00"
+        },
+        {
+          "outputSeconds": 96,
+          "title": "Why architecture decision records matter",
+          "sourceSeconds": 27607.86,
+          "timestamp": "01:36"
+        },
+        {
+          "outputSeconds": 328,
+          "title": "Where could AI and supercomputing help medicine?",
+          "sourceSeconds": 27839.36,
+          "timestamp": "05:28"
+        },
+        {
+          "outputSeconds": 483,
+          "title": "Can scientific discovery be automated?",
+          "sourceSeconds": 27994.42,
+          "timestamp": "08:03"
+        },
+        {
+          "outputSeconds": 726,
+          "title": "Computation, mathematical certainty and supercomputers",
+          "sourceSeconds": 28237.92,
+          "timestamp": "12:06"
+        },
+        {
+          "outputSeconds": 852,
+          "title": "Regulation, medical data and informed consent",
+          "sourceSeconds": 28364.02,
+          "timestamp": "14:12"
+        },
+        {
+          "outputSeconds": 1044,
+          "title": "Do breakthroughs require a PhD?",
+          "sourceSeconds": 28555.88,
+          "timestamp": "17:24"
+        },
+        {
+          "outputSeconds": 1233,
+          "title": "Connecting medicine, mathematics and software skills",
+          "sourceSeconds": 28745.1,
+          "timestamp": "20:33"
+        },
+        {
+          "outputSeconds": 1469,
+          "title": "Do decision records create a maintenance burden?",
+          "sourceSeconds": 28980.56,
+          "timestamp": "24:29"
+        },
+        {
+          "outputSeconds": 1563,
+          "title": "What happens when only some teammates use AI?",
+          "sourceSeconds": 29074.9,
+          "timestamp": "26:03"
+        },
+        {
+          "outputSeconds": 1725,
+          "title": "Can academia keep pace with AI development?",
+          "sourceSeconds": 29236.68,
+          "timestamp": "28:45"
+        }
+      ],
+      "materials": [
+        {
+          "label": "Slides (PDF)",
+          "url": "https://www.sdlcai.org/media/talks/zak-allal-industry-perspective/ca321a78-3c93-4396-b728-07c1805ceae1.pdf",
+          "speakerNames": [
+            "Zak Allal"
+          ]
+        },
+        {
+          "label": "Slides (PDF)",
+          "url": "https://www.sdlcai.org/media/talks/genai-software-engineering/f491d4b2-18a5-4208-a7b2-19b48c192193.pdf",
+          "speakerNames": [
+            "Muhammad Waseem"
+          ]
+        }
+      ],
+      "existingSummary": "Zak Allal and Muhammad Waseem discuss continuous hearing, architecture decision records, and the role of AI and supercomputers in research. Audience questions lead to a discussion of medical applications, controlled experiments, privacy, multidisciplinary collaboration, the maintenance cost of decision records, mixed AI use in teams and academia’s changing role.",
+      "captions": {
+        "language": "en",
+        "srt": "transcripts/final-v02/final-panel.en.srt",
+        "vtt": "transcripts/final-v02/final-panel.en.vtt",
+        "qualityReport": "transcripts/final-v02/final-panel.caption-qc.json",
+        "listeningReview": "transcripts/final-v02/final-panel.listening-review.txt",
+        "status": "prepared-with-human-listening-review-notes"
+      },
+      "captionSHA256": "76b6695e96c8dfd1efb56c4d9516db2160a509bfe741613cb8eb24a271aa5606",
+      "mediaBytes": 944150495,
+      "cueCount": 482
+    },
+    {
+      "id": "mood",
+      "kind": "mood",
+      "officialTitle": "SDLCAI 2026 — AI in Software Development",
+      "speakerNames": [],
+      "durationSeconds": 127.99453333333334,
+      "videoFile": "exports/mood-v06-4k.mp4",
+      "reviewFile": "review/mood-v06-1080p.mp4",
+      "chapters": [
+        {
+          "outputSeconds": 0,
+          "title": "SDLCAI — AI in software development",
+          "timestamp": "00:00"
+        },
+        {
+          "outputSeconds": 16.783433333333335,
+          "title": "Experience from software teams",
+          "timestamp": "00:16"
+        },
+        {
+          "outputSeconds": 35.20183333333333,
+          "title": "Asking why we build",
+          "timestamp": "00:35"
+        },
+        {
+          "outputSeconds": 49.616233333333334,
+          "title": "Research meets practice",
+          "timestamp": "00:49"
+        },
+        {
+          "outputSeconds": 70.40366666666667,
+          "title": "Learning and exchanging ideas",
+          "timestamp": "01:10"
+        },
+        {
+          "outputSeconds": 87.22046666666667,
+          "title": "Conversations beyond the talks",
+          "timestamp": "01:27"
+        },
+        {
+          "outputSeconds": 112.0119,
+          "title": "Sponsor thanks and follow SDLCAI",
+          "timestamp": "01:52"
+        }
+      ],
+      "existingSummary": null,
+      "captions": {
+        "required": true,
+        "optional": false,
+        "language": "en",
+        "srt": "transcripts/mood-v06/mood.en.srt",
+        "vtt": "transcripts/mood-v06/mood.en.vtt",
+        "qualityReport": "transcripts/mood-v06/mood.caption-qc.json",
+        "listeningReview": "transcripts/mood-v06/mood.listening-review.txt",
+        "reason": "Two contiguous excerpts from the seminar talks and Q&A, with verified text and excerpt timing. Human listening review remains pending."
+      },
+      "captionSHA256": "cec386ece4e2a0291abfc89ef0822686be3c889a63ab8da58bb653f44ffb5513",
+      "mediaBytes": 172461995,
+      "cueCount": 4
+    }
+  ]
+}

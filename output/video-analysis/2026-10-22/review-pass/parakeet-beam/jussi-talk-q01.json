@@ -1,0 +1,494 @@
+{
+  "text": "So uh then some key learnings along the way. So the regulation is a challenge, but it's not a not a pro uh roadblock. So there's definitely things how you can stay within the regulation because it's very difficult",
+  "sentences": [
+    {
+      "text": " So uh then some key learnings along the way.",
+      "start": 0.72,
+      "end": 6.0,
+      "duration": 5.28,
+      "confidence": 0.838,
+      "tokens": [
+        {
+          "text": " So",
+          "start": 0.72,
+          "end": 1.04,
+          "duration": 0.32,
+          "confidence": 0.859
+        },
+        {
+          "text": " uh",
+          "start": 1.6,
+          "end": 1.92,
+          "duration": 0.32,
+          "confidence": 0.727
+        },
+        {
+          "text": " then",
+          "start": 2.72,
+          "end": 3.04,
+          "duration": 0.32,
+          "confidence": 0.936
+        },
+        {
+          "text": " some",
+          "start": 3.52,
+          "end": 3.84,
+          "duration": 0.32,
+          "confidence": 0.913
+        },
+        {
+          "text": " ke",
+          "start": 4.0,
+          "end": 4.16,
+          "duration": 0.16,
+          "confidence": 0.86
+        },
+        {
+          "text": "y",
+          "start": 4.16,
+          "end": 4.32,
+          "duration": 0.16,
+          "confidence": 0.998
+        },
+        {
+          "text": " le",
+          "start": 4.32,
+          "end": 4.48,
+          "duration": 0.16,
+          "confidence": 0.857
+        },
+        {
+          "text": "ar",
+          "start": 4.48,
+          "end": 4.72,
+          "duration": 0.24,
+          "confidence": 0.611
+        },
+        {
+          "text": "nings",
+          "start": 4.72,
+          "end": 4.96,
+          "duration": 0.24,
+          "confidence": 0.893
+        },
+        {
+          "text": " al",
+          "start": 4.96,
+          "end": 5.12,
+          "duration": 0.16,
+          "confidence": 0.984
+        },
+        {
+          "text": "ong",
+          "start": 5.12,
+          "end": 5.28,
+          "duration": 0.16,
+          "confidence": 0.523
+        },
+        {
+          "text": " the",
+          "start": 5.28,
+          "end": 5.6,
+          "duration": 0.32,
+          "confidence": 0.893
+        },
+        {
+          "text": " way",
+          "start": 5.6,
+          "end": 5.84,
+          "duration": 0.24,
+          "confidence": 0.99
+        },
+        {
+          "text": ".",
+          "start": 5.84,
+          "end": 6.0,
+          "duration": 0.16,
+          "confidence": 0.861
+        }
+      ]
+    },
+    {
+      "text": " So the regulation is a challenge, but it's not a not a pro uh roadblock.",
+      "start": 6.0,
+      "end": 12.16,
+      "duration": 6.16,
+      "confidence": 0.627,
+      "tokens": [
+        {
+          "text": " So",
+          "start": 6.0,
+          "end": 6.32,
+          "duration": 0.32,
+          "confidence": 0.906
+        },
+        {
+          "text": " the",
+          "start": 6.56,
+          "end": 6.88,
+          "duration": 0.32,
+          "confidence": 0.932
+        },
+        {
+          "text": " regul",
+          "start": 6.88,
+          "end": 7.2,
+          "duration": 0.32,
+          "confidence": 0.856
+        },
+        {
+          "text": "ation",
+          "start": 7.44,
+          "end": 7.68,
+          "duration": 0.24,
+          "confidence": 0.544
+        },
+        {
+          "text": " is",
+          "start": 7.68,
+          "end": 7.84,
+          "duration": 0.16,
+          "confidence": 0.994
+        },
+        {
+          "text": " a",
+          "start": 7.84,
+          "end": 8.08,
+          "duration": 0.24,
+          "confidence": 0.789
+        },
+        {
+          "text": " ch",
+          "start": 8.08,
+          "end": 8.24,
+          "duration": 0.16,
+          "confidence": 0.899
+        },
+        {
+          "text": "allen",
+          "start": 8.24,
+          "end": 8.48,
+          "duration": 0.24,
+          "confidence": 0.44
+        },
+        {
+          "text": "ge",
+          "start": 8.48,
+          "end": 8.72,
+          "duration": 0.24,
+          "confidence": 0.988
+        },
+        {
+          "text": ",",
+          "start": 8.72,
+          "end": 8.88,
+          "duration": 0.16,
+          "confidence": 0.324
+        },
+        {
+          "text": " but",
+          "start": 8.88,
+          "end": 9.04,
+          "duration": 0.16,
+          "confidence": 0.982
+        },
+        {
+          "text": " it",
+          "start": 9.04,
+          "end": 9.2,
+          "duration": 0.16,
+          "confidence": 0.532
+        },
+        {
+          "text": "'",
+          "start": 9.2,
+          "end": 9.28,
+          "duration": 0.08,
+          "confidence": 0.586
+        },
+        {
+          "text": "s",
+          "start": 9.28,
+          "end": 9.36,
+          "duration": 0.08,
+          "confidence": 0.958
+        },
+        {
+          "text": " not",
+          "start": 9.36,
+          "end": 9.52,
+          "duration": 0.16,
+          "confidence": 0.898
+        },
+        {
+          "text": " a",
+          "start": 9.52,
+          "end": 9.68,
+          "duration": 0.16,
+          "confidence": 0.3
+        },
+        {
+          "text": " not",
+          "start": 9.92,
+          "end": 10.08,
+          "duration": 0.16,
+          "confidence": 0.146
+        },
+        {
+          "text": " a",
+          "start": 10.16,
+          "end": 10.4,
+          "duration": 0.24,
+          "confidence": 0.391
+        },
+        {
+          "text": " pro",
+          "start": 10.4,
+          "end": 10.56,
+          "duration": 0.16,
+          "confidence": 0.336
+        },
+        {
+          "text": " uh",
+          "start": 10.64,
+          "end": 10.8,
+          "duration": 0.16,
+          "confidence": 0.522
+        },
+        {
+          "text": " ro",
+          "start": 10.96,
+          "end": 11.12,
+          "duration": 0.16,
+          "confidence": 0.91
+        },
+        {
+          "text": "ad",
+          "start": 11.12,
+          "end": 11.28,
+          "duration": 0.16,
+          "confidence": 0.443
+        },
+        {
+          "text": "b",
+          "start": 11.28,
+          "end": 11.52,
+          "duration": 0.24,
+          "confidence": 0.53
+        },
+        {
+          "text": "lo",
+          "start": 11.52,
+          "end": 11.76,
+          "duration": 0.24,
+          "confidence": 0.935
+        },
+        {
+          "text": "ck",
+          "start": 11.76,
+          "end": 12.0,
+          "duration": 0.24,
+          "confidence": 0.989
+        },
+        {
+          "text": ".",
+          "start": 12.0,
+          "end": 12.16,
+          "duration": 0.16,
+          "confidence": 0.862
+        }
+      ]
+    },
+    {
+      "text": " So there's definitely things how you can stay within the regulation because it's very difficult",
+      "start": 12.16,
+      "end": 17.44,
+      "duration": 5.28,
+      "confidence": 0.718,
+      "tokens": [
+        {
+          "text": " So",
+          "start": 12.16,
+          "end": 12.4,
+          "duration": 0.24,
+          "confidence": 0.742
+        },
+        {
+          "text": " there",
+          "start": 12.48,
+          "end": 12.64,
+          "duration": 0.16,
+          "confidence": 0.575
+        },
+        {
+          "text": "'",
+          "start": 12.64,
+          "end": 12.8,
+          "duration": 0.16,
+          "confidence": 0.598
+        },
+        {
+          "text": "s",
+          "start": 12.8,
+          "end": 12.8,
+          "duration": 0.0,
+          "confidence": 1.0
+        },
+        {
+          "text": " defin",
+          "start": 12.8,
+          "end": 13.04,
+          "duration": 0.24,
+          "confidence": 0.743
+        },
+        {
+          "text": "it",
+          "start": 13.04,
+          "end": 13.2,
+          "duration": 0.16,
+          "confidence": 0.436
+        },
+        {
+          "text": "ely",
+          "start": 13.2,
+          "end": 13.44,
+          "duration": 0.24,
+          "confidence": 0.9
+        },
+        {
+          "text": " th",
+          "start": 13.44,
+          "end": 13.68,
+          "duration": 0.24,
+          "confidence": 0.434
+        },
+        {
+          "text": "ings",
+          "start": 13.68,
+          "end": 13.84,
+          "duration": 0.16,
+          "confidence": 0.255
+        },
+        {
+          "text": " how",
+          "start": 13.92,
+          "end": 14.16,
+          "duration": 0.24,
+          "confidence": 0.839
+        },
+        {
+          "text": " you",
+          "start": 14.16,
+          "end": 14.4,
+          "duration": 0.24,
+          "confidence": 0.618
+        },
+        {
+          "text": " can",
+          "start": 14.4,
+          "end": 14.64,
+          "duration": 0.24,
+          "confidence": 0.955
+        },
+        {
+          "text": " sta",
+          "start": 14.64,
+          "end": 14.8,
+          "duration": 0.16,
+          "confidence": 0.982
+        },
+        {
+          "text": "y",
+          "start": 14.8,
+          "end": 14.96,
+          "duration": 0.16,
+          "confidence": 0.967
+        },
+        {
+          "text": " with",
+          "start": 14.96,
+          "end": 15.2,
+          "duration": 0.24,
+          "confidence": 0.767
+        },
+        {
+          "text": "in",
+          "start": 15.2,
+          "end": 15.36,
+          "duration": 0.16,
+          "confidence": 0.984
+        },
+        {
+          "text": " the",
+          "start": 15.36,
+          "end": 15.52,
+          "duration": 0.16,
+          "confidence": 0.37
+        },
+        {
+          "text": " regul",
+          "start": 15.52,
+          "end": 15.84,
+          "duration": 0.32,
+          "confidence": 0.918
+        },
+        {
+          "text": "ation",
+          "start": 15.84,
+          "end": 16.08,
+          "duration": 0.24,
+          "confidence": 0.89
+        },
+        {
+          "text": " because",
+          "start": 16.24,
+          "end": 16.48,
+          "duration": 0.24,
+          "confidence": 0.973
+        },
+        {
+          "text": " it",
+          "start": 16.48,
+          "end": 16.64,
+          "duration": 0.16,
+          "confidence": 0.39
+        },
+        {
+          "text": "'",
+          "start": 16.64,
+          "end": 16.8,
+          "duration": 0.16,
+          "confidence": 0.731
+        },
+        {
+          "text": "s",
+          "start": 16.8,
+          "end": 16.8,
+          "duration": 0.0,
+          "confidence": 1.0
+        },
+        {
+          "text": " very",
+          "start": 16.8,
+          "end": 17.04,
+          "duration": 0.24,
+          "confidence": 0.97
+        },
+        {
+          "text": " diffic",
+          "start": 17.04,
+          "end": 17.28,
+          "duration": 0.24,
+          "confidence": 0.764
+        },
+        {
+          "text": "ult",
+          "start": 17.28,
+          "end": 17.44,
+          "duration": 0.16,
+          "confidence": 0.989
+        }
+      ]
+    }
+  ]
+}

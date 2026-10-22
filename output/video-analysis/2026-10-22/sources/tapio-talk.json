@@ -1,0 +1,1789 @@
+{
+  "id": "tapio-talk",
+  "kind": "talk",
+  "officialTitle": "The Agentic Probe: The Instrument of Agentic Discovery & Engineering",
+  "speakerNames": [
+    "Tapio Pitkäranta"
+  ],
+  "durationSeconds": 1359.0,
+  "videoFile": "exports/talks-v02/tapio-talk-4k.mp4",
+  "reviewFile": "review/talks-v02/tapio-talk-720p.mp4",
+  "chapters": [
+    {
+      "outputSeconds": 0,
+      "title": "Introduction and the research behind agentic probes",
+      "sourceSeconds": 8466,
+      "timestamp": "00:00"
+    },
+    {
+      "outputSeconds": 138,
+      "title": "The shift from agentic engineering to discovery",
+      "sourceSeconds": 8601.68,
+      "timestamp": "02:18"
+    },
+    {
+      "outputSeconds": 345,
+      "title": "A personal view of the current AI landscape",
+      "sourceSeconds": 8808.0,
+      "timestamp": "05:45"
+    },
+    {
+      "outputSeconds": 652,
+      "title": "Mapping discovery onto development processes",
+      "sourceSeconds": 9115.46,
+      "timestamp": "10:52"
+    },
+    {
+      "outputSeconds": 754,
+      "title": "Agentic probes: making problems and solutions tangible",
+      "sourceSeconds": 9217.38,
+      "timestamp": "12:34"
+    },
+    {
+      "outputSeconds": 869,
+      "title": "Agentic search and evidence gathering",
+      "sourceSeconds": 9332.46,
+      "timestamp": "14:29"
+    },
+    {
+      "outputSeconds": 929,
+      "title": "Experiments: building a probe factory",
+      "sourceSeconds": 9392.06,
+      "timestamp": "15:29"
+    },
+    {
+      "outputSeconds": 1070,
+      "title": "Exploring healthcare processes with agents",
+      "sourceSeconds": 9533.4,
+      "timestamp": "17:50"
+    },
+    {
+      "outputSeconds": 1243,
+      "title": "Takeaways: discovery, engineering and moving bottlenecks",
+      "sourceSeconds": 9706.52,
+      "timestamp": "20:43"
+    }
+  ],
+  "materials": [
+    {
+      "label": "Related resource",
+      "url": "https://longshoreforrest.github.io/publications/agentic-discovery/"
+    }
+  ],
+  "talkUrl": "https://www.sdlcai.org/2026/schedule/#agentic-discovery",
+  "existingSummary": "Tapio Pitkäranta presents agentic probes as tangible experiments for exploring problems and testing possible solutions. Drawing on research with Leena Pitkäranta, he describes a probe factory, agentic search and a healthcare process example, while asking how discovery changes as implementation becomes faster.",
+  "captions": {
+    "language": "en",
+    "srt": "transcripts/final-v02/tapio-talk.en.srt",
+    "vtt": "transcripts/final-v02/tapio-talk.en.vtt",
+    "qualityReport": "transcripts/final-v02/tapio-talk.caption-qc.json",
+    "listeningReview": "transcripts/final-v02/tapio-talk.listening-review.txt",
+    "status": "prepared-with-human-listening-review-notes"
+  },
+  "captionSHA256": "048ab8578e67f836d19f4f89dca2e3a63a6f59e6fbbd9c018634f88558d6edb6",
+  "mediaBytes": 600515129,
+  "cueCount": 267,
+  "listeningWindows": [
+    {
+      "id": "tapio-talk-037",
+      "videoId": "tapio-talk",
+      "startSeconds": 491.36,
+      "endSeconds": 500.5,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Uncertain wording candidate: gigantic leap → agentic leap",
+      "currentCaptionText": "But what we see is that during the last one year, there was this huge sort of leap. I have been calling it a gigantic leap, but there might be other names for that. Then some people said, yeah, it's just the programming.",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/tapio-talk.listening-review.json",
+          "entryIndices": [
+            5
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/tapio-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                81
+              ],
+              "text": "The last one year there was this huge sort of leap. I have been calling it again the leap, but there might be other names for that. Then some people said, yeah, it's just the programming."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/tapio-talk.listening-review.json",
+          "index": 5
+        }
+      ],
+      "sourceSegments": [
+        81
+      ],
+      "sourceStartSeconds": 8954.36,
+      "sourceEndSeconds": 8963.5
+    },
+    {
+      "id": "tapio-talk-039",
+      "videoId": "tapio-talk",
+      "startSeconds": 640.22,
+      "endSeconds": 647.66,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Context-supported correction still marked for listening: github copilot pro codex → GitHub Copilot Pro, Codex",
+      "currentCaptionText": "coding agents are like everyday Claude Code one of the best but there's plenty of others like GitHub Copilot Pro, Codex and many others",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/tapio-talk.listening-review.json",
+          "entryIndices": [
+            9
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/tapio-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                107
+              ],
+              "text": "Cloud Code one of the best but there's plenty of others like Key Topco, Palakpaw, Codex and many others but that's sort of the state"
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 107,
+              "before": "github copilot pro codex",
+              "after": "GitHub Copilot Pro, Codex",
+              "basis": "Brand capitalization; verify whether Pro is standalone tool or Copilot tier."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/tapio-talk.listening-review.json",
+          "index": 9
+        }
+      ],
+      "sourceSegments": [
+        107
+      ],
+      "sourceStartSeconds": 9103.22,
+      "sourceEndSeconds": 9110.66
+    }
+  ],
+  "cues": [
+    {
+      "id": 1,
+      "start": 4.24,
+      "end": 9.04,
+      "text": "Excellent. So, my name is Tapio Pitkäranta, and first of all, thanks for"
+    },
+    {
+      "id": 2,
+      "start": 9.06,
+      "end": 13.83,
+      "text": "the opportunity to be able to share a few insights with you."
+    },
+    {
+      "id": 3,
+      "start": 15.74,
+      "end": 22.37,
+      "text": "My topic today is related to agentic discovery and agentic engineering."
+    },
+    {
+      "id": 4,
+      "start": 22.7,
+      "end": 27.08,
+      "text": "So, I'm viewing the software development lifecycle as a whole."
+    },
+    {
+      "id": 5,
+      "start": 27.22,
+      "end": 29.5,
+      "text": "We will be discussing agentic probes."
+    },
+    {
+      "id": 6,
+      "start": 29.7,
+      "end": 32.76,
+      "text": "So, in Finnish, that would be agentinen luotain."
+    },
+    {
+      "id": 7,
+      "start": 33.15,
+      "end": 38.55,
+      "text": "So let's see if we get some interesting thoughts with this session and then"
+    },
+    {
+      "id": 8,
+      "start": 38.69,
+      "end": 39.49,
+      "text": "afterwards."
+    },
+    {
+      "id": 9,
+      "start": 40.34,
+      "end": 46.27,
+      "text": "This work is actually joint research together with my wife, Leena"
+    },
+    {
+      "id": 10,
+      "start": 46.41,
+      "end": 52.07,
+      "text": "Pitkäranta. So we are sort of AI freak family in a sense that I recently"
+    },
+    {
+      "id": 11,
+      "start": 52.09,
+      "end": 55.04,
+      "text": "completed my PhD here at Aalto University."
+    },
+    {
+      "id": 12,
+      "start": 56.2,
+      "end": 58.78,
+      "text": "And Leena has the same ongoing project."
+    },
+    {
+      "id": 13,
+      "start": 59.52,
+      "end": 60.7,
+      "text": "But this is joint work."
+    },
+    {
+      "id": 14,
+      "start": 62.63,
+      "end": 64.59,
+      "text": "A few words about my background."
+    },
+    {
+      "id": 15,
+      "start": 64.8,
+      "end": 70.67,
+      "text": "So I started from the sort of applied academia more than 20 years ago as an"
+    },
+    {
+      "id": 16,
+      "start": 70.87,
+      "end": 76.41,
+      "text": "agent researcher. And then since then, I've been building SaaS systems mainly in"
+    },
+    {
+      "id": 17,
+      "start": 76.43,
+      "end": 81.84,
+      "text": "industry. So I've worked in four industry segments, healthcare, retail,"
+    },
+    {
+      "id": 18,
+      "start": 81.86,
+      "end": 84.02,
+      "text": "international tax and recruiting."
+    },
+    {
+      "id": 19,
+      "start": 84.52,
+      "end": 89.03999999999999,
+      "text": "And at the moment, I'm working as head of AI development at Siili Solutions."
+    },
+    {
+      "id": 20,
+      "start": 90.49,
+      "end": 97.14,
+      "text": "And I'm using AI agents on a like a heavy user probably the most token"
+    },
+    {
+      "id": 21,
+      "start": 97.16,
+      "end": 102.72999999999999,
+      "text": "consumption in in Siili Group at the moment I've kept some statistics that I've"
+    },
+    {
+      "id": 22,
+      "start": 102.75,
+      "end": 104.52000000000001,
+      "text": "used like thousands of agents"
+    },
+    {
+      "id": 23,
+      "start": 105.37,
+      "end": 112.12,
+      "text": "during this this year for example and uh as discussed this"
+    },
+    {
+      "id": 24,
+      "start": 112.14,
+      "end": 114.75,
+      "text": "paper is is joint work together with Leena."
+    },
+    {
+      "id": 25,
+      "start": 114.93,
+      "end": 121.48,
+      "text": "So Leena is also having a long industry career in telecom sector and working in"
+    },
+    {
+      "id": 26,
+      "start": 121.5,
+      "end": 127.7,
+      "text": "Natalia Vuori's group for PhD studies regarding how AI is changing"
+    },
+    {
+      "id": 27,
+      "start": 127.72,
+      "end": 128.52,
+      "text": "leadership"
+    },
+    {
+      "id": 28,
+      "start": 129.53,
+      "end": 130.97,
+      "text": "principles and practices."
+    },
+    {
+      "id": 29,
+      "start": 131.18,
+      "end": 134.52,
+      "text": "And we have a few joint papers before this one as well."
+    },
+    {
+      "id": 30,
+      "start": 134.54,
+      "end": 137.32999999999998,
+      "text": "But to get this"
+    },
+    {
+      "id": 31,
+      "start": 138.35,
+      "end": 145.15,
+      "text": "research into context we outline this kind of agentic wave picture so how we see at"
+    },
+    {
+      "id": 32,
+      "start": 145.3,
+      "end": 150.45,
+      "text": "the moment the product development life cycle or software development life cycle"
+    },
+    {
+      "id": 33,
+      "start": 150.47,
+      "end": 156.799,
+      "text": "is that the agentic AI started from writing code so Claude Codes,"
+    },
+    {
+      "id": 34,
+      "start": 156.81900000000002,
+      "end": 163.62,
+      "text": "Codexes and whatnots so let's say a few years back we only had like co-pilots"
+    },
+    {
+      "id": 35,
+      "start": 163.64,
+      "end": 169.97,
+      "text": "and coding assistants the real agents came like two years go with the first ones and"
+    },
+    {
+      "id": 36,
+      "start": 170.07999999999998,
+      "end": 174.56,
+      "text": "then during the last one year pretty much it's like fully took off"
+    },
+    {
+      "id": 37,
+      "start": 175.44,
+      "end": 179.79,
+      "text": "but now there's a situation that sort of the downstream funnel so after"
+    },
+    {
+      "id": 38,
+      "start": 179.81,
+      "end": 185.26,
+      "text": "specification then development testing towards actual production we call that"
+    },
+    {
+      "id": 39,
+      "start": 185.28,
+      "end": 190.39,
+      "text": "agentic engineering some people call it the software factory but that's more"
+    },
+    {
+      "id": 40,
+      "start": 190.41,
+      "end": 195.87,
+      "text": "mature from my point of view already I'm not focusing so much on that you can"
+    },
+    {
+      "id": 41,
+      "start": 196.24,
+      "end": 201.67000000000002,
+      "text": "purchase already existing commercial software factories and build your own and"
+    },
+    {
+      "id": 42,
+      "start": 201.99,
+      "end": 206.52,
+      "text": "there's plenty of options there but the upstream part I think there's a big"
+    },
+    {
+      "id": 43,
+      "start": 206.93,
+      "end": 213.48,
+      "text": "variance now on how the industry is seeing the agentic wave there the upstream"
+    },
+    {
+      "id": 44,
+      "start": 213.75,
+      "end": 219.51,
+      "text": "part that we call now agentic discovery it starts from the product vision goes"
+    },
+    {
+      "id": 45,
+      "start": 219.53,
+      "end": 225.57999999999998,
+      "text": "through the market customer segmentation through the discovery and design that part"
+    },
+    {
+      "id": 46,
+      "start": 225.6,
+      "end": 231.87,
+      "text": "hasn't been so disciplined around tooling for example like whereas the"
+    },
+    {
+      "id": 47,
+      "start": 231.89,
+      "end": 237.39,
+      "text": "downstream funnel has version control systems and audit logs and whatnot the"
+    },
+    {
+      "id": 48,
+      "start": 237.59,
+      "end": 242.1,
+      "text": "upstream part has been at least from my point of view in 20 years in the industry"
+    },
+    {
+      "id": 49,
+      "start": 242.12,
+      "end": 247.22,
+      "text": "like powerpoints and presentation and something is in somebody's head and then"
+    },
+    {
+      "id": 50,
+      "start": 247.24,
+      "end": 252.55,
+      "text": "that person just left and whatever So there's a longer probably transition going"
+    },
+    {
+      "id": 51,
+      "start": 253.07,
+      "end": 254.82,
+      "text": "to be on the upstream part."
+    },
+    {
+      "id": 52,
+      "start": 256.7,
+      "end": 263.08,
+      "text": "Now, what we think as a research hypothesis in this paper is that still the"
+    },
+    {
+      "id": 53,
+      "start": 263.1,
+      "end": 268.68,
+      "text": "sort of classical problem domain versus solution domain distinction will stay."
+    },
+    {
+      "id": 54,
+      "start": 269.1,
+      "end": 273.38,
+      "text": "Let's see if that holds, but that's like our assumption here."
+    },
+    {
+      "id": 55,
+      "start": 273.51,
+      "end": 278.64,
+      "text": "And that's why there's a discovery part and then the engineering part."
+    },
+    {
+      "id": 56,
+      "start": 279.63,
+      "end": 283.72,
+      "text": "And you can, of course, plot the existing"
+    },
+    {
+      "id": 57,
+      "start": 283.74,
+      "end": 290.71,
+      "text": "stacks, so from the left-hand side you see the agentic discovery, and"
+    },
+    {
+      "id": 58,
+      "start": 291.04,
+      "end": 294.5,
+      "text": "on the right-hand side the engineering funnel."
+    },
+    {
+      "id": 59,
+      "start": 294.63,
+      "end": 300.52,
+      "text": "And you can get these slides, by the way, so you don't need to take"
+    },
+    {
+      "id": 60,
+      "start": 300.57,
+      "end": 304.5,
+      "text": "pictures, they are available online."
+    },
+    {
+      "id": 61,
+      "start": 304.63,
+      "end": 309.48,
+      "text": "But there's also a big shift now so bottlenecks are moving here and there"
+    },
+    {
+      "id": 62,
+      "start": 309.5,
+      "end": 315.24,
+      "text": "whereas the coding and programming and actual manufacturing the software used to"
+    },
+    {
+      "id": 63,
+      "start": 315.26,
+      "end": 322.23,
+      "text": "be the big thing and took a lot of time now that's sort of squeezed you can"
+    },
+    {
+      "id": 64,
+      "start": 322.25,
+      "end": 328.54,
+      "text": "do parallel multi-agent implementation but it doesn't mean that humans couldn't focus"
+    },
+    {
+      "id": 65,
+      "start": 328.56,
+      "end": 334.6,
+      "text": "on anything but I think there's much more emphasis now on actually reframing the"
+    },
+    {
+      "id": 66,
+      "start": 334.62,
+      "end": 339.49,
+      "text": "problems and that's where we have these luotain or probes that we're going to"
+    },
+    {
+      "id": 67,
+      "start": 339.51,
+      "end": 344.44,
+      "text": "discuss later in this presentation and then also validation so what did those"
+    },
+    {
+      "id": 68,
+      "start": 344.46,
+      "end": 351.36,
+      "text": "agents actually do before we go into like"
+    },
+    {
+      "id": 69,
+      "start": 351.38,
+      "end": 357.28,
+      "text": "actual content of this presentation I still like to view my personal view on the"
+    },
+    {
+      "id": 70,
+      "start": 357.31,
+      "end": 363.93,
+      "text": "status of the AI at the moment where I have been learning Most of the stuff I"
+    },
+    {
+      "id": 71,
+      "start": 364.06,
+      "end": 369.37,
+      "text": "would say from the past few years is first of all, try to build something, build,"
+    },
+    {
+      "id": 72,
+      "start": 369.39,
+      "end": 371.04,
+      "text": "build, build, build, build a lot."
+    },
+    {
+      "id": 73,
+      "start": 371.25,
+      "end": 377.05,
+      "text": "And then from the kids, it's astonishing that already like three years ago, my"
+    },
+    {
+      "id": 74,
+      "start": 377.19,
+      "end": 382.5,
+      "text": "youngest daughter was creating fantastic fairy tales with AI."
+    },
+    {
+      "id": 75,
+      "start": 383.08,
+      "end": 388.02,
+      "text": "She didn't know how to read or write, but she had a very precise vision what those"
+    },
+    {
+      "id": 76,
+      "start": 388.04,
+      "end": 390.0,
+      "text": "stories should entail."
+    },
+    {
+      "id": 77,
+      "start": 390.35,
+      "end": 393.98,
+      "text": "And I was like blown away what the AI was creating."
+    },
+    {
+      "id": 78,
+      "start": 394.18,
+      "end": 397.98,
+      "text": "But she was like, no, no, there's three puppies, should be two."
+    },
+    {
+      "id": 79,
+      "start": 398.14,
+      "end": 400.17,
+      "text": "And no, no, those colors and whatever."
+    },
+    {
+      "id": 80,
+      "start": 401.82,
+      "end": 406.84000000000003,
+      "text": "Last year, my middle daughter built a 3D horse farm game."
+    },
+    {
+      "id": 81,
+      "start": 407.62,
+      "end": 412.28,
+      "text": "So they are into horses, which is not so good for me, but might be good for them."
+    },
+    {
+      "id": 82,
+      "start": 413.36,
+      "end": 417.44,
+      "text": "And again, I was like, oh, my God, you know, eight year old can do that."
+    },
+    {
+      "id": 83,
+      "start": 417.81,
+      "end": 421.51,
+      "text": "And she was like, no, it has to be more realistic, and this is not enough."
+    },
+    {
+      "id": 84,
+      "start": 422.44,
+      "end": 427.93,
+      "text": "And now my son wanted to create his own gaming company, and he's producing games"
+    },
+    {
+      "id": 85,
+      "start": 427.95,
+      "end": 430.62,
+      "text": "that I could never imagine to build myself."
+    },
+    {
+      "id": 86,
+      "start": 431.04,
+      "end": 432.99,
+      "text": "And I'm like, oh my God, this is great."
+    },
+    {
+      "id": 87,
+      "start": 433.05,
+      "end": 435.95,
+      "text": "And he's like, I'm firing these agents and demand."
+    },
+    {
+      "id": 88,
+      "start": 436.64,
+      "end": 442.34,
+      "text": "So it's like, sort of, if you look the AI as you would without any"
+    },
+    {
+      "id": 89,
+      "start": 442.36,
+      "end": 445.13,
+      "text": "limitations, then you're like a child."
+    },
+    {
+      "id": 90,
+      "start": 447.81,
+      "end": 454.48,
+      "text": "So in software engineering, I used to be quoting this METR chart for the"
+    },
+    {
+      "id": 91,
+      "start": 454.5,
+      "end": 456.3,
+      "text": "past one and a half years."
+    },
+    {
+      "id": 92,
+      "start": 456.6,
+      "end": 463.0,
+      "text": "So it used to tell that there was a doubling rate of four to seven months of"
+    },
+    {
+      "id": 93,
+      "start": 463.02,
+      "end": 463.83,
+      "text": "software"
+    },
+    {
+      "id": 94,
+      "start": 464.85,
+      "end": 469.15,
+      "text": "engineering tasks. So we went from one hour human task to two hours and four"
+    },
+    {
+      "id": 95,
+      "start": 469.67,
+      "end": 471.84000000000003,
+      "text": "hours and eight hours and whatever."
+    },
+    {
+      "id": 96,
+      "start": 472.19,
+      "end": 477.32,
+      "text": "But during the spring, this chart sort of became unreliable because it's already"
+    },
+    {
+      "id": 97,
+      "start": 477.74,
+      "end": 483.16,
+      "text": "several days of jobs or tasks that the agents can solve."
+    },
+    {
+      "id": 98,
+      "start": 483.34,
+      "end": 487.12,
+      "text": "And it's not measuring actually the agents like Claude Code and whatever."
+    },
+    {
+      "id": 99,
+      "start": 487.82,
+      "end": 492.07,
+      "text": "But what we see is that during the last one year, there was this huge sort of"
+    },
+    {
+      "id": 100,
+      "start": 492.09,
+      "end": 497.82,
+      "text": "leap. I have been calling it a gigantic leap, but there might be other names for"
+    },
+    {
+      "id": 101,
+      "start": 497.84,
+      "end": 501.96,
+      "text": "that. Then some people said, yeah, it's just the programming."
+    },
+    {
+      "id": 102,
+      "start": 502.54,
+      "end": 507.71,
+      "text": "I have been fooled by YouTube many times so that I've been listening to like Lana"
+    },
+    {
+      "id": 103,
+      "start": 507.73,
+      "end": 511.64,
+      "text": "Del Rey. I'm like, oh my God, a new nice song."
+    },
+    {
+      "id": 104,
+      "start": 512.16,
+      "end": 513.94,
+      "text": "But it was not Lana Del Rey."
+    },
+    {
+      "id": 105,
+      "start": 514.23,
+      "end": 515.38,
+      "text": "Somebody just prompted."
+    },
+    {
+      "id": 106,
+      "start": 516.06,
+      "end": 517.36,
+      "text": "I think that's good."
+    },
+    {
+      "id": 107,
+      "start": 517.58,
+      "end": 518.98,
+      "text": "It sounds like Lana Del Rey."
+    },
+    {
+      "id": 108,
+      "start": 520.42,
+      "end": 521.72,
+      "text": "Does it make a difference?"
+    },
+    {
+      "id": 109,
+      "start": 521.94,
+      "end": 526.49,
+      "text": "But you can try your favorite artist and put slash AI music and then are you able"
+    },
+    {
+      "id": 110,
+      "start": 526.51,
+      "end": 527.66,
+      "text": "to tell the difference?"
+    },
+    {
+      "id": 111,
+      "start": 529.19,
+      "end": 533.83,
+      "text": "Mathematicians are now a bit scared my father used to be a professor of"
+    },
+    {
+      "id": 112,
+      "start": 533.85,
+      "end": 535.71,
+      "text": "mathematics in this university"
+    },
+    {
+      "id": 113,
+      "start": 536.42,
+      "end": 541.44,
+      "text": "we had some professors a few weeks ago at our house and they were like what's gonna"
+    },
+    {
+      "id": 114,
+      "start": 541.46,
+      "end": 546.16,
+      "text": "happen to mathematicians do we need them at all and they were like actually quite"
+    },
+    {
+      "id": 115,
+      "start": 546.18,
+      "end": 552.19,
+      "text": "scared they are retired so not them but now there has been like continuous"
+    },
+    {
+      "id": 116,
+      "start": 552.21,
+      "end": 559.11,
+      "text": "discussion around how well is the AI doing in math and now we are in the limit of"
+    },
+    {
+      "id": 117,
+      "start": 559.13,
+      "end": 564.51,
+      "text": "unsolved problems being posted like hundreds and hundreds by OpenAI and then"
+    },
+    {
+      "id": 118,
+      "start": 564.83,
+      "end": 569.62,
+      "text": "mathematicians are like are we able to still understand what those logical proofs"
+    },
+    {
+      "id": 119,
+      "start": 569.77,
+      "end": 576.43,
+      "text": "are about so it's not only about programming GDPval I think"
+    },
+    {
+      "id": 120,
+      "start": 576.51,
+      "end": 582.61,
+      "text": "sort of nice experiment or benchmark started from the U.S."
+    },
+    {
+      "id": 121,
+      "start": 582.72,
+      "end": 587.45,
+      "text": "GDP so what are the most important jobs and how to quantify what they are actually"
+    },
+    {
+      "id": 122,
+      "start": 587.65,
+      "end": 593.86,
+      "text": "doing again the same story so within a few last year AI models are beating"
+    },
+    {
+      "id": 123,
+      "start": 594.83,
+      "end": 601.01,
+      "text": "the experts and even the hardest benchmarks are sort of approaching the"
+    },
+    {
+      "id": 124,
+      "start": 601.43,
+      "end": 606.68,
+      "text": "ceiling all the time and then people are like how should we now measure where we"
+    },
+    {
+      "id": 125,
+      "start": 606.7,
+      "end": 611.54,
+      "text": "are and I think in in terms of software engineering I don't fully know even though"
+    },
+    {
+      "id": 126,
+      "start": 611.57,
+      "end": 616.91,
+      "text": "I'm sort of in the business so how big tasks are we able to solve and open-weight"
+    },
+    {
+      "id": 127,
+      "start": 616.93,
+      "end": 622.85,
+      "text": "models are sort of following quite closely within few months the frontier models so"
+    },
+    {
+      "id": 128,
+      "start": 623.05,
+      "end": 628.9,
+      "text": "it seems that in this intelligence competition there is no single player that"
+    },
+    {
+      "id": 129,
+      "start": 628.92,
+      "end": 632.54,
+      "text": "would dominate and have a like a sustainable advantage"
+    },
+    {
+      "id": 130,
+      "start": 634.91,
+      "end": 640.61,
+      "text": "coding agents are like everyday Claude Code one of the best but there's plenty of"
+    },
+    {
+      "id": 131,
+      "start": 640.85,
+      "end": 641.65,
+      "text": "others like"
+    },
+    {
+      "id": 132,
+      "start": 642.22,
+      "end": 645.27,
+      "text": "GitHub Copilot Pro, Codex and many others"
+    },
+    {
+      "id": 133,
+      "start": 648.38,
+      "end": 651.18,
+      "text": "but that's sort of the state of the AI as I see it"
+    },
+    {
+      "id": 134,
+      "start": 652.46,
+      "end": 658.3,
+      "text": "now to put this agentic discovery and engineering into perspectives we just want"
+    },
+    {
+      "id": 135,
+      "start": 658.32,
+      "end": 663.97,
+      "text": "to visualize a few existing theorems not all of them because there's just too many"
+    },
+    {
+      "id": 136,
+      "start": 664.91,
+      "end": 670.62,
+      "text": "but for example this problem domain and solution domain I think the agentic"
+    },
+    {
+      "id": 137,
+      "start": 670.75,
+      "end": 675.88,
+      "text": "engineering and discovery are probably a bit overlapping it's not like so black and"
+    },
+    {
+      "id": 138,
+      "start": 676.03,
+      "end": 676.83,
+      "text": "white"
+    },
+    {
+      "id": 139,
+      "start": 678.62,
+      "end": 681.58,
+      "text": "and there's plenty of other illustrations that are sort of"
+    },
+    {
+      "id": 140,
+      "start": 682.7,
+      "end": 689.17,
+      "text": "having this problem domain and solution domain and captured within then like from"
+    },
+    {
+      "id": 141,
+      "start": 689.32,
+      "end": 695.96,
+      "text": "vision to strategy roadmap and features I haven't seen a process"
+    },
+    {
+      "id": 142,
+      "start": 695.98,
+      "end": 701.3,
+      "text": "actually implemented at the moment in the industry that would really use multi-agent"
+    },
+    {
+      "id": 143,
+      "start": 701.32,
+      "end": 706.89,
+      "text": "systems here but I think that that's that's coming but again this part of the"
+    },
+    {
+      "id": 144,
+      "start": 707.0,
+      "end": 713.88,
+      "text": "upstream part is much more immature and as discussed some of the people might not"
+    },
+    {
+      "id": 145,
+      "start": 713.9,
+      "end": 719.47,
+      "text": "have the right background to even try those tools so let's say fluently"
+    },
+    {
+      "id": 146,
+      "start": 721.02,
+      "end": 726.68,
+      "text": "or the traditional waterfall model again it's a bit overlapping like where do you"
+    },
+    {
+      "id": 147,
+      "start": 726.7,
+      "end": 727.5,
+      "text": "draw the line"
+    },
+    {
+      "id": 148,
+      "start": 728.14,
+      "end": 734.95,
+      "text": "where does the agentic engineering let's say start or some people call"
+    },
+    {
+      "id": 149,
+      "start": 734.97,
+      "end": 735.77,
+      "text": "it product"
+    },
+    {
+      "id": 150,
+      "start": 737.39,
+      "end": 743.64,
+      "text": "development life cycle focusing on the outcomes perhaps might have six stages"
+    },
+    {
+      "id": 151,
+      "start": 743.66,
+      "end": 744.46,
+      "text": "again it's a bit"
+    },
+    {
+      "id": 152,
+      "start": 745.55,
+      "end": 751.76,
+      "text": "overlapping that's like quickly just plotting those processes on top of"
+    },
+    {
+      "id": 153,
+      "start": 751.78,
+      "end": 752.65,
+      "text": "existing"
+    },
+    {
+      "id": 154,
+      "start": 754.38,
+      "end": 760.78,
+      "text": "uh then about again the probes so I like this luotain concept for some reason"
+    },
+    {
+      "id": 155,
+      "start": 761.58,
+      "end": 766.75,
+      "text": "I think we meant the probe to be something tangible, which the agent creates pretty"
+    },
+    {
+      "id": 156,
+      "start": 766.9,
+      "end": 772.29,
+      "text": "much. It can be throwaway, but you might replace like writing thousands of pages of"
+    },
+    {
+      "id": 157,
+      "start": 772.31,
+      "end": 773.74,
+      "text": "documents or something."
+    },
+    {
+      "id": 158,
+      "start": 773.9,
+      "end": 775.3,
+      "text": "But it's something tangible."
+    },
+    {
+      "id": 159,
+      "start": 775.46,
+      "end": 779.12,
+      "text": "It can be a software, but it can be something else as well."
+    },
+    {
+      "id": 160,
+      "start": 780.98,
+      "end": 783.67,
+      "text": "What can it be? Well, you can validate the problem."
+    },
+    {
+      "id": 161,
+      "start": 784.3,
+      "end": 787.85,
+      "text": "For example, somebody says that in healthcare we have this problem that I"
+    },
+    {
+      "id": 162,
+      "start": 787.87,
+      "end": 791.27,
+      "text": "need to be waiting and then happens this and this and this and that."
+    },
+    {
+      "id": 163,
+      "start": 791.63,
+      "end": 795.5,
+      "text": "Then you can create a simulation, \"Is this what you mean?\""
+    },
+    {
+      "id": 164,
+      "start": 795.63,
+      "end": 799.13,
+      "text": "No. Let's fix it. Now is this?"
+    },
+    {
+      "id": 165,
+      "start": 799.15,
+      "end": 801.48,
+      "text": "Yes. Or then solution."
+    },
+    {
+      "id": 166,
+      "start": 801.5,
+      "end": 807.5,
+      "text": "Instead of writing documents and whatever, you just create the software on the fly."
+    },
+    {
+      "id": 167,
+      "start": 807.63,
+      "end": 811.5,
+      "text": "Or some kind of validation that, \"Is this what you mean?\""
+    },
+    {
+      "id": 168,
+      "start": 811.63,
+      "end": 816.76,
+      "text": "And again, the agent can create that, and the dreamer is now the human in these"
+    },
+    {
+      "id": 169,
+      "start": 817.17,
+      "end": 819.5,
+      "text": "loops, is the one who validates it."
+    },
+    {
+      "id": 170,
+      "start": 819.63,
+      "end": 821.53,
+      "text": "No, no, that's not what I meant."
+    },
+    {
+      "id": 171,
+      "start": 821.76,
+      "end": 824.93,
+      "text": "And then you iterate until you sort of satisfy the constraints."
+    },
+    {
+      "id": 172,
+      "start": 826.56,
+      "end": 829.62,
+      "text": "And what probes there could be, I think probably more."
+    },
+    {
+      "id": 173,
+      "start": 830.32,
+      "end": 834.72,
+      "text": "This is just a general like from the problem and solution domain, different"
+    },
+    {
+      "id": 174,
+      "start": 834.74,
+      "end": 835.58,
+      "text": "types of probes."
+    },
+    {
+      "id": 175,
+      "start": 836.92,
+      "end": 840.94,
+      "text": "And then you can use this like outside in or inside out."
+    },
+    {
+      "id": 176,
+      "start": 841.07,
+      "end": 847.41,
+      "text": "So in a large IT organization, for example, if you start to change something,"
+    },
+    {
+      "id": 177,
+      "start": 847.56,
+      "end": 849.36,
+      "text": "you might have different strategies."
+    },
+    {
+      "id": 178,
+      "start": 849.63,
+      "end": 856.58,
+      "text": "Let's rebuild everything like green field or very brown field let's just you know to"
+    },
+    {
+      "id": 179,
+      "start": 856.6,
+      "end": 863.04,
+      "text": "tweak one bit by bit so you could use the same discovery to find out the current"
+    },
+    {
+      "id": 180,
+      "start": 863.06,
+      "end": 868.59,
+      "text": "constraints or then start from the optimal solution and then add constraint by"
+    },
+    {
+      "id": 181,
+      "start": 868.61,
+      "end": 875.39,
+      "text": "constraint then a few words about"
+    },
+    {
+      "id": 182,
+      "start": 875.53,
+      "end": 881.58,
+      "text": "agentic search and agentic information retrieval if you have a better source come"
+    },
+    {
+      "id": 183,
+      "start": 881.6,
+      "end": 887.72,
+      "text": "and discuss with me I've been seeing this concept used so many times that we just"
+    },
+    {
+      "id": 184,
+      "start": 887.74,
+      "end": 893.56,
+      "text": "plotted a picture like what is an agentic search pretty much you can replace any"
+    },
+    {
+      "id": 185,
+      "start": 893.59,
+      "end": 898.11,
+      "text": "type of googling with multi-agent system doing the same thing you need to specify"
+    },
+    {
+      "id": 186,
+      "start": 898.55,
+      "end": 904.44,
+      "text": "what you want then you probably have some analysis like what are you going to do"
+    },
+    {
+      "id": 187,
+      "start": 904.49,
+      "end": 909.39,
+      "text": "about now you have all the documents from the internet or something else and then a"
+    },
+    {
+      "id": 188,
+      "start": 909.41,
+      "end": 914.34,
+      "text": "study well how do you satisfy the constraints what are you looking for is it"
+    },
+    {
+      "id": 189,
+      "start": 914.36,
+      "end": 921.34,
+      "text": "the question that you're answering or what and"
+    },
+    {
+      "id": 190,
+      "start": 921.36,
+      "end": 927.96,
+      "text": "this is just explaining pretty much the same so from evidence to the"
+    },
+    {
+      "id": 191,
+      "start": 928.06,
+      "end": 934.85,
+      "text": "reports so probes and searches then some experiments"
+    },
+    {
+      "id": 192,
+      "start": 935.13,
+      "end": 936.59,
+      "text": "the first type of experiment"
+    },
+    {
+      "id": 193,
+      "start": 937.34,
+      "end": 943.08,
+      "text": "what we did was to go to eight locations and we promised that we will implement all"
+    },
+    {
+      "id": 194,
+      "start": 943.1,
+      "end": 949.83,
+      "text": "your ideas that was pretty much it we you know just come with your ideas we will do"
+    },
+    {
+      "id": 195,
+      "start": 949.85,
+      "end": 955.35,
+      "text": "them all and what happened was that in first setup it was like finnish meeting"
+    },
+    {
+      "id": 196,
+      "start": 955.37,
+      "end": 961.95,
+      "text": "like in the north not too many ideas so two ideas actually we implemented it was"
+    },
+    {
+      "id": 197,
+      "start": 962.47,
+      "end": 966.14,
+      "text": "like was it uh 27 people were invited"
+    },
+    {
+      "id": 198,
+      "start": 967.15,
+      "end": 974.15,
+      "text": "second meeting again like two ideas then it was four and then it was seven so I"
+    },
+    {
+      "id": 199,
+      "start": 974.57,
+      "end": 979.12,
+      "text": "was in practice building seven applications on the fly and and in seven I"
+    },
+    {
+      "id": 200,
+      "start": 979.14,
+      "end": 985.43,
+      "text": "understood that now I am the bottleneck definitely so first it was the ideas then"
+    },
+    {
+      "id": 201,
+      "start": 985.45,
+      "end": 991.67,
+      "text": "I was the bottleneck and then when we knew that we will be inviting more than 100"
+    },
+    {
+      "id": 202,
+      "start": 991.69,
+      "end": 996.56,
+      "text": "people then we knew that well we need to do some kind of whatever factory so that"
+    },
+    {
+      "id": 203,
+      "start": 996.69,
+      "end": 998.4,
+      "text": "I'm not the bottleneck."
+    },
+    {
+      "id": 204,
+      "start": 998.53,
+      "end": 1002.12,
+      "text": "And then we built like a small probe factory."
+    },
+    {
+      "id": 205,
+      "start": 1002.25,
+      "end": 1007.38,
+      "text": "So people can just post the ideas and then I just accept and then agents do it"
+    },
+    {
+      "id": 206,
+      "start": 1007.8,
+      "end": 1014.77,
+      "text": "all. And then there was like a process, so I was the orchestrator, - but there"
+    },
+    {
+      "id": 207,
+      "start": 1015.09,
+      "end": 1018.0,
+      "text": "was like small software factory to do this."
+    },
+    {
+      "id": 208,
+      "start": 1018.13,
+      "end": 1023.14,
+      "text": "And we were able to implement in, let's say, one or two hours, - like 26 probes"
+    },
+    {
+      "id": 209,
+      "start": 1023.47,
+      "end": 1030.14,
+      "text": "and in one session it was 20 probes and in the last session I was like 15 minutes"
+    },
+    {
+      "id": 210,
+      "start": 1030.16,
+      "end": 1035.22,
+      "text": "and and 20 software so then I was like I don't I'm not needed in this process I"
+    },
+    {
+      "id": 211,
+      "start": 1035.24,
+      "end": 1036.56,
+      "text": "could just you know"
+    },
+    {
+      "id": 212,
+      "start": 1037.68,
+      "end": 1039.08,
+      "text": "just you know all your ideas"
+    },
+    {
+      "id": 213,
+      "start": 1042.8,
+      "end": 1048.94,
+      "text": "and then in this process that dreamers were able to post new things so first idea"
+    },
+    {
+      "id": 214,
+      "start": 1048.96,
+      "end": 1051.18,
+      "text": "then no no no That was not what I meant."
+    },
+    {
+      "id": 215,
+      "start": 1051.2,
+      "end": 1056.98,
+      "text": "And more ideas. And then when they run out of ideas, then it was sort of satisfied."
+    },
+    {
+      "id": 216,
+      "start": 1060.62,
+      "end": 1067.47,
+      "text": "And then there's some segmentation around what categories of ideas people had in"
+    },
+    {
+      "id": 217,
+      "start": 1067.49,
+      "end": 1068.29,
+      "text": "mind."
+    },
+    {
+      "id": 218,
+      "start": 1070.4,
+      "end": 1074.08,
+      "text": "Then this is sort of a work in progress at the moment."
+    },
+    {
+      "id": 219,
+      "start": 1074.21,
+      "end": 1080.55,
+      "text": "And so if you would apply the agentic search and"
+    },
+    {
+      "id": 220,
+      "start": 1080.7,
+      "end": 1087.42,
+      "text": "analysis and perhaps study to create a lot of probes, let's say you would have"
+    },
+    {
+      "id": 221,
+      "start": 1087.79,
+      "end": 1091.92,
+      "text": "the question that how could Finnish healthcare benefit from AI?"
+    },
+    {
+      "id": 222,
+      "start": 1092.36,
+      "end": 1098.45,
+      "text": "So first, could you please figure out all the processes from the internet, from the"
+    },
+    {
+      "id": 223,
+      "start": 1098.47,
+      "end": 1100.84,
+      "text": "healthcare, like read everything."
+    },
+    {
+      "id": 224,
+      "start": 1102.43,
+      "end": 1106.24,
+      "text": "Then analyze, like, what are the most important processes that you find?"
+    },
+    {
+      "id": 225,
+      "start": 1106.52,
+      "end": 1108.76,
+      "text": "Then describe those in a meaningful way."
+    },
+    {
+      "id": 226,
+      "start": 1109.78,
+      "end": 1114.4,
+      "text": "Then think that, well, how would it change in the AI world?"
+    },
+    {
+      "id": 227,
+      "start": 1114.9,
+      "end": 1118.15,
+      "text": "So not only describing how it should be, but how it could be."
+    },
+    {
+      "id": 228,
+      "start": 1120.82,
+      "end": 1124.56,
+      "text": "So you can set up a multi-agent system like that."
+    },
+    {
+      "id": 229,
+      "start": 1124.8,
+      "end": 1127.45,
+      "text": "Then it's more like, do you have the tokens to do it?"
+    },
+    {
+      "id": 230,
+      "start": 1127.49,
+      "end": 1131.87,
+      "text": "And are you able to specify what you want and what kind of people say loop"
+    },
+    {
+      "id": 231,
+      "start": 1131.89,
+      "end": 1138.39,
+      "text": "engineering? Like what kind of backward loops do you need to specify so that"
+    },
+    {
+      "id": 232,
+      "start": 1138.8,
+      "end": 1141.78,
+      "text": "the end result will be what you expected?"
+    },
+    {
+      "id": 233,
+      "start": 1143.92,
+      "end": 1149.58,
+      "text": "So this is an example process of like just picking one from what we"
+    },
+    {
+      "id": 234,
+      "start": 1149.6,
+      "end": 1151.46,
+      "text": "constructed."
+    },
+    {
+      "id": 235,
+      "start": 1152.28,
+      "end": 1154.25,
+      "text": "It's like, how does it work at the moment?"
+    },
+    {
+      "id": 236,
+      "start": 1154.27,
+      "end": 1160.75,
+      "text": "Some patient has a asthma he needs periodically some"
+    },
+    {
+      "id": 237,
+      "start": 1160.77,
+      "end": 1167.63,
+      "text": "medicine it appears every now and then and at the moment you always need to call"
+    },
+    {
+      "id": 238,
+      "start": 1167.65,
+      "end": 1172.36,
+      "text": "the doctor and think when is that available then you go to the lab and"
+    },
+    {
+      "id": 239,
+      "start": 1172.38,
+      "end": 1179.24,
+      "text": "whatever it takes a few days then it's solved and it costs a few hundred if it's"
+    },
+    {
+      "id": 240,
+      "start": 1179.37,
+      "end": 1185.87,
+      "text": "like type of thing then the agent you can of"
+    },
+    {
+      "id": 241,
+      "start": 1185.94,
+      "end": 1189.22,
+      "text": "course think that okay if you go outside in"
+    },
+    {
+      "id": 242,
+      "start": 1190.13,
+      "end": 1197.04,
+      "text": "theoretically if you just you know get rid of the people have agents be granted to"
+    },
+    {
+      "id": 243,
+      "start": 1197.76,
+      "end": 1203.92,
+      "text": "give that kind of medicine it's like 20 minutes 40 minutes"
+    },
+    {
+      "id": 244,
+      "start": 1205.33,
+      "end": 1210.14,
+      "text": "person discussing with first AI agent and somebody has the authority to just okay"
+    },
+    {
+      "id": 245,
+      "start": 1210.16,
+      "end": 1211.12,
+      "text": "you will get that"
+    },
+    {
+      "id": 246,
+      "start": 1212.56,
+      "end": 1219.34,
+      "text": "so you can sort of produce this in mass scale and there's no limit around how many"
+    },
+    {
+      "id": 247,
+      "start": 1219.36,
+      "end": 1226.23,
+      "text": "such processes you can first find visualize and then sort of I don't"
+    },
+    {
+      "id": 248,
+      "start": 1226.25,
+      "end": 1231.89,
+      "text": "know if it's hallucinate or imagine or whatever how could it be it's more the"
+    },
+    {
+      "id": 249,
+      "start": 1231.97,
+      "end": 1237.21,
+      "text": "question of if you are able to get certain rid of certain"
+    },
+    {
+      "id": 250,
+      "start": 1237.23,
+      "end": 1243.93,
+      "text": "restrictions so these are different types of probes and"
+    },
+    {
+      "id": 251,
+      "start": 1244.25,
+      "end": 1251.16,
+      "text": "as a summary yeah I think where we are the downstream funnel the agentic"
+    },
+    {
+      "id": 252,
+      "start": 1251.21,
+      "end": 1257.87,
+      "text": "engineering is definitely more mature in terms of industrial practice at the moment"
+    },
+    {
+      "id": 253,
+      "start": 1257.93,
+      "end": 1262.71,
+      "text": "the upstream part I think it's in in big turbulence it's interesting to see which"
+    },
+    {
+      "id": 254,
+      "start": 1263.25,
+      "end": 1270.12,
+      "text": "tools even survive from the existing ones and uh our core claim"
+    },
+    {
+      "id": 255,
+      "start": 1270.14,
+      "end": 1276.51,
+      "text": "still is that it there will be two phases let's see if that holds and we call those"
+    },
+    {
+      "id": 256,
+      "start": 1276.62,
+      "end": 1281.89,
+      "text": "again the discovery and agentic engineering and instruments we called"
+    },
+    {
+      "id": 257,
+      "start": 1282.33,
+      "end": 1288.07,
+      "text": "probes and we used a few ones like to validate certain solution or that validate"
+    },
+    {
+      "id": 258,
+      "start": 1288.21,
+      "end": 1294.4,
+      "text": "the actual problem and then we show that well you can even mass scale create those"
+    },
+    {
+      "id": 259,
+      "start": 1295.09,
+      "end": 1301.7,
+      "text": "like discover how it's currently done and imagine how it could be and this is not"
+    },
+    {
+      "id": 260,
+      "start": 1302.08,
+      "end": 1308.99,
+      "text": "a new idea like bottleneck here bottleneck there there's like"
+    },
+    {
+      "id": 261,
+      "start": 1309.01,
+      "end": 1314.78,
+      "text": "40 year old book which is about optimizing a factory you optimize certain point and"
+    },
+    {
+      "id": 262,
+      "start": 1314.8,
+      "end": 1320.43,
+      "text": "the bottleneck moves you try to optimize it here and there I think it's sort of the"
+    },
+    {
+      "id": 263,
+      "start": 1320.53,
+      "end": 1325.5,
+      "text": "same but of course in in software engineering sometimes you might be able to"
+    },
+    {
+      "id": 264,
+      "start": 1325.52,
+      "end": 1330.99,
+      "text": "start fresh like greenfield which is not so typical in the factory perhaps so you"
+    },
+    {
+      "id": 265,
+      "start": 1331.36,
+      "end": 1338.06,
+      "text": "can reimagine but the discovery part is interesting to see when it is"
+    },
+    {
+      "id": 266,
+      "start": 1338.08,
+      "end": 1344.57,
+      "text": "reimagined so how it actually works that was it and you can find the paper and"
+    },
+    {
+      "id": 267,
+      "start": 1344.59,
+      "end": 1348.96,
+      "text": "slides here if you want to dive deeper."
+    }
+  ]
+}

@@ -1,0 +1,704 @@
+{
+  "text": "Fundamentally, there's no significant correlation between AI adoption and improvements at the company level. AI doesn't fix a team, it just amplifies what is existing there. And I think the best way to think about this, and I'm going back to history further back than the 1970s, is to actually go.",
+  "sentences": [
+    {
+      "text": " Fundamentally, there's no significant correlation between AI adoption and improvements at the company level.",
+      "start": 0.16,
+      "end": 5.76,
+      "duration": 5.6,
+      "confidence": 0.998,
+      "tokens": [
+        {
+          "text": " F",
+          "start": 0.16,
+          "end": 0.24,
+          "duration": 0.08,
+          "confidence": 0.967
+        },
+        {
+          "text": "und",
+          "start": 0.24,
+          "end": 0.32,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "ament",
+          "start": 0.32,
+          "end": 0.48,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ally",
+          "start": 0.48,
+          "end": 0.56,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": ",",
+          "start": 0.56,
+          "end": 0.64,
+          "duration": 0.08,
+          "confidence": 0.984
+        },
+        {
+          "text": " there",
+          "start": 0.64,
+          "end": 0.72,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "'",
+          "start": 0.72,
+          "end": 0.8,
+          "duration": 0.08,
+          "confidence": 0.996
+        },
+        {
+          "text": "s",
+          "start": 0.8,
+          "end": 0.8,
+          "duration": 0.0,
+          "confidence": 1.0
+        },
+        {
+          "text": " no",
+          "start": 0.8,
+          "end": 0.96,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " signific",
+          "start": 0.96,
+          "end": 1.2,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "ant",
+          "start": 1.2,
+          "end": 1.36,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " cor",
+          "start": 1.36,
+          "end": 1.6,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "rel",
+          "start": 1.6,
+          "end": 1.84,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "ation",
+          "start": 1.84,
+          "end": 2.0,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " bet",
+          "start": 2.0,
+          "end": 2.08,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "we",
+          "start": 2.08,
+          "end": 2.24,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "en",
+          "start": 2.24,
+          "end": 2.4,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " A",
+          "start": 2.4,
+          "end": 2.56,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "I",
+          "start": 2.56,
+          "end": 2.8,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " ad",
+          "start": 2.8,
+          "end": 2.96,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "op",
+          "start": 2.96,
+          "end": 3.2,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "tion",
+          "start": 3.2,
+          "end": 3.44,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " and",
+          "start": 3.44,
+          "end": 3.68,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " imp",
+          "start": 3.68,
+          "end": 3.84,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "rov",
+          "start": 3.84,
+          "end": 4.08,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "ements",
+          "start": 4.08,
+          "end": 4.24,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " at",
+          "start": 4.24,
+          "end": 4.4,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " the",
+          "start": 4.4,
+          "end": 4.48,
+          "duration": 0.08,
+          "confidence": 0.999
+        },
+        {
+          "text": " comp",
+          "start": 4.48,
+          "end": 4.72,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "any",
+          "start": 4.72,
+          "end": 4.96,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " le",
+          "start": 4.96,
+          "end": 5.2,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "vel",
+          "start": 5.2,
+          "end": 5.44,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 5.44,
+          "end": 5.76,
+          "duration": 0.32,
+          "confidence": 0.988
+        }
+      ]
+    },
+    {
+      "text": " AI doesn't fix a team, it just amplifies what is existing there.",
+      "start": 5.76,
+      "end": 10.48,
+      "duration": 4.72,
+      "confidence": 0.998,
+      "tokens": [
+        {
+          "text": " A",
+          "start": 5.76,
+          "end": 6.0,
+          "duration": 0.24,
+          "confidence": 0.994
+        },
+        {
+          "text": "I",
+          "start": 6.0,
+          "end": 6.32,
+          "duration": 0.32,
+          "confidence": 0.999
+        },
+        {
+          "text": " do",
+          "start": 6.32,
+          "end": 6.4,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "esn",
+          "start": 6.4,
+          "end": 6.48,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "'",
+          "start": 6.48,
+          "end": 6.56,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "t",
+          "start": 6.56,
+          "end": 6.72,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " fi",
+          "start": 6.72,
+          "end": 6.88,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "x",
+          "start": 6.88,
+          "end": 7.04,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " a",
+          "start": 7.04,
+          "end": 7.28,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " te",
+          "start": 7.28,
+          "end": 7.36,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "am",
+          "start": 7.36,
+          "end": 7.6,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": ",",
+          "start": 7.6,
+          "end": 7.68,
+          "duration": 0.08,
+          "confidence": 0.976
+        },
+        {
+          "text": " it",
+          "start": 7.68,
+          "end": 7.84,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " just",
+          "start": 7.84,
+          "end": 8.08,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " am",
+          "start": 8.08,
+          "end": 8.24,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "pli",
+          "start": 8.24,
+          "end": 8.4,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "f",
+          "start": 8.4,
+          "end": 8.56,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ies",
+          "start": 8.56,
+          "end": 8.72,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " what",
+          "start": 8.72,
+          "end": 8.88,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " is",
+          "start": 8.88,
+          "end": 9.12,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " exist",
+          "start": 9.12,
+          "end": 9.44,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": "ing",
+          "start": 9.44,
+          "end": 9.76,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " there",
+          "start": 9.76,
+          "end": 10.08,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 10.24,
+          "end": 10.48,
+          "duration": 0.24,
+          "confidence": 0.98
+        }
+      ]
+    },
+    {
+      "text": " And I think the best way to think about this, and I'm going back to history further back than the 1970s, is to actually go.",
+      "start": 10.48,
+      "end": 15.76,
+      "duration": 5.28,
+      "confidence": 0.987,
+      "tokens": [
+        {
+          "text": " And",
+          "start": 10.48,
+          "end": 10.72,
+          "duration": 0.24,
+          "confidence": 0.967
+        },
+        {
+          "text": " I",
+          "start": 10.72,
+          "end": 10.88,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " think",
+          "start": 10.88,
+          "end": 11.04,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " the",
+          "start": 11.04,
+          "end": 11.12,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " best",
+          "start": 11.12,
+          "end": 11.28,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " way",
+          "start": 11.28,
+          "end": 11.44,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " to",
+          "start": 11.44,
+          "end": 11.52,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " think",
+          "start": 11.52,
+          "end": 11.68,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " about",
+          "start": 11.68,
+          "end": 11.84,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " this",
+          "start": 11.84,
+          "end": 12.0,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": ",",
+          "start": 12.0,
+          "end": 12.08,
+          "duration": 0.08,
+          "confidence": 0.922
+        },
+        {
+          "text": " and",
+          "start": 12.08,
+          "end": 12.16,
+          "duration": 0.08,
+          "confidence": 0.996
+        },
+        {
+          "text": " I",
+          "start": 12.16,
+          "end": 12.24,
+          "duration": 0.08,
+          "confidence": 0.995
+        },
+        {
+          "text": "'",
+          "start": 12.24,
+          "end": 12.32,
+          "duration": 0.08,
+          "confidence": 0.998
+        },
+        {
+          "text": "m",
+          "start": 12.32,
+          "end": 12.4,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " going",
+          "start": 12.4,
+          "end": 12.64,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " back",
+          "start": 12.64,
+          "end": 12.96,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " to",
+          "start": 12.96,
+          "end": 13.12,
+          "duration": 0.16,
+          "confidence": 0.996
+        },
+        {
+          "text": " hist",
+          "start": 13.2,
+          "end": 13.36,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ory",
+          "start": 13.36,
+          "end": 13.52,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " f",
+          "start": 13.6,
+          "end": 13.68,
+          "duration": 0.08,
+          "confidence": 0.999
+        },
+        {
+          "text": "urt",
+          "start": 13.68,
+          "end": 13.76,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "her",
+          "start": 13.76,
+          "end": 13.92,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " back",
+          "start": 13.92,
+          "end": 14.08,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " than",
+          "start": 14.08,
+          "end": 14.32,
+          "duration": 0.24,
+          "confidence": 0.98
+        },
+        {
+          "text": " the",
+          "start": 14.32,
+          "end": 14.4,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " ",
+          "start": 14.4,
+          "end": 14.48,
+          "duration": 0.08,
+          "confidence": 0.966
+        },
+        {
+          "text": "1",
+          "start": 14.48,
+          "end": 14.56,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "9",
+          "start": 14.56,
+          "end": 14.72,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "7",
+          "start": 14.72,
+          "end": 14.8,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "0",
+          "start": 14.8,
+          "end": 14.88,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "s",
+          "start": 14.88,
+          "end": 14.96,
+          "duration": 0.08,
+          "confidence": 0.999
+        },
+        {
+          "text": ",",
+          "start": 15.04,
+          "end": 15.12,
+          "duration": 0.08,
+          "confidence": 0.889
+        },
+        {
+          "text": " is",
+          "start": 15.12,
+          "end": 15.2,
+          "duration": 0.08,
+          "confidence": 0.991
+        },
+        {
+          "text": " to",
+          "start": 15.2,
+          "end": 15.28,
+          "duration": 0.08,
+          "confidence": 0.995
+        },
+        {
+          "text": " actu",
+          "start": 15.28,
+          "end": 15.36,
+          "duration": 0.08,
+          "confidence": 0.998
+        },
+        {
+          "text": "ally",
+          "start": 15.36,
+          "end": 15.44,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " go",
+          "start": 15.52,
+          "end": 15.6,
+          "duration": 0.08,
+          "confidence": 0.932
+        },
+        {
+          "text": ".",
+          "start": 15.6,
+          "end": 15.76,
+          "duration": 0.16,
+          "confidence": 0.902
+        }
+      ]
+    }
+  ]
+}

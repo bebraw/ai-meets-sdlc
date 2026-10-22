@@ -1,0 +1,3957 @@
+{
+  "id": "mo-talk",
+  "kind": "talk",
+  "officialTitle": "1978: The Last Good Year",
+  "speakerNames": [
+    "Mo Khazali"
+  ],
+  "durationSeconds": 2150.0,
+  "videoFile": "exports/talks-v02/mo-talk-4k.mp4",
+  "reviewFile": "review/talks-v02/mo-talk-720p.mp4",
+  "chapters": [
+    {
+      "outputSeconds": 0,
+      "title": "Opening film and introduction",
+      "sourceSeconds": 1185.0,
+      "timestamp": "00:00"
+    },
+    {
+      "outputSeconds": 97,
+      "title": "Detroit in 1978: why automation was not enough",
+      "sourceSeconds": 1279.66,
+      "timestamp": "01:37"
+    },
+    {
+      "outputSeconds": 403,
+      "title": "AI adoption and misleading productivity metrics",
+      "sourceSeconds": 1585.82,
+      "timestamp": "06:43"
+    },
+    {
+      "outputSeconds": 755,
+      "title": "Redesigning the system: from steam engines to NUMMI",
+      "sourceSeconds": 1937.78,
+      "timestamp": "12:35"
+    },
+    {
+      "outputSeconds": 1001,
+      "title": "Building an AI platform team",
+      "sourceSeconds": 2183.88,
+      "timestamp": "16:41"
+    },
+    {
+      "outputSeconds": 1155,
+      "title": "Kaizen and a learning organisation",
+      "sourceSeconds": 2337.3,
+      "timestamp": "19:15"
+    },
+    {
+      "outputSeconds": 1540,
+      "title": "Right first time: blueprints and quality gates",
+      "sourceSeconds": 2722.74,
+      "timestamp": "25:40"
+    },
+    {
+      "outputSeconds": 1731,
+      "title": "Just in time: redesigning the development week",
+      "sourceSeconds": 2913.74,
+      "timestamp": "28:51"
+    },
+    {
+      "outputSeconds": 1903,
+      "title": "Measuring outcomes and building the right thing",
+      "sourceSeconds": 3085.06,
+      "timestamp": "31:43"
+    },
+    {
+      "outputSeconds": 2087,
+      "title": "Takeaways: audit the flow and measure outcomes",
+      "sourceSeconds": 3269.2,
+      "timestamp": "34:47"
+    }
+  ],
+  "materials": [
+    {
+      "label": "Slides (PDF)",
+      "url": "https://www.sdlcai.org/media/talks/mo-khazali-industry-perspective/f2ba9ef0-a8bd-4062-b4dc-5c779e707405.pdf"
+    },
+    {
+      "label": "Presentation",
+      "url": "https://sdlcai-1978-film.mojavad.workers.dev/presenter"
+    }
+  ],
+  "talkUrl": "https://www.sdlcai.org/2026/schedule/#mo-khazali-industry-perspective",
+  "existingSummary": "Mo Khazali compares AI adoption with the automotive industry’s automation push, then applies lean principles to software delivery: shared platforms, continuous learning, quality gates and measures of customer value.",
+  "captions": {
+    "language": "en",
+    "srt": "transcripts/final-v02/mo-talk.en.srt",
+    "vtt": "transcripts/final-v02/mo-talk.en.vtt",
+    "qualityReport": "transcripts/final-v02/mo-talk.caption-qc.json",
+    "listeningReview": "transcripts/final-v02/mo-talk.listening-review.txt",
+    "status": "prepared-with-human-listening-review-notes"
+  },
+  "captionSHA256": "1438adb23046c3dbd33d061f461a38d6ec7de6311cb838ec0a8477fb8cd1f820",
+  "mediaBytes": 1023332708,
+  "cueCount": 631,
+  "listeningWindows": [
+    {
+      "id": "mo-talk-003",
+      "videoId": "mo-talk",
+      "startSeconds": 1294.56,
+      "endSeconds": 1300.1,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Spoken ASR 5% vs slide3%; preserve what is spoken, no factual rewrite.",
+      "currentCaptionText": "So we had to go in and we realized, actually, no, that's not it. That's only happening in 5% of the cases. All right, why did it happen then?",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/mo-talk.listening-review.json",
+          "entryIndices": [
+            2
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/mo-talk.listening-review.json",
+          "index": 2
+        }
+      ],
+      "sourceSegments": [
+        318
+      ],
+      "sourceStartSeconds": 2476.56,
+      "sourceEndSeconds": 2482.1
+    },
+    {
+      "id": "mo-talk-004",
+      "videoId": "mo-talk",
+      "startSeconds": 1321.9,
+      "endSeconds": 1330.06,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Context-supported correction still marked for listening: cloud code → Claude Code",
+      "currentCaptionText": "So one of the things that we've built is we've built a custom skill that we pop into our Claude Code and it goes in and looks at the conversation that you've had, so this becomes a coaching exercise one-on-one when you have a one-on-one with",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/mo-talk.listening-review.json",
+          "entryIndices": [
+            3
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 332,
+              "before": "cloud code",
+              "after": "Claude Code",
+              "basis": "Coding-agent product name in context; verify audio"
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/mo-talk.listening-review.json",
+          "index": 3
+        }
+      ],
+      "sourceSegments": [
+        332
+      ],
+      "sourceStartSeconds": 2503.9,
+      "sourceEndSeconds": 2512.06
+    }
+  ],
+  "cues": [
+    {
+      "id": 1,
+      "start": 3.02,
+      "end": 6.12,
+      "text": "All right. So I have this whole walk-up-the-stage thing going."
+    },
+    {
+      "id": 2,
+      "start": 6.26,
+      "end": 9.21,
+      "text": "I'm going to start the video, and then we'll go from there."
+    },
+    {
+      "id": 3,
+      "start": 14.1,
+      "end": 16.06,
+      "text": "America, what's your favorite sport?"
+    },
+    {
+      "id": 4,
+      "start": 16.64,
+      "end": 18.68,
+      "text": "Baseball. And what's your favorite food?"
+    },
+    {
+      "id": 5,
+      "start": 18.92,
+      "end": 21.26,
+      "text": "Hot dog. And what's your favorite pie?"
+    },
+    {
+      "id": 6,
+      "start": 21.56,
+      "end": 23.81,
+      "text": "Apple. And what's your favorite car, America?"
+    },
+    {
+      "id": 7,
+      "start": 24.02,
+      "end": 29.43,
+      "text": "Chevrolet. We love baseball, hot dogs, apple pie, and Chevrolet."
+    },
+    {
+      "id": 8,
+      "start": 32.08,
+      "end": 35.78,
+      "text": "♪ Baseball, hot dogs, apple pie, and Chevrolet."
+    },
+    {
+      "id": 9,
+      "start": 35.8,
+      "end": 42.1,
+      "text": "They go together in the good old USA."
+    },
+    {
+      "id": 10,
+      "start": 42.12,
+      "end": 48.64,
+      "text": "Baseball, hot dogs, apple pie, and Chevrolet."
+    },
+    {
+      "id": 11,
+      "start": 53.28,
+      "end": 54.46,
+      "text": "So good morning, everyone."
+    },
+    {
+      "id": 12,
+      "start": 54.48,
+      "end": 57.58,
+      "text": "It's great to be with you all in Espoo."
+    },
+    {
+      "id": 13,
+      "start": 57.6,
+      "end": 62.37,
+      "text": "I'm really excited for this event, bringing together people from academia,"
+    },
+    {
+      "id": 14,
+      "start": 62.45,
+      "end": 66.61,
+      "text": "from the industry, and talking about the impacts of what AI is doing to our"
+    },
+    {
+      "id": 15,
+      "start": 66.63,
+      "end": 68.06,
+      "text": "industry as a whole."
+    },
+    {
+      "id": 16,
+      "start": 68.74,
+      "end": 71.62,
+      "text": "And I think we are in transformative times, as Juho was saying."
+    },
+    {
+      "id": 17,
+      "start": 71.64,
+      "end": 72.64,
+      "text": "It is quite pivotal."
+    },
+    {
+      "id": 18,
+      "start": 73.1,
+      "end": 76.18,
+      "text": "A lot of what we do is changing in its fundamental shape."
+    },
+    {
+      "id": 19,
+      "start": 76.84,
+      "end": 80.73,
+      "text": "And this talk is actually one that I'm very excited about because it's an idea"
+    },
+    {
+      "id": 20,
+      "start": 80.75,
+      "end": 84.64,
+      "text": "that I've had for the last few months, and I was looking for the right place to"
+    },
+    {
+      "id": 21,
+      "start": 84.66,
+      "end": 88.53,
+      "text": "actually do the talk, and Juho kind of gave me a blank check and was like, talk"
+    },
+    {
+      "id": 22,
+      "start": 88.55,
+      "end": 90.64,
+      "text": "about what you want, and I was like, great!"
+    },
+    {
+      "id": 23,
+      "start": 90.66,
+      "end": 95.9,
+      "text": "I can try my experimental ideas on this crowd, and hopefully they'll like it."
+    },
+    {
+      "id": 24,
+      "start": 97.66,
+      "end": 102.0,
+      "text": "I want to start by talking about the 1970s, which is sort of counterintuitive"
+    },
+    {
+      "id": 25,
+      "start": 102.09,
+      "end": 104.74000000000001,
+      "text": "given that we're talking about the state of AI today."
+    },
+    {
+      "id": 26,
+      "start": 105.18,
+      "end": 108.87,
+      "text": "But I think there's a lot that we can learn from the decline in the American car"
+    },
+    {
+      "id": 27,
+      "start": 108.89,
+      "end": 110.63,
+      "text": "manufacturing industry."
+    },
+    {
+      "id": 28,
+      "start": 111.3,
+      "end": 114.65,
+      "text": "And I think it can teach us some lessons for where we are at today."
+    },
+    {
+      "id": 29,
+      "start": 114.8,
+      "end": 119.28,
+      "text": "So I want to take you back to 1978 to a place called Detroit, Michigan."
+    },
+    {
+      "id": 30,
+      "start": 120.02,
+      "end": 123.82,
+      "text": "This era for Detroit is where it's at its peak."
+    },
+    {
+      "id": 31,
+      "start": 123.84,
+      "end": 129.02,
+      "text": "It feels like it's the center of manufacturing in the entire world."
+    },
+    {
+      "id": 32,
+      "start": 129.74,
+      "end": 133.31,
+      "text": "And there's three big American car manufacturers that are leading in this"
+    },
+    {
+      "id": 33,
+      "start": 133.33,
+      "end": 135.32,
+      "text": "area. One is called General Motors."
+    },
+    {
+      "id": 34,
+      "start": 135.7,
+      "end": 137.3,
+      "text": "There's another one called Ford."
+    },
+    {
+      "id": 35,
+      "start": 137.38,
+      "end": 139.07999999999998,
+      "text": "And then lastly, there's Chrysler."
+    },
+    {
+      "id": 36,
+      "start": 139.54,
+      "end": 143.73,
+      "text": "And they have been, for the last several years, making some of the best cars"
+    },
+    {
+      "id": 37,
+      "start": 143.75,
+      "end": 144.9,
+      "text": "available to customers."
+    },
+    {
+      "id": 38,
+      "start": 145.6,
+      "end": 146.78,
+      "text": "And GM is the biggest."
+    },
+    {
+      "id": 39,
+      "start": 147.28,
+      "end": 153.59,
+      "text": "But all throughout the 1970s and up to 1978, they are having record"
+    },
+    {
+      "id": 40,
+      "start": 153.61,
+      "end": 160.21,
+      "text": "sales. So GM does its best year up to that point in 1978 and does $63 billion in"
+    },
+    {
+      "id": 41,
+      "start": 160.23,
+      "end": 165.73,
+      "text": "sales. Now, that's $63 billion in 1970s money, which is a lot of money."
+    },
+    {
+      "id": 42,
+      "start": 165.85,
+      "end": 169.07,
+      "text": "And in 1978, GM had another record as well."
+    },
+    {
+      "id": 43,
+      "start": 169.09,
+      "end": 173.67000000000002,
+      "text": "They broke record profits, so they made $3.5 billion in just profits."
+    },
+    {
+      "id": 44,
+      "start": 173.69,
+      "end": 178.13,
+      "text": "And so if you're inside of the bubble of Detroit, You're thinking that things are"
+    },
+    {
+      "id": 45,
+      "start": 178.15,
+      "end": 182.19,
+      "text": "going pretty well, nothing could go wrong, and everything's just going to go on the"
+    },
+    {
+      "id": 46,
+      "start": 182.21,
+      "end": 183.01,
+      "text": "up and up."
+    },
+    {
+      "id": 47,
+      "start": 183.9,
+      "end": 189.26,
+      "text": "But if we fast forward two years, every one of those profit lines starts to take a"
+    },
+    {
+      "id": 48,
+      "start": 189.28,
+      "end": 194.58,
+      "text": "nosedive. So in the year 1980, General Motors lost $763 million."
+    },
+    {
+      "id": 49,
+      "start": 195.38,
+      "end": 200.14,
+      "text": "It was the first year that they had a loss in about 50 years."
+    },
+    {
+      "id": 50,
+      "start": 200.82,
+      "end": 204.2,
+      "text": "Ford lost a billion, and Chrysler lost $1.7 billion."
+    },
+    {
+      "id": 51,
+      "start": 205.0,
+      "end": 209.63,
+      "text": "So collectively, putting these together, there was almost about $4 billion of"
+    },
+    {
+      "id": 52,
+      "start": 209.65,
+      "end": 211.71,
+      "text": "losses across these companies."
+    },
+    {
+      "id": 53,
+      "start": 212.16,
+      "end": 215.4,
+      "text": "And so it was a really tough year for the American car manufacturing industry."
+    },
+    {
+      "id": 54,
+      "start": 215.42000000000002,
+      "end": 217.55,
+      "text": "So tough that Chrysler actually had to ask the U.S."
+    },
+    {
+      "id": 55,
+      "start": 217.57,
+      "end": 218.89,
+      "text": "Government for a bailout."
+    },
+    {
+      "id": 56,
+      "start": 219.18,
+      "end": 221.12,
+      "text": "Otherwise, they were going to go bankrupt."
+    },
+    {
+      "id": 57,
+      "start": 221.44,
+      "end": 224.1,
+      "text": "Now, there was a lot of reasons this was happening at this time."
+    },
+    {
+      "id": 58,
+      "start": 224.12,
+      "end": 228.36,
+      "text": "There was geopolitical reasons, economic reasons in the 1970s and the 80s."
+    },
+    {
+      "id": 59,
+      "start": 228.38,
+      "end": 232.0,
+      "text": "But there was also another trend that was happening in the American market."
+    },
+    {
+      "id": 60,
+      "start": 232.02,
+      "end": 235.22,
+      "text": "And there were these cars that were taking over the market slowly and surely."
+    },
+    {
+      "id": 61,
+      "start": 235.24,
+      "end": 237.14,
+      "text": "Does anyone know what car model this is?"
+    },
+    {
+      "id": 62,
+      "start": 237.16,
+      "end": 239.11,
+      "text": "Are there any enthusiasts in the crowd?"
+    },
+    {
+      "id": 63,
+      "start": 239.42000000000002,
+      "end": 240.22,
+      "text": "What is that?"
+    },
+    {
+      "id": 64,
+      "start": 240.88,
+      "end": 242.84,
+      "text": "Very good. Give him a round of applause."
+    },
+    {
+      "id": 65,
+      "start": 242.86,
+      "end": 243.66,
+      "text": "I'm impressed."
+    },
+    {
+      "id": 66,
+      "start": 246.5,
+      "end": 251.63,
+      "text": "So it is a Datsun. And one of these companies is the one that we're going to"
+    },
+    {
+      "id": 67,
+      "start": 251.65,
+      "end": 253.3,
+      "text": "follow for the rest of this talk."
+    },
+    {
+      "id": 68,
+      "start": 253.4,
+      "end": 255.26,
+      "text": "I'm sure you're all familiar with Toyota."
+    },
+    {
+      "id": 69,
+      "start": 255.28,
+      "end": 258.93,
+      "text": "But Toyota got famous in the U.S. In the late 1970s because they were making"
+    },
+    {
+      "id": 70,
+      "start": 258.95,
+      "end": 261.34,
+      "text": "smaller cars that were cheaper."
+    },
+    {
+      "id": 71,
+      "start": 262.02,
+      "end": 265.27,
+      "text": "And better built than the American variations that you could buy."
+    },
+    {
+      "id": 72,
+      "start": 265.78,
+      "end": 269.64,
+      "text": "Now, GM is starting to reasonably freak out a little bit."
+    },
+    {
+      "id": 73,
+      "start": 269.86,
+      "end": 272.90999999999997,
+      "text": "They're seeing the decline that's happening in their profits."
+    },
+    {
+      "id": 74,
+      "start": 273.0,
+      "end": 277.76,
+      "text": "And the natural inclination that they had for GM, but also other big American"
+    },
+    {
+      "id": 75,
+      "start": 277.83,
+      "end": 280.13,
+      "text": "manufacturers, was we're not efficient enough."
+    },
+    {
+      "id": 76,
+      "start": 280.32,
+      "end": 283.5,
+      "text": "We need to catch up with these Asian suppliers."
+    },
+    {
+      "id": 77,
+      "start": 283.7,
+      "end": 286.52,
+      "text": "So what we're going to do is we're going to spend billions on automation."
+    },
+    {
+      "id": 78,
+      "start": 286.54,
+      "end": 288.42,
+      "text": "So they filled their factories with robots."
+    },
+    {
+      "id": 79,
+      "start": 288.44,
+      "end": 293.04,
+      "text": "GM in a five-year period spent about $45 billion on reworking their entire"
+    },
+    {
+      "id": 80,
+      "start": 293.06,
+      "end": 295.68,
+      "text": "factories and automating and adding robots and everything."
+    },
+    {
+      "id": 81,
+      "start": 295.7,
+      "end": 299.34000000000003,
+      "text": "And their bet was that technology would close the gap that they're facing."
+    },
+    {
+      "id": 82,
+      "start": 299.36,
+      "end": 302.86,
+      "text": "They would be able to speed up and catch up with these nimble players."
+    },
+    {
+      "id": 83,
+      "start": 303.26,
+      "end": 307.25,
+      "text": "That didn't happen. However much automation that they bought, they just"
+    },
+    {
+      "id": 84,
+      "start": 307.34,
+      "end": 309.72,
+      "text": "could not catch up with Toyota's speed."
+    },
+    {
+      "id": 85,
+      "start": 309.74,
+      "end": 314.15,
+      "text": "And it's not just Toyota's speed, but it's the fact that Toyota was actually building"
+    },
+    {
+      "id": 86,
+      "start": 314.17,
+      "end": 316.84,
+      "text": "less defective cars through their manufacturing lines."
+    },
+    {
+      "id": 87,
+      "start": 316.86,
+      "end": 319.72,
+      "text": "And this got studied for many, many years afterwards."
+    },
+    {
+      "id": 88,
+      "start": 319.98,
+      "end": 324.82,
+      "text": "But if you look at a GM production line and a Toyota production line, Toyota's"
+    },
+    {
+      "id": 89,
+      "start": 324.84,
+      "end": 328.9,
+      "text": "producing about twice as many cars, and they're creating far less defects in the"
+    },
+    {
+      "id": 90,
+      "start": 328.92,
+      "end": 329.72,
+      "text": "process."
+    },
+    {
+      "id": 91,
+      "start": 330.66,
+      "end": 334.33,
+      "text": "And this is quite a striking sort of comparison between the two."
+    },
+    {
+      "id": 92,
+      "start": 334.35,
+      "end": 339.02,
+      "text": "So GM, roughly, it took them on one of their sort of average factories, it would"
+    },
+    {
+      "id": 93,
+      "start": 339.04,
+      "end": 342.74,
+      "text": "take them 31 hours to take a car from the very start of the production line to the"
+    },
+    {
+      "id": 94,
+      "start": 342.76,
+      "end": 344.21,
+      "text": "very end of the production line."
+    },
+    {
+      "id": 95,
+      "start": 344.23,
+      "end": 348.7,
+      "text": "Whereas in Japan, Toyota was able to do that in half the time."
+    },
+    {
+      "id": 96,
+      "start": 348.72,
+      "end": 351.94,
+      "text": "But I think the more interesting number here is actually the defects numbers."
+    },
+    {
+      "id": 97,
+      "start": 351.96,
+      "end": 355.57,
+      "text": "So a defect when you're manufacturing a car is this idea that something is wrong"
+    },
+    {
+      "id": 98,
+      "start": 355.59000000000003,
+      "end": 358.29,
+      "text": "and it needs to be fixed at the end of the production line or at some point in the"
+    },
+    {
+      "id": 99,
+      "start": 358.31,
+      "end": 362.16,
+      "text": "production line. So it might be that the mirror is not put on correctly or there's"
+    },
+    {
+      "id": 100,
+      "start": 362.18,
+      "end": 365.26,
+      "text": "something wrong with the wheels and it needs alignment."
+    },
+    {
+      "id": 101,
+      "start": 365.28,
+      "end": 369.17,
+      "text": "Toyota was getting significantly better quality and GM was having at least, on"
+    },
+    {
+      "id": 102,
+      "start": 369.19,
+      "end": 374.24,
+      "text": "average, at least one to 1.5 defects per car, whereas Toyota was having fewer than"
+    },
+    {
+      "id": 103,
+      "start": 374.26,
+      "end": 377.91,
+      "text": "one defect per car, so they were having a defect every two cars, roughly."
+    },
+    {
+      "id": 104,
+      "start": 378.08,
+      "end": 382.68,
+      "text": "So Toyota was faster and better in terms of manufacturing."
+    },
+    {
+      "id": 105,
+      "start": 382.7,
+      "end": 386.78,
+      "text": "And the philosophy really boiled down to building the right thing, building it"
+    },
+    {
+      "id": 106,
+      "start": 386.8,
+      "end": 391.19,
+      "text": "right, which means that you're building it with the right quality and checks in"
+    },
+    {
+      "id": 107,
+      "start": 391.21,
+      "end": 395.55,
+      "text": "place, and the natural idea that they followed was that by doing these two"
+    },
+    {
+      "id": 108,
+      "start": 395.57,
+      "end": 399.14,
+      "text": "things, speed will just come as a byproduct of it."
+    },
+    {
+      "id": 109,
+      "start": 399.15999999999997,
+      "end": 403.8,
+      "text": "You don't target the speed, but the speed will naturally follow as part of it."
+    },
+    {
+      "id": 110,
+      "start": 403.82,
+      "end": 408.12,
+      "text": "So why have I talked about cars for the last five minutes?"
+    },
+    {
+      "id": 111,
+      "start": 408.14,
+      "end": 411.88,
+      "text": "What can we learn today in 2026?"
+    },
+    {
+      "id": 112,
+      "start": 411.9,
+      "end": 415.25,
+      "text": "In the same way that there were these top-down initiatives and edicts for"
+    },
+    {
+      "id": 113,
+      "start": 415.27,
+      "end": 418.06,
+      "text": "automation in the car industry, I think we're seeing a lot of that happen in the"
+    },
+    {
+      "id": 114,
+      "start": 418.08,
+      "end": 420.46,
+      "text": "software industry as well."
+    },
+    {
+      "id": 115,
+      "start": 420.48,
+      "end": 424.36,
+      "text": "Last year, Shopify came out and said that AI usage is now a baseline expectation of"
+    },
+    {
+      "id": 116,
+      "start": 424.38,
+      "end": 426.56,
+      "text": "all of our employees."
+    },
+    {
+      "id": 117,
+      "start": 426.58,
+      "end": 430.8,
+      "text": "Microsoft said that using AI is no longer optional."
+    },
+    {
+      "id": 118,
+      "start": 430.82,
+      "end": 434.39,
+      "text": "Duolingo came out and said we want to be an AI-first company, from our developers"
+    },
+    {
+      "id": 119,
+      "start": 434.41,
+      "end": 436.59,
+      "text": "all the way to our users."
+    },
+    {
+      "id": 120,
+      "start": 436.64,
+      "end": 439.47,
+      "text": "And Coinbase went even further, and there's a few other companies that you can"
+    },
+    {
+      "id": 121,
+      "start": 439.49,
+      "end": 442.88,
+      "text": "reference here, where they basically said you have until the end of the week to"
+    },
+    {
+      "id": 122,
+      "start": 442.9,
+      "end": 444.84,
+      "text": "onboard by using AI tools."
+    },
+    {
+      "id": 123,
+      "start": 444.86,
+      "end": 446.48,
+      "text": "If you don't do it, go and find another job."
+    },
+    {
+      "id": 124,
+      "start": 446.5,
+      "end": 451.68,
+      "text": "It's very harsh, top-down edicts that are coming from a lot of these companies."
+    },
+    {
+      "id": 125,
+      "start": 451.8,
+      "end": 455.51,
+      "text": "And as it happens, it's usually top-down memos that cascade down the chain, and"
+    },
+    {
+      "id": 126,
+      "start": 455.53,
+      "end": 459.06,
+      "text": "everyone is suddenly given a license and they are now an AI developer."
+    },
+    {
+      "id": 127,
+      "start": 459.08,
+      "end": 463.40999999999997,
+      "text": "Congratulations. So naturally what happens is that people report upwards, that"
+    },
+    {
+      "id": 128,
+      "start": 463.77,
+      "end": 468.15999999999997,
+      "text": "everybody has licenses, there's full adoption and token usage is going through"
+    },
+    {
+      "id": 129,
+      "start": 468.32,
+      "end": 472.92,
+      "text": "the roof. These are the numbers that get reported when people say we're an AI-first"
+    },
+    {
+      "id": 130,
+      "start": 473.29,
+      "end": 476.54,
+      "text": "company. But this is actually quite a well-known phenomenon."
+    },
+    {
+      "id": 131,
+      "start": 476.56,
+      "end": 480.22,
+      "text": "There's an old factory story about it called the Hawthorne effect."
+    },
+    {
+      "id": 132,
+      "start": 480.24,
+      "end": 484.11,
+      "text": "So in 1924, in this Hawthorne factory, they would turn up the lights on the"
+    },
+    {
+      "id": 133,
+      "start": 484.47,
+      "end": 487.88,
+      "text": "factory floor and they realized there was some weird correlation where actually the"
+    },
+    {
+      "id": 134,
+      "start": 487.9,
+      "end": 490.81,
+      "text": "factory's performance would go up when they turned on the lights."
+    },
+    {
+      "id": 135,
+      "start": 490.83,
+      "end": 495.04,
+      "text": "They would then turn the lights back down again and they'd realise the factory's"
+    },
+    {
+      "id": 136,
+      "start": 495.14,
+      "end": 496.57,
+      "text": "performance would go up again."
+    },
+    {
+      "id": 137,
+      "start": 496.59,
+      "end": 498.94,
+      "text": "So there was something weird that was going on."
+    },
+    {
+      "id": 138,
+      "start": 499.38,
+      "end": 502.96,
+      "text": "And basically what they realised after researchers went through this, and they"
+    },
+    {
+      "id": 139,
+      "start": 502.98,
+      "end": 507.13,
+      "text": "still debate about this as a topic, but the consensus was that actually people's"
+    },
+    {
+      "id": 140,
+      "start": 507.29,
+      "end": 510.55,
+      "text": "performance only went up because they were being watched."
+    },
+    {
+      "id": 141,
+      "start": 510.57,
+      "end": 513.28,
+      "text": "And this is now known as the Hawthorne effect."
+    },
+    {
+      "id": 142,
+      "start": 513.3,
+      "end": 516.98,
+      "text": "When you watch something and you measure a specific metric, oftentimes that number"
+    },
+    {
+      "id": 143,
+      "start": 517.0,
+      "end": 520.92,
+      "text": "just naturally goes up because it's more in focus."
+    },
+    {
+      "id": 144,
+      "start": 520.94,
+      "end": 523.81,
+      "text": "But when you're measuring the wrong metric and you're optimising for it, it really"
+    },
+    {
+      "id": 145,
+      "start": 523.83,
+      "end": 527.68,
+      "text": "does not help, and people are investing a lot of time watching a dashboard of"
+    },
+    {
+      "id": 146,
+      "start": 527.73,
+      "end": 531.15,
+      "text": "tokens, seeing where people rank on a leaderboard, but that doesn't serve the"
+    },
+    {
+      "id": 147,
+      "start": 531.17,
+      "end": 535.05,
+      "text": "goals of a business, it doesn't mean that you've created value for your users and"
+    },
+    {
+      "id": 148,
+      "start": 535.07,
+      "end": 537.26,
+      "text": "for your customers, and eventually the bill arrives."
+    },
+    {
+      "id": 149,
+      "start": 537.28,
+      "end": 541.11,
+      "text": "Who has seen in their company a dashboard of tokens?"
+    },
+    {
+      "id": 150,
+      "start": 541.17,
+      "end": 547.76,
+      "text": "I've I've seen it. I really hope those die and burn, those dashboards."
+    },
+    {
+      "id": 151,
+      "start": 547.78,
+      "end": 550.66,
+      "text": "I think they're really driving the wrong behaviours."
+    },
+    {
+      "id": 152,
+      "start": 550.68,
+      "end": 553.31,
+      "text": "And you'll see this with big tech companies, they're starting to admit this"
+    },
+    {
+      "id": 153,
+      "start": 553.33,
+      "end": 557.32,
+      "text": "now. So Uber's president came back in May of this year, he had an interview that he"
+    },
+    {
+      "id": 154,
+      "start": 557.34,
+      "end": 560.41,
+      "text": "was doing and he says that AI spending is getting harder and harder to justify"
+    },
+    {
+      "id": 155,
+      "start": 560.43,
+      "end": 565.65,
+      "text": "because they can't link the token spend that's costing them millions and millions"
+    },
+    {
+      "id": 156,
+      "start": 565.67,
+      "end": 569.88,
+      "text": "to what actual product value they're getting off the back of it."
+    },
+    {
+      "id": 157,
+      "start": 569.9,
+      "end": 572.9,
+      "text": "And this is the peril of top-down automation."
+    },
+    {
+      "id": 158,
+      "start": 572.92,
+      "end": 577.0,
+      "text": "It is akin to GM buying robots to catch up with Toyota."
+    },
+    {
+      "id": 159,
+      "start": 577.02,
+      "end": 580.76,
+      "text": "And a lot of people are just hoping that the models get much better, that people"
+    },
+    {
+      "id": 160,
+      "start": 580.78,
+      "end": 585.08,
+      "text": "learn how to use these tools well, and that we can somehow automate our way"
+    },
+    {
+      "id": 161,
+      "start": 585.45,
+      "end": 588.05,
+      "text": "through the competition and win this race."
+    },
+    {
+      "id": 162,
+      "start": 588.16,
+      "end": 590.69,
+      "text": "Will this work in the same way that it didn't work for GM?"
+    },
+    {
+      "id": 163,
+      "start": 590.71,
+      "end": 594.3,
+      "text": "I really don't think that this is going to be a successful endeavor."
+    },
+    {
+      "id": 164,
+      "start": 594.6,
+      "end": 599.09,
+      "text": "Now, the natural question you'll be asking, and this is one that I felt"
+    },
+    {
+      "id": 165,
+      "start": 599.11,
+      "end": 601.52,
+      "text": "myself, is my teams are faster."
+    },
+    {
+      "id": 166,
+      "start": 601.55,
+      "end": 604.16,
+      "text": "I feel like I'm faster with AI tools."
+    },
+    {
+      "id": 167,
+      "start": 604.27,
+      "end": 608.21,
+      "text": "And what I would say to that is, yes, I think we are faster, but we tend to"
+    },
+    {
+      "id": 168,
+      "start": 608.47,
+      "end": 610.36,
+      "text": "overestimate how much faster we are."
+    },
+    {
+      "id": 169,
+      "start": 612.34,
+      "end": 615.28,
+      "text": "Honestly, it's sometimes that we just feel like we're going faster."
+    },
+    {
+      "id": 170,
+      "start": 615.3,
+      "end": 617.25,
+      "text": "There's a study for this."
+    },
+    {
+      "id": 171,
+      "start": 617.5,
+      "end": 619.34,
+      "text": "So this is a study by METR."
+    },
+    {
+      "id": 172,
+      "start": 619.56,
+      "end": 623.22,
+      "text": "They are a non-profit that focuses on sort of AI research."
+    },
+    {
+      "id": 173,
+      "start": 623.24,
+      "end": 629.15,
+      "text": "And they took 16 very experienced open source developers, and basically they gave"
+    },
+    {
+      "id": 174,
+      "start": 629.17,
+      "end": 632.59,
+      "text": "them a few hundred real tasks that they could execute on their own repos."
+    },
+    {
+      "id": 175,
+      "start": 632.61,
+      "end": 634.92,
+      "text": "So these are repos that they are familiar with."
+    },
+    {
+      "id": 176,
+      "start": 634.94,
+      "end": 637.67,
+      "text": "They've developed on these repos themselves, and they wanted to see how"
+    },
+    {
+      "id": 177,
+      "start": 637.69,
+      "end": 639.38,
+      "text": "much faster they would be using AI."
+    },
+    {
+      "id": 178,
+      "start": 639.4,
+      "end": 643.11,
+      "text": "So before they started, experts, these are AI experts and thought leaders in the"
+    },
+    {
+      "id": 179,
+      "start": 643.13,
+      "end": 646.18,
+      "text": "space, guessed that it would make them about 38% faster."
+    },
+    {
+      "id": 180,
+      "start": 647.22,
+      "end": 650.72,
+      "text": "When they asked the developers themselves, they predicted that they'd be going 24%"
+    },
+    {
+      "id": 181,
+      "start": 650.74,
+      "end": 654.21,
+      "text": "faster. Then they actually went through the experiments, they gave them the AI"
+    },
+    {
+      "id": 182,
+      "start": 654.23,
+      "end": 658.58,
+      "text": "tools to actually complete the tasks, and afterwards they asked the same developers,"
+    },
+    {
+      "id": 183,
+      "start": 658.8,
+      "end": 661.8,
+      "text": "how much faster do you think you went as a result of using AI?"
+    },
+    {
+      "id": 184,
+      "start": 661.82,
+      "end": 664.57,
+      "text": "And they predicted, I think it was about 20% faster."
+    },
+    {
+      "id": 185,
+      "start": 666.24,
+      "end": 667.79,
+      "text": "Can someone shout some numbers?"
+    },
+    {
+      "id": 186,
+      "start": 667.88,
+      "end": 670.28,
+      "text": "What do you think was the actual result of this?"
+    },
+    {
+      "id": 187,
+      "start": 670.44,
+      "end": 672.86,
+      "text": "Three, 20% slower. 20% slower."
+    },
+    {
+      "id": 188,
+      "start": 672.88,
+      "end": 674.02,
+      "text": "Someone's seen the study already."
+    },
+    {
+      "id": 189,
+      "start": 674.04,
+      "end": 677.56,
+      "text": "That is correct. They got 19% slower."
+    },
+    {
+      "id": 190,
+      "start": 677.69,
+      "end": 680.16,
+      "text": "Now, this is a massive variation there, right?"
+    },
+    {
+      "id": 191,
+      "start": 680.18,
+      "end": 684.0,
+      "text": "So it's a huge gap. It's probably statistically very hard to say whether or"
+    },
+    {
+      "id": 192,
+      "start": 684.02,
+      "end": 685.32,
+      "text": "not there's a correlation."
+    },
+    {
+      "id": 193,
+      "start": 685.42,
+      "end": 688.76,
+      "text": "But the reality of it is there is no proof that we're getting faster, right?"
+    },
+    {
+      "id": 194,
+      "start": 688.78,
+      "end": 691.73,
+      "text": "These are experienced developers working on the same code bases that they're very"
+    },
+    {
+      "id": 195,
+      "start": 691.75,
+      "end": 695.94,
+      "text": "familiar with. Now, in fairness, the same test was ran a year later."
+    },
+    {
+      "id": 196,
+      "start": 695.96,
+      "end": 697.76,
+      "text": "So this is now 2026."
+    },
+    {
+      "id": 197,
+      "start": 697.78,
+      "end": 702.99,
+      "text": "And what you can see here is that we went from 19% slower to 18% faster, so the"
+    },
+    {
+      "id": 198,
+      "start": 703.19,
+      "end": 707.6,
+      "text": "tools, the harnesses, the models are getting better, but still that variation"
+    },
+    {
+      "id": 199,
+      "start": 707.62,
+      "end": 712.28,
+      "text": "is humongous, and you can't actually say with good statistical significance that"
+    },
+    {
+      "id": 200,
+      "start": 712.39,
+      "end": 714.83,
+      "text": "this is conclusive results that we're going faster."
+    },
+    {
+      "id": 201,
+      "start": 714.85,
+      "end": 718.33,
+      "text": "Additionally, when they brought new devs, what we realised was actually that it's"
+    },
+    {
+      "id": 202,
+      "start": 718.35,
+      "end": 722.26,
+      "text": "almost about 4%, so it's really not in any capacity significant here."
+    },
+    {
+      "id": 203,
+      "start": 722.28,
+      "end": 727.96,
+      "text": "But then when you take a step back, Google launches and releases their DORA study"
+    },
+    {
+      "id": 204,
+      "start": 728.33,
+      "end": 731.52,
+      "text": "every year, and one of the things that they've recently found is that they"
+    },
+    {
+      "id": 205,
+      "start": 731.54,
+      "end": 735.34,
+      "text": "believe that people are getting less stable in their delivery output as a"
+    },
+    {
+      "id": 206,
+      "start": 735.36,
+      "end": 736.74,
+      "text": "result of adopting AI."
+    },
+    {
+      "id": 207,
+      "start": 736.85,
+      "end": 741.12,
+      "text": "So for every 25% of your organization that adopts AI, you're actually slightly"
+    },
+    {
+      "id": 208,
+      "start": 741.29,
+      "end": 743.1,
+      "text": "reducing your delivery stability."
+    },
+    {
+      "id": 209,
+      "start": 743.12,
+      "end": 746.2,
+      "text": "And all of this points to say that fundamentally there's no significant"
+    },
+    {
+      "id": 210,
+      "start": 746.22,
+      "end": 750.94,
+      "text": "correlation between AI adoption and improvements at the company level."
+    },
+    {
+      "id": 211,
+      "start": 750.96,
+      "end": 754.78,
+      "text": "AI doesn't fix a team, It just amplifies what is existing there."
+    },
+    {
+      "id": 212,
+      "start": 755.78,
+      "end": 758.51,
+      "text": "And I think the best way to think about this, and I'm going back to history,"
+    },
+    {
+      "id": 213,
+      "start": 758.53,
+      "end": 761.78,
+      "text": "further back than the 1970s, is to actually go into the 1800s."
+    },
+    {
+      "id": 214,
+      "start": 762.02,
+      "end": 764.02,
+      "text": "I'm taking you guys for a journey today."
+    },
+    {
+      "id": 215,
+      "start": 764.78,
+      "end": 768.15,
+      "text": "In the late 1800s, factories were often steam factories."
+    },
+    {
+      "id": 216,
+      "start": 768.44,
+      "end": 771.61,
+      "text": "So there was one steam engine, and it'd be connected to a shaft at the top, and there"
+    },
+    {
+      "id": 217,
+      "start": 771.63,
+      "end": 774.98,
+      "text": "would be belts running through, and every single machine that was part of this"
+    },
+    {
+      "id": 218,
+      "start": 775.0,
+      "end": 778.15,
+      "text": "factory would be using that shaft and the belts connected to it to actually power it"
+    },
+    {
+      "id": 219,
+      "start": 778.17,
+      "end": 782.56,
+      "text": "through. So the whole building was arranged and laid out around the shaft."
+    },
+    {
+      "id": 220,
+      "start": 782.88,
+      "end": 785.8,
+      "text": "So the structure was there because that was sort of the constraints that you were"
+    },
+    {
+      "id": 221,
+      "start": 785.82,
+      "end": 789.87,
+      "text": "dealing with at that point. Then in the early 1900s, electricity arrives."
+    },
+    {
+      "id": 222,
+      "start": 790.16,
+      "end": 793.32,
+      "text": "So a lot of the factories, what they do is they swap their steam engines to these"
+    },
+    {
+      "id": 223,
+      "start": 793.34,
+      "end": 795.74,
+      "text": "bigger, stronger, faster electrical motors."
+    },
+    {
+      "id": 224,
+      "start": 796.16,
+      "end": 799.4,
+      "text": "And they're hoping that by connecting these new motors, things will improve."
+    },
+    {
+      "id": 225,
+      "start": 799.42,
+      "end": 801.92,
+      "text": "They'll get faster and the output will be quicker."
+    },
+    {
+      "id": 226,
+      "start": 801.96,
+      "end": 804.93,
+      "text": "But fundamentally, what they had to do was they still had to connect it to the same"
+    },
+    {
+      "id": 227,
+      "start": 804.95,
+      "end": 807.41,
+      "text": "shaft and use the same structure of the factory."
+    },
+    {
+      "id": 228,
+      "start": 807.44,
+      "end": 808.6,
+      "text": "So they couldn't really move anything."
+    },
+    {
+      "id": 229,
+      "start": 808.62,
+      "end": 810.37,
+      "text": "It was just the motor was changing."
+    },
+    {
+      "id": 230,
+      "start": 810.46,
+      "end": 815.16,
+      "text": "And productivity didn't really move whatsoever for a few decades."
+    },
+    {
+      "id": 231,
+      "start": 815.64,
+      "end": 818.52,
+      "text": "And the changing point where actually productivity did improve in these"
+    },
+    {
+      "id": 232,
+      "start": 818.54,
+      "end": 822.13,
+      "text": "factories was where they were able to rearrange all of the stations, and motors"
+    },
+    {
+      "id": 233,
+      "start": 822.15,
+      "end": 825.54,
+      "text": "got more efficient, they got cheaper, and they got smaller, and you could actually"
+    },
+    {
+      "id": 234,
+      "start": 825.56,
+      "end": 828.26,
+      "text": "attach a motor to each of these stations individually."
+    },
+    {
+      "id": 235,
+      "start": 828.36,
+      "end": 831.64,
+      "text": "And so you could rearrange the flow of work however you saw fit, and you could"
+    },
+    {
+      "id": 236,
+      "start": 831.66,
+      "end": 833.81,
+      "text": "actually change the entirety of the system."
+    },
+    {
+      "id": 237,
+      "start": 834.38,
+      "end": 838.09,
+      "text": "And so the gains that they got was from the redesign of the system rather than"
+    },
+    {
+      "id": 238,
+      "start": 838.11,
+      "end": 842.18,
+      "text": "faster, better motors, and nothing illustrates this better, I think, than"
+    },
+    {
+      "id": 239,
+      "start": 842.2,
+      "end": 847.38,
+      "text": "going back to our car story and looking at one manufacturing plant in particular, and"
+    },
+    {
+      "id": 240,
+      "start": 847.45,
+      "end": 849.4,
+      "text": "this one is called Fremont."
+    },
+    {
+      "id": 241,
+      "start": 849.42,
+      "end": 855.99,
+      "text": "It's in California. This is a GM car plant in the 1980s, and it was known, everyone"
+    },
+    {
+      "id": 242,
+      "start": 856.11,
+      "end": 858.31,
+      "text": "in the industry knew that it was GM's worst plant."
+    },
+    {
+      "id": 243,
+      "start": 858.33,
+      "end": 862.61,
+      "text": "There was about 7,000 people that worked here, and at any given point on a typical"
+    },
+    {
+      "id": 244,
+      "start": 862.73,
+      "end": 864.96,
+      "text": "day, one out of five people were absent."
+    },
+    {
+      "id": 245,
+      "start": 864.98,
+      "end": 867.98,
+      "text": "And the lines never really stopped."
+    },
+    {
+      "id": 246,
+      "start": 868.08,
+      "end": 870.09,
+      "text": "There was defects going left, right, and center."
+    },
+    {
+      "id": 247,
+      "start": 870.11,
+      "end": 873.71,
+      "text": "Cars were being sent from Fremont that were just really poor quality."
+    },
+    {
+      "id": 248,
+      "start": 873.74,
+      "end": 878.67,
+      "text": "It was so bad that in 1982, GM actually shut the plant down, saying there's no way"
+    },
+    {
+      "id": 249,
+      "start": 878.69,
+      "end": 880.95,
+      "text": "to save this plant. It's just complete."
+    },
+    {
+      "id": 250,
+      "start": 880.97,
+      "end": 882.52,
+      "text": "It's a complete disaster."
+    },
+    {
+      "id": 251,
+      "start": 882.54,
+      "end": 889.36,
+      "text": "If we move to 1984, Toyota opens the same plant in a venture"
+    },
+    {
+      "id": 252,
+      "start": 889.38,
+      "end": 894.43,
+      "text": "called NUMMI. And the interesting part was that they actually rehired 85% of the GM"
+    },
+    {
+      "id": 253,
+      "start": 894.45,
+      "end": 896.88,
+      "text": "employees into the exact same factory."
+    },
+    {
+      "id": 254,
+      "start": 896.9,
+      "end": 899.71,
+      "text": "But they thoroughly changed the system around it."
+    },
+    {
+      "id": 255,
+      "start": 899.73,
+      "end": 902.06,
+      "text": "And absenteeism dropped down to two or 3%."
+    },
+    {
+      "id": 256,
+      "start": 902.08,
+      "end": 904.38,
+      "text": "So a lot more people were showing up to work."
+    },
+    {
+      "id": 257,
+      "start": 904.4,
+      "end": 908.1,
+      "text": "But also the results of how efficient this factory was, was actually quite"
+    },
+    {
+      "id": 258,
+      "start": 908.16,
+      "end": 913.11,
+      "text": "astounding. So it's the same factory, same location, same employees by and large."
+    },
+    {
+      "id": 259,
+      "start": 913.32,
+      "end": 915.86,
+      "text": "But actually, they were able to get numbers similar to the numbers that they"
+    },
+    {
+      "id": 260,
+      "start": 915.88,
+      "end": 920.5,
+      "text": "get in their Japanese factories so you're looking at 19 hours per car from the start"
+    },
+    {
+      "id": 261,
+      "start": 920.52,
+      "end": 924.67,
+      "text": "to the end of the production line and the defects were dropped and really this is a"
+    },
+    {
+      "id": 262,
+      "start": 924.7,
+      "end": 928.87,
+      "text": "great example and a lot of people study this in sort of the lean spaces around the"
+    },
+    {
+      "id": 263,
+      "start": 928.89,
+      "end": 933.34,
+      "text": "fact that it wasn't really the robots actually NUMMI the factory in Fremont that"
+    },
+    {
+      "id": 264,
+      "start": 933.36,
+      "end": 937.06,
+      "text": "Toyota launched had less automation than the factories that GM was launching in"
+    },
+    {
+      "id": 265,
+      "start": 937.08,
+      "end": 941.31,
+      "text": "other places around the country it wasn't that they hired significantly better"
+    },
+    {
+      "id": 266,
+      "start": 941.33,
+      "end": 945.79,
+      "text": "people or more skilled people, it was that they had a very rigorous system around how"
+    },
+    {
+      "id": 267,
+      "start": 945.83,
+      "end": 948.54,
+      "text": "they would handle the development of their cars."
+    },
+    {
+      "id": 268,
+      "start": 948.56,
+      "end": 950.96,
+      "text": "And Toyota describes the system as a house."
+    },
+    {
+      "id": 269,
+      "start": 951.15,
+      "end": 953.46,
+      "text": "So this is the Toyota production system."
+    },
+    {
+      "id": 270,
+      "start": 954.0,
+      "end": 957.68,
+      "text": "A lot of people who will have spent time in the lean spaces will have seen this"
+    },
+    {
+      "id": 271,
+      "start": 957.7,
+      "end": 959.22,
+      "text": "many, many, many times."
+    },
+    {
+      "id": 272,
+      "start": 959.33,
+      "end": 963.87,
+      "text": "And the question that comes up is how do we create the right system for software in"
+    },
+    {
+      "id": 273,
+      "start": 963.98,
+      "end": 969.28,
+      "text": "the age of AI? And so what I'm going to be talking about is grounded in this book,"
+    },
+    {
+      "id": 274,
+      "start": 969.41,
+      "end": 971.26,
+      "text": "The Lean Tech manifesto."
+    },
+    {
+      "id": 275,
+      "start": 971.28,
+      "end": 973.43,
+      "text": "It's written by our co-founders at Theodo."
+    },
+    {
+      "id": 276,
+      "start": 973.45,
+      "end": 977.13,
+      "text": "It's where I work. It's Toyota's system applied to tech teams."
+    },
+    {
+      "id": 277,
+      "start": 977.15,
+      "end": 979.66,
+      "text": "So this is something, this is the way that we work, and this is the way that I've"
+    },
+    {
+      "id": 278,
+      "start": 979.68,
+      "end": 981.73,
+      "text": "been sort of trained over the last five years."
+    },
+    {
+      "id": 279,
+      "start": 981.75,
+      "end": 984.25,
+      "text": "And I think it works really well in the age of AI."
+    },
+    {
+      "id": 280,
+      "start": 984.46,
+      "end": 990.03,
+      "text": "And within this book, they draw out a very similar house, but it's specifically"
+    },
+    {
+      "id": 281,
+      "start": 990.05,
+      "end": 992.31,
+      "text": "targeted towards software development."
+    },
+    {
+      "id": 282,
+      "start": 992.33,
+      "end": 996.58,
+      "text": "And so we'll dig into this and look at the different layers and it can teach us about"
+    },
+    {
+      "id": 283,
+      "start": 996.62,
+      "end": 999.84,
+      "text": "the adoption of AI in this day and age."
+    },
+    {
+      "id": 284,
+      "start": 999.97,
+      "end": 1004.06,
+      "text": "So if we start at the floor, the fundamental baseline of it is a"
+    },
+    {
+      "id": 285,
+      "start": 1004.08,
+      "end": 1006.34,
+      "text": "tech-enabled network of teams."
+    },
+    {
+      "id": 286,
+      "start": 1006.36,
+      "end": 1010.54,
+      "text": "So in an organization that's rolling out AI, every team will get access to"
+    },
+    {
+      "id": 287,
+      "start": 1010.56,
+      "end": 1014.52,
+      "text": "licenses, they'll get told the same instructions, go out and make yourself"
+    },
+    {
+      "id": 288,
+      "start": 1014.54,
+      "end": 1019.07,
+      "text": "more efficient, and what naturally they end up doing is they go through and they"
+    },
+    {
+      "id": 289,
+      "start": 1019.09,
+      "end": 1020.41,
+      "text": "build their own setup."
+    },
+    {
+      "id": 290,
+      "start": 1020.43,
+      "end": 1024.95,
+      "text": "They create their own prompts, they define their own agents.mds, their own rule"
+    },
+    {
+      "id": 291,
+      "start": 1024.97,
+      "end": 1029.64,
+      "text": "files, they'll choose a set of MCPs that they want to use, and they'll all go at"
+    },
+    {
+      "id": 292,
+      "start": 1029.71,
+      "end": 1033.38,
+      "text": "their own paces. But what will happen is that there will be a lot of duplication"
+    },
+    {
+      "id": 293,
+      "start": 1033.4,
+      "end": 1036.06,
+      "text": "that comes up from these efforts across the teams."
+    },
+    {
+      "id": 294,
+      "start": 1036.3,
+      "end": 1038.23,
+      "text": "And these teams will get really good locally."
+    },
+    {
+      "id": 295,
+      "start": 1038.25,
+      "end": 1040.98,
+      "text": "So there'll be one squad that'll get really, really efficient, and everyone"
+    },
+    {
+      "id": 296,
+      "start": 1041.0,
+      "end": 1043.48,
+      "text": "will be saying, this is such a good AI-enabled squad."
+    },
+    {
+      "id": 297,
+      "start": 1043.5,
+      "end": 1046.0,
+      "text": "There'll be other teams that'll be lagging behind."
+    },
+    {
+      "id": 298,
+      "start": 1046.09,
+      "end": 1049.34,
+      "text": "And so one of the things and one of the sort of software engineering practices"
+    },
+    {
+      "id": 299,
+      "start": 1049.36,
+      "end": 1053.22,
+      "text": "that was popularized in the era of cloud was this concept of team topologies, which"
+    },
+    {
+      "id": 300,
+      "start": 1053.24,
+      "end": 1056.53,
+      "text": "is that you reorient the structure of teams, and you have stream-aligned teams"
+    },
+    {
+      "id": 301,
+      "start": 1056.55,
+      "end": 1060.17,
+      "text": "that are focused on features, and you have a platform team that sits underneath, and"
+    },
+    {
+      "id": 302,
+      "start": 1060.19,
+      "end": 1064.22,
+      "text": "this platform team is responsible for creating the right fundamentals for the"
+    },
+    {
+      "id": 303,
+      "start": 1064.24,
+      "end": 1068.47,
+      "text": "actual stream-aligned teams who are building the features out for the"
+    },
+    {
+      "id": 304,
+      "start": 1068.56,
+      "end": 1072.94,
+      "text": "customer. And so if we take a lot of the common building blocks that are necessary"
+    },
+    {
+      "id": 305,
+      "start": 1073.04,
+      "end": 1076.91,
+      "text": "for a team to be successful in using AI, you can create an AI platform team, and"
+    },
+    {
+      "id": 306,
+      "start": 1076.93,
+      "end": 1080.94,
+      "text": "this AI platform team can be responsible for things like having a model gateway"
+    },
+    {
+      "id": 307,
+      "start": 1080.96,
+      "end": 1084.05,
+      "text": "where people have secure access to the right models with the right data residency"
+    },
+    {
+      "id": 308,
+      "start": 1084.07,
+      "end": 1088.58,
+      "text": "and stuff like that, cost controls, audit logging, observability, but they can also"
+    },
+    {
+      "id": 309,
+      "start": 1088.66,
+      "end": 1092.83,
+      "text": "customize the harness, define a set of skills for the code bases that your teams"
+    },
+    {
+      "id": 310,
+      "start": 1093.01,
+      "end": 1097.36,
+      "text": "maintain, create things like review agents and guardrails that fit within your CICD"
+    },
+    {
+      "id": 311,
+      "start": 1097.45,
+      "end": 1101.07,
+      "text": "as part of the process, and they can also be responsible for measuring success, but"
+    },
+    {
+      "id": 312,
+      "start": 1101.09,
+      "end": 1104.44,
+      "text": "not measuring success in token use, but measuring success in things like DORA"
+    },
+    {
+      "id": 313,
+      "start": 1104.46,
+      "end": 1108.86,
+      "text": "metrics, measuring success in AI telemetry to some degree, but not exactly the way"
+    },
+    {
+      "id": 314,
+      "start": 1108.88,
+      "end": 1112.76,
+      "text": "that you might imagine it, and measuring this concept of right the first time."
+    },
+    {
+      "id": 315,
+      "start": 1112.78,
+      "end": 1116.56,
+      "text": "And I'll touch on right the first time because I think it's one of the key, key,"
+    },
+    {
+      "id": 316,
+      "start": 1116.58,
+      "end": 1118.59,
+      "text": "key pillars in successful AI adoption."
+    },
+    {
+      "id": 317,
+      "start": 1118.61,
+      "end": 1123.5,
+      "text": "And fundamentally, the platform team are just really, really good developers who"
+    },
+    {
+      "id": 318,
+      "start": 1123.52,
+      "end": 1127.07,
+      "text": "understand the whole developer experience and the whole SDLC."
+    },
+    {
+      "id": 319,
+      "start": 1127.09,
+      "end": 1131.11,
+      "text": "So when a team gets stuck, you know, they call out and they say, hey, I need some"
+    },
+    {
+      "id": 320,
+      "start": 1131.13,
+      "end": 1135.51,
+      "text": "help. And a platform engineer will come up, sit with them, you know, bang on the"
+    },
+    {
+      "id": 321,
+      "start": 1135.53,
+      "end": 1140.64,
+      "text": "colloquial you know box and once they fix it together they take the knowledge of the"
+    },
+    {
+      "id": 322,
+      "start": 1140.66,
+      "end": 1145.2,
+      "text": "problem that they fixed they go back into the platform team they create a structure"
+    },
+    {
+      "id": 323,
+      "start": 1145.22,
+      "end": 1148.73,
+      "text": "and a standard for the rest of the teams and they roll that out back up to all of"
+    },
+    {
+      "id": 324,
+      "start": 1148.75,
+      "end": 1152.95,
+      "text": "the stream aligned teams so fixes that you do on a local level translate across the"
+    },
+    {
+      "id": 325,
+      "start": 1153.11,
+      "end": 1154.26,
+      "text": "entire organization"
+    },
+    {
+      "id": 326,
+      "start": 1155.3,
+      "end": 1158.96,
+      "text": "and this naturally leads to building a learning organization because a platform"
+    },
+    {
+      "id": 327,
+      "start": 1158.98,
+      "end": 1162.44,
+      "text": "at the end of the of the day is just tools, but the fundamental key importance"
+    },
+    {
+      "id": 328,
+      "start": 1162.46,
+      "end": 1166.2,
+      "text": "here is to get people actually exercising and learning through this process."
+    },
+    {
+      "id": 329,
+      "start": 1166.22,
+      "end": 1168.9,
+      "text": "And this is really the foundation of the house."
+    },
+    {
+      "id": 330,
+      "start": 1169.06,
+      "end": 1170.96,
+      "text": "It's building a learning organization."
+    },
+    {
+      "id": 331,
+      "start": 1170.98,
+      "end": 1172.91,
+      "text": "Now, the Japanese have a term for this."
+    },
+    {
+      "id": 332,
+      "start": 1172.93,
+      "end": 1173.97,
+      "text": "They call it Kaizen."
+    },
+    {
+      "id": 333,
+      "start": 1174.26,
+      "end": 1175.82,
+      "text": "Has anyone heard of Kaizen before?"
+    },
+    {
+      "id": 334,
+      "start": 1175.84,
+      "end": 1178.78,
+      "text": "I'm so happy. This is going to make my life much easier."
+    },
+    {
+      "id": 335,
+      "start": 1178.8,
+      "end": 1182.53,
+      "text": "So Kaizen means, Kai means change, Zen means good."
+    },
+    {
+      "id": 336,
+      "start": 1182.55,
+      "end": 1186.57,
+      "text": "So change for the better is roughly how you would translate it."
+    },
+    {
+      "id": 337,
+      "start": 1186.59,
+      "end": 1191.5,
+      "text": "And one of the concepts that you will see in sort of the books about Toyota's"
+    },
+    {
+      "id": 338,
+      "start": 1191.52,
+      "end": 1195.62,
+      "text": "factories is that there was a bunch of cords called Andon cords, and there still"
+    },
+    {
+      "id": 339,
+      "start": 1195.64,
+      "end": 1200.07,
+      "text": "is. And when someone spots a problem, they just pull down the cord and everyone comes"
+    },
+    {
+      "id": 340,
+      "start": 1200.09,
+      "end": 1202.71,
+      "text": "together to spot the problem and learn from that problem."
+    },
+    {
+      "id": 341,
+      "start": 1202.73,
+      "end": 1206.28,
+      "text": "Crucially, I think one thing that's important is that actually someone who's a"
+    },
+    {
+      "id": 342,
+      "start": 1206.3,
+      "end": 1211.36,
+      "text": "manager or senior comes in to that circle and actually teaches them, but not"
+    },
+    {
+      "id": 343,
+      "start": 1211.38,
+      "end": 1212.79,
+      "text": "teaching them in the traditional way."
+    },
+    {
+      "id": 344,
+      "start": 1212.81,
+      "end": 1215.18,
+      "text": "They teach them through sort of the Socratic method."
+    },
+    {
+      "id": 345,
+      "start": 1215.2,
+      "end": 1217.35,
+      "text": "So the machine stops."
+    },
+    {
+      "id": 346,
+      "start": 1217.47,
+      "end": 1220.2,
+      "text": "There was something wrong in our manufacturing pipeline."
+    },
+    {
+      "id": 347,
+      "start": 1220.22,
+      "end": 1222.72,
+      "text": "Why? They'll just go through a chain of causation."
+    },
+    {
+      "id": 348,
+      "start": 1222.79,
+      "end": 1224.75,
+      "text": "They'll ask the engineers on the ground, why?"
+    },
+    {
+      "id": 349,
+      "start": 1224.77,
+      "end": 1227.64,
+      "text": "Why is this happening? So why an overload the fuse blew?"
+    },
+    {
+      "id": 350,
+      "start": 1227.9,
+      "end": 1229.45,
+      "text": "Okay. Why did that happen?"
+    },
+    {
+      "id": 351,
+      "start": 1229.57,
+      "end": 1231.74,
+      "text": "The bearing wasn't lubricated."
+    },
+    {
+      "id": 352,
+      "start": 1232.38,
+      "end": 1233.39,
+      "text": "Okay. Why did that happen?"
+    },
+    {
+      "id": 353,
+      "start": 1233.41,
+      "end": 1235.45,
+      "text": "The lubricant pump wasn't pumping."
+    },
+    {
+      "id": 354,
+      "start": 1235.47,
+      "end": 1237.21,
+      "text": "Okay. Why did that happen?"
+    },
+    {
+      "id": 355,
+      "start": 1237.68,
+      "end": 1239.96,
+      "text": "Its shaft was worn out. Why?"
+    },
+    {
+      "id": 356,
+      "start": 1239.98,
+      "end": 1242.12,
+      "text": "So you keep on asking these whys."
+    },
+    {
+      "id": 357,
+      "start": 1242.14,
+      "end": 1246.44,
+      "text": "Why? Why? It's not an interrogation, it's a process of trying to coach your"
+    },
+    {
+      "id": 358,
+      "start": 1246.46,
+      "end": 1251.0,
+      "text": "engineers on the ground to think about things systematically and methodically and"
+    },
+    {
+      "id": 359,
+      "start": 1251.02,
+      "end": 1254.66,
+      "text": "solve problems. And you get to a root cause and you realize actually there's"
+    },
+    {
+      "id": 360,
+      "start": 1254.68,
+      "end": 1258.27,
+      "text": "probably quite a small root cause to this, but we can fix it and systematically make"
+    },
+    {
+      "id": 361,
+      "start": 1258.29,
+      "end": 1260.46,
+      "text": "sure this issue doesn't come up again."
+    },
+    {
+      "id": 362,
+      "start": 1260.72,
+      "end": 1264.88,
+      "text": "And we take the same approach when we're actually trying to figure out how to"
+    },
+    {
+      "id": 363,
+      "start": 1264.9,
+      "end": 1269.85,
+      "text": "improve our SDLC. So this is anonymized, but from an actual project, and this was a"
+    },
+    {
+      "id": 364,
+      "start": 1269.97,
+      "end": 1275.14,
+      "text": "random problem-solving that we did a week ago in one of our teams in France."
+    },
+    {
+      "id": 365,
+      "start": 1275.16,
+      "end": 1278.38,
+      "text": "And it was, our agents are slow, so the question that they asked, and this is all"
+    },
+    {
+      "id": 366,
+      "start": 1278.4,
+      "end": 1282.3,
+      "text": "on Notion, so I can kind of steal different people's problem-solvings, it"
+    },
+    {
+      "id": 367,
+      "start": 1282.37,
+      "end": 1287.1,
+      "text": "was 55% of their time went on validating, but they only spent 36% on building the"
+    },
+    {
+      "id": 368,
+      "start": 1287.47,
+      "end": 1290.34,
+      "text": "feature. Okay, why did that happen?"
+    },
+    {
+      "id": 369,
+      "start": 1290.46,
+      "end": 1292.9,
+      "text": "Is it because of merge conflicts between parallel agents?"
+    },
+    {
+      "id": 370,
+      "start": 1292.92,
+      "end": 1294.24,
+      "text": "Maybe that's a part of the flow."
+    },
+    {
+      "id": 371,
+      "start": 1294.26,
+      "end": 1296.54,
+      "text": "So we had to go in and we realized, actually, no, that's not it."
+    },
+    {
+      "id": 372,
+      "start": 1296.56,
+      "end": 1298.5,
+      "text": "That's only happening in 5% of the cases."
+    },
+    {
+      "id": 373,
+      "start": 1298.52,
+      "end": 1300.08,
+      "text": "All right, why did it happen then?"
+    },
+    {
+      "id": 374,
+      "start": 1300.1,
+      "end": 1302.5,
+      "text": "Well, every fixed rerun validation from scratch."
+    },
+    {
+      "id": 375,
+      "start": 1302.6,
+      "end": 1306.16,
+      "text": "Okay, why? Because parity tests ran on every single test and so on and so forth."
+    },
+    {
+      "id": 376,
+      "start": 1306.18,
+      "end": 1309.66,
+      "text": "And you go through this process until you reach the root cause that we were"
+    },
+    {
+      "id": 377,
+      "start": 1309.68,
+      "end": 1311.02,
+      "text": "overvalidating as part of the agent."
+    },
+    {
+      "id": 378,
+      "start": 1311.04,
+      "end": 1313.74,
+      "text": "We needed to do it per slice as we were going through."
+    },
+    {
+      "id": 379,
+      "start": 1314.22,
+      "end": 1316.12,
+      "text": "And Kaizen isn't just a team exercise."
+    },
+    {
+      "id": 380,
+      "start": 1316.44,
+      "end": 1319.48,
+      "text": "It's how we want to coach engineers one-on-one."
+    },
+    {
+      "id": 381,
+      "start": 1319.98,
+      "end": 1324.36,
+      "text": "So one of the things that we've built is we've built a custom skill that we pop"
+    },
+    {
+      "id": 382,
+      "start": 1324.46,
+      "end": 1328.04,
+      "text": "into our Claude Code and it goes in and looks at the conversation that you've had,"
+    },
+    {
+      "id": 383,
+      "start": 1328.06,
+      "end": 1331.13,
+      "text": "so this becomes a coaching exercise one-on-one when you have a one-on-one with"
+    },
+    {
+      "id": 384,
+      "start": 1331.15,
+      "end": 1334.6,
+      "text": "someone senior or you know you're trying to coach someone, and you go through and"
+    },
+    {
+      "id": 385,
+      "start": 1334.62,
+      "end": 1337.4,
+      "text": "it finds the friction points within the chat conversation that you've had,"
+    },
+    {
+      "id": 386,
+      "start": 1337.42,
+      "end": 1340.23,
+      "text": "highlights that so you can have a conversation one-to-one to say okay we're"
+    },
+    {
+      "id": 387,
+      "start": 1340.25,
+      "end": 1343.7,
+      "text": "seeing these friction points, what can we do as a team to improve it?"
+    },
+    {
+      "id": 388,
+      "start": 1344.14,
+      "end": 1348.28,
+      "text": "And really the goal is that this isn't some one-off workshop, it's small Kaizens"
+    },
+    {
+      "id": 389,
+      "start": 1348.3,
+      "end": 1349.8,
+      "text": "that you you run every single day."
+    },
+    {
+      "id": 390,
+      "start": 1349.82,
+      "end": 1351.89,
+      "text": "You get the team into an experimentation mindset."
+    },
+    {
+      "id": 391,
+      "start": 1351.91,
+      "end": 1356.04,
+      "text": "And the goal is to really make it become a part of the culture."
+    },
+    {
+      "id": 392,
+      "start": 1356.06,
+      "end": 1357.77,
+      "text": "So how do you embed this culture?"
+    },
+    {
+      "id": 393,
+      "start": 1357.86,
+      "end": 1360.44,
+      "text": "So this summer, I spent two weeks with our team in Cape Town."
+    },
+    {
+      "id": 394,
+      "start": 1360.46,
+      "end": 1362.81,
+      "text": "This is a new office that we're slowly growing."
+    },
+    {
+      "id": 395,
+      "start": 1362.92,
+      "end": 1365.84,
+      "text": "But what that means is that it's a bit disconnected from what we do in London and"
+    },
+    {
+      "id": 396,
+      "start": 1365.86,
+      "end": 1367.07,
+      "text": "what we're practicing in London."
+    },
+    {
+      "id": 397,
+      "start": 1367.09,
+      "end": 1370.79,
+      "text": "And I basically went in every day and said, let's just solve some problems"
+    },
+    {
+      "id": 398,
+      "start": 1370.85,
+      "end": 1373.03,
+      "text": "together and put it up on a shared wall."
+    },
+    {
+      "id": 399,
+      "start": 1373.15,
+      "end": 1375.48,
+      "text": "This was focused on just AI experimentation."
+    },
+    {
+      "id": 400,
+      "start": 1375.5,
+      "end": 1379.34,
+      "text": "So in the two weeks with sort of a small team of about 10 people we did about 28"
+    },
+    {
+      "id": 401,
+      "start": 1379.36,
+      "end": 1382.8,
+      "text": "experiments together these were very simple experiments some of them were just"
+    },
+    {
+      "id": 402,
+      "start": 1382.82,
+      "end": 1386.36,
+      "text": "a part of the day-to-day work that we were doing so we realized that there was a"
+    },
+    {
+      "id": 403,
+      "start": 1386.38,
+      "end": 1389.76,
+      "text": "flaky test that we were trying to solve that was something to do with github and"
+    },
+    {
+      "id": 404,
+      "start": 1389.78,
+      "end": 1393.44,
+      "text": "we were trying to get the information of the ci runners from github and we said why"
+    },
+    {
+      "id": 405,
+      "start": 1393.46,
+      "end": 1396.4,
+      "text": "don't we just do a quick experiment and see is it better to get that information"
+    },
+    {
+      "id": 406,
+      "start": 1396.42,
+      "end": 1400.24,
+      "text": "from the cli or to get it from the MCP and as simple as that it could be something"
+    },
+    {
+      "id": 407,
+      "start": 1400.26,
+      "end": 1404.61,
+      "text": "very small like running the same prompt in slight variations twice while you're"
+    },
+    {
+      "id": 408,
+      "start": 1404.63,
+      "end": 1407.11,
+      "text": "running the same task."
+    },
+    {
+      "id": 409,
+      "start": 1407.2,
+      "end": 1410.52,
+      "text": "And through that process, over the two weeks, I sat with the engineers and went"
+    },
+    {
+      "id": 410,
+      "start": 1410.54,
+      "end": 1413.69,
+      "text": "through that chain of causation, why, why, why, through the problems that they were"
+    },
+    {
+      "id": 411,
+      "start": 1413.71,
+      "end": 1419.35,
+      "text": "facing. And I flew back home, and one of the things I purposely did was I cancelled"
+    },
+    {
+      "id": 412,
+      "start": 1419.47,
+      "end": 1420.5,
+      "text": "the meetings that we had set up."
+    },
+    {
+      "id": 413,
+      "start": 1420.52,
+      "end": 1423.94,
+      "text": "So I had set up a daily to go through the problem-solvings and everything, cancelled"
+    },
+    {
+      "id": 414,
+      "start": 1423.96,
+      "end": 1425.34,
+      "text": "that, and left them to it."
+    },
+    {
+      "id": 415,
+      "start": 1425.44,
+      "end": 1429.83,
+      "text": "The thing that made me incredibly happy was two weeks afterwards, I saw a Slack"
+    },
+    {
+      "id": 416,
+      "start": 1430.04,
+      "end": 1431.74,
+      "text": "message in a group that I wasn't even a part of."
+    },
+    {
+      "id": 417,
+      "start": 1431.76,
+      "end": 1435.66,
+      "text": "I later got added on. And Dale, who's one of our engineers in South Africa,"
+    },
+    {
+      "id": 418,
+      "start": 1435.76,
+      "end": 1438.34,
+      "text": "basically said to the team, hey, should we start up these experiments back again?"
+    },
+    {
+      "id": 419,
+      "start": 1438.36,
+      "end": 1439.99,
+      "text": "It was quite fun to have that in the process."
+    },
+    {
+      "id": 420,
+      "start": 1440.01,
+      "end": 1443.54,
+      "text": "And it became this organic, natural thing that the team was doing on the ground to"
+    },
+    {
+      "id": 421,
+      "start": 1443.56,
+      "end": 1444.88,
+      "text": "improve their learning."
+    },
+    {
+      "id": 422,
+      "start": 1444.9,
+      "end": 1448.18,
+      "text": "And one of the ways you can gauge whether this culture is being adopted is what"
+    },
+    {
+      "id": 423,
+      "start": 1448.2,
+      "end": 1451.67,
+      "text": "people do themselves on the ground without being prompted by leadership or by"
+    },
+    {
+      "id": 424,
+      "start": 1451.69,
+      "end": 1456.23,
+      "text": "management. So we've had guilds forming in London completely organically within our"
+    },
+    {
+      "id": 425,
+      "start": 1456.25,
+      "end": 1459.84,
+      "text": "office. They sort of share with each other, but it's really not mandated"
+    },
+    {
+      "id": 426,
+      "start": 1459.86,
+      "end": 1461.65,
+      "text": "whatsoever. These are run by the engineers."
+    },
+    {
+      "id": 427,
+      "start": 1461.67,
+      "end": 1465.4,
+      "text": "They have free reign to do this as much as they want, spend time on whatever."
+    },
+    {
+      "id": 428,
+      "start": 1465.42,
+      "end": 1466.71,
+      "text": "They have very wacky names."
+    },
+    {
+      "id": 429,
+      "start": 1466.73,
+      "end": 1470.29,
+      "text": "One of them is called Lose Yourself, because it's about leaving tasks"
+    },
+    {
+      "id": 430,
+      "start": 1470.31,
+      "end": 1471.81,
+      "text": "overrunning overnight."
+    },
+    {
+      "id": 431,
+      "start": 1471.83,
+      "end": 1473.66,
+      "text": "So they're running overnight."
+    },
+    {
+      "id": 432,
+      "start": 1473.68,
+      "end": 1475.94,
+      "text": "So you kind of lose yourself in the process to the AI."
+    },
+    {
+      "id": 433,
+      "start": 1475.96,
+      "end": 1478.66,
+      "text": "But there's a lot of these different guilds, and they share with each other,"
+    },
+    {
+      "id": 434,
+      "start": 1478.68,
+      "end": 1481.78,
+      "text": "and they constantly are kind of collaborating with one another"
+    },
+    {
+      "id": 435,
+      "start": 1481.85,
+      "end": 1482.65,
+      "text": "organically."
+    },
+    {
+      "id": 436,
+      "start": 1483.78,
+      "end": 1488.54,
+      "text": "And the idea here with sort of going back to Toyota is that there's this concept of"
+    },
+    {
+      "id": 437,
+      "start": 1488.56,
+      "end": 1490.78,
+      "text": "respect for people is the phrase that they use it."
+    },
+    {
+      "id": 438,
+      "start": 1490.8,
+      "end": 1494.29,
+      "text": "And it's that you make better products by making better people as part of your"
+    },
+    {
+      "id": 439,
+      "start": 1494.31,
+      "end": 1497.97,
+      "text": "organization. And I think we lose sight of that sometimes when it comes to AI."
+    },
+    {
+      "id": 440,
+      "start": 1497.99,
+      "end": 1502.82,
+      "text": "Jenni, who's going to be speaking in a little bit, is going to be talking about"
+    },
+    {
+      "id": 441,
+      "start": 1502.84,
+      "end": 1506.59,
+      "text": "this, why it's important for leadership to go down and spend time with the teams and"
+    },
+    {
+      "id": 442,
+      "start": 1506.61,
+      "end": 1509.61,
+      "text": "dog food what they're giving to their teams as well."
+    },
+    {
+      "id": 443,
+      "start": 1509.63,
+      "end": 1513.1,
+      "text": "If we go back to Fremont one last time, and I swear I'm done with Fremont after"
+    },
+    {
+      "id": 444,
+      "start": 1513.12,
+      "end": 1515.33,
+      "text": "this. This plant was bought again."
+    },
+    {
+      "id": 445,
+      "start": 1515.35,
+      "end": 1516.8,
+      "text": "So it's got a long history."
+    },
+    {
+      "id": 446,
+      "start": 1516.82,
+      "end": 1519.96,
+      "text": "It was bought by Tesla in 2010."
+    },
+    {
+      "id": 447,
+      "start": 1519.98,
+      "end": 1525.37,
+      "text": "And eight years later, a certain someone goes on Twitter and says that actually"
+    },
+    {
+      "id": 448,
+      "start": 1525.39,
+      "end": 1529.2,
+      "text": "I've realized excessive automation in these factories was a bit of a mistake."
+    },
+    {
+      "id": 449,
+      "start": 1529.22,
+      "end": 1530.62,
+      "text": "Humans are underrated."
+    },
+    {
+      "id": 450,
+      "start": 1530.66,
+      "end": 1535.06,
+      "text": "So it seems like this Fremont factory is teaching the same lesson and over and over"
+    },
+    {
+      "id": 451,
+      "start": 1535.08,
+      "end": 1539.43,
+      "text": "again to different people in the car manufacturing business."
+    },
+    {
+      "id": 452,
+      "start": 1539.45,
+      "end": 1543.72,
+      "text": "Okay. So that is that is building a learning organization, let's move on to"
+    },
+    {
+      "id": 453,
+      "start": 1543.74,
+      "end": 1544.79,
+      "text": "right the first time."
+    },
+    {
+      "id": 454,
+      "start": 1545.38,
+      "end": 1548.96,
+      "text": "Now, a bit of trivia is that Toyota, before they made cars, they were actually"
+    },
+    {
+      "id": 455,
+      "start": 1548.98,
+      "end": 1549.78,
+      "text": "making looms."
+    },
+    {
+      "id": 456,
+      "start": 1550.52,
+      "end": 1554.28,
+      "text": "And one of the things that they built into their loom machine was this automatic"
+    },
+    {
+      "id": 457,
+      "start": 1554.3,
+      "end": 1559.27,
+      "text": "stopper. So when a thread breaks in a loom, what that causes is that the entire"
+    },
+    {
+      "id": 458,
+      "start": 1559.29,
+      "end": 1563.79,
+      "text": "sort of fabric goes to waste for a certain part after you've weaved with a thread"
+    },
+    {
+      "id": 459,
+      "start": 1563.81,
+      "end": 1567.48,
+      "text": "that was broken. So what they created was an automatic detection system that would"
+    },
+    {
+      "id": 460,
+      "start": 1567.5,
+      "end": 1571.58,
+      "text": "just cut off the weaving as soon as there was a thread that broke."
+    },
+    {
+      "id": 461,
+      "start": 1571.68,
+      "end": 1575.88,
+      "text": "And this idea was stopping at the very first defect and stopping the automation,"
+    },
+    {
+      "id": 462,
+      "start": 1575.94,
+      "end": 1578.42,
+      "text": "not letting that defect build up over time."
+    },
+    {
+      "id": 463,
+      "start": 1578.52,
+      "end": 1581.02,
+      "text": "And they call this jidoka in Japanese."
+    },
+    {
+      "id": 464,
+      "start": 1581.04,
+      "end": 1584.88,
+      "text": "And so what is right the first time for agents is how many times do you have to"
+    },
+    {
+      "id": 465,
+      "start": 1584.9,
+      "end": 1588.22,
+      "text": "recorrect and reorient the agent when you give it a set of instructions?"
+    },
+    {
+      "id": 466,
+      "start": 1588.24,
+      "end": 1589.56,
+      "text": "How many times does it get things wrong?"
+    },
+    {
+      "id": 467,
+      "start": 1589.58,
+      "end": 1593.43,
+      "text": "And it could be that it doesn't understand your domain very well, or it makes"
+    },
+    {
+      "id": 468,
+      "start": 1593.45,
+      "end": 1595.52,
+      "text": "business rule mistakes."
+    },
+    {
+      "id": 469,
+      "start": 1595.76,
+      "end": 1599.78,
+      "text": "But it could also be that it doesn't choose a consistent way of doing the"
+    },
+    {
+      "id": 470,
+      "start": 1599.8,
+      "end": 1604.03,
+      "text": "correct thing. So this is an example from trying to read from DynamoDB and AWS."
+    },
+    {
+      "id": 471,
+      "start": 1604.05,
+      "end": 1605.87,
+      "text": "All three of these are correct."
+    },
+    {
+      "id": 472,
+      "start": 1605.96,
+      "end": 1607.3,
+      "text": "They'll all compile."
+    },
+    {
+      "id": 473,
+      "start": 1607.32,
+      "end": 1609.62,
+      "text": "They're the technically correct ways to do it."
+    },
+    {
+      "id": 474,
+      "start": 1609.66,
+      "end": 1612.91,
+      "text": "But we need to find a way to make it consistently choose the same thing,"
+    },
+    {
+      "id": 475,
+      "start": 1612.93,
+      "end": 1616.15,
+      "text": "because we want coding standards to be enforced across the board."
+    },
+    {
+      "id": 476,
+      "start": 1616.17,
+      "end": 1620.47,
+      "text": "And one of the ways that we do this is we try to introduce determinism into the"
+    },
+    {
+      "id": 477,
+      "start": 1620.69,
+      "end": 1625.98,
+      "text": "workflow and so we have created this idea of blueprints and the blueprints are sort"
+    },
+    {
+      "id": 478,
+      "start": 1626.15,
+      "end": 1629.81,
+      "text": "of a reference doc almost like a glossary where you say this is following a pattern"
+    },
+    {
+      "id": 479,
+      "start": 1629.83,
+      "end": 1633.47,
+      "text": "that we've established and you tell the agent to basically go through this"
+    },
+    {
+      "id": 480,
+      "start": 1633.49,
+      "end": 1638.6,
+      "text": "foundation. It's an arbitrary markdown file as is coding these days but with the"
+    },
+    {
+      "id": 481,
+      "start": 1638.62,
+      "end": 1642.47,
+      "text": "concept of Jidoka what we want to do is we want to be able to catch that in a"
+    },
+    {
+      "id": 482,
+      "start": 1642.51,
+      "end": 1645.98,
+      "text": "deterministic way very quickly as the implementation is happening."
+    },
+    {
+      "id": 483,
+      "start": 1646.42,
+      "end": 1649.7,
+      "text": "And so we take those blueprints and we encode them as custom linting rules."
+    },
+    {
+      "id": 484,
+      "start": 1649.72,
+      "end": 1653.25,
+      "text": "And so what that makes it is it makes it virtually impossible for the agent to make"
+    },
+    {
+      "id": 485,
+      "start": 1653.27,
+      "end": 1656.58,
+      "text": "that mistake again because you're deterministically figuring out when that"
+    },
+    {
+      "id": 486,
+      "start": 1656.6,
+      "end": 1657.65,
+      "text": "mistake is happening."
+    },
+    {
+      "id": 487,
+      "start": 1658.88,
+      "end": 1660.6,
+      "text": "There is another Japanese term for this."
+    },
+    {
+      "id": 488,
+      "start": 1660.62,
+      "end": 1665.44,
+      "text": "It's called poka-yoke, so a slip to avoid, which is making the mistake impossible."
+    },
+    {
+      "id": 489,
+      "start": 1665.74,
+      "end": 1668.54,
+      "text": "This is the right mindset that you need to have when it comes to agents."
+    },
+    {
+      "id": 490,
+      "start": 1668.56,
+      "end": 1671.42,
+      "text": "How do you make it impossible for bugs to get to production?"
+    },
+    {
+      "id": 491,
+      "start": 1671.44,
+      "end": 1674.44,
+      "text": "How do you catch these defects as early as you possibly can?"
+    },
+    {
+      "id": 492,
+      "start": 1674.48,
+      "end": 1679.4,
+      "text": "And part of it is designing your SDLC workflow around the right gates to have in"
+    },
+    {
+      "id": 493,
+      "start": 1679.42,
+      "end": 1680.22,
+      "text": "place."
+    },
+    {
+      "id": 494,
+      "start": 1680.46,
+      "end": 1685.64,
+      "text": "Where do you introduce humans in the loop to make sure that agents don't go rogue"
+    },
+    {
+      "id": 495,
+      "start": 1685.81,
+      "end": 1687.8,
+      "text": "and make the wrong choices as part of it?"
+    },
+    {
+      "id": 496,
+      "start": 1687.82,
+      "end": 1690.0,
+      "text": "And not thinking through your gates can have a serious consequence."
+    },
+    {
+      "id": 497,
+      "start": 1690.02,
+      "end": 1694.08,
+      "text": "So this is from a PR where we actually had a bug merge through because we didn't have"
+    },
+    {
+      "id": 498,
+      "start": 1694.1,
+      "end": 1695.47,
+      "text": "the right gates in place."
+    },
+    {
+      "id": 499,
+      "start": 1696.02,
+      "end": 1699.4,
+      "text": "So there was a commit suggestion coming in from an AI reviewer."
+    },
+    {
+      "id": 500,
+      "start": 1699.6,
+      "end": 1704.18,
+      "text": "We committed it, and then we realized five months later that by actually closing that"
+    },
+    {
+      "id": 501,
+      "start": 1704.5,
+      "end": 1708.74,
+      "text": "client, we messed up concurrent requests in production."
+    },
+    {
+      "id": 502,
+      "start": 1709.58,
+      "end": 1711.73,
+      "text": "And the fix that AI had proposed was a bug."
+    },
+    {
+      "id": 503,
+      "start": 1711.76,
+      "end": 1715.18,
+      "text": "We didn't have the right system in place or the right flow in place to catch that"
+    },
+    {
+      "id": 504,
+      "start": 1715.2,
+      "end": 1717.05,
+      "text": "as an issue that was going to happen."
+    },
+    {
+      "id": 505,
+      "start": 1718.12,
+      "end": 1721.21,
+      "text": "And fundamentally, by introducing these blueprints, by introducing these lint"
+    },
+    {
+      "id": 506,
+      "start": 1721.23,
+      "end": 1724.27,
+      "text": "rules, by introducing the gates, what you want to do is you want to shift the"
+    },
+    {
+      "id": 507,
+      "start": 1724.29,
+      "end": 1728.63,
+      "text": "distribution of your prompts that you're doing so that you have less and less"
+    },
+    {
+      "id": 508,
+      "start": 1728.75,
+      "end": 1731.54,
+      "text": "reprompting over time. So that's right the first time."
+    },
+    {
+      "id": 509,
+      "start": 1731.74,
+      "end": 1733.69,
+      "text": "The other pillar there is just-in-time."
+    },
+    {
+      "id": 510,
+      "start": 1733.78,
+      "end": 1738.18,
+      "text": "The question is, how do you design your week or your sprints as a team, right?"
+    },
+    {
+      "id": 511,
+      "start": 1738.42,
+      "end": 1741.45,
+      "text": "Because the traditional setup here is that you spent a bit of time with the entire"
+    },
+    {
+      "id": 512,
+      "start": 1741.47,
+      "end": 1744.5,
+      "text": "team in refinement, you do some sprint planning if you're working in Scrum, you"
+    },
+    {
+      "id": 513,
+      "start": 1744.52,
+      "end": 1747.68,
+      "text": "spent most of your time in the week sort of going away, developing, then you do"
+    },
+    {
+      "id": 514,
+      "start": 1747.7,
+      "end": 1750.18,
+      "text": "code reviews, QAs, demos, and retros, right?"
+    },
+    {
+      "id": 515,
+      "start": 1750.24,
+      "end": 1752.99,
+      "text": "This is like your flow that you could potentially have."
+    },
+    {
+      "id": 516,
+      "start": 1753.62,
+      "end": 1755.48,
+      "text": "But you do need to rearrange your station."
+    },
+    {
+      "id": 517,
+      "start": 1755.5,
+      "end": 1758.92,
+      "text": "So going back to the steam and electrical factories, you do need to rearrange your"
+    },
+    {
+      "id": 518,
+      "start": 1758.94,
+      "end": 1761.92,
+      "text": "systems because things are completely different and fundamentally different."
+    },
+    {
+      "id": 519,
+      "start": 1761.94,
+      "end": 1763.99,
+      "text": "So your build time significantly reduces."
+    },
+    {
+      "id": 520,
+      "start": 1764.22,
+      "end": 1766.18,
+      "text": "So what do you have to spend time doing?"
+    },
+    {
+      "id": 521,
+      "start": 1766.2,
+      "end": 1769.18,
+      "text": "You might need to add a prototyping phase."
+    },
+    {
+      "id": 522,
+      "start": 1769.58,
+      "end": 1772.18,
+      "text": "You might need to add a second plan phase at certain points."
+    },
+    {
+      "id": 523,
+      "start": 1772.2,
+      "end": 1773.98,
+      "text": "And I'll get into what that means in a second."
+    },
+    {
+      "id": 524,
+      "start": 1774.0,
+      "end": 1777.84,
+      "text": "But you might want to also spend a lot of time in experimentation and in Kaizen."
+    },
+    {
+      "id": 525,
+      "start": 1777.86,
+      "end": 1781.6,
+      "text": "We've done this differently for every single team that we have."
+    },
+    {
+      "id": 526,
+      "start": 1782.0,
+      "end": 1785.58,
+      "text": "It's not that there is this one-shoe-fits-all solution."
+    },
+    {
+      "id": 527,
+      "start": 1785.7,
+      "end": 1787.64,
+      "text": "There's not a one-size-fits-all solution here."
+    },
+    {
+      "id": 528,
+      "start": 1787.66,
+      "end": 1790.83,
+      "text": "It is tailored to each team's needs, the domain that they're working in, the"
+    },
+    {
+      "id": 529,
+      "start": 1790.85,
+      "end": 1791.95,
+      "text": "processes, the people."
+    },
+    {
+      "id": 530,
+      "start": 1792.34,
+      "end": 1793.54,
+      "text": "I'm not going to give you a recipe."
+    },
+    {
+      "id": 531,
+      "start": 1793.56,
+      "end": 1796.14,
+      "text": "This is just something that worked for one of our teams."
+    },
+    {
+      "id": 532,
+      "start": 1796.16,
+      "end": 1799.02,
+      "text": "And we rearranged the structure of the week where we kind of take this extreme"
+    },
+    {
+      "id": 533,
+      "start": 1799.04,
+      "end": 1802.26,
+      "text": "programming-style Monday where the business people, the designers, the"
+    },
+    {
+      "id": 534,
+      "start": 1802.28,
+      "end": 1805.61,
+      "text": "product people are in the room together in a workshop in person, and then they go"
+    },
+    {
+      "id": 535,
+      "start": 1805.63,
+      "end": 1809.02,
+      "text": "through a bit of a process on Tuesday, Wednesdays, Thursdays where they're"
+    },
+    {
+      "id": 536,
+      "start": 1809.04,
+      "end": 1810.44,
+      "text": "developing those three days."
+    },
+    {
+      "id": 537,
+      "start": 1810.5,
+      "end": 1814.72,
+      "text": "And then on Friday, they spend the entire time working on improving the system."
+    },
+    {
+      "id": 538,
+      "start": 1814.98,
+      "end": 1817.36,
+      "text": "They are doing Kaizen throughout the entire day."
+    },
+    {
+      "id": 539,
+      "start": 1817.38,
+      "end": 1819.16,
+      "text": "And that's how we structured our team."
+    },
+    {
+      "id": 540,
+      "start": 1819.18,
+      "end": 1821.48,
+      "text": "It's very different to your traditional Scrum."
+    },
+    {
+      "id": 541,
+      "start": 1821.68,
+      "end": 1825.25,
+      "text": "And we've built the tooling around the process rather than building the process"
+    },
+    {
+      "id": 542,
+      "start": 1825.27,
+      "end": 1827.63,
+      "text": "around the tooling. I've got a very quick demo."
+    },
+    {
+      "id": 543,
+      "start": 1828.1,
+      "end": 1832.26,
+      "text": "This is less for you to sort of see the details of it because Ohans is going to"
+    },
+    {
+      "id": 544,
+      "start": 1832.28,
+      "end": 1834.24,
+      "text": "walk you through a very opinionated SDLC."
+    },
+    {
+      "id": 545,
+      "start": 1834.26,
+      "end": 1837.38,
+      "text": "This is just to show you that one of the things that we've done is because we kind"
+    },
+    {
+      "id": 546,
+      "start": 1837.4,
+      "end": 1841.12,
+      "text": "of have defined this very custom workflow, we can also build custom software around"
+    },
+    {
+      "id": 547,
+      "start": 1841.14,
+      "end": 1842.55,
+      "text": "it for our engineers to use."
+    },
+    {
+      "id": 548,
+      "start": 1842.66,
+      "end": 1846.32,
+      "text": "So this is a web platform that we've built that our engineers, product, and design"
+    },
+    {
+      "id": 549,
+      "start": 1846.34,
+      "end": 1850.62,
+      "text": "people use, and this is the place where they go in and they refine the work, they"
+    },
+    {
+      "id": 550,
+      "start": 1850.64,
+      "end": 1854.29,
+      "text": "talk about the features that they need to build in the next week, they do planning"
+    },
+    {
+      "id": 551,
+      "start": 1854.31,
+      "end": 1858.37,
+      "text": "on here. So this team has very strict regulatory needs, and there's a very high"
+    },
+    {
+      "id": 552,
+      "start": 1858.49,
+      "end": 1861.54,
+      "text": "risk of mistakes. So what we've done is we've created multi-plan agents."
+    },
+    {
+      "id": 553,
+      "start": 1861.56,
+      "end": 1865.41,
+      "text": "So you spin up multiple agents at the same time to do separate plans, and the"
+    },
+    {
+      "id": 554,
+      "start": 1865.47,
+      "end": 1868.6,
+      "text": "engineer has to compare between them and choose the steps that they want to do."
+    },
+    {
+      "id": 555,
+      "start": 1868.62,
+      "end": 1872.26,
+      "text": "There is the build process that is custom within this one."
+    },
+    {
+      "id": 556,
+      "start": 1872.28,
+      "end": 1877.04,
+      "text": "Again, it has like steps and gates in place to stop and get the user to actually"
+    },
+    {
+      "id": 557,
+      "start": 1877.36,
+      "end": 1881.28,
+      "text": "check the implementation in a TDD loop, because again, there's regulatory needs."
+    },
+    {
+      "id": 558,
+      "start": 1881.3,
+      "end": 1883.16,
+      "text": "We have review gates as part of the process."
+    },
+    {
+      "id": 559,
+      "start": 1883.18,
+      "end": 1889.34,
+      "text": "We have telemetry, and all of this kind of feeds in to the final piece of the house."
+    },
+    {
+      "id": 560,
+      "start": 1889.36,
+      "end": 1893.26,
+      "text": "If you look at the telemetry here, you can see over different weeks, if we go back,"
+    },
+    {
+      "id": 561,
+      "start": 1893.28,
+      "end": 1896.92,
+      "text": "what's the throughput, what's the cycle time, how many times have they re-prompted"
+    },
+    {
+      "id": 562,
+      "start": 1896.94,
+      "end": 1898.79,
+      "text": "and corrected and so on and so forth."
+    },
+    {
+      "id": 563,
+      "start": 1898.82,
+      "end": 1901.12,
+      "text": "It's slightly different to just a tokens dashboard."
+    },
+    {
+      "id": 564,
+      "start": 1901.14,
+      "end": 1903.04,
+      "text": "You're tracking DORA metrics here."
+    },
+    {
+      "id": 565,
+      "start": 1903.06,
+      "end": 1907.01,
+      "text": "And that leads to the final bit of the house, which is the value for customers."
+    },
+    {
+      "id": 566,
+      "start": 1908.62,
+      "end": 1912.33,
+      "text": "Uber has showed us that as you increase your token spend, value does not"
+    },
+    {
+      "id": 567,
+      "start": 1912.35,
+      "end": 1914.02,
+      "text": "necessarily correlate with that."
+    },
+    {
+      "id": 568,
+      "start": 1914.04,
+      "end": 1917.38,
+      "text": "We've seen that. What we're measuring instead, and this is by no means correct,"
+    },
+    {
+      "id": 569,
+      "start": 1917.4,
+      "end": 1920.2,
+      "text": "because I think everyone in the industry is trying to figure out exactly what to"
+    },
+    {
+      "id": 570,
+      "start": 1920.22,
+      "end": 1922.94,
+      "text": "measure. We're measuring lead time and deploy frequency from DORA."
+    },
+    {
+      "id": 571,
+      "start": 1922.96,
+      "end": 1926.12,
+      "text": "We're measuring change failure rates, time to recover."
+    },
+    {
+      "id": 572,
+      "start": 1926.14,
+      "end": 1927.48,
+      "text": "We're looking at the right the first time."
+    },
+    {
+      "id": 573,
+      "start": 1927.5,
+      "end": 1930.38,
+      "text": "How many times do we have to steer the agent into correction?"
+    },
+    {
+      "id": 574,
+      "start": 1930.4,
+      "end": 1932.4,
+      "text": "And what's the rework that we need to do?"
+    },
+    {
+      "id": 575,
+      "start": 1932.42,
+      "end": 1935.97,
+      "text": "When there's a bug that needs to get reverted or we need to fix something in"
+    },
+    {
+      "id": 576,
+      "start": 1935.99,
+      "end": 1938.15,
+      "text": "production, what's the rate of that?"
+    },
+    {
+      "id": 577,
+      "start": 1938.2,
+      "end": 1941.2,
+      "text": "Is that increasing because of AI or is it decreasing and we have a slower sort of"
+    },
+    {
+      "id": 578,
+      "start": 1941.22,
+      "end": 1942.19,
+      "text": "change time there?"
+    },
+    {
+      "id": 579,
+      "start": 1943.34,
+      "end": 1945.86,
+      "text": "And we are seeing some really promising results with this."
+    },
+    {
+      "id": 580,
+      "start": 1945.88,
+      "end": 1947.06,
+      "text": "So this is within one organization."
+    },
+    {
+      "id": 581,
+      "start": 1947.08,
+      "end": 1950.78,
+      "text": "We've been slowly taking pilots of different teams and squads within that."
+    },
+    {
+      "id": 582,
+      "start": 1951.22,
+      "end": 1956.62,
+      "text": "And we are seeing that they are relative to themselves improving over the last few"
+    },
+    {
+      "id": 583,
+      "start": 1956.64,
+      "end": 1958.96,
+      "text": "months in terms of the throughput of the features that they're getting."
+    },
+    {
+      "id": 584,
+      "start": 1958.98,
+      "end": 1960.16,
+      "text": "This isn't lines of code or anything."
+    },
+    {
+      "id": 585,
+      "start": 1960.18,
+      "end": 1963.31,
+      "text": "This is like features that have gone through a bit of a classification process"
+    },
+    {
+      "id": 586,
+      "start": 1963.33,
+      "end": 1966.18,
+      "text": "to get a sense of how they're doing compared to the rest of the organization"
+    },
+    {
+      "id": 587,
+      "start": 1966.2,
+      "end": 1969.27,
+      "text": "where they've been given the same AI harnesses and tools."
+    },
+    {
+      "id": 588,
+      "start": 1969.32,
+      "end": 1973.52,
+      "text": "But they've actually just been using AI as they would with their previous processes."
+    },
+    {
+      "id": 589,
+      "start": 1975.36,
+      "end": 1979.86,
+      "text": "And so really what we're saying is we've kind of gotten the bottom two correct."
+    },
+    {
+      "id": 590,
+      "start": 1980.2,
+      "end": 1983.84,
+      "text": "The last bit is building the right thing because the bottleneck is fundamentally"
+    },
+    {
+      "id": 591,
+      "start": 1983.86,
+      "end": 1986.9,
+      "text": "moved from the build process more to the decision phase."
+    },
+    {
+      "id": 592,
+      "start": 1987.08,
+      "end": 1990.07,
+      "text": "What is it that you're building? Because you can build software at a much cheaper"
+    },
+    {
+      "id": 593,
+      "start": 1990.09,
+      "end": 1992.09,
+      "text": "rate, so you end up building a lot more."
+    },
+    {
+      "id": 594,
+      "start": 1992.72,
+      "end": 1996.86,
+      "text": "And this is one of the places where I think is the most fascinating."
+    },
+    {
+      "id": 595,
+      "start": 1997.18,
+      "end": 2000.47,
+      "text": "In that extreme programming sense of bringing together the product, the design,"
+    },
+    {
+      "id": 596,
+      "start": 2000.49,
+      "end": 2004.49,
+      "text": "and the tech, what we do on a regular basis in that Monday session with this"
+    },
+    {
+      "id": 597,
+      "start": 2004.51,
+      "end": 2008.52,
+      "text": "team is that we all sit together and look at all the different ideas and assess them"
+    },
+    {
+      "id": 598,
+      "start": 2008.54,
+      "end": 2013.14,
+      "text": "very quickly. We prototype them and throw out some of them."
+    },
+    {
+      "id": 599,
+      "start": 2013.16,
+      "end": 2017.33,
+      "text": "We then go through and we test some of them with real users, and then we decide"
+    },
+    {
+      "id": 600,
+      "start": 2017.35,
+      "end": 2019.16,
+      "text": "whether or not we want to build some of these out."
+    },
+    {
+      "id": 601,
+      "start": 2019.18,
+      "end": 2021.16,
+      "text": "So we spend it exclusively towards prototyping."
+    },
+    {
+      "id": 602,
+      "start": 2021.18,
+      "end": 2025.37,
+      "text": "It's kind of like a new part of the SDLC that we can do very rapidly and very"
+    },
+    {
+      "id": 603,
+      "start": 2025.39,
+      "end": 2029.44,
+      "text": "quickly. And building the right thing is really at the core of the job right now."
+    },
+    {
+      "id": 604,
+      "start": 2029.52,
+      "end": 2033.15,
+      "text": "Engineers and everyone else in the whole SDLC need to think about what is it that"
+    },
+    {
+      "id": 605,
+      "start": 2033.17,
+      "end": 2036.92,
+      "text": "we're building. And in a similar - bringing back to the car analogy - in a"
+    },
+    {
+      "id": 606,
+      "start": 2036.94,
+      "end": 2041.42,
+      "text": "similar way, once you've got a line that runs reliably and smoothly, it opens the"
+    },
+    {
+      "id": 607,
+      "start": 2041.44,
+      "end": 2045.6,
+      "text": "door to something very exciting, which is Toyota builds Corollas, Priuses, C-HRs on"
+    },
+    {
+      "id": 608,
+      "start": 2045.62,
+      "end": 2047.06,
+      "text": "the exact same platform."
+    },
+    {
+      "id": 609,
+      "start": 2047.08,
+      "end": 2049.24,
+      "text": "The underneath of it is the same car."
+    },
+    {
+      "id": 610,
+      "start": 2049.46,
+      "end": 2054.0,
+      "text": "But you can build different variants for different people."
+    },
+    {
+      "id": 611,
+      "start": 2054.02,
+      "end": 2055.8,
+      "text": "And you can kind of do the same thing with software."
+    },
+    {
+      "id": 612,
+      "start": 2055.82,
+      "end": 2059.6,
+      "text": "And this is something novel that we're sort of experimenting with right now."
+    },
+    {
+      "id": 613,
+      "start": 2059.62,
+      "end": 2063.01,
+      "text": "But, you know, the scale of A/B tests that we can now run because of having a"
+    },
+    {
+      "id": 614,
+      "start": 2063.03,
+      "end": 2066.46,
+      "text": "foundation where we can iterate fastly and reliably is incredible."
+    },
+    {
+      "id": 615,
+      "start": 2066.48,
+      "end": 2071.2,
+      "text": "And we can start to tailor even parts of the UI to specific users and their needs."
+    },
+    {
+      "id": 616,
+      "start": 2071.22,
+      "end": 2075.56,
+      "text": "And this is really just the whole line coming together to let you focus on value"
+    },
+    {
+      "id": 617,
+      "start": 2075.65,
+      "end": 2079.79,
+      "text": "for customers. There's a talk later on this morning by Dr."
+    },
+    {
+      "id": 618,
+      "start": 2079.81,
+      "end": 2083.9,
+      "text": "Joongi Shin about the generative UI space, and I think that's going to be very"
+    },
+    {
+      "id": 619,
+      "start": 2083.92,
+      "end": 2087.18,
+      "text": "exciting to dig into, because I think it talks about some of these things."
+    },
+    {
+      "id": 620,
+      "start": 2087.2,
+      "end": 2092.3,
+      "text": "So let's wrap up. I think I've gone slightly over time, so I really apologize."
+    },
+    {
+      "id": 621,
+      "start": 2092.32,
+      "end": 2095.44,
+      "text": "The two takeaways that I would say for anyone who's an engineering leader in this"
+    },
+    {
+      "id": 622,
+      "start": 2095.46,
+      "end": 2100.22,
+      "text": "room or as a senior engineer in this room is firstly try to map out your entire flow"
+    },
+    {
+      "id": 623,
+      "start": 2100.31,
+      "end": 2104.16,
+      "text": "of software development and go in and audit that line see where the bottlenecks"
+    },
+    {
+      "id": 624,
+      "start": 2104.18,
+      "end": 2108.5,
+      "text": "are where is it that your team is slow and find the systematic fixes to that rather"
+    },
+    {
+      "id": 625,
+      "start": 2108.52,
+      "end": 2112.88,
+      "text": "than just throw agents at it right see what's the SDLC in its entirety and try to"
+    },
+    {
+      "id": 626,
+      "start": 2112.9,
+      "end": 2117.34,
+      "text": "fix those bottlenecks but also work with your leadership team to actually focus on"
+    },
+    {
+      "id": 627,
+      "start": 2117.36,
+      "end": 2121.59,
+      "text": "the right metrics think about the flow of software think about the outcomes that"
+    },
+    {
+      "id": 628,
+      "start": 2121.61,
+      "end": 2126.6,
+      "text": "you're trying to achieve, rather than the seats, because we shouldn't measure AI by"
+    },
+    {
+      "id": 629,
+      "start": 2126.62,
+      "end": 2130.71,
+      "text": "the code that it writes, but actually by the bottlenecks that it solves."
+    },
+    {
+      "id": 630,
+      "start": 2130.73,
+      "end": 2135.02,
+      "text": "And I hope that with all of this, you can make sure that this isn't your 1978."
+    },
+    {
+      "id": 631,
+      "start": 2135.04,
+      "end": 2139.14,
+      "text": "Thank you very much."
+    }
+  ]
+}

@@ -1,0 +1,2577 @@
+{
+  "id": "viljami-talk",
+  "kind": "talk",
+  "officialTitle": "I Let Non-Engineers Vibe-Code Our Production Codebase",
+  "speakerNames": [
+    "Viljami Kuosmanen"
+  ],
+  "durationSeconds": 1335.0,
+  "videoFile": "exports/talks-v02/viljami-talk-4k.mp4",
+  "reviewFile": "review/talks-v02/viljami-talk-720p.mp4",
+  "chapters": [
+    {
+      "outputSeconds": 0,
+      "title": "Introduction: opening the codebase to non-engineers",
+      "sourceSeconds": 18227,
+      "timestamp": "00:00"
+    },
+    {
+      "outputSeconds": 156,
+      "title": "The Slack coworker and pull-request workflow",
+      "sourceSeconds": 18380.58,
+      "timestamp": "02:36"
+    },
+    {
+      "outputSeconds": 240,
+      "title": "Giving agents codebase and business context",
+      "sourceSeconds": 18464.62,
+      "timestamp": "04:00"
+    },
+    {
+      "outputSeconds": 323,
+      "title": "Why Slack helped adoption spread",
+      "sourceSeconds": 18547.54,
+      "timestamp": "05:23"
+    },
+    {
+      "outputSeconds": 384,
+      "title": "Building Leidang and an agent-agnostic runtime",
+      "sourceSeconds": 18608.48,
+      "timestamp": "06:24"
+    },
+    {
+      "outputSeconds": 471,
+      "title": "Background agents and automatic triage",
+      "sourceSeconds": 18695.64,
+      "timestamp": "07:51"
+    },
+    {
+      "outputSeconds": 518,
+      "title": "Non-engineers, preview links and adoption numbers",
+      "sourceSeconds": 18742.78,
+      "timestamp": "08:38"
+    },
+    {
+      "outputSeconds": 730,
+      "title": "Examples from product, design, support and QA",
+      "sourceSeconds": 18954.34,
+      "timestamp": "12:10"
+    },
+    {
+      "outputSeconds": 1055,
+      "title": "A deployment near miss, guardrails and review bottlenecks",
+      "sourceSeconds": 19279.34,
+      "timestamp": "17:35"
+    },
+    {
+      "outputSeconds": 1246,
+      "title": "Four lessons: coworker, access, guardrails and context",
+      "sourceSeconds": 19470.56,
+      "timestamp": "20:46"
+    }
+  ],
+  "materials": [
+    {
+      "label": "Slides (PDF)",
+      "url": "https://www.sdlcai.org/media/talks/non-engineers-vibe-code-production/404574e7-178f-48ea-bca5-02245c74ab6a.pdf"
+    }
+  ],
+  "talkUrl": "https://www.sdlcai.org/2026/schedule/#non-engineers-vibe-code-production",
+  "existingSummary": "Viljami Kuosmanen shares epilot’s experiment giving product managers, designers and customer-success staff access to coding agents in Slack. He shows real contributions, explains why shared context and preview links matter, and describes a deployment near miss that led to tighter permissions and engineer review.",
+  "captions": {
+    "language": "en",
+    "srt": "transcripts/final-v02/viljami-talk.en.srt",
+    "vtt": "transcripts/final-v02/viljami-talk.en.vtt",
+    "qualityReport": "transcripts/final-v02/viljami-talk.caption-qc.json",
+    "listeningReview": "transcripts/final-v02/viljami-talk.listening-review.txt",
+    "status": "prepared-with-human-listening-review-notes"
+  },
+  "captionSHA256": "b7e0e9f2efe7f70679caca05e74d499ffb0e1d8bdaccae7f6c061439d1006d2a",
+  "mediaBytes": 629114543,
+  "cueCount": 392,
+  "listeningWindows": [
+    {
+      "id": "viljami-talk-109",
+      "videoId": "viljami-talk",
+      "startSeconds": 1097.42,
+      "endSeconds": 1105.92,
+      "priority": "high",
+      "category": "high_impact_wording",
+      "note": "Confirm make versus merge in the engineer PR rule. Three local passes hear make; captions preserve make and the following requirement for engineer review.",
+      "currentCaptionText": "out what's going on, and then we changed the policy. And now we have a simple rule. The engineers make the PRs. Agents and non-engineers can open as many pull requests as they want, but they need to get an engineer to review it.",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/viljami-talk.listening-review.json",
+          "entryIndices": [
+            4,
+            7
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/viljami-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                275
+              ],
+              "text": "on and then we change the policy. And now we have a simple rule. The engineers make the PRs. Agents and non-engineers can open as many pull requests as they want, but they need to get an engineer to review it. Of course, the guardrails would"
+            }
+          ]
+        },
+        {
+          "type": "isolatedLocalASR",
+          "model": "Whisper large-v3",
+          "path": "transcripts/priority-checks-v1/comparison-index.json",
+          "checks": [
+            {
+              "id": "viljami-pr-rule",
+              "text": "and immediately stop this and found out what's going on, and then we changed the policy. And now we have a simple rule. The engineers make the PRs. Agents and non-engineers can open as many pull requests as they want, but they need to get an engineer to review it. Of course, the guardrails were there"
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/viljami-talk.listening-review.json",
+          "index": 4
+        },
+        {
+          "path": "transcripts/final-v02/viljami-talk.listening-review.json",
+          "index": 7
+        }
+      ],
+      "sourceSegments": [
+        275
+      ],
+      "sourceStartSeconds": 19321.42,
+      "sourceEndSeconds": 19329.92
+    },
+    {
+      "id": "viljami-talk-110",
+      "videoId": "viljami-talk",
+      "startSeconds": 1149.06,
+      "endSeconds": 1169.22,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Context-supported correction still marked for listening: jump pose → jump host",
+      "currentCaptionText": "One thing that we were really concerned about, there were no incidents here, but we really wanted to make sure since developers work on their machines with the coding agents, you don't want those developer machines connected to production at all. So, what we did is we locked ourselves out of production. Now, there's a multi-factor way that you have to do it. You have to go through a jump host, a completely separate machine to do anything",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/viljami-talk.listening-review.json",
+          "entryIndices": [
+            6,
+            13
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/viljami-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                294
+              ],
+              "text": "production at all. So what we did is we locked ourselves out of production. Now there's a multi-factor way that you have to do it. You have to go through a jump hose, completely separate machine to do anything in production basically."
+            },
+            {
+              "segments": [
+                291,
+                292,
+                293
+              ],
+              "text": "it is for engineers. So one thing that we were really concerned about, there were no incidents here, but we really wanted to make sure that since developers work on their machines with the coding agents, you don't want those developer machines connected to production at all. So what we did is we locked ourselves out of production. Now there's a multi-factor way that you have to do it, you have to go through a jump pose completely separate."
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 294,
+              "before": "jump pose",
+              "after": "jump host",
+              "basis": "Production-access architecture context; listen."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/viljami-talk.listening-review.json",
+          "index": 6
+        },
+        {
+          "path": "transcripts/final-v02/viljami-talk.listening-review.json",
+          "index": 13
+        }
+      ],
+      "sourceSegments": [
+        291,
+        292,
+        293,
+        294
+      ],
+      "sourceStartSeconds": 19373.06,
+      "sourceEndSeconds": 19393.22
+    }
+  ],
+  "cues": [
+    {
+      "id": 1,
+      "start": 3.66,
+      "end": 10.64,
+      "text": "Thanks, everybody."
+    },
+    {
+      "id": 2,
+      "start": 10.66,
+      "end": 15.4,
+      "text": "We've heard from really smart, responsible people just before me, so it's good to"
+    },
+    {
+      "id": 3,
+      "start": 15.42,
+      "end": 17.88,
+      "text": "have me now to show you the YOLO way."
+    },
+    {
+      "id": 4,
+      "start": 17.9,
+      "end": 21.36,
+      "text": "I've been building SaaS for 15 years now."
+    },
+    {
+      "id": 5,
+      "start": 21.38,
+      "end": 25.92,
+      "text": "I joined this company in 2021 and spent the first five years as the head of"
+    },
+    {
+      "id": 6,
+      "start": 25.94,
+      "end": 30.59,
+      "text": "engineering there. I grew the team from about 10 in-house engineers to 50 today."
+    },
+    {
+      "id": 7,
+      "start": 30.61,
+      "end": 33.3,
+      "text": "I wasn't a founder, I was very early on in the company."
+    },
+    {
+      "id": 8,
+      "start": 33.32,
+      "end": 37.5,
+      "text": "This year, I decided to focus again on building with AI and became a"
+    },
+    {
+      "id": 9,
+      "start": 37.52,
+      "end": 42.6,
+      "text": "distinguished engineer, as we call it in my company, which still I lead many of the"
+    },
+    {
+      "id": 10,
+      "start": 42.62,
+      "end": 46.69,
+      "text": "AI efforts, not all of them, but many of them on the product side."
+    },
+    {
+      "id": 11,
+      "start": 46.71,
+      "end": 48.46,
+      "text": "So let's see if this works."
+    },
+    {
+      "id": 12,
+      "start": 48.48,
+      "end": 54.21,
+      "text": "Here we go. So about epilot very quickly, we call ourselves an Energy XRM."
+    },
+    {
+      "id": 13,
+      "start": 54.23,
+      "end": 56.28,
+      "text": "It's essentially CRM extended."
+    },
+    {
+      "id": 14,
+      "start": 56.3,
+      "end": 60.67,
+      "text": "It's a B2B SaaS serving about 220 enterprise customers, mostly in Germany,"
+    },
+    {
+      "id": 15,
+      "start": 60.69,
+      "end": 66.05,
+      "text": "Austria, Switzerland, Our customers are energy utilities, like Helen, Caruna, that"
+    },
+    {
+      "id": 16,
+      "start": 66.07,
+      "end": 67.9,
+      "text": "sort of thing, in Germany."
+    },
+    {
+      "id": 17,
+      "start": 67.92,
+      "end": 72.9,
+      "text": "Vattenfall actually recently moved their energy services platform over to epilot."
+    },
+    {
+      "id": 18,
+      "start": 72.92,
+      "end": 76.9,
+      "text": "Customers run, essentially, sales, service through our software."
+    },
+    {
+      "id": 19,
+      "start": 76.92,
+      "end": 80.9,
+      "text": "You can buy a heat pump, you can move your contract to a new place."
+    },
+    {
+      "id": 20,
+      "start": 80.92,
+      "end": 82.9,
+      "text": "That's basically the product."
+    },
+    {
+      "id": 21,
+      "start": 82.92,
+      "end": 87.9,
+      "text": "So, in February, I did something that most people think is a really, really bad idea."
+    },
+    {
+      "id": 22,
+      "start": 87.92,
+      "end": 94.4,
+      "text": "I gave every non-technical PM, every designer, every customer success support"
+    },
+    {
+      "id": 23,
+      "start": 94.42,
+      "end": 98.9,
+      "text": "person at our company a coding agent and just gave them access to the code base."
+    },
+    {
+      "id": 24,
+      "start": 99.0,
+      "end": 100.0,
+      "text": "Now we can open PRs."
+    },
+    {
+      "id": 25,
+      "start": 100.88,
+      "end": 103.86,
+      "text": "And this talk is just going to be me sharing that experience, what happened,"
+    },
+    {
+      "id": 26,
+      "start": 103.88,
+      "end": 105.66,
+      "text": "what was the experiment like."
+    },
+    {
+      "id": 27,
+      "start": 107.47999999999999,
+      "end": 109.56,
+      "text": "I want to convince you of two things today."
+    },
+    {
+      "id": 28,
+      "start": 109.58,
+      "end": 114.36,
+      "text": "Number one is going to be that AI agents in Slack is the game changer."
+    },
+    {
+      "id": 29,
+      "start": 114.86,
+      "end": 118.24000000000001,
+      "text": "And number two is that if you're not letting non-engineers directly change your"
+    },
+    {
+      "id": 30,
+      "start": 118.25999999999999,
+      "end": 120.08,
+      "text": "software, you're really missing out."
+    },
+    {
+      "id": 31,
+      "start": 121.1,
+      "end": 123.34,
+      "text": "So, yeah, I'm just going to be talking about the experience."
+    },
+    {
+      "id": 32,
+      "start": 123.36,
+      "end": 126.26,
+      "text": "So bear in mind, this is still what happened for epilot."
+    },
+    {
+      "id": 33,
+      "start": 129.36,
+      "end": 133.26,
+      "text": "Yeah, the reason we were able to do this, energy is also a regulated industry."
+    },
+    {
+      "id": 34,
+      "start": 133.28,
+      "end": 136.07999999999998,
+      "text": "Like you were saying before, there are some limitations."
+    },
+    {
+      "id": 35,
+      "start": 136.12,
+      "end": 140.25,
+      "text": "What enabled us to do this is basically that we already made a lot of good bets"
+    },
+    {
+      "id": 36,
+      "start": 140.27,
+      "end": 144.65,
+      "text": "before AI. So we had all those kind of CI pipelines in place, a lot of security, a"
+    },
+    {
+      "id": 37,
+      "start": 144.67000000000002,
+      "end": 146.74,
+      "text": "lot of guardrails were already there."
+    },
+    {
+      "id": 38,
+      "start": 148.4,
+      "end": 151.0,
+      "text": "And funny enough, all of these were bets that we made way before AI really was a"
+    },
+    {
+      "id": 39,
+      "start": 151.02,
+      "end": 152.8,
+      "text": "thing for our development."
+    },
+    {
+      "id": 40,
+      "start": 153.0,
+      "end": 156.35,
+      "text": "So nothing to do with AI, we just got pretty lucky with this stuff."
+    },
+    {
+      "id": 41,
+      "start": 156.57999999999998,
+      "end": 157.88,
+      "text": "So what actually happened?"
+    },
+    {
+      "id": 42,
+      "start": 159.16,
+      "end": 163.02,
+      "text": "The way we did it, we hired a new coworker into Slack, basically."
+    },
+    {
+      "id": 43,
+      "start": 163.04,
+      "end": 169.22,
+      "text": "We started out with Claude, Codex, and we even tried out OpenClaw very early on."
+    },
+    {
+      "id": 44,
+      "start": 169.62,
+      "end": 173.88,
+      "text": "But very quickly, it was obvious that Claude is just way above everyone else in"
+    },
+    {
+      "id": 45,
+      "start": 173.9,
+      "end": 176.2,
+      "text": "February, at least, of this year."
+    },
+    {
+      "id": 46,
+      "start": 176.82,
+      "end": 178.82,
+      "text": "Here's how it works. You tag the agent in a Slack thread."
+    },
+    {
+      "id": 47,
+      "start": 178.84,
+      "end": 183.61,
+      "text": "It spins up a cloud sandbox with a copy of our entire code base, plus everything we"
+    },
+    {
+      "id": 48,
+      "start": 183.63,
+      "end": 186.08,
+      "text": "know written down. So that's your knowledge base."
+    },
+    {
+      "id": 49,
+      "start": 186.8,
+      "end": 190.54,
+      "text": "It posts back a pull request to the thread with explanations what it's doing."
+    },
+    {
+      "id": 50,
+      "start": 190.56,
+      "end": 193.1,
+      "text": "You click it, and then you see the change directly in the product."
+    },
+    {
+      "id": 51,
+      "start": 193.12,
+      "end": 194.94,
+      "text": "You see what you wanted to change."
+    },
+    {
+      "id": 52,
+      "start": 195.74,
+      "end": 199.16,
+      "text": "An engineer always then reviews the change, and then it goes live, you merge"
+    },
+    {
+      "id": 53,
+      "start": 199.18,
+      "end": 202.63,
+      "text": "it, goes to production the way a normal CI pipeline works, basically."
+    },
+    {
+      "id": 54,
+      "start": 205.42000000000002,
+      "end": 212.13,
+      "text": "So, last three months in our GitLab, it looks like this."
+    },
+    {
+      "id": 55,
+      "start": 212.64,
+      "end": 216.29,
+      "text": "So, obviously, we are still running the experiment, and at the moment, the agent,"
+    },
+    {
+      "id": 56,
+      "start": 216.31,
+      "end": 218.54,
+      "text": "it has its own identity inside of GitLab."
+    },
+    {
+      "id": 57,
+      "start": 218.56,
+      "end": 222.69,
+      "text": "So, you see kind of what it's opening, what PRs it's doing, and yeah, it's quite"
+    },
+    {
+      "id": 58,
+      "start": 222.71,
+      "end": 225.56,
+      "text": "obviously the biggest contributor at the moment."
+    },
+    {
+      "id": 59,
+      "start": 225.64,
+      "end": 228.87,
+      "text": "I wouldn't say the most productive necessarily, but the biggest contributor,"
+    },
+    {
+      "id": 60,
+      "start": 228.89,
+      "end": 229.69,
+      "text": "for sure."
+    },
+    {
+      "id": 61,
+      "start": 232.98,
+      "end": 235.78,
+      "text": "Oh, by the way, on the last slide, the purple slide here is actually a designer,"
+    },
+    {
+      "id": 62,
+      "start": 235.8,
+      "end": 237.25,
+      "text": "which was really interesting."
+    },
+    {
+      "id": 63,
+      "start": 237.34,
+      "end": 238.99,
+      "text": "We'll get back to that very soon."
+    },
+    {
+      "id": 64,
+      "start": 240.62,
+      "end": 243.13,
+      "text": "If you just point an agent at your code base and ask it to do stuff, you won't"
+    },
+    {
+      "id": 65,
+      "start": 243.15,
+      "end": 244.98,
+      "text": "really get good results."
+    },
+    {
+      "id": 66,
+      "start": 245.0,
+      "end": 247.25,
+      "text": "We knew that already from the very beginning."
+    },
+    {
+      "id": 67,
+      "start": 247.9,
+      "end": 251.75,
+      "text": "What we did is we, of course, gave it a lot of knowledge about our code base."
+    },
+    {
+      "id": 68,
+      "start": 251.94,
+      "end": 254.54,
+      "text": "We gave it basically what we call how-to everything."
+    },
+    {
+      "id": 69,
+      "start": 254.58,
+      "end": 259.94,
+      "text": "It is a huge markdown kind of documentation file with this kind of index"
+    },
+    {
+      "id": 70,
+      "start": 259.96,
+      "end": 261.86,
+      "text": "built in to the AGENTS.md file."
+    },
+    {
+      "id": 71,
+      "start": 262.94,
+      "end": 264.14,
+      "text": "And that's been growing."
+    },
+    {
+      "id": 72,
+      "start": 264.16,
+      "end": 268.86,
+      "text": "It's essentially just an npm package that every single turn of your AI development,"
+    },
+    {
+      "id": 73,
+      "start": 269.0,
+      "end": 272.81,
+      "text": "every time you start developing something new, we always pull from that package a"
+    },
+    {
+      "id": 74,
+      "start": 272.83,
+      "end": 276.82,
+      "text": "huge set of documentation about our coding standards, how we want to build things,"
+    },
+    {
+      "id": 75,
+      "start": 276.84000000000003,
+      "end": 279.69,
+      "text": "how our APIs look, how the design should look, and so on."
+    },
+    {
+      "id": 76,
+      "start": 279.76,
+      "end": 281.26,
+      "text": "Kind of all the practices you need to know."
+    },
+    {
+      "id": 77,
+      "start": 281.28,
+      "end": 283.48,
+      "text": "Also the business context, things like that."
+    },
+    {
+      "id": 78,
+      "start": 284.02,
+      "end": 288.64,
+      "text": "And here's how that actually looks how engineers use it is is um Claude go and"
+    },
+    {
+      "id": 79,
+      "start": 288.65999999999997,
+      "end": 292.43,
+      "text": "fix a ticket number that's the most common thing you'll see in slack and you get a"
+    },
+    {
+      "id": 80,
+      "start": 292.45,
+      "end": 296.40999999999997,
+      "text": "pull request back usually it's very good and you just end up merging it directly"
+    },
+    {
+      "id": 81,
+      "start": 296.43,
+      "end": 299.82,
+      "text": "that's the basic loop that you see all the time at epilot um you can also ask"
+    },
+    {
+      "id": 82,
+      "start": 299.84000000000003,
+      "end": 304.11,
+      "text": "questions which front ends still use the Froala editor here for example it reads"
+    },
+    {
+      "id": 83,
+      "start": 304.29,
+      "end": 308.09,
+      "text": "all the 300 different repos we have in our code base and it finds that"
+    },
+    {
+      "id": 84,
+      "start": 309.46,
+      "end": 313.36,
+      "text": "response in a couple of minutes and there's no like crazy indexing happening"
+    },
+    {
+      "id": 85,
+      "start": 313.38,
+      "end": 314.84,
+      "text": "or anything like that."
+    },
+    {
+      "id": 86,
+      "start": 314.86,
+      "end": 319.49,
+      "text": "It's just really doing bash or grepping throughout the codebase to figure out"
+    },
+    {
+      "id": 87,
+      "start": 319.51,
+      "end": 320.31,
+      "text": "things."
+    },
+    {
+      "id": 88,
+      "start": 323.54,
+      "end": 325.89,
+      "text": "So, why Slack? Three different reasons. It's public."
+    },
+    {
+      "id": 89,
+      "start": 325.91,
+      "end": 330.03,
+      "text": "Every request, every pull request, every mistake happens in a channel where"
+    },
+    {
+      "id": 90,
+      "start": 330.05,
+      "end": 331.03,
+      "text": "everybody can see that."
+    },
+    {
+      "id": 91,
+      "start": 331.05,
+      "end": 332.75,
+      "text": "So, we're actually spreading these"
+    },
+    {
+      "id": 92,
+      "start": 333.14,
+      "end": 335.36,
+      "text": "best practices and best patterns for everybody."
+    },
+    {
+      "id": 93,
+      "start": 335.38,
+      "end": 337.52,
+      "text": "PMs are watching what the engineers are doing."
+    },
+    {
+      "id": 94,
+      "start": 337.54,
+      "end": 339.35,
+      "text": "Engineers are watching what the PMs are doing."
+    },
+    {
+      "id": 95,
+      "start": 339.37,
+      "end": 341.02,
+      "text": "So, we all learn from each other."
+    },
+    {
+      "id": 96,
+      "start": 341.7,
+      "end": 343.52,
+      "text": "Number two is that's where people already are."
+    },
+    {
+      "id": 97,
+      "start": 343.54,
+      "end": 344.92,
+      "text": "So that's where the work was happening."
+    },
+    {
+      "id": 98,
+      "start": 344.94,
+      "end": 349.72,
+      "text": "So especially as a non-engineer, you now get a direct access."
+    },
+    {
+      "id": 99,
+      "start": 349.74,
+      "end": 350.92,
+      "text": "You don't have to install an IDE."
+    },
+    {
+      "id": 100,
+      "start": 350.94,
+      "end": 353.15999999999997,
+      "text": "You don't have to install any special software to run this."
+    },
+    {
+      "id": 101,
+      "start": 353.18,
+      "end": 354.64,
+      "text": "Just talk to the agent in Slack."
+    },
+    {
+      "id": 102,
+      "start": 354.65999999999997,
+      "end": 356.5,
+      "text": "This is way easier than you think."
+    },
+    {
+      "id": 103,
+      "start": 358.32,
+      "end": 359.72,
+      "text": "And the thread is also the whole story."
+    },
+    {
+      "id": 104,
+      "start": 359.74,
+      "end": 362.38,
+      "text": "So often what ends up happening is that you have a discussion about a problem in"
+    },
+    {
+      "id": 105,
+      "start": 362.4,
+      "end": 366.0,
+      "text": "the company. And at some point, you just invite the agent to contribute."
+    },
+    {
+      "id": 106,
+      "start": 366.08,
+      "end": 367.44,
+      "text": "Hey, can you go and fix this?"
+    },
+    {
+      "id": 107,
+      "start": 367.46,
+      "end": 369.92,
+      "text": "Here's a problem we were discussing, you know, a long thread."
+    },
+    {
+      "id": 108,
+      "start": 369.94,
+      "end": 373.44,
+      "text": "And after this, the agent just comes in and either helps you out or just gives you"
+    },
+    {
+      "id": 109,
+      "start": 373.46,
+      "end": 376.77,
+      "text": "directly the solution. This was honestly the most important decision we made early"
+    },
+    {
+      "id": 110,
+      "start": 376.79,
+      "end": 381.46,
+      "text": "on because this is what allowed us to spread the working style across the whole"
+    },
+    {
+      "id": 111,
+      "start": 381.48,
+      "end": 382.3,
+      "text": "company."
+    },
+    {
+      "id": 112,
+      "start": 384.48,
+      "end": 387.19,
+      "text": "One thing that happened is that Claude came with, so we started with Claude and"
+    },
+    {
+      "id": 113,
+      "start": 387.21,
+      "end": 389.48,
+      "text": "Claude came out with Claude Tag."
+    },
+    {
+      "id": 114,
+      "start": 389.7,
+      "end": 392.56,
+      "text": "Not a good thing for us because that made it way more expensive."
+    },
+    {
+      "id": 115,
+      "start": 392.58,
+      "end": 396.15,
+      "text": "And we were already using this across the entire company when it came out around"
+    },
+    {
+      "id": 116,
+      "start": 396.17,
+      "end": 396.97,
+      "text": "June."
+    },
+    {
+      "id": 117,
+      "start": 397.56,
+      "end": 400.52,
+      "text": "And, yeah, it priced us out completely."
+    },
+    {
+      "id": 118,
+      "start": 400.96,
+      "end": 405.96,
+      "text": "They wanted to bill us based on tokens instead of our Claude subscriptions."
+    },
+    {
+      "id": 119,
+      "start": 406.42,
+      "end": 409.8,
+      "text": "And it would be just one kind of agent user for the entire company."
+    },
+    {
+      "id": 120,
+      "start": 410.08,
+      "end": 413.62,
+      "text": "They have fixed it, I think, or they're trying to fix it now very recently."
+    },
+    {
+      "id": 121,
+      "start": 413.64,
+      "end": 416.24,
+      "text": "But, yeah, we had to implement our own solution."
+    },
+    {
+      "id": 122,
+      "start": 416.26,
+      "end": 417.9,
+      "text": "So we kind of had a choice."
+    },
+    {
+      "id": 123,
+      "start": 418.04,
+      "end": 419.8,
+      "text": "Do we want to continue working like this or not?"
+    },
+    {
+      "id": 124,
+      "start": 419.82,
+      "end": 423.23,
+      "text": "So we built our own thing to kind of replace Claude the way it was working back"
+    },
+    {
+      "id": 125,
+      "start": 423.25,
+      "end": 426.35,
+      "text": "then. We called it Leidang. And this, by the way, also allowed us to go agent"
+    },
+    {
+      "id": 126,
+      "start": 426.37,
+      "end": 430.5,
+      "text": "agnostic. So we tried Codex in the very beginning, but their cloud sandboxes"
+    },
+    {
+      "id": 127,
+      "start": 430.52,
+      "end": 436.03,
+      "text": "weren't very good. So now we have our own kind of cross-platform, cross-vendor"
+    },
+    {
+      "id": 128,
+      "start": 436.05,
+      "end": 441.78,
+      "text": "runtime for engineers and non-engineers to run coding agents in sandboxes."
+    },
+    {
+      "id": 129,
+      "start": 441.86,
+      "end": 444.96,
+      "text": "Very, very cool. It runs different harnesses, different, you know, kind of"
+    },
+    {
+      "id": 130,
+      "start": 444.98,
+      "end": 447.48,
+      "text": "whatever engineers want to use, they can use that."
+    },
+    {
+      "id": 131,
+      "start": 447.76,
+      "end": 452.45,
+      "text": "Officially, the company does run on Claude and OpenAI, but we are also looking into"
+    },
+    {
+      "id": 132,
+      "start": 452.47,
+      "end": 456.1,
+      "text": "using those sovereign open source models in-house."
+    },
+    {
+      "id": 133,
+      "start": 456.46,
+      "end": 459.65999999999997,
+      "text": "I think that which is a very cool thing to try out, but currently it's mostly Claude,"
+    },
+    {
+      "id": 134,
+      "start": 459.68,
+      "end": 460.48,
+      "text": "to be honest."
+    },
+    {
+      "id": 135,
+      "start": 461.88,
+      "end": 463.94,
+      "text": "And by the way, it's going to be open source very soon."
+    },
+    {
+      "id": 136,
+      "start": 463.96,
+      "end": 467.04,
+      "text": "So we are going to be sharing how we actually do this in real life."
+    },
+    {
+      "id": 137,
+      "start": 467.06,
+      "end": 469.64,
+      "text": "The Leidang project is going to be Apache licensed."
+    },
+    {
+      "id": 138,
+      "start": 471.64,
+      "end": 474.54,
+      "text": "So yeah, and not every agent waits for somebody to tag it."
+    },
+    {
+      "id": 139,
+      "start": 474.56,
+      "end": 477.06,
+      "text": "We also run, of course, the background agents we already talked about."
+    },
+    {
+      "id": 140,
+      "start": 477.08,
+      "end": 477.88,
+      "text": "Maybe just one."
+    },
+    {
+      "id": 141,
+      "start": 478.68,
+      "end": 480.72,
+      "text": "These are cool ideas for you to maybe take a look at."
+    },
+    {
+      "id": 142,
+      "start": 480.74,
+      "end": 484.1,
+      "text": "I'm not going to go too deep into any of them, but the biggest kind of impact we"
+    },
+    {
+      "id": 143,
+      "start": 484.12,
+      "end": 485.56,
+      "text": "had was the auto triage one."
+    },
+    {
+      "id": 144,
+      "start": 485.9,
+      "end": 489.24,
+      "text": "So we have a background agent that has already all the signals connected like we"
+    },
+    {
+      "id": 145,
+      "start": 489.26,
+      "end": 492.97,
+      "text": "were discussing earlier looks at Datadog looks at all the alerts looks at customer"
+    },
+    {
+      "id": 146,
+      "start": 492.99,
+      "end": 496.3,
+      "text": "feedback bug tickets all this stuff and it's able to directly triage things and"
+    },
+    {
+      "id": 147,
+      "start": 496.32,
+      "end": 500.31,
+      "text": "runs every 30 minutes right it figures out what's the most important thing to work on"
+    },
+    {
+      "id": 148,
+      "start": 500.33,
+      "end": 505.02,
+      "text": "and it gives context to whoever is running um the company on on call um who's the"
+    },
+    {
+      "id": 149,
+      "start": 505.04,
+      "end": 510.11,
+      "text": "on-call engineer at the company and this was really really huge of course we run"
+    },
+    {
+      "id": 150,
+      "start": 510.13,
+      "end": 513.24,
+      "text": "things like the technical debt scan kind of all the boring stuff you don't want to"
+    },
+    {
+      "id": 151,
+      "start": 513.26,
+      "end": 517.96,
+      "text": "do as as engineers or non-engineers, you want to give that away to autonomous"
+    },
+    {
+      "id": 152,
+      "start": 517.98,
+      "end": 519.23,
+      "text": "agents doing things in the background."
+    },
+    {
+      "id": 153,
+      "start": 519.25,
+      "end": 521.52,
+      "text": "Let's skip this one."
+    },
+    {
+      "id": 154,
+      "start": 521.54,
+      "end": 527.56,
+      "text": "So, yeah, what does the coworker look like when it's cheap to run and lives where you"
+    },
+    {
+      "id": 155,
+      "start": 527.58,
+      "end": 531.4,
+      "text": "work? And this is the cool part is not just engineers running things."
+    },
+    {
+      "id": 156,
+      "start": 531.42,
+      "end": 532.22,
+      "text": "So,"
+    },
+    {
+      "id": 157,
+      "start": 534.7,
+      "end": 538.2,
+      "text": "the coworker was really built originally for engineers, but we wanted to give it"
+    },
+    {
+      "id": 158,
+      "start": 538.22,
+      "end": 541.44,
+      "text": "out to everybody. Same coworker, same Slack channels."
+    },
+    {
+      "id": 159,
+      "start": 541.46,
+      "end": 545.2,
+      "text": "We had like this dev squad agents where everybody would come in and we initially"
+    },
+    {
+      "id": 160,
+      "start": 545.22,
+      "end": 548.93,
+      "text": "just worked in one channel but of course that spread across the entire company the"
+    },
+    {
+      "id": 161,
+      "start": 548.95,
+      "end": 553.48,
+      "text": "different channels and I really was surprised by the by the results of this so"
+    },
+    {
+      "id": 162,
+      "start": 553.5,
+      "end": 557.75,
+      "text": "these are real prompts from our product managers word for word so things like"
+    },
+    {
+      "id": 163,
+      "start": 557.77,
+      "end": 561.91,
+      "text": "Claude, disable the drag and drop of entity table for columns real product"
+    },
+    {
+      "id": 164,
+      "start": 561.93,
+      "end": 565.41,
+      "text": "feature um when the user clicks create family the drawer should close"
+    },
+    {
+      "id": 165,
+      "start": 565.43,
+      "end": 569.14,
+      "text": "automatically so just go and fix that and this started becoming everyday occurrence"
+    },
+    {
+      "id": 166,
+      "start": 569.16,
+      "end": 573.12,
+      "text": "no repo names by the way no framework we're not this is not an engineer talking,"
+    },
+    {
+      "id": 167,
+      "start": 573.14,
+      "end": 575.4,
+      "text": "right? It's not like open this repo and go in."
+    },
+    {
+      "id": 168,
+      "start": 575.42,
+      "end": 577.56,
+      "text": "That's, by the way, how Claude works by default."
+    },
+    {
+      "id": 169,
+      "start": 577.58,
+      "end": 582.83,
+      "text": "So what we had to do was we had to kind of bring everything together so that you can"
+    },
+    {
+      "id": 170,
+      "start": 582.85,
+      "end": 587.02,
+      "text": "do this really, really easily with just human language."
+    },
+    {
+      "id": 171,
+      "start": 587.04,
+      "end": 589.9,
+      "text": "One thing that really made this possible for non-technical folks was to be able to"
+    },
+    {
+      "id": 172,
+      "start": 589.92,
+      "end": 591.06,
+      "text": "see your changes directly."
+    },
+    {
+      "id": 173,
+      "start": 591.08,
+      "end": 594.72,
+      "text": "So whenever the PR opens, you get a preview link, which was another topic we"
+    },
+    {
+      "id": 174,
+      "start": 594.74,
+      "end": 596.94,
+      "text": "already discussed earlier today, which is cool."
+    },
+    {
+      "id": 175,
+      "start": 596.96,
+      "end": 600.0,
+      "text": "And that's really important when you're not running things locally or dev machine"
+    },
+    {
+      "id": 176,
+      "start": 600.02,
+      "end": 603.72,
+      "text": "you need to be able to see the change you need to be able to test things most of our"
+    },
+    {
+      "id": 177,
+      "start": 603.74,
+      "end": 607.3,
+      "text": "time nowadays is actually testing things and doing QA so this was a very very"
+    },
+    {
+      "id": 178,
+      "start": 607.32,
+      "end": 611.33,
+      "text": "important thing to do uh from the very beginning the agents also take screenshots"
+    },
+    {
+      "id": 179,
+      "start": 611.35,
+      "end": 615.04,
+      "text": "as part of the PR sometimes even videos which is always really cool to see is like"
+    },
+    {
+      "id": 180,
+      "start": 615.06,
+      "end": 618.92,
+      "text": "you give it a ticket to work on and the agent comes back with a full PR a video"
+    },
+    {
+      "id": 181,
+      "start": 618.94,
+      "end": 623.21,
+      "text": "demo of the of the fix or or a feature that I just implemented and yeah you just"
+    },
+    {
+      "id": 182,
+      "start": 623.31,
+      "end": 626.88,
+      "text": "essentially look at the hey this looks great I'm gonna merge and go live with"
+    },
+    {
+      "id": 183,
+      "start": 626.9,
+      "end": 630.57,
+      "text": "this So, yeah, this has been a real game changer for us."
+    },
+    {
+      "id": 184,
+      "start": 631.58,
+      "end": 633.46,
+      "text": "We did add a dev sandbox also later."
+    },
+    {
+      "id": 185,
+      "start": 634.12,
+      "end": 637.06,
+      "text": "The designers tend to like it more because they need more real-time feedback."
+    },
+    {
+      "id": 186,
+      "start": 637.08,
+      "end": 640.68,
+      "text": "They don't want to wait for the PR to be open and then click the preview link."
+    },
+    {
+      "id": 187,
+      "start": 640.7,
+      "end": 642.86,
+      "text": "But that's a more niche thing, I would say."
+    },
+    {
+      "id": 188,
+      "start": 644.56,
+      "end": 649.72,
+      "text": "Here are the numbers. So, from February to end of September, straight from our Git,"
+    },
+    {
+      "id": 189,
+      "start": 650.26,
+      "end": 653.68,
+      "text": "we have 7,000 pull requests opened by agents."
+    },
+    {
+      "id": 190,
+      "start": 653.82,
+      "end": 655.3,
+      "text": "4,000 of them were merged to production."
+    },
+    {
+      "id": 191,
+      "start": 655.32,
+      "end": 658.46,
+      "text": "There's actually a big gap there, and that's one thing that we found, is that a"
+    },
+    {
+      "id": 192,
+      "start": 658.48,
+      "end": 662.9,
+      "text": "lot of the changes that agents are making, we end up just rejecting."
+    },
+    {
+      "id": 193,
+      "start": 663.26,
+      "end": 667.03,
+      "text": "This was a good idea, but we might want to do this again, or we want to rethink how"
+    },
+    {
+      "id": 194,
+      "start": 667.05,
+      "end": 672.75,
+      "text": "we do this. A lot of the PRs are simply, you know, an agent thinks that this is one"
+    },
+    {
+      "id": 195,
+      "start": 672.77,
+      "end": 675.75,
+      "text": "way to do it, here's one way to fix a bug, and the engineer actually thinks"
+    },
+    {
+      "id": 196,
+      "start": 675.77,
+      "end": 677.32,
+      "text": "otherwise. And that's completely fine."
+    },
+    {
+      "id": 197,
+      "start": 677.34,
+      "end": 680.2,
+      "text": "We just throw the code away, we close the pull request, and that's it."
+    },
+    {
+      "id": 198,
+      "start": 680.22,
+      "end": 681.07,
+      "text": "We call it a day."
+    },
+    {
+      "id": 199,
+      "start": 681.52,
+      "end": 683.38,
+      "text": "Of course, we would like to get those numbers higher."
+    },
+    {
+      "id": 200,
+      "start": 683.4,
+      "end": 686.84,
+      "text": "I think that's generally a good thing to measure as a metric."
+    },
+    {
+      "id": 201,
+      "start": 688.38,
+      "end": 691.89,
+      "text": "800 of those pull requests so far have been driven by non-engineers, which was"
+    },
+    {
+      "id": 202,
+      "start": 691.91,
+      "end": 693.54,
+      "text": "also a pretty big surprise."
+    },
+    {
+      "id": 203,
+      "start": 693.82,
+      "end": 695.82,
+      "text": "Like, so many of these are non-engineered ones."
+    },
+    {
+      "id": 204,
+      "start": 695.84,
+      "end": 700.1,
+      "text": "And if you look at the kind of curve here, it stayed about the same."
+    },
+    {
+      "id": 205,
+      "start": 700.24,
+      "end": 704.04,
+      "text": "So, as engineers were doing more and more with autonomous agents from Slack,"
+    },
+    {
+      "id": 206,
+      "start": 705.18,
+      "end": 708.46,
+      "text": "kind of the same group of people within the company, which is still good, right?"
+    },
+    {
+      "id": 207,
+      "start": 708.48,
+      "end": 710.42,
+      "text": "They were still, they really like this tooling."
+    },
+    {
+      "id": 208,
+      "start": 710.44,
+      "end": 713.14,
+      "text": "They really enjoy it as part of their day-to-day work."
+    },
+    {
+      "id": 209,
+      "start": 713.4,
+      "end": 716.6,
+      "text": "And you can also, by the way, see the slump around June and May."
+    },
+    {
+      "id": 210,
+      "start": 716.92,
+      "end": 720.51,
+      "text": "Of course, summer vacations, but then that's also when Claude Tag came out and"
+    },
+    {
+      "id": 211,
+      "start": 720.53,
+      "end": 724.72,
+      "text": "we got priced out and we had to shut down Claude to save on costs and we had to"
+    },
+    {
+      "id": 212,
+      "start": 724.74,
+      "end": 727.94,
+      "text": "implement our own. So, yeah, this is really what happened."
+    },
+    {
+      "id": 213,
+      "start": 730.34,
+      "end": 731.19,
+      "text": "Who's doing this?"
+    },
+    {
+      "id": 214,
+      "start": 731.66,
+      "end": 735.51,
+      "text": "So these are the kind of real top seven non-engineers who are opening pull"
+    },
+    {
+      "id": 215,
+      "start": 735.53,
+      "end": 737.08,
+      "text": "requests, and you can see it's a mix."
+    },
+    {
+      "id": 216,
+      "start": 737.1,
+      "end": 740.32,
+      "text": "It's product designers, product managers, customer success."
+    },
+    {
+      "id": 217,
+      "start": 740.94,
+      "end": 744.94,
+      "text": "You know, we even had our QA also open a lot of things."
+    },
+    {
+      "id": 218,
+      "start": 745.04,
+      "end": 747.39,
+      "text": "Here are some examples of what they really did."
+    },
+    {
+      "id": 219,
+      "start": 747.52,
+      "end": 749.72,
+      "text": "And it's really not translation fixes,"
+    },
+    {
+      "id": 220,
+      "start": 751.2,
+      "end": 756.12,
+      "text": "filters, inbox layouts, cross-repo features, like even pretty complex things."
+    },
+    {
+      "id": 221,
+      "start": 756.52,
+      "end": 759.86,
+      "text": "I was really, to be honest, expecting more like really tiny things, like, hey, change"
+    },
+    {
+      "id": 222,
+      "start": 759.88,
+      "end": 762.1,
+      "text": "this translation here, change this button text."
+    },
+    {
+      "id": 223,
+      "start": 762.12,
+      "end": 766.19,
+      "text": "But it turns out people, non-engineers, have a lot of really good ideas, and they"
+    },
+    {
+      "id": 224,
+      "start": 766.21,
+      "end": 770.11,
+      "text": "seem to be able to execute on those ideas really well nowadays with good coding"
+    },
+    {
+      "id": 225,
+      "start": 770.13,
+      "end": 773.92,
+      "text": "agents. Here are a few real examples."
+    },
+    {
+      "id": 226,
+      "start": 773.94,
+      "end": 775.14,
+      "text": "Kristin is a product manager."
+    },
+    {
+      "id": 227,
+      "start": 775.16,
+      "end": 778.12,
+      "text": "She's done 86 pull requests since February."
+    },
+    {
+      "id": 228,
+      "start": 778.14,
+      "end": 781.74,
+      "text": "She owns one of the most important parts of the app, the email inbox in epilot."
+    },
+    {
+      "id": 229,
+      "start": 781.76,
+      "end": 786.0,
+      "text": "Four of her improvements are here, an unread filter she implemented by herself,"
+    },
+    {
+      "id": 230,
+      "start": 786.02,
+      "end": 790.33,
+      "text": "shared inboxes open by default, a resizable thread list, and a new entry"
+    },
+    {
+      "id": 231,
+      "start": 790.35,
+      "end": 791.82,
+      "text": "point for saved views."
+    },
+    {
+      "id": 232,
+      "start": 791.84,
+      "end": 793.83,
+      "text": "All of this, by the way, the engineer chimed in."
+    },
+    {
+      "id": 233,
+      "start": 793.85,
+      "end": 797.74,
+      "text": "They had to take some steps afterwards to make sure everything is good, make a few"
+    },
+    {
+      "id": 234,
+      "start": 797.76,
+      "end": 802.7,
+      "text": "changes here and there, but they all ended up getting shipped into the product in,"
+    },
+    {
+      "id": 235,
+      "start": 802.72,
+      "end": 805.06,
+      "text": "like, a day, which is amazing."
+    },
+    {
+      "id": 236,
+      "start": 805.08,
+      "end": 809.58,
+      "text": "It doesn't always work out, of course, so this is another attempt early on from"
+    },
+    {
+      "id": 237,
+      "start": 809.6,
+      "end": 813.03,
+      "text": "Kristin, and she found it's more complicated than I thought, and that's"
+    },
+    {
+      "id": 238,
+      "start": 813.05,
+      "end": 816.43,
+      "text": "also completely fine. The thing is the alternative here would have been her"
+    },
+    {
+      "id": 239,
+      "start": 816.45,
+      "end": 820.46,
+      "text": "writing a bug ticket or like a Jira product page or whatever for an engineer"
+    },
+    {
+      "id": 240,
+      "start": 820.48,
+      "end": 822.12,
+      "text": "to go read. Now we have a prototype."
+    },
+    {
+      "id": 241,
+      "start": 822.14,
+      "end": 823.17,
+      "text": "It doesn't work fully."
+    },
+    {
+      "id": 242,
+      "start": 823.19,
+      "end": 827.49,
+      "text": "Now an engineer can take it and actually go in and implement the real feature,"
+    },
+    {
+      "id": 243,
+      "start": 827.51,
+      "end": 830.56,
+      "text": "let's call it. And this is honestly the engineers even like this more."
+    },
+    {
+      "id": 244,
+      "start": 830.58,
+      "end": 835.66,
+      "text": "They prefer to get this rather than a spec for how to build something."
+    },
+    {
+      "id": 245,
+      "start": 835.68,
+      "end": 838.02,
+      "text": "This conveys the idea."
+    },
+    {
+      "id": 246,
+      "start": 838.04,
+      "end": 841.02,
+      "text": "Angelika, product manager from our workflow builder."
+    },
+    {
+      "id": 247,
+      "start": 841.04,
+      "end": 843.34,
+      "text": "She's done 141 pull requests."
+    },
+    {
+      "id": 248,
+      "start": 843.36,
+      "end": 845.1,
+      "text": "She's a true champion here."
+    },
+    {
+      "id": 249,
+      "start": 845.12,
+      "end": 846.6,
+      "text": "The most of any of our PMs."
+    },
+    {
+      "id": 250,
+      "start": 846.62,
+      "end": 849.36,
+      "text": "She fixes things herself all the time for the team."
+    },
+    {
+      "id": 251,
+      "start": 849.38,
+      "end": 852.93,
+      "text": "It's kind of crazy to think about a PM doing bug fixes for the engineers."
+    },
+    {
+      "id": 252,
+      "start": 852.95,
+      "end": 857.76,
+      "text": "I really love that. This is something I could not imagine"
+    },
+    {
+      "id": 253,
+      "start": 857.78,
+      "end": 863.57,
+      "text": "before. Here's an example of Angelika working across three different repos."
+    },
+    {
+      "id": 254,
+      "start": 863.63,
+      "end": 866.71,
+      "text": "Even for junior engineers joining the team, it's pretty hard to do."
+    },
+    {
+      "id": 255,
+      "start": 866.73,
+      "end": 869.76,
+      "text": "You have to understand how the product works, how things are interconnected, and"
+    },
+    {
+      "id": 256,
+      "start": 869.78,
+      "end": 872.29,
+      "text": "she's able to work across the whole code base like this."
+    },
+    {
+      "id": 257,
+      "start": 872.31,
+      "end": 875.44,
+      "text": "It's pretty cool. Lina, customer success."
+    },
+    {
+      "id": 258,
+      "start": 875.46,
+      "end": 878.04,
+      "text": "This is March, her first pull request ever."
+    },
+    {
+      "id": 259,
+      "start": 878.06,
+      "end": 882.26,
+      "text": "I figured that since I already have an engineer in my title, so she's a customer"
+    },
+    {
+      "id": 260,
+      "start": 882.28,
+      "end": 887.02,
+      "text": "success engineer, I guess it's about time to post my first pull request or MR since"
+    },
+    {
+      "id": 261,
+      "start": 887.04,
+      "end": 891.14,
+      "text": "we're on GitLab. And it's cool, like she posted a screen recording pull request,"
+    },
+    {
+      "id": 262,
+      "start": 891.16,
+      "end": 894.13,
+      "text": "you know, honestly a better ticket than most people would write, even a PM or an"
+    },
+    {
+      "id": 263,
+      "start": 894.15,
+      "end": 897.29,
+      "text": "engineer would be able to write, and this is somebody that works directly with the"
+    },
+    {
+      "id": 264,
+      "start": 897.31,
+      "end": 898.5,
+      "text": "customers every single day."
+    },
+    {
+      "id": 265,
+      "start": 898.52,
+      "end": 901.61,
+      "text": "Here's Lina again six months after."
+    },
+    {
+      "id": 266,
+      "start": 901.63,
+      "end": 905.4,
+      "text": "She's done already, you know, 50 plus pull requests at this point."
+    },
+    {
+      "id": 267,
+      "start": 905.42,
+      "end": 910.24,
+      "text": "She notices there's a problem in search and she's just going to fix it right away."
+    },
+    {
+      "id": 268,
+      "start": 910.26,
+      "end": 914.58,
+      "text": "A really cool comment from one of our our engineers, the change really seemed good,"
+    },
+    {
+      "id": 269,
+      "start": 914.6,
+      "end": 915.68,
+      "text": "deploying the change to prod."
+    },
+    {
+      "id": 270,
+      "start": 915.7,
+      "end": 918.16,
+      "text": "This is just every day for our team now."
+    },
+    {
+      "id": 271,
+      "start": 918.18,
+      "end": 924.03,
+      "text": "Here's Michael from customer success, 109 pull request, build full"
+    },
+    {
+      "id": 272,
+      "start": 924.05,
+      "end": 929.24,
+      "text": "features. We have so many of these examples."
+    },
+    {
+      "id": 273,
+      "start": 929.26,
+      "end": 935.3,
+      "text": "Here's our designers building a fully working prototype for a feature."
+    },
+    {
+      "id": 274,
+      "start": 935.32,
+      "end": 940.19,
+      "text": "In this case, I think we ended up even using the prototype as the the final UI"
+    },
+    {
+      "id": 275,
+      "start": 940.27,
+      "end": 941.8,
+      "text": "part of the solution."
+    },
+    {
+      "id": 276,
+      "start": 941.82,
+      "end": 946.6,
+      "text": "There was no back end supporting this, but the UI was there."
+    },
+    {
+      "id": 277,
+      "start": 946.62,
+      "end": 952.0,
+      "text": "And again, when design works with this, we always get the preview link to actually"
+    },
+    {
+      "id": 278,
+      "start": 952.02,
+      "end": 955.76,
+      "text": "see the new design of the new feature or the tweak that they made to the product to"
+    },
+    {
+      "id": 279,
+      "start": 955.78,
+      "end": 960.06,
+      "text": "make things work better, and it's just really, really cool."
+    },
+    {
+      "id": 280,
+      "start": 960.08,
+      "end": 963.41,
+      "text": "Scroll markers for long pages, a navigation badge fixed, product designer"
+    },
+    {
+      "id": 281,
+      "start": 963.43,
+      "end": 967.49,
+      "text": "back in June now implementing some smaller changes with Claude Code myself to keep"
+    },
+    {
+      "id": 282,
+      "start": 967.51,
+      "end": 971.42,
+      "text": "things moving. I think she's saying that engineers are too slow for her, even."
+    },
+    {
+      "id": 283,
+      "start": 971.44,
+      "end": 975.18,
+      "text": "It's pretty cool. Yeah."
+    },
+    {
+      "id": 284,
+      "start": 975.2,
+      "end": 978.46,
+      "text": "And maybe one final really cool thing is that the designers now own fully the"
+    },
+    {
+      "id": 285,
+      "start": 978.48,
+      "end": 982.04,
+      "text": "design system, so they no longer rely at all on the engineers adding new"
+    },
+    {
+      "id": 286,
+      "start": 982.06,
+      "end": 984.76,
+      "text": "components, adding new changes to the design system."
+    },
+    {
+      "id": 287,
+      "start": 984.78,
+      "end": 988.45,
+      "text": "The engineers are just using the design system."
+    },
+    {
+      "id": 288,
+      "start": 988.47,
+      "end": 993.8,
+      "text": "The designers are able to fully run and develop it themselves."
+    },
+    {
+      "id": 289,
+      "start": 993.82,
+      "end": 995.34,
+      "text": "Designer picks up a bug ticket."
+    },
+    {
+      "id": 290,
+      "start": 995.36,
+      "end": 999.08,
+      "text": "That's cool. You don't see that in a lot of companies."
+    },
+    {
+      "id": 291,
+      "start": 999.1,
+      "end": 1002.59,
+      "text": "It's just generally the idea that the closest person to the fix should actually"
+    },
+    {
+      "id": 292,
+      "start": 1002.61,
+      "end": 1007.08,
+      "text": "do the fix. So if they saw this directly, why do you need to then go to the engineer"
+    },
+    {
+      "id": 293,
+      "start": 1007.1,
+      "end": 1008.48,
+      "text": "to explain what happened?"
+    },
+    {
+      "id": 294,
+      "start": 1008.5,
+      "end": 1010.72,
+      "text": "Why don't you just give the engineer the fix directly?"
+    },
+    {
+      "id": 295,
+      "start": 1010.74,
+      "end": 1012.74,
+      "text": "This is really cool to see every day."
+    },
+    {
+      "id": 296,
+      "start": 1012.76,
+      "end": 1017.0,
+      "text": "It's not only designers, it's PMs, customer success."
+    },
+    {
+      "id": 297,
+      "start": 1017.02,
+      "end": 1020.31,
+      "text": "Our QA, too. Our QA actually did a slightly different approach."
+    },
+    {
+      "id": 298,
+      "start": 1020.33,
+      "end": 1023.91,
+      "text": "He's, of course, fixing bugs all the time, but he actually built two products of his"
+    },
+    {
+      "id": 299,
+      "start": 1023.93,
+      "end": 1028.06,
+      "text": "own to automate his own work and help us with things."
+    },
+    {
+      "id": 300,
+      "start": 1028.08,
+      "end": 1032.11,
+      "text": "He built Dreadnaught, which is like a release management dashboard that helps"
+    },
+    {
+      "id": 301,
+      "start": 1032.13,
+      "end": 1035.98,
+      "text": "him do our releases, and Snapbug, which is a browser extension that creates really"
+    },
+    {
+      "id": 302,
+      "start": 1036.0,
+      "end": 1039.52,
+      "text": "good bug tickets. And usually, by the way, those Snapbug bug tickets, because there's"
+    },
+    {
+      "id": 303,
+      "start": 1039.54,
+      "end": 1043.54,
+      "text": "automation that automatically triggers a background agent to go fix bugs, usually"
+    },
+    {
+      "id": 304,
+      "start": 1043.56,
+      "end": 1048.17,
+      "text": "that once you do a Snapbug bug ticket, right, like a few minutes after you also"
+    },
+    {
+      "id": 305,
+      "start": 1048.19,
+      "end": 1049.48,
+      "text": "get a PR to fix the bug."
+    },
+    {
+      "id": 306,
+      "start": 1049.5,
+      "end": 1053.68,
+      "text": "It's like fully implemented AI SDLC, right?"
+    },
+    {
+      "id": 307,
+      "start": 1053.7,
+      "end": 1057.0,
+      "text": "It's pretty cool. And now for the juicy part."
+    },
+    {
+      "id": 308,
+      "start": 1057.02,
+      "end": 1058.82,
+      "text": "So, not everything worked."
+    },
+    {
+      "id": 309,
+      "start": 1058.84,
+      "end": 1060.24,
+      "text": "What actually broke?"
+    },
+    {
+      "id": 310,
+      "start": 1060.26,
+      "end": 1063.48,
+      "text": "What guardrails did we end up having to add?"
+    },
+    {
+      "id": 311,
+      "start": 1063.5,
+      "end": 1065.89,
+      "text": "So, this happened pretty early on."
+    },
+    {
+      "id": 312,
+      "start": 1065.91,
+      "end": 1070.83,
+      "text": "A few weeks in, some non-technical folks had been invited to GitLab as maintainers,"
+    },
+    {
+      "id": 313,
+      "start": 1070.85,
+      "end": 1073.08,
+      "text": "so they had full merge rights."
+    },
+    {
+      "id": 314,
+      "start": 1073.1,
+      "end": 1077.08,
+      "text": "They were able to merge PRs."
+    },
+    {
+      "id": 315,
+      "start": 1077.1,
+      "end": 1080.13,
+      "text": "Basically, they had the same rights as engineers have, and to be honest, that's"
+    },
+    {
+      "id": 316,
+      "start": 1080.15,
+      "end": 1083.84,
+      "text": "probably not what you want in reality."
+    },
+    {
+      "id": 317,
+      "start": 1083.86,
+      "end": 1087.47,
+      "text": "What happened in this case is our monitoring in production noticed that"
+    },
+    {
+      "id": 318,
+      "start": 1087.49,
+      "end": 1091.09,
+      "text": "someone is trying to make a direct deployment to our production environment."
+    },
+    {
+      "id": 319,
+      "start": 1091.11,
+      "end": 1094.84,
+      "text": "And we saw that in our monitoring and immediately stopped this, right, and found"
+    },
+    {
+      "id": 320,
+      "start": 1094.86,
+      "end": 1098.18,
+      "text": "out what's going on, and then we changed the policy."
+    },
+    {
+      "id": 321,
+      "start": 1098.2,
+      "end": 1099.38,
+      "text": "And now we have a simple rule."
+    },
+    {
+      "id": 322,
+      "start": 1099.4,
+      "end": 1100.58,
+      "text": "The engineers make the PRs."
+    },
+    {
+      "id": 323,
+      "start": 1100.6,
+      "end": 1104.75,
+      "text": "Agents and non-engineers can open as many pull requests as they want, but they need"
+    },
+    {
+      "id": 324,
+      "start": 1104.77,
+      "end": 1106.94,
+      "text": "to get an engineer to review it."
+    },
+    {
+      "id": 325,
+      "start": 1106.96,
+      "end": 1113.14,
+      "text": "Of course, the guardrails were there for everything, even before, or most of them."
+    },
+    {
+      "id": 326,
+      "start": 1113.16,
+      "end": 1116.94,
+      "text": "Having the agents running cloud sandboxes without production access to generally is"
+    },
+    {
+      "id": 327,
+      "start": 1116.96,
+      "end": 1120.71,
+      "text": "really a good thing. What happened there was the agent figured out that it can"
+    },
+    {
+      "id": 328,
+      "start": 1120.73,
+      "end": 1121.72,
+      "text": "still use our CI pipeline."
+    },
+    {
+      "id": 329,
+      "start": 1121.74,
+      "end": 1124.3,
+      "text": "It can create a new project to go through the CI pipeline."
+    },
+    {
+      "id": 330,
+      "start": 1124.32,
+      "end": 1125.42,
+      "text": "And then we fixed that afterwards."
+    },
+    {
+      "id": 331,
+      "start": 1125.44,
+      "end": 1130.08,
+      "text": "We figured out a way to actually approve new CI pipelines completely."
+    },
+    {
+      "id": 332,
+      "start": 1130.1,
+      "end": 1132.46,
+      "text": "So yeah, lock down your merge permissions before you do this."
+    },
+    {
+      "id": 333,
+      "start": 1132.48,
+      "end": 1134.46,
+      "text": "Is a good learning to have."
+    },
+    {
+      "id": 334,
+      "start": 1134.48,
+      "end": 1139.46,
+      "text": "No real drama. What the rule looks like in practice is, hey, I don't have the"
+    },
+    {
+      "id": 335,
+      "start": 1139.55,
+      "end": 1142.12,
+      "text": "permission to merge anymore, please review my MR."
+    },
+    {
+      "id": 336,
+      "start": 1142.14,
+      "end": 1146.74,
+      "text": "No drama, no meeting, one simple rule."
+    },
+    {
+      "id": 337,
+      "start": 1146.76,
+      "end": 1148.06,
+      "text": "We also did this for engineers."
+    },
+    {
+      "id": 338,
+      "start": 1148.08,
+      "end": 1152.5,
+      "text": "One thing that we were really concerned about, there were no incidents here, but"
+    },
+    {
+      "id": 339,
+      "start": 1152.52,
+      "end": 1156.0,
+      "text": "we really wanted to make sure since developers work on their machines with the"
+    },
+    {
+      "id": 340,
+      "start": 1156.02,
+      "end": 1159.92,
+      "text": "coding agents, you don't want those developer machines connected to production"
+    },
+    {
+      "id": 341,
+      "start": 1160.04,
+      "end": 1163.0,
+      "text": "at all. So, what we did is we locked ourselves out of production."
+    },
+    {
+      "id": 342,
+      "start": 1163.02,
+      "end": 1165.19,
+      "text": "Now, there's a multi-factor way that you have to do it."
+    },
+    {
+      "id": 343,
+      "start": 1165.21,
+      "end": 1169.44,
+      "text": "You have to go through a jump host, a completely separate machine to do anything"
+    },
+    {
+      "id": 344,
+      "start": 1169.46,
+      "end": 1171.66,
+      "text": "in production, basically."
+    },
+    {
+      "id": 345,
+      "start": 1171.68,
+      "end": 1173.62,
+      "text": "No laptop access anymore to production AWS."
+    },
+    {
+      "id": 346,
+      "start": 1173.64,
+      "end": 1175.55,
+      "text": "And you also have to give a reason."
+    },
+    {
+      "id": 347,
+      "start": 1175.57,
+      "end": 1179.34,
+      "text": "We have a full audit log of why people are accessing production."
+    },
+    {
+      "id": 348,
+      "start": 1179.36,
+      "end": 1181.15,
+      "text": "So, yeah, what really happened?"
+    },
+    {
+      "id": 349,
+      "start": 1181.17,
+      "end": 1184.04,
+      "text": "People are still doing this all the time."
+    },
+    {
+      "id": 350,
+      "start": 1184.06,
+      "end": 1186.68,
+      "text": "You saw the graph already say pretty much the same."
+    },
+    {
+      "id": 351,
+      "start": 1186.7,
+      "end": 1190.85,
+      "text": "Hopefully, we can get those numbers up also more people contributing at the"
+    },
+    {
+      "id": 352,
+      "start": 1190.87,
+      "end": 1195.23,
+      "text": "moment by the way we're not really doing any outreach or like helping really yet"
+    },
+    {
+      "id": 353,
+      "start": 1195.37,
+      "end": 1198.96,
+      "text": "internally people to use these tools they just picked them up themselves they gave"
+    },
+    {
+      "id": 354,
+      "start": 1198.98,
+      "end": 1202.54,
+      "text": "them access and they decided that I wanted to start using these AI tools and we told"
+    },
+    {
+      "id": 355,
+      "start": 1202.56,
+      "end": 1206.06,
+      "text": "them it's okay so so far there's no like trainings from engineers to non-engineers"
+    },
+    {
+      "id": 356,
+      "start": 1206.08,
+      "end": 1211.42,
+      "text": "what still goes wrong review is definitely the bottleneck for us right now so all of"
+    },
+    {
+      "id": 357,
+      "start": 1211.44,
+      "end": 1214.85,
+      "text": "the engineers are doing a lot of not only kind of code review I wouldn't say that we"
+    },
+    {
+      "id": 358,
+      "start": 1214.87,
+      "end": 1218.82,
+      "text": "look at the code necessarily we look at RFCs, so these design documents of what"
+    },
+    {
+      "id": 359,
+      "start": 1218.84,
+      "end": 1222.58,
+      "text": "was happening, but then testing, obviously, this is a lot of work for us to"
+    },
+    {
+      "id": 360,
+      "start": 1222.6,
+      "end": 1227.91,
+      "text": "do. We use AI in those reviews, obviously, but it still takes a lot of time."
+    },
+    {
+      "id": 361,
+      "start": 1228.03,
+      "end": 1230.37,
+      "text": "And you have to know not every PR should ship."
+    },
+    {
+      "id": 362,
+      "start": 1230.39,
+      "end": 1234.58,
+      "text": "You saw that a lot of the PRs that the agents actually open, we don't end up"
+    },
+    {
+      "id": 363,
+      "start": 1234.6,
+      "end": 1238.21,
+      "text": "shipping. Could be the engineer deciding to do it a different way."
+    },
+    {
+      "id": 364,
+      "start": 1238.23,
+      "end": 1241.56,
+      "text": "Could be some other reason that we just decide that this is not good enough."
+    },
+    {
+      "id": 365,
+      "start": 1241.58,
+      "end": 1244.18,
+      "text": "We need to start from scratch and do something else."
+    },
+    {
+      "id": 366,
+      "start": 1246.56,
+      "end": 1248.14,
+      "text": "So four things I'd do again."
+    },
+    {
+      "id": 367,
+      "start": 1248.74,
+      "end": 1250.08,
+      "text": "One is do the Slack thing."
+    },
+    {
+      "id": 368,
+      "start": 1250.4,
+      "end": 1252.5,
+      "text": "Hire the co-worker. Put the agent on Slack."
+    },
+    {
+      "id": 369,
+      "start": 1252.52,
+      "end": 1255.18,
+      "text": "Absolutely. This was the big game changer for us, I would say."
+    },
+    {
+      "id": 370,
+      "start": 1255.2,
+      "end": 1256.75,
+      "text": "Number two, open the code base."
+    },
+    {
+      "id": 371,
+      "start": 1257.5,
+      "end": 1261.64,
+      "text": "I think it's just really great to invite non-engineers to directly be able to make"
+    },
+    {
+      "id": 372,
+      "start": 1261.66,
+      "end": 1262.46,
+      "text": "these changes."
+    },
+    {
+      "id": 373,
+      "start": 1263.76,
+      "end": 1267.13,
+      "text": "I don't have any great data to show you how much faster this made us or anything"
+    },
+    {
+      "id": 374,
+      "start": 1267.15,
+      "end": 1270.7,
+      "text": "like that. That's something for us to research and look into later."
+    },
+    {
+      "id": 375,
+      "start": 1271.12,
+      "end": 1275.61,
+      "text": "But from the kind of general perception of the company, everyone loves this."
+    },
+    {
+      "id": 376,
+      "start": 1276.02,
+      "end": 1278.98,
+      "text": "The people who are involved with this, I kind of started with the assumption that"
+    },
+    {
+      "id": 377,
+      "start": 1279.0,
+      "end": 1281.86,
+      "text": "engineers would hate it. Engineers would hate that other people can touch their"
+    },
+    {
+      "id": 378,
+      "start": 1281.88,
+      "end": 1286.63,
+      "text": "code base. In reality, not getting bug tickets anymore, instead you get a PR, is"
+    },
+    {
+      "id": 379,
+      "start": 1286.65,
+      "end": 1290.78,
+      "text": "way better. And we all seem to really enjoy that more than how things used to be"
+    },
+    {
+      "id": 380,
+      "start": 1290.8,
+      "end": 1291.6,
+      "text": "before."
+    },
+    {
+      "id": 381,
+      "start": 1292.26,
+      "end": 1294.11,
+      "text": "And three, the guardrails, obviously."
+    },
+    {
+      "id": 382,
+      "start": 1294.18,
+      "end": 1295.86,
+      "text": "You should lock your merge permissions."
+    },
+    {
+      "id": 383,
+      "start": 1295.88,
+      "end": 1298.43,
+      "text": "You should make sure that your agents don't have direct production access, but"
+    },
+    {
+      "id": 384,
+      "start": 1298.45,
+      "end": 1301.66,
+      "text": "that's obvious. This is something we all should, I think, by now know if you're"
+    },
+    {
+      "id": 385,
+      "start": 1301.68,
+      "end": 1302.74,
+      "text": "working with agents."
+    },
+    {
+      "id": 386,
+      "start": 1303.94,
+      "end": 1305.28,
+      "text": "And four, write it down."
+    },
+    {
+      "id": 387,
+      "start": 1305.68,
+      "end": 1307.74,
+      "text": "Your context is the bottleneck, not the model."
+    },
+    {
+      "id": 388,
+      "start": 1307.76,
+      "end": 1311.51,
+      "text": "So what actually made our agents work super well was the setup, was all of the"
+    },
+    {
+      "id": 389,
+      "start": 1311.53,
+      "end": 1315.34,
+      "text": "documentation, was all of the effort put into, not the harness necessarily, but all"
+    },
+    {
+      "id": 390,
+      "start": 1315.36,
+      "end": 1319.68,
+      "text": "of the things that the agents can access and find out about our business context"
+    },
+    {
+      "id": 391,
+      "start": 1319.7,
+      "end": 1322.05,
+      "text": "and our code base. That's it from me."
+    },
+    {
+      "id": 392,
+      "start": 1322.6,
+      "end": 1325.2,
+      "text": "Just the learnings. Thanks much."
+    }
+  ]
+}

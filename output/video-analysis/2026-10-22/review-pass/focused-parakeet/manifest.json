@@ -1,0 +1,173 @@
+{
+  "createdAt": "2026-10-22T11:18:44.897194+00:00",
+  "purpose": "Predefined context-sensitivity checks for the four flagged wordings, including the original source of the mood-film excerpt.",
+  "method": "Fresh 16 kHz mono PCM extracts from the final 4K masters, with clause, sentence and wider-context windows. No audio filtering, speech-rate change, wording hints or language prompts. Same Parakeet model as the prior pass; two decoder settings are correlated checks.",
+  "model": "mlx-community/parakeet-tdt-0.6b-v3",
+  "windows": [
+    {
+      "id": "jenni-clause",
+      "case": "jenni",
+      "videoId": "jenni-talk",
+      "window": "clause",
+      "start": 1234.5,
+      "end": 1240,
+      "sourceMaster": "exports/talks-v02/jenni-talk-4k.mp4",
+      "audio": "review-pass/focused-parakeet/jenni-clause.wav",
+      "audioSHA256": "c1de7727bce30a90a3926457a084491a89618fc461f8fc33507af8aa4766a760"
+    },
+    {
+      "id": "jenni-sentence",
+      "case": "jenni",
+      "videoId": "jenni-talk",
+      "window": "sentence",
+      "start": 1231.5,
+      "end": 1250.5,
+      "sourceMaster": "exports/talks-v02/jenni-talk-4k.mp4",
+      "audio": "review-pass/focused-parakeet/jenni-sentence.wav",
+      "audioSHA256": "a1b657e14fddc2f10df9489f627fc30dd36386b1e64bfc0a9edb153ac1777b23"
+    },
+    {
+      "id": "jenni-context",
+      "case": "jenni",
+      "videoId": "jenni-talk",
+      "window": "context",
+      "start": 1210,
+      "end": 1260,
+      "sourceMaster": "exports/talks-v02/jenni-talk-4k.mp4",
+      "audio": "review-pass/focused-parakeet/jenni-context.wav",
+      "audioSHA256": "adbe4681c9cfc9ddccd9a4191b82aeb54323ab725802a980bf771bf7ebfae3df"
+    },
+    {
+      "id": "joongi-clause",
+      "case": "joongi",
+      "videoId": "joongi-talk",
+      "window": "clause",
+      "start": 1048,
+      "end": 1054,
+      "sourceMaster": "exports/talks-v02/joongi-talk-4k.mp4",
+      "audio": "review-pass/focused-parakeet/joongi-clause.wav",
+      "audioSHA256": "3375a7a06f6a2cb3ed03ee363a7427a6818aa4fdedbff5061c02f48ca677fcc7"
+    },
+    {
+      "id": "joongi-sentence",
+      "case": "joongi",
+      "videoId": "joongi-talk",
+      "window": "sentence",
+      "start": 1041,
+      "end": 1055,
+      "sourceMaster": "exports/talks-v02/joongi-talk-4k.mp4",
+      "audio": "review-pass/focused-parakeet/joongi-sentence.wav",
+      "audioSHA256": "8beb019d368b86a6ed840cdaabfa3746252bc9899184b6ebeb65508161877c62"
+    },
+    {
+      "id": "joongi-context",
+      "case": "joongi",
+      "videoId": "joongi-talk",
+      "window": "context",
+      "start": 1025,
+      "end": 1075,
+      "sourceMaster": "exports/talks-v02/joongi-talk-4k.mp4",
+      "audio": "review-pass/focused-parakeet/joongi-context.wav",
+      "audioSHA256": "c3ad9d36a5529de1f4b88780c79f297f5c544115665170ab9162211b0e9c7840"
+    },
+    {
+      "id": "final-clause",
+      "case": "final",
+      "videoId": "final-panel",
+      "window": "clause",
+      "start": 1538,
+      "end": 1544.5,
+      "sourceMaster": "exports/talks-v02/final-panel-4k.mp4",
+      "audio": "review-pass/focused-parakeet/final-clause.wav",
+      "audioSHA256": "67ef782754e65935886c7e0dc6f1c768a9933a30387e9f97bdfde8ec448b7a56"
+    },
+    {
+      "id": "final-sentence",
+      "case": "final",
+      "videoId": "final-panel",
+      "window": "sentence",
+      "start": 1530,
+      "end": 1551,
+      "sourceMaster": "exports/talks-v02/final-panel-4k.mp4",
+      "audio": "review-pass/focused-parakeet/final-sentence.wav",
+      "audioSHA256": "384bd93bb63c25332707b92719b8b46e5e92e7eb19514d318b858b74debd5981"
+    },
+    {
+      "id": "final-context",
+      "case": "final",
+      "videoId": "final-panel",
+      "window": "context",
+      "start": 1493,
+      "end": 1554,
+      "sourceMaster": "exports/talks-v02/final-panel-4k.mp4",
+      "audio": "review-pass/focused-parakeet/final-context.wav",
+      "audioSHA256": "ef9f36c7fc10aa4bc267b1a6a5521d2e0d71f80e0ca738b85bea99a986ccf9e1"
+    },
+    {
+      "id": "mood-clause",
+      "case": "mood",
+      "videoId": "mood",
+      "window": "clause",
+      "start": 35.2,
+      "end": 43.7,
+      "sourceMaster": "exports/mood-v06-4k.mp4",
+      "audio": "review-pass/focused-parakeet/mood-clause.wav",
+      "audioSHA256": "9434c3d8945da3a1356b4af16ab277198913189d13f6915869e5077e462f57cf"
+    },
+    {
+      "id": "mood-sentence",
+      "case": "mood",
+      "videoId": "mood",
+      "window": "sentence",
+      "start": 30,
+      "end": 49.6,
+      "sourceMaster": "exports/mood-v06-4k.mp4",
+      "audio": "review-pass/focused-parakeet/mood-sentence.wav",
+      "audioSHA256": "de146daeb09cd9cca4302e9aac6652e7a7070e96a84533467b64965e737c1cbc"
+    },
+    {
+      "id": "mood-context",
+      "case": "mood",
+      "videoId": "mood",
+      "window": "context",
+      "start": 0,
+      "end": 49.6,
+      "sourceMaster": "exports/mood-v06-4k.mp4",
+      "audio": "review-pass/focused-parakeet/mood-context.wav",
+      "audioSHA256": "b2cdb57488f3b2d5587d875c18795438a67fca602af202f0cf8c2109daa6d4f8"
+    },
+    {
+      "id": "mood-original-clause",
+      "case": "mood-original",
+      "videoId": "industry-panel",
+      "window": "clause",
+      "start": 187.1,
+      "end": 195.2,
+      "sourceMaster": "exports/talks-v02/industry-panel-4k.mp4",
+      "audio": "review-pass/focused-parakeet/mood-original-clause.wav",
+      "audioSHA256": "0ef6dbb936756708c9d0d85b1cd741e08b4714eccdab09e14356e6df2fa7dd38"
+    },
+    {
+      "id": "mood-original-sentence",
+      "case": "mood-original",
+      "videoId": "industry-panel",
+      "window": "sentence",
+      "start": 183,
+      "end": 196,
+      "sourceMaster": "exports/talks-v02/industry-panel-4k.mp4",
+      "audio": "review-pass/focused-parakeet/mood-original-sentence.wav",
+      "audioSHA256": "aee7be01fee0f786bdb7f1d3fb0404302f7d5cd70fc0815e2922dfd5ddcb9ecb"
+    },
+    {
+      "id": "mood-original-context",
+      "case": "mood-original",
+      "videoId": "industry-panel",
+      "window": "context",
+      "start": 174,
+      "end": 201,
+      "sourceMaster": "exports/talks-v02/industry-panel-4k.mp4",
+      "audio": "review-pass/focused-parakeet/mood-original-context.wav",
+      "audioSHA256": "fdf65872b323ff46bb30bf669620b25c825e73faea522da15588ee46ca8a677c"
+    }
+  ]
+}

@@ -1,0 +1,289 @@
+[
+  {
+    "videoId": "mo-talk",
+    "scope": "One sampled midpoint frame per proposed clip, inspected by the assistant; not a full motion or audio review.",
+    "samples": [
+      {
+        "videoId": "mo-talk",
+        "time": 1637.0,
+        "path": "frames/mo-talk-01.jpg",
+        "clip": "Turn blueprints into checks that catch recurring mistakes",
+        "observation": "Blueprint slide says “Show the agent. Don’t tell it.” and points to code references."
+      },
+      {
+        "videoId": "mo-talk",
+        "time": 2113.0,
+        "path": "frames/mo-talk-02.jpg",
+        "clip": "Measure the bottlenecks AI solves",
+        "observation": "Closing production-line slide connects the flow from idea to outcome and asks where the bottleneck is."
+      }
+    ]
+  },
+  {
+    "videoId": "ohans-talk",
+    "scope": "One sampled midpoint frame per proposed clip, inspected by the assistant; not a full motion or audio review.",
+    "samples": [
+      {
+        "videoId": "ohans-talk",
+        "time": 589.5,
+        "path": "frames/ohans-talk-01.jpg",
+        "clip": "Review the implementation decision before it becomes a large diff",
+        "observation": "Implementation-plan review is stated directly on the slide."
+      },
+      {
+        "videoId": "ohans-talk",
+        "time": 1251.5,
+        "path": "frames/ohans-talk-02.jpg",
+        "clip": "What independent QA needs beyond another model's approval",
+        "observation": "Visual QA slide combines repeated flows, LLM judgement and deterministic assertions."
+      }
+    ]
+  },
+  {
+    "videoId": "jenni-talk",
+    "scope": "One sampled midpoint frame per proposed clip, inspected by the assistant; not a full motion or audio review.",
+    "samples": [
+      {
+        "videoId": "jenni-talk",
+        "time": 1054.5,
+        "path": "frames/jenni-talk-01.jpg",
+        "clip": "A reporting request that reopened Jira tickets",
+        "observation": "Mistakes slide lists context, harnesses, guardrails and validation."
+      },
+      {
+        "videoId": "jenni-talk",
+        "time": 1313.5,
+        "path": "frames/jenni-talk-02.jpg",
+        "clip": "Treat the AI toolbox as a product",
+        "observation": "Toolbox slide explicitly treats reusable assets as a product across development activities."
+      }
+    ]
+  },
+  {
+    "videoId": "tapio-talk",
+    "scope": "One sampled midpoint frame per proposed clip, inspected by the assistant; not a full motion or audio review.",
+    "samples": [
+      {
+        "videoId": "tapio-talk",
+        "time": 800.5,
+        "path": "frames/tapio-talk-01.jpg",
+        "clip": "What an agentic probe is for",
+        "observation": "Probe slide connects problem validation and solution proposals with human feedback."
+      },
+      {
+        "videoId": "tapio-talk",
+        "time": 1001.5,
+        "path": "frames/tapio-talk-02.jpg",
+        "clip": "When the person building the prototypes becomes the bottleneck",
+        "observation": "Workshop slide shows orchestration of agentic engineering; no slide speed multiplier is reused as a general measured result."
+      }
+    ]
+  },
+  {
+    "videoId": "joongi-talk",
+    "scope": "One sampled midpoint frame per proposed clip, inspected by the assistant; not a full motion or audio review.",
+    "samples": [
+      {
+        "videoId": "joongi-talk",
+        "time": 984.0,
+        "path": "frames/joongi-talk-01.jpg",
+        "clip": "Help people envision without making them design",
+        "observation": "Slide contrasts prompt-only, subtask–UI and prompt-survey approaches."
+      },
+      {
+        "videoId": "joongi-talk",
+        "time": 1078.0,
+        "path": "frames/joongi-talk-02.jpg",
+        "clip": "When clarification questions get in the user's way",
+        "observation": "Slide explicitly says “Prompt-survey can also fail”; this supports the technical term despite the ASR difference."
+      }
+    ]
+  },
+  {
+    "videoId": "jussi-talk",
+    "scope": "One sampled midpoint frame per proposed clip, inspected by the assistant; not a full motion or audio review.",
+    "samples": [
+      {
+        "videoId": "jussi-talk",
+        "time": 381.5,
+        "path": "frames/jussi-talk-01.jpg",
+        "clip": "Keep exceptional restrictions from blocking the whole organisation",
+        "observation": "Regulation, guidance, tooling and experiments are shown as separate practical work areas."
+      },
+      {
+        "videoId": "jussi-talk",
+        "time": 1178.0,
+        "path": "frames/jussi-talk-02.jpg",
+        "clip": "Clear direction matters more than telling everyone to use AI everywhere",
+        "observation": "Closing slide supports the regulation-not-roadblock and clarity-over-quantity messages."
+      }
+    ]
+  },
+  {
+    "videoId": "viljami-talk",
+    "scope": "One sampled midpoint frame per proposed clip, inspected by the assistant; not a full motion or audio review.",
+    "samples": [
+      {
+        "videoId": "viljami-talk",
+        "time": 352.5,
+        "path": "frames/viljami-talk-01.jpg",
+        "clip": "Why Slack helped non-engineers contribute",
+        "observation": "Public shared work and thread context appear on the adoption slide."
+      },
+      {
+        "videoId": "viljami-talk",
+        "time": 1104.5,
+        "path": "frames/viljami-talk-02.jpg",
+        "clip": "The deployment near miss and the permissions it exposed",
+        "observation": "Permissions slide states that agents and non-engineers open PRs and engineers review and merge; it also limits production access."
+      }
+    ]
+  },
+  {
+    "videoId": "sini-talk",
+    "scope": "One sampled midpoint frame per proposed clip, inspected by the assistant; not a full motion or audio review.",
+    "samples": [
+      {
+        "videoId": "sini-talk",
+        "time": 166.0,
+        "path": "frames/sini-talk-01.jpg",
+        "clip": "Why the prototype is only part of the production journey",
+        "observation": "Prototype-to-production slide places code and testing within a larger production journey; the numerical estimate is not reused as our finding."
+      },
+      {
+        "videoId": "sini-talk",
+        "time": 1350.5,
+        "path": "frames/sini-talk-02.jpg",
+        "clip": "Turn delivery controls into executable evidence",
+        "observation": "Control slide asks who requested, checked and accepted a change and how it can be undone."
+      }
+    ]
+  },
+  {
+    "videoId": "zak-talk",
+    "scope": "One sampled midpoint frame per proposed clip, inspected by the assistant; not a full motion or audio review.",
+    "samples": [
+      {
+        "videoId": "zak-talk",
+        "time": 262.5,
+        "path": "frames/zak-talk-01.jpg",
+        "clip": "Make experiments cheap enough to repeat",
+        "observation": "Experiment repetition slide illustrates the cost-of-repeating argument."
+      },
+      {
+        "videoId": "zak-talk",
+        "time": 750.0,
+        "path": "frames/zak-talk-02.jpg",
+        "clip": "A research system built for replaying experiments",
+        "observation": "Clinical Sense OS slide lists orchestration, Rust, Julia, C++, containers, a registry and experiments treated as Git."
+      }
+    ]
+  },
+  {
+    "videoId": "waseem-talk",
+    "scope": "One sampled midpoint frame per proposed clip, inspected by the assistant; not a full motion or audio review.",
+    "samples": [
+      {
+        "videoId": "waseem-talk",
+        "time": 958.5,
+        "path": "frames/waseem-talk-01.jpg",
+        "clip": "The knowledge that agents cannot read from code",
+        "observation": "Slide describes an agent lacking onboarding and the reasons behind past decisions."
+      },
+      {
+        "videoId": "waseem-talk",
+        "time": 1715.5,
+        "path": "frames/waseem-talk-02.jpg",
+        "clip": "Three questions for an AI-assisted software team",
+        "observation": "Closing slide asks to measure the system, write the why and grow skills."
+      }
+    ]
+  },
+  {
+    "videoId": "research-panel",
+    "scope": "One sampled midpoint frame per proposed clip, inspected by the assistant; not a full motion or audio review.",
+    "samples": [
+      {
+        "videoId": "research-panel",
+        "time": 909.5,
+        "path": "frames/research-panel-01.jpg",
+        "clip": "Does cheaper building really separate discovery from implementation?",
+        "observation": "Panel and session-identification frame supports the discovery discussion setting."
+      },
+      {
+        "videoId": "research-panel",
+        "time": 1350.5,
+        "path": "frames/research-panel-02.jpg",
+        "clip": "Who carries accessibility responsibility for generated interfaces?",
+        "observation": "Projected audience question explicitly raises accessibility responsibility and user labour."
+      },
+      {
+        "videoId": "research-panel",
+        "time": 1566.5,
+        "path": "frames/research-panel-03.jpg",
+        "clip": "Research output grows faster than expert review capacity",
+        "observation": "Projected questions include research-process risks and a developer-versus-designer comparison; a question is not evidence that the study made that comparison."
+      }
+    ]
+  },
+  {
+    "videoId": "industry-panel",
+    "scope": "One sampled midpoint frame per proposed clip, inspected by the assistant; not a full motion or audio review.",
+    "samples": [
+      {
+        "videoId": "industry-panel",
+        "time": 468.5,
+        "path": "frames/industry-panel-01.jpg",
+        "clip": "Two different ways to manage the cost of agents",
+        "observation": "Projected questions concern token budgets, quality, mental models and review workload."
+      },
+      {
+        "videoId": "industry-panel",
+        "time": 744.0,
+        "path": "frames/industry-panel-02.jpg",
+        "clip": "More bugs found and fewer bugs per release can both be true",
+        "observation": "Quality discussion frame includes the question to Viljami; sampled images do not independently establish every speaker turn."
+      }
+    ]
+  },
+  {
+    "videoId": "final-panel",
+    "scope": "One sampled midpoint frame per proposed clip, inspected by the assistant; not a full motion or audio review.",
+    "samples": [
+      {
+        "videoId": "final-panel",
+        "time": 192.0,
+        "path": "frames/final-panel-01.jpg",
+        "clip": "What an architecture decision record preserves",
+        "observation": "Projected question addresses Waseem about architecture decision records."
+      },
+      {
+        "videoId": "final-panel",
+        "time": 1514.5,
+        "path": "frames/final-panel-02.jpg",
+        "clip": "When decision records become a maintenance burden",
+        "observation": "Projected question explicitly raises maintenance burden from thousands of decision files; individual quote attribution remains pending."
+      }
+    ]
+  },
+  {
+    "videoId": "mood",
+    "scope": "One sampled midpoint frame per proposed clip, inspected by the assistant; not a full motion or audio review.",
+    "samples": [
+      {
+        "videoId": "mood",
+        "time": 24.808,
+        "path": "frames/mood-01.jpg",
+        "clip": "An introduction to SDLCAI and why we build",
+        "observation": "Opening event footage shows the seminar identity and stage."
+      },
+      {
+        "videoId": "mood",
+        "time": 78.812,
+        "path": "frames/mood-02.jpg",
+        "clip": "Learning and exchanging ideas",
+        "observation": "Second sampled frame is the “Ideas in conversation” graphic, consistent with the learning-and-community positioning."
+      }
+    ]
+  }
+]

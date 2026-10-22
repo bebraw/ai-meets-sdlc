@@ -1,0 +1,175 @@
+{
+  "status": "passed",
+  "counts": {
+    "videos": 14,
+    "talks": 10,
+    "qas": 3,
+    "moodFilms": 1,
+    "durationSeconds": 21369.114533333333,
+    "quoteCandidates": 22,
+    "quoteWordingFlags": 0,
+    "clipCandidates": 29,
+    "sampledFrames": 29,
+    "themes": 8,
+    "tensions": 4,
+    "attributionsSupportedByMetadataOrContext": 21,
+    "unresolvedIndividualAttributions": 1,
+    "unresolvedWordingDifferences": 0,
+    "parakeetNormalizedQuoteMatches": 16,
+    "parakeetSpeechEditDifferences": 2,
+    "parakeetAudioChecks": 28,
+    "parakeetBeamChecks": 10,
+    "focusedParakeetAudioCrops": 15,
+    "focusedParakeetTranscriptions": 30,
+    "editorialWordingSelections": 4
+  },
+  "checkedAt": "2026-10-22T10:57:41.407267+00:00",
+  "checks": [
+    "All final deliveries represented once.",
+    "All source caption hashes and review-media byte counts still match.",
+    "Review-media durations match delivery metadata within 0.2 seconds.",
+    "All ranges, chapters and synthesis references fit the relevant final video.",
+    "Every quote has one normalized caption match and a corresponding final-cut audio extract and fresh ASR result.",
+    "Every quote audio duration matches the extraction range within 0.15 seconds.",
+    "All original Whisper/caption wording differences and the additional Parakeet pronoun difference are explicitly flagged.",
+    "Every clip has a sampled frame and a recorded inspection note."
+  ],
+  "reviewMediaDurations": [
+    {
+      "videoId": "mo-talk",
+      "expectedSeconds": 2150.0,
+      "probedReviewSeconds": 2150.0
+    },
+    {
+      "videoId": "ohans-talk",
+      "expectedSeconds": 1929.0,
+      "probedReviewSeconds": 1929.0
+    },
+    {
+      "videoId": "jenni-talk",
+      "expectedSeconds": 1530.0,
+      "probedReviewSeconds": 1530.0
+    },
+    {
+      "videoId": "tapio-talk",
+      "expectedSeconds": 1359.0,
+      "probedReviewSeconds": 1359.0
+    },
+    {
+      "videoId": "joongi-talk",
+      "expectedSeconds": 1162.0,
+      "probedReviewSeconds": 1162.0
+    },
+    {
+      "videoId": "jussi-talk",
+      "expectedSeconds": 1247.0,
+      "probedReviewSeconds": 1247.0
+    },
+    {
+      "videoId": "viljami-talk",
+      "expectedSeconds": 1335.0,
+      "probedReviewSeconds": 1335.0
+    },
+    {
+      "videoId": "sini-talk",
+      "expectedSeconds": 1690.0,
+      "probedReviewSeconds": 1690.0
+    },
+    {
+      "videoId": "zak-talk",
+      "expectedSeconds": 1255.0,
+      "probedReviewSeconds": 1255.0
+    },
+    {
+      "videoId": "waseem-talk",
+      "expectedSeconds": 1854.0,
+      "probedReviewSeconds": 1854.0
+    },
+    {
+      "videoId": "research-panel",
+      "expectedSeconds": 2731.0,
+      "probedReviewSeconds": 2731.0
+    },
+    {
+      "videoId": "industry-panel",
+      "expectedSeconds": 991.12,
+      "probedReviewSeconds": 991.12
+    },
+    {
+      "videoId": "final-panel",
+      "expectedSeconds": 2008.0,
+      "probedReviewSeconds": 2008.0
+    },
+    {
+      "videoId": "mood",
+      "expectedSeconds": 127.99453333333334,
+      "probedReviewSeconds": 127.999979
+    }
+  ],
+  "wordingFlags": {},
+  "doesNotEstablish": "Publication approval, full audiovisual review, independent fact checking or speaker identity verification.",
+  "reviewPass": {
+    "status": "Additional ASR and contextual checks complete; direct listening incomplete.",
+    "counts": {
+      "quoteCandidates": 22,
+      "attributionsSupportedByMetadataOrContext": 21,
+      "unresolvedIndividualAttributions": 1,
+      "unresolvedWordingDifferences": 3
+    },
+    "report": "review-pass/review-findings.json"
+  },
+  "parakeetPass": {
+    "status": "passed",
+    "report": "review-pass/parakeet-review.json",
+    "counts": {
+      "quoteCandidates": 22,
+      "greedyAudioChecks": 28,
+      "beamAudioChecks": 10,
+      "normalizedQuoteMatches": 16,
+      "speechEditDifferences": 2,
+      "wordingReviewNeeded": 4,
+      "unresolvedIndividualAttributions": 1
+    },
+    "checks": [
+      "All 22 quote windows and six context windows have Parakeet greedy JSON results.",
+      "All ten selected windows have beam JSON results.",
+      "All quote results have matching IDs, source audio fingerprints and retained final-video offsets.",
+      "Every normalized wording mismatch is classified and has an editorial note."
+    ],
+    "remaining": "Four exact-wording flags and one unnamed panel respondent; direct listening and full clip review still pending."
+  },
+  "focusedParakeetPass": {
+    "status": "passed",
+    "audioCrops": 15,
+    "transcriptions": 30,
+    "report": "review-pass/focused-parakeet/review.json",
+    "checks": [
+      "Every crop fits the final edited video and uses its final master audio.",
+      "All crop WAVs are mono 16 kHz with durations matching the requested intervals.",
+      "All 30 saved transcripts are represented, including the one empty beam result.",
+      "All target word renderings are classified; no variant was omitted from the report."
+    ],
+    "remaining": "Four exact-wording flags and one unnamed panel respondent. No direct listening or full clip review has been performed."
+  },
+  "priorWordingFlags": {
+    "jenni-talk-q02": "Fresh master-audio checks remain window-dependent: “a customer” occurs in the sentence crop with both decoders and in the clause crop with greedy decoding; “your customer” occurs in the wider crop with both decoders. The clause crop returns no text with beam decoding. Retain the caption’s “a customer” as a draft, but do not mark the exact quote listening-approved.",
+    "joongi-talk-q02": "All six fresh master-audio runs render “problem survey” in the disputed sentence. The paired and wider crops separately render “prompt survey” in the preceding sentence, matching the method name on the slide. Parakeet therefore consistently suggests “problem survey” here, but ASR cannot distinguish a spoken slip from an acoustic recognition error. Use “prompt-survey” in the paraphrase and keep the verbatim quote flagged.",
+    "final-panel-q01": "Five of six fresh master-audio runs render “women”; the wider crop with greedy decoding instead renders “human”. This changes the earlier impression that Parakeet was stable across contexts. The captions have “humans”. The exact noun remains unresolved, and the respondent is still not individually attributed. Use the paraphrase for reuse.",
+    "mood-q01": "Five of six fresh montage-audio runs render “why you’re building this”; one sentence-crop beam run renders “we’re”. In the original industry-Q&A audio, four of six runs render “you’re”, while both tightly cropped clause runs render “we’re”. The existing caption “you’re” is better supported by sentence and wider context, but the pronoun is still sensitive to cropping and needs listening before verbatim reuse."
+  },
+  "editorialChoices": {
+    "status": "applied",
+    "choices": {
+      "jenni-talk-q02": "a customer",
+      "joongi-talk-q02": "prompt-survey",
+      "final-panel-q01": "humans",
+      "mood-q01": "you're"
+    },
+    "checks": [
+      "All four choices are present in the selected quote text.",
+      "Raw audio, captions and ASR results remain unchanged.",
+      "All four candidates carry an editorial-choice label."
+    ],
+    "remaining": "Individual attribution for the final-panel quote remains unconfirmed. Direct listening is not claimed."
+  }
+}

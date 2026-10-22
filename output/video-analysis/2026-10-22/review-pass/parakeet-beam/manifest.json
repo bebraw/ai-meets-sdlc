@@ -1,0 +1,114 @@
+{
+  "runAt": "2026-10-22T10:53:04.879780+00:00",
+  "model": "mlx-community/parakeet-tdt-0.6b-v3",
+  "decoding": "beam",
+  "executable": "/Users/juhovepsalainen/.local/bin/parakeet-mlx",
+  "command": [
+    "/Users/juhovepsalainen/.local/bin/parakeet-mlx",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/audio/joongi-talk-q01.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/audio/jussi-talk-q01.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/audio/mood-q01.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/review-pass/mood-sini-original.wav",
+    "--model",
+    "mlx-community/parakeet-tdt-0.6b-v3",
+    "--output-dir",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/review-pass/parakeet-beam",
+    "--output-format",
+    "json",
+    "--decoding",
+    "beam"
+  ],
+  "sources": [
+    {
+      "id": "final-panel-q01",
+      "videoId": "final-panel",
+      "audio": "audio/final-panel-q01.wav",
+      "start": 1531.66,
+      "end": 1549.54,
+      "kind": "quote",
+      "result": "review-pass/parakeet-beam/final-panel-q01.json"
+    },
+    {
+      "id": "jenni-talk-q02",
+      "videoId": "jenni-talk",
+      "audio": "audio/jenni-talk-q02.wav",
+      "start": 1226.0,
+      "end": 1256.0,
+      "kind": "quote",
+      "result": "review-pass/parakeet-beam/jenni-talk-q02.json"
+    },
+    {
+      "id": "joongi-talk-q01",
+      "videoId": "joongi-talk",
+      "audio": "audio/joongi-talk-q01.wav",
+      "start": 929.46,
+      "end": 948.04,
+      "kind": "quote",
+      "result": "review-pass/parakeet-beam/joongi-talk-q01.json"
+    },
+    {
+      "id": "joongi-talk-q02",
+      "videoId": "joongi-talk",
+      "audio": "audio/joongi-talk-q02.wav",
+      "start": 1040.36,
+      "end": 1058.62,
+      "kind": "quote",
+      "result": "review-pass/parakeet-beam/joongi-talk-q02.json"
+    },
+    {
+      "id": "jussi-talk-q01",
+      "videoId": "jussi-talk",
+      "audio": "audio/jussi-talk-q01.wav",
+      "start": 954.6,
+      "end": 972.14,
+      "kind": "quote",
+      "result": "review-pass/parakeet-beam/jussi-talk-q01.json"
+    },
+    {
+      "id": "mood-q01",
+      "videoId": "mood",
+      "audio": "audio/mood-q01.wav",
+      "start": 29.252000000000002,
+      "end": 49.502,
+      "kind": "quote",
+      "result": "review-pass/parakeet-beam/mood-q01.json"
+    },
+    {
+      "id": "jenni-wording",
+      "videoId": "jenni-talk",
+      "audio": "review-pass/jenni-wording.wav",
+      "start": 1215,
+      "end": 1257,
+      "kind": "context",
+      "result": "review-pass/parakeet-beam/jenni-wording.json"
+    },
+    {
+      "id": "joongi-wording",
+      "videoId": "joongi-talk",
+      "audio": "review-pass/joongi-wording.wav",
+      "start": 1036,
+      "end": 1066,
+      "kind": "context",
+      "result": "review-pass/parakeet-beam/joongi-wording.json"
+    },
+    {
+      "id": "final-wording-and-turn",
+      "videoId": "final-panel",
+      "audio": "review-pass/final-wording-and-turn.wav",
+      "start": 1469,
+      "end": 1561,
+      "kind": "context",
+      "result": "review-pass/parakeet-beam/final-wording-and-turn.json"
+    },
+    {
+      "id": "mood-sini-original",
+      "videoId": "industry-panel",
+      "audio": "review-pass/mood-sini-original.wav",
+      "start": 164,
+      "end": 201,
+      "kind": "context",
+      "result": "review-pass/parakeet-beam/mood-sini-original.json"
+    }
+  ],
+  "method": "Local Parakeet ASR of final-cut audio. Different model family from Whisper; not direct assistant listening, speaker diarization, or publication approval."
+}

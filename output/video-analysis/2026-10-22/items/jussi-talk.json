@@ -1,0 +1,77 @@
+{
+  "id": "jussi-talk",
+  "shortSummary": "Jussi Hacklin describes how Elisa supports AI adoption within regulatory and customer-contract constraints. Legal collaboration, clear leadership expectations, practical guidance, shared tooling and bounded experiments form the basis for adoption across the software lifecycle.",
+  "longSummary": "Jussi Hacklin describes Elisa's progression from individual AI experiments toward broader use across software development, testing and maintenance. Regulation and customer contracts constrain which tools and data flows are available, so the organisation works with legal specialists and established vendors while separating especially restricted areas from the wider operation. Practical support includes concise guidance, training, a developer portal, a community for sharing experience and central management of tools and quotas. Sandboxed greenfield experiments provide space to try different development approaches. Jussi also sketches a development model connecting product creation, engineering and operations through live, secure organisational context and feedback. He emphasises that adoption depends on people understanding the direction and expectations, alongside a curated tool portfolio that can change as capabilities, pricing and constraints evolve.",
+  "takeaways": [
+    {
+      "point": "Regulatory obligations and customer-contract restrictions need active legal collaboration, rather than a single blanket rule for every part of the company.",
+      "start": 312,
+      "end": 451
+    },
+    {
+      "point": "Clear management expectations should be backed by accessible guidance, training and a developer community.",
+      "start": 452,
+      "end": 577
+    },
+    {
+      "point": "Central tool ownership and quota monitoring provide visibility while allowing teams to request capacity and propose useful additions.",
+      "start": 549,
+      "end": 687
+    },
+    {
+      "point": "Sandboxed experiments can test new development approaches without imposing every brownfield constraint on the experiment.",
+      "start": 688,
+      "end": 739
+    },
+    {
+      "point": "Shared context and feedback should connect product creation, development and operations; leadership should keep communicating the direction while adapting the tools.",
+      "start": 839,
+      "end": 1237
+    }
+  ],
+  "topics": [
+    "AI adoption",
+    "regulated environments",
+    "developer communities",
+    "tool governance",
+    "shared context",
+    "token budgets",
+    "leadership"
+  ],
+  "quoteCandidates": [
+    {
+      "text": "So, the regulation is a challenge, but it's not a roadblock.",
+      "speaker": "Jussi Hacklin"
+    },
+    {
+      "text": "Aim for clarity, not quantity when it comes to guidelines.",
+      "speaker": "Jussi Hacklin"
+    }
+  ],
+  "clipCandidates": [
+    {
+      "title": "Keep exceptional restrictions from blocking the whole organisation",
+      "start": 312,
+      "end": 451,
+      "why": "Explains the practical difference between regulatory requirements, customer constraints and the room available elsewhere in the business.",
+      "audience": "Engineering leaders in regulated organisations"
+    },
+    {
+      "title": "Clear direction matters more than telling everyone to use AI everywhere",
+      "start": 1119,
+      "end": 1237,
+      "why": "A concise leadership conclusion connects repeated communication with flexibility as tools and economics change.",
+      "audience": "Managers leading AI adoption"
+    }
+  ],
+  "reuseAngles": [
+    "A case-study summary of adoption under constraints",
+    "A practical checklist connecting guidance, communities, tool ownership and experimentation"
+  ],
+  "editorialCaveats": [
+    "The adoption and AI-generated-code percentages are speaker-reported company figures, not independently audited measures of productivity.",
+    "The spoken year around 03:16–03:33 conflicts with the slide timeline. Summaries describe the progression without repeating the disputed year.",
+    "The security discussion describes the speaker's approach; secure individual components alone do not establish the security of an assembled system."
+  ],
+  "analysisStatus": "Complete-caption analysis, fresh local quote ASR and sampled-frame review complete; editorial approval pending."
+}

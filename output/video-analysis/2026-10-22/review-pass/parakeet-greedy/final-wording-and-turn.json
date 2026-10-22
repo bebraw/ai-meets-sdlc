@@ -1,0 +1,2639 @@
+{
+  "text": "This one has more most votes, so let's go with this. If we were if you if we write down every decision and feature lives over time, we end up having thousands of decisions decision files. That can become maintenance burden. Absolutely agree. This is so first thing I uh one of the paper I have write, uh it was about like uh coding with flow, paying with depth. And this depth was like a kind of maintenance burden. So yes, at some point, even if you are doing some sort of the wild vibe coding, I'm saying wild wild vibe coding, uh at some point you will feel that okay, we are developing something that is not really necessary. You will find so many files that are unnecessary, so many chunks of code that are not uh that need to clean up. So yeah, I agree with you. Whoever asks the question, yes, maintenance burden. And it is not only maintenance burden for uh women but also for the agents as well. They will lose the context at some point and uh things will not go as you are intending to develop. Do you want to comment on this? No, not okay with you. Then we have another question.",
+  "sentences": [
+    {
+      "text": " This one has more most votes, so let's go with this.",
+      "start": 3.68,
+      "end": 8.8,
+      "duration": 5.12,
+      "confidence": 0.983,
+      "tokens": [
+        {
+          "text": " This",
+          "start": 3.68,
+          "end": 4.0,
+          "duration": 0.32,
+          "confidence": 0.961
+        },
+        {
+          "text": " one",
+          "start": 4.0,
+          "end": 4.32,
+          "duration": 0.32,
+          "confidence": 0.999
+        },
+        {
+          "text": " has",
+          "start": 4.56,
+          "end": 4.88,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " more",
+          "start": 4.88,
+          "end": 5.2,
+          "duration": 0.32,
+          "confidence": 0.999
+        },
+        {
+          "text": " most",
+          "start": 5.76,
+          "end": 6.0,
+          "duration": 0.24,
+          "confidence": 0.927
+        },
+        {
+          "text": " v",
+          "start": 6.32,
+          "end": 6.48,
+          "duration": 0.16,
+          "confidence": 0.955
+        },
+        {
+          "text": "ot",
+          "start": 6.48,
+          "end": 6.64,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "es",
+          "start": 6.64,
+          "end": 6.8,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": ",",
+          "start": 6.8,
+          "end": 6.88,
+          "duration": 0.08,
+          "confidence": 0.91
+        },
+        {
+          "text": " so",
+          "start": 6.88,
+          "end": 7.2,
+          "duration": 0.32,
+          "confidence": 0.999
+        },
+        {
+          "text": " let",
+          "start": 7.2,
+          "end": 7.36,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": "'",
+          "start": 7.36,
+          "end": 7.52,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "s",
+          "start": 7.52,
+          "end": 7.52,
+          "duration": 0.0,
+          "confidence": 1.0
+        },
+        {
+          "text": " go",
+          "start": 7.52,
+          "end": 7.76,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " with",
+          "start": 7.76,
+          "end": 8.08,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " this",
+          "start": 8.08,
+          "end": 8.4,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 8.48,
+          "end": 8.8,
+          "duration": 0.32,
+          "confidence": 0.975
+        }
+      ]
+    },
+    {
+      "text": " If we were if you if we write down every decision and feature lives over time, we end up having thousands of decisions decision files.",
+      "start": 8.8,
+      "end": 21.76,
+      "duration": 12.96,
+      "confidence": 0.989,
+      "tokens": [
+        {
+          "text": " I",
+          "start": 8.8,
+          "end": 8.88,
+          "duration": 0.08,
+          "confidence": 0.967
+        },
+        {
+          "text": "f",
+          "start": 8.88,
+          "end": 9.04,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " we",
+          "start": 9.04,
+          "end": 9.28,
+          "duration": 0.24,
+          "confidence": 0.997
+        },
+        {
+          "text": " were",
+          "start": 9.28,
+          "end": 9.6,
+          "duration": 0.32,
+          "confidence": 0.982
+        },
+        {
+          "text": " if",
+          "start": 9.76,
+          "end": 10.0,
+          "duration": 0.24,
+          "confidence": 0.991
+        },
+        {
+          "text": " you",
+          "start": 10.0,
+          "end": 10.24,
+          "duration": 0.24,
+          "confidence": 0.921
+        },
+        {
+          "text": " if",
+          "start": 10.48,
+          "end": 10.8,
+          "duration": 0.32,
+          "confidence": 0.986
+        },
+        {
+          "text": " we",
+          "start": 10.8,
+          "end": 11.12,
+          "duration": 0.32,
+          "confidence": 0.999
+        },
+        {
+          "text": " w",
+          "start": 11.28,
+          "end": 11.36,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "r",
+          "start": 11.36,
+          "end": 11.52,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ite",
+          "start": 11.52,
+          "end": 11.76,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " down",
+          "start": 11.76,
+          "end": 12.08,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " ever",
+          "start": 12.08,
+          "end": 12.32,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "y",
+          "start": 12.32,
+          "end": 12.56,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " de",
+          "start": 12.56,
+          "end": 12.8,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": "cis",
+          "start": 12.8,
+          "end": 13.04,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "ion",
+          "start": 13.04,
+          "end": 13.2,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " and",
+          "start": 13.2,
+          "end": 13.52,
+          "duration": 0.32,
+          "confidence": 0.998
+        },
+        {
+          "text": " fe",
+          "start": 13.52,
+          "end": 13.76,
+          "duration": 0.24,
+          "confidence": 0.998
+        },
+        {
+          "text": "at",
+          "start": 13.76,
+          "end": 14.0,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": "ure",
+          "start": 14.0,
+          "end": 14.16,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " liv",
+          "start": 14.72,
+          "end": 14.96,
+          "duration": 0.24,
+          "confidence": 0.949
+        },
+        {
+          "text": "es",
+          "start": 14.96,
+          "end": 15.12,
+          "duration": 0.16,
+          "confidence": 0.985
+        },
+        {
+          "text": " over",
+          "start": 15.44,
+          "end": 15.76,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " time",
+          "start": 15.76,
+          "end": 16.08,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": ",",
+          "start": 16.08,
+          "end": 16.32,
+          "duration": 0.24,
+          "confidence": 0.964
+        },
+        {
+          "text": " we",
+          "start": 16.32,
+          "end": 16.56,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " end",
+          "start": 16.56,
+          "end": 16.8,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " up",
+          "start": 16.8,
+          "end": 17.04,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " hav",
+          "start": 17.04,
+          "end": 17.2,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ing",
+          "start": 17.2,
+          "end": 17.44,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " t",
+          "start": 17.44,
+          "end": 17.52,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "ho",
+          "start": 17.52,
+          "end": 17.6,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "us",
+          "start": 17.6,
+          "end": 17.68,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "and",
+          "start": 17.68,
+          "end": 17.84,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "s",
+          "start": 17.84,
+          "end": 18.08,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " of",
+          "start": 18.08,
+          "end": 18.32,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " de",
+          "start": 18.32,
+          "end": 18.56,
+          "duration": 0.24,
+          "confidence": 0.979
+        },
+        {
+          "text": "cis",
+          "start": 18.56,
+          "end": 18.8,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "ions",
+          "start": 18.8,
+          "end": 19.04,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": " de",
+          "start": 19.76,
+          "end": 20.0,
+          "duration": 0.24,
+          "confidence": 0.914
+        },
+        {
+          "text": "cis",
+          "start": 20.0,
+          "end": 20.24,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "ion",
+          "start": 20.24,
+          "end": 20.48,
+          "duration": 0.24,
+          "confidence": 0.968
+        },
+        {
+          "text": " fil",
+          "start": 20.72,
+          "end": 21.04,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": "es",
+          "start": 21.04,
+          "end": 21.36,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 21.44,
+          "end": 21.76,
+          "duration": 0.32,
+          "confidence": 0.901
+        }
+      ]
+    },
+    {
+      "text": " That can become maintenance burden.",
+      "start": 21.76,
+      "end": 24.96,
+      "duration": 3.2,
+      "confidence": 0.99,
+      "tokens": [
+        {
+          "text": " That",
+          "start": 21.76,
+          "end": 22.08,
+          "duration": 0.32,
+          "confidence": 0.943
+        },
+        {
+          "text": " can",
+          "start": 22.08,
+          "end": 22.4,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " be",
+          "start": 22.4,
+          "end": 22.64,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "c",
+          "start": 22.64,
+          "end": 22.8,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": "ome",
+          "start": 22.8,
+          "end": 22.88,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " main",
+          "start": 23.12,
+          "end": 23.36,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "ten",
+          "start": 23.36,
+          "end": 23.6,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "ance",
+          "start": 23.6,
+          "end": 23.84,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " b",
+          "start": 23.84,
+          "end": 24.0,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": "ur",
+          "start": 24.0,
+          "end": 24.32,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": "den",
+          "start": 24.32,
+          "end": 24.64,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 24.64,
+          "end": 24.96,
+          "duration": 0.32,
+          "confidence": 0.947
+        }
+      ]
+    },
+    {
+      "text": " Absolutely agree.",
+      "start": 25.2,
+      "end": 27.36,
+      "duration": 2.16,
+      "confidence": 0.994,
+      "tokens": [
+        {
+          "text": " Ab",
+          "start": 25.2,
+          "end": 25.36,
+          "duration": 0.16,
+          "confidence": 0.986
+        },
+        {
+          "text": "s",
+          "start": 25.36,
+          "end": 25.6,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": "ol",
+          "start": 25.6,
+          "end": 25.6,
+          "duration": 0.0,
+          "confidence": 1.0
+        },
+        {
+          "text": "ut",
+          "start": 25.6,
+          "end": 25.84,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "ely",
+          "start": 25.84,
+          "end": 25.92,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " ag",
+          "start": 26.16,
+          "end": 26.48,
+          "duration": 0.32,
+          "confidence": 0.998
+        },
+        {
+          "text": "ree",
+          "start": 26.48,
+          "end": 26.8,
+          "duration": 0.32,
+          "confidence": 0.998
+        },
+        {
+          "text": ".",
+          "start": 27.04,
+          "end": 27.36,
+          "duration": 0.32,
+          "confidence": 0.968
+        }
+      ]
+    },
+    {
+      "text": " This is so first thing I uh one of the paper I have write, uh it was about like uh coding with flow, paying with depth.",
+      "start": 27.36,
+      "end": 38.32,
+      "duration": 10.96,
+      "confidence": 0.975,
+      "tokens": [
+        {
+          "text": " This",
+          "start": 27.36,
+          "end": 27.68,
+          "duration": 0.32,
+          "confidence": 0.944
+        },
+        {
+          "text": " is",
+          "start": 27.92,
+          "end": 28.24,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " so",
+          "start": 28.72,
+          "end": 28.96,
+          "duration": 0.24,
+          "confidence": 0.953
+        },
+        {
+          "text": " first",
+          "start": 29.12,
+          "end": 29.44,
+          "duration": 0.32,
+          "confidence": 0.981
+        },
+        {
+          "text": " th",
+          "start": 29.44,
+          "end": 29.52,
+          "duration": 0.08,
+          "confidence": 0.994
+        },
+        {
+          "text": "ing",
+          "start": 29.52,
+          "end": 29.6,
+          "duration": 0.08,
+          "confidence": 0.999
+        },
+        {
+          "text": " I",
+          "start": 29.68,
+          "end": 29.92,
+          "duration": 0.24,
+          "confidence": 0.991
+        },
+        {
+          "text": " uh",
+          "start": 30.0,
+          "end": 30.32,
+          "duration": 0.32,
+          "confidence": 0.95
+        },
+        {
+          "text": " one",
+          "start": 30.64,
+          "end": 30.88,
+          "duration": 0.24,
+          "confidence": 0.961
+        },
+        {
+          "text": " of",
+          "start": 30.88,
+          "end": 31.04,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " the",
+          "start": 31.04,
+          "end": 31.12,
+          "duration": 0.08,
+          "confidence": 0.999
+        },
+        {
+          "text": " pap",
+          "start": 31.12,
+          "end": 31.36,
+          "duration": 0.24,
+          "confidence": 0.992
+        },
+        {
+          "text": "er",
+          "start": 31.36,
+          "end": 31.6,
+          "duration": 0.24,
+          "confidence": 0.933
+        },
+        {
+          "text": " I",
+          "start": 31.6,
+          "end": 31.76,
+          "duration": 0.16,
+          "confidence": 0.996
+        },
+        {
+          "text": " have",
+          "start": 31.76,
+          "end": 32.0,
+          "duration": 0.24,
+          "confidence": 0.918
+        },
+        {
+          "text": " w",
+          "start": 32.16,
+          "end": 32.4,
+          "duration": 0.24,
+          "confidence": 0.935
+        },
+        {
+          "text": "r",
+          "start": 32.4,
+          "end": 32.64,
+          "duration": 0.24,
+          "confidence": 0.954
+        },
+        {
+          "text": "ite",
+          "start": 32.64,
+          "end": 32.88,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": ",",
+          "start": 32.88,
+          "end": 33.04,
+          "duration": 0.16,
+          "confidence": 0.882
+        },
+        {
+          "text": " uh",
+          "start": 33.04,
+          "end": 33.12,
+          "duration": 0.08,
+          "confidence": 0.921
+        },
+        {
+          "text": " it",
+          "start": 33.2,
+          "end": 33.52,
+          "duration": 0.32,
+          "confidence": 0.99
+        },
+        {
+          "text": " was",
+          "start": 33.52,
+          "end": 33.84,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " about",
+          "start": 33.84,
+          "end": 34.08,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " like",
+          "start": 34.08,
+          "end": 34.4,
+          "duration": 0.32,
+          "confidence": 0.991
+        },
+        {
+          "text": " uh",
+          "start": 34.4,
+          "end": 34.72,
+          "duration": 0.32,
+          "confidence": 0.961
+        },
+        {
+          "text": " c",
+          "start": 35.52,
+          "end": 35.76,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": "od",
+          "start": 35.76,
+          "end": 35.92,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ing",
+          "start": 35.92,
+          "end": 36.08,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " with",
+          "start": 36.08,
+          "end": 36.32,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " fl",
+          "start": 36.32,
+          "end": 36.56,
+          "duration": 0.24,
+          "confidence": 0.998
+        },
+        {
+          "text": "ow",
+          "start": 36.56,
+          "end": 36.72,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": ",",
+          "start": 36.72,
+          "end": 36.88,
+          "duration": 0.16,
+          "confidence": 0.938
+        },
+        {
+          "text": " pa",
+          "start": 36.88,
+          "end": 37.04,
+          "duration": 0.16,
+          "confidence": 0.962
+        },
+        {
+          "text": "y",
+          "start": 37.04,
+          "end": 37.2,
+          "duration": 0.16,
+          "confidence": 0.998
+        },
+        {
+          "text": "ing",
+          "start": 37.2,
+          "end": 37.36,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " with",
+          "start": 37.36,
+          "end": 37.52,
+          "duration": 0.16,
+          "confidence": 0.998
+        },
+        {
+          "text": " de",
+          "start": 37.52,
+          "end": 37.76,
+          "duration": 0.24,
+          "confidence": 0.993
+        },
+        {
+          "text": "pt",
+          "start": 37.76,
+          "end": 38.0,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "h",
+          "start": 38.0,
+          "end": 38.16,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": ".",
+          "start": 38.16,
+          "end": 38.32,
+          "duration": 0.16,
+          "confidence": 0.892
+        }
+      ]
+    },
+    {
+      "text": " And this depth was like a kind of maintenance burden.",
+      "start": 38.32,
+      "end": 42.24,
+      "duration": 3.92,
+      "confidence": 0.994,
+      "tokens": [
+        {
+          "text": " And",
+          "start": 38.32,
+          "end": 38.56,
+          "duration": 0.24,
+          "confidence": 0.978
+        },
+        {
+          "text": " this",
+          "start": 38.56,
+          "end": 38.8,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": " de",
+          "start": 39.04,
+          "end": 39.2,
+          "duration": 0.16,
+          "confidence": 0.996
+        },
+        {
+          "text": "pt",
+          "start": 39.2,
+          "end": 39.36,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "h",
+          "start": 39.36,
+          "end": 39.52,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " was",
+          "start": 39.52,
+          "end": 39.68,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " like",
+          "start": 39.68,
+          "end": 39.84,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " a",
+          "start": 39.84,
+          "end": 40.0,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " kind",
+          "start": 40.0,
+          "end": 40.24,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " of",
+          "start": 40.24,
+          "end": 40.48,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " main",
+          "start": 40.48,
+          "end": 40.72,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "ten",
+          "start": 40.72,
+          "end": 40.88,
+          "duration": 0.16,
+          "confidence": 0.998
+        },
+        {
+          "text": "ance",
+          "start": 40.88,
+          "end": 41.12,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " b",
+          "start": 41.12,
+          "end": 41.36,
+          "duration": 0.24,
+          "confidence": 0.998
+        },
+        {
+          "text": "ur",
+          "start": 41.36,
+          "end": 41.68,
+          "duration": 0.32,
+          "confidence": 0.999
+        },
+        {
+          "text": "den",
+          "start": 41.68,
+          "end": 41.92,
+          "duration": 0.24,
+          "confidence": 0.982
+        },
+        {
+          "text": ".",
+          "start": 41.92,
+          "end": 42.24,
+          "duration": 0.32,
+          "confidence": 0.945
+        }
+      ]
+    },
+    {
+      "text": " So yes, at some point, even if you are doing some sort of the wild vibe coding, I'm saying wild wild vibe coding, uh at some point you will feel that okay, we are developing something that is not really necessary.",
+      "start": 42.24,
+      "end": 57.76,
+      "duration": 15.52,
+      "confidence": 0.984,
+      "tokens": [
+        {
+          "text": " So",
+          "start": 42.24,
+          "end": 42.56,
+          "duration": 0.32,
+          "confidence": 0.993
+        },
+        {
+          "text": " y",
+          "start": 42.88,
+          "end": 43.2,
+          "duration": 0.32,
+          "confidence": 0.994
+        },
+        {
+          "text": "es",
+          "start": 43.2,
+          "end": 43.36,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": ",",
+          "start": 43.36,
+          "end": 43.52,
+          "duration": 0.16,
+          "confidence": 0.926
+        },
+        {
+          "text": " at",
+          "start": 43.52,
+          "end": 43.84,
+          "duration": 0.32,
+          "confidence": 0.999
+        },
+        {
+          "text": " some",
+          "start": 43.84,
+          "end": 44.16,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " point",
+          "start": 44.16,
+          "end": 44.48,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": ",",
+          "start": 44.48,
+          "end": 44.64,
+          "duration": 0.16,
+          "confidence": 0.929
+        },
+        {
+          "text": " even",
+          "start": 44.64,
+          "end": 44.96,
+          "duration": 0.32,
+          "confidence": 0.998
+        },
+        {
+          "text": " if",
+          "start": 45.04,
+          "end": 45.28,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " you",
+          "start": 45.28,
+          "end": 45.44,
+          "duration": 0.16,
+          "confidence": 0.998
+        },
+        {
+          "text": " are",
+          "start": 45.44,
+          "end": 45.6,
+          "duration": 0.16,
+          "confidence": 0.993
+        },
+        {
+          "text": " do",
+          "start": 45.6,
+          "end": 45.76,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ing",
+          "start": 45.76,
+          "end": 45.84,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " some",
+          "start": 46.08,
+          "end": 46.24,
+          "duration": 0.16,
+          "confidence": 0.995
+        },
+        {
+          "text": " s",
+          "start": 46.24,
+          "end": 46.4,
+          "duration": 0.16,
+          "confidence": 0.992
+        },
+        {
+          "text": "ort",
+          "start": 46.4,
+          "end": 46.48,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " of",
+          "start": 46.48,
+          "end": 46.72,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " the",
+          "start": 46.72,
+          "end": 46.96,
+          "duration": 0.24,
+          "confidence": 0.905
+        },
+        {
+          "text": " w",
+          "start": 46.96,
+          "end": 47.12,
+          "duration": 0.16,
+          "confidence": 0.992
+        },
+        {
+          "text": "ild",
+          "start": 47.12,
+          "end": 47.36,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": " vi",
+          "start": 47.36,
+          "end": 47.6,
+          "duration": 0.24,
+          "confidence": 0.947
+        },
+        {
+          "text": "be",
+          "start": 47.6,
+          "end": 47.84,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": " c",
+          "start": 47.84,
+          "end": 48.0,
+          "duration": 0.16,
+          "confidence": 0.993
+        },
+        {
+          "text": "od",
+          "start": 48.0,
+          "end": 48.24,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "ing",
+          "start": 48.24,
+          "end": 48.48,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": ",",
+          "start": 48.48,
+          "end": 48.72,
+          "duration": 0.24,
+          "confidence": 0.9
+        },
+        {
+          "text": " I",
+          "start": 48.72,
+          "end": 48.8,
+          "duration": 0.08,
+          "confidence": 0.994
+        },
+        {
+          "text": "'",
+          "start": 48.8,
+          "end": 48.96,
+          "duration": 0.16,
+          "confidence": 0.985
+        },
+        {
+          "text": "m",
+          "start": 48.96,
+          "end": 49.04,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " say",
+          "start": 49.04,
+          "end": 49.2,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": "ing",
+          "start": 49.2,
+          "end": 49.28,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " w",
+          "start": 49.44,
+          "end": 49.6,
+          "duration": 0.16,
+          "confidence": 0.887
+        },
+        {
+          "text": "ild",
+          "start": 49.6,
+          "end": 49.76,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " w",
+          "start": 50.0,
+          "end": 50.16,
+          "duration": 0.16,
+          "confidence": 0.967
+        },
+        {
+          "text": "ild",
+          "start": 50.16,
+          "end": 50.4,
+          "duration": 0.24,
+          "confidence": 0.998
+        },
+        {
+          "text": " vi",
+          "start": 50.4,
+          "end": 50.64,
+          "duration": 0.24,
+          "confidence": 0.944
+        },
+        {
+          "text": "be",
+          "start": 50.64,
+          "end": 50.88,
+          "duration": 0.24,
+          "confidence": 0.997
+        },
+        {
+          "text": " c",
+          "start": 50.88,
+          "end": 51.04,
+          "duration": 0.16,
+          "confidence": 0.981
+        },
+        {
+          "text": "od",
+          "start": 51.04,
+          "end": 51.28,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "ing",
+          "start": 51.28,
+          "end": 51.6,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": ",",
+          "start": 51.68,
+          "end": 51.84,
+          "duration": 0.16,
+          "confidence": 0.892
+        },
+        {
+          "text": " uh",
+          "start": 51.84,
+          "end": 52.08,
+          "duration": 0.24,
+          "confidence": 0.934
+        },
+        {
+          "text": " at",
+          "start": 52.24,
+          "end": 52.56,
+          "duration": 0.32,
+          "confidence": 0.996
+        },
+        {
+          "text": " some",
+          "start": 52.56,
+          "end": 52.8,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " point",
+          "start": 52.8,
+          "end": 53.04,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": " you",
+          "start": 53.12,
+          "end": 53.36,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " will",
+          "start": 53.36,
+          "end": 53.6,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " fe",
+          "start": 53.6,
+          "end": 53.68,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "el",
+          "start": 53.68,
+          "end": 53.92,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " that",
+          "start": 53.92,
+          "end": 54.08,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " o",
+          "start": 54.16,
+          "end": 54.32,
+          "duration": 0.16,
+          "confidence": 0.977
+        },
+        {
+          "text": "kay",
+          "start": 54.32,
+          "end": 54.48,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": ",",
+          "start": 54.48,
+          "end": 54.64,
+          "duration": 0.16,
+          "confidence": 0.881
+        },
+        {
+          "text": " we",
+          "start": 54.64,
+          "end": 54.8,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " are",
+          "start": 54.8,
+          "end": 54.96,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " de",
+          "start": 54.96,
+          "end": 55.04,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "vel",
+          "start": 55.04,
+          "end": 55.2,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "op",
+          "start": 55.2,
+          "end": 55.36,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ing",
+          "start": 55.36,
+          "end": 55.6,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " somet",
+          "start": 55.6,
+          "end": 55.76,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "hing",
+          "start": 55.76,
+          "end": 55.92,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " that",
+          "start": 55.92,
+          "end": 56.08,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " is",
+          "start": 56.08,
+          "end": 56.32,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " not",
+          "start": 56.32,
+          "end": 56.64,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " really",
+          "start": 56.64,
+          "end": 56.96,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " necess",
+          "start": 56.96,
+          "end": 57.28,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": "ary",
+          "start": 57.28,
+          "end": 57.6,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 57.6,
+          "end": 57.76,
+          "duration": 0.16,
+          "confidence": 0.961
+        }
+      ]
+    },
+    {
+      "text": " You will find so many files that are unnecessary, so many chunks of code that are not uh that need to clean up.",
+      "start": 57.76,
+      "end": 65.04,
+      "duration": 7.28,
+      "confidence": 0.992,
+      "tokens": [
+        {
+          "text": " You",
+          "start": 57.76,
+          "end": 57.92,
+          "duration": 0.16,
+          "confidence": 0.978
+        },
+        {
+          "text": " will",
+          "start": 57.92,
+          "end": 58.08,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " f",
+          "start": 58.08,
+          "end": 58.24,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ind",
+          "start": 58.24,
+          "end": 58.4,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " so",
+          "start": 58.56,
+          "end": 58.8,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " man",
+          "start": 58.8,
+          "end": 58.88,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "y",
+          "start": 58.88,
+          "end": 58.96,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " fil",
+          "start": 58.96,
+          "end": 59.2,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": "es",
+          "start": 59.2,
+          "end": 59.36,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " that",
+          "start": 59.44,
+          "end": 59.6,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " are",
+          "start": 59.6,
+          "end": 59.76,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " un",
+          "start": 59.76,
+          "end": 59.92,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": "ne",
+          "start": 59.92,
+          "end": 60.08,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "cess",
+          "start": 60.08,
+          "end": 60.24,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ary",
+          "start": 60.24,
+          "end": 60.4,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": ",",
+          "start": 60.4,
+          "end": 60.48,
+          "duration": 0.08,
+          "confidence": 0.946
+        },
+        {
+          "text": " so",
+          "start": 60.48,
+          "end": 60.64,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " man",
+          "start": 60.64,
+          "end": 60.72,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "y",
+          "start": 60.72,
+          "end": 60.88,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " ch",
+          "start": 60.88,
+          "end": 61.04,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": "un",
+          "start": 61.04,
+          "end": 61.12,
+          "duration": 0.08,
+          "confidence": 0.918
+        },
+        {
+          "text": "ks",
+          "start": 61.12,
+          "end": 61.2,
+          "duration": 0.08,
+          "confidence": 0.999
+        },
+        {
+          "text": " of",
+          "start": 61.2,
+          "end": 61.36,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " c",
+          "start": 61.36,
+          "end": 61.52,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": "ode",
+          "start": 61.52,
+          "end": 61.68,
+          "duration": 0.16,
+          "confidence": 0.997
+        },
+        {
+          "text": " that",
+          "start": 61.68,
+          "end": 61.92,
+          "duration": 0.24,
+          "confidence": 0.993
+        },
+        {
+          "text": " are",
+          "start": 61.92,
+          "end": 62.16,
+          "duration": 0.24,
+          "confidence": 0.996
+        },
+        {
+          "text": " not",
+          "start": 62.16,
+          "end": 62.48,
+          "duration": 0.32,
+          "confidence": 0.996
+        },
+        {
+          "text": " uh",
+          "start": 62.64,
+          "end": 62.96,
+          "duration": 0.32,
+          "confidence": 0.962
+        },
+        {
+          "text": " that",
+          "start": 63.12,
+          "end": 63.44,
+          "duration": 0.32,
+          "confidence": 0.99
+        },
+        {
+          "text": " need",
+          "start": 63.44,
+          "end": 63.76,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " to",
+          "start": 63.76,
+          "end": 63.92,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " c",
+          "start": 63.92,
+          "end": 64.08,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "le",
+          "start": 64.08,
+          "end": 64.32,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "an",
+          "start": 64.32,
+          "end": 64.56,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " up",
+          "start": 64.56,
+          "end": 64.8,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 64.8,
+          "end": 65.04,
+          "duration": 0.24,
+          "confidence": 0.926
+        }
+      ]
+    },
+    {
+      "text": " So yeah, I agree with you.",
+      "start": 65.04,
+      "end": 67.04,
+      "duration": 2.0,
+      "confidence": 0.966,
+      "tokens": [
+        {
+          "text": " So",
+          "start": 65.04,
+          "end": 65.2,
+          "duration": 0.16,
+          "confidence": 0.993
+        },
+        {
+          "text": " ye",
+          "start": 65.36,
+          "end": 65.52,
+          "duration": 0.16,
+          "confidence": 0.998
+        },
+        {
+          "text": "ah",
+          "start": 65.52,
+          "end": 65.68,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": ",",
+          "start": 65.68,
+          "end": 65.84,
+          "duration": 0.16,
+          "confidence": 0.921
+        },
+        {
+          "text": " I",
+          "start": 65.84,
+          "end": 66.0,
+          "duration": 0.16,
+          "confidence": 0.891
+        },
+        {
+          "text": " ag",
+          "start": 66.08,
+          "end": 66.24,
+          "duration": 0.16,
+          "confidence": 0.998
+        },
+        {
+          "text": "ree",
+          "start": 66.24,
+          "end": 66.4,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " with",
+          "start": 66.4,
+          "end": 66.56,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " you",
+          "start": 66.56,
+          "end": 66.72,
+          "duration": 0.16,
+          "confidence": 0.991
+        },
+        {
+          "text": ".",
+          "start": 66.88,
+          "end": 67.04,
+          "duration": 0.16,
+          "confidence": 0.88
+        }
+      ]
+    },
+    {
+      "text": " Whoever asks the question, yes, maintenance burden.",
+      "start": 67.04,
+      "end": 69.76,
+      "duration": 2.72,
+      "confidence": 0.974,
+      "tokens": [
+        {
+          "text": " W",
+          "start": 67.04,
+          "end": 67.12,
+          "duration": 0.08,
+          "confidence": 0.983
+        },
+        {
+          "text": "ho",
+          "start": 67.12,
+          "end": 67.28,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "e",
+          "start": 67.28,
+          "end": 67.36,
+          "duration": 0.08,
+          "confidence": 0.998
+        },
+        {
+          "text": "ver",
+          "start": 67.36,
+          "end": 67.44,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " as",
+          "start": 67.52,
+          "end": 67.6,
+          "duration": 0.08,
+          "confidence": 0.921
+        },
+        {
+          "text": "ks",
+          "start": 67.6,
+          "end": 67.68,
+          "duration": 0.08,
+          "confidence": 0.994
+        },
+        {
+          "text": " the",
+          "start": 67.84,
+          "end": 67.92,
+          "duration": 0.08,
+          "confidence": 0.974
+        },
+        {
+          "text": " questi",
+          "start": 67.92,
+          "end": 68.0,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "on",
+          "start": 68.0,
+          "end": 68.16,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": ",",
+          "start": 68.16,
+          "end": 68.24,
+          "duration": 0.08,
+          "confidence": 0.876
+        },
+        {
+          "text": " y",
+          "start": 68.24,
+          "end": 68.32,
+          "duration": 0.08,
+          "confidence": 0.977
+        },
+        {
+          "text": "es",
+          "start": 68.32,
+          "end": 68.4,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": ",",
+          "start": 68.4,
+          "end": 68.56,
+          "duration": 0.16,
+          "confidence": 0.902
+        },
+        {
+          "text": " main",
+          "start": 68.56,
+          "end": 68.72,
+          "duration": 0.16,
+          "confidence": 0.997
+        },
+        {
+          "text": "ten",
+          "start": 68.72,
+          "end": 68.96,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": "ance",
+          "start": 68.96,
+          "end": 69.12,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " b",
+          "start": 69.12,
+          "end": 69.28,
+          "duration": 0.16,
+          "confidence": 0.996
+        },
+        {
+          "text": "ur",
+          "start": 69.28,
+          "end": 69.44,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": "den",
+          "start": 69.44,
+          "end": 69.6,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 69.6,
+          "end": 69.76,
+          "duration": 0.16,
+          "confidence": 0.891
+        }
+      ]
+    },
+    {
+      "text": " And it is not only maintenance burden for uh women but also for the agents as well.",
+      "start": 69.76,
+      "end": 74.4,
+      "duration": 4.64,
+      "confidence": 0.984,
+      "tokens": [
+        {
+          "text": " And",
+          "start": 69.76,
+          "end": 70.08,
+          "duration": 0.32,
+          "confidence": 0.986
+        },
+        {
+          "text": " it",
+          "start": 70.08,
+          "end": 70.24,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " is",
+          "start": 70.24,
+          "end": 70.4,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " not",
+          "start": 70.4,
+          "end": 70.56,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " only",
+          "start": 70.56,
+          "end": 70.8,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " main",
+          "start": 70.8,
+          "end": 71.04,
+          "duration": 0.24,
+          "confidence": 0.998
+        },
+        {
+          "text": "ten",
+          "start": 71.04,
+          "end": 71.2,
+          "duration": 0.16,
+          "confidence": 0.996
+        },
+        {
+          "text": "ance",
+          "start": 71.2,
+          "end": 71.36,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " b",
+          "start": 71.36,
+          "end": 71.44,
+          "duration": 0.08,
+          "confidence": 0.961
+        },
+        {
+          "text": "ur",
+          "start": 71.44,
+          "end": 71.6,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": "den",
+          "start": 71.6,
+          "end": 71.76,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " for",
+          "start": 71.76,
+          "end": 71.92,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " uh",
+          "start": 71.92,
+          "end": 72.08,
+          "duration": 0.16,
+          "confidence": 0.956
+        },
+        {
+          "text": " w",
+          "start": 72.08,
+          "end": 72.24,
+          "duration": 0.16,
+          "confidence": 0.907
+        },
+        {
+          "text": "omen",
+          "start": 72.24,
+          "end": 72.4,
+          "duration": 0.16,
+          "confidence": 0.953
+        },
+        {
+          "text": " but",
+          "start": 72.64,
+          "end": 72.8,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " also",
+          "start": 72.8,
+          "end": 72.96,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " for",
+          "start": 72.96,
+          "end": 73.04,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " the",
+          "start": 73.04,
+          "end": 73.28,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": " ag",
+          "start": 73.28,
+          "end": 73.44,
+          "duration": 0.16,
+          "confidence": 0.941
+        },
+        {
+          "text": "ents",
+          "start": 73.44,
+          "end": 73.6,
+          "duration": 0.16,
+          "confidence": 0.994
+        },
+        {
+          "text": " as",
+          "start": 73.84,
+          "end": 74.08,
+          "duration": 0.24,
+          "confidence": 0.987
+        },
+        {
+          "text": " well",
+          "start": 74.08,
+          "end": 74.24,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 74.24,
+          "end": 74.4,
+          "duration": 0.16,
+          "confidence": 0.949
+        }
+      ]
+    },
+    {
+      "text": " They will lose the context at some point and uh things will not go as you are intending to develop.",
+      "start": 74.4,
+      "end": 81.6,
+      "duration": 7.2,
+      "confidence": 0.993,
+      "tokens": [
+        {
+          "text": " The",
+          "start": 74.4,
+          "end": 74.48,
+          "duration": 0.08,
+          "confidence": 0.99
+        },
+        {
+          "text": "y",
+          "start": 74.48,
+          "end": 74.64,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " will",
+          "start": 74.64,
+          "end": 74.8,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " los",
+          "start": 74.8,
+          "end": 74.88,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "e",
+          "start": 74.88,
+          "end": 75.04,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " the",
+          "start": 75.04,
+          "end": 75.2,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " con",
+          "start": 75.2,
+          "end": 75.36,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": "te",
+          "start": 75.36,
+          "end": 75.6,
+          "duration": 0.24,
+          "confidence": 0.996
+        },
+        {
+          "text": "xt",
+          "start": 75.6,
+          "end": 75.76,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " at",
+          "start": 75.76,
+          "end": 76.0,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " some",
+          "start": 76.0,
+          "end": 76.32,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " point",
+          "start": 76.32,
+          "end": 76.64,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " and",
+          "start": 77.12,
+          "end": 77.44,
+          "duration": 0.32,
+          "confidence": 0.998
+        },
+        {
+          "text": " uh",
+          "start": 77.44,
+          "end": 77.76,
+          "duration": 0.32,
+          "confidence": 0.955
+        },
+        {
+          "text": " th",
+          "start": 78.08,
+          "end": 78.32,
+          "duration": 0.24,
+          "confidence": 0.997
+        },
+        {
+          "text": "ings",
+          "start": 78.32,
+          "end": 78.56,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": " will",
+          "start": 78.56,
+          "end": 78.8,
+          "duration": 0.24,
+          "confidence": 0.998
+        },
+        {
+          "text": " not",
+          "start": 78.8,
+          "end": 79.04,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " go",
+          "start": 79.04,
+          "end": 79.28,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " as",
+          "start": 79.28,
+          "end": 79.52,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " you",
+          "start": 79.52,
+          "end": 79.68,
+          "duration": 0.16,
+          "confidence": 0.997
+        },
+        {
+          "text": " are",
+          "start": 79.68,
+          "end": 79.92,
+          "duration": 0.24,
+          "confidence": 0.991
+        },
+        {
+          "text": " int",
+          "start": 79.92,
+          "end": 80.08,
+          "duration": 0.16,
+          "confidence": 0.998
+        },
+        {
+          "text": "end",
+          "start": 80.08,
+          "end": 80.32,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "ing",
+          "start": 80.32,
+          "end": 80.56,
+          "duration": 0.24,
+          "confidence": 0.957
+        },
+        {
+          "text": " to",
+          "start": 80.56,
+          "end": 80.8,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " de",
+          "start": 80.8,
+          "end": 80.96,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "vel",
+          "start": 80.96,
+          "end": 81.28,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": "op",
+          "start": 81.28,
+          "end": 81.44,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 81.44,
+          "end": 81.6,
+          "duration": 0.16,
+          "confidence": 0.919
+        }
+      ]
+    },
+    {
+      "text": " Do you want to comment on this?",
+      "start": 84.8,
+      "end": 86.88,
+      "duration": 2.08,
+      "confidence": 0.983,
+      "tokens": [
+        {
+          "text": " Do",
+          "start": 84.8,
+          "end": 85.12,
+          "duration": 0.32,
+          "confidence": 0.959
+        },
+        {
+          "text": " you",
+          "start": 85.12,
+          "end": 85.28,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " want",
+          "start": 85.28,
+          "end": 85.44,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " to",
+          "start": 85.44,
+          "end": 85.6,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " com",
+          "start": 85.6,
+          "end": 85.84,
+          "duration": 0.24,
+          "confidence": 0.993
+        },
+        {
+          "text": "ment",
+          "start": 85.84,
+          "end": 85.92,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " on",
+          "start": 86.32,
+          "end": 86.4,
+          "duration": 0.08,
+          "confidence": 0.991
+        },
+        {
+          "text": " this",
+          "start": 86.4,
+          "end": 86.56,
+          "duration": 0.16,
+          "confidence": 0.982
+        },
+        {
+          "text": "?",
+          "start": 86.64,
+          "end": 86.88,
+          "duration": 0.24,
+          "confidence": 0.928
+        }
+      ]
+    },
+    {
+      "text": " No, not okay with you.",
+      "start": 86.88,
+      "end": 89.2,
+      "duration": 2.32,
+      "confidence": 0.936,
+      "tokens": [
+        {
+          "text": " No",
+          "start": 86.88,
+          "end": 87.04,
+          "duration": 0.16,
+          "confidence": 0.975
+        },
+        {
+          "text": ",",
+          "start": 87.04,
+          "end": 87.2,
+          "duration": 0.16,
+          "confidence": 0.892
+        },
+        {
+          "text": " not",
+          "start": 87.2,
+          "end": 87.28,
+          "duration": 0.08,
+          "confidence": 0.857
+        },
+        {
+          "text": " o",
+          "start": 87.68,
+          "end": 87.84,
+          "duration": 0.16,
+          "confidence": 0.907
+        },
+        {
+          "text": "kay",
+          "start": 87.84,
+          "end": 87.92,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " with",
+          "start": 88.48,
+          "end": 88.64,
+          "duration": 0.16,
+          "confidence": 0.992
+        },
+        {
+          "text": " you",
+          "start": 88.64,
+          "end": 88.88,
+          "duration": 0.24,
+          "confidence": 0.936
+        },
+        {
+          "text": ".",
+          "start": 88.88,
+          "end": 89.2,
+          "duration": 0.32,
+          "confidence": 0.939
+        }
+      ]
+    },
+    {
+      "text": " Then we have another question.",
+      "start": 89.2,
+      "end": 91.84,
+      "duration": 2.64,
+      "confidence": 0.984,
+      "tokens": [
+        {
+          "text": " T",
+          "start": 89.2,
+          "end": 89.36,
+          "duration": 0.16,
+          "confidence": 0.93
+        },
+        {
+          "text": "hen",
+          "start": 89.36,
+          "end": 89.6,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " we",
+          "start": 89.6,
+          "end": 89.92,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " have",
+          "start": 89.92,
+          "end": 90.24,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " an",
+          "start": 90.4,
+          "end": 90.64,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "ot",
+          "start": 90.64,
+          "end": 90.96,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": "her",
+          "start": 90.96,
+          "end": 91.2,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " questi",
+          "start": 91.2,
+          "end": 91.52,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": "on",
+          "start": 91.52,
+          "end": 91.68,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 91.68,
+          "end": 91.84,
+          "duration": 0.16,
+          "confidence": 0.916
+        }
+      ]
+    }
+  ]
+}

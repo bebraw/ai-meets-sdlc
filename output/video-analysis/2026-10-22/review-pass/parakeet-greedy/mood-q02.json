@@ -1,0 +1,189 @@
+{
+  "text": "We should not be afraid of making mistakes because mistakes teach us more.",
+  "sentences": [
+    {
+      "text": " We should not be afraid of making mistakes because mistakes teach us more.",
+      "start": 5.76,
+      "end": 12.48,
+      "duration": 6.72,
+      "confidence": 0.997,
+      "tokens": [
+        {
+          "text": " We",
+          "start": 5.76,
+          "end": 6.08,
+          "duration": 0.32,
+          "confidence": 0.996
+        },
+        {
+          "text": " sho",
+          "start": 6.32,
+          "end": 6.48,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "uld",
+          "start": 6.48,
+          "end": 6.8,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " not",
+          "start": 6.8,
+          "end": 7.12,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " be",
+          "start": 7.12,
+          "end": 7.28,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " af",
+          "start": 7.28,
+          "end": 7.44,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ra",
+          "start": 7.44,
+          "end": 7.68,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "id",
+          "start": 7.68,
+          "end": 7.76,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " of",
+          "start": 7.76,
+          "end": 8.0,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " mak",
+          "start": 8.0,
+          "end": 8.24,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "ing",
+          "start": 8.24,
+          "end": 8.4,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " m",
+          "start": 8.4,
+          "end": 8.56,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ista",
+          "start": 8.56,
+          "end": 8.64,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "k",
+          "start": 8.64,
+          "end": 8.8,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "es",
+          "start": 8.8,
+          "end": 8.96,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " because",
+          "start": 9.2,
+          "end": 9.52,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " m",
+          "start": 9.52,
+          "end": 9.68,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ista",
+          "start": 9.68,
+          "end": 9.92,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "k",
+          "start": 9.92,
+          "end": 10.24,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": "es",
+          "start": 10.24,
+          "end": 10.56,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " te",
+          "start": 10.56,
+          "end": 10.88,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": "ach",
+          "start": 10.88,
+          "end": 11.2,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " us",
+          "start": 11.2,
+          "end": 11.52,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " more",
+          "start": 11.52,
+          "end": 11.84,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 12.16,
+          "end": 12.48,
+          "duration": 0.32,
+          "confidence": 0.933
+        }
+      ]
+    }
+  ]
+}

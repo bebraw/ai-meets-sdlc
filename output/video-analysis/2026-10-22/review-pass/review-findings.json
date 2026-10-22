@@ -1,0 +1,123 @@
+{
+  "reviewDate": "2026-10-22",
+  "directListeningPerformed": false,
+  "directListeningBlocker": "The current assistant session explicitly does not support audio input. Playback or file permissions cannot change that capability.",
+  "method": "Unquantized Whisper large-v3 with wider context, no supplied wording hints. Same model family as the existing captions; not direct listening.",
+  "contextWindows": [
+    {
+      "id": "jenni-wording",
+      "videoId": "jenni-talk",
+      "start": 1215,
+      "end": 1257,
+      "audio": "review-pass/jenni-wording.wav",
+      "asr": "review-pass/jenni-wording-large-v3.json",
+      "captionContext": "Do we sacrifice the release schedules, or do we gain later benefits from these AI learnings? Since the fact is that learning to use AI, it will take time. It means that as leaders, we need to take that into account when we define priorities and we make plans. Because if you overpromise something to your customer, deliver some feature to a customer, you probably end up sacrificing the learning as a first mitigation action if you run out of time. If I recap my learning so far, our work requires AI assets so that we can make various tasks.",
+      "text": "from these AI learnings. Since the fact is that learning to use AI, it will take time. It means that as leaders, we need to take that into account when we define priorities and we make plans. Because if you over-promise something to your customer, deliver some feature to your customer, you probably end up sacrificing the learning as a first mitigation action of time. If I recap my learning so far, so our work requires AI assets so that"
+    },
+    {
+      "id": "joongi-wording",
+      "videoId": "joongi-talk",
+      "start": 1036,
+      "end": 1066,
+      "audio": "review-pass/joongi-wording.wav",
+      "asr": "review-pass/joongi-wording-large-v3.json",
+      "captionContext": "themselves. Couple of slides to the end. How do we then move forward to achieve the future that generative UI was aiming for? Then would be the question that the prompt survey approach is the answer, is the problem solved? I would say the prompt-survey approach can also fail. This is also what we observed in our study. So sometimes LLM just continuously ask questions like that doesn't really align with or make sense in the human level or what the user was actually wanting to achieve. For example, they often intentionally ask very obscure, vague",
+      "text": "How do we then move forward to achieve the future that GenFUI was aiming for? Then would be the question that the prompt survey approach is the answer. Is the problem solved? I would say the problem survey approach can also fail. This is also what we observed in our study. So sometimes LLM just continuously ask questions that doesn't really align with or make sense in a human level or what the user was actually wanting to achieve."
+    },
+    {
+      "id": "final-wording-and-turn",
+      "videoId": "final-panel",
+      "start": 1469,
+      "end": 1561,
+      "audio": "review-pass/final-wording-and-turn.wav",
+      "asr": "review-pass/final-wording-and-turn-large-v3.json",
+      "captionContext": "- We have six. - So maybe one question or half. This one has more most votes so let's go with this if we were if you if we write down every decision and feature lives over time we end up having thousands of decisions decision files that can become maintenance burden. Absolutely agree. This is. So first thing I, one of the paper I write, it was about like coding with flow, paying with debt. And this debt was like a kind of maintenance burden. So yes, at some point, even if you are doing some sort of wild vibe coding, I'm saying a wild vibe coding, at some point you will feel that, okay, we are developing something that is not really necessary. You will find so many files that are unnecessary, so many chunk of code that need to clean up. So yeah, I agree with you, whoever asked the question, yes, maintenance burden. And it is not only maintenance burden for humans, but also for the agents as well. Will lose the context at some point and things will not go as you are intending to develop do you want to comment no I agree with him then we have another question",
+      "text": "This one has more, most votes, so let's go with this. If we write down every decision and feature lives over time, we end up having thousands of decision files. That can become maintenance burden. Absolutely agree. This is. So first thing I, one of the paper I have, right? It was about, like, coding with flow, paying with depth. And this depth was like a kind of maintenance burden. So, yes, at some point, even if you are doing some sort of wild vibe coding, I'm saying wild vibe coding, at some point you will feel that, okay, we are developing something that is not really necessary. You will find so many files that are unnecessary says there are so many chunks of code that need to clean up. So yeah, I agree with you, whoever asked the question. Yes, maintenance burden. And it is not only maintenance burden for women, but also for the agents as well. They will lose the context at some point, and things will not go as you are intending to develop. Do you want to comment? No. I agree with him. Then we have... another question."
+    },
+    {
+      "id": "industry-handoff",
+      "videoId": "industry-panel",
+      "start": 808,
+      "end": 895,
+      "audio": "review-pass/industry-handoff.wav",
+      "asr": "review-pass/industry-handoff-large-v3.json",
+      "captionContext": "Maybe one for Viljami and one for all. Of course you can all answer this. Viljami, how do developers maintain a mental model of the software when patches are coming in from outside engineering? I don't know. I have to say, personally, I can answer, right? So like the code I wrote and the code I still write with AI agents is still the same, exactly as before, right? So we don't have any special tooling around that. The only thing that maybe we did add, but I don't know if that answers your question about how do the engineers maintain that mental model, but also the agents need to maintain that mental model. So what we specifically do is we run sort of these scanners to our code base and then create these indexes into the knowledge base to kind of try to explain and understand, okay, what is this repo about? Because I did mention we have more than 300 production repositories in our code base, so there's a lot to kind of look into. We maintain basically a lot of documentation, and now that documentation is maintained by AI itself. So we share that documentation. That's also what engineers use. They read that same documentation. It's actually public. You can go and read it yourself on docs.epilot.io if you are interested. But it hasn't really changed, to be honest. The engineer still fully owns the code they write, the code they merge. So you build up that mental model as you do that, even if you don't write every single line. Thank you.",
+      "text": "Maybe one for William and one for all. Of course, you can all answer. William, how do developers maintain a mental model of the software when patches are coming in from outside engineering? I don't know. I have to say. Personally, I can answer. The code I wrote and the code I still write with AI agents is still the same, exactly as before. We don't have any special tooling around that. The only thing that maybe we did add, but I don't know if that answers your question about how do the engineers maintain that mental model, but also the agents need to maintain that mental model. So what we specifically do is we run sort of these scanners to our code base and then create these indexes into the knowledge base to kind of try to explain and understand, okay, what is this repo about? Because I did mention we have more than 300 production repositories in our code base. So there's a lot to kind of look into. a lot of documentation and now that documentation is maintained by AI itself. So we share that documentation. That's also what engineers use. They read that same documentation. It's actually public. You can go and read it yourself on docs.ipad.io if you are interested. But it hasn't really changed, to be honest. The engineer still fully owns the code they write, the code they merge. So you build up that mental model as you do that, even if you don't write everything online. Thank you."
+    },
+    {
+      "id": "research-handoff",
+      "videoId": "research-panel",
+      "start": 928,
+      "end": 983,
+      "audio": "review-pass/research-handoff.wav",
+      "asr": "review-pass/research-handoff-large-v3.json",
+      "captionContext": "But I think it will take a while to sort of be end to end. - Does Joongi have anything to add? - Whenever I hear this, I have a slightly different thoughts. Like people saying the problem is always the problem. Sure, that's how everything starts. But I think a lot of times the problem actually evolves by you building and testing stuff. So I think that's actually one of the limitation where people are just dealing in order this building problems to AI, just to get what, receive what is generated and try to just, okay, the problem is solved try to end it so I think building is still part of the the problem that helps you try to understand what the problem is really about so I wouldn't just uh completely abandon what practice we have been building up on that's true uh",
+      "text": "But I think it will take a while to sort of be end-to-end. Does Jun have anything to add? Whenever I hear this, I have slightly different thoughts. Like people saying the problem is always the problem. Sure, that's how everything starts. But I think a lot of times the problem actually evolves by you building and testing stuff. So I think that's actually one of the limitations where people are just dealing in all this. building problems to AI just to receive what is generated and try to just, okay, the problem is solved and try to end it. So I think building is still part of the problem that helps you try to understand what the problem is really about. So I wouldn't just completely abandon what practice we have been building upon. That's true."
+    },
+    {
+      "id": "mood-sini-original",
+      "videoId": "industry-panel",
+      "start": 164,
+      "end": 201,
+      "audio": "review-pass/mood-sini-original.wav",
+      "asr": "review-pass/mood-sini-original-large-v3.json",
+      "captionContext": "uh Sini in terms of autonomy who makes sure that the team works in the right and most important things? That's a really good question. Of course, when developing stuff, you should look for the business. You should have a business validation. You should really think why you're building this. Is this relevant? Is this actually bringing us some value at the end? And I think customers are great validators in the sense that now when we are living in the times of vibe coding, you can demonstrate the value very fast you can",
+      "text": "Sini. In terms of autonomy, who makes sure that the team works in the right and most important things? That's a really good question. Of course, when developing stuff, you should look for the business. You should have a business validation. You should really think why you're building this. Is this relevant? Is this actually bringing us some value? at the end and I think customers are great validators in the sense that now when we are living in the times of why"
+    }
+  ],
+  "wording": {
+    "jenni-talk-q02": {
+      "contextWindow": "jenni-wording",
+      "finding": "Captions have “deliver some feature to a customer”. Both fresh short-window and wider-context ASR render “deliver some feature to your customer”. The wider pass also drops words near the end. These are correlated Whisper-family results, so the exact quotation remains unresolved.",
+      "paraphrase": "Protect learning time when making delivery commitments, or urgent work will displace it."
+    },
+    "joongi-talk-q02": {
+      "contextWindow": "joongi-wording",
+      "finding": "Captions and the slide use “prompt-survey”. Both fresh ASR passes render “problem survey” in the disputed sentence, although the wider pass renders “prompt survey” immediately before it. The intended method is clear; whether the spoken sentence contains that term or a slip remains unresolved.",
+      "paraphrase": "The prompt-survey approach can fail when follow-up questions do not serve the user’s task."
+    },
+    "final-panel-q01": {
+      "contextWindow": "final-wording-and-turn",
+      "finding": "Captions have “humans”; both fresh ASR passes render “women”. The comparison with agents suggests people are intended, but context cannot establish the exact word spoken. Keep this as a paraphrase until direct listening. The host does not name the respondent in this handoff, so individual attribution remains unresolved.",
+      "paraphrase": "Accumulated decision records create maintenance work for both people and agents."
+    }
+  },
+  "attributions": {
+    "industry-panel-q01": {
+      "speaker": "Viljami Kuosmanen",
+      "status": "Supported by an explicit named question and the continuous answer in the final captions.",
+      "basis": "At 13:34 the host addresses Viljami about maintaining a mental model. The answer continues through the quote at 14:44 and ends with thanks at 14:53; its references to 300 repositories and shared documentation also fit his talk. Wider-context ASR preserves the question/answer sequence but misrenders the name as “William”.",
+      "contextWindow": "industry-handoff"
+    },
+    "research-panel-q01": {
+      "speaker": "Joongi Shin",
+      "status": "Supported by an explicit named handoff and the continuous answer in the final captions.",
+      "basis": "At 15:35 the host asks Joongi to add his view. The following answer contains the quote at 15:49 and continues to 16:23 without an intervening handoff. Wider-context ASR preserves the sequence but misrenders the name as “Jun”.",
+      "contextWindow": "research-handoff"
+    },
+    "mood-q01": {
+      "speaker": "Sini Tistelgrén",
+      "status": "Supported by the edit mapping and an explicit named question in the original session.",
+      "basis": "The mood-film excerpt maps to the industry Q&A. At 02:44 the host addresses Sini about choosing the right work; the continuous answer includes the value question used in the mood film. Wider-context ASR also renders the name Sini.",
+      "contextWindow": "mood-sini-original"
+    },
+    "mood-q02": {
+      "speaker": "Jenni Kylmäkoski",
+      "status": "Supported by the edit mapping to the named single-speaker talk.",
+      "basis": "The edit mapping points to Jenni’s talk at 23:28–23:35. The final talk captions and the mood-film captions contain the excerpt."
+    },
+    "final-panel-q01": {
+      "speaker": "Final Q&A contribution",
+      "status": "Unresolved individual attribution.",
+      "basis": "The host reads an audience question without naming a respondent. A response begins at 24:54, contains the quote at 25:37, and is followed by “Do you want to comment?” and “I agree with him”. The topic and a reference to a paper are insufficient to establish the speaker’s name.",
+      "contextWindow": "final-wording-and-turn"
+    }
+  },
+  "counts": {
+    "quoteCandidates": 22,
+    "attributionsSupportedByMetadataOrContext": 21,
+    "unresolvedIndividualAttributions": 1,
+    "unresolvedWordingDifferences": 3
+  },
+  "nextStep": "Use an audio-capable model/tool or a person to review the three disputed excerpts and identify the final-panel respondent. Full listening/viewing of proposed clips is still pending."
+}

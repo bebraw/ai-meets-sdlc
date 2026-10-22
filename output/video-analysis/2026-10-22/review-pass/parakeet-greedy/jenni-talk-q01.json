@@ -1,0 +1,396 @@
+{
+  "text": "Develop and maintain these assets are toolbox. We need to treat it as a product. In software development, I think AI assets are a bit similar than code and",
+  "sentences": [
+    {
+      "text": " Develop and maintain these assets are toolbox.",
+      "start": 0.24,
+      "end": 5.84,
+      "duration": 5.6,
+      "confidence": 0.978,
+      "tokens": [
+        {
+          "text": " De",
+          "start": 0.24,
+          "end": 0.32,
+          "duration": 0.08,
+          "confidence": 0.92
+        },
+        {
+          "text": "vel",
+          "start": 0.32,
+          "end": 0.56,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "op",
+          "start": 0.56,
+          "end": 0.72,
+          "duration": 0.16,
+          "confidence": 0.927
+        },
+        {
+          "text": " and",
+          "start": 0.72,
+          "end": 0.96,
+          "duration": 0.24,
+          "confidence": 0.983
+        },
+        {
+          "text": " main",
+          "start": 0.96,
+          "end": 1.2,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": "tain",
+          "start": 1.2,
+          "end": 1.44,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " these",
+          "start": 1.6,
+          "end": 1.92,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " ass",
+          "start": 1.92,
+          "end": 2.24,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": "ets",
+          "start": 2.24,
+          "end": 2.56,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " are",
+          "start": 4.32,
+          "end": 4.48,
+          "duration": 0.16,
+          "confidence": 0.908
+        },
+        {
+          "text": " to",
+          "start": 4.72,
+          "end": 4.96,
+          "duration": 0.24,
+          "confidence": 0.994
+        },
+        {
+          "text": "ol",
+          "start": 4.96,
+          "end": 5.12,
+          "duration": 0.16,
+          "confidence": 0.988
+        },
+        {
+          "text": "bo",
+          "start": 5.12,
+          "end": 5.36,
+          "duration": 0.24,
+          "confidence": 0.997
+        },
+        {
+          "text": "x",
+          "start": 5.36,
+          "end": 5.68,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 5.68,
+          "end": 5.84,
+          "duration": 0.16,
+          "confidence": 0.958
+        }
+      ]
+    },
+    {
+      "text": " We need to treat it as a product.",
+      "start": 5.84,
+      "end": 9.2,
+      "duration": 3.36,
+      "confidence": 0.998,
+      "tokens": [
+        {
+          "text": " We",
+          "start": 5.84,
+          "end": 6.08,
+          "duration": 0.24,
+          "confidence": 0.998
+        },
+        {
+          "text": " need",
+          "start": 6.08,
+          "end": 6.24,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " to",
+          "start": 6.24,
+          "end": 6.4,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " tre",
+          "start": 6.4,
+          "end": 6.56,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "at",
+          "start": 6.56,
+          "end": 6.72,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " it",
+          "start": 6.72,
+          "end": 6.88,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " as",
+          "start": 6.88,
+          "end": 7.12,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " a",
+          "start": 7.12,
+          "end": 7.44,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " produ",
+          "start": 7.44,
+          "end": 7.76,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": "ct",
+          "start": 7.76,
+          "end": 8.08,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 8.96,
+          "end": 9.2,
+          "duration": 0.24,
+          "confidence": 0.976
+        }
+      ]
+    },
+    {
+      "text": " In software development, I think AI assets are a bit similar than code and",
+      "start": 9.6,
+      "end": 15.68,
+      "duration": 6.08,
+      "confidence": 0.992,
+      "tokens": [
+        {
+          "text": " In",
+          "start": 9.6,
+          "end": 9.92,
+          "duration": 0.32,
+          "confidence": 0.987
+        },
+        {
+          "text": " so",
+          "start": 9.92,
+          "end": 10.08,
+          "duration": 0.16,
+          "confidence": 0.998
+        },
+        {
+          "text": "ft",
+          "start": 10.08,
+          "end": 10.24,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "w",
+          "start": 10.24,
+          "end": 10.4,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "are",
+          "start": 10.4,
+          "end": 10.56,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " de",
+          "start": 10.56,
+          "end": 10.72,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "vel",
+          "start": 10.72,
+          "end": 10.96,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "op",
+          "start": 10.96,
+          "end": 11.28,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": "ment",
+          "start": 11.28,
+          "end": 11.6,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": ",",
+          "start": 11.68,
+          "end": 11.92,
+          "duration": 0.24,
+          "confidence": 0.943
+        },
+        {
+          "text": " I",
+          "start": 11.92,
+          "end": 12.24,
+          "duration": 0.32,
+          "confidence": 0.998
+        },
+        {
+          "text": " think",
+          "start": 12.24,
+          "end": 12.56,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " A",
+          "start": 12.8,
+          "end": 12.96,
+          "duration": 0.16,
+          "confidence": 0.998
+        },
+        {
+          "text": "I",
+          "start": 12.96,
+          "end": 13.2,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " ass",
+          "start": 13.2,
+          "end": 13.44,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": "ets",
+          "start": 13.44,
+          "end": 13.68,
+          "duration": 0.24,
+          "confidence": 0.998
+        },
+        {
+          "text": " are",
+          "start": 13.68,
+          "end": 13.84,
+          "duration": 0.16,
+          "confidence": 0.997
+        },
+        {
+          "text": " a",
+          "start": 13.84,
+          "end": 13.92,
+          "duration": 0.08,
+          "confidence": 0.994
+        },
+        {
+          "text": " bit",
+          "start": 13.92,
+          "end": 14.16,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": " sim",
+          "start": 14.16,
+          "end": 14.32,
+          "duration": 0.16,
+          "confidence": 0.998
+        },
+        {
+          "text": "il",
+          "start": 14.32,
+          "end": 14.48,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ar",
+          "start": 14.48,
+          "end": 14.64,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " than",
+          "start": 14.64,
+          "end": 14.96,
+          "duration": 0.32,
+          "confidence": 0.977
+        },
+        {
+          "text": " c",
+          "start": 15.2,
+          "end": 15.28,
+          "duration": 0.08,
+          "confidence": 0.983
+        },
+        {
+          "text": "ode",
+          "start": 15.28,
+          "end": 15.52,
+          "duration": 0.24,
+          "confidence": 0.989
+        },
+        {
+          "text": " and",
+          "start": 15.52,
+          "end": 15.68,
+          "duration": 0.16,
+          "confidence": 0.943
+        }
+      ]
+    }
+  ]
+}

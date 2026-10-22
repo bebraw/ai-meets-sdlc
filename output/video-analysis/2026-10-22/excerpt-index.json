@@ -1,0 +1,570 @@
+{
+  "timebase": "Final edited videos",
+  "quoteWindows": [
+    {
+      "id": "final-panel-q01",
+      "videoId": "final-panel",
+      "text": "And it is not only maintenance burden for humans, but also for the agents as well.",
+      "speaker": "Final Q&A contribution",
+      "quoteStart": 1537.66,
+      "quoteEnd": 1543.54,
+      "cueIds": [
+        373,
+        374
+      ],
+      "audioStart": 1531.66,
+      "audioEnd": 1549.54,
+      "audio": "audio/final-panel-q01.wav",
+      "asr": "asr/final-panel-q01.json",
+      "captionContext": "You will find so many files that are unnecessary, so many chunk of code that need to clean up. So yeah, I agree with you, whoever asked the question, yes, maintenance burden. And it is not only maintenance burden for humans, but also for the agents as well. Will lose the context at some point and things will not go as you are intending to develop",
+      "overlappingListeningFlags": []
+    },
+    {
+      "id": "industry-panel-q01",
+      "videoId": "industry-panel",
+      "text": "The engineer still fully owns the code they write, the code they merge.",
+      "speaker": "Viljami Kuosmanen",
+      "quoteStart": 884.36,
+      "quoteEnd": 887.8,
+      "cueIds": [
+        213
+      ],
+      "audioStart": 878.36,
+      "audioEnd": 893.8,
+      "audio": "audio/industry-panel-q01.wav",
+      "asr": "asr/industry-panel-q01.json",
+      "captionContext": "It's actually public. You can go and read it yourself on docs.epilot.io if you are interested. But it hasn't really changed, to be honest. The engineer still fully owns the code they write, the code they merge. So you build up that mental model as you do that, even if you don't write every single line.",
+      "overlappingListeningFlags": [
+        "industry-panel-126"
+      ]
+    },
+    {
+      "id": "jenni-talk-q01",
+      "videoId": "jenni-talk",
+      "text": "We need to treat it as a product.",
+      "speaker": "Jenni Kylmäkoski",
+      "quoteStart": 1297.04,
+      "quoteEnd": 1300.92,
+      "cueIds": [
+        256
+      ],
+      "audioStart": 1291.04,
+      "audioEnd": 1306.92,
+      "audio": "audio/jenni-talk-q01.wav",
+      "asr": "asr/jenni-talk-q01.json",
+      "captionContext": "So we actually need to develop and maintain these assets, our toolbox. We need to treat it as a product. In software development, I think AI assets are a bit similar than code and",
+      "overlappingListeningFlags": []
+    },
+    {
+      "id": "jenni-talk-q02",
+      "videoId": "jenni-talk",
+      "text": "Because if you overpromise something to your customer, deliver some feature to a customer, you probably end up sacrificing the learning as a first mitigation action if you run out of time.",
+      "speaker": "Jenni Kylmäkoski",
+      "quoteStart": 1232.0,
+      "quoteEnd": 1250.0,
+      "cueIds": [
+        244,
+        245,
+        246
+      ],
+      "audioStart": 1226.0,
+      "audioEnd": 1256.0,
+      "audio": "audio/jenni-talk-q02.wav",
+      "asr": "asr/jenni-talk-q02.json",
+      "captionContext": "time. It means that as leaders, we need to take that into account when we define priorities and we make plans. Because if you overpromise something to your customer, deliver some feature to a customer, you probably end up sacrificing the learning as a first mitigation action if you run out of time. If I recap my learning so far, our work requires AI assets",
+      "overlappingListeningFlags": []
+    },
+    {
+      "id": "joongi-talk-q01",
+      "videoId": "joongi-talk",
+      "text": "what works for designers may not really work for task-oriented users.",
+      "speaker": "Joongi Shin",
+      "quoteStart": 935.46,
+      "quoteEnd": 942.04,
+      "cueIds": [
+        212,
+        213
+      ],
+      "audioStart": 929.46,
+      "audioEnd": 948.04,
+      "audio": "audio/joongi-talk-q01.wav",
+      "asr": "asr/joongi-talk-q01.json",
+      "captionContext": "different, maybe lower level of expectation compared to the ones who does not have experience. So in the end, what does this all mean to us? I think the first insight I can share is that what works for designers may not really work for task-oriented users. So we need to understand what's the difference between designers or engineers whose task is or goal is to design something better, who are willing and",
+      "overlappingListeningFlags": []
+    },
+    {
+      "id": "joongi-talk-q02",
+      "videoId": "joongi-talk",
+      "text": "the prompt-survey approach can also fail.",
+      "speaker": "Joongi Shin",
+      "quoteStart": 1046.36,
+      "quoteEnd": 1052.62,
+      "cueIds": [
+        238
+      ],
+      "audioStart": 1040.36,
+      "audioEnd": 1058.62,
+      "audio": "audio/joongi-talk-q02.wav",
+      "asr": "asr/joongi-talk-q02.json",
+      "captionContext": "How do we then move forward to achieve the future that generative UI was aiming for? Then would be the question that the prompt survey approach is the answer, is the problem solved? I would say the prompt-survey approach can also fail. This is also what we observed in our study. So sometimes LLM just continuously ask questions like that doesn't really align",
+      "overlappingListeningFlags": []
+    },
+    {
+      "id": "jussi-talk-q01",
+      "videoId": "jussi-talk",
+      "text": "So, the regulation is a challenge, but it's not a roadblock.",
+      "speaker": "Jussi Hacklin",
+      "quoteStart": 960.6,
+      "quoteEnd": 966.14,
+      "cueIds": [
+        194
+      ],
+      "audioStart": 954.6,
+      "audioEnd": 972.14,
+      "audio": "audio/jussi-talk-q01.wav",
+      "asr": "asr/jussi-talk-q01.json",
+      "captionContext": "So, then some key learnings along the way. So, the regulation is a challenge, but it's not a roadblock. So, there's definitely things how you can stay within the regulation because it's",
+      "overlappingListeningFlags": []
+    },
+    {
+      "id": "jussi-talk-q02",
+      "videoId": "jussi-talk",
+      "text": "Aim for clarity, not quantity when it comes to guidelines.",
+      "speaker": "Jussi Hacklin",
+      "quoteStart": 1097.32,
+      "quoteEnd": 1100.26,
+      "cueIds": [
+        224
+      ],
+      "audioStart": 1091.32,
+      "audioEnd": 1106.26,
+      "audio": "audio/jussi-talk-q02.wav",
+      "asr": "asr/jussi-talk-q02.json",
+      "captionContext": "So like mentioned, it is a certain portfolio that we have, but it doesn't mean that we don't try out new things and then also take them into use when needed. Aim for clarity, not quantity when it comes to guidelines. So our guidelines are not 100 page documents. It's more like maybe, let's say, five pages that then get also read.",
+      "overlappingListeningFlags": []
+    },
+    {
+      "id": "mo-talk-q01",
+      "videoId": "mo-talk",
+      "text": "AI doesn't fix a team, It just amplifies what is existing there.",
+      "speaker": "Mo Khazali",
+      "quoteStart": 750.96,
+      "quoteEnd": 754.78,
+      "cueIds": [
+        211
+      ],
+      "audioStart": 744.96,
+      "audioEnd": 760.78,
+      "audio": "audio/mo-talk-q01.wav",
+      "asr": "asr/mo-talk-q01.json",
+      "captionContext": "And all of this points to say that fundamentally there's no significant correlation between AI adoption and improvements at the company level. AI doesn't fix a team, It just amplifies what is existing there. And I think the best way to think about this, and I'm going back to history, further back than the 1970s, is to actually go into the 1800s.",
+      "overlappingListeningFlags": []
+    },
+    {
+      "id": "mo-talk-q02",
+      "videoId": "mo-talk",
+      "text": "we shouldn't measure AI by the code that it writes, but actually by the bottlenecks that it solves.",
+      "speaker": "Mo Khazali",
+      "quoteStart": 2121.61,
+      "quoteEnd": 2130.71,
+      "cueIds": [
+        628,
+        629
+      ],
+      "audioStart": 2115.61,
+      "audioEnd": 2136.71,
+      "audio": "audio/mo-talk-q02.wav",
+      "asr": "asr/mo-talk-q02.json",
+      "captionContext": "fix those bottlenecks but also work with your leadership team to actually focus on the right metrics think about the flow of software think about the outcomes that you're trying to achieve, rather than the seats, because we shouldn't measure AI by the code that it writes, but actually by the bottlenecks that it solves. And I hope that with all of this, you can make sure that this isn't your 1978. Thank you very much.",
+      "overlappingListeningFlags": []
+    },
+    {
+      "id": "mood-q01",
+      "videoId": "mood",
+      "text": "You should really think why you're building this. Is this relevant? Is this actually bringing us some value at the end?",
+      "speaker": "Sini Tistelgrén",
+      "quoteStart": 35.252,
+      "quoteEnd": 43.502,
+      "cueIds": [
+        2,
+        3
+      ],
+      "audioStart": 29.252000000000002,
+      "audioEnd": 49.502,
+      "audio": "audio/mood-q01.wav",
+      "asr": "asr/mood-q01.json",
+      "captionContext": "You should really think why you're building this. Is this relevant? Is this actually bringing us some value at the end?",
+      "overlappingListeningFlags": []
+    },
+    {
+      "id": "mood-q02",
+      "videoId": "mood",
+      "text": "We should not be afraid of making mistakes because mistakes teach us more.",
+      "speaker": "Jenni Kylmäkoski",
+      "quoteStart": 70.684,
+      "quoteEnd": 76.48400000000001,
+      "cueIds": [
+        4
+      ],
+      "audioStart": 64.684,
+      "audioEnd": 82.48400000000001,
+      "audio": "audio/mood-q02.wav",
+      "asr": "asr/mood-q02.json",
+      "captionContext": "We should not be afraid of making mistakes because mistakes teach us more.",
+      "overlappingListeningFlags": []
+    },
+    {
+      "id": "ohans-talk-q01",
+      "videoId": "ohans-talk",
+      "text": "I don't want a world where I don't understand the system that I maintain.",
+      "speaker": "Ohans Emmanuel",
+      "quoteStart": 913.5,
+      "quoteEnd": 920.09,
+      "cueIds": [
+        217,
+        218
+      ],
+      "audioStart": 907.5,
+      "audioEnd": 926.09,
+      "audio": "audio/ohans-talk-q01.wav",
+      "asr": "asr/ohans-talk-q01.json",
+      "captionContext": "I don't know if it was Cognizant or something, but you can't keep up with the system that you maintain. Now, I'm all up for agents writing code. I do 99% of my work with agents, but I don't want a world where I don't understand the system that I maintain. That is absolutely ridiculous. If you don't understand the system you maintain, what is that?",
+      "overlappingListeningFlags": []
+    },
+    {
+      "id": "research-panel-q01",
+      "videoId": "research-panel",
+      "text": "the problem actually evolves by you building and testing stuff.",
+      "speaker": "Joongi Shin",
+      "quoteStart": 949.0,
+      "quoteEnd": 956.64,
+      "cueIds": [
+        176,
+        177
+      ],
+      "audioStart": 943.0,
+      "audioEnd": 962.64,
+      "audio": "audio/research-panel-q01.wav",
+      "asr": "asr/research-panel-q01.json",
+      "captionContext": "Like people saying the problem is always the problem. Sure, that's how everything starts. But I think a lot of times the problem actually evolves by you building and testing stuff. So I think that's actually one of the limitation where people are just dealing in order this building problems to AI, just to get what, receive what is generated and try to just, okay, the problem is solved try to end it so I",
+      "overlappingListeningFlags": []
+    },
+    {
+      "id": "sini-talk-q01",
+      "videoId": "sini-talk",
+      "text": "Whatever writes a change never approves it directly.",
+      "speaker": "Sini Tistelgrén",
+      "quoteStart": 1385.24,
+      "quoteEnd": 1388.12,
+      "cueIds": [
+        295
+      ],
+      "audioStart": 1379.24,
+      "audioEnd": 1394.12,
+      "audio": "audio/sini-talk-q01.wav",
+      "asr": "asr/sini-talk-q01.json",
+      "captionContext": "Make the controls executable, pre-approve a type of routine changes, and then release each change on its evidence. Whatever writes a change never approves it directly. The audit evidence becomes a by-product of delivery, and audit can test the pipeline itself as a control.",
+      "overlappingListeningFlags": []
+    },
+    {
+      "id": "sini-talk-q02",
+      "videoId": "sini-talk",
+      "text": "the AI factory does not eliminate the fundamentals. It actually runs on them.",
+      "speaker": "Sini Tistelgrén",
+      "quoteStart": 1668.78,
+      "quoteEnd": 1677.78,
+      "cueIds": [
+        357,
+        358,
+        359
+      ],
+      "audioStart": 1662.78,
+      "audioEnd": 1683.78,
+      "audio": "audio/sini-talk-q02.wav",
+      "asr": "asr/sini-talk-q02.json",
+      "captionContext": "Summary of DORA's 2026 report on the return of AI investment puts it plainly. Reinvest capacity, don't reduce headcount. And if we come back to the original headline, the AI factory does not eliminate the fundamentals. It actually runs on them. Thank you.",
+      "overlappingListeningFlags": []
+    },
+    {
+      "id": "tapio-talk-q01",
+      "videoId": "tapio-talk",
+      "text": "I think we meant the probe to be something tangible, which the agent creates pretty much.",
+      "speaker": "Tapio Pitkäranta",
+      "quoteStart": 761.58,
+      "quoteEnd": 772.29,
+      "cueIds": [
+        155,
+        156
+      ],
+      "audioStart": 755.58,
+      "audioEnd": 778.29,
+      "audio": "audio/tapio-talk-q01.wav",
+      "asr": "asr/tapio-talk-q01.json",
+      "captionContext": "uh then about again the probes so I like this luotain concept for some reason I think we meant the probe to be something tangible, which the agent creates pretty much. It can be throwaway, but you might replace like writing thousands of pages of documents or something. But it's something tangible. It can be a software, but it can be something else as well.",
+      "overlappingListeningFlags": []
+    },
+    {
+      "id": "viljami-talk-q01",
+      "videoId": "viljami-talk",
+      "text": "Your context is the bottleneck, not the model.",
+      "speaker": "Viljami Kuosmanen",
+      "quoteStart": 1305.68,
+      "quoteEnd": 1307.74,
+      "cueIds": [
+        387
+      ],
+      "audioStart": 1299.68,
+      "audioEnd": 1313.74,
+      "audio": "audio/viljami-talk-q01.wav",
+      "asr": "asr/viljami-talk-q01.json",
+      "captionContext": "that's obvious. This is something we all should, I think, by now know if you're working with agents. And four, write it down. Your context is the bottleneck, not the model. So what actually made our agents work super well was the setup, was all of the documentation, was all of the effort put into, not the harness necessarily, but all",
+      "overlappingListeningFlags": []
+    },
+    {
+      "id": "viljami-talk-q02",
+      "videoId": "viljami-talk",
+      "text": "not every PR should ship.",
+      "speaker": "Viljami Kuosmanen",
+      "quoteStart": 1228.03,
+      "quoteEnd": 1230.37,
+      "cueIds": [
+        361
+      ],
+      "audioStart": 1222.03,
+      "audioEnd": 1236.37,
+      "audio": "audio/viljami-talk-q02.wav",
+      "asr": "asr/viljami-talk-q02.json",
+      "captionContext": "was happening, but then testing, obviously, this is a lot of work for us to do. We use AI in those reviews, obviously, but it still takes a lot of time. And you have to know not every PR should ship. You saw that a lot of the PRs that the agents actually open, we don't end up shipping. Could be the engineer deciding to do it a different way.",
+      "overlappingListeningFlags": []
+    },
+    {
+      "id": "waseem-talk-q01",
+      "videoId": "waseem-talk",
+      "text": "AI made code cheap. It did not make understanding cheap.",
+      "speaker": "Muhammad Waseem",
+      "quoteStart": 247.34,
+      "quoteEnd": 250.94,
+      "cueIds": [
+        60
+      ],
+      "audioStart": 241.34,
+      "audioEnd": 256.94,
+      "audio": "audio/waseem-talk-q01.wav",
+      "asr": "asr/waseem-talk-q01.json",
+      "captionContext": "What you are providing it? So this is the real question. So here, this is my talk around it. AI made code cheap. It did not make understanding cheap. You have a pile of code generated by the AI.",
+      "overlappingListeningFlags": []
+    },
+    {
+      "id": "waseem-talk-q02",
+      "videoId": "waseem-talk",
+      "text": "When agents make a decision, where is the why written?",
+      "speaker": "Muhammad Waseem",
+      "quoteStart": 1686.9,
+      "quoteEnd": 1698.64,
+      "cueIds": [
+        394,
+        395
+      ],
+      "audioStart": 1680.9,
+      "audioEnd": 1704.64,
+      "audio": "audio/waseem-talk-q02.wav",
+      "asr": "asr/waseem-talk-q02.json",
+      "captionContext": "If something is breaking, if he or she is able to get access back or can recover it. When agents make a decision, where is the why written? So for example, here, agents have made some decision. Do we have something why they have made these decisions? The next thing is that who will review your code two years from now?",
+      "overlappingListeningFlags": []
+    },
+    {
+      "id": "zak-talk-q01",
+      "videoId": "zak-talk",
+      "text": "the premise was wrong in the first place, and nobody checked the premise.",
+      "speaker": "Zak Allal",
+      "quoteStart": 855.11,
+      "quoteEnd": 863.7,
+      "cueIds": [
+        173,
+        174
+      ],
+      "audioStart": 849.11,
+      "audioEnd": 869.7,
+      "audio": "audio/zak-talk-q01.wav",
+      "asr": "asr/zak-talk-q01.json",
+      "captionContext": "So when people and researchers for the past 15 years on AI were disagreeing and debating if it's 6 or 15 or 11, the premise was wrong in the first place, and nobody checked the premise. So in traditional academia, I would have stopped, published a paper, and said, \"I",
+      "overlappingListeningFlags": []
+    }
+  ],
+  "frames": [
+    {
+      "videoId": "final-panel",
+      "time": 192.0,
+      "path": "frames/final-panel-01.jpg",
+      "clip": "What an architecture decision record preserves"
+    },
+    {
+      "videoId": "final-panel",
+      "time": 1514.5,
+      "path": "frames/final-panel-02.jpg",
+      "clip": "When decision records become a maintenance burden"
+    },
+    {
+      "videoId": "industry-panel",
+      "time": 468.5,
+      "path": "frames/industry-panel-01.jpg",
+      "clip": "Two different ways to manage the cost of agents"
+    },
+    {
+      "videoId": "industry-panel",
+      "time": 744.0,
+      "path": "frames/industry-panel-02.jpg",
+      "clip": "More bugs found and fewer bugs per release can both be true"
+    },
+    {
+      "videoId": "jenni-talk",
+      "time": 1054.5,
+      "path": "frames/jenni-talk-01.jpg",
+      "clip": "A reporting request that reopened Jira tickets"
+    },
+    {
+      "videoId": "jenni-talk",
+      "time": 1313.5,
+      "path": "frames/jenni-talk-02.jpg",
+      "clip": "Treat the AI toolbox as a product"
+    },
+    {
+      "videoId": "joongi-talk",
+      "time": 984.0,
+      "path": "frames/joongi-talk-01.jpg",
+      "clip": "Help people envision without making them design"
+    },
+    {
+      "videoId": "joongi-talk",
+      "time": 1078.0,
+      "path": "frames/joongi-talk-02.jpg",
+      "clip": "When clarification questions get in the user's way"
+    },
+    {
+      "videoId": "jussi-talk",
+      "time": 381.5,
+      "path": "frames/jussi-talk-01.jpg",
+      "clip": "Keep exceptional restrictions from blocking the whole organisation"
+    },
+    {
+      "videoId": "jussi-talk",
+      "time": 1178.0,
+      "path": "frames/jussi-talk-02.jpg",
+      "clip": "Clear direction matters more than telling everyone to use AI everywhere"
+    },
+    {
+      "videoId": "mo-talk",
+      "time": 1637.0,
+      "path": "frames/mo-talk-01.jpg",
+      "clip": "Turn blueprints into checks that catch recurring mistakes"
+    },
+    {
+      "videoId": "mo-talk",
+      "time": 2113.0,
+      "path": "frames/mo-talk-02.jpg",
+      "clip": "Measure the bottlenecks AI solves"
+    },
+    {
+      "videoId": "mood",
+      "time": 24.808,
+      "path": "frames/mood-01.jpg",
+      "clip": "An introduction to SDLCAI and why we build"
+    },
+    {
+      "videoId": "mood",
+      "time": 78.812,
+      "path": "frames/mood-02.jpg",
+      "clip": "Learning and exchanging ideas"
+    },
+    {
+      "videoId": "ohans-talk",
+      "time": 589.5,
+      "path": "frames/ohans-talk-01.jpg",
+      "clip": "Review the implementation decision before it becomes a large diff"
+    },
+    {
+      "videoId": "ohans-talk",
+      "time": 1251.5,
+      "path": "frames/ohans-talk-02.jpg",
+      "clip": "What independent QA needs beyond another model's approval"
+    },
+    {
+      "videoId": "research-panel",
+      "time": 909.5,
+      "path": "frames/research-panel-01.jpg",
+      "clip": "Does cheaper building really separate discovery from implementation?"
+    },
+    {
+      "videoId": "research-panel",
+      "time": 1350.5,
+      "path": "frames/research-panel-02.jpg",
+      "clip": "Who carries accessibility responsibility for generated interfaces?"
+    },
+    {
+      "videoId": "research-panel",
+      "time": 1566.5,
+      "path": "frames/research-panel-03.jpg",
+      "clip": "Research output grows faster than expert review capacity"
+    },
+    {
+      "videoId": "sini-talk",
+      "time": 166.0,
+      "path": "frames/sini-talk-01.jpg",
+      "clip": "Why the prototype is only part of the production journey"
+    },
+    {
+      "videoId": "sini-talk",
+      "time": 1350.5,
+      "path": "frames/sini-talk-02.jpg",
+      "clip": "Turn delivery controls into executable evidence"
+    },
+    {
+      "videoId": "tapio-talk",
+      "time": 800.5,
+      "path": "frames/tapio-talk-01.jpg",
+      "clip": "What an agentic probe is for"
+    },
+    {
+      "videoId": "tapio-talk",
+      "time": 1001.5,
+      "path": "frames/tapio-talk-02.jpg",
+      "clip": "When the person building the prototypes becomes the bottleneck"
+    },
+    {
+      "videoId": "viljami-talk",
+      "time": 352.5,
+      "path": "frames/viljami-talk-01.jpg",
+      "clip": "Why Slack helped non-engineers contribute"
+    },
+    {
+      "videoId": "viljami-talk",
+      "time": 1104.5,
+      "path": "frames/viljami-talk-02.jpg",
+      "clip": "The deployment near miss and the permissions it exposed"
+    },
+    {
+      "videoId": "waseem-talk",
+      "time": 958.5,
+      "path": "frames/waseem-talk-01.jpg",
+      "clip": "The knowledge that agents cannot read from code"
+    },
+    {
+      "videoId": "waseem-talk",
+      "time": 1715.5,
+      "path": "frames/waseem-talk-02.jpg",
+      "clip": "Three questions for an AI-assisted software team"
+    },
+    {
+      "videoId": "zak-talk",
+      "time": 262.5,
+      "path": "frames/zak-talk-01.jpg",
+      "clip": "Make experiments cheap enough to repeat"
+    },
+    {
+      "videoId": "zak-talk",
+      "time": 750.0,
+      "path": "frames/zak-talk-02.jpg",
+      "clip": "A research system built for replaying experiments"
+    }
+  ]
+}

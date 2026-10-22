@@ -1,0 +1,2511 @@
+{
+  "id": "sini-talk",
+  "kind": "talk",
+  "officialTitle": "AI Factory doesn't eliminate the fundamentals",
+  "speakerNames": [
+    "Sini Tistelgrén"
+  ],
+  "durationSeconds": 1690.0,
+  "videoFile": "exports/talks-v02/sini-talk-4k.mp4",
+  "reviewFile": "review/talks-v02/sini-talk-720p.mp4",
+  "chapters": [
+    {
+      "outputSeconds": 0,
+      "title": "Introduction: AI adoption across the SDLC",
+      "sourceSeconds": 19613,
+      "timestamp": "00:00"
+    },
+    {
+      "outputSeconds": 94,
+      "title": "Why a fast prototype still takes time to reach production",
+      "sourceSeconds": 19704.38,
+      "timestamp": "01:34"
+    },
+    {
+      "outputSeconds": 240,
+      "title": "Three different meanings of using AI",
+      "sourceSeconds": 19850.96,
+      "timestamp": "04:00"
+    },
+    {
+      "outputSeconds": 390,
+      "title": "The AI factory: six stations and six fundamentals",
+      "sourceSeconds": 20000.28,
+      "timestamp": "06:30"
+    },
+    {
+      "outputSeconds": 580,
+      "title": "Making enterprise architecture readable to agents",
+      "sourceSeconds": 20190.0,
+      "timestamp": "09:40"
+    },
+    {
+      "outputSeconds": 831,
+      "title": "Assessment findings and risk moving downstream",
+      "sourceSeconds": 20441.1,
+      "timestamp": "13:51"
+    },
+    {
+      "outputSeconds": 1131,
+      "title": "Following one change through the factory",
+      "sourceSeconds": 20741.56,
+      "timestamp": "18:51"
+    },
+    {
+      "outputSeconds": 1307,
+      "title": "Making controls and audit evidence executable",
+      "sourceSeconds": 20917.82,
+      "timestamp": "21:47"
+    },
+    {
+      "outputSeconds": 1397,
+      "title": "Autonomy levels, prototypes and changing roles",
+      "sourceSeconds": 21007.86,
+      "timestamp": "23:17"
+    },
+    {
+      "outputSeconds": 1568,
+      "title": "Where to start and where to reinvest the time saved",
+      "sourceSeconds": 21178.82,
+      "timestamp": "26:08"
+    }
+  ],
+  "materials": [
+    {
+      "label": "Slides (PDF)",
+      "url": "https://www.sdlcai.org/media/talks/ai-factory-fundamentals/f58fdda9-1f7d-4dbb-b060-94eb6a581c49.pdf"
+    }
+  ],
+  "talkUrl": "https://www.sdlcai.org/2026/schedule/#ai-factory-fundamentals",
+  "existingSummary": "Sini Tistelgrén argues that an AI factory depends on clear intent, sound architecture, security, independent verification, ownership and operational feedback. She follows a change through six delivery stages and explains how enterprises can turn existing controls into executable checks while reshaping roles and measuring outcomes.",
+  "captions": {
+    "language": "en",
+    "srt": "transcripts/final-v02/sini-talk.en.srt",
+    "vtt": "transcripts/final-v02/sini-talk.en.vtt",
+    "qualityReport": "transcripts/final-v02/sini-talk.caption-qc.json",
+    "listeningReview": "transcripts/final-v02/sini-talk.listening-review.txt",
+    "status": "prepared-with-human-listening-review-notes"
+  },
+  "captionSHA256": "6656b2db89e27e48b2d344464afe112fd55e89cc934478b833fc24c0ae4edffe",
+  "mediaBytes": 805031792,
+  "cueCount": 360,
+  "listeningWindows": [
+    {
+      "id": "sini-talk-115",
+      "videoId": "sini-talk",
+      "startSeconds": 1225.6,
+      "endSeconds": 1245.18,
+      "priority": "high",
+      "category": "high_impact_wording",
+      "note": "The independent-verification sentence remains malformed: cannot test / cannot change. Confirm the actual wording because it describes a key safeguard. Three local passes reproduce the wording; avoid inventing missing words.",
+      "currentCaptionText": "own identity and it cannot see production data then we are moving towards the verification phase and the test agent itself cannot test that the agent itself cannot change plus the acceptance scenarios that it already hasn't seen before. So the second check happens there, and it's fully independent of the coding agent and comparing the changes with the acceptance",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/sini-talk.listening-review.json",
+          "entryIndices": [
+            4
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/sini-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                211,
+                212
+              ],
+              "text": "data. Then we are moving towards the verification phase and the test agent itself cannot test that the agent itself cannot change, plus the acceptance scenarios that it already hasn't seen before. So the second check happens there and it's fully independent of the coding agent."
+            }
+          ]
+        },
+        {
+          "type": "isolatedLocalASR",
+          "model": "Whisper large-v3",
+          "path": "transcripts/priority-checks-v1/comparison-index.json",
+          "checks": [
+            {
+              "id": "sini-verification",
+              "text": "actually has its own identity and it cannot see production data then we are moving towards the verification phase and the test agent itself cannot test that the agent itself cannot change plus the acceptance scenarios that it already hasn't seen before so so the second check happens there and it's it's fully independent of"
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/sini-talk.listening-review.json",
+          "index": 4
+        }
+      ],
+      "sourceSegments": [
+        211,
+        212
+      ],
+      "sourceStartSeconds": 20835.6,
+      "sourceEndSeconds": 20855.18
+    },
+    {
+      "id": "sini-talk-111",
+      "videoId": "sini-talk",
+      "startSeconds": 542.0,
+      "endSeconds": 555.88,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Context-supported correction still marked for listening: requiring agent tasks → recurring agent tasks",
+      "currentCaptionText": "compiler that can compile the Linux kernel, and both wrote down how. So at OpenAI, custom linters and structural tests enforced the architecture and recurring agent tasks cleaned up the code. And in Anthropic, the researcher says that most of his effort went actually into the",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/sini-talk.listening-review.json",
+          "entryIndices": [
+            7
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/sini-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                99
+              ],
+              "text": "kernel and both wrote down how. So at OpenAI, custom linters and structural tests enforced the architecture and requiring agent tasks cleaned up the code. And in Antwerbig, the The researcher says that most..."
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 99,
+              "before": "requiring agent tasks",
+              "after": "recurring agent tasks",
+              "basis": "Repeated maintenance tasks in referenced example; listen."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/sini-talk.listening-review.json",
+          "index": 7
+        }
+      ],
+      "sourceSegments": [
+        99
+      ],
+      "sourceStartSeconds": 20152.0,
+      "sourceEndSeconds": 20165.88
+    },
+    {
+      "id": "sini-talk-112",
+      "videoId": "sini-talk",
+      "startSeconds": 879.4,
+      "endSeconds": 889.76,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Uncertain wording candidate: All the new systems → Old and new systems",
+      "currentCaptionText": "there might be a half-finished modernization. All the new systems are actually running side-by-side with two different versions of rules. So, which one agent should actually be following?",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/sini-talk.listening-review.json",
+          "entryIndices": [
+            2
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/sini-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                156
+              ],
+              "text": "there might be a half the finished modernization. All the new systems are actually running side by side with two different versions of rules. So which one agent should actually be following? Which one?"
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/sini-talk.listening-review.json",
+          "index": 2
+        }
+      ],
+      "sourceSegments": [
+        156
+      ],
+      "sourceStartSeconds": 20489.4,
+      "sourceEndSeconds": 20499.76
+    },
+    {
+      "id": "sini-talk-117",
+      "videoId": "sini-talk",
+      "startSeconds": 1369.56,
+      "endSeconds": 1376.14,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Second ISET likely second eye set or second set of eyes; preserve exact spoken wording after listening. Context-supported correction still marked for listening: ISET → eye set",
+      "currentCaptionText": "So that's kind of problematic. So every change needs also second eye set. Make the controls executable, pre-approve a type of routine changes, and then",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/sini-talk.listening-review.json",
+          "entryIndices": [
+            5,
+            9
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/sini-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                232
+              ],
+              "text": "cannot also be the reviewer, so that's kind of problematic. So every change needs also second-oist it. So make the controls executable pre-up"
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 232,
+              "before": "ISET",
+              "after": "eye set",
+              "basis": "Both local models hear phonetic eye-set; reviewer independence context supports this spelling. Preserve spoken word order; listening pending."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/sini-talk.listening-review.json",
+          "index": 5
+        },
+        {
+          "path": "transcripts/final-v02/sini-talk.listening-review.json",
+          "index": 9
+        }
+      ],
+      "sourceSegments": [
+        232
+      ],
+      "sourceStartSeconds": 20979.56,
+      "sourceEndSeconds": 20986.14
+    },
+    {
+      "id": "sini-talk-119",
+      "videoId": "sini-talk",
+      "startSeconds": 1544.56,
+      "endSeconds": 1551.64,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Uncertain wording candidate: locks → logs",
+      "currentCaptionText": "And then we have the platform team that runs the whole line itself. The identities, limits, locks, rollbacks, all that. And then the leader, of course, stops tracking hopefully the output and decides",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/sini-talk.listening-review.json",
+          "entryIndices": [
+            3
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/sini-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                263
+              ],
+              "text": "We have the platform team that runs the whole line itself. The identities, limits, locks, rollbacks, all that. And then the leader, of course, stops tracking."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/sini-talk.listening-review.json",
+          "index": 3
+        }
+      ],
+      "sourceSegments": [
+        263
+      ],
+      "sourceStartSeconds": 21154.56,
+      "sourceEndSeconds": 21161.64
+    }
+  ],
+  "cues": [
+    {
+      "id": 1,
+      "start": 3.74,
+      "end": 5.99,
+      "text": "Hello, everyone, and thank you for having me."
+    },
+    {
+      "id": 2,
+      "start": 6.18,
+      "end": 7.38,
+      "text": "My name is Sini Tistelgrén."
+    },
+    {
+      "id": 3,
+      "start": 7.4,
+      "end": 9.56,
+      "text": "I'm one of the co-founders of AIMBITION,"
+    },
+    {
+      "id": 4,
+      "start": 10.42,
+      "end": 13.64,
+      "text": "also a COO and one of our tech leads."
+    },
+    {
+      "id": 5,
+      "start": 14.96,
+      "end": 20.82,
+      "text": "What we do at AIMBITION, we help companies adopt AI within their SDLC."
+    },
+    {
+      "id": 6,
+      "start": 21.52,
+      "end": 27.02,
+      "text": "I think that's one of the key things most of the consulting companies are doing now."
+    },
+    {
+      "id": 7,
+      "start": 27.04,
+      "end": 33.22,
+      "text": "But our angle is broader than just the development context."
+    },
+    {
+      "id": 8,
+      "start": 33.42,
+      "end": 40.13,
+      "text": "We really want to help companies take the AI as a part of every phase of"
+    },
+    {
+      "id": 9,
+      "start": 40.15,
+      "end": 46.03,
+      "text": "SDLC. We're also keen to help companies to look into"
+    },
+    {
+      "id": 10,
+      "start": 46.05,
+      "end": 52.79,
+      "text": "sovereign AI and be in control and have ownership of their technological future."
+    },
+    {
+      "id": 11,
+      "start": 53.92,
+      "end": 56.04,
+      "text": "About me a few words."
+    },
+    {
+      "id": 12,
+      "start": 56.06,
+      "end": 62.07,
+      "text": "I have been working around IT and software for around 15 years in different kinds of"
+    },
+    {
+      "id": 13,
+      "start": 62.09,
+      "end": 67.91,
+      "text": "roles and on both sides building software and also running the business side."
+    },
+    {
+      "id": 14,
+      "start": 69.02,
+      "end": 75.19,
+      "text": "And before we start I would like to say that you definitely should build an AI"
+    },
+    {
+      "id": 15,
+      "start": 75.21000000000001,
+      "end": 78.42,
+      "text": "factory. I don't want to scare you out of it."
+    },
+    {
+      "id": 16,
+      "start": 78.95,
+      "end": 84.78,
+      "text": "And this goes also for the large and regulated industries."
+    },
+    {
+      "id": 17,
+      "start": 84.8,
+      "end": 90.63,
+      "text": "I think they could benefit greatly out of these AI factories if they're built"
+    },
+    {
+      "id": 18,
+      "start": 90.65,
+      "end": 91.72,
+      "text": "correctly."
+    },
+    {
+      "id": 19,
+      "start": 94.38,
+      "end": 97.55,
+      "text": "But for now, I would like to ask a question from you."
+    },
+    {
+      "id": 20,
+      "start": 97.57,
+      "end": 104.33,
+      "text": "How many of you guys have heard about some vibe-coded product or vibe-coded thing"
+    },
+    {
+      "id": 21,
+      "start": 104.72999999999999,
+      "end": 108.22,
+      "text": "that was done really fast and in a meeting"
+    },
+    {
+      "id": 22,
+      "start": 109.18,
+      "end": 115.74000000000001,
+      "text": "someone has already been asking that why taking it to production takes so long."
+    },
+    {
+      "id": 23,
+      "start": 118.78,
+      "end": 122.68,
+      "text": "Okay, quite many of you have gone through it."
+    },
+    {
+      "id": 24,
+      "start": 122.7,
+      "end": 128.86,
+      "text": "So here it goes. Someone is actually vibe coding something, it might be a"
+    },
+    {
+      "id": 25,
+      "start": 128.88,
+      "end": 135.01,
+      "text": "developer, it might be a business user, it might be a designer, it might be whoever"
+    },
+    {
+      "id": 26,
+      "start": 135.03,
+      "end": 141.69,
+      "text": "who is capable of expressing the business intent now more profoundly when we are"
+    },
+    {
+      "id": 27,
+      "start": 142.07999999999998,
+      "end": 146.6,
+      "text": "living in the age where tools are so developed as they now are."
+    },
+    {
+      "id": 28,
+      "start": 146.62,
+      "end": 151.98,
+      "text": "So if we look at this slide here,"
+    },
+    {
+      "id": 29,
+      "start": 153.1,
+      "end": 158.87,
+      "text": "Actually, writing the code and maybe testing it, it's only 25 to 35 percent of"
+    },
+    {
+      "id": 30,
+      "start": 159.0,
+      "end": 162.28,
+      "text": "the time of taking something into production."
+    },
+    {
+      "id": 31,
+      "start": 162.76,
+      "end": 164.34,
+      "text": "So what's the rest of it?"
+    },
+    {
+      "id": 32,
+      "start": 165.04,
+      "end": 170.34,
+      "text": "That's maybe the answer for the question, why it takes so long to take things into"
+    },
+    {
+      "id": 33,
+      "start": 170.36,
+      "end": 171.32,
+      "text": "production."
+    },
+    {
+      "id": 34,
+      "start": 172.3,
+      "end": 176.64,
+      "text": "So we really have to also consider the identity and access,"
+    },
+    {
+      "id": 35,
+      "start": 178.04,
+      "end": 179.44,
+      "text": "like all the governance, the"
+    },
+    {
+      "id": 36,
+      "start": 180.03,
+      "end": 184.91,
+      "text": "regulation, whatever is relevant in your own industry, also you might have some"
+    },
+    {
+      "id": 37,
+      "start": 185.09,
+      "end": 190.17,
+      "text": "legacy systems you might have legacy stuff integrated in your systems you have lots"
+    },
+    {
+      "id": 38,
+      "start": 190.19,
+      "end": 196.7,
+      "text": "of integrations you have to be mindful of security you really have to think about"
+    },
+    {
+      "id": 39,
+      "start": 197.06,
+      "end": 203.97,
+      "text": "the whole release process you have to be interested in the costs token economics is"
+    },
+    {
+      "id": 40,
+      "start": 203.99,
+      "end": 210.45,
+      "text": "an important fact nowadays as well observability compliance and auditability"
+    },
+    {
+      "id": 41,
+      "start": 210.47,
+      "end": 213.94,
+      "text": "and of course the ownership and support part."
+    },
+    {
+      "id": 42,
+      "start": 214.46,
+      "end": 219.46,
+      "text": "So all of these are actually needed in order to take something into production."
+    },
+    {
+      "id": 43,
+      "start": 219.74,
+      "end": 224.3,
+      "text": "And thus, it might be that the engineer is giving you an answer that, okay, even"
+    },
+    {
+      "id": 44,
+      "start": 224.32,
+      "end": 228.32,
+      "text": "though you vibe-coded this thing in one afternoon, it might still take a quarter"
+    },
+    {
+      "id": 45,
+      "start": 228.56,
+      "end": 230.28,
+      "text": "to take that into production."
+    },
+    {
+      "id": 46,
+      "start": 231.1,
+      "end": 233.57,
+      "text": "And that might be still a rather fast schedule."
+    },
+    {
+      "id": 47,
+      "start": 234.32,
+      "end": 238.78,
+      "text": "And it might feel somewhat frustrating, but it is how it is."
+    },
+    {
+      "id": 48,
+      "start": 240.96,
+      "end": 246.3,
+      "text": "And when companies are saying that, hey, we are using AI, I think it can mean"
+    },
+    {
+      "id": 49,
+      "start": 246.32,
+      "end": 248.18,
+      "text": "multitudes of things."
+    },
+    {
+      "id": 50,
+      "start": 248.72,
+      "end": 249.87,
+      "text": "Here we have like three"
+    },
+    {
+      "id": 51,
+      "start": 250.71,
+      "end": 256.6,
+      "text": "examples, but of course, like the non-technical users who are doing vibe"
+    },
+    {
+      "id": 52,
+      "start": 256.62,
+      "end": 261.11,
+      "text": "coding stuff, it looks like something in the left side of the slide."
+    },
+    {
+      "id": 53,
+      "start": 261.14,
+      "end": 266.34,
+      "text": "So one person might be developing something, it might be a tool for them, or"
+    },
+    {
+      "id": 54,
+      "start": 266.36,
+      "end": 270.11,
+      "text": "it might be something totally new that they enjoy."
+    },
+    {
+      "id": 55,
+      "start": 270.96,
+      "end": 275.4,
+      "text": "They are the only ones who are checking it, they are authoring it, and they are"
+    },
+    {
+      "id": 56,
+      "start": 275.76,
+      "end": 279.74,
+      "text": "checking it just by the eye, not necessarily looking in the code at all."
+    },
+    {
+      "id": 57,
+      "start": 280.94,
+      "end": 285.24,
+      "text": "There might be some rules if they have written down something, or there might be"
+    },
+    {
+      "id": 58,
+      "start": 285.34000000000003,
+      "end": 291.12,
+      "text": "no rules at all because of the nature of the non-technical vibe coder."
+    },
+    {
+      "id": 59,
+      "start": 291.14,
+      "end": 296.46,
+      "text": "And the success rate is measured if this is actually working even once, it's"
+    },
+    {
+      "id": 60,
+      "start": 296.48,
+      "end": 297.68,
+      "text": "already a success."
+    },
+    {
+      "id": 61,
+      "start": 298.64,
+      "end": 305.6,
+      "text": "Then in the middle section, we're looking at a team of maybe engineers"
+    },
+    {
+      "id": 62,
+      "start": 305.62,
+      "end": 311.16,
+      "text": "who actually already have one or multiple AI tools within their hands."
+    },
+    {
+      "id": 63,
+      "start": 311.3,
+      "end": 316.04,
+      "text": "And they are developing stuff together with AI."
+    },
+    {
+      "id": 64,
+      "start": 316.72,
+      "end": 321.61,
+      "text": "But still, it's a colleague who is actually checking the changes and reading"
+    },
+    {
+      "id": 65,
+      "start": 321.63,
+      "end": 322.46,
+      "text": "the PRs."
+    },
+    {
+      "id": 66,
+      "start": 323.28,
+      "end": 325.28,
+      "text": "And still, there might be rules."
+    },
+    {
+      "id": 67,
+      "start": 325.3,
+      "end": 330.53,
+      "text": "They might be somewhere documented or they might be just living in the heads of the"
+    },
+    {
+      "id": 68,
+      "start": 330.55,
+      "end": 331.35,
+      "text": "engineers."
+    },
+    {
+      "id": 69,
+      "start": 332.15999999999997,
+      "end": 337.96,
+      "text": "And the success might be measured in the number of PRs that are actually produced."
+    },
+    {
+      "id": 70,
+      "start": 339.04,
+      "end": 343.1,
+      "text": "And then if we look at the right side of the slide, we see an AI factory."
+    },
+    {
+      "id": 71,
+      "start": 344.0,
+      "end": 349.06,
+      "text": "So agents are actually situated at every station along the way."
+    },
+    {
+      "id": 72,
+      "start": 349.42,
+      "end": 350.45,
+      "text": "And we have"
+    },
+    {
+      "id": 73,
+      "start": 351.40999999999997,
+      "end": 357.08,
+      "text": "automated tests and rules, and the coding and the developer or the engineer cannot"
+    },
+    {
+      "id": 74,
+      "start": 357.1,
+      "end": 359.3,
+      "text": "actually change the rules along the way."
+    },
+    {
+      "id": 75,
+      "start": 359.98,
+      "end": 365.96,
+      "text": "The rules live in the pipeline, and then the success is actually measured based on"
+    },
+    {
+      "id": 76,
+      "start": 365.98,
+      "end": 369.56,
+      "text": "the accepted changes in the production."
+    },
+    {
+      "id": 77,
+      "start": 370.54,
+      "end": 375.36,
+      "text": "Okay, so using AI can mean multiple different things."
+    },
+    {
+      "id": 78,
+      "start": 376.3,
+      "end": 380.78,
+      "text": "But think about for a moment, where is your organization now?"
+    },
+    {
+      "id": 79,
+      "start": 381.5,
+      "end": 386.75,
+      "text": "Does these three examples reflect the situation at your organization at the"
+    },
+    {
+      "id": 80,
+      "start": 386.77,
+      "end": 387.57,
+      "text": "moment?"
+    },
+    {
+      "id": 81,
+      "start": 390.28,
+      "end": 391.78,
+      "text": "Then, when we talk about an AI"
+    },
+    {
+      "id": 82,
+      "start": 392.27,
+      "end": 396.64,
+      "text": "factory, it would be nice to understand, okay, what is an AI factory?"
+    },
+    {
+      "id": 83,
+      "start": 397.36,
+      "end": 398.46,
+      "text": "This is my definition."
+    },
+    {
+      "id": 84,
+      "start": 398.64,
+      "end": 402.72,
+      "text": "I think an AI factory is actually a delivery system."
+    },
+    {
+      "id": 85,
+      "start": 402.74,
+      "end": 409.62,
+      "text": "It is a shared line where agents turn validated intent into software that"
+    },
+    {
+      "id": 86,
+      "start": 409.64,
+      "end": 415.13,
+      "text": "someone actually owns, runs, change after change inside the architecture that you"
+    },
+    {
+      "id": 87,
+      "start": 415.25,
+      "end": 416.21,
+      "text": "already have."
+    },
+    {
+      "id": 88,
+      "start": 417.02,
+      "end": 418.06,
+      "text": "And the line has six"
+    },
+    {
+      "id": 89,
+      "start": 419.01,
+      "end": 424.34,
+      "text": "stations here. So, intent, I think someone else also mentioned business intent here"
+    },
+    {
+      "id": 90,
+      "start": 424.36,
+      "end": 425.16,
+      "text": "today."
+    },
+    {
+      "id": 91,
+      "start": 425.74,
+      "end": 430.92,
+      "text": "Then we have the design, build, verify, release, operate."
+    },
+    {
+      "id": 92,
+      "start": 430.94,
+      "end": 435.34,
+      "text": "And agents obviously work on each and every of these stations."
+    },
+    {
+      "id": 93,
+      "start": 436.28,
+      "end": 439.46,
+      "text": "And then under this line, there are these six fundamentals."
+    },
+    {
+      "id": 94,
+      "start": 440.58,
+      "end": 445.54,
+      "text": "The clear intent, sound architecture, security, independent verification,"
+    },
+    {
+      "id": 95,
+      "start": 445.56,
+      "end": 448.38,
+      "text": "ownership, and operational feedback."
+    },
+    {
+      "id": 96,
+      "start": 449.32,
+      "end": 454.21,
+      "text": "Factory builds each of them once, and every change that goes through the line"
+    },
+    {
+      "id": 97,
+      "start": 454.23,
+      "end": 455.3,
+      "text": "uses them."
+    },
+    {
+      "id": 98,
+      "start": 456.15999999999997,
+      "end": 458.94,
+      "text": "And the role of people here is actually changing."
+    },
+    {
+      "id": 99,
+      "start": 458.96,
+      "end": 464.94,
+      "text": "I think we have heard about people in the loop, but people in the loop review every"
+    },
+    {
+      "id": 100,
+      "start": 464.96,
+      "end": 465.76,
+      "text": "change."
+    },
+    {
+      "id": 101,
+      "start": 466.26,
+      "end": 469.62,
+      "text": "And here people are on the loop."
+    },
+    {
+      "id": 102,
+      "start": 469.86,
+      "end": 475.42,
+      "text": "So they're setting the intent, owning the checks and handling only the exceptions"
+    },
+    {
+      "id": 103,
+      "start": 475.44,
+      "end": 476.24,
+      "text": "there."
+    },
+    {
+      "id": 104,
+      "start": 476.94,
+      "end": 477.94,
+      "text": "And here's the test."
+    },
+    {
+      "id": 105,
+      "start": 478.84000000000003,
+      "end": 480.14,
+      "text": "Can a routine change reach"
+    },
+    {
+      "id": 106,
+      "start": 480.83,
+      "end": 484.68,
+      "text": "production without a person reading every line?"
+    },
+    {
+      "id": 107,
+      "start": 484.7,
+      "end": 488.48,
+      "text": "Can you show afterwards why that was actually safe?"
+    },
+    {
+      "id": 108,
+      "start": 488.96,
+      "end": 494.35,
+      "text": "By a routine change, I'm meaning here that kind of an everyday new field, changed"
+    },
+    {
+      "id": 109,
+      "start": 494.73,
+      "end": 497.26,
+      "text": "rule, bug fix, something like this."
+    },
+    {
+      "id": 110,
+      "start": 499.8,
+      "end": 504.86,
+      "text": "Well, if we look, this type of thing can be actually done."
+    },
+    {
+      "id": 111,
+      "start": 505.58,
+      "end": 510.34,
+      "text": "And here, the two examples that I took, they're from OpenAI and Anthropic,"
+    },
+    {
+      "id": 112,
+      "start": 511.1,
+      "end": 517.04,
+      "text": "the greatest ever providers of frontier models."
+    },
+    {
+      "id": 113,
+      "start": 517.96,
+      "end": 523.4,
+      "text": "In this example, OpenAI provided a small team that was building a product about a"
+    },
+    {
+      "id": 114,
+      "start": 523.42,
+      "end": 528.56,
+      "text": "million lines in five months, and none of the code was actually written by hand."
+    },
+    {
+      "id": 115,
+      "start": 528.58,
+      "end": 530.87,
+      "text": "It was done all by agents."
+    },
+    {
+      "id": 116,
+      "start": 531.8,
+      "end": 537.07,
+      "text": "And similarly, at Anthropic, there were 16 agents working in parallel, writing in C"
+    },
+    {
+      "id": 117,
+      "start": 537.09,
+      "end": 543.26,
+      "text": "compiler that can compile the Linux kernel, and both wrote down how."
+    },
+    {
+      "id": 118,
+      "start": 544.0,
+      "end": 549.52,
+      "text": "So at OpenAI, custom linters and structural tests enforced the architecture"
+    },
+    {
+      "id": 119,
+      "start": 549.54,
+      "end": 553.86,
+      "text": "and recurring agent tasks cleaned up the code."
+    },
+    {
+      "id": 120,
+      "start": 553.88,
+      "end": 559.32,
+      "text": "And in Anthropic, the researcher says that most of his effort went actually into the"
+    },
+    {
+      "id": 121,
+      "start": 559.34,
+      "end": 564.72,
+      "text": "testing and the feedback around the model, not the actual development itself."
+    },
+    {
+      "id": 122,
+      "start": 565.34,
+      "end": 570.66,
+      "text": "So in both of these projects, the code came from the agents and the human effort"
+    },
+    {
+      "id": 123,
+      "start": 570.68,
+      "end": 572.96,
+      "text": "went into tests and rules."
+    },
+    {
+      "id": 124,
+      "start": 573.8,
+      "end": 576.4,
+      "text": "And that is the work of actually building a factory."
+    },
+    {
+      "id": 125,
+      "start": 580.0,
+      "end": 585.78,
+      "text": "Then if we look at here, okay, Sandbox is proving the agent, and your architecture"
+    },
+    {
+      "id": 126,
+      "start": 585.9,
+      "end": 587.76,
+      "text": "itself is proving the factory."
+    },
+    {
+      "id": 127,
+      "start": 588.88,
+      "end": 594.33,
+      "text": "If you look at those previous slides' examples, what these projects had in"
+    },
+    {
+      "id": 128,
+      "start": 594.55,
+      "end": 598.38,
+      "text": "common was that both were actually new code bases."
+    },
+    {
+      "id": 129,
+      "start": 598.4,
+      "end": 603.18,
+      "text": "So they were greenfield projects designed for agents from day one."
+    },
+    {
+      "id": 130,
+      "start": 603.8,
+      "end": 606.09,
+      "text": "OpenAI calls it an agent-first world."
+    },
+    {
+      "id": 131,
+      "start": 606.86,
+      "end": 612.28,
+      "text": "Nothing else depended on them, and everything the agent needed was actually"
+    },
+    {
+      "id": 132,
+      "start": 612.71,
+      "end": 614.22,
+      "text": "available in the repository."
+    },
+    {
+      "id": 133,
+      "start": 614.78,
+      "end": 617.0,
+      "text": "We could call this as a sandbox."
+    },
+    {
+      "id": 134,
+      "start": 617.76,
+      "end": 620.11,
+      "text": "And sandbox is proving the agent."
+    },
+    {
+      "id": 135,
+      "start": 620.68,
+      "end": 625.63,
+      "text": "Running many of these agents is, of course, very impressive, but it's no"
+    },
+    {
+      "id": 136,
+      "start": 626.02,
+      "end": 627.82,
+      "text": "longer the hard part."
+    },
+    {
+      "id": 137,
+      "start": 627.84,
+      "end": 630.31,
+      "text": "Everyone can set up multiple agents,"
+    },
+    {
+      "id": 138,
+      "start": 631.14,
+      "end": 637.06,
+      "text": "But running it on top of your enterprise architecture, that's the hard part."
+    },
+    {
+      "id": 139,
+      "start": 637.9,
+      "end": 644.81,
+      "text": "You might have decades of systems, most of them designed long before agentic AI was"
+    },
+    {
+      "id": 140,
+      "start": 644.83,
+      "end": 649.84,
+      "text": "available for us. Context might live in ERP systems, in the integrations and"
+    },
+    {
+      "id": 141,
+      "start": 649.86,
+      "end": 651.08,
+      "text": "people's heads."
+    },
+    {
+      "id": 142,
+      "start": 652.3,
+      "end": 657.2,
+      "text": "There might be plenty of documentation but it's not up to date and it's not"
+    },
+    {
+      "id": 143,
+      "start": 657.22,
+      "end": 663.16,
+      "text": "necessarily written in the format that is most readable for the agents."
+    },
+    {
+      "id": 144,
+      "start": 663.18,
+      "end": 664.23,
+      "text": "One change can touch"
+    },
+    {
+      "id": 145,
+      "start": 665.17,
+      "end": 670.8,
+      "text": "multiple places and like multiple teams for instance your data might be"
+    },
+    {
+      "id": 146,
+      "start": 671.75,
+      "end": 677.33,
+      "text": "classified every agent needs an identity limits and approved model running in your"
+    },
+    {
+      "id": 147,
+      "start": 677.59,
+      "end": 684.26,
+      "text": "own tenancy. Of course, when we live in the regulated world, we need to have"
+    },
+    {
+      "id": 148,
+      "start": 684.62,
+      "end": 686.49,
+      "text": "the auditability as well."
+    },
+    {
+      "id": 149,
+      "start": 686.87,
+      "end": 691.19,
+      "text": "Every change needs to be recorded, tested, approved and verified."
+    },
+    {
+      "id": 150,
+      "start": 691.3,
+      "end": 693.13,
+      "text": "It needs to be auditable."
+    },
+    {
+      "id": 151,
+      "start": 693.27,
+      "end": 697.74,
+      "text": "So, for an enterprise, the actual achievement is running agents in your own"
+    },
+    {
+      "id": 152,
+      "start": 697.84,
+      "end": 702.1,
+      "text": "regulated environment on the architecture you actually have."
+    },
+    {
+      "id": 153,
+      "start": 702.12,
+      "end": 703.79,
+      "text": "Your architecture is proving the factory."
+    },
+    {
+      "id": 154,
+      "start": 703.81,
+      "end": 710.72,
+      "text": "And if we think about the enterprise architecture a bit more,"
+    },
+    {
+      "id": 155,
+      "start": 710.74,
+      "end": 714.89,
+      "text": "agent is seeing only what is being written down."
+    },
+    {
+      "id": 156,
+      "start": 715.22,
+      "end": 720.74,
+      "text": "And in most enterprises, much of the important knowledge is not written down."
+    },
+    {
+      "id": 157,
+      "start": 720.76,
+      "end": 726.78,
+      "text": "We have done multitudes of these AI roadmaps and assessed organizations, how"
+    },
+    {
+      "id": 158,
+      "start": 726.8,
+      "end": 730.03,
+      "text": "are they using AI and how are they adopting AI."
+    },
+    {
+      "id": 159,
+      "start": 730.05,
+      "end": 736.7,
+      "text": "And just one example from there was just that one system was deleting personal data"
+    },
+    {
+      "id": 160,
+      "start": 736.72,
+      "end": 743.04,
+      "text": "automatically. They had like two different schedules there, but nobody had written"
+    },
+    {
+      "id": 161,
+      "start": 743.06,
+      "end": 746.16,
+      "text": "down why, or which data followed which schedule."
+    },
+    {
+      "id": 162,
+      "start": 746.46,
+      "end": 747.56,
+      "text": "So the answer was only"
+    },
+    {
+      "id": 163,
+      "start": 748.45,
+      "end": 750.72,
+      "text": "available in one architect's memory."
+    },
+    {
+      "id": 164,
+      "start": 750.74,
+      "end": 755.62,
+      "text": "And of course, as a human colleague, you can always ask that specific architect"
+    },
+    {
+      "id": 165,
+      "start": 755.64,
+      "end": 758.98,
+      "text": "about this rule, and you can reach the information."
+    },
+    {
+      "id": 166,
+      "start": 759.0,
+      "end": 763.1,
+      "text": "But if you're an agent you cannot ask."
+    },
+    {
+      "id": 167,
+      "start": 763.12,
+      "end": 767.83,
+      "text": "So the factory idea is to make the architecture readable."
+    },
+    {
+      "id": 168,
+      "start": 767.85,
+      "end": 773.05,
+      "text": "Interfaces become contracts with tests like in this context if the ERP is there"
+    },
+    {
+      "id": 169,
+      "start": 773.07,
+      "end": 778.81,
+      "text": "that goes first. Architecture decisions becomes rules that the pipeline is"
+    },
+    {
+      "id": 170,
+      "start": 778.83,
+      "end": 782.94,
+      "text": "actually checking and reasons written next to them."
+    },
+    {
+      "id": 171,
+      "start": 782.96,
+      "end": 785.89,
+      "text": "And the domain gets written down as well."
+    },
+    {
+      "id": 172,
+      "start": 785.91,
+      "end": 792.01,
+      "text": "Which systems is or which system is owning what data and the business rules they are"
+    },
+    {
+      "id": 173,
+      "start": 792.03,
+      "end": 797.85,
+      "text": "also documented in plain plain words and then when you start start building these"
+    },
+    {
+      "id": 174,
+      "start": 797.87,
+      "end": 803.29,
+      "text": "seams around the tightly coupled core so the agents can start working in bounded"
+    },
+    {
+      "id": 175,
+      "start": 803.75,
+      "end": 810.47,
+      "text": "areas test environments and anonymized data are created for each change and the"
+    },
+    {
+      "id": 176,
+      "start": 810.78,
+      "end": 816.92,
+      "text": "agent can work inside your own perimeter its own identity in your access management"
+    },
+    {
+      "id": 177,
+      "start": 816.94,
+      "end": 820.62,
+      "text": "approved models and logs in your own monitoring."
+    },
+    {
+      "id": 178,
+      "start": 821.28,
+      "end": 827.71,
+      "text": "So none of this is actually new work from the angle of architecture, but AI just"
+    },
+    {
+      "id": 179,
+      "start": 828.1,
+      "end": 829.64,
+      "text": "made it very urgent."
+    },
+    {
+      "id": 180,
+      "start": 831.1,
+      "end": 833.47,
+      "text": "But how urgent it actually is,"
+    },
+    {
+      "id": 181,
+      "start": 834.7,
+      "end": 840.38,
+      "text": "I have just picked up some things from these assessments during this last year."
+    },
+    {
+      "id": 182,
+      "start": 841.32,
+      "end": 847.28,
+      "text": "So there are multiple things, of course, what we have found, but as I presented"
+    },
+    {
+      "id": 183,
+      "start": 847.43,
+      "end": 852.24,
+      "text": "these different stages, there are certain things that have been highlighted in our"
+    },
+    {
+      "id": 184,
+      "start": 852.37,
+      "end": 857.59,
+      "text": "findings. In the intent phase, the requirements, they might have been living"
+    },
+    {
+      "id": 185,
+      "start": 857.61,
+      "end": 864.21,
+      "text": "somewhere only in meeting, sometimes only in Slack channels or Teams channels, or"
+    },
+    {
+      "id": 186,
+      "start": 864.23,
+      "end": 871.07,
+      "text": "in very, very thin tickets in Jira, just written down with few bullets."
+    },
+    {
+      "id": 187,
+      "start": 871.09,
+      "end": 877.4,
+      "text": "So without a structured record, Then, if we go to the next phase, to the design,"
+    },
+    {
+      "id": 188,
+      "start": 877.42,
+      "end": 880.5,
+      "text": "there might be a half-finished modernization."
+    },
+    {
+      "id": 189,
+      "start": 881.4,
+      "end": 886.78,
+      "text": "All the new systems are actually running side-by-side with two different versions"
+    },
+    {
+      "id": 190,
+      "start": 886.8,
+      "end": 891.24,
+      "text": "of rules. So, which one agent should actually be following?"
+    },
+    {
+      "id": 191,
+      "start": 891.26,
+      "end": 893.66,
+      "text": "Which rules? That might be difficult."
+    },
+    {
+      "id": 192,
+      "start": 894.58,
+      "end": 898.86,
+      "text": "Then, the build phase, there's, of course, the shadow IT."
+    },
+    {
+      "id": 193,
+      "start": 898.88,
+      "end": 904.7,
+      "text": "So, someone might be keen to use Claude, someone might like Codex more, someone"
+    },
+    {
+      "id": 194,
+      "start": 904.72,
+      "end": 909.24,
+      "text": "might want to work with some different tool or with different model."
+    },
+    {
+      "id": 195,
+      "start": 909.82,
+      "end": 915.61,
+      "text": "And depending on the availability of the existing tools in your company, the shadow"
+    },
+    {
+      "id": 196,
+      "start": 915.63,
+      "end": 920.87,
+      "text": "IT is there. It's going to be found, and I think many of you have already recognized"
+    },
+    {
+      "id": 197,
+      "start": 920.89,
+      "end": 925.1,
+      "text": "it. Even if you don't acknowledge the problem, it still exists."
+    },
+    {
+      "id": 198,
+      "start": 925.94,
+      "end": 928.0,
+      "text": "Saying no does not remove the need."
+    },
+    {
+      "id": 199,
+      "start": 928.22,
+      "end": 930.24,
+      "text": "People will find their own way."
+    },
+    {
+      "id": 200,
+      "start": 931.3,
+      "end": 936.26,
+      "text": "Then the verification, the testing part, usually came very last."
+    },
+    {
+      "id": 201,
+      "start": 936.86,
+      "end": 941.1,
+      "text": "And code might be merged even before it has been actually properly tested."
+    },
+    {
+      "id": 202,
+      "start": 942.0,
+      "end": 943.84,
+      "text": "And that's really a problem."
+    },
+    {
+      "id": 203,
+      "start": 944.46,
+      "end": 946.21,
+      "text": "Of course, also the release phase."
+    },
+    {
+      "id": 204,
+      "start": 946.74,
+      "end": 947.89,
+      "text": "It was actually unclear"
+    },
+    {
+      "id": 205,
+      "start": 948.73,
+      "end": 951.56,
+      "text": "sometimes who is in charge, who decides."
+    },
+    {
+      "id": 206,
+      "start": 951.58,
+      "end": 958.33,
+      "text": "Most people we surveyed might not have known in certain companies how to request"
+    },
+    {
+      "id": 207,
+      "start": 958.35,
+      "end": 962.66,
+      "text": "a change or where this request and release actually stood."
+    },
+    {
+      "id": 208,
+      "start": 963.3,
+      "end": 969.97,
+      "text": "And then in the operations stage, the actual errors found in the operations"
+    },
+    {
+      "id": 209,
+      "start": 969.99,
+      "end": 976.84,
+      "text": "were not actually becoming any kind of checks or anything that would actually"
+    },
+    {
+      "id": 210,
+      "start": 977.28,
+      "end": 981.7,
+      "text": "fix the existing code base there."
+    },
+    {
+      "id": 211,
+      "start": 982.58,
+      "end": 989.32,
+      "text": "So visibility into production might be very thin, and nobody has a baseline"
+    },
+    {
+      "id": 212,
+      "start": 989.34,
+      "end": 993.02,
+      "text": "that what the AI actually had changed."
+    },
+    {
+      "id": 213,
+      "start": 993.86,
+      "end": 995.31,
+      "text": "So each of these is missing a"
+    },
+    {
+      "id": 214,
+      "start": 995.85,
+      "end": 1000.49,
+      "text": "fundamental. The clear intent, the sound architecture, the security, the"
+    },
+    {
+      "id": 215,
+      "start": 1000.51,
+      "end": 1004.04,
+      "text": "independent verification, ownership, and operational feedback."
+    },
+    {
+      "id": 216,
+      "start": 1004.44,
+      "end": 1011.38,
+      "text": "And at the same time, like, every company is working"
+    },
+    {
+      "id": 217,
+      "start": 1011.4,
+      "end": 1015.56,
+      "text": "with agents, and we know that generating code got quite cheap."
+    },
+    {
+      "id": 218,
+      "start": 1015.58,
+      "end": 1021.06,
+      "text": "Obviously, now it's still very, very cheap because of the prices are down, but it's"
+    },
+    {
+      "id": 219,
+      "start": 1021.08,
+      "end": 1024.02,
+      "text": "going to be still cheap in the future as well."
+    },
+    {
+      "id": 220,
+      "start": 1025.52,
+      "end": 1031.75,
+      "text": "And the generation itself getting cheap is a good thing, but the thing many people"
+    },
+    {
+      "id": 221,
+      "start": 1031.77,
+      "end": 1037.48,
+      "text": "still forget is that everything around the code generation did not get any"
+    },
+    {
+      "id": 222,
+      "start": 1038.43,
+      "end": 1039.23,
+      "text": "cheaper."
+    },
+    {
+      "id": 223,
+      "start": 1039.86,
+      "end": 1045.29,
+      "text": "So the work is actually piling, and the risk and cost both are moving basically"
+    },
+    {
+      "id": 224,
+      "start": 1045.31,
+      "end": 1046.14,
+      "text": "downstream."
+    },
+    {
+      "id": 225,
+      "start": 1047.46,
+      "end": 1051.32,
+      "text": "Verify gets more changes than people can actually check."
+    },
+    {
+      "id": 226,
+      "start": 1051.8,
+      "end": 1056.82,
+      "text": "Release gets failed changes and operate gets incidents and a lot lots of rework"
+    },
+    {
+      "id": 227,
+      "start": 1056.84,
+      "end": 1058.52,
+      "text": "there was a"
+    },
+    {
+      "id": 228,
+      "start": 1059.64,
+      "end": 1065.46,
+      "text": "research done by Faros AI that compared organizations with themselves at high at"
+    },
+    {
+      "id": 229,
+      "start": 1065.48,
+      "end": 1071.62,
+      "text": "low AI adoption across 22 000 developers merged pull requests per"
+    },
+    {
+      "id": 230,
+      "start": 1071.64,
+      "end": 1077.84,
+      "text": "developer rose 16 percent and average time in review"
+    },
+    {
+      "id": 231,
+      "start": 1078.35,
+      "end": 1082.57,
+      "text": "tripled and incidents per pull request more than tripled."
+    },
+    {
+      "id": 232,
+      "start": 1082.59,
+      "end": 1086.19,
+      "text": "Also, the OpenAI team saw it too."
+    },
+    {
+      "id": 233,
+      "start": 1086.43,
+      "end": 1091.06,
+      "text": "Their bottleneck became the human QA capacity."
+    },
+    {
+      "id": 234,
+      "start": 1091.08,
+      "end": 1096.56,
+      "text": "And as Google's DORA research links AI adoption to higher instability, our"
+    },
+    {
+      "id": 235,
+      "start": 1096.71,
+      "end": 1099.54,
+      "text": "assessments have been finding the same."
+    },
+    {
+      "id": 236,
+      "start": 1099.56,
+      "end": 1105.63,
+      "text": "In more than one organization code review was already becoming a bottleneck and I"
+    },
+    {
+      "id": 237,
+      "start": 1105.65,
+      "end": 1111.22,
+      "text": "think we have heard few here already today speaking about the same thing."
+    },
+    {
+      "id": 238,
+      "start": 1111.24,
+      "end": 1114.76,
+      "text": "So more output might be actually the wrong target."
+    },
+    {
+      "id": 239,
+      "start": 1115.32,
+      "end": 1121.85,
+      "text": "Measure what comes out of the far end, lead time, change fail rate and the"
+    },
+    {
+      "id": 240,
+      "start": 1121.87,
+      "end": 1124.17,
+      "text": "cost per accepted change."
+    },
+    {
+      "id": 241,
+      "start": 1124.43,
+      "end": 1126.14,
+      "text": "These would be good ones."
+    },
+    {
+      "id": 242,
+      "start": 1126.16,
+      "end": 1129.88,
+      "text": "I'm going to go fast forward these couple of slides"
+    },
+    {
+      "id": 243,
+      "start": 1131.56,
+      "end": 1137.86,
+      "text": "and come back here so if I put this"
+    },
+    {
+      "id": 244,
+      "start": 1137.88,
+      "end": 1143.17,
+      "text": "together with one change let's say that we have a request that customers can change"
+    },
+    {
+      "id": 245,
+      "start": 1143.58,
+      "end": 1149.08,
+      "text": "the delivery address until the order is actually shipped it's sounding like a"
+    },
+    {
+      "id": 246,
+      "start": 1149.1,
+      "end": 1154.5,
+      "text": "relatively minor change and it still touches the order service the warehouse"
+    },
+    {
+      "id": 247,
+      "start": 1154.52,
+      "end": 1157.12,
+      "text": "and customer data in this imaginary"
+    },
+    {
+      "id": 248,
+      "start": 1158.09,
+      "end": 1164.96,
+      "text": "organization so the intent intent phase an agent drafts maybe three"
+    },
+    {
+      "id": 249,
+      "start": 1164.98,
+      "end": 1170.66,
+      "text": "acceptance criterias from the actual request the product owner hopefully reads"
+    },
+    {
+      "id": 250,
+      "start": 1171.02,
+      "end": 1176.15,
+      "text": "them through fixes maybe one or two and then when he or she is happy with the"
+    },
+    {
+      "id": 251,
+      "start": 1176.2,
+      "end": 1181.9,
+      "text": "intent they are actually gonna approve it approval is basically the first human"
+    },
+    {
+      "id": 252,
+      "start": 1181.92,
+      "end": 1184.21,
+      "text": "decision along the line."
+    },
+    {
+      "id": 253,
+      "start": 1184.23,
+      "end": 1191.15,
+      "text": "Then we move towards the design phase and there the architectural rules are actually"
+    },
+    {
+      "id": 254,
+      "start": 1191.17,
+      "end": 1196.47,
+      "text": "in the pipeline and they're confirming that the change actually is staying inside"
+    },
+    {
+      "id": 255,
+      "start": 1196.49,
+      "end": 1198.82,
+      "text": "the order service and it's using the"
+    },
+    {
+      "id": 256,
+      "start": 1199.77,
+      "end": 1202.66,
+      "text": "approved interface to the warehouse."
+    },
+    {
+      "id": 257,
+      "start": 1202.68,
+      "end": 1209.47,
+      "text": "Then when we're happy with that we move to the build phase and at this point of"
+    },
+    {
+      "id": 258,
+      "start": 1209.49,
+      "end": 1215.21,
+      "text": "time it's kind of obvious that it's a coding agent that will do the work so when"
+    },
+    {
+      "id": 259,
+      "start": 1215.23,
+      "end": 1221.04,
+      "text": "when when the agent has written the code it has done it so that it actually has its"
+    },
+    {
+      "id": 260,
+      "start": 1221.06,
+      "end": 1226.2,
+      "text": "own identity and it cannot see production data then we are moving towards the"
+    },
+    {
+      "id": 261,
+      "start": 1226.22,
+      "end": 1232.97,
+      "text": "verification phase and the test agent itself cannot test that the agent itself"
+    },
+    {
+      "id": 262,
+      "start": 1232.99,
+      "end": 1238.77,
+      "text": "cannot change plus the acceptance scenarios that it already hasn't seen"
+    },
+    {
+      "id": 263,
+      "start": 1238.79,
+      "end": 1244.21,
+      "text": "before. So the second check happens there, and it's fully"
+    },
+    {
+      "id": 264,
+      "start": 1245.17,
+      "end": 1251.64,
+      "text": "independent of the coding agent and comparing the changes with the acceptance"
+    },
+    {
+      "id": 265,
+      "start": 1251.66,
+      "end": 1255.62,
+      "text": "criteria. Then we're moving to the release phase."
+    },
+    {
+      "id": 266,
+      "start": 1255.64,
+      "end": 1258.76,
+      "text": "So this type of change was approved in advance."
+    },
+    {
+      "id": 267,
+      "start": 1258.78,
+      "end": 1261.64,
+      "text": "You might create some kind of classification rules."
+    },
+    {
+      "id": 268,
+      "start": 1261.82,
+      "end": 1265.54,
+      "text": "So what types of things you might already pre-approve."
+    },
+    {
+      "id": 269,
+      "start": 1266.42,
+      "end": 1271.42,
+      "text": "So the pipeline is actually releasing it already for a few customers first."
+    },
+    {
+      "id": 270,
+      "start": 1272.04,
+      "end": 1277.62,
+      "text": "That pre-approval is still the second human decision that is made once weeks"
+    },
+    {
+      "id": 271,
+      "start": 1277.64,
+      "end": 1282.34,
+      "text": "earlier before this request has even been created."
+    },
+    {
+      "id": 272,
+      "start": 1282.8,
+      "end": 1288.42,
+      "text": "And then we have the operating phase there where the monitoring watches the new flow."
+    },
+    {
+      "id": 273,
+      "start": 1288.78,
+      "end": 1294.94,
+      "text": "And if any errors arise, then a rollback is one rehearsed step that happens easily."
+    },
+    {
+      "id": 274,
+      "start": 1295.96,
+      "end": 1297.0,
+      "text": "So people ended up"
+    },
+    {
+      "id": 275,
+      "start": 1297.95,
+      "end": 1301.82,
+      "text": "deciding twice, and every station left evidence,"
+    },
+    {
+      "id": 276,
+      "start": 1302.52,
+      "end": 1305.89,
+      "text": "and that is what is being on the loop that looks like."
+    },
+    {
+      "id": 277,
+      "start": 1307.82,
+      "end": 1314.28,
+      "text": "Well, now if we look at these six stations as an auditor would, who asked for it,"
+    },
+    {
+      "id": 278,
+      "start": 1314.3,
+      "end": 1319.12,
+      "text": "does it fit to the architecture, what made it, And with what access?"
+    },
+    {
+      "id": 279,
+      "start": 1319.27,
+      "end": 1321.35,
+      "text": "Who checked it? Who accepted it?"
+    },
+    {
+      "id": 280,
+      "start": 1321.37,
+      "end": 1322.82,
+      "text": "Can we undo it?"
+    },
+    {
+      "id": 281,
+      "start": 1323.82,
+      "end": 1329.76,
+      "text": "A regulated enterprise already hopefully asks these questions, and they're called"
+    },
+    {
+      "id": 282,
+      "start": 1329.78,
+      "end": 1331.78,
+      "text": "controls in this environment."
+    },
+    {
+      "id": 283,
+      "start": 1334.2,
+      "end": 1341.02,
+      "text": "But the catch is that these controls were written for people at human speed,"
+    },
+    {
+      "id": 284,
+      "start": 1341.04,
+      "end": 1346.42,
+      "text": "and a change board cannot read a thousand changes a week."
+    },
+    {
+      "id": 285,
+      "start": 1346.86,
+      "end": 1347.9,
+      "text": "So in one regulated"
+    },
+    {
+      "id": 286,
+      "start": 1348.85,
+      "end": 1355.16,
+      "text": "organization we assessed, they were building, and the build ready in a day"
+    },
+    {
+      "id": 287,
+      "start": 1355.18,
+      "end": 1359.24,
+      "text": "often needed a week of paperwork before the formal testing actually happened."
+    },
+    {
+      "id": 288,
+      "start": 1359.26,
+      "end": 1360.94,
+      "text": "And they also found a paradox."
+    },
+    {
+      "id": 289,
+      "start": 1361.42,
+      "end": 1365.68,
+      "text": "If an agent writes the code and developer reviews it, the developer becomes the"
+    },
+    {
+      "id": 290,
+      "start": 1365.7,
+      "end": 1369.04,
+      "text": "author, and the author cannot also be the reviewer."
+    },
+    {
+      "id": 291,
+      "start": 1369.24,
+      "end": 1370.74,
+      "text": "So that's kind of problematic."
+    },
+    {
+      "id": 292,
+      "start": 1371.56,
+      "end": 1373.97,
+      "text": "So every change needs also second eye set."
+    },
+    {
+      "id": 293,
+      "start": 1375.24,
+      "end": 1380.58,
+      "text": "Make the controls executable, pre-approve a type of routine changes, and then"
+    },
+    {
+      "id": 294,
+      "start": 1380.6,
+      "end": 1384.24,
+      "text": "release each change on its evidence."
+    },
+    {
+      "id": 295,
+      "start": 1385.24,
+      "end": 1388.12,
+      "text": "Whatever writes a change never approves it directly."
+    },
+    {
+      "id": 296,
+      "start": 1388.92,
+      "end": 1393.36,
+      "text": "The audit evidence becomes a by-product of delivery, and audit can test the pipeline"
+    },
+    {
+      "id": 297,
+      "start": 1393.38,
+      "end": 1394.86,
+      "text": "itself as a control."
+    },
+    {
+      "id": 298,
+      "start": 1397.86,
+      "end": 1401.34,
+      "text": "And this is like a trust thermometer."
+    },
+    {
+      "id": 299,
+      "start": 1401.94,
+      "end": 1405.96,
+      "text": "That is some concept that our CTO Kalle Mäkelä has developed."
+    },
+    {
+      "id": 300,
+      "start": 1406.78,
+      "end": 1408.76,
+      "text": "And this is about the autonomy."
+    },
+    {
+      "id": 301,
+      "start": 1408.78,
+      "end": 1415.43,
+      "text": "So if we look at the vibe-coded things, they might go on the"
+    },
+    {
+      "id": 302,
+      "start": 1415.45,
+      "end": 1421.76,
+      "text": "autonomy level one. So it's just a preview of a website or some kind of prototype"
+    },
+    {
+      "id": 303,
+      "start": 1421.78,
+      "end": 1424.84,
+      "text": "maybe running on your local host."
+    },
+    {
+      "id": 304,
+      "start": 1425.14,
+      "end": 1426.8,
+      "text": "And it's on autonomy level one."
+    },
+    {
+      "id": 305,
+      "start": 1427.02,
+      "end": 1433.16,
+      "text": "It doesn't need to be anywhere else if we go further up on the ladder and look for"
+    },
+    {
+      "id": 306,
+      "start": 1433.18,
+      "end": 1437.86,
+      "text": "the most of the businesses that that you guys are running these businesses and the"
+    },
+    {
+      "id": 307,
+      "start": 1437.88,
+      "end": 1444.24,
+      "text": "business systems live somewhere between the levels three and five and each and"
+    },
+    {
+      "id": 308,
+      "start": 1444.26,
+      "end": 1451.2,
+      "text": "every level should already have everything that's below it and I have skipped"
+    },
+    {
+      "id": 309,
+      "start": 1451.22,
+      "end": 1453.18,
+      "text": "levels six and seven"
+    },
+    {
+      "id": 310,
+      "start": 1454.54,
+      "end": 1460.5,
+      "text": "But it's mostly the level five that we are interested in the enterprise context."
+    },
+    {
+      "id": 311,
+      "start": 1461.64,
+      "end": 1465.28,
+      "text": "Keep them, the vibe-coded demos, they're great."
+    },
+    {
+      "id": 312,
+      "start": 1465.74,
+      "end": 1469.56,
+      "text": "Treat each and every one of them as a requirement that runs."
+    },
+    {
+      "id": 313,
+      "start": 1469.58,
+      "end": 1473.88,
+      "text": "It is a great way to express business intent,"
+    },
+    {
+      "id": 314,
+      "start": 1474.64,
+      "end": 1475.67,
+      "text": "but this vibe-coded"
+    },
+    {
+      "id": 315,
+      "start": 1476.63,
+      "end": 1480.3,
+      "text": "prototype does not work as a spec on its own."
+    },
+    {
+      "id": 316,
+      "start": 1481.0,
+      "end": 1487.89,
+      "text": "Its intent is intended to travel into the factory, and the code itself does not get"
+    },
+    {
+      "id": 317,
+      "start": 1488.29,
+      "end": 1489.48,
+      "text": "any shortcuts."
+    },
+    {
+      "id": 318,
+      "start": 1492.48,
+      "end": 1499.36,
+      "text": "The roles might stay or change a bit, but still we might need a product owner that"
+    },
+    {
+      "id": 319,
+      "start": 1499.39,
+      "end": 1506.23,
+      "text": "owns the system or owns the product, writes the"
+    },
+    {
+      "id": 320,
+      "start": 1506.25,
+      "end": 1510.0,
+      "text": "criteria an agent can actually test against."
+    },
+    {
+      "id": 321,
+      "start": 1510.02,
+      "end": 1515.4,
+      "text": "The architects might stop reviewing everyday designs and turn the approved"
+    },
+    {
+      "id": 322,
+      "start": 1515.42,
+      "end": 1519.1,
+      "text": "patterns into rules, the pipeline then enforcing."
+    },
+    {
+      "id": 323,
+      "start": 1519.7,
+      "end": 1524.2,
+      "text": "And also, developer might own a service, directs the agents, and handles the"
+    },
+    {
+      "id": 324,
+      "start": 1524.22,
+      "end": 1528.11,
+      "text": "exceptions. That takes a deeper understanding of the system."
+    },
+    {
+      "id": 325,
+      "start": 1529.0,
+      "end": 1530.65,
+      "text": "And then a QA person becomes more"
+    },
+    {
+      "id": 326,
+      "start": 1530.99,
+      "end": 1531.79,
+      "text": "important."
+    },
+    {
+      "id": 327,
+      "start": 1532.14,
+      "end": 1535.16,
+      "text": "These independent checks are the heart of the factory."
+    },
+    {
+      "id": 328,
+      "start": 1535.18,
+      "end": 1539.98,
+      "text": "So someone has to really own them, including all the scenarios the agents"
+    },
+    {
+      "id": 329,
+      "start": 1540.0,
+      "end": 1541.12,
+      "text": "never actually see."
+    },
+    {
+      "id": 330,
+      "start": 1542.0,
+      "end": 1546.28,
+      "text": "And then we have the platform team that runs the whole line itself."
+    },
+    {
+      "id": 331,
+      "start": 1546.56,
+      "end": 1549.64,
+      "text": "The identities, limits, locks, rollbacks, all that."
+    },
+    {
+      "id": 332,
+      "start": 1550.56,
+      "end": 1555.91,
+      "text": "And then the leader, of course, stops tracking hopefully the output and decides"
+    },
+    {
+      "id": 333,
+      "start": 1555.93,
+      "end": 1558.18,
+      "text": "how far the agents may go."
+    },
+    {
+      "id": 334,
+      "start": 1558.7,
+      "end": 1561.17,
+      "text": "And they are actually owning the outcome."
+    },
+    {
+      "id": 335,
+      "start": 1561.38,
+      "end": 1565.75,
+      "text": "So, every one of these jobs needs people who understand the system"
+    },
+    {
+      "id": 336,
+      "start": 1565.77,
+      "end": 1571.22,
+      "text": "itself. And if you are now a lead"
+    },
+    {
+      "id": 337,
+      "start": 1571.65,
+      "end": 1578.55,
+      "text": "engineering person, pick one loosely coupled value stream and measure it before"
+    },
+    {
+      "id": 338,
+      "start": 1579.01,
+      "end": 1580.92,
+      "text": "any agent touches it."
+    },
+    {
+      "id": 339,
+      "start": 1580.94,
+      "end": 1586.85,
+      "text": "Then maybe build one bounded loop with one owner, one agent or few agents, and one"
+    },
+    {
+      "id": 340,
+      "start": 1586.87,
+      "end": 1590.2,
+      "text": "independent verifier per agent."
+    },
+    {
+      "id": 341,
+      "start": 1590.22,
+      "end": 1595.0,
+      "text": "And then make the architecture of that value stream readable: the contracts, the"
+    },
+    {
+      "id": 342,
+      "start": 1595.02,
+      "end": 1597.92,
+      "text": "rules, the domain, written down."
+    },
+    {
+      "id": 343,
+      "start": 1597.94,
+      "end": 1603.08,
+      "text": "If you are leading a business, replace your output targets with two measures: the"
+    },
+    {
+      "id": 344,
+      "start": 1603.1,
+      "end": 1606.63,
+      "text": "lead time and the change/fail rate."
+    },
+    {
+      "id": 345,
+      "start": 1606.66,
+      "end": 1611.24,
+      "text": "And give the factory one owner with a budget and a mandate."
+    },
+    {
+      "id": 346,
+      "start": 1611.26,
+      "end": 1612.3,
+      "text": "And if you are very"
+    },
+    {
+      "id": 347,
+      "start": 1613.25,
+      "end": 1618.1,
+      "text": "regulated, design the first loop in the manner that you have the audit and"
+    },
+    {
+      "id": 348,
+      "start": 1618.12,
+      "end": 1623.82,
+      "text": "security in the room from from the day one and give the people an approved AI route"
+    },
+    {
+      "id": 349,
+      "start": 1623.84,
+      "end": 1629.21,
+      "text": "early they're gonna find the way anyway so it's better if you give it and no without"
+    },
+    {
+      "id": 350,
+      "start": 1629.23,
+      "end": 1635.29,
+      "text": "an alternative is only moving the data somewhere you cannot see and for all three"
+    },
+    {
+      "id": 351,
+      "start": 1635.31,
+      "end": 1641.53,
+      "text": "AI is freeing up time at the build station and the load moves further the line so to"
+    },
+    {
+      "id": 352,
+      "start": 1641.55,
+      "end": 1644.84,
+      "text": "the people who are actually doing the the verification."
+    },
+    {
+      "id": 353,
+      "start": 1644.94,
+      "end": 1651.26,
+      "text": "Decide in advance that where the saved part of the time actually"
+    },
+    {
+      "id": 354,
+      "start": 1651.28,
+      "end": 1657.96,
+      "text": "goes. Into the written intent, tests, architecture, rules and evidence."
+    },
+    {
+      "id": 355,
+      "start": 1657.98,
+      "end": 1664.13,
+      "text": "Summary of DORA's 2026 report on the return of AI investment puts it plainly."
+    },
+    {
+      "id": 356,
+      "start": 1664.41,
+      "end": 1667.38,
+      "text": "Reinvest capacity, don't reduce headcount."
+    },
+    {
+      "id": 357,
+      "start": 1668.78,
+      "end": 1673.65,
+      "text": "And if we come back to the original headline, the AI factory does not"
+    },
+    {
+      "id": 358,
+      "start": 1673.81,
+      "end": 1675.6,
+      "text": "eliminate the fundamentals."
+    },
+    {
+      "id": 359,
+      "start": 1676.1,
+      "end": 1677.78,
+      "text": "It actually runs on them."
+    },
+    {
+      "id": 360,
+      "start": 1679.18,
+      "end": 1679.98,
+      "text": "Thank you."
+    }
+  ]
+}

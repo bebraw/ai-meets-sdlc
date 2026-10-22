@@ -1,0 +1,2040 @@
+{
+  "id": "jenni-talk",
+  "kind": "talk",
+  "officialTitle": "Why Leaders Should Use AI Themselves and Eat Their Own Dog Food?",
+  "speakerNames": [
+    "Jenni Kylmäkoski"
+  ],
+  "durationSeconds": 1530.0,
+  "videoFile": "exports/talks-v02/jenni-talk-4k.mp4",
+  "reviewFile": "review/talks-v02/jenni-talk-720p.mp4",
+  "chapters": [
+    {
+      "outputSeconds": 0,
+      "title": "Introduction: why leaders need firsthand AI experience",
+      "sourceSeconds": 5473,
+      "timestamp": "00:00"
+    },
+    {
+      "outputSeconds": 341,
+      "title": "Using AI to build tools for leadership",
+      "sourceSeconds": 5811.78,
+      "timestamp": "05:41"
+    },
+    {
+      "outputSeconds": 543,
+      "title": "Developer experience and getting started",
+      "sourceSeconds": 6013.32,
+      "timestamp": "09:03"
+    },
+    {
+      "outputSeconds": 690,
+      "title": "Experimentation, sharing and empathy",
+      "sourceSeconds": 6160.66,
+      "timestamp": "11:30"
+    },
+    {
+      "outputSeconds": 826,
+      "title": "Building a reusable AI toolbox",
+      "sourceSeconds": 6296.0,
+      "timestamp": "13:46"
+    },
+    {
+      "outputSeconds": 960,
+      "title": "A Jira mistake: permissions, logging and guardrails",
+      "sourceSeconds": 6430.92,
+      "timestamp": "16:00"
+    },
+    {
+      "outputSeconds": 1160,
+      "title": "Making time for learning and setting priorities",
+      "sourceSeconds": 6630.12,
+      "timestamp": "19:20"
+    },
+    {
+      "outputSeconds": 1250,
+      "title": "Treating AI assets as a product",
+      "sourceSeconds": 6720.02,
+      "timestamp": "20:50"
+    },
+    {
+      "outputSeconds": 1381,
+      "title": "Six lessons and a path to better leadership",
+      "sourceSeconds": 6851.6,
+      "timestamp": "23:01"
+    }
+  ],
+  "materials": [
+    {
+      "label": "Slides (PDF)",
+      "url": "https://www.sdlcai.org/media/talks/jenni-kylmakoski-industry-perspective/d6658bed-6f24-4668-b331-b70df7bd7f55.pdf"
+    }
+  ],
+  "talkUrl": "https://www.sdlcai.org/2026/schedule/#jenni-kylmakoski-industry-perspective",
+  "existingSummary": "Jenni Kylmäkoski shares what she learned by using AI to build her own leadership tools at Nokia: improving developer experience, making time to learn, adding guardrails and treating AI assets as maintained products. A Jira mishap illustrates why firsthand experience matters for leading the change.",
+  "captions": {
+    "language": "en",
+    "srt": "transcripts/final-v02/jenni-talk.en.srt",
+    "vtt": "transcripts/final-v02/jenni-talk.en.vtt",
+    "qualityReport": "transcripts/final-v02/jenni-talk.caption-qc.json",
+    "listeningReview": "transcripts/final-v02/jenni-talk.listening-review.txt",
+    "status": "prepared-with-human-listening-review-notes"
+  },
+  "captionSHA256": "ce6b3713d2513e59d6a40de5512c02bc0710d2b4d484d43987e37f20130b3fc8",
+  "mediaBytes": 725704474,
+  "cueCount": 298,
+  "listeningWindows": [
+    {
+      "id": "jenni-talk-029",
+      "videoId": "jenni-talk",
+      "startSeconds": 215.5,
+      "endSeconds": 225.02,
+      "priority": "high",
+      "category": "high_impact_wording",
+      "note": "Confirm the frequency in the less than 20% claim. Full, independent and isolated passes all hear at least once; preserve this wording unless listening reveals an omitted qualifier.",
+      "currentCaptionText": "Actually, when I studied the report more closely, it revealed that only - well, less than 20 percent of leaders have used AI at least once. So in practice, it means that if you have even once used free ChatGPT to create a",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/jenni-talk.listening-review.json",
+          "entryIndices": [
+            1
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/jenni-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                53
+              ],
+              "text": "report more closely, it revealed that only less than 20% of leaders have used AI at least once. So in practice, it means that if you have even once you..."
+            }
+          ]
+        },
+        {
+          "type": "isolatedLocalASR",
+          "model": "Whisper large-v3",
+          "path": "transcripts/priority-checks-v1/comparison-index.json",
+          "checks": [
+            {
+              "id": "jenni-frequency",
+              "text": "report more closely, it revealed that only, well, less than 20 percent of leaders have used AI at least once. So, in practice, it means that if you have even once used free chat GPT, to create a funny picture, it means that you can actually reach these"
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/jenni-talk.listening-review.json",
+          "index": 1
+        }
+      ],
+      "sourceSegments": [
+        53
+      ],
+      "sourceStartSeconds": 5685.5,
+      "sourceEndSeconds": 5695.02
+    },
+    {
+      "id": "jenni-talk-032",
+      "videoId": "jenni-talk",
+      "startSeconds": 487.62,
+      "endSeconds": 500.36,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Context-supported correction still marked for listening: technical depth → technical debt",
+      "currentCaptionText": "So in practice that could mean that we discuss about coding and testing, we discuss about concerns about software quality, or whether the AI brings us more technical debt. We might be talking about what are the limitations of current LLMs",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/jenni-talk.listening-review.json",
+          "entryIndices": [
+            5
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/jenni-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                105
+              ],
+              "text": "coding and testing. We discuss about concerns about software quality or whether the AI brings us more technical depth. We might be talking about what are the limitations of current"
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 105,
+              "before": "technical depth",
+              "after": "technical debt",
+              "basis": "Software quality and technical debt context; verify audio."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/jenni-talk.listening-review.json",
+          "index": 5
+        }
+      ],
+      "sourceSegments": [
+        105
+      ],
+      "sourceStartSeconds": 5957.62,
+      "sourceEndSeconds": 5970.36
+    },
+    {
+      "id": "jenni-talk-035",
+      "videoId": "jenni-talk",
+      "startSeconds": 970.82,
+      "endSeconds": 979.04,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Context-supported correction still marked for listening: no person → no purpose",
+      "currentCaptionText": "If I have opened some Jira tickets, some closed Jira tickets on purpose. And I was thinking like, no, I have no purpose to do that one. And then he shared me a screenshot, you know, from the ticket history showing",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/jenni-talk.listening-review.json",
+          "entryIndices": [
+            7
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/jenni-talk.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                183
+              ],
+              "text": "opens and georetic gets some close georetic it's on purpose and I was thinking like no I have no person to do that one and then he shared me a screenshot you know"
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 183,
+              "before": "no person",
+              "after": "no purpose",
+              "basis": "Speaker denies intentionally reopening Jira tickets; listen."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/jenni-talk.listening-review.json",
+          "index": 7
+        }
+      ],
+      "sourceSegments": [
+        183
+      ],
+      "sourceStartSeconds": 6440.82,
+      "sourceEndSeconds": 6449.04
+    }
+  ],
+  "cues": [
+    {
+      "id": 1,
+      "start": 4.12,
+      "end": 10.73,
+      "text": "So while he'll handle some technical stuff, I can tell that we talked"
+    },
+    {
+      "id": 2,
+      "start": 10.75,
+      "end": 16.28,
+      "text": "today here about how the software development lifecycle will change, but the"
+    },
+    {
+      "id": 3,
+      "start": 16.3,
+      "end": 20.14,
+      "text": "change is not limited only to developers."
+    },
+    {
+      "id": 4,
+      "start": 21.38,
+      "end": 27.62,
+      "text": "So leaders in the software industry, they need to also change their working habits."
+    },
+    {
+      "id": 5,
+      "start": 28.98,
+      "end": 34.61,
+      "text": "So my presentation will concentrate on the leader's role in this AI"
+    },
+    {
+      "id": 6,
+      "start": 34.63,
+      "end": 39.86,
+      "text": "evolution. So how can we transform teams or"
+    },
+    {
+      "id": 7,
+      "start": 40.5,
+      "end": 46.12,
+      "text": "organizations to become AI native if we don't have a personal"
+    },
+    {
+      "id": 8,
+      "start": 46.14,
+      "end": 51.08,
+      "text": "understanding what this change is all about?"
+    },
+    {
+      "id": 9,
+      "start": 51.88,
+      "end": 57.77,
+      "text": "Okay, he found my"
+    },
+    {
+      "id": 10,
+      "start": 57.79,
+      "end": 64.51,
+      "text": "presentation. It's easier to do if you have a few slides"
+    },
+    {
+      "id": 11,
+      "start": 64.53,
+      "end": 68.78999999999999,
+      "text": "in the background. I"
+    },
+    {
+      "id": 12,
+      "start": 68.81,
+      "end": 75.23,
+      "text": "see my"
+    },
+    {
+      "id": 13,
+      "start": 75.25,
+      "end": 83.03,
+      "text": "slides,"
+    },
+    {
+      "id": 14,
+      "start": 83.05,
+      "end": 84.57,
+      "text": "like, okay, now they're there."
+    },
+    {
+      "id": 15,
+      "start": 84.59,
+      "end": 85.39,
+      "text": "Good."
+    },
+    {
+      "id": 16,
+      "start": 92.24000000000001,
+      "end": 98.25999999999999,
+      "text": "So, hello everyone. So, my name is Jenni Kylmäkoski, and I'm R&D leader in Nokia."
+    },
+    {
+      "id": 17,
+      "start": 99.24000000000001,
+      "end": 104.14,
+      "text": "So, in my daily life, I deal with a software that is developed by hundreds of"
+    },
+    {
+      "id": 18,
+      "start": 104.16,
+      "end": 104.96000000000001,
+      "text": "developers."
+    },
+    {
+      "id": 19,
+      "start": 105.84,
+      "end": 111.1,
+      "text": "So, in practice, we deal a very big and very complex software."
+    },
+    {
+      "id": 20,
+      "start": 113.25999999999999,
+      "end": 118.03999999999999,
+      "text": "In practice, that means that I'm accountable of keeping the release"
+    },
+    {
+      "id": 21,
+      "start": 118.06,
+      "end": 119.32,
+      "text": "schedules,"
+    },
+    {
+      "id": 22,
+      "start": 120.04,
+      "end": 123.26,
+      "text": "Keeping our promise to customers about the quality."
+    },
+    {
+      "id": 23,
+      "start": 124.04,
+      "end": 130.48,
+      "text": "So actually, we have a quality promise not to deliver any bugs to the customers."
+    },
+    {
+      "id": 24,
+      "start": 131.78,
+      "end": 138.16,
+      "text": "And naturally, I need to ensure that we design and deliver features that meet our"
+    },
+    {
+      "id": 25,
+      "start": 138.18,
+      "end": 139.12,
+      "text": "customer needs."
+    },
+    {
+      "id": 26,
+      "start": 140.34,
+      "end": 147.07999999999998,
+      "text": "I'm also a team manager, people manager for scrum teams, meaning developers and"
+    },
+    {
+      "id": 27,
+      "start": 147.1,
+      "end": 149.84,
+      "text": "testers, software architects."
+    },
+    {
+      "id": 28,
+      "start": 150.04,
+      "end": 153.48,
+      "text": "Product owners and scrum masters."
+    },
+    {
+      "id": 29,
+      "start": 154.68,
+      "end": 160.97,
+      "text": "For us, this AI transition, it's an equally continuous learning"
+    },
+    {
+      "id": 30,
+      "start": 160.99,
+      "end": 164.76,
+      "text": "journey than any of you."
+    },
+    {
+      "id": 31,
+      "start": 166.82,
+      "end": 169.52,
+      "text": "So today I'm looking for how the AI"
+    },
+    {
+      "id": 32,
+      "start": 170.4,
+      "end": 176.85,
+      "text": "transition looks from leader’s point of view and what we can also learn"
+    },
+    {
+      "id": 33,
+      "start": 176.87,
+      "end": 183.64,
+      "text": "when we live the same change than our team members, what we can learn about"
+    },
+    {
+      "id": 34,
+      "start": 183.83,
+      "end": 185.4,
+      "text": "it at the same time."
+    },
+    {
+      "id": 35,
+      "start": 186.06,
+      "end": 190.52,
+      "text": "And I will be sharing a few of my personal learnings at the same time."
+    },
+    {
+      "id": 36,
+      "start": 193.1,
+      "end": 196.47,
+      "text": "Gallup released in the beginning of this year a"
+    },
+    {
+      "id": 37,
+      "start": 197.38,
+      "end": 202.61,
+      "text": "report stating that 69% of leaders use AI."
+    },
+    {
+      "id": 38,
+      "start": 203.26,
+      "end": 205.88,
+      "text": "Even more than their workforce."
+    },
+    {
+      "id": 39,
+      "start": 205.9,
+      "end": 209.38,
+      "text": "I think that sounds really good, doesn't it?"
+    },
+    {
+      "id": 40,
+      "start": 210.66,
+      "end": 217.39,
+      "text": "Actually, when I studied the report more closely, it revealed that only -"
+    },
+    {
+      "id": 41,
+      "start": 217.5,
+      "end": 223.0,
+      "text": "well, less than 20 percent of leaders have used AI at least once."
+    },
+    {
+      "id": 42,
+      "start": 223.02,
+      "end": 229.67000000000002,
+      "text": "So in practice, it means that if you have even once used free ChatGPT to create a"
+    },
+    {
+      "id": 43,
+      "start": 230.07,
+      "end": 234.76,
+      "text": "funny picture, it means that you can actually reach this 69% group."
+    },
+    {
+      "id": 44,
+      "start": 236.62,
+      "end": 243.24,
+      "text": "Actually, to me, it's quite alarming if these same people drive the AI transition"
+    },
+    {
+      "id": 45,
+      "start": 243.26,
+      "end": 249.96,
+      "text": "in their organizations to their teams, do they really know what it is all"
+    },
+    {
+      "id": 46,
+      "start": 249.98,
+      "end": 251.02,
+      "text": "about?"
+    },
+    {
+      "id": 47,
+      "start": 253.62,
+      "end": 257.19,
+      "text": "So, in practice, like"
+    },
+    {
+      "id": 48,
+      "start": 257.9,
+      "end": 264.59,
+      "text": "actually Mo was saying, that the change is actually quite demanding from"
+    },
+    {
+      "id": 49,
+      "start": 264.74,
+      "end": 266.1,
+      "text": "leaders' point of view."
+    },
+    {
+      "id": 50,
+      "start": 266.12,
+      "end": 268.32,
+      "text": "So, we're supposed"
+    },
+    {
+      "id": 51,
+      "start": 269.09,
+      "end": 269.89,
+      "text": "to"
+    },
+    {
+      "id": 52,
+      "start": 270.4,
+      "end": 273.62,
+      "text": "integrate AI to our software development practices,"
+    },
+    {
+      "id": 53,
+      "start": 274.4,
+      "end": 280.23,
+      "text": "and we're supposed to also get results."
+    },
+    {
+      "id": 54,
+      "start": 280.76,
+      "end": 282.76,
+      "text": "You know, that was in Mo’s presentation,"
+    },
+    {
+      "id": 55,
+      "start": 282.96,
+      "end": 285.56,
+      "text": "that getting results is actually the hard part."
+    },
+    {
+      "id": 56,
+      "start": 286.34000000000003,
+      "end": 289.74,
+      "text": "We're supposed to still manage the costs,"
+    },
+    {
+      "id": 57,
+      "start": 290.46,
+      "end": 294.14,
+      "text": "and we are supposed to speed up the development."
+    },
+    {
+      "id": 58,
+      "start": 294.15999999999997,
+      "end": 297.64,
+      "text": "And naturally, we did all that yesterday."
+    },
+    {
+      "id": 59,
+      "start": 297.65999999999997,
+      "end": 300.44,
+      "text": "In a high level, this can sound easy."
+    },
+    {
+      "id": 60,
+      "start": 300.46,
+      "end": 307.14,
+      "text": "So, give your teams tools, upskill them, teach them a bit of how"
+    },
+    {
+      "id": 61,
+      "start": 307.16,
+      "end": 309.74,
+      "text": "to use AI ethically."
+    },
+    {
+      "id": 62,
+      "start": 309.76,
+      "end": 313.94,
+      "text": "It means that there are certain things that you can do with AI, and there are"
+    },
+    {
+      "id": 63,
+      "start": 314.33,
+      "end": 316.84,
+      "text": "certain things that you shouldn't do with AI."
+    },
+    {
+      "id": 64,
+      "start": 316.86,
+      "end": 323.75,
+      "text": "Start from experimentation, and then gradually increase the"
+    },
+    {
+      "id": 65,
+      "start": 323.77,
+      "end": 326.14,
+      "text": "AI to come up with daily activity."
+    },
+    {
+      "id": 66,
+      "start": 327.46,
+      "end": 332.48,
+      "text": "I know that we today hear a lot of examples of how that can be done."
+    },
+    {
+      "id": 67,
+      "start": 332.5,
+      "end": 337.46,
+      "text": "But then, what do the leaders need to know about this?"
+    },
+    {
+      "id": 68,
+      "start": 338.06,
+      "end": 340.1,
+      "text": "So let's go that through."
+    },
+    {
+      "id": 69,
+      "start": 341.78,
+      "end": 348.72,
+      "text": "I will challenge all of those few leaders who are here to actually experiment"
+    },
+    {
+      "id": 70,
+      "start": 348.74,
+      "end": 349.95,
+      "text": "and"
+    },
+    {
+      "id": 71,
+      "start": 350.82,
+      "end": 357.56,
+      "text": "really experience the AI change in a similar way that they expect"
+    },
+    {
+      "id": 72,
+      "start": 357.58,
+      "end": 361.8,
+      "text": "from others, to eat their own dog food."
+    },
+    {
+      "id": 73,
+      "start": 361.82,
+      "end": 364.18,
+      "text": "That I also do myself."
+    },
+    {
+      "id": 74,
+      "start": 364.3,
+      "end": 366.98,
+      "text": "So I explore AI from two"
+    },
+    {
+      "id": 75,
+      "start": 367.88,
+      "end": 374.67,
+      "text": "perspectives, as a leader's tool, but also how do we make software with"
+    },
+    {
+      "id": 76,
+      "start": 374.75,
+      "end": 381.66,
+      "text": "AI. So my use of AI, that's not limited to that I do some meeting minutes with AI, or"
+    },
+    {
+      "id": 77,
+      "start": 381.68,
+      "end": 388.27,
+      "text": "I ask AI what are the top five tasks based on my email"
+    },
+    {
+      "id": 78,
+      "start": 388.29,
+      "end": 389.58,
+      "text": "inbox."
+    },
+    {
+      "id": 79,
+      "start": 390.34,
+      "end": 394.8,
+      "text": "I actually make small software products utilizing AI."
+    },
+    {
+      "id": 80,
+      "start": 397.65999999999997,
+      "end": 399.86,
+      "text": "So what kind of tools I made AI?"
+    },
+    {
+      "id": 81,
+      "start": 401.22,
+      "end": 402.97,
+      "text": "Naturally, they are leaders' tools."
+    },
+    {
+      "id": 82,
+      "start": 403.5,
+      "end": 407.4,
+      "text": "I need reports, I need summaries, I need analyses."
+    },
+    {
+      "id": 83,
+      "start": 407.42,
+      "end": 410.40999999999997,
+      "text": "Usually something that I do very frequently."
+    },
+    {
+      "id": 84,
+      "start": 411.74,
+      "end": 416.98,
+      "text": "It could be release status or quality status."
+    },
+    {
+      "id": 85,
+      "start": 417.48,
+      "end": 419.48,
+      "text": "Sometimes I do something more technical."
+    },
+    {
+      "id": 86,
+      "start": 419.98,
+      "end": 425.12,
+      "text": "I want to know the regression test statuses or I want to know what is wrong"
+    },
+    {
+      "id": 87,
+      "start": 425.14,
+      "end": 427.43,
+      "text": "with our component or product build pipes."
+    },
+    {
+      "id": 88,
+      "start": 429.74,
+      "end": 435.64,
+      "text": "So what is then the benefit for me to make these small applications apart from the"
+    },
+    {
+      "id": 89,
+      "start": 435.66,
+      "end": 437.65,
+      "text": "fact that I do save time?"
+    },
+    {
+      "id": 90,
+      "start": 437.67,
+      "end": 440.41,
+      "text": "Application or script"
+    },
+    {
+      "id": 91,
+      "start": 441.3,
+      "end": 447.82,
+      "text": "actually doesn't use tokens, so it's cost-efficient for me."
+    },
+    {
+      "id": 92,
+      "start": 448.94,
+      "end": 455.15999999999997,
+      "text": "Also, it is deterministic, so when I run it, it can make the same"
+    },
+    {
+      "id": 93,
+      "start": 455.18,
+      "end": 461.4,
+      "text": "results, so I can actually trust well of my"
+    },
+    {
+      "id": 94,
+      "start": 461.42,
+      "end": 468.27,
+      "text": "reports. Since I'm working in a software organisation, actually it's important for"
+    },
+    {
+      "id": 95,
+      "start": 468.29,
+      "end": 473.84000000000003,
+      "text": "me to actually understand what it feels to make a software."
+    },
+    {
+      "id": 96,
+      "start": 473.86,
+      "end": 479.44,
+      "text": "And I do this one because I want to be able to discuss with my team members all"
+    },
+    {
+      "id": 97,
+      "start": 479.46,
+      "end": 482.68,
+      "text": "the concerns that they might have."
+    },
+    {
+      "id": 98,
+      "start": 482.7,
+      "end": 488.38,
+      "text": "So in practice that could mean that we discuss about coding and testing, we"
+    },
+    {
+      "id": 99,
+      "start": 488.45,
+      "end": 494.8,
+      "text": "discuss about concerns about software quality, or whether the AI"
+    },
+    {
+      "id": 100,
+      "start": 494.82,
+      "end": 498.34,
+      "text": "brings us more technical debt."
+    },
+    {
+      "id": 101,
+      "start": 498.36,
+      "end": 504.94,
+      "text": "We might be talking about what are the limitations of current LLMs"
+    },
+    {
+      "id": 102,
+      "start": 504.96,
+      "end": 511.85,
+      "text": "from our context. When I do my small applications, I do try to"
+    },
+    {
+      "id": 103,
+      "start": 511.87,
+      "end": 516.18,
+      "text": "follow the basic software development principles."
+    },
+    {
+      "id": 104,
+      "start": 516.2,
+      "end": 521.76,
+      "text": "So it means that I make the plans and designs before the implementation."
+    },
+    {
+      "id": 105,
+      "start": 521.78,
+      "end": 528.21,
+      "text": "I have rules for the unit test coverage or the code"
+    },
+    {
+      "id": 106,
+      "start": 528.23,
+      "end": 535.1,
+      "text": "complexity. But since I delegate the coding to AI, I still"
+    },
+    {
+      "id": 107,
+      "start": 535.12,
+      "end": 540.92,
+      "text": "need to validate my report results before I can trust"
+    },
+    {
+      "id": 108,
+      "start": 540.94,
+      "end": 547.27,
+      "text": "them. So what I have learned with the"
+    },
+    {
+      "id": 109,
+      "start": 547.59,
+      "end": 554.28,
+      "text": "AI-assisted coding then: even if you have someone who has experimented AI, you"
+    },
+    {
+      "id": 110,
+      "start": 554.3,
+      "end": 560.99,
+      "text": "know, making those fancy AI agents, there's always those ones who wonder how"
+    },
+    {
+      "id": 111,
+      "start": 561.01,
+      "end": 563.06,
+      "text": "to even get started."
+    },
+    {
+      "id": 112,
+      "start": 563.98,
+      "end": 568.56,
+      "text": "So while you eat your own dog food, you actually learn that the developer"
+    },
+    {
+      "id": 113,
+      "start": 568.58,
+      "end": 570.78,
+      "text": "experience, it do matters."
+    },
+    {
+      "id": 114,
+      "start": 572.5,
+      "end": 578.09,
+      "text": "And it also impacts how people are motivated to take something new actively"
+    },
+    {
+      "id": 115,
+      "start": 578.41,
+      "end": 579.36,
+      "text": "in use."
+    },
+    {
+      "id": 116,
+      "start": 580.48,
+      "end": 583.64,
+      "text": "So I use several tools, several AI tools."
+    },
+    {
+      "id": 117,
+      "start": 583.76,
+      "end": 587.74,
+      "text": "I use the same tools that my team members are using."
+    },
+    {
+      "id": 118,
+      "start": 588.62,
+      "end": 595.1,
+      "text": "And first thing in the process, you learn that how hard, usually hard, or how easy"
+    },
+    {
+      "id": 119,
+      "start": 595.12,
+      "end": 596.9,
+      "text": "it actually is to get started."
+    },
+    {
+      "id": 120,
+      "start": 597.26,
+      "end": 599.7,
+      "text": "So, where do you find licenses?"
+    },
+    {
+      "id": 121,
+      "start": 600.24,
+      "end": 601.74,
+      "text": "Where do you install software?"
+    },
+    {
+      "id": 122,
+      "start": 603.34,
+      "end": 606.7,
+      "text": "You know, what kind of settings you need to do the environments?"
+    },
+    {
+      "id": 123,
+      "start": 607.42,
+      "end": 613.77,
+      "text": "At least in big corporations like us, you need to always do the little tweaks in"
+    },
+    {
+      "id": 124,
+      "start": 613.79,
+      "end": 616.76,
+      "text": "order to get your applications to working."
+    },
+    {
+      "id": 125,
+      "start": 618.62,
+      "end": 625.48,
+      "text": "Also, during the process, you learn how important the"
+    },
+    {
+      "id": 126,
+      "start": 625.55,
+      "end": 631.65,
+      "text": "communication, instructions, trainings, support"
+    },
+    {
+      "id": 127,
+      "start": 632.03,
+      "end": 638.7,
+      "text": "channels are. While going through that myself, I have even learned how to"
+    },
+    {
+      "id": 128,
+      "start": 638.72,
+      "end": 645.62,
+      "text": "actually create a bug report for missing functionalities"
+    },
+    {
+      "id": 129,
+      "start": 645.64,
+      "end": 652.58,
+      "text": "in our AI tools. This developer experience matters not only"
+    },
+    {
+      "id": 130,
+      "start": 652.8,
+      "end": 659.16,
+      "text": "when you start it, but it matters all the time because you introduce new AI assets,"
+    },
+    {
+      "id": 131,
+      "start": 659.18,
+      "end": 663.96,
+      "text": "maybe new agents or new versions of agents."
+    },
+    {
+      "id": 132,
+      "start": 663.98,
+      "end": 670.6,
+      "text": "So typical questions from people is that, okay, what does this agent do?"
+    },
+    {
+      "id": 133,
+      "start": 670.62,
+      "end": 673.12,
+      "text": "What are the limitations of it?"
+    },
+    {
+      "id": 134,
+      "start": 673.16,
+      "end": 677.2,
+      "text": "How do I actually take it into use?"
+    },
+    {
+      "id": 135,
+      "start": 677.22,
+      "end": 681.86,
+      "text": "How do I interact with that one?"
+    },
+    {
+      "id": 136,
+      "start": 681.88,
+      "end": 688.22,
+      "text": "So an agent will not have no benefits for us if people"
+    },
+    {
+      "id": 137,
+      "start": 688.24,
+      "end": 694.08,
+      "text": "don't use it. A very typical path for"
+    },
+    {
+      "id": 138,
+      "start": 694.94,
+      "end": 701.2,
+      "text": "organisations to start using AI is actually experimentation."
+    },
+    {
+      "id": 139,
+      "start": 701.22,
+      "end": 707.44,
+      "text": "We hope to get quick wins when people try AI, and they hope to find good examples"
+    },
+    {
+      "id": 140,
+      "start": 707.46,
+      "end": 709.92,
+      "text": "where the AI works well."
+    },
+    {
+      "id": 141,
+      "start": 710.2,
+      "end": 712.1,
+      "text": "That has been my case, too."
+    },
+    {
+      "id": 142,
+      "start": 712.12,
+      "end": 718.72,
+      "text": "So it has required a lot of curiosity, a lot of experimentation to find out in my"
+    },
+    {
+      "id": 143,
+      "start": 718.74,
+      "end": 725.16,
+      "text": "own role what I can do with AI and how to successfully"
+    },
+    {
+      "id": 144,
+      "start": 725.18,
+      "end": 728.42,
+      "text": "delegate tasks to it."
+    },
+    {
+      "id": 145,
+      "start": 728.44,
+      "end": 735.38,
+      "text": "When was the last time you have made a demo about how you use AI in your own"
+    },
+    {
+      "id": 146,
+      "start": 735.4,
+      "end": 738.92,
+      "text": "work? Maybe to your colleagues."
+    },
+    {
+      "id": 147,
+      "start": 738.94,
+      "end": 745.45,
+      "text": "Or maybe you have shared what kind of AI asset"
+    },
+    {
+      "id": 148,
+      "start": 745.47,
+      "end": 751.85,
+      "text": "you have created. Learning can be really, well, this can be"
+    },
+    {
+      "id": 149,
+      "start": 751.87,
+      "end": 755.04,
+      "text": "actually very difficult for people."
+    },
+    {
+      "id": 150,
+      "start": 755.06,
+      "end": 759.26,
+      "text": "It requires a lot of courage to share something you have done."
+    },
+    {
+      "id": 151,
+      "start": 760.66,
+      "end": 767.41,
+      "text": "Quite often, people feel that they haven't done such significant things that it"
+    },
+    {
+      "id": 152,
+      "start": 767.46,
+      "end": 769.85,
+      "text": "would be worth sharing with others."
+    },
+    {
+      "id": 153,
+      "start": 770.36,
+      "end": 776.3,
+      "text": "Actually, in Mo’s presentation, the little coach in my heart was actually really"
+    },
+    {
+      "id": 154,
+      "start": 776.32,
+      "end": 781.81,
+      "text": "smiling when I heard that they had those communities where people share their"
+    },
+    {
+      "id": 155,
+      "start": 781.83,
+      "end": 786.84,
+      "text": "experience and people want to experiment together even more."
+    },
+    {
+      "id": 156,
+      "start": 786.86,
+      "end": 792.7,
+      "text": "So that was a, I think, very positive example how you can do that in your"
+    },
+    {
+      "id": 157,
+      "start": 792.75,
+      "end": 794.76,
+      "text": "organization."
+    },
+    {
+      "id": 158,
+      "start": 795.86,
+      "end": 802.84,
+      "text": "But living the same change than my colleagues"
+    },
+    {
+      "id": 159,
+      "start": 802.86,
+      "end": 807.84,
+      "text": "or my team members actually teach me a lot."
+    },
+    {
+      "id": 160,
+      "start": 807.86,
+      "end": 814.46,
+      "text": "And it also is vital for me that when I understand what they are going through, I"
+    },
+    {
+      "id": 161,
+      "start": 814.48,
+      "end": 816.04,
+      "text": "can be more empathetic."
+    },
+    {
+      "id": 162,
+      "start": 816.76,
+      "end": 821.23,
+      "text": "And it helps me to build connections as a leader to others."
+    },
+    {
+      "id": 163,
+      "start": 826.0,
+      "end": 832.5,
+      "text": "Sometimes the reality hits best when you have your hands full of"
+    },
+    {
+      "id": 164,
+      "start": 832.52,
+      "end": 833.42,
+      "text": "work."
+    },
+    {
+      "id": 165,
+      "start": 834.36,
+      "end": 840.98,
+      "text": "So if I think about making this picture with that AI, actually, it's very easy."
+    },
+    {
+      "id": 166,
+      "start": 841.84,
+      "end": 847.65,
+      "text": "But if I want to make another picture and get another one, and I want to make sure"
+    },
+    {
+      "id": 167,
+      "start": 847.67,
+      "end": 852.26,
+      "text": "that they all look like the same, you know, the character is the same, maybe add"
+    },
+    {
+      "id": 168,
+      "start": 852.28,
+      "end": 854.76,
+      "text": "some diversity to the characters."
+    },
+    {
+      "id": 169,
+      "start": 856.04,
+      "end": 858.83,
+      "text": "I want to make sure that the fonts are the same."
+    },
+    {
+      "id": 170,
+      "start": 860.52,
+      "end": 865.5,
+      "text": "In case of images, I want to make sure the background is always transparent."
+    },
+    {
+      "id": 171,
+      "start": 865.52,
+      "end": 867.72,
+      "text": "At least I don't have the stamina to write a"
+    },
+    {
+      "id": 172,
+      "start": 869.16,
+      "end": 873.8,
+      "text": "prompt again and again. So I'll figure out that I need better tools."
+    },
+    {
+      "id": 173,
+      "start": 876.28,
+      "end": 879.56,
+      "text": "So I actually need skill in my presentation."
+    },
+    {
+      "id": 174,
+      "start": 881.88,
+      "end": 886.66,
+      "text": "Reality is that the toolbox is a combination of something you have done"
+    },
+    {
+      "id": 175,
+      "start": 886.68,
+      "end": 893.08,
+      "text": "yourself. It's also something that others have developed and centrally shared."
+    },
+    {
+      "id": 176,
+      "start": 894.6,
+      "end": 899.32,
+      "text": "We don't want that every developer has to invent the wheel again and again"
+    },
+    {
+      "id": 177,
+      "start": 901.24,
+      "end": 903.0,
+      "text": "for tasks that we do very often."
+    },
+    {
+      "id": 178,
+      "start": 905.0,
+      "end": 906.74,
+      "text": "But we do need tools."
+    },
+    {
+      "id": 179,
+      "start": 906.76,
+      "end": 912.04,
+      "text": "We need tools like skills or guardrails and harnesses."
+    },
+    {
+      "id": 180,
+      "start": 912.6,
+      "end": 914.8,
+      "text": "We need MCPs to"
+    },
+    {
+      "id": 181,
+      "start": 916.88,
+      "end": 923.61,
+      "text": "accessing systems, we need knowledge bases, at the end we want to have AI"
+    },
+    {
+      "id": 182,
+      "start": 923.63,
+      "end": 927.96,
+      "text": "agents and workflows, and we need monitoring assets for those ones."
+    },
+    {
+      "id": 183,
+      "start": 929.72,
+      "end": 934.58,
+      "text": "So we really need a toolbox in order to work well with the AI."
+    },
+    {
+      "id": 184,
+      "start": 934.6,
+      "end": 941.17,
+      "text": "As a leader, when I explore all of these, it also"
+    },
+    {
+      "id": 185,
+      "start": 941.19,
+      "end": 948.1,
+      "text": "gives me a better understanding of what are the AI capabilities and"
+    },
+    {
+      "id": 186,
+      "start": 948.12,
+      "end": 951.78,
+      "text": "what are the limitations when utilizing AI."
+    },
+    {
+      "id": 187,
+      "start": 951.8,
+      "end": 955.24,
+      "text": "It gives me, you know, the skill of AI literacy."
+    },
+    {
+      "id": 188,
+      "start": 960.92,
+      "end": 966.52,
+      "text": "A colleague of mine contacted me some time ago and actually asked me that"
+    },
+    {
+      "id": 189,
+      "start": 968.04,
+      "end": 971.98,
+      "text": "If I have opened some Jira tickets, some closed Jira tickets on purpose."
+    },
+    {
+      "id": 190,
+      "start": 972.82,
+      "end": 977.04,
+      "text": "And I was thinking like, no, I have no purpose to do that one."
+    },
+    {
+      "id": 191,
+      "start": 977.78,
+      "end": 982.19,
+      "text": "And then he shared me a screenshot, you know, from the ticket history showing"
+    },
+    {
+      "id": 192,
+      "start": 982.35,
+      "end": 986.74,
+      "text": "that, yes, I actually, a few days earlier, I actually have opened several Jira"
+    },
+    {
+      "id": 193,
+      "start": 986.87,
+      "end": 987.7,
+      "text": "tickets."
+    },
+    {
+      "id": 194,
+      "start": 989.52,
+      "end": 993.68,
+      "text": "And it took me a few minutes to figure out that what earth has happened."
+    },
+    {
+      "id": 195,
+      "start": 994.04,
+      "end": 997.9,
+      "text": "And then I realized that, yes, actually, it was me working with AI."
+    },
+    {
+      "id": 196,
+      "start": 997.92,
+      "end": 1003.98,
+      "text": "I actually had wanted to check from Jira our coming release"
+    },
+    {
+      "id": 197,
+      "start": 1004.11,
+      "end": 1010.73,
+      "text": "contents. I had made some queries, but I had used a new model"
+    },
+    {
+      "id": 198,
+      "start": 1010.75,
+      "end": 1016.02,
+      "text": "while doing it. And this model has become very innovative."
+    },
+    {
+      "id": 199,
+      "start": 1017.24,
+      "end": 1023.38,
+      "text": "And instead of just reading and summarizing me the release contents, it"
+    },
+    {
+      "id": 200,
+      "start": 1023.4,
+      "end": 1027.41,
+      "text": "has opened several Jira tickets just for me."
+    },
+    {
+      "id": 201,
+      "start": 1028.78,
+      "end": 1030.7,
+      "text": "So I had to clean my mess."
+    },
+    {
+      "id": 202,
+      "start": 1032.24,
+      "end": 1037.88,
+      "text": "But regardless of the mess, I think it was really good learning for me because I"
+    },
+    {
+      "id": 203,
+      "start": 1037.96,
+      "end": 1039.12,
+      "text": "learned several things."
+    },
+    {
+      "id": 204,
+      "start": 1039.14,
+      "end": 1041.75,
+      "text": "I learned that"
+    },
+    {
+      "id": 205,
+      "start": 1043.42,
+      "end": 1049.38,
+      "text": "security matters, logging matters."
+    },
+    {
+      "id": 206,
+      "start": 1049.78,
+      "end": 1054.71,
+      "text": "So when I changed the model, it behaved"
+    },
+    {
+      "id": 207,
+      "start": 1054.73,
+      "end": 1057.06,
+      "text": "differently."
+    },
+    {
+      "id": 208,
+      "start": 1057.88,
+      "end": 1064.8,
+      "text": "So I have no clue how to actually first undo what I've done because I didn't have"
+    },
+    {
+      "id": 209,
+      "start": 1064.97,
+      "end": 1069.48,
+      "text": "the logs to see what I have done and what I should be cleaning up."
+    },
+    {
+      "id": 210,
+      "start": 1070.48,
+      "end": 1073.84,
+      "text": "So I learned to actually build some harnesses,"
+    },
+    {
+      "id": 211,
+      "start": 1074.78,
+      "end": 1078.06,
+      "text": "some guardrails, that this would not happen a second time."
+    },
+    {
+      "id": 212,
+      "start": 1078.48,
+      "end": 1083.48,
+      "text": "I also made the logging so that the next time it happens, and it probably will"
+    },
+    {
+      "id": 213,
+      "start": 1083.51,
+      "end": 1084.31,
+      "text": "happen,"
+    },
+    {
+      "id": 214,
+      "start": 1084.94,
+      "end": 1088.38,
+      "text": "because the model evolution,"
+    },
+    {
+      "id": 215,
+      "start": 1089.36,
+      "end": 1095.22,
+      "text": "it's easier for me to understand what happened, what the AI did, and what I"
+    },
+    {
+      "id": 216,
+      "start": 1095.24,
+      "end": 1097.01,
+      "text": "originally actually asked from it."
+    },
+    {
+      "id": 217,
+      "start": 1098.32,
+      "end": 1104.17,
+      "text": "Maybe third learning would be that next time, it might be good to have actually a"
+    },
+    {
+      "id": 218,
+      "start": 1104.19,
+      "end": 1110.35,
+      "text": "different user profile when I access these systems that doesn't have the same"
+    },
+    {
+      "id": 219,
+      "start": 1110.5,
+      "end": 1111.34,
+      "text": "privileges."
+    },
+    {
+      "id": 220,
+      "start": 1112.34,
+      "end": 1115.71,
+      "text": "Maybe read-only rights compared to my own"
+    },
+    {
+      "id": 221,
+      "start": 1116.62,
+      "end": 1117.42,
+      "text": "privileges."
+    },
+    {
+      "id": 222,
+      "start": 1119.92,
+      "end": 1124.94,
+      "text": "So, my mistake reminded me that security matters,"
+    },
+    {
+      "id": 223,
+      "start": 1125.03,
+      "end": 1131.74,
+      "text": "observability is a must, and what privileges"
+    },
+    {
+      "id": 224,
+      "start": 1131.91,
+      "end": 1133.05,
+      "text": "we give to AI."
+    },
+    {
+      "id": 225,
+      "start": 1134.36,
+      "end": 1141.19,
+      "text": "Actually, I'm really curious to hear later this afternoon when Viljami Kuosmanen"
+    },
+    {
+      "id": 226,
+      "start": 1141.21,
+      "end": 1147.83,
+      "text": "will tell his story about what happened when he gave everybody in his"
+    },
+    {
+      "id": 227,
+      "start": 1147.85,
+      "end": 1149.3,
+      "text": "organization,"
+    },
+    {
+      "id": 228,
+      "start": 1150.5,
+      "end": 1154.33,
+      "text": "permissions to push changes to their"
+    },
+    {
+      "id": 229,
+      "start": 1154.49,
+      "end": 1160.37,
+      "text": "product. My"
+    },
+    {
+      "id": 230,
+      "start": 1160.62,
+      "end": 1167.14,
+      "text": "curiosity to test new features, build those little applications, that all takes"
+    },
+    {
+      "id": 231,
+      "start": 1167.16,
+      "end": 1173.89,
+      "text": "time. I have to confess that multitasking between the manager meetings is not"
+    },
+    {
+      "id": 232,
+      "start": 1173.91,
+      "end": 1179.18,
+      "text": "definitely the best way of learning for me."
+    },
+    {
+      "id": 233,
+      "start": 1179.2,
+      "end": 1182.45,
+      "text": "Actually, one of my team members approached me a"
+    },
+    {
+      "id": 234,
+      "start": 1183.48,
+      "end": 1190.33,
+      "text": "week ago, and he wanted to hear my opinion, whether I want him to focus"
+    },
+    {
+      "id": 235,
+      "start": 1190.35,
+      "end": 1197.23,
+      "text": "on customer-critical feature, or do I prefer that he would study more on new"
+    },
+    {
+      "id": 236,
+      "start": 1197.56,
+      "end": 1199.27,
+      "text": "AI assets that we just"
+    },
+    {
+      "id": 237,
+      "start": 1200.04,
+      "end": 1204.06,
+      "text": "recently launched? Which way I prefer?"
+    },
+    {
+      "id": 238,
+      "start": 1204.14,
+      "end": 1205.54,
+      "text": "Which is the more important?"
+    },
+    {
+      "id": 239,
+      "start": 1206.48,
+      "end": 1208.58,
+      "text": "Actually, that was a really good question."
+    },
+    {
+      "id": 240,
+      "start": 1208.72,
+      "end": 1215.28,
+      "text": "Do we sacrifice the release schedules, or do we gain later benefits from"
+    },
+    {
+      "id": 241,
+      "start": 1215.3,
+      "end": 1222.19,
+      "text": "these AI learnings? Since the fact is that learning to use AI, it will take"
+    },
+    {
+      "id": 242,
+      "start": 1222.24,
+      "end": 1228.6,
+      "text": "time. It means that as leaders, we need to take that into account when we define"
+    },
+    {
+      "id": 243,
+      "start": 1229.64,
+      "end": 1231.98,
+      "text": "priorities and we make plans."
+    },
+    {
+      "id": 244,
+      "start": 1232.0,
+      "end": 1237.91,
+      "text": "Because if you overpromise something to your customer, deliver some feature to a"
+    },
+    {
+      "id": 245,
+      "start": 1237.93,
+      "end": 1244.52,
+      "text": "customer, you probably end up sacrificing the learning as a first mitigation"
+    },
+    {
+      "id": 246,
+      "start": 1244.54,
+      "end": 1250.0,
+      "text": "action if you run out of time."
+    },
+    {
+      "id": 247,
+      "start": 1250.02,
+      "end": 1256.85,
+      "text": "If I recap my learning so far, our work requires AI assets"
+    },
+    {
+      "id": 248,
+      "start": 1256.87,
+      "end": 1261.19,
+      "text": "so that we can make various tasks."
+    },
+    {
+      "id": 249,
+      "start": 1261.26,
+      "end": 1267.9,
+      "text": "We know that developer experience is essential so that we can actually take all"
+    },
+    {
+      "id": 250,
+      "start": 1267.92,
+      "end": 1271.46,
+      "text": "the assets we share to actively use."
+    },
+    {
+      "id": 251,
+      "start": 1271.48,
+      "end": 1277.52,
+      "text": "And we know that for more complex tasks we have, we need to start building AI agents"
+    },
+    {
+      "id": 252,
+      "start": 1277.54,
+      "end": 1284.27,
+      "text": "and workflows. All that is real development,"
+    },
+    {
+      "id": 253,
+      "start": 1284.71,
+      "end": 1287.96,
+      "text": "not just experimentation."
+    },
+    {
+      "id": 254,
+      "start": 1287.98,
+      "end": 1293.81,
+      "text": "So we actually need to develop and maintain these"
+    },
+    {
+      "id": 255,
+      "start": 1293.87,
+      "end": 1296.94,
+      "text": "assets, our toolbox."
+    },
+    {
+      "id": 256,
+      "start": 1297.04,
+      "end": 1300.92,
+      "text": "We need to treat it as a product."
+    },
+    {
+      "id": 257,
+      "start": 1300.94,
+      "end": 1307.22,
+      "text": "In software development, I think AI assets are a bit similar than code and"
+    },
+    {
+      "id": 258,
+      "start": 1307.24,
+      "end": 1312.64,
+      "text": "tests that we need to actively manage."
+    },
+    {
+      "id": 259,
+      "start": 1312.66,
+      "end": 1316.54,
+      "text": "So also AI assets, our toolbox."
+    },
+    {
+      "id": 260,
+      "start": 1317.24,
+      "end": 1320.17,
+      "text": "We need to define requirements for them."
+    },
+    {
+      "id": 261,
+      "start": 1320.62,
+      "end": 1325.09,
+      "text": "We need to code and test, deploy, distribute."
+    },
+    {
+      "id": 262,
+      "start": 1326.24,
+      "end": 1333.03,
+      "text": "We will anyway end up troubleshooting the issues and fixing bugs that we"
+    },
+    {
+      "id": 263,
+      "start": 1333.05,
+      "end": 1334.1,
+      "text": "found."
+    },
+    {
+      "id": 264,
+      "start": 1334.92,
+      "end": 1337.12,
+      "text": "We need to create documentation"
+    },
+    {
+      "id": 265,
+      "start": 1337.87,
+      "end": 1344.48,
+      "text": "for the users so that they actually know how to utilize the assets and"
+    },
+    {
+      "id": 266,
+      "start": 1344.57,
+      "end": 1346.78,
+      "text": "gain benefits out of it."
+    },
+    {
+      "id": 267,
+      "start": 1348.04,
+      "end": 1354.46,
+      "text": "We need to enable the observability, monitoring,"
+    },
+    {
+      "id": 268,
+      "start": 1354.48,
+      "end": 1358.74,
+      "text": "logging for more complex tasks."
+    },
+    {
+      "id": 269,
+      "start": 1360.52,
+      "end": 1366.32,
+      "text": "I think this is a true investment of both time and resources."
+    },
+    {
+      "id": 270,
+      "start": 1367.88,
+      "end": 1371.4,
+      "text": "And we cannot do that without people."
+    },
+    {
+      "id": 271,
+      "start": 1373.1,
+      "end": 1377.86,
+      "text": "So we need to really maintain our AI asset ecosystem."
+    },
+    {
+      "id": 272,
+      "start": 1381.6,
+      "end": 1384.24,
+      "text": "Okay, unfortunately, time runs out."
+    },
+    {
+      "id": 273,
+      "start": 1384.5,
+      "end": 1387.72,
+      "text": "We're already late. So let's recap."
+    },
+    {
+      "id": 274,
+      "start": 1388.68,
+      "end": 1392.38,
+      "text": "So what I have learned while eating my own dog food."
+    },
+    {
+      "id": 275,
+      "start": 1393.0,
+      "end": 1395.84,
+      "text": "So I've learned that the developer experience matters."
+    },
+    {
+      "id": 276,
+      "start": 1396.38,
+      "end": 1402.38,
+      "text": "We evolve from small experimentation to the daily use of AI."
+    },
+    {
+      "id": 277,
+      "start": 1403.36,
+      "end": 1407.62,
+      "text": "We need to get clarity on priorities because learning takes time."
+    },
+    {
+      "id": 278,
+      "start": 1408.72,
+      "end": 1414.5,
+      "text": "We should not be afraid of making mistakes because mistakes teach us more."
+    },
+    {
+      "id": 279,
+      "start": 1416.9,
+      "end": 1423.66,
+      "text": "Prompt is not enough because you need more various types of AI"
+    },
+    {
+      "id": 280,
+      "start": 1423.68,
+      "end": 1427.0,
+      "text": "assets. So you need a real toolbox."
+    },
+    {
+      "id": 281,
+      "start": 1429.0,
+      "end": 1434.96,
+      "text": "We need to treat these AI tools and assets, our toolbox, as a product."
+    },
+    {
+      "id": 282,
+      "start": 1438.14,
+      "end": 1442.24,
+      "text": "I think it's, at the same time, I've got these learnings."
+    },
+    {
+      "id": 283,
+      "start": 1442.3,
+      "end": 1446.48,
+      "text": "I think it's also a growth path to leadership."
+    },
+    {
+      "id": 284,
+      "start": 1447.92,
+      "end": 1454.45,
+      "text": "Because when I use those AI assets, my toolbox,"
+    },
+    {
+      "id": 285,
+      "start": 1454.8,
+      "end": 1459.78,
+      "text": "I learn more about the AI and how to interpret that."
+    },
+    {
+      "id": 286,
+      "start": 1459.8,
+      "end": 1463.03,
+      "text": "I know what it is"
+    },
+    {
+      "id": 287,
+      "start": 1464.08,
+      "end": 1467.78,
+      "text": "capable and what are the limitations of it."
+    },
+    {
+      "id": 288,
+      "start": 1467.8,
+      "end": 1474.78,
+      "text": "Also, when I live the change at the same time than others,"
+    },
+    {
+      "id": 289,
+      "start": 1474.8,
+      "end": 1479.8,
+      "text": "I learn about their challenges, how they experience it."
+    },
+    {
+      "id": 290,
+      "start": 1480.3,
+      "end": 1484.56,
+      "text": "And I can understand them, these people better."
+    },
+    {
+      "id": 291,
+      "start": 1485.56,
+      "end": 1487.73,
+      "text": "And it helped me to be more empathetic."
+    },
+    {
+      "id": 292,
+      "start": 1488.98,
+      "end": 1495.82,
+      "text": "At the same time, when I live the same change together with others,"
+    },
+    {
+      "id": 293,
+      "start": 1496.28,
+      "end": 1499.07,
+      "text": "I also notice here and there"
+    },
+    {
+      "id": 294,
+      "start": 1499.86,
+      "end": 1504.16,
+      "text": "whether the plan actually works."
+    },
+    {
+      "id": 295,
+      "start": 1504.64,
+      "end": 1507.94,
+      "text": "So I learn also about the change management."
+    },
+    {
+      "id": 296,
+      "start": 1509.72,
+      "end": 1513.18,
+      "text": "So thank you all i would be very"
+    },
+    {
+      "id": 297,
+      "start": 1514.0,
+      "end": 1518.59,
+      "text": "interested to continue the dialogue with you in the corridors during the breaks"
+    },
+    {
+      "id": 298,
+      "start": 1518.61,
+      "end": 1519.41,
+      "text": "thank you"
+    }
+  ]
+}

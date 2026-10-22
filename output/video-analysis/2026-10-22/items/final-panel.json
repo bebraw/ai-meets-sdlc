@@ -1,0 +1,75 @@
+{
+  "id": "final-panel",
+  "shortSummary": "Zak Allal and Muhammad Waseem discuss research infrastructure, architectural decision records and the limits of automation. The Q&A connects repeatable computation with provenance and domain expertise, while raising questions about medical data consent, documentation maintenance and evidence about mixed AI use in teams.",
+  "longSummary": "The final Q&A expands on the hearing-research example and the need to preserve engineering decisions. Muhammad Waseem emphasises architectural rationale and testing, while the discussion of research automation introduces checkpoints, typed structures, schemas, provenance and repeatable computation. The panellists distinguish assistance from replacing professional judgement and discuss the value of bringing medicine, mathematics and software skills together. Questions also expose unresolved issues. Decision records can create maintenance and context burdens of their own, and the panel does not provide a controlled comparison of teams with mixed AI use. The discussion of academia distinguishes adopting new tools from influencing the direction of frontier development. Medical applications, regulatory access and privacy concerns remain part of the speakers' event-time discussion, rather than established findings or current operational guidance.",
+  "takeaways": [
+    {
+      "point": "Architectural decisions include reasons and quality trade-offs, not just diagrams or the resulting source code.",
+      "start": 96,
+      "end": 288
+    },
+    {
+      "point": "Research automation still needs checkpoints, structured data and provenance that connect results to their origin.",
+      "start": 487,
+      "end": 625
+    },
+    {
+      "point": "Combining domain, mathematical and software expertise can expose useful questions that one discipline misses.",
+      "start": 1044,
+      "end": 1469
+    },
+    {
+      "point": "Recording decisions has a maintenance cost for people and agents; more documentation is not automatically more useful context.",
+      "start": 1469,
+      "end": 1560
+    },
+    {
+      "point": "The panel does not supply comparative evidence about mixed AI and non-AI teammates; that question remains a research opportunity.",
+      "start": 1563,
+      "end": 1721
+    }
+  ],
+  "topics": [
+    "decision records",
+    "scientific computing",
+    "provenance",
+    "domain expertise",
+    "documentation maintenance",
+    "research gaps",
+    "data consent"
+  ],
+  "quoteCandidates": [
+    {
+      "text": "And it is not only maintenance burden for humans, but also for the agents as well.",
+      "speaker": "Final Q&A contribution",
+      "attributionBasis": "The panel captions are not diarised. Confirm the individual speaker before attributing this quote to a named panellist."
+    }
+  ],
+  "clipCandidates": [
+    {
+      "title": "What an architecture decision record preserves",
+      "start": 96,
+      "end": 288,
+      "why": "A direct question leads to a discussion of rationale, quality trade-offs and knowledge that otherwise stays in people's heads.",
+      "audience": "Architects and teams maintaining agent-readable context"
+    },
+    {
+      "title": "When decision records become a maintenance burden",
+      "start": 1469,
+      "end": 1560,
+      "why": "A useful qualification to calls for more written context; keep the audience question and answer together.",
+      "audience": "Teams designing documentation and agent memory practices"
+    }
+  ],
+  "reuseAngles": [
+    "A balanced article on decision records that includes their maintenance cost",
+    "A discussion prompt about what comparative evidence is still missing from AI adoption stories"
+  ],
+  "editorialCaveats": [
+    "Medical possibilities are forecasts and opinions in a panel, not evidence of validated treatments or diagnostic performance.",
+    "Claims about companies' medical-data practices are not independently verified here and are excluded from reusable summary claims.",
+    "Panel captions have no reliable speaker diarisation; a quote needs individual attribution confirmation before named reuse.",
+    "The maintenance-burden answer acknowledges the problem but does not establish a specific documentation policy or solution."
+  ],
+  "analysisStatus": "Complete-caption analysis, fresh local quote ASR and sampled-frame review complete; editorial approval pending."
+}

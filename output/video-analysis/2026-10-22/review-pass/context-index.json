@@ -1,0 +1,59 @@
+{
+  "method": "Unquantized Whisper large-v3 with wider context, no supplied wording hints. Same model family as the existing captions; not direct listening.",
+  "windows": [
+    {
+      "id": "jenni-wording",
+      "videoId": "jenni-talk",
+      "start": 1215,
+      "end": 1257,
+      "audio": "review-pass/jenni-wording.wav",
+      "asr": "review-pass/jenni-wording-large-v3.json",
+      "captionContext": "Do we sacrifice the release schedules, or do we gain later benefits from these AI learnings? Since the fact is that learning to use AI, it will take time. It means that as leaders, we need to take that into account when we define priorities and we make plans. Because if you overpromise something to your customer, deliver some feature to a customer, you probably end up sacrificing the learning as a first mitigation action if you run out of time. If I recap my learning so far, our work requires AI assets so that we can make various tasks."
+    },
+    {
+      "id": "joongi-wording",
+      "videoId": "joongi-talk",
+      "start": 1036,
+      "end": 1066,
+      "audio": "review-pass/joongi-wording.wav",
+      "asr": "review-pass/joongi-wording-large-v3.json",
+      "captionContext": "themselves. Couple of slides to the end. How do we then move forward to achieve the future that generative UI was aiming for? Then would be the question that the prompt survey approach is the answer, is the problem solved? I would say the prompt-survey approach can also fail. This is also what we observed in our study. So sometimes LLM just continuously ask questions like that doesn't really align with or make sense in the human level or what the user was actually wanting to achieve. For example, they often intentionally ask very obscure, vague"
+    },
+    {
+      "id": "final-wording-and-turn",
+      "videoId": "final-panel",
+      "start": 1469,
+      "end": 1561,
+      "audio": "review-pass/final-wording-and-turn.wav",
+      "asr": "review-pass/final-wording-and-turn-large-v3.json",
+      "captionContext": "- We have six. - So maybe one question or half. This one has more most votes so let's go with this if we were if you if we write down every decision and feature lives over time we end up having thousands of decisions decision files that can become maintenance burden. Absolutely agree. This is. So first thing I, one of the paper I write, it was about like coding with flow, paying with debt. And this debt was like a kind of maintenance burden. So yes, at some point, even if you are doing some sort of wild vibe coding, I'm saying a wild vibe coding, at some point you will feel that, okay, we are developing something that is not really necessary. You will find so many files that are unnecessary, so many chunk of code that need to clean up. So yeah, I agree with you, whoever asked the question, yes, maintenance burden. And it is not only maintenance burden for humans, but also for the agents as well. Will lose the context at some point and things will not go as you are intending to develop do you want to comment no I agree with him then we have another question"
+    },
+    {
+      "id": "industry-handoff",
+      "videoId": "industry-panel",
+      "start": 808,
+      "end": 895,
+      "audio": "review-pass/industry-handoff.wav",
+      "asr": "review-pass/industry-handoff-large-v3.json",
+      "captionContext": "Maybe one for Viljami and one for all. Of course you can all answer this. Viljami, how do developers maintain a mental model of the software when patches are coming in from outside engineering? I don't know. I have to say, personally, I can answer, right? So like the code I wrote and the code I still write with AI agents is still the same, exactly as before, right? So we don't have any special tooling around that. The only thing that maybe we did add, but I don't know if that answers your question about how do the engineers maintain that mental model, but also the agents need to maintain that mental model. So what we specifically do is we run sort of these scanners to our code base and then create these indexes into the knowledge base to kind of try to explain and understand, okay, what is this repo about? Because I did mention we have more than 300 production repositories in our code base, so there's a lot to kind of look into. We maintain basically a lot of documentation, and now that documentation is maintained by AI itself. So we share that documentation. That's also what engineers use. They read that same documentation. It's actually public. You can go and read it yourself on docs.epilot.io if you are interested. But it hasn't really changed, to be honest. The engineer still fully owns the code they write, the code they merge. So you build up that mental model as you do that, even if you don't write every single line. Thank you."
+    },
+    {
+      "id": "research-handoff",
+      "videoId": "research-panel",
+      "start": 928,
+      "end": 983,
+      "audio": "review-pass/research-handoff.wav",
+      "asr": "review-pass/research-handoff-large-v3.json",
+      "captionContext": "But I think it will take a while to sort of be end to end. - Does Joongi have anything to add? - Whenever I hear this, I have a slightly different thoughts. Like people saying the problem is always the problem. Sure, that's how everything starts. But I think a lot of times the problem actually evolves by you building and testing stuff. So I think that's actually one of the limitation where people are just dealing in order this building problems to AI, just to get what, receive what is generated and try to just, okay, the problem is solved try to end it so I think building is still part of the the problem that helps you try to understand what the problem is really about so I wouldn't just uh completely abandon what practice we have been building up on that's true uh"
+    },
+    {
+      "id": "mood-sini-original",
+      "videoId": "industry-panel",
+      "start": 164,
+      "end": 201,
+      "audio": "review-pass/mood-sini-original.wav",
+      "asr": "review-pass/mood-sini-original-large-v3.json",
+      "captionContext": "uh Sini in terms of autonomy who makes sure that the team works in the right and most important things? That's a really good question. Of course, when developing stuff, you should look for the business. You should have a business validation. You should really think why you're building this. Is this relevant? Is this actually bringing us some value at the end? And I think customers are great validators in the sense that now when we are living in the times of vibe coding, you can demonstrate the value very fast you can"
+    }
+  ]
+}

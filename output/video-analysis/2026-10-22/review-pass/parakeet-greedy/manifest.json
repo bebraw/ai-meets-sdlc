@@ -1,0 +1,300 @@
+{
+  "runAt": "2026-10-22T10:51:30.919647+00:00",
+  "model": "mlx-community/parakeet-tdt-0.6b-v3",
+  "decoding": "greedy",
+  "executable": "/Users/juhovepsalainen/.local/bin/parakeet-mlx",
+  "command": [
+    "/Users/juhovepsalainen/.local/bin/parakeet-mlx",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/audio/final-panel-q01.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/audio/industry-panel-q01.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/audio/jenni-talk-q01.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/audio/jenni-talk-q02.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/audio/joongi-talk-q01.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/audio/joongi-talk-q02.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/audio/jussi-talk-q01.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/audio/jussi-talk-q02.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/audio/mo-talk-q01.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/audio/mo-talk-q02.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/audio/mood-q01.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/audio/mood-q02.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/audio/ohans-talk-q01.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/audio/research-panel-q01.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/audio/sini-talk-q01.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/audio/sini-talk-q02.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/audio/tapio-talk-q01.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/audio/viljami-talk-q01.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/audio/viljami-talk-q02.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/audio/waseem-talk-q01.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/audio/waseem-talk-q02.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/audio/zak-talk-q01.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/review-pass/jenni-wording.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/review-pass/joongi-wording.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/review-pass/final-wording-and-turn.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/review-pass/industry-handoff.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/review-pass/research-handoff.wav",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/review-pass/mood-sini-original.wav",
+    "--model",
+    "mlx-community/parakeet-tdt-0.6b-v3",
+    "--output-dir",
+    "/Users/juhovepsalainen/Projects/sdlcai/sdlcai-site/output/video-analysis/2026-10-22/review-pass/parakeet-greedy",
+    "--output-format",
+    "json",
+    "--decoding",
+    "greedy"
+  ],
+  "sources": [
+    {
+      "id": "final-panel-q01",
+      "videoId": "final-panel",
+      "audio": "audio/final-panel-q01.wav",
+      "start": 1531.66,
+      "end": 1549.54,
+      "kind": "quote",
+      "result": "review-pass/parakeet-greedy/final-panel-q01.json"
+    },
+    {
+      "id": "industry-panel-q01",
+      "videoId": "industry-panel",
+      "audio": "audio/industry-panel-q01.wav",
+      "start": 878.36,
+      "end": 893.8,
+      "kind": "quote",
+      "result": "review-pass/parakeet-greedy/industry-panel-q01.json"
+    },
+    {
+      "id": "jenni-talk-q01",
+      "videoId": "jenni-talk",
+      "audio": "audio/jenni-talk-q01.wav",
+      "start": 1291.04,
+      "end": 1306.92,
+      "kind": "quote",
+      "result": "review-pass/parakeet-greedy/jenni-talk-q01.json"
+    },
+    {
+      "id": "jenni-talk-q02",
+      "videoId": "jenni-talk",
+      "audio": "audio/jenni-talk-q02.wav",
+      "start": 1226.0,
+      "end": 1256.0,
+      "kind": "quote",
+      "result": "review-pass/parakeet-greedy/jenni-talk-q02.json"
+    },
+    {
+      "id": "joongi-talk-q01",
+      "videoId": "joongi-talk",
+      "audio": "audio/joongi-talk-q01.wav",
+      "start": 929.46,
+      "end": 948.04,
+      "kind": "quote",
+      "result": "review-pass/parakeet-greedy/joongi-talk-q01.json"
+    },
+    {
+      "id": "joongi-talk-q02",
+      "videoId": "joongi-talk",
+      "audio": "audio/joongi-talk-q02.wav",
+      "start": 1040.36,
+      "end": 1058.62,
+      "kind": "quote",
+      "result": "review-pass/parakeet-greedy/joongi-talk-q02.json"
+    },
+    {
+      "id": "jussi-talk-q01",
+      "videoId": "jussi-talk",
+      "audio": "audio/jussi-talk-q01.wav",
+      "start": 954.6,
+      "end": 972.14,
+      "kind": "quote",
+      "result": "review-pass/parakeet-greedy/jussi-talk-q01.json"
+    },
+    {
+      "id": "jussi-talk-q02",
+      "videoId": "jussi-talk",
+      "audio": "audio/jussi-talk-q02.wav",
+      "start": 1091.32,
+      "end": 1106.26,
+      "kind": "quote",
+      "result": "review-pass/parakeet-greedy/jussi-talk-q02.json"
+    },
+    {
+      "id": "mo-talk-q01",
+      "videoId": "mo-talk",
+      "audio": "audio/mo-talk-q01.wav",
+      "start": 744.96,
+      "end": 760.78,
+      "kind": "quote",
+      "result": "review-pass/parakeet-greedy/mo-talk-q01.json"
+    },
+    {
+      "id": "mo-talk-q02",
+      "videoId": "mo-talk",
+      "audio": "audio/mo-talk-q02.wav",
+      "start": 2115.61,
+      "end": 2136.71,
+      "kind": "quote",
+      "result": "review-pass/parakeet-greedy/mo-talk-q02.json"
+    },
+    {
+      "id": "mood-q01",
+      "videoId": "mood",
+      "audio": "audio/mood-q01.wav",
+      "start": 29.252000000000002,
+      "end": 49.502,
+      "kind": "quote",
+      "result": "review-pass/parakeet-greedy/mood-q01.json"
+    },
+    {
+      "id": "mood-q02",
+      "videoId": "mood",
+      "audio": "audio/mood-q02.wav",
+      "start": 64.684,
+      "end": 82.48400000000001,
+      "kind": "quote",
+      "result": "review-pass/parakeet-greedy/mood-q02.json"
+    },
+    {
+      "id": "ohans-talk-q01",
+      "videoId": "ohans-talk",
+      "audio": "audio/ohans-talk-q01.wav",
+      "start": 907.5,
+      "end": 926.09,
+      "kind": "quote",
+      "result": "review-pass/parakeet-greedy/ohans-talk-q01.json"
+    },
+    {
+      "id": "research-panel-q01",
+      "videoId": "research-panel",
+      "audio": "audio/research-panel-q01.wav",
+      "start": 943.0,
+      "end": 962.64,
+      "kind": "quote",
+      "result": "review-pass/parakeet-greedy/research-panel-q01.json"
+    },
+    {
+      "id": "sini-talk-q01",
+      "videoId": "sini-talk",
+      "audio": "audio/sini-talk-q01.wav",
+      "start": 1379.24,
+      "end": 1394.12,
+      "kind": "quote",
+      "result": "review-pass/parakeet-greedy/sini-talk-q01.json"
+    },
+    {
+      "id": "sini-talk-q02",
+      "videoId": "sini-talk",
+      "audio": "audio/sini-talk-q02.wav",
+      "start": 1662.78,
+      "end": 1683.78,
+      "kind": "quote",
+      "result": "review-pass/parakeet-greedy/sini-talk-q02.json"
+    },
+    {
+      "id": "tapio-talk-q01",
+      "videoId": "tapio-talk",
+      "audio": "audio/tapio-talk-q01.wav",
+      "start": 755.58,
+      "end": 778.29,
+      "kind": "quote",
+      "result": "review-pass/parakeet-greedy/tapio-talk-q01.json"
+    },
+    {
+      "id": "viljami-talk-q01",
+      "videoId": "viljami-talk",
+      "audio": "audio/viljami-talk-q01.wav",
+      "start": 1299.68,
+      "end": 1313.74,
+      "kind": "quote",
+      "result": "review-pass/parakeet-greedy/viljami-talk-q01.json"
+    },
+    {
+      "id": "viljami-talk-q02",
+      "videoId": "viljami-talk",
+      "audio": "audio/viljami-talk-q02.wav",
+      "start": 1222.03,
+      "end": 1236.37,
+      "kind": "quote",
+      "result": "review-pass/parakeet-greedy/viljami-talk-q02.json"
+    },
+    {
+      "id": "waseem-talk-q01",
+      "videoId": "waseem-talk",
+      "audio": "audio/waseem-talk-q01.wav",
+      "start": 241.34,
+      "end": 256.94,
+      "kind": "quote",
+      "result": "review-pass/parakeet-greedy/waseem-talk-q01.json"
+    },
+    {
+      "id": "waseem-talk-q02",
+      "videoId": "waseem-talk",
+      "audio": "audio/waseem-talk-q02.wav",
+      "start": 1680.9,
+      "end": 1704.64,
+      "kind": "quote",
+      "result": "review-pass/parakeet-greedy/waseem-talk-q02.json"
+    },
+    {
+      "id": "zak-talk-q01",
+      "videoId": "zak-talk",
+      "audio": "audio/zak-talk-q01.wav",
+      "start": 849.11,
+      "end": 869.7,
+      "kind": "quote",
+      "result": "review-pass/parakeet-greedy/zak-talk-q01.json"
+    },
+    {
+      "id": "jenni-wording",
+      "videoId": "jenni-talk",
+      "audio": "review-pass/jenni-wording.wav",
+      "start": 1215,
+      "end": 1257,
+      "kind": "context",
+      "result": "review-pass/parakeet-greedy/jenni-wording.json"
+    },
+    {
+      "id": "joongi-wording",
+      "videoId": "joongi-talk",
+      "audio": "review-pass/joongi-wording.wav",
+      "start": 1036,
+      "end": 1066,
+      "kind": "context",
+      "result": "review-pass/parakeet-greedy/joongi-wording.json"
+    },
+    {
+      "id": "final-wording-and-turn",
+      "videoId": "final-panel",
+      "audio": "review-pass/final-wording-and-turn.wav",
+      "start": 1469,
+      "end": 1561,
+      "kind": "context",
+      "result": "review-pass/parakeet-greedy/final-wording-and-turn.json"
+    },
+    {
+      "id": "industry-handoff",
+      "videoId": "industry-panel",
+      "audio": "review-pass/industry-handoff.wav",
+      "start": 808,
+      "end": 895,
+      "kind": "context",
+      "result": "review-pass/parakeet-greedy/industry-handoff.json"
+    },
+    {
+      "id": "research-handoff",
+      "videoId": "research-panel",
+      "audio": "review-pass/research-handoff.wav",
+      "start": 928,
+      "end": 983,
+      "kind": "context",
+      "result": "review-pass/parakeet-greedy/research-handoff.json"
+    },
+    {
+      "id": "mood-sini-original",
+      "videoId": "industry-panel",
+      "audio": "review-pass/mood-sini-original.wav",
+      "start": 164,
+      "end": 201,
+      "kind": "context",
+      "result": "review-pass/parakeet-greedy/mood-sini-original.json"
+    }
+  ],
+  "method": "Local Parakeet ASR of final-cut audio. Different model family from Whisper; not direct assistant listening, speaker diarization, or publication approval."
+}

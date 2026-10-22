@@ -1,0 +1,74 @@
+{
+  "id": "zak-talk",
+  "shortSummary": "Zak Allal argues that lowering the cost of repeating experiments can change scientific discovery. He describes a clinical research system built with supercomputing, Rust, Julia and C++, and presents a proposed continuous hearing atlas as an example of questioning the assumptions behind existing categories.",
+  "longSummary": "Zak Allal links software architecture and multidisciplinary curiosity to the practical ability to repeat scientific experiments. A weather-checking analogy introduces the cost of time, effort and repetition; he then applies that idea to research tooling and supercomputing. He describes a container-based clinical research system using Rust, Julia and C++ to orchestrate repeatable analyses of hearing data. Repeated experiments produced inconsistent categories, prompting him to question the premise that hearing should be represented as discrete types. He presents a proposed five-dimensional hearing atlas and describes methodological issues he believes affected earlier work, including discretisation and treating paired observations as independent. At the event, he states that the paper is a preprint undergoing review and that regulatory qualification has been sought. The reusable engineering lesson is to make experiments cheap to rerun, preserve their configuration and remain willing to challenge the question being asked.",
+  "takeaways": [
+    {
+      "point": "The cost of repeating an experiment influences which questions researchers can afford to investigate.",
+      "start": 146,
+      "end": 331
+    },
+    {
+      "point": "Architecture, orchestration and repeatable configurations can be as important as adding a predictive model.",
+      "start": 708,
+      "end": 792
+    },
+    {
+      "point": "Unstable results can justify examining the original premise and methodology rather than choosing another model.",
+      "start": 467,
+      "end": 608
+    },
+    {
+      "point": "The proposed hearing atlas is presented as research under review, not an established clinical standard.",
+      "start": 981,
+      "end": 1167
+    },
+    {
+      "point": "Curiosity and collaboration across engineering and domain expertise help define worthwhile experiments.",
+      "start": 1168,
+      "end": 1244
+    }
+  ],
+  "topics": [
+    "scientific computing",
+    "repeatable experiments",
+    "research infrastructure",
+    "supercomputing",
+    "multidisciplinary research",
+    "hearing research",
+    "problem framing"
+  ],
+  "quoteCandidates": [
+    {
+      "text": "the premise was wrong in the first place, and nobody checked the premise.",
+      "speaker": "Zak Allal"
+    }
+  ],
+  "clipCandidates": [
+    {
+      "title": "Make experiments cheap enough to repeat",
+      "start": 194,
+      "end": 331,
+      "why": "The weather analogy explains the cost-of-repetition argument without relying on medical outcome claims.",
+      "audience": "Engineers and researchers building experimental tools"
+    },
+    {
+      "title": "A research system built for replaying experiments",
+      "start": 708,
+      "end": 792,
+      "why": "A concrete architecture example introduces orchestration, environments and configuration. Numerical scale claims should remain attributed to the speaker.",
+      "audience": "Scientific software and infrastructure teams"
+    }
+  ],
+  "reuseAngles": [
+    "A research-software article on repeatability and cheap experiments",
+    "A cross-session comparison of testing a product idea and testing a scientific premise"
+  ],
+  "editorialCaveats": [
+    "The proposed hearing model, novelty statements, numerical scale claims and clinical implications are speaker-reported research claims, not independently verified medical findings.",
+    "The talk explicitly describes a preprint and an intention to seek regulatory qualification; do not imply completed peer review, regulatory approval or demonstrated patient benefit.",
+    "The selected premise quote is about the speaker's hearing-data analysis and needs that context when reused.",
+    "No medical advice or diagnostic recommendation is derived from this session."
+  ],
+  "analysisStatus": "Complete-caption analysis, fresh local quote ASR and sampled-frame review complete; editorial approval pending."
+}

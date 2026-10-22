@@ -1,0 +1,77 @@
+{
+  "id": "sini-talk",
+  "shortSummary": "Sini Tistelgrén describes an AI factory as a delivery system built on intent, architecture, security, independent verification, ownership and operational feedback. She explains why a quick prototype still needs a production path, and proposes bounded loops with executable controls and evidence.",
+  "longSummary": "Sini Tistelgrén argues that generating code quickly does not remove the work of taking a change safely into production. Her AI factory connects six stations—intent, design, build, verify, release and operate—through shared foundations and explicitly owned checks. In enterprises, much of the difficulty lies in making existing architecture, data ownership, business rules and decision reasons accessible to agents. She describes assessment findings in which unclear requirements, competing rules, weak testing, ambiguous release ownership and missing production feedback push risk downstream. A delivery-address example illustrates how acceptance criteria, architectural rules, independent verification, controlled release and rollback could work together. Routine changes may use pre-approved policies while people remain responsible for intent, controls and exceptions. She recommends starting with one loosely coupled value stream, measuring its baseline and reinvesting capacity in the surrounding delivery system.",
+  "takeaways": [
+    {
+      "point": "A working prototype expresses intent but still needs the architecture, access, release, operations and support work required for production.",
+      "start": 94,
+      "end": 238
+    },
+    {
+      "point": "An AI factory should connect intent, design, build, verification, release and operation through shared fundamentals.",
+      "start": 390,
+      "end": 484
+    },
+    {
+      "point": "Agents need written domain rules, tested interfaces, decision reasons and bounded access to the architecture the organisation actually has.",
+      "start": 580,
+      "end": 829
+    },
+    {
+      "point": "Control ownership and independent verification matter; the author of a change should not be its sole approver.",
+      "start": 1307,
+      "end": 1394
+    },
+    {
+      "point": "Start with one bounded value stream and a baseline, then measure lead time, failed changes and the cost of accepted delivery rather than output volume alone.",
+      "start": 1571,
+      "end": 1664
+    }
+  ],
+  "topics": [
+    "AI factory",
+    "enterprise architecture",
+    "independent verification",
+    "operational feedback",
+    "governance",
+    "delivery metrics",
+    "ownership"
+  ],
+  "quoteCandidates": [
+    {
+      "text": "Whatever writes a change never approves it directly.",
+      "speaker": "Sini Tistelgrén"
+    },
+    {
+      "text": "the AI factory does not eliminate the fundamentals. It actually runs on them.",
+      "speaker": "Sini Tistelgrén"
+    }
+  ],
+  "clipCandidates": [
+    {
+      "title": "Why the prototype is only part of the production journey",
+      "start": 94,
+      "end": 238,
+      "why": "A recognisable business question opens into the architecture, security, governance and operations work around code.",
+      "audience": "Business sponsors and engineering leaders"
+    },
+    {
+      "title": "Turn delivery controls into executable evidence",
+      "start": 1307,
+      "end": 1394,
+      "why": "Explains the author-versus-approver distinction and the role of pre-approved routine-change policies.",
+      "audience": "Platform, QA, security and governance teams"
+    }
+  ],
+  "reuseAngles": [
+    "A six-stage delivery checklist for the archive",
+    "A cross-talk discussion of where time saved during implementation should be reinvested"
+  ],
+  "editorialCaveats": [
+    "The delivery-address scenario is an illustrative organisation, not an observed customer case.",
+    "The independent-verification wording at 20:25–20:45 is flagged as malformed in the caption review. No precise missing safeguard wording has been reconstructed here.",
+    "External study percentages and provider case-study claims are not independently fact-checked in this library; these summaries retain the process argument without adopting those figures as universal findings."
+  ],
+  "analysisStatus": "Complete-caption analysis, fresh local quote ASR and sampled-frame review complete; editorial approval pending."
+}

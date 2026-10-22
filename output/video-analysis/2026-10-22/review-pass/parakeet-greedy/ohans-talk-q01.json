@@ -1,0 +1,722 @@
+{
+  "text": "Can't just you can't keep up with the system that you maintain. Now, I'm all up for agents writing code. I do 99% of my work with agents, but I don't want a world where I don't understand the system that I maintain. That is absolutely ridiculous. Like if you don't understand the system you maintain",
+  "sentences": [
+    {
+      "text": " Can't just you can't keep up with the system that you maintain.",
+      "start": 0.16,
+      "end": 3.2,
+      "duration": 3.04,
+      "confidence": 0.986,
+      "tokens": [
+        {
+          "text": " Can",
+          "start": 0.16,
+          "end": 0.24,
+          "duration": 0.08,
+          "confidence": 0.882
+        },
+        {
+          "text": "'",
+          "start": 0.24,
+          "end": 0.32,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "t",
+          "start": 0.32,
+          "end": 0.32,
+          "duration": 0.0,
+          "confidence": 1.0
+        },
+        {
+          "text": " just",
+          "start": 0.32,
+          "end": 0.48,
+          "duration": 0.16,
+          "confidence": 0.998
+        },
+        {
+          "text": " you",
+          "start": 0.56,
+          "end": 0.72,
+          "duration": 0.16,
+          "confidence": 0.958
+        },
+        {
+          "text": " can",
+          "start": 0.72,
+          "end": 0.8,
+          "duration": 0.08,
+          "confidence": 0.998
+        },
+        {
+          "text": "'",
+          "start": 0.8,
+          "end": 0.88,
+          "duration": 0.08,
+          "confidence": 0.998
+        },
+        {
+          "text": "t",
+          "start": 0.88,
+          "end": 0.96,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " ke",
+          "start": 0.96,
+          "end": 1.04,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "ep",
+          "start": 1.04,
+          "end": 1.2,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " up",
+          "start": 1.2,
+          "end": 1.36,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " with",
+          "start": 1.36,
+          "end": 1.52,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " the",
+          "start": 1.52,
+          "end": 1.68,
+          "duration": 0.16,
+          "confidence": 0.934
+        },
+        {
+          "text": " system",
+          "start": 1.68,
+          "end": 1.92,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " that",
+          "start": 1.92,
+          "end": 2.08,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " you",
+          "start": 2.08,
+          "end": 2.32,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " main",
+          "start": 2.32,
+          "end": 2.64,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": "tain",
+          "start": 2.64,
+          "end": 2.96,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 2.96,
+          "end": 3.2,
+          "duration": 0.24,
+          "confidence": 0.97
+        }
+      ]
+    },
+    {
+      "text": " Now, I'm all up for agents writing code.",
+      "start": 3.2,
+      "end": 5.92,
+      "duration": 2.72,
+      "confidence": 0.99,
+      "tokens": [
+        {
+          "text": " N",
+          "start": 3.2,
+          "end": 3.36,
+          "duration": 0.16,
+          "confidence": 0.998
+        },
+        {
+          "text": "ow",
+          "start": 3.36,
+          "end": 3.52,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": ",",
+          "start": 3.52,
+          "end": 3.68,
+          "duration": 0.16,
+          "confidence": 0.922
+        },
+        {
+          "text": " I",
+          "start": 3.68,
+          "end": 3.76,
+          "duration": 0.08,
+          "confidence": 0.996
+        },
+        {
+          "text": "'",
+          "start": 3.76,
+          "end": 3.92,
+          "duration": 0.16,
+          "confidence": 0.996
+        },
+        {
+          "text": "m",
+          "start": 3.92,
+          "end": 4.08,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " all",
+          "start": 4.08,
+          "end": 4.32,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " up",
+          "start": 4.32,
+          "end": 4.48,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " for",
+          "start": 4.48,
+          "end": 4.72,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " ag",
+          "start": 4.72,
+          "end": 4.96,
+          "duration": 0.24,
+          "confidence": 0.992
+        },
+        {
+          "text": "ents",
+          "start": 4.96,
+          "end": 5.28,
+          "duration": 0.32,
+          "confidence": 0.999
+        },
+        {
+          "text": " w",
+          "start": 5.28,
+          "end": 5.36,
+          "duration": 0.08,
+          "confidence": 0.999
+        },
+        {
+          "text": "rit",
+          "start": 5.36,
+          "end": 5.52,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ing",
+          "start": 5.52,
+          "end": 5.6,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": " c",
+          "start": 5.6,
+          "end": 5.68,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "ode",
+          "start": 5.68,
+          "end": 5.84,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 5.84,
+          "end": 5.92,
+          "duration": 0.08,
+          "confidence": 0.932
+        }
+      ]
+    },
+    {
+      "text": " I do 99% of my work with agents, but I don't want a world where I don't understand the system that I maintain.",
+      "start": 5.92,
+      "end": 13.04,
+      "duration": 7.12,
+      "confidence": 0.995,
+      "tokens": [
+        {
+          "text": " I",
+          "start": 5.92,
+          "end": 6.08,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " do",
+          "start": 6.08,
+          "end": 6.24,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " ",
+          "start": 6.24,
+          "end": 6.32,
+          "duration": 0.08,
+          "confidence": 0.973
+        },
+        {
+          "text": "9",
+          "start": 6.32,
+          "end": 6.48,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": "9",
+          "start": 6.64,
+          "end": 6.72,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "%",
+          "start": 6.8,
+          "end": 6.96,
+          "duration": 0.16,
+          "confidence": 0.989
+        },
+        {
+          "text": " of",
+          "start": 7.04,
+          "end": 7.12,
+          "duration": 0.08,
+          "confidence": 0.999
+        },
+        {
+          "text": " my",
+          "start": 7.12,
+          "end": 7.36,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " work",
+          "start": 7.36,
+          "end": 7.6,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " with",
+          "start": 7.6,
+          "end": 7.84,
+          "duration": 0.24,
+          "confidence": 0.998
+        },
+        {
+          "text": " ag",
+          "start": 7.84,
+          "end": 8.16,
+          "duration": 0.32,
+          "confidence": 0.992
+        },
+        {
+          "text": "ents",
+          "start": 8.16,
+          "end": 8.4,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": ",",
+          "start": 8.4,
+          "end": 8.64,
+          "duration": 0.24,
+          "confidence": 0.918
+        },
+        {
+          "text": " but",
+          "start": 8.64,
+          "end": 8.88,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " I",
+          "start": 8.88,
+          "end": 8.96,
+          "duration": 0.08,
+          "confidence": 0.999
+        },
+        {
+          "text": " don",
+          "start": 8.96,
+          "end": 9.12,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "'",
+          "start": 9.12,
+          "end": 9.28,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "t",
+          "start": 9.28,
+          "end": 9.28,
+          "duration": 0.0,
+          "confidence": 1.0
+        },
+        {
+          "text": " want",
+          "start": 9.28,
+          "end": 9.44,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " a",
+          "start": 9.44,
+          "end": 9.68,
+          "duration": 0.24,
+          "confidence": 0.999
+        },
+        {
+          "text": " wor",
+          "start": 9.68,
+          "end": 9.76,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "ld",
+          "start": 9.76,
+          "end": 10.0,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " where",
+          "start": 10.0,
+          "end": 10.24,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " I",
+          "start": 10.24,
+          "end": 10.48,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " don",
+          "start": 10.48,
+          "end": 10.64,
+          "duration": 0.16,
+          "confidence": 0.994
+        },
+        {
+          "text": "'",
+          "start": 10.64,
+          "end": 10.8,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": "t",
+          "start": 10.8,
+          "end": 10.8,
+          "duration": 0.0,
+          "confidence": 1.0
+        },
+        {
+          "text": " under",
+          "start": 10.8,
+          "end": 11.12,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": "stand",
+          "start": 11.12,
+          "end": 11.28,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " the",
+          "start": 11.28,
+          "end": 11.52,
+          "duration": 0.24,
+          "confidence": 0.994
+        },
+        {
+          "text": " system",
+          "start": 11.52,
+          "end": 11.76,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " that",
+          "start": 11.76,
+          "end": 12.0,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " I",
+          "start": 12.0,
+          "end": 12.24,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " main",
+          "start": 12.24,
+          "end": 12.56,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": "tain",
+          "start": 12.56,
+          "end": 12.88,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 12.88,
+          "end": 13.04,
+          "duration": 0.16,
+          "confidence": 0.968
+        }
+      ]
+    },
+    {
+      "text": " That is absolutely ridiculous.",
+      "start": 13.04,
+      "end": 15.12,
+      "duration": 2.08,
+      "confidence": 0.997,
+      "tokens": [
+        {
+          "text": " That",
+          "start": 13.04,
+          "end": 13.36,
+          "duration": 0.32,
+          "confidence": 0.997
+        },
+        {
+          "text": " is",
+          "start": 13.36,
+          "end": 13.52,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " absol",
+          "start": 13.52,
+          "end": 13.76,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "ut",
+          "start": 13.76,
+          "end": 13.92,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ely",
+          "start": 13.92,
+          "end": 14.08,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " rid",
+          "start": 14.08,
+          "end": 14.24,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "ic",
+          "start": 14.24,
+          "end": 14.48,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "ulo",
+          "start": 14.48,
+          "end": 14.72,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "us",
+          "start": 14.72,
+          "end": 14.88,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": ".",
+          "start": 14.88,
+          "end": 15.12,
+          "duration": 0.24,
+          "confidence": 0.973
+        }
+      ]
+    },
+    {
+      "text": " Like if you don't understand the system you maintain",
+      "start": 15.12,
+      "end": 18.0,
+      "duration": 2.88,
+      "confidence": 0.994,
+      "tokens": [
+        {
+          "text": " L",
+          "start": 15.12,
+          "end": 15.28,
+          "duration": 0.16,
+          "confidence": 0.929
+        },
+        {
+          "text": "ike",
+          "start": 15.28,
+          "end": 15.36,
+          "duration": 0.08,
+          "confidence": 0.999
+        },
+        {
+          "text": " if",
+          "start": 15.52,
+          "end": 15.68,
+          "duration": 0.16,
+          "confidence": 0.999
+        },
+        {
+          "text": " you",
+          "start": 15.68,
+          "end": 15.84,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " don",
+          "start": 15.84,
+          "end": 16.0,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "'",
+          "start": 16.0,
+          "end": 16.16,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "t",
+          "start": 16.16,
+          "end": 16.16,
+          "duration": 0.0,
+          "confidence": 1.0
+        },
+        {
+          "text": " under",
+          "start": 16.16,
+          "end": 16.4,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": "stand",
+          "start": 16.4,
+          "end": 16.56,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": " the",
+          "start": 16.56,
+          "end": 16.8,
+          "duration": 0.24,
+          "confidence": 0.997
+        },
+        {
+          "text": " system",
+          "start": 16.8,
+          "end": 17.12,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": " you",
+          "start": 17.12,
+          "end": 17.36,
+          "duration": 0.24,
+          "confidence": 1.0
+        },
+        {
+          "text": " main",
+          "start": 17.36,
+          "end": 17.68,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": "tain",
+          "start": 17.68,
+          "end": 18.0,
+          "duration": 0.32,
+          "confidence": 1.0
+        }
+      ]
+    }
+  ]
+}

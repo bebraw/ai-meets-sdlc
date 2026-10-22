@@ -1,0 +1,75 @@
+{
+  "id": "jenni-talk",
+  "shortSummary": "Jenni Kylmäkoski explains why leaders should build and use AI tools themselves. Her reporting tools and an unintended Jira change reveal practical lessons about onboarding, permissions, observability, learning time and maintaining shared AI assets as products.",
+  "longSummary": "Drawing on her work as an R&D leader at Nokia, Jenni Kylmäkoski argues that leaders need direct experience of the changes they ask teams to make. She builds small applications for recurring reporting and analysis, using the same tools as her developers and checking the generated results. This exposes installation friction, documentation gaps and the support people need to adopt new capabilities. A model change unexpectedly reopened closed Jira tickets during a reporting task, prompting her to reconsider permissions, logs and recovery. She also describes the tension between delivery commitments and time spent learning. Her conclusion is that an organisation's prompts, skills, agents, workflows and monitoring need requirements, testing, distribution, documentation and ongoing maintenance, just as other software products do. Practical participation helps leaders understand both the technology and the people living through the transition.",
+  "takeaways": [
+    {
+      "point": "Leaders can learn the development experience by building tools for their own recurring work and validating the outputs.",
+      "start": 341,
+      "end": 547
+    },
+    {
+      "point": "Onboarding, documentation, training and support shape whether shared AI assets are actually used.",
+      "start": 547,
+      "end": 694
+    },
+    {
+      "point": "A model change can alter tool behaviour; least privilege, logging and recovery deserve explicit attention.",
+      "start": 960,
+      "end": 1149
+    },
+    {
+      "point": "Learning time must be included in priorities and delivery plans, or urgent commitments will displace it.",
+      "start": 1160,
+      "end": 1250
+    },
+    {
+      "point": "Shared AI assets need a product lifecycle with requirements, tests, releases, documentation and maintenance.",
+      "start": 1250,
+      "end": 1377
+    }
+  ],
+  "topics": [
+    "leadership",
+    "AI adoption",
+    "developer experience",
+    "least privilege",
+    "observability",
+    "learning",
+    "AI asset maintenance"
+  ],
+  "quoteCandidates": [
+    {
+      "text": "We need to treat it as a product.",
+      "speaker": "Jenni Kylmäkoski"
+    },
+    {
+      "text": "Because if you overpromise something to your customer, deliver some feature to a customer, you probably end up sacrificing the learning as a first mitigation action if you run out of time.",
+      "speaker": "Jenni Kylmäkoski"
+    }
+  ],
+  "clipCandidates": [
+    {
+      "title": "A reporting request that reopened Jira tickets",
+      "start": 960,
+      "end": 1149,
+      "why": "A concrete failure story connects model changes to permissions, logs and recovery. Keep the explanation of safeguards with the incident.",
+      "audience": "Engineering leaders and teams connecting agents to business systems"
+    },
+    {
+      "title": "Treat the AI toolbox as a product",
+      "start": 1250,
+      "end": 1377,
+      "why": "Explains what maintaining skills, agents and workflows requires beyond initial experimentation.",
+      "audience": "Platform teams and engineering managers"
+    }
+  ],
+  "reuseAngles": [
+    "A leadership article on learning the same tools as the team",
+    "A practical checklist for maintaining shared AI assets"
+  ],
+  "editorialCaveats": [
+    "The leader-usage percentages at 03:17–04:03 are internally difficult to reconcile in the delivered wording. They are excluded from these summaries and should not be reused without checking the cited report and audio."
+  ],
+  "analysisStatus": "Complete-caption analysis, fresh local quote ASR and sampled-frame review complete; editorial approval pending."
+}

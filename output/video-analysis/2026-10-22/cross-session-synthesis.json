@@ -1,0 +1,396 @@
+{
+  "status": "Editorial synthesis of the seminar, not an independent evaluation of speaker claims.",
+  "overview": "Across the seminar, faster generation repeatedly exposes work elsewhere in the system: deciding what to build, supplying context, understanding changes, checking them and operating the result. Mo Khazali frames this as delivery-system design; Ohans Emmanuel connects intent, build, QA and production feedback; Sini Tistelgrén describes the fundamentals between a prototype and accepted production delivery. Jenni Kylmäkoski, Jussi Hacklin and Viljami Kuosmanen offer different adoption experiences, with practical lessons about learning, shared assets, permissions and visible work. Muhammad Waseem makes decision rationale and system understanding central. The research sessions broaden this beyond code: Tapio Pitkäranta uses tangible probes for discovery, Joongi Shin studies the experience of people generating interfaces, and Zak Allal describes infrastructure for repeating scientific experiments. These are related perspectives rather than one demonstrated method. The Q&As preserve useful qualifications: building can change the problem being explored; documentation can become a burden; more output can overwhelm expert review; and activity metrics alone do not establish value. A strong editorial direction is therefore to ask what happens around generated output, supported by named examples and the limits of each example.",
+  "themes": [
+    {
+      "id": "delivery-system",
+      "title": "Generation changes the delivery system",
+      "finding": "Mo, Ohans and Sini place generation inside a wider delivery flow. Viljami describes the review and testing work created by more proposals, while the research Q&A describes a similar evaluation constraint in peer review.",
+      "evidence": [
+        {
+          "videoId": "mo-talk",
+          "start": 1903,
+          "end": 2139
+        },
+        {
+          "videoId": "ohans-talk",
+          "start": 1499,
+          "end": 1918
+        },
+        {
+          "videoId": "sini-talk",
+          "start": 94,
+          "end": 238
+        },
+        {
+          "videoId": "viljami-talk",
+          "start": 1198,
+          "end": 1291
+        },
+        {
+          "videoId": "research-panel",
+          "start": 1493,
+          "end": 1640
+        }
+      ],
+      "reuseImplication": "Build an archive introduction around shifting constraints, then link to concrete examples rather than claiming a universal productivity multiplier."
+    },
+    {
+      "id": "context-and-rationale",
+      "title": "Shared context includes the reasons behind decisions",
+      "finding": "Accessible intent, codebase knowledge, architecture and decision reasons recur across the delivery talks. Waseem stresses that code does not contain all of an organisation’s knowledge. The final Q&A qualifies this with the maintenance burden of decision records.",
+      "evidence": [
+        {
+          "videoId": "ohans-talk",
+          "start": 423,
+          "end": 541
+        },
+        {
+          "videoId": "viljami-talk",
+          "start": 240,
+          "end": 320
+        },
+        {
+          "videoId": "sini-talk",
+          "start": 580,
+          "end": 829
+        },
+        {
+          "videoId": "waseem-talk",
+          "start": 899,
+          "end": 1018
+        },
+        {
+          "videoId": "final-panel",
+          "start": 1469,
+          "end": 1560
+        }
+      ],
+      "reuseImplication": "A practical article can compare shared intent, packaged documentation and decision records, including ownership and maintenance."
+    },
+    {
+      "id": "verification-and-ownership",
+      "title": "Verification needs clear ownership and bounded permissions",
+      "finding": "Jenni’s Jira incident and Viljami’s deployment near miss show why write permissions matter. Ohans separates implementation from QA; Sini separates authorship from approval; Waseem combines checks with human judgement. These proposals do not establish that adding a second model makes failures independent.",
+      "evidence": [
+        {
+          "videoId": "jenni-talk",
+          "start": 960,
+          "end": 1149
+        },
+        {
+          "videoId": "viljami-talk",
+          "start": 1057,
+          "end": 1178
+        },
+        {
+          "videoId": "ohans-talk",
+          "start": 1078,
+          "end": 1499
+        },
+        {
+          "videoId": "sini-talk",
+          "start": 1307,
+          "end": 1394
+        },
+        {
+          "videoId": "waseem-talk",
+          "start": 1346,
+          "end": 1447
+        }
+      ],
+      "reuseImplication": "Use a permissions-and-review story with explicit examples of who may propose, test, approve, merge and deploy."
+    },
+    {
+      "id": "adoption-and-learning",
+      "title": "Adoption depends on usable assets and room to learn",
+      "finding": "Jenni argues for protected learning time and treating shared AI assets as a product. Jussi describes guidance, training and community. Viljami describes learning through visible Slack work. Mo connects experimentation with continuous improvement. The approaches differ in how formal their training is.",
+      "evidence": [
+        {
+          "videoId": "jenni-talk",
+          "start": 1160,
+          "end": 1377
+        },
+        {
+          "videoId": "jussi-talk",
+          "start": 452,
+          "end": 577
+        },
+        {
+          "videoId": "viljami-talk",
+          "start": 156,
+          "end": 382
+        },
+        {
+          "videoId": "mo-talk",
+          "start": 1155,
+          "end": 1543
+        }
+      ],
+      "reuseImplication": "Compare concrete adoption mechanisms; avoid presenting formal training or a particular chat tool as a requirement for every organisation."
+    },
+    {
+      "id": "discovery-and-iteration",
+      "title": "Building can be part of discovering the problem",
+      "finding": "Tapio’s probes make possible problems and solutions tangible. Joongi distinguishes envisioning an outcome from articulating it. In the research Q&A, Joongi explicitly qualifies a simple separation between discovery and implementation: building and testing can change the problem itself.",
+      "evidence": [
+        {
+          "videoId": "tapio-talk",
+          "start": 754,
+          "end": 875
+        },
+        {
+          "videoId": "joongi-talk",
+          "start": 412,
+          "end": 504
+        },
+        {
+          "videoId": "research-panel",
+          "start": 836,
+          "end": 983
+        }
+      ],
+      "reuseImplication": "Pair the probe explanation with the Q&A qualification in an article or discussion clip."
+    },
+    {
+      "id": "metrics-and-value",
+      "title": "Use outcome measures and preserve their denominators",
+      "finding": "Mo and Sini distinguish delivery outcomes from activity. Viljami’s contribution counts describe participation, not a causal productivity result. In the industry Q&A, absolute bugs discovered and bugs per release move differently. Joongi evaluates both generating and using an interface.",
+      "evidence": [
+        {
+          "videoId": "mo-talk",
+          "start": 403,
+          "end": 754
+        },
+        {
+          "videoId": "sini-talk",
+          "start": 1571,
+          "end": 1664
+        },
+        {
+          "videoId": "viljami-talk",
+          "start": 1198,
+          "end": 1291
+        },
+        {
+          "videoId": "industry-panel",
+          "start": 674,
+          "end": 814
+        },
+        {
+          "videoId": "joongi-talk",
+          "start": 728,
+          "end": 932
+        }
+      ],
+      "reuseImplication": "A measurement story can ask what changed for the customer or delivery flow, while keeping cost, adoption, volume and quality measures distinct."
+    },
+    {
+      "id": "experimentation-and-expertise",
+      "title": "Repeatable experiments still need expert evaluation",
+      "finding": "Zak argues that making experiments cheaper to repeat changes the questions researchers can investigate. The final Q&A discusses checkpoints, structured data and provenance. The research Q&A warns that increased output can overload expert review. Zak’s hearing work is presented as research under review.",
+      "evidence": [
+        {
+          "videoId": "zak-talk",
+          "start": 146,
+          "end": 331
+        },
+        {
+          "videoId": "zak-talk",
+          "start": 708,
+          "end": 792
+        },
+        {
+          "videoId": "zak-talk",
+          "start": 981,
+          "end": 1167
+        },
+        {
+          "videoId": "final-panel",
+          "start": 487,
+          "end": 625
+        },
+        {
+          "videoId": "research-panel",
+          "start": 1493,
+          "end": 1640
+        }
+      ],
+      "reuseImplication": "Connect research infrastructure to evaluation capacity without presenting a preprint as an established clinical result."
+    },
+    {
+      "id": "users-and-responsibility",
+      "title": "Generated interfaces must serve the user’s task",
+      "finding": "Joongi’s reported study distinguishes the goals of task-oriented users from designers and shows limits to follow-up questions. The research Q&A leaves accessibility responsibility unresolved. Generating an interface does not settle whether it is useful, accessible or fair to the user.",
+      "evidence": [
+        {
+          "videoId": "joongi-talk",
+          "start": 149,
+          "end": 302
+        },
+        {
+          "videoId": "joongi-talk",
+          "start": 790,
+          "end": 1120
+        },
+        {
+          "videoId": "research-panel",
+          "start": 1222,
+          "end": 1479
+        }
+      ],
+      "reuseImplication": "Use this as a product-design story that includes the generation experience and the resulting interface."
+    }
+  ],
+  "tensions": [
+    {
+      "id": "discovery-boundary",
+      "title": "Separate discovery or learn through building",
+      "finding": "Tapio’s distinction helps ask whether a team is exploring the right problem or engineering a solution. Joongi’s Q&A response cautions against making that boundary rigid: testing a built artefact can change the problem. Both perspectives should remain visible.",
+      "evidence": [
+        {
+          "videoId": "tapio-talk",
+          "start": 138,
+          "end": 291
+        },
+        {
+          "videoId": "tapio-talk",
+          "start": 754,
+          "end": 875
+        },
+        {
+          "videoId": "research-panel",
+          "start": 836,
+          "end": 983
+        }
+      ],
+      "reuseImplication": "Preserve the exchange rather than editing the qualification out of a discovery narrative."
+    },
+    {
+      "id": "approval-models",
+      "title": "Approval models depend on the work and risk",
+      "finding": "Viljami retains engineer review and merge for contributions. Sini discusses preapproved routine work and approval based on evidence, with independent verification. Ohans moves consequential review into implementation planning. These are different operating models, not proof of one universal review policy.",
+      "evidence": [
+        {
+          "videoId": "viljami-talk",
+          "start": 1057,
+          "end": 1178
+        },
+        {
+          "videoId": "sini-talk",
+          "start": 1307,
+          "end": 1394
+        },
+        {
+          "videoId": "ohans-talk",
+          "start": 542,
+          "end": 784
+        }
+      ],
+      "reuseImplication": "Compare the responsibility boundaries and the kinds of changes each speaker is describing."
+    },
+    {
+      "id": "context-maintenance",
+      "title": "More context also creates maintenance work",
+      "finding": "Several talks call for explicit knowledge and rationale. The final Q&A raises the cost of accumulating decision files for people and agents. The discussion does not supply a complete policy for pruning and maintaining them.",
+      "evidence": [
+        {
+          "videoId": "waseem-talk",
+          "start": 899,
+          "end": 1018
+        },
+        {
+          "videoId": "viljami-talk",
+          "start": 240,
+          "end": 320
+        },
+        {
+          "videoId": "final-panel",
+          "start": 1469,
+          "end": 1560
+        }
+      ],
+      "reuseImplication": "Follow an article about recording why with questions about ownership, relevance and maintenance."
+    },
+    {
+      "id": "cost-and-outcomes",
+      "title": "Cost visibility and outcome measurement answer different questions",
+      "finding": "Jussi’s quotas and the industry panel’s subscription and infrastructure discussion concern access and expenditure. Mo’s critique of activity metrics concerns whether the delivery system improves. Tracking token costs and rejecting token volume as proof of value are compatible positions.",
+      "evidence": [
+        {
+          "videoId": "jussi-talk",
+          "start": 549,
+          "end": 687
+        },
+        {
+          "videoId": "industry-panel",
+          "start": 390,
+          "end": 672
+        },
+        {
+          "videoId": "mo-talk",
+          "start": 403,
+          "end": 754
+        }
+      ],
+      "reuseImplication": "Keep adoption, expenditure and delivery impact separate in comparisons and headlines."
+    }
+  ],
+  "reusePlan": [
+    {
+      "use": "2026 archive and video cards",
+      "proposal": "Use each short summary as a starting point for a video card and each long summary for an archive entry. Preserve the official title, speaker and materials link.",
+      "inputs": [
+        "all per-video summaries"
+      ],
+      "nextStep": "Add actual YouTube video URLs after upload; current review links are local."
+    },
+    {
+      "use": "Opening editorial article",
+      "proposal": "How faster generation changes the work around the code: context, verification, operations and choosing what to build.",
+      "inputs": [
+        "delivery-system",
+        "context-and-rationale",
+        "verification-and-ownership"
+      ],
+      "nextStep": "Develop the argument with named speaker examples and keep it framed as seminar synthesis."
+    },
+    {
+      "use": "Newsletter series",
+      "proposal": "Three follow-ups: learning and adoption; decision rationale and review; probes, generative UI and scientific experiments.",
+      "inputs": [
+        "adoption-and-learning",
+        "context-maintenance",
+        "discovery-and-iteration",
+        "experimentation-and-expertise"
+      ],
+      "nextStep": "Select one main example and one useful qualification per issue."
+    },
+    {
+      "use": "Clips and discussion prompts",
+      "proposal": "Start with the bottleneck message, the deployment near miss, the discovery qualification and the documentation burden. Longer Q&A ranges retain the question and caveats.",
+      "inputs": [
+        "mo-talk",
+        "viljami-talk",
+        "research-panel",
+        "final-panel"
+      ],
+      "nextStep": "Watch and listen to the selected ranges, confirm wording and panel attribution, and tighten boundaries before rendering."
+    },
+    {
+      "use": "Channel introduction",
+      "proposal": "Use the existing 2:08 mood film as a candidate channel introduction or archive opener.",
+      "inputs": [
+        "mood"
+      ],
+      "nextStep": "Approve the final film and preserve the required music and photograph credits when making derivatives."
+    }
+  ],
+  "discussionPrompts": [
+    "Which constraint moved after generation became faster in your team, and what evidence shows it?",
+    "Who owns the reasons behind architectural decisions, and who keeps them useful?",
+    "Which changes can an agent propose, verify, approve, merge or deploy in your system?",
+    "What have you learned about the problem only after building and testing a prototype?",
+    "Which activity metric are you tempted to treat as an outcome, and what denominator is missing?"
+  ]
+}

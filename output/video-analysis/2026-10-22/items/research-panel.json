@@ -1,0 +1,85 @@
+{
+  "id": "research-panel",
+  "shortSummary": "Tapio Pitkäranta and Joongi Shin explore how probes, generative UI and human judgement interact. Audience questions expose limits in available organisational knowledge, privacy, accessibility and peer review, while Joongi qualifies the idea that finding a problem can be separated from building and testing.",
+  "longSummary": "The research Q&A connects agentic probes with the challenge of helping users envision an interface. Tangible examples can support reflection, but their design and information content still matter. Questions about agentic search expose incomplete sources, tacit knowledge and the need for domain experts to evaluate any proposed model of an organisation. The panel also discusses vague intent, privacy and possible roles for local computation. A useful distinction emerges around the claim that building has become cheap: Joongi argues that building and testing can themselves change the understanding of the problem. Accessibility responsibility remains an open issue rather than a solved consequence of user-generated interfaces. Increased submission volume creates a peer-review bottleneck, and the panellists discuss sources, structure and expert judgement. Later answers clarify that Joongi's study was not a direct developer-versus-designer group comparison and frame UI quality around usefulness and the user's task.",
+  "takeaways": [
+    {
+      "point": "A probe can help users reflect on what they want, but merely generating a prototype does not guarantee useful reflection.",
+      "start": 3,
+      "end": 100
+    },
+    {
+      "point": "Agentic discovery can miss known specifications and organisational context; experts still need to evaluate completeness and credibility.",
+      "start": 219,
+      "end": 536
+    },
+    {
+      "point": "Building and testing are also ways of discovering the problem, which qualifies a simple upstream-versus-downstream bottleneck story.",
+      "start": 836,
+      "end": 983
+    },
+    {
+      "point": "User-generated interfaces raise unresolved responsibility and accessibility questions; the panel does not offer a settled allocation of responsibility.",
+      "start": 1222,
+      "end": 1479
+    },
+    {
+      "point": "A larger volume of plausible research output can overload expert review; sources and the substance of a contribution still matter.",
+      "start": 1493,
+      "end": 1640
+    }
+  ],
+  "topics": [
+    "agentic discovery",
+    "generative UI",
+    "problem framing",
+    "tacit knowledge",
+    "accessibility",
+    "peer review",
+    "privacy",
+    "user intent"
+  ],
+  "quoteCandidates": [
+    {
+      "text": "the problem actually evolves by you building and testing stuff.",
+      "speaker": "Joongi Shin",
+      "attributionBasis": "The host explicitly asks Joongi to add his view at 15:35 immediately before this response; captions are not otherwise diarised."
+    }
+  ],
+  "clipCandidates": [
+    {
+      "title": "Does cheaper building really separate discovery from implementation?",
+      "start": 836,
+      "end": 983,
+      "why": "Preserves both the shifting-bottleneck argument and Joongi's qualification that building changes the problem itself.",
+      "audience": "Product, design and engineering teams"
+    },
+    {
+      "title": "Who carries accessibility responsibility for generated interfaces?",
+      "start": 1222,
+      "end": 1479,
+      "why": "Keep the audience's full concern and the qualified responses; a short answer alone would conceal that the responsibility question remains unresolved.",
+      "audience": "Product designers and accessibility practitioners"
+    },
+    {
+      "title": "Research output grows faster than expert review capacity",
+      "start": 1493,
+      "end": 1640,
+      "why": "Connects AI-assisted production with the human evaluation bottleneck in research.",
+      "audience": "Researchers, reviewers and research-software teams"
+    }
+  ],
+  "reuseAngles": [
+    "A balanced follow-up to the agentic discovery talks",
+    "A discussion article on accessibility responsibility in generative UI",
+    "A comparison between code-review load and academic peer-review load"
+  ],
+  "editorialCaveats": [
+    "The privacy discussion contains personal risk attitudes and speculative approaches, not a security or legal assessment.",
+    "The accessibility discussion does not establish that a vendor can transfer legal responsibility to users.",
+    "The panel explicitly says Joongi's study was not a direct comparison of developer and designer participant groups.",
+    "Do not present user attention as an established new bottleneck: the question raises the idea and Joongi pushes back on that framing.",
+    "Panel quotes need attribution confirmation before publication because captions are not diarised."
+  ],
+  "analysisStatus": "Complete-caption analysis, fresh local quote ASR and sampled-frame review complete; editorial approval pending."
+}

@@ -1,0 +1,3493 @@
+{
+  "id": "final-panel",
+  "kind": "qa",
+  "officialTitle": "AI, Scientific Discovery & Software Engineering — Q&A",
+  "speakerNames": [
+    "Zak Allal",
+    "Muhammad Waseem"
+  ],
+  "durationSeconds": 2008.0,
+  "videoFile": "exports/talks-v02/final-panel-4k.mp4",
+  "reviewFile": "review/talks-v02/final-panel-720p.mp4",
+  "chapters": [
+    {
+      "outputSeconds": 0,
+      "title": "What does continuous hearing mean?",
+      "sourceSeconds": 27514.12,
+      "timestamp": "00:00"
+    },
+    {
+      "outputSeconds": 96,
+      "title": "Why architecture decision records matter",
+      "sourceSeconds": 27607.86,
+      "timestamp": "01:36"
+    },
+    {
+      "outputSeconds": 328,
+      "title": "Where could AI and supercomputing help medicine?",
+      "sourceSeconds": 27839.36,
+      "timestamp": "05:28"
+    },
+    {
+      "outputSeconds": 483,
+      "title": "Can scientific discovery be automated?",
+      "sourceSeconds": 27994.42,
+      "timestamp": "08:03"
+    },
+    {
+      "outputSeconds": 726,
+      "title": "Computation, mathematical certainty and supercomputers",
+      "sourceSeconds": 28237.92,
+      "timestamp": "12:06"
+    },
+    {
+      "outputSeconds": 852,
+      "title": "Regulation, medical data and informed consent",
+      "sourceSeconds": 28364.02,
+      "timestamp": "14:12"
+    },
+    {
+      "outputSeconds": 1044,
+      "title": "Do breakthroughs require a PhD?",
+      "sourceSeconds": 28555.88,
+      "timestamp": "17:24"
+    },
+    {
+      "outputSeconds": 1233,
+      "title": "Connecting medicine, mathematics and software skills",
+      "sourceSeconds": 28745.1,
+      "timestamp": "20:33"
+    },
+    {
+      "outputSeconds": 1469,
+      "title": "Do decision records create a maintenance burden?",
+      "sourceSeconds": 28980.56,
+      "timestamp": "24:29"
+    },
+    {
+      "outputSeconds": 1563,
+      "title": "What happens when only some teammates use AI?",
+      "sourceSeconds": 29074.9,
+      "timestamp": "26:03"
+    },
+    {
+      "outputSeconds": 1725,
+      "title": "Can academia keep pace with AI development?",
+      "sourceSeconds": 29236.68,
+      "timestamp": "28:45"
+    }
+  ],
+  "materials": [
+    {
+      "label": "Slides (PDF)",
+      "url": "https://www.sdlcai.org/media/talks/zak-allal-industry-perspective/ca321a78-3c93-4396-b728-07c1805ceae1.pdf",
+      "speakerNames": [
+        "Zak Allal"
+      ]
+    },
+    {
+      "label": "Slides (PDF)",
+      "url": "https://www.sdlcai.org/media/talks/genai-software-engineering/f491d4b2-18a5-4208-a7b2-19b48c192193.pdf",
+      "speakerNames": [
+        "Muhammad Waseem"
+      ]
+    }
+  ],
+  "existingSummary": "Zak Allal and Muhammad Waseem discuss continuous hearing, architecture decision records, and the role of AI and supercomputers in research. Audience questions lead to a discussion of medical applications, controlled experiments, privacy, multidisciplinary collaboration, the maintenance cost of decision records, mixed AI use in teams and academia’s changing role.",
+  "captions": {
+    "language": "en",
+    "srt": "transcripts/final-v02/final-panel.en.srt",
+    "vtt": "transcripts/final-v02/final-panel.en.vtt",
+    "qualityReport": "transcripts/final-v02/final-panel.caption-qc.json",
+    "listeningReview": "transcripts/final-v02/final-panel.listening-review.txt",
+    "status": "prepared-with-human-listening-review-notes"
+  },
+  "captionSHA256": "76b6695e96c8dfd1efb56c4d9516db2160a509bfe741613cb8eb24a271aa5606",
+  "mediaBytes": 944150495,
+  "cueCount": 482,
+  "listeningWindows": [
+    {
+      "id": "final-panel-159",
+      "videoId": "final-panel",
+      "startSeconds": 269.68,
+      "endSeconds": 292.5,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Dedicate or transform your knowledge and body/buddy wording needs listening; do not rewrite the sentence wholesale. Context-supported correction still marked for listening: coding body or agent body → coding buddy or agent buddy",
+      "currentCaptionText": "head. They are making this kind of decision. And these are the tacit knowledge. So next thing is that, like, look, for example, how you can dedicate or transform your knowledge to your coding buddy or agent buddy that have a role of architect. Thank you.",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/final-panel.listening-review.json",
+          "entryIndices": [
+            9,
+            20
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/final-panel.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                61
+              ],
+              "text": "Dedicate or transform your knowledge to your coding body or agent body that have role of architect. Thank you. Mark"
+            },
+            {
+              "segments": [
+                60,
+                61
+              ],
+              "text": "this kind of decision and these are the test acknowledge. So next thing is that like a look, for example, how you can dedicate or transform your knowledge to your coding body or agent body that have a role of architect. Thank you. Mark."
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 61,
+              "before": "coding body or agent body",
+              "after": "coding buddy or agent buddy",
+              "basis": "Speaker repeatedly uses buddy for an agent collaborator; listening required."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/final-panel.listening-review.json",
+          "index": 9
+        },
+        {
+          "path": "transcripts/final-v02/final-panel.listening-review.json",
+          "index": 20
+        }
+      ],
+      "sourceSegments": [
+        60,
+        61
+      ],
+      "sourceStartSeconds": 27780.8,
+      "sourceEndSeconds": 27803.62
+    },
+    {
+      "id": "final-panel-160",
+      "videoId": "final-panel",
+      "startSeconds": 435.96,
+      "endSeconds": 445.72,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Wade likely refers to Waseem, but listen for actual spoken name. Context-supported correction still marked for listening: wade → Waseem",
+      "currentCaptionText": "does you will understand that it's much more nuanced and it's not it's not the machine it's exactly what Waseem was saying sometimes you need you have to have someone who is looking and just it's about perspective and if you see yesterday I was talking with someone here they say if you",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/final-panel.listening-review.json",
+          "entryIndices": [
+            10,
+            21
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/final-panel.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                90
+              ],
+              "text": "that it's much more nuanced. And it's not the machine. It's exactly what Waid was saying. Sometimes you need, you have to have someone who is looking and just, it's about perspective. And if you see a..."
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 90,
+              "before": "wade",
+              "after": "Waseem",
+              "basis": "Zak refers to the fellow panelist’s preceding talk."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/final-panel.listening-review.json",
+          "index": 10
+        },
+        {
+          "path": "transcripts/final-v02/final-panel.listening-review.json",
+          "index": 21
+        }
+      ],
+      "sourceSegments": [
+        90
+      ],
+      "sourceStartSeconds": 27947.08,
+      "sourceEndSeconds": 27956.84
+    },
+    {
+      "id": "final-panel-161",
+      "videoId": "final-panel",
+      "startSeconds": 652.18,
+      "endSeconds": 660.18,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Cloud/Claude extension ambiguity in Excel reference; spelling inference needs listening. Context-supported correction still marked for listening: cloud extension → Claude extension",
+      "currentCaptionText": "hypothesis. Then there is a Claude extension in the Excel. They are doing really good.",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/final-panel.listening-review.json",
+          "entryIndices": [
+            11,
+            22
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/final-panel.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                129
+              ],
+              "text": "and then you have some sort of the hypothesis. Then there is a X-cloud extension in the X-cell. They are doing really good. Like I have done some experiments."
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 129,
+              "before": "cloud extension",
+              "after": "Claude extension",
+              "basis": "Likely Claude in Excel from context, but listening confirmation required."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/final-panel.listening-review.json",
+          "index": 11
+        },
+        {
+          "path": "transcripts/final-v02/final-panel.listening-review.json",
+          "index": 22
+        }
+      ],
+      "sourceSegments": [
+        129
+      ],
+      "sourceStartSeconds": 28163.3,
+      "sourceEndSeconds": 28171.3
+    },
+    {
+      "id": "final-panel-163",
+      "videoId": "final-panel",
+      "startSeconds": 906.3,
+      "endSeconds": 917.16,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Submodel may be some model; do not guess without audio.",
+      "currentCaptionText": "Especially healthcare data. Yeah. And this is not the only data that when you say that, like, okay, my health data is going to the some model. But there are so many other things. They are directly or indirectly influencing you to buy something that you",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/final-panel.listening-review.json",
+          "entryIndices": [
+            12,
+            27
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/final-panel.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                180
+              ],
+              "text": "especially healthcare data. Yeah. And this is not the only data that when you say that like, okay, my health data is going to the some model, but there are so many other things. They are directly indirectly."
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 180,
+              "before": "submodel",
+              "after": "some model",
+              "basis": "Independent local base.en pass distinguishes some model in the health-data sentence. Retain listening flag."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/final-panel.listening-review.json",
+          "index": 12
+        },
+        {
+          "path": "transcripts/final-v02/final-panel.listening-review.json",
+          "index": 27
+        }
+      ],
+      "sourceSegments": [
+        180
+      ],
+      "sourceStartSeconds": 28417.42,
+      "sourceEndSeconds": 28428.28
+    },
+    {
+      "id": "final-panel-164",
+      "videoId": "final-panel",
+      "startSeconds": 994.12,
+      "endSeconds": 1002.7,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Aspire your medical information may be the speaker’s phrasing (possibly aspirate); preserve unless listening resolves.",
+      "currentCaptionText": "And in that privacy, they use HIPAA loopholes to completely aspire your medical information within a second. And you gave a waiver. So I think this is what I fear most is when we...",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/final-panel.listening-review.json",
+          "entryIndices": [
+            13
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/final-panel.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                207
+              ],
+              "text": "And in that privacy they use HIPAA loopholes to completely aspire your medical information within a second. And you gave a waiver. So I think this is what I fear most is."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/final-panel.listening-review.json",
+          "index": 13
+        }
+      ],
+      "sourceSegments": [
+        207
+      ],
+      "sourceStartSeconds": 28505.24,
+      "sourceEndSeconds": 28513.82
+    },
+    {
+      "id": "final-panel-166",
+      "videoId": "final-panel",
+      "startSeconds": 1103.8,
+      "endSeconds": 1120.84,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Kuhnian is likely the scientific-revolutions reference; verify pronunciation. Context-supported correction still marked for listening: Kunhan → Kuhnian",
+      "currentCaptionText": "some of them were not even doctors and they were from outside the field. There's even something called, I think, Kuhnian, we spoke about it yesterday, about the Kuhnian revolutions and the paradigm where you have a whole field that is extremely conservative and got sclerotic and rigid across the years, but they are suffering",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/final-panel.listening-review.json",
+          "entryIndices": [
+            14,
+            23,
+            24
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/final-panel.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                229
+              ],
+              "text": "more not even doctors. And they were from outside the field. There's even something called, I think, Kun Han. We spoke about it yesterday about the Kun Han revolutions and the"
+            },
+            {
+              "segments": [
+                230
+              ],
+              "text": "even something called the Koon Han. We spoke about it yesterday about the Koon Han revolutions and the paradigm where you have a whole field that is extremely conservative and got..."
+            },
+            {
+              "segments": [
+                229,
+                230
+              ],
+              "text": "more not even doctors. And they were from outside the field. There's even something called, I think, Kun Han, we spoke about it yesterday, about the Kun Han revolutions and the paradigm where you have a whole field that is extremely conservative and got..."
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 229,
+              "before": "Kunhan",
+              "after": "Kuhnian",
+              "basis": "Reference to paradigm shifts and scientific revolutions; listening required."
+            },
+            {
+              "segment": 230,
+              "before": "Kunhan",
+              "after": "Kuhnian",
+              "basis": "Reference to paradigm shifts and scientific revolutions; listening required."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/final-panel.listening-review.json",
+          "index": 14
+        },
+        {
+          "path": "transcripts/final-v02/final-panel.listening-review.json",
+          "index": 23
+        },
+        {
+          "path": "transcripts/final-v02/final-panel.listening-review.json",
+          "index": 24
+        }
+      ],
+      "sourceSegments": [
+        229,
+        230
+      ],
+      "sourceStartSeconds": 28614.92,
+      "sourceEndSeconds": 28631.96
+    },
+    {
+      "id": "final-panel-167",
+      "videoId": "final-panel",
+      "startSeconds": 1160.7,
+      "endSeconds": 1176.6,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Innovative site / LLMR / PAD contain possible misrecognitions; retain only supported corrections.",
+      "currentCaptionText": "They are from the chemistry, physics, or some other department. They are coming up with a very innovative site. And they have started using these LLM or vibe coding. And most of like a trained PhD, the trained computer scientists, they are not even thinking around it. Absolutely.",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/final-panel.listening-review.json",
+          "entryIndices": [
+            15,
+            25
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/final-panel.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                242
+              ],
+              "text": "They are coming up with a very innovative side. And they start using these LLMR wipe coating. And most are like a trend PID."
+            },
+            {
+              "segments": [
+                241,
+                242,
+                243
+              ],
+              "text": "from the computer science there from the chemistry physics or some other department. They are coming up with a very innovative site and they are start using these LLM or wipe coding and most are like a trend PAD or the trend computer scientists. They are not even thinking around there. Absolutely. when they are coming."
+            }
+          ]
+        },
+        {
+          "type": "appliedCorrectionEvidence",
+          "corrections": [
+            {
+              "segment": 242,
+              "before": "LLMR",
+              "after": "LLM or",
+              "basis": "Sentence discusses using LLMs or vibe coding; listening required."
+            },
+            {
+              "segment": 243,
+              "before": "PAD",
+              "after": "PhD",
+              "basis": "The question and answer concern academic qualifications."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/final-panel.listening-review.json",
+          "index": 15
+        },
+        {
+          "path": "transcripts/final-v02/final-panel.listening-review.json",
+          "index": 25
+        }
+      ],
+      "sourceSegments": [
+        241,
+        242,
+        243
+      ],
+      "sourceStartSeconds": 28671.82,
+      "sourceEndSeconds": 28687.72
+    },
+    {
+      "id": "final-panel-172",
+      "videoId": "final-panel",
+      "startSeconds": 1691.5,
+      "endSeconds": 1696.54,
+      "priority": "normal",
+      "category": "wording_or_entity",
+      "note": "Great co-pilot may be GitHub Copilot; needs listening.",
+      "currentCaptionText": "No, no, no, it's not for us. We have a regulation. We have a great co-pilot. So up to that.",
+      "evidence": [
+        {
+          "type": "originalReviewNotes",
+          "path": "transcripts/final-v02/final-panel.listening-review.json",
+          "entryIndices": [
+            18
+          ]
+        },
+        {
+          "type": "independentLocalASR",
+          "model": "Whisper base.en",
+          "path": "transcripts/secondary-checks-v1/final-panel.json",
+          "matchingChecks": [
+            {
+              "segments": [
+                361
+              ],
+              "text": "No, we are not using it. No, no, no, it's not for us. We have a regulation. We have a great copilot. So up to that. But here the situation is changed."
+            }
+          ]
+        }
+      ],
+      "sourceEntries": [
+        {
+          "path": "transcripts/final-v02/final-panel.listening-review.json",
+          "index": 18
+        }
+      ],
+      "sourceSegments": [
+        361
+      ],
+      "sourceStartSeconds": 29202.62,
+      "sourceEndSeconds": 29207.66
+    }
+  ],
+  "cues": [
+    {
+      "id": 1,
+      "start": 3.94,
+      "end": 9.7,
+      "text": "Okay but we can start Zak what's what does continuous hearing mean"
+    },
+    {
+      "id": 2,
+      "start": 11.27,
+      "end": 17.9,
+      "text": "it's exactly as a gps position uh the gps position is could"
+    },
+    {
+      "id": 3,
+      "start": 17.92,
+      "end": 24.07,
+      "text": "be zero eight comma two five three you change it a"
+    },
+    {
+      "id": 4,
+      "start": 24.83,
+      "end": 31.28,
+      "text": "little and then your position changes it is located in a 3d space right"
+    },
+    {
+      "id": 5,
+      "start": 31.3,
+      "end": 36.55,
+      "text": "longitude latitude altitude you get that coordinate and you can move it all around"
+    },
+    {
+      "id": 6,
+      "start": 36.57,
+      "end": 40.23,
+      "text": "that's what continuous is whereas"
+    },
+    {
+      "id": 7,
+      "start": 41.02,
+      "end": 47.76,
+      "text": "if I tell you I am in finland this is a category it doesn't give you my"
+    },
+    {
+      "id": 8,
+      "start": 47.78,
+      "end": 48.9,
+      "text": "exact location"
+    },
+    {
+      "id": 9,
+      "start": 50.1,
+      "end": 56.32,
+      "text": "so when I tell you I am in finland I am giving you a category when I tell you I am"
+    },
+    {
+      "id": 10,
+      "start": 56.34,
+      "end": 61.64,
+      "text": "in this exact gps position that's more or less what continuous is to make it simple"
+    },
+    {
+      "id": 11,
+      "start": 62.13,
+      "end": 69.03999999999999,
+      "text": "I'm simplifying yeah that's better to be that way or the best also is colors"
+    },
+    {
+      "id": 12,
+      "start": 69.06,
+      "end": 75.13,
+      "text": "I can tell you red I can tell you dark blue I can tell you light blue in the sky"
+    },
+    {
+      "id": 13,
+      "start": 75.15,
+      "end": 80.03999999999999,
+      "text": "blue navy blue but then the way I imagine it and the way you imagine it may be"
+    },
+    {
+      "id": 14,
+      "start": 80.06,
+      "end": 85.68,
+      "text": "different and that's why we created we discovered actually the RGB which is a"
+    },
+    {
+      "id": 15,
+      "start": 85.7,
+      "end": 92.42,
+      "text": "continuous description of color that's also a good example and a way to relate to"
+    },
+    {
+      "id": 16,
+      "start": 92.44,
+      "end": 93.53999999999999,
+      "text": "it thanks"
+    },
+    {
+      "id": 17,
+      "start": 96.74000000000001,
+      "end": 97.89,
+      "text": "then Waseem what's your"
+    },
+    {
+      "id": 18,
+      "start": 98.53999999999999,
+      "end": 99.41,
+      "text": "take on"
+    },
+    {
+      "id": 19,
+      "start": 101.62,
+      "end": 107.42,
+      "text": "ADRs so architectural description"
+    },
+    {
+      "id": 20,
+      "start": 109.14,
+      "end": 113.75,
+      "text": "yeah design decision I think this is uh one of the key thing that you are going to"
+    },
+    {
+      "id": 21,
+      "start": 113.77000000000001,
+      "end": 114.57,
+      "text": "carry on"
+    },
+    {
+      "id": 22,
+      "start": 116.39,
+      "end": 121.38,
+      "text": "What we are like these days advocating that maybe the code is not a really big"
+    },
+    {
+      "id": 23,
+      "start": 121.42,
+      "end": 123.21,
+      "text": "problem. The decision behind"
+    },
+    {
+      "id": 24,
+      "start": 123.95,
+      "end": 127.14,
+      "text": "that you are taking, these are most important."
+    },
+    {
+      "id": 25,
+      "start": 127.28,
+      "end": 131.43,
+      "text": "We also did a couple of research around it in which, for example, we are recovering"
+    },
+    {
+      "id": 26,
+      "start": 131.51,
+      "end": 132.79,
+      "text": "the code, existing"
+    },
+    {
+      "id": 27,
+      "start": 133.58,
+      "end": 137.7,
+      "text": "code, and then existing architecture."
+    },
+    {
+      "id": 28,
+      "start": 137.82999999999998,
+      "end": 141.56,
+      "text": "And then we are trying to add the new feature in the system."
+    },
+    {
+      "id": 29,
+      "start": 141.79,
+      "end": 146.68,
+      "text": "And then we were checking that, like, what actually is -- have the -- what kind of"
+    },
+    {
+      "id": 30,
+      "start": 146.7,
+      "end": 147.97,
+      "text": "ripple effect our"
+    },
+    {
+      "id": 31,
+      "start": 148.75,
+      "end": 153.75,
+      "text": "system may have. So I will say that shortly, like, the most important thing"
+    },
+    {
+      "id": 32,
+      "start": 153.77,
+      "end": 156.5,
+      "text": "currently in soft -- if we see from the software"
+    },
+    {
+      "id": 33,
+      "start": 157.28,
+      "end": 162.66,
+      "text": "development lifecycle perspective, this is your architecture."
+    },
+    {
+      "id": 34,
+      "start": 162.79,
+      "end": 165.96,
+      "text": "And architecture, I'm not only, like, saying that, like, only the diagrams or"
+    },
+    {
+      "id": 35,
+      "start": 165.98,
+      "end": 167.57999999999998,
+      "text": "something like that."
+    },
+    {
+      "id": 36,
+      "start": 167.71,
+      "end": 170.31,
+      "text": "Probably these are not needed. But decision behind it."
+    },
+    {
+      "id": 37,
+      "start": 170.32999999999998,
+      "end": 172.82999999999998,
+      "text": "And then the second thing is going to your testing."
+    },
+    {
+      "id": 38,
+      "start": 172.85,
+      "end": 178.96,
+      "text": "And the testing is, again, inspired from your architecture and requirements, et"
+    },
+    {
+      "id": 39,
+      "start": 178.98,
+      "end": 184.89,
+      "text": "cetera. So yeah, this is the thing that's going to stay for a very long time, until"
+    },
+    {
+      "id": 40,
+      "start": 184.91,
+      "end": 191.75,
+      "text": "unless your architecture or your agents are not really, really good at taking an"
+    },
+    {
+      "id": 41,
+      "start": 191.77,
+      "end": 194.99,
+      "text": "architecting decision on that."
+    },
+    {
+      "id": 42,
+      "start": 195.1,
+      "end": 196.39,
+      "text": "We also developed one tool."
+    },
+    {
+      "id": 43,
+      "start": 196.41,
+      "end": 197.94,
+      "text": "We call this a TimeArch."
+    },
+    {
+      "id": 44,
+      "start": 198.07,
+      "end": 203.04,
+      "text": "But in that tool, basically, we have automated all the architecting practices"
+    },
+    {
+      "id": 45,
+      "start": 203.36,
+      "end": 205.02,
+      "text": "that currently are happening."
+    },
+    {
+      "id": 46,
+      "start": 205.15,
+      "end": 207.4,
+      "text": "We are now moving on that."
+    },
+    {
+      "id": 47,
+      "start": 207.53,
+      "end": 213.55,
+      "text": "For example, what kind of architectural decisions are required for this agentic"
+    },
+    {
+      "id": 48,
+      "start": 213.57,
+      "end": 215.65,
+      "text": "world? What will be the infrastructure?"
+    },
+    {
+      "id": 49,
+      "start": 215.81,
+      "end": 222.69,
+      "text": "How you are going to make the security things in"
+    },
+    {
+      "id": 50,
+      "start": 222.71,
+      "end": 227.4,
+      "text": "place? And then what kind of trade-off around different kind of quality"
+    },
+    {
+      "id": 51,
+      "start": 227.42000000000002,
+      "end": 233.24,
+      "text": "attributes starting from performance, availability, reliability, and also"
+    },
+    {
+      "id": 52,
+      "start": 233.66,
+      "end": 238.47,
+      "text": "recoverability are all other kind of abilities that usually we are taking"
+    },
+    {
+      "id": 53,
+      "start": 238.57,
+      "end": 244.98,
+      "text": "around. So yeah, I will say that one of the most important thing is ADRs that"
+    },
+    {
+      "id": 54,
+      "start": 245.13,
+      "end": 247.26,
+      "text": "really need research."
+    },
+    {
+      "id": 55,
+      "start": 247.39,
+      "end": 248.49,
+      "text": "If you see my academic"
+    },
+    {
+      "id": 56,
+      "start": 249.06,
+      "end": 255.2,
+      "text": "angle, we have hardly a couple of studies that are done around ADRs."
+    },
+    {
+      "id": 57,
+      "start": 255.33,
+      "end": 257.97,
+      "text": "One of those studies we have conducted."
+    },
+    {
+      "id": 58,
+      "start": 258.31,
+      "end": 259.19,
+      "text": "And then in"
+    },
+    {
+      "id": 59,
+      "start": 259.98,
+      "end": 266.26,
+      "text": "practice, probably most of the ADRs are now senior developer"
+    },
+    {
+      "id": 60,
+      "start": 266.28,
+      "end": 269.75,
+      "text": "head. They are making this kind of decision."
+    },
+    {
+      "id": 61,
+      "start": 269.89,
+      "end": 271.68,
+      "text": "And these are the tacit knowledge."
+    },
+    {
+      "id": 62,
+      "start": 271.81,
+      "end": 278.62,
+      "text": "So next thing is that, like, look, for example, how you can dedicate or"
+    },
+    {
+      "id": 63,
+      "start": 278.64,
+      "end": 281.07,
+      "text": "transform your knowledge to your"
+    },
+    {
+      "id": 64,
+      "start": 281.86,
+      "end": 288.1,
+      "text": "coding buddy or agent buddy that have a role of"
+    },
+    {
+      "id": 65,
+      "start": 288.12,
+      "end": 295.08,
+      "text": "architect. Thank you."
+    },
+    {
+      "id": 66,
+      "start": 295.21,
+      "end": 296.17,
+      "text": "And there is one"
+    },
+    {
+      "id": 67,
+      "start": 296.88,
+      "end": 303.41,
+      "text": "advertisement. P.S., we have nice lager for the after party, so don't run too"
+    },
+    {
+      "id": 68,
+      "start": 303.66,
+      "end": 304.46,
+      "text": "fast."
+    },
+    {
+      "id": 69,
+      "start": 305.18,
+      "end": 306.73,
+      "text": "And you have to drink the lager"
+    },
+    {
+      "id": 70,
+      "start": 306.98,
+      "end": 310.1,
+      "text": "inside here, because this is..."
+    },
+    {
+      "id": 71,
+      "start": 310.23,
+      "end": 311.12,
+      "text": "What is it in"
+    },
+    {
+      "id": 72,
+      "start": 311.9,
+      "end": 313.68,
+      "text": "English? Consumption area."
+    },
+    {
+      "id": 73,
+      "start": 314.62,
+      "end": 316.09,
+      "text": "Consumption area, yes."
+    },
+    {
+      "id": 74,
+      "start": 316.35,
+      "end": 317.3,
+      "text": "Sounds about right."
+    },
+    {
+      "id": 75,
+      "start": 318.16,
+      "end": 319.1,
+      "text": "Yes, thank you."
+    },
+    {
+      "id": 76,
+      "start": 320.14,
+      "end": 321.15,
+      "text": "It's from some small"
+    },
+    {
+      "id": 77,
+      "start": 321.94,
+      "end": 325.17,
+      "text": "brewery around the area."
+    },
+    {
+      "id": 78,
+      "start": 325.37,
+      "end": 326.72,
+      "text": "Okay, yeah, let's continue."
+    },
+    {
+      "id": 79,
+      "start": 328.37,
+      "end": 329.25,
+      "text": "What medical"
+    },
+    {
+      "id": 80,
+      "start": 330.04,
+      "end": 335.83,
+      "text": "problems are likely to be solved with AI plus"
+    },
+    {
+      "id": 81,
+      "start": 335.85,
+      "end": 339.56,
+      "text": "supercomputer approach in the future?"
+    },
+    {
+      "id": 82,
+      "start": 340.36,
+      "end": 341.37,
+      "text": "I believe cancer."
+    },
+    {
+      "id": 83,
+      "start": 342.58,
+      "end": 344.74,
+      "text": "Many types of cancer."
+    },
+    {
+      "id": 84,
+      "start": 345.26,
+      "end": 346.90999999999997,
+      "text": "I think we will understand better"
+    },
+    {
+      "id": 85,
+      "start": 347.05,
+      "end": 352.85,
+      "text": "mechanisms. I think a lot of the neurological"
+    },
+    {
+      "id": 86,
+      "start": 353.05,
+      "end": 359.88,
+      "text": "diseases also, spanning from Alzheimer's to better interventions"
+    },
+    {
+      "id": 87,
+      "start": 359.9,
+      "end": 366.32,
+      "text": "for Parkinson's, we already have very good AI in radiology, in"
+    },
+    {
+      "id": 88,
+      "start": 366.34,
+      "end": 370.68,
+      "text": "pathology, in triage, for example."
+    },
+    {
+      "id": 89,
+      "start": 370.81,
+      "end": 377.4,
+      "text": "And when I say AI, I have to be specific that it's regulated or accepted by"
+    },
+    {
+      "id": 90,
+      "start": 377.42,
+      "end": 382.88,
+      "text": "regulatory agencies, whether it's the European agency or the FDA."
+    },
+    {
+      "id": 91,
+      "start": 383.08,
+      "end": 384.93,
+      "text": "I'm not talking about ChatGPT Health."
+    },
+    {
+      "id": 92,
+      "start": 385.11,
+      "end": 386.61,
+      "text": "That's a different discussion."
+    },
+    {
+      "id": 93,
+      "start": 387.52,
+      "end": 392.04,
+      "text": "But in radiology, for example, it's not replacing doctors."
+    },
+    {
+      "id": 94,
+      "start": 392.36,
+      "end": 393.36,
+      "text": "It's not replacing"
+    },
+    {
+      "id": 95,
+      "start": 394.15,
+      "end": 398.42,
+      "text": "surgeons. It's not replacing pathologists who look at the microscope and tell you"
+    },
+    {
+      "id": 96,
+      "start": 398.85,
+      "end": 400.62,
+      "text": "whether this is a cancer or not."
+    },
+    {
+      "id": 97,
+      "start": 400.81,
+      "end": 401.90999999999997,
+      "text": "They use AI to quickly"
+    },
+    {
+      "id": 98,
+      "start": 402.48,
+      "end": 408.38,
+      "text": "triage. They use AI, especially visual AI, to"
+    },
+    {
+      "id": 99,
+      "start": 408.56,
+      "end": 411.94,
+      "text": "compartmentalize specific segments."
+    },
+    {
+      "id": 100,
+      "start": 413.08,
+      "end": 414.09000000000003,
+      "text": "It helps a lot."
+    },
+    {
+      "id": 101,
+      "start": 415.26,
+      "end": 421.86,
+      "text": "But to this day, personally, I haven't seen yet AI replacing radiologists"
+    },
+    {
+      "id": 102,
+      "start": 421.88,
+      "end": 424.18,
+      "text": "because there's so many nuances."
+    },
+    {
+      "id": 103,
+      "start": 425.24,
+      "end": 430.24,
+      "text": "And for someone who makes such a claim, please go spend one week as an observer."
+    },
+    {
+      "id": 104,
+      "start": 430.81,
+      "end": 431.71,
+      "text": "What a radiologist"
+    },
+    {
+      "id": 105,
+      "start": 432.44,
+      "end": 437.96,
+      "text": "does you will understand that it's much more nuanced and it's not it's not the"
+    },
+    {
+      "id": 106,
+      "start": 438.09,
+      "end": 442.29,
+      "text": "machine it's exactly what Waseem was saying sometimes you need you have to have"
+    },
+    {
+      "id": 107,
+      "start": 442.31,
+      "end": 444.73,
+      "text": "someone who is looking and just it's about"
+    },
+    {
+      "id": 108,
+      "start": 445.51,
+      "end": 449.91,
+      "text": "perspective and if you see yesterday I was talking with someone here they say if you"
+    },
+    {
+      "id": 109,
+      "start": 449.93,
+      "end": 454.52,
+      "text": "see a light blinking or you take a picture or short video of something blinking in"
+    },
+    {
+      "id": 110,
+      "start": 454.65,
+      "end": 459.21,
+      "text": "the sky someone may say it's a ufo another we tell you it's a satellite another we"
+    },
+    {
+      "id": 111,
+      "start": 459.23,
+      "end": 464.4,
+      "text": "tell you it's an airplane so it's also those nuances I don't think you should"
+    },
+    {
+      "id": 112,
+      "start": 464.42,
+      "end": 470.82,
+      "text": "delegate and it doesn't happen anyway that AI is making those diagnosis but to answer"
+    },
+    {
+      "id": 113,
+      "start": 470.84000000000003,
+      "end": 474.96,
+      "text": "the question cancer neurological diseases and"
+    },
+    {
+      "id": 114,
+      "start": 475.73,
+      "end": 482.47,
+      "text": "other niche areas as well like hearing yeah yeah maybe I can continue"
+    },
+    {
+      "id": 115,
+      "start": 482.49,
+      "end": 487.88,
+      "text": "from here maybe I'm asking a question because you said the scientific discovery"
+    },
+    {
+      "id": 116,
+      "start": 487.9,
+      "end": 490.47,
+      "text": "so one thing is that like understandability."
+    },
+    {
+      "id": 117,
+      "start": 490.49,
+      "end": 496.28,
+      "text": "Yes, we know that like several things you can give to LLM or the traditional AI,"
+    },
+    {
+      "id": 118,
+      "start": 496.66,
+      "end": 498.8,
+      "text": "they can explain you really well."
+    },
+    {
+      "id": 119,
+      "start": 498.82,
+      "end": 504.93,
+      "text": "But actually, how you can put in a medical especially LLMs or AI to do the real"
+    },
+    {
+      "id": 120,
+      "start": 504.95,
+      "end": 510.97,
+      "text": "scientific discovery when we are saying that like creating some scientific"
+    },
+    {
+      "id": 121,
+      "start": 511.74,
+      "end": 513.32,
+      "text": "knowledge or addition of the knowledge."
+    },
+    {
+      "id": 122,
+      "start": 513.34,
+      "end": 518.51,
+      "text": "So how we can automate this Do you see this kind of light in the medical field?"
+    },
+    {
+      "id": 123,
+      "start": 518.87,
+      "end": 524.91,
+      "text": "Well, part of this clinical OS, Clinical Sense OS and this hearing discovery,"
+    },
+    {
+      "id": 124,
+      "start": 524.93,
+      "end": 527.74,
+      "text": "actually part of it was automated."
+    },
+    {
+      "id": 125,
+      "start": 527.86,
+      "end": 531.31,
+      "text": "Of course, I had to step in multiple times to actually, exactly as you were"
+    },
+    {
+      "id": 126,
+      "start": 531.33,
+      "end": 533.74,
+      "text": "describing, without knowing it."
+    },
+    {
+      "id": 127,
+      "start": 533.87,
+      "end": 537.82,
+      "text": "But I was doing exactly what you were describing, where you step in at specific"
+    },
+    {
+      "id": 128,
+      "start": 538.09,
+      "end": 540.76,
+      "text": "checkpoints. But I must thank"
+    },
+    {
+      "id": 129,
+      "start": 541.54,
+      "end": 547.56,
+      "text": "Rust. Rust enums and matching is incredible."
+    },
+    {
+      "id": 130,
+      "start": 547.58,
+      "end": 553.55,
+      "text": "I used it and I trusted it fully, blindly, where there were certain gates in my"
+    },
+    {
+      "id": 131,
+      "start": 554.02,
+      "end": 558.55,
+      "text": "pipeline, where I would say, it's either this, this, this, and that, and I coded"
+    },
+    {
+      "id": 132,
+      "start": 558.62,
+      "end": 562.84,
+      "text": "it, and I'm like, it's this, this, this, else that, and then that's it."
+    },
+    {
+      "id": 133,
+      "start": 563.81,
+      "end": 564.73,
+      "text": "So there is no"
+    },
+    {
+      "id": 134,
+      "start": 565.48,
+      "end": 570.32,
+      "text": "exceptions, and you can trust that there is no escape around in the pipeline."
+    },
+    {
+      "id": 135,
+      "start": 570.82,
+      "end": 572.27,
+      "text": "So this is in the experiment."
+    },
+    {
+      "id": 136,
+      "start": 572.41,
+      "end": 577.39,
+      "text": "If it's about understanding, then, of course, you know, RAGs are good."
+    },
+    {
+      "id": 137,
+      "start": 577.64,
+      "end": 579.34,
+      "text": "Like, you can have the literature."
+    },
+    {
+      "id": 138,
+      "start": 579.46,
+      "end": 584.63,
+      "text": "You can pretty much scope it that it has to give you the literal citation."
+    },
+    {
+      "id": 139,
+      "start": 585.93,
+      "end": 590.38,
+      "text": "And I think somebody earlier this afternoon was talking about tracking the"
+    },
+    {
+      "id": 140,
+      "start": 590.4,
+      "end": 593.7,
+      "text": "origin when AI writes something."
+    },
+    {
+      "id": 141,
+      "start": 593.83,
+      "end": 600.7,
+      "text": "We did address that literally by having hashes and provenance and telemetry."
+    },
+    {
+      "id": 142,
+      "start": 601.36,
+      "end": 605.57,
+      "text": "And that's where DuckDB, for example, was really good because it's very fast and"
+    },
+    {
+      "id": 143,
+      "start": 605.71,
+      "end": 608.11,
+      "text": "everything was literally with schemas and so on."
+    },
+    {
+      "id": 144,
+      "start": 608.41,
+      "end": 609.46,
+      "text": "So I do still believe"
+    },
+    {
+      "id": 145,
+      "start": 610.08,
+      "end": 613.59,
+      "text": "that having structure and schema and programming"
+    },
+    {
+      "id": 146,
+      "start": 614.38,
+      "end": 617.79,
+      "text": "languages still be trusted to kind of"
+    },
+    {
+      "id": 147,
+      "start": 618.57,
+      "end": 622.68,
+      "text": "have a barrier around this AI that will escape."
+    },
+    {
+      "id": 148,
+      "start": 624.54,
+      "end": 625.69,
+      "text": "Yeah, maybe a couple of"
+    },
+    {
+      "id": 149,
+      "start": 626.33,
+      "end": 631.08,
+      "text": "things that I want to ask it and what I want to share the experience here."
+    },
+    {
+      "id": 150,
+      "start": 631.86,
+      "end": 636.69,
+      "text": "For example, now you can put your LLMs or agents on doing some"
+    },
+    {
+      "id": 151,
+      "start": 637.45,
+      "end": 639.93,
+      "text": "sort of the experiment, especially in software"
+    },
+    {
+      "id": 152,
+      "start": 640.71,
+      "end": 643.24,
+      "text": "engineering side. And then you are getting results"
+    },
+    {
+      "id": 153,
+      "start": 643.98,
+      "end": 645.52,
+      "text": "out of that. And now you have"
+    },
+    {
+      "id": 154,
+      "start": 646.3,
+      "end": 649.22,
+      "text": "several kind of results in your CSV or Excel"
+    },
+    {
+      "id": 155,
+      "start": 649.99,
+      "end": 652.04,
+      "text": "sheet. And then you have some sort of the"
+    },
+    {
+      "id": 156,
+      "start": 652.65,
+      "end": 653.45,
+      "text": "hypothesis."
+    },
+    {
+      "id": 157,
+      "start": 654.18,
+      "end": 655.28,
+      "text": "Then there is a Claude"
+    },
+    {
+      "id": 158,
+      "start": 655.98,
+      "end": 658.04,
+      "text": "extension in the Excel."
+    },
+    {
+      "id": 159,
+      "start": 658.94,
+      "end": 660.29,
+      "text": "They are doing really good."
+    },
+    {
+      "id": 160,
+      "start": 660.62,
+      "end": 662.22,
+      "text": "Like I have done some experiment"
+    },
+    {
+      "id": 161,
+      "start": 662.35,
+      "end": 664.51,
+      "text": "for the learning purpose that how"
+    },
+    {
+      "id": 162,
+      "start": 665.29,
+      "end": 667.06,
+      "text": "far this your LLM can go,"
+    },
+    {
+      "id": 163,
+      "start": 668.24,
+      "end": 669.25,
+      "text": "what kind of test,"
+    },
+    {
+      "id": 164,
+      "start": 670.04,
+      "end": 673.14,
+      "text": "statistical test they can implement it, how they can"
+    },
+    {
+      "id": 165,
+      "start": 673.94,
+      "end": 679.28,
+      "text": "actually do the analysis and how they can interpret the findings."
+    },
+    {
+      "id": 166,
+      "start": 680.44,
+      "end": 685.33,
+      "text": "So I think your LLM now, at least on this position, they can find the"
+    },
+    {
+      "id": 167,
+      "start": 686.12,
+      "end": 688.54,
+      "text": "statistical significant difference."
+    },
+    {
+      "id": 168,
+      "start": 688.78,
+      "end": 690.88,
+      "text": "Yeah. Have we have or not?"
+    },
+    {
+      "id": 169,
+      "start": 690.9,
+      "end": 697.6,
+      "text": "Do we have some real kind of breakthrough based on the experiment that we have done?"
+    },
+    {
+      "id": 170,
+      "start": 697.62,
+      "end": 703.98,
+      "text": "And what I see that like this way you can actually speed up your scientific"
+    },
+    {
+      "id": 171,
+      "start": 704.11,
+      "end": 707.28,
+      "text": "contribution from the analysis perspective."
+    },
+    {
+      "id": 172,
+      "start": 707.3,
+      "end": 712.49,
+      "text": "I remember before this era, I have spent couple of months to"
+    },
+    {
+      "id": 173,
+      "start": 713.27,
+      "end": 717.48,
+      "text": "analyze some qualitative data."
+    },
+    {
+      "id": 174,
+      "start": 717.5,
+      "end": 722.24,
+      "text": "But now it's one or two prompts you can reach over there."
+    },
+    {
+      "id": 175,
+      "start": 722.41,
+      "end": 726.8,
+      "text": "So this is the one thing that, like, discovery can be speed up."
+    },
+    {
+      "id": 176,
+      "start": 726.93,
+      "end": 730.88,
+      "text": "Yeah. And it's -- what you're saying is very interesting because you're talking"
+    },
+    {
+      "id": 177,
+      "start": 731.01,
+      "end": 736.05,
+      "text": "about computation. You're talking about statistical analysis and mathematics."
+    },
+    {
+      "id": 178,
+      "start": 736.24,
+      "end": 741.54,
+      "text": "And this is what I personally believe, it's my opinion, that the future of those"
+    },
+    {
+      "id": 179,
+      "start": 741.56,
+      "end": 746.2,
+      "text": "medical and scientific discoveries in general, not only medicine, is going to be"
+    },
+    {
+      "id": 180,
+      "start": 746.22,
+      "end": 751.41,
+      "text": "computational and mathematical, not LLM models based."
+    },
+    {
+      "id": 181,
+      "start": 751.73,
+      "end": 752.98,
+      "text": "And the reason is because"
+    },
+    {
+      "id": 182,
+      "start": 753.39,
+      "end": 755.59,
+      "text": "everyone is focusing on foundational models."
+    },
+    {
+      "id": 183,
+      "start": 755.66,
+      "end": 758.41,
+      "text": "We've embedded the world's knowledge and so on."
+    },
+    {
+      "id": 184,
+      "start": 758.96,
+      "end": 760.74,
+      "text": "I think it's going to be computational"
+    },
+    {
+      "id": 185,
+      "start": 760.76,
+      "end": 765.84,
+      "text": "because you can leverage and structure that data and then do much more powerful"
+    },
+    {
+      "id": 186,
+      "start": 765.86,
+      "end": 769.76,
+      "text": "computations where you get the mathematical certainty."
+    },
+    {
+      "id": 187,
+      "start": 770.8,
+      "end": 772.55,
+      "text": "And that certainty is not something"
+    },
+    {
+      "id": 188,
+      "start": 772.6,
+      "end": 775.24,
+      "text": "that you get easily out of an LLM."
+    },
+    {
+      "id": 189,
+      "start": 775.37,
+      "end": 781.03,
+      "text": "You will never I always say this uh this kind of a thing is like if you can trust"
+    },
+    {
+      "id": 190,
+      "start": 781.05,
+      "end": 786.61,
+      "text": "to let your kid go on an airplane that's driven by an LLM if you still feel kind of"
+    },
+    {
+      "id": 191,
+      "start": 786.63,
+      "end": 791.3,
+      "text": "not okay then you still don't trust the LLMs but you would trust an airplane that"
+    },
+    {
+      "id": 192,
+      "start": 791.48,
+      "end": 796.4,
+      "text": "is functioning with all the mathematical and physical precision and that's what I"
+    },
+    {
+      "id": 193,
+      "start": 796.42,
+      "end": 801.78,
+      "text": "think is the future of of medicine it's it's computational And that's why I spoke"
+    },
+    {
+      "id": 194,
+      "start": 801.8,
+      "end": 806.78,
+      "text": "about Roihu and the Finnish, and I think we should also be very positive about"
+    },
+    {
+      "id": 195,
+      "start": 806.8,
+      "end": 812.54,
+      "text": "Finland and Europe in general, because a lot criticize Europe about being"
+    },
+    {
+      "id": 196,
+      "start": 812.56,
+      "end": 818.06,
+      "text": "over-regulated, and nothing is regulated in the U.S."
+    },
+    {
+      "id": 197,
+      "start": 818.11,
+      "end": 821.8,
+      "text": "I lived in Silicon Valley, I'm very familiar with the break things and break"
+    },
+    {
+      "id": 198,
+      "start": 821.82,
+      "end": 826.73,
+      "text": "fast culture. I think it's good in certain things, but I think here in Finland, for"
+    },
+    {
+      "id": 199,
+      "start": 826.75,
+      "end": 831.58,
+      "text": "example, we have access literally digitally with your strong authentication."
+    },
+    {
+      "id": 200,
+      "start": 832.0,
+      "end": 836.44,
+      "text": "If you have an institutional affiliation, you go and you get access, terminal access"
+    },
+    {
+      "id": 201,
+      "start": 836.46,
+      "end": 840.8,
+      "text": "to the most powerful supercomputer in Finland, you can use it for free."
+    },
+    {
+      "id": 202,
+      "start": 841.06,
+      "end": 845.1,
+      "text": "How great is that? So I think also we should be leveraging and using those tools"
+    },
+    {
+      "id": 203,
+      "start": 845.4,
+      "end": 849.22,
+      "text": "more. I will add a very short point here."
+    },
+    {
+      "id": 204,
+      "start": 849.64,
+      "end": 852.2,
+      "text": "We are not taking questions from you anymore."
+    },
+    {
+      "id": 205,
+      "start": 852.9,
+      "end": 858.75,
+      "text": "But the thing is that, yeah, from the regulation perspective, yes, we are, what"
+    },
+    {
+      "id": 206,
+      "start": 859.11,
+      "end": 862.7,
+      "text": "I feel that like we are criticizing Europe too much."
+    },
+    {
+      "id": 207,
+      "start": 862.84,
+      "end": 864.46,
+      "text": "We have over-regulation."
+    },
+    {
+      "id": 208,
+      "start": 864.62,
+      "end": 867.29,
+      "text": "We cannot break through some new innovation."
+    },
+    {
+      "id": 209,
+      "start": 867.76,
+      "end": 871.91,
+      "text": "But the thing is that, like, look, these regulations, based on my experience and my"
+    },
+    {
+      "id": 210,
+      "start": 872.23,
+      "end": 873.03,
+      "text": "understanding,"
+    },
+    {
+      "id": 211,
+      "start": 873.19,
+      "end": 877.62,
+      "text": "These having no regulation is working for the big companies."
+    },
+    {
+      "id": 212,
+      "start": 878.14,
+      "end": 880.46,
+      "text": "It's not working for the common people."
+    },
+    {
+      "id": 213,
+      "start": 881.08,
+      "end": 883.7,
+      "text": "The common people is where my data will go."
+    },
+    {
+      "id": 214,
+      "start": 884.46,
+      "end": 889.62,
+      "text": "The big companies, they can actually win the race for this and all the profit is"
+    },
+    {
+      "id": 215,
+      "start": 889.64,
+      "end": 890.7,
+      "text": "going to them."
+    },
+    {
+      "id": 216,
+      "start": 891.58,
+      "end": 893.75,
+      "text": "And the data. And the data is also going"
+    },
+    {
+      "id": 217,
+      "start": 894.49,
+      "end": 895.29,
+      "text": "there."
+    },
+    {
+      "id": 218,
+      "start": 895.44,
+      "end": 902.31,
+      "text": "But I think being regulated and like regulation And for the"
+    },
+    {
+      "id": 219,
+      "start": 902.41,
+      "end": 904.31,
+      "text": "people, it's the most important thing."
+    },
+    {
+      "id": 220,
+      "start": 905.22,
+      "end": 906.52,
+      "text": "Especially healthcare data."
+    },
+    {
+      "id": 221,
+      "start": 906.54,
+      "end": 907.34,
+      "text": "Yeah."
+    },
+    {
+      "id": 222,
+      "start": 908.3,
+      "end": 912.02,
+      "text": "And this is not the only data that when you say that, like, okay, my health data"
+    },
+    {
+      "id": 223,
+      "start": 912.04,
+      "end": 915.16,
+      "text": "is going to the some model."
+    },
+    {
+      "id": 224,
+      "start": 915.4,
+      "end": 916.81,
+      "text": "But there are so many other things."
+    },
+    {
+      "id": 225,
+      "start": 916.83,
+      "end": 921.3,
+      "text": "They are directly or indirectly influencing you to buy something that you"
+    },
+    {
+      "id": 226,
+      "start": 921.32,
+      "end": 922.86,
+      "text": "really don't need it."
+    },
+    {
+      "id": 227,
+      "start": 923.76,
+      "end": 926.36,
+      "text": "You can see that, like, several things are coming and pop up."
+    },
+    {
+      "id": 228,
+      "start": 926.38,
+      "end": 929.78,
+      "text": "You are just thinking that. Or maybe you have thought two weeks ago."
+    },
+    {
+      "id": 229,
+      "start": 930.11,
+      "end": 932.86,
+      "text": "But you see, oh, this is my need, and I will go for it."
+    },
+    {
+      "id": 230,
+      "start": 933.82,
+      "end": 934.62,
+      "text": "Yeah."
+    },
+    {
+      "id": 231,
+      "start": 936.22,
+      "end": 937.72,
+      "text": "Sovereign data, also sovereign"
+    },
+    {
+      "id": 232,
+      "start": 938.01,
+      "end": 940.19,
+      "text": "medical data, I think is just to build"
+    },
+    {
+      "id": 233,
+      "start": 940.97,
+      "end": 945.19,
+      "text": "quickly on what you said, and I think I will give you back the microphone."
+    },
+    {
+      "id": 234,
+      "start": 945.37,
+      "end": 949.71,
+      "text": "Yes, go ahead. Is the sovereign, there's a lot going on about the regulation of"
+    },
+    {
+      "id": 235,
+      "start": 949.74,
+      "end": 953.35,
+      "text": "sovereign data, and I think, and sovereignty of LLMs and so on."
+    },
+    {
+      "id": 236,
+      "start": 954.12,
+      "end": 955.42,
+      "text": "But we have to think about"
+    },
+    {
+      "id": 237,
+      "start": 955.92,
+      "end": 962.34,
+      "text": "also circumvention techniques that are used by the AI giants to still circumvent"
+    },
+    {
+      "id": 238,
+      "start": 962.36,
+      "end": 966.56,
+      "text": "this, and it's a cat-and-mouse kind of game that's happening, and it doesn't"
+    },
+    {
+      "id": 239,
+      "start": 966.58,
+      "end": 969.07,
+      "text": "necessarily happen at the regulatory level."
+    },
+    {
+      "id": 240,
+      "start": 969.33,
+      "end": 972.33,
+      "text": "It happens at the consumer level, and the consumer sometimes"
+    },
+    {
+      "id": 241,
+      "start": 972.66,
+      "end": 978.11,
+      "text": "doesn't know that when they authorize the app on their phone, they are sent or"
+    },
+    {
+      "id": 242,
+      "start": 978.89,
+      "end": 985.46,
+      "text": "quickly forwarded to an SSO platform that takes their login information to get their"
+    },
+    {
+      "id": 243,
+      "start": 985.48,
+      "end": 991.96,
+      "text": "medical information, but they don't read the privacy contract or clauses."
+    },
+    {
+      "id": 244,
+      "start": 992.09,
+      "end": 997.64,
+      "text": "And in that privacy, they use HIPAA loopholes to completely aspire your"
+    },
+    {
+      "id": 245,
+      "start": 997.92,
+      "end": 1000.7,
+      "text": "medical information within a second."
+    },
+    {
+      "id": 246,
+      "start": 1000.98,
+      "end": 1005.15,
+      "text": "And you gave a waiver. So I think this is what I fear most is when we..."
+    },
+    {
+      "id": 247,
+      "start": 1005.47,
+      "end": 1008.62,
+      "text": "I don't fear that ChatGPT will replace doctors."
+    },
+    {
+      "id": 248,
+      "start": 1009.0,
+      "end": 1015.41,
+      "text": "I fear that OpenAI gets access to citizens' medical information without"
+    },
+    {
+      "id": 249,
+      "start": 1015.43,
+      "end": 1020.57,
+      "text": "their own clear consent or knowing because they approved privacy policies they didn't"
+    },
+    {
+      "id": 250,
+      "start": 1020.67,
+      "end": 1021.47,
+      "text": "know about."
+    },
+    {
+      "id": 251,
+      "start": 1021.94,
+      "end": 1023.99,
+      "text": "So that's about that."
+    },
+    {
+      "id": 252,
+      "start": 1027.26,
+      "end": 1030.68,
+      "text": "Okay, now we have, I think we have still"
+    },
+    {
+      "id": 253,
+      "start": 1031.46,
+      "end": 1032.26,
+      "text": "time."
+    },
+    {
+      "id": 254,
+      "start": 1033.38,
+      "end": 1034.28,
+      "text": "Don't be shy."
+    },
+    {
+      "id": 255,
+      "start": 1035.38,
+      "end": 1037.28,
+      "text": "Can I say when to stop?"
+    },
+    {
+      "id": 256,
+      "start": 1038.0,
+      "end": 1038.8,
+      "text": "Five."
+    },
+    {
+      "id": 257,
+      "start": 1039.04,
+      "end": 1040.05,
+      "text": "Five, okay, we have"
+    },
+    {
+      "id": 258,
+      "start": 1040.82,
+      "end": 1041.77,
+      "text": "14 minutes."
+    },
+    {
+      "id": 259,
+      "start": 1044.89,
+      "end": 1051.53,
+      "text": "Put on screen. Do you have to be PhD, use AI and get"
+    },
+    {
+      "id": 260,
+      "start": 1051.55,
+      "end": 1058.4,
+      "text": "access to a supercomputer to be able to make significant impacts on people's"
+    },
+    {
+      "id": 261,
+      "start": 1058.42,
+      "end": 1061.72,
+      "text": "lives or make big scientific breakthroughs?"
+    },
+    {
+      "id": 262,
+      "start": 1061.85,
+      "end": 1064.06,
+      "text": "PhD is pretty huge dogma."
+    },
+    {
+      "id": 263,
+      "start": 1064.08,
+      "end": 1065.61,
+      "text": "I think it's academia."
+    },
+    {
+      "id": 264,
+      "start": 1065.63,
+      "end": 1072.2,
+      "text": "You don't have to be in academia for the specific CSC, Roihu supercomputer,"
+    },
+    {
+      "id": 265,
+      "start": 1072.22,
+      "end": 1075.36,
+      "text": "including they have a quantum computer as well."
+    },
+    {
+      "id": 266,
+      "start": 1075.38,
+      "end": 1078.08,
+      "text": "They do calls for applications all the time."
+    },
+    {
+      "id": 267,
+      "start": 1078.21,
+      "end": 1083.18,
+      "text": "You don't have to be a PhD you need strong authentication and an affiliation to an"
+    },
+    {
+      "id": 268,
+      "start": 1083.2,
+      "end": 1088.61,
+      "text": "institution that they list there including to a university but you don't have to be a"
+    },
+    {
+      "id": 269,
+      "start": 1088.63,
+      "end": 1094.36,
+      "text": "PhD and on people's lives to make big scientific breakthroughs absolutely not"
+    },
+    {
+      "id": 270,
+      "start": 1094.38,
+      "end": 1100.31,
+      "text": "look at the list of the people who won the Nobel there are not necessarily PhDs and"
+    },
+    {
+      "id": 271,
+      "start": 1100.52,
+      "end": 1107.27,
+      "text": "some of them were not even doctors and they were from outside the field."
+    },
+    {
+      "id": 272,
+      "start": 1107.6,
+      "end": 1113.19,
+      "text": "There's even something called, I think, Kuhnian, we spoke about it yesterday,"
+    },
+    {
+      "id": 273,
+      "start": 1113.21,
+      "end": 1119.23,
+      "text": "about the Kuhnian revolutions and the paradigm where you have a whole field that"
+    },
+    {
+      "id": 274,
+      "start": 1119.33,
+      "end": 1120.13,
+      "text": "is extremely"
+    },
+    {
+      "id": 275,
+      "start": 1120.64,
+      "end": 1126.8,
+      "text": "conservative and got sclerotic and rigid across the years, but they are suffering"
+    },
+    {
+      "id": 276,
+      "start": 1126.93,
+      "end": 1131.97,
+      "text": "horribly, but they are inside and they don't know, until you have an outsider who"
+    },
+    {
+      "id": 277,
+      "start": 1132.22,
+      "end": 1137.48,
+      "text": "comes with the breakthrough radical idea that actually not only fixes that problem"
+    },
+    {
+      "id": 278,
+      "start": 1137.61,
+      "end": 1138.49,
+      "text": "but opens a new"
+    },
+    {
+      "id": 279,
+      "start": 1139.28,
+      "end": 1145.34,
+      "text": "perspective. And that's why I think agentic AI coding and software engineering"
+    },
+    {
+      "id": 280,
+      "start": 1145.57,
+      "end": 1149.9,
+      "text": "can be a very, very good renaissance for science and medicine."
+    },
+    {
+      "id": 281,
+      "start": 1150.66,
+      "end": 1152.4,
+      "text": "Yeah, I will add a couple of points"
+    },
+    {
+      "id": 282,
+      "start": 1152.42,
+      "end": 1153.95,
+      "text": "here. Like in our lab, we have"
+    },
+    {
+      "id": 283,
+      "start": 1154.69,
+      "end": 1156.84,
+      "text": "people from very diverse backgrounds."
+    },
+    {
+      "id": 284,
+      "start": 1157.56,
+      "end": 1159.95,
+      "text": "And some people, they are not from the computer science."
+    },
+    {
+      "id": 285,
+      "start": 1159.97,
+      "end": 1162.81,
+      "text": "They are from the chemistry, physics, or some other department."
+    },
+    {
+      "id": 286,
+      "start": 1162.83,
+      "end": 1166.08,
+      "text": "They are coming up with a very innovative site."
+    },
+    {
+      "id": 287,
+      "start": 1166.62,
+      "end": 1169.27,
+      "text": "And they have started using these LLM or vibe coding."
+    },
+    {
+      "id": 288,
+      "start": 1170.1,
+      "end": 1171.11,
+      "text": "And most of like a"
+    },
+    {
+      "id": 289,
+      "start": 1171.9,
+      "end": 1175.99,
+      "text": "trained PhD, the trained computer scientists, they are not even thinking"
+    },
+    {
+      "id": 290,
+      "start": 1176.03,
+      "end": 1177.26,
+      "text": "around it. Absolutely."
+    },
+    {
+      "id": 291,
+      "start": 1177.54,
+      "end": 1178.84,
+      "text": "So when they are combining"
+    },
+    {
+      "id": 292,
+      "start": 1179.34,
+      "end": 1184.82,
+      "text": "this interdisciplinary skills, they are coming up with very new things and fresh"
+    },
+    {
+      "id": 293,
+      "start": 1184.84,
+      "end": 1187.33,
+      "text": "ideas that you can build on top of it."
+    },
+    {
+      "id": 294,
+      "start": 1187.78,
+      "end": 1191.73,
+      "text": "Around that, I will say that the PhD is a kind of three-year in which basically"
+    },
+    {
+      "id": 295,
+      "start": 1192.43,
+      "end": 1198.37,
+      "text": "you train yourself only on a couple of things, how to critically think, how to"
+    },
+    {
+      "id": 296,
+      "start": 1198.46,
+      "end": 1204.78,
+      "text": "formulate, what is the process of generating a science, having a science,"
+    },
+    {
+      "id": 297,
+      "start": 1204.91,
+      "end": 1208.14,
+      "text": "and then how I can report it."
+    },
+    {
+      "id": 298,
+      "start": 1208.27,
+      "end": 1213.61,
+      "text": "So if you have like a true ambitions, you really want to do something around it, you"
+    },
+    {
+      "id": 299,
+      "start": 1213.63,
+      "end": 1215.98,
+      "text": "can learn from the experiences."
+    },
+    {
+      "id": 300,
+      "start": 1216.11,
+      "end": 1223.01,
+      "text": "And then if you have resources or access to the computing power if you want to use"
+    },
+    {
+      "id": 301,
+      "start": 1223.45,
+      "end": 1226.81,
+      "text": "these computing things, then you can go for it."
+    },
+    {
+      "id": 302,
+      "start": 1227.19,
+      "end": 1232.42,
+      "text": "So the discovery does not really, really depend on having a PhD or the"
+    },
+    {
+      "id": 303,
+      "start": 1232.44,
+      "end": 1237.33,
+      "text": "breakthrough. And in fact, about this multidisciplinary thing, I think there are"
+    },
+    {
+      "id": 304,
+      "start": 1238.12,
+      "end": 1242.4,
+      "text": "opportunities for students, for postdocs, for business, for"
+    },
+    {
+      "id": 305,
+      "start": 1243.17,
+      "end": 1246.12,
+      "text": "companies to create teaching material and education."
+    },
+    {
+      "id": 306,
+      "start": 1246.41,
+      "end": 1248.01,
+      "text": "Because when you talk to average"
+    },
+    {
+      "id": 307,
+      "start": 1248.07,
+      "end": 1252.98,
+      "text": "doctors-- I'm a doctor who knows how to code and I'm really really the exception"
+    },
+    {
+      "id": 308,
+      "start": 1253.0,
+      "end": 1259.38,
+      "text": "of the exception you do not meet doctors who code word Microsoft Word is kind of"
+    },
+    {
+      "id": 309,
+      "start": 1259.42,
+      "end": 1266.28,
+      "text": "the standard limit but but - I'm stereotypic of course stereotyping but"
+    },
+    {
+      "id": 310,
+      "start": 1266.3,
+      "end": 1273.04,
+      "text": "in general doctors do need some software or some technology familiarization"
+    },
+    {
+      "id": 311,
+      "start": 1273.17,
+      "end": 1274.06,
+      "text": "then you have"
+    },
+    {
+      "id": 312,
+      "start": 1274.84,
+      "end": 1279.92,
+      "text": "coders who are excellent coders even in with supercomputers and parallel and so on"
+    },
+    {
+      "id": 313,
+      "start": 1280.05,
+      "end": 1285.09,
+      "text": "parallel architectures and so on but they do not know what are the problems in the"
+    },
+    {
+      "id": 314,
+      "start": 1285.34,
+      "end": 1287.3,
+      "text": "medical field that need to be solved"
+    },
+    {
+      "id": 315,
+      "start": 1288.04,
+      "end": 1292.75,
+      "text": "then you have on the other side mathematicians who are extremely bright"
+    },
+    {
+      "id": 316,
+      "start": 1292.77,
+      "end": 1298.22,
+      "text": "and bright brilliant but they do not see mathematical problems apply to medical"
+    },
+    {
+      "id": 317,
+      "start": 1298.52,
+      "end": 1303.1,
+      "text": "problems and then when you have the intersection of these mathematics and this"
+    },
+    {
+      "id": 318,
+      "start": 1303.4,
+      "end": 1307.98,
+      "text": "coding and then medicine then you have the human hearing atlas you can understand"
+    },
+    {
+      "id": 319,
+      "start": 1308.0,
+      "end": 1312.71,
+      "text": "those things but it happens in extremely rare cases so I think we should also"
+    },
+    {
+      "id": 320,
+      "start": 1313.04,
+      "end": 1318.66,
+      "text": "create more opportunities for these three people to just discuss and for companies"
+    },
+    {
+      "id": 321,
+      "start": 1318.68,
+      "end": 1323.04,
+      "text": "universities and so on to create those familiarity and familiarization"
+    },
+    {
+      "id": 322,
+      "start": 1323.06,
+      "end": 1327.51,
+      "text": "multidisciplinary programs and so on I think it's yeah a couple of more things"
+    },
+    {
+      "id": 323,
+      "start": 1327.53,
+      "end": 1332.87,
+      "text": "around this so for example what But I feel even that now things are like going to the"
+    },
+    {
+      "id": 324,
+      "start": 1332.89,
+      "end": 1335.7,
+      "text": "multidisciplinary having a skills."
+    },
+    {
+      "id": 325,
+      "start": 1335.98,
+      "end": 1337.63,
+      "text": "So you know the multiple demands."
+    },
+    {
+      "id": 326,
+      "start": 1337.88,
+      "end": 1339.98,
+      "text": "Then you come up with a really good thing."
+    },
+    {
+      "id": 327,
+      "start": 1340.3,
+      "end": 1346.18,
+      "text": "Now, for example, as we were discussing that like coding is not a real bottleneck"
+    },
+    {
+      "id": 328,
+      "start": 1346.2,
+      "end": 1351.4,
+      "text": "that you cannot prove or come up with some findings around that."
+    },
+    {
+      "id": 329,
+      "start": 1351.62,
+      "end": 1354.77,
+      "text": "So now the thing is that the problem is understanding a domain."
+    },
+    {
+      "id": 330,
+      "start": 1355.53,
+      "end": 1356.41,
+      "text": "How you can"
+    },
+    {
+      "id": 331,
+      "start": 1357.19,
+      "end": 1363.94,
+      "text": "educate your agentic buddies that they are going to understand this in a clear"
+    },
+    {
+      "id": 332,
+      "start": 1363.96,
+      "end": 1368.58,
+      "text": "way. If you are able to do this, then your agents will work in a better way."
+    },
+    {
+      "id": 333,
+      "start": 1368.99,
+      "end": 1373.94,
+      "text": "Of course, there will be a kind of things that you also need to check."
+    },
+    {
+      "id": 334,
+      "start": 1374.22,
+      "end": 1375.23,
+      "text": "And some technology"
+    },
+    {
+      "id": 335,
+      "start": 1376.01,
+      "end": 1378.07,
+      "text": "experts, they can check it."
+    },
+    {
+      "id": 336,
+      "start": 1378.62,
+      "end": 1381.8,
+      "text": "What I feel so far, now the limitation is here."
+    },
+    {
+      "id": 337,
+      "start": 1382.59,
+      "end": 1387.44,
+      "text": "If you, regarding the coding, or regarding a problem, if you can actually clearly"
+    },
+    {
+      "id": 338,
+      "start": 1388.02,
+      "end": 1392.83,
+      "text": "explain the things to agents, and agents have so much, so big data behind it, our"
+    },
+    {
+      "id": 339,
+      "start": 1392.85,
+      "end": 1393.65,
+      "text": "LLM, our big"
+    },
+    {
+      "id": 340,
+      "start": 1394.39,
+      "end": 1399.63,
+      "text": "parameters world is going around there, so they can actually do the reasoning around"
+    },
+    {
+      "id": 341,
+      "start": 1400.08,
+      "end": 1405.3,
+      "text": "it, they can actually come up with the real kind of information"
+    },
+    {
+      "id": 342,
+      "start": 1406.34,
+      "end": 1407.79,
+      "text": "that you need to check before"
+    },
+    {
+      "id": 343,
+      "start": 1408.14,
+      "end": 1413.74,
+      "text": "going further, you can quickly check your hypothesis that these are wrong or not."
+    },
+    {
+      "id": 344,
+      "start": 1413.87,
+      "end": 1415.12,
+      "text": "Or maybe you can actually"
+    },
+    {
+      "id": 345,
+      "start": 1415.54,
+      "end": 1418.34,
+      "text": "check the research gap that you have in your mind."
+    },
+    {
+      "id": 346,
+      "start": 1418.47,
+      "end": 1419.35,
+      "text": "This is already"
+    },
+    {
+      "id": 347,
+      "start": 1420.13,
+      "end": 1422.5,
+      "text": "solved or not, or unique angle."
+    },
+    {
+      "id": 348,
+      "start": 1422.69,
+      "end": 1429.46,
+      "text": "Sometimes you are also good to like, you can use your LLM to"
+    },
+    {
+      "id": 349,
+      "start": 1429.95,
+      "end": 1432.98,
+      "text": "check the blind spot in your scientific research."
+    },
+    {
+      "id": 350,
+      "start": 1433.11,
+      "end": 1437.98,
+      "text": "What is missing, what I need to like bring the,"
+    },
+    {
+      "id": 351,
+      "start": 1439.57,
+      "end": 1445.73,
+      "text": "to maybe I will put like this, to improve my results or having proper"
+    },
+    {
+      "id": 352,
+      "start": 1446.52,
+      "end": 1449.71,
+      "text": "integrity added in the research."
+    },
+    {
+      "id": 353,
+      "start": 1450.74,
+      "end": 1455.28,
+      "text": "So yeah, this is up to you that how you are now using it and how far you can take"
+    },
+    {
+      "id": 354,
+      "start": 1455.48,
+      "end": 1457.5,
+      "text": "your agents for scientific"
+    },
+    {
+      "id": 355,
+      "start": 1458.29,
+      "end": 1459.09,
+      "text": "discoveries."
+    },
+    {
+      "id": 356,
+      "start": 1462.66,
+      "end": 1464.06,
+      "text": "We still have seven minutes."
+    },
+    {
+      "id": 357,
+      "start": 1464.28,
+      "end": 1469.36,
+      "text": "- We have six. - So maybe one question or half."
+    },
+    {
+      "id": 358,
+      "start": 1469.57,
+      "end": 1476.4,
+      "text": "This one has more most votes so let's"
+    },
+    {
+      "id": 359,
+      "start": 1476.42,
+      "end": 1482.41,
+      "text": "go with this if we were if you if we write down every decision and"
+    },
+    {
+      "id": 360,
+      "start": 1483.19,
+      "end": 1490.02,
+      "text": "feature lives over time we end up having thousands of decisions decision files"
+    },
+    {
+      "id": 361,
+      "start": 1490.15,
+      "end": 1493.0,
+      "text": "that can become maintenance burden."
+    },
+    {
+      "id": 362,
+      "start": 1494.27,
+      "end": 1495.15,
+      "text": "Absolutely agree."
+    },
+    {
+      "id": 363,
+      "start": 1496.38,
+      "end": 1497.18,
+      "text": "This is."
+    },
+    {
+      "id": 364,
+      "start": 1497.78,
+      "end": 1502.35,
+      "text": "So first thing I, one of the paper I write, it was about"
+    },
+    {
+      "id": 365,
+      "start": 1503.13,
+      "end": 1506.76,
+      "text": "like coding with flow, paying with debt."
+    },
+    {
+      "id": 366,
+      "start": 1507.48,
+      "end": 1510.15,
+      "text": "And this debt was like a kind of maintenance burden."
+    },
+    {
+      "id": 367,
+      "start": 1511.24,
+      "end": 1512.24,
+      "text": "So yes, at some"
+    },
+    {
+      "id": 368,
+      "start": 1513.03,
+      "end": 1517.0,
+      "text": "point, even if you are doing some sort of wild vibe coding,"
+    },
+    {
+      "id": 369,
+      "start": 1517.96,
+      "end": 1523.94,
+      "text": "I'm saying a wild vibe coding, at some point you will feel that, okay, we are"
+    },
+    {
+      "id": 370,
+      "start": 1523.96,
+      "end": 1526.82,
+      "text": "developing something that is not really necessary."
+    },
+    {
+      "id": 371,
+      "start": 1526.95,
+      "end": 1531.99,
+      "text": "You will find so many files that are unnecessary, so many chunk of code that"
+    },
+    {
+      "id": 372,
+      "start": 1532.24,
+      "end": 1537.64,
+      "text": "need to clean up. So yeah, I agree with you, whoever asked the question, yes,"
+    },
+    {
+      "id": 373,
+      "start": 1537.66,
+      "end": 1540.16,
+      "text": "maintenance burden. And it is not only maintenance"
+    },
+    {
+      "id": 374,
+      "start": 1540.84,
+      "end": 1543.54,
+      "text": "burden for humans, but also for the agents as well."
+    },
+    {
+      "id": 375,
+      "start": 1543.67,
+      "end": 1544.72,
+      "text": "Will lose the context"
+    },
+    {
+      "id": 376,
+      "start": 1545.34,
+      "end": 1550.1,
+      "text": "at some point and things will not go as you are intending to develop"
+    },
+    {
+      "id": 377,
+      "start": 1553.94,
+      "end": 1560.66,
+      "text": "do you want to comment no I agree with him then we have another question"
+    },
+    {
+      "id": 378,
+      "start": 1563.78,
+      "end": 1569.52,
+      "text": "thank you for the nice presentations so far I have heard that all people in teams"
+    },
+    {
+      "id": 379,
+      "start": 1569.54,
+      "end": 1575.74,
+      "text": "and companies are using AI but have you seen situations where some use AI and"
+    },
+    {
+      "id": 380,
+      "start": 1575.76,
+      "end": 1579.08,
+      "text": "others don't in the same team as a choice or for"
+    },
+    {
+      "id": 381,
+      "start": 1579.82,
+      "end": 1583.05,
+      "text": "whichever reason and what does that look like"
+    },
+    {
+      "id": 382,
+      "start": 1585.62,
+      "end": 1590.54,
+      "text": "uh we as a researcher we planned several times that we should replicate this"
+    },
+    {
+      "id": 383,
+      "start": 1590.56,
+      "end": 1591.36,
+      "text": "situation"
+    },
+    {
+      "id": 384,
+      "start": 1591.78,
+      "end": 1593.08,
+      "text": "but things are now getting"
+    },
+    {
+      "id": 385,
+      "start": 1593.58,
+      "end": 1598.34,
+      "text": "complicated uh so no we did not pass through from this situation"
+    },
+    {
+      "id": 386,
+      "start": 1599.11,
+      "end": 1605.26,
+      "text": "But I meet a couple of people who really want to, I meet with them, and they really"
+    },
+    {
+      "id": 387,
+      "start": 1605.28,
+      "end": 1607.21,
+      "text": "want to explore this area."
+    },
+    {
+      "id": 388,
+      "start": 1608.1,
+      "end": 1614.22,
+      "text": "But the thing is that, like, the second part, finding now is a bit difficult,"
+    },
+    {
+      "id": 389,
+      "start": 1614.47,
+      "end": 1615.82,
+      "text": "those who are not using AI."
+    },
+    {
+      "id": 390,
+      "start": 1616.78,
+      "end": 1622.98,
+      "text": "So, yeah. So, then, of course, what you are exactly comparing,"
+    },
+    {
+      "id": 391,
+      "start": 1623.85,
+      "end": 1630.61,
+      "text": "comparing what code generated by the human, those who are not using"
+    },
+    {
+      "id": 392,
+      "start": 1630.76,
+      "end": 1632.82,
+      "text": "AI are those who are using."
+    },
+    {
+      "id": 393,
+      "start": 1633.01,
+      "end": 1637.65,
+      "text": "So this is also need to be clarified that what you want to evaluate."
+    },
+    {
+      "id": 394,
+      "start": 1645.78,
+      "end": 1649.98,
+      "text": "- Okay. - And yeah, couple of more thing I can add here."
+    },
+    {
+      "id": 395,
+      "start": 1650.11,
+      "end": 1654.58,
+      "text": "So now we are going on a more kind of experimental research."
+    },
+    {
+      "id": 396,
+      "start": 1654.71,
+      "end": 1659.28,
+      "text": "Whatever we are developing, we try to check on the benchmarks."
+    },
+    {
+      "id": 397,
+      "start": 1659.41,
+      "end": 1662.01,
+      "text": "Is it working in the right way?"
+    },
+    {
+      "id": 398,
+      "start": 1662.23,
+      "end": 1667.17,
+      "text": "We are coming up with our own experiments rather than having a long study."
+    },
+    {
+      "id": 399,
+      "start": 1667.35,
+      "end": 1668.3,
+      "text": "So I'm not familiar"
+    },
+    {
+      "id": 400,
+      "start": 1669.02,
+      "end": 1673.86,
+      "text": "as well with this kind of study in which basically we are evaluating technical"
+    },
+    {
+      "id": 401,
+      "start": 1673.88,
+      "end": 1676.63,
+      "text": "things. But yes, this kind of study."
+    },
+    {
+      "id": 402,
+      "start": 1676.81,
+      "end": 1680.91,
+      "text": "Two years ago, what tools you were using, now what you are using."
+    },
+    {
+      "id": 403,
+      "start": 1681.44,
+      "end": 1684.76,
+      "text": "Before, for example, we are working closely with the companies."
+    },
+    {
+      "id": 404,
+      "start": 1684.9,
+      "end": 1691.14,
+      "text": "We also found that many of the companies, 2025, 2024, no, we are not using AI."
+    },
+    {
+      "id": 405,
+      "start": 1691.24,
+      "end": 1692.38,
+      "text": "No, no, no, it's not for us."
+    },
+    {
+      "id": 406,
+      "start": 1692.4,
+      "end": 1694.75,
+      "text": "We have a regulation. We have a great co-pilot."
+    },
+    {
+      "id": 407,
+      "start": 1695.18,
+      "end": 1696.19,
+      "text": "So up to that."
+    },
+    {
+      "id": 408,
+      "start": 1697.06,
+      "end": 1698.63,
+      "text": "But here the situation has changed."
+    },
+    {
+      "id": 409,
+      "start": 1698.65,
+      "end": 1702.72,
+      "text": "And also I will say I feel that this is a pretty young field."
+    },
+    {
+      "id": 410,
+      "start": 1704.17,
+      "end": 1709.51,
+      "text": "And some companies or some researchers who have a real passion and they find these"
+    },
+    {
+      "id": 411,
+      "start": 1710.22,
+      "end": 1715.26,
+      "text": "both variables, no AI and AI, then they can go for it."
+    },
+    {
+      "id": 412,
+      "start": 1719.46,
+      "end": 1721.46,
+      "text": "Okay, one last question."
+    },
+    {
+      "id": 413,
+      "start": 1725.56,
+      "end": 1727.34,
+      "text": "Can academia keep up with the general"
+    },
+    {
+      "id": 414,
+      "start": 1727.36,
+      "end": 1732.64,
+      "text": "development of AI and what people can achieve with it?"
+    },
+    {
+      "id": 415,
+      "start": 1733.57,
+      "end": 1735.36,
+      "text": "- Should I go for this?"
+    },
+    {
+      "id": 416,
+      "start": 1735.45,
+      "end": 1738.02,
+      "text": "- Yeah, do you want to go first?"
+    },
+    {
+      "id": 417,
+      "start": 1738.09,
+      "end": 1739.79,
+      "text": "- Yeah, I really want to go first."
+    },
+    {
+      "id": 418,
+      "start": 1741.65,
+      "end": 1742.53,
+      "text": "Actually, this"
+    },
+    {
+      "id": 419,
+      "start": 1743.32,
+      "end": 1748.09,
+      "text": "is what I feel that where you are working, in what kind of research"
+    },
+    {
+      "id": 420,
+      "start": 1748.88,
+      "end": 1750.68,
+      "text": "group you are working."
+    },
+    {
+      "id": 421,
+      "start": 1750.81,
+      "end": 1751.69,
+      "text": "And what I feel"
+    },
+    {
+      "id": 422,
+      "start": 1752.47,
+      "end": 1757.15,
+      "text": "that like academia have the principal role that they guide the"
+    },
+    {
+      "id": 423,
+      "start": 1757.9,
+      "end": 1763.06,
+      "text": "industry, that what technologies you need to use it and how you need to use it."
+    },
+    {
+      "id": 424,
+      "start": 1763.19,
+      "end": 1768.82,
+      "text": "But instead of that, unfortunately, a couple of times I feel that industry is"
+    },
+    {
+      "id": 425,
+      "start": 1768.84,
+      "end": 1770.44,
+      "text": "telling, okay, what we have now."
+    },
+    {
+      "id": 426,
+      "start": 1771.0,
+      "end": 1772.4,
+      "text": "And again, it depends on the"
+    },
+    {
+      "id": 427,
+      "start": 1772.76,
+      "end": 1775.34,
+      "text": "industry. What kind of industry you are comparing."
+    },
+    {
+      "id": 428,
+      "start": 1775.47,
+      "end": 1776.62,
+      "text": "Is it the manufacturing"
+    },
+    {
+      "id": 429,
+      "start": 1777.14,
+      "end": 1782.46,
+      "text": "side, OpenAI, Microsoft, Anthropic, or this is the consumer industry that we have"
+    },
+    {
+      "id": 430,
+      "start": 1782.48,
+      "end": 1783.28,
+      "text": "here?"
+    },
+    {
+      "id": 431,
+      "start": 1784.23,
+      "end": 1785.33,
+      "text": "So if we are comparing"
+    },
+    {
+      "id": 432,
+      "start": 1785.9,
+      "end": 1792.52,
+      "text": "with that, no, most of the time we are not aligned or we"
+    },
+    {
+      "id": 433,
+      "start": 1792.54,
+      "end": 1793.34,
+      "text": "are not"
+    },
+    {
+      "id": 434,
+      "start": 1793.82,
+      "end": 1797.48,
+      "text": "developing ourselves on that pace."
+    },
+    {
+      "id": 435,
+      "start": 1798.12,
+      "end": 1801.7,
+      "text": "But if we are talking about some consumer side,"
+    },
+    {
+      "id": 436,
+      "start": 1802.44,
+      "end": 1807.04,
+      "text": "so pretty much sure that a couple of groups in Finland, they are working in a"
+    },
+    {
+      "id": 437,
+      "start": 1807.06,
+      "end": 1812.45,
+      "text": "way that they are guiding companies that what technology is coming and how you use"
+    },
+    {
+      "id": 438,
+      "start": 1812.47,
+      "end": 1813.77,
+      "text": "it and what kind of issues"
+    },
+    {
+      "id": 439,
+      "start": 1814.44,
+      "end": 1815.49,
+      "text": "this technology have."
+    },
+    {
+      "id": 440,
+      "start": 1815.78,
+      "end": 1818.71,
+      "text": "And most of the time they are coming before to the companies because I know"
+    },
+    {
+      "id": 441,
+      "start": 1818.73,
+      "end": 1821.93,
+      "text": "that the companies have some sort of the policies that when they"
+    },
+    {
+      "id": 442,
+      "start": 1822.58,
+      "end": 1825.08,
+      "text": "approve, you need to use this technology."
+    },
+    {
+      "id": 443,
+      "start": 1825.74,
+      "end": 1828.89,
+      "text": "If they are not approving, you have to wait for some long time."
+    },
+    {
+      "id": 444,
+      "start": 1829.18,
+      "end": 1831.98,
+      "text": "But for academia, I think this is a kind of blessing."
+    },
+    {
+      "id": 445,
+      "start": 1832.33,
+      "end": 1837.0,
+      "text": "You can quickly check the things without taking care of much regulations."
+    },
+    {
+      "id": 446,
+      "start": 1838.02,
+      "end": 1841.07,
+      "text": "Of course, some regulations you have to take care about that."
+    },
+    {
+      "id": 447,
+      "start": 1841.17,
+      "end": 1847.58,
+      "text": "But for experimental purpose, you can actually quickly adopt or test at least"
+    },
+    {
+      "id": 448,
+      "start": 1847.6,
+      "end": 1848.45,
+      "text": "new technologies."
+    },
+    {
+      "id": 449,
+      "start": 1851.56,
+      "end": 1853.26,
+      "text": "I think AI, if you mean AI keeping"
+    },
+    {
+      "id": 450,
+      "start": 1853.36,
+      "end": 1860.25,
+      "text": "up as in adopting what is AI, the current state of affairs of AI, I think pretty"
+    },
+    {
+      "id": 451,
+      "start": 1860.29,
+      "end": 1865.19,
+      "text": "much well, at least in medical and scientific academia, I think they are"
+    },
+    {
+      "id": 452,
+      "start": 1865.21,
+      "end": 1866.01,
+      "text": "keeping up well."
+    },
+    {
+      "id": 453,
+      "start": 1866.91,
+      "end": 1871.95,
+      "text": "Adopting them of course not to the detailed point of you know CI"
+    },
+    {
+      "id": 454,
+      "start": 1872.2,
+      "end": 1876.68,
+      "text": "pipelines and so on but they they use them for content"
+    },
+    {
+      "id": 455,
+      "start": 1877.46,
+      "end": 1883.29,
+      "text": "and reading science and papers and so on if you mean influencing that depends how"
+    },
+    {
+      "id": 456,
+      "start": 1883.31,
+      "end": 1889.9,
+      "text": "we're talking about influencing in terms of thought leadership I"
+    },
+    {
+      "id": 457,
+      "start": 1889.92,
+      "end": 1895.6,
+      "text": "don't think so I I think the AI giants have their own financial interests."
+    },
+    {
+      "id": 458,
+      "start": 1896.38,
+      "end": 1900.35,
+      "text": "Let's keep in mind that they are burning more cash that they are bringing in, and"
+    },
+    {
+      "id": 459,
+      "start": 1900.37,
+      "end": 1901.54,
+      "text": "there's a wall ahead."
+    },
+    {
+      "id": 460,
+      "start": 1902.2,
+      "end": 1907.56,
+      "text": "So I think they are influencing and, in fact, imposing many things not only on"
+    },
+    {
+      "id": 461,
+      "start": 1907.58,
+      "end": 1908.96,
+      "text": "academia and science."
+    },
+    {
+      "id": 462,
+      "start": 1909.12,
+      "end": 1915.52,
+      "text": "I don't think that is happening, but at least here in Finland, I think, it's good"
+    },
+    {
+      "id": 463,
+      "start": 1915.54,
+      "end": 1922.15,
+      "text": "that Finland is a country where there's a lot of respect and authority given to"
+    },
+    {
+      "id": 464,
+      "start": 1922.32,
+      "end": 1928.18,
+      "text": "academia in the public debate, in media, in policy and politics."
+    },
+    {
+      "id": 465,
+      "start": 1928.76,
+      "end": 1932.76,
+      "text": "And I think it's important, and I think there's a lot of work being done here in"
+    },
+    {
+      "id": 466,
+      "start": 1933.11,
+      "end": 1934.66,
+      "text": "Finland that we listen to these"
+    },
+    {
+      "id": 467,
+      "start": 1935.11,
+      "end": 1939.69,
+      "text": "people who have actually the interest of the common good and not simply boardroom"
+    },
+    {
+      "id": 468,
+      "start": 1939.94,
+      "end": 1940.74,
+      "text": "interest."
+    },
+    {
+      "id": 469,
+      "start": 1941.68,
+      "end": 1943.18,
+      "text": "Yeah, here I will add one more"
+    },
+    {
+      "id": 470,
+      "start": 1943.45,
+      "end": 1946.35,
+      "text": "point here. Maybe we didn't discuss in the whole day."
+    },
+    {
+      "id": 471,
+      "start": 1947.27,
+      "end": 1954.12,
+      "text": "We should not forget how the companies are marketing what they have and"
+    },
+    {
+      "id": 472,
+      "start": 1954.14,
+      "end": 1954.94,
+      "text": "how they are"
+    },
+    {
+      "id": 473,
+      "start": 1955.67,
+      "end": 1957.04,
+      "text": "creating out of our need."
+    },
+    {
+      "id": 474,
+      "start": 1957.54,
+      "end": 1961.82,
+      "text": "So they have a very big budget for this kind of thing,"
+    },
+    {
+      "id": 475,
+      "start": 1962.73,
+      "end": 1963.83,
+      "text": "especially some of the"
+    },
+    {
+      "id": 476,
+      "start": 1964.4,
+      "end": 1970.7,
+      "text": "technologies we saw around the time, that they were not real impactful, but they"
+    },
+    {
+      "id": 477,
+      "start": 1970.72,
+      "end": 1974.03,
+      "text": "were presented in a way, they were marketed"
+    },
+    {
+      "id": 478,
+      "start": 1974.82,
+      "end": 1980.38,
+      "text": "in a way we feel that, this is our need so they are also"
+    },
+    {
+      "id": 479,
+      "start": 1980.4,
+      "end": 1985.24,
+      "text": "influencing so much our adopting and thinking pattern"
+    },
+    {
+      "id": 480,
+      "start": 1985.96,
+      "end": 1987.16,
+      "text": "for adopt for using some"
+    },
+    {
+      "id": 481,
+      "start": 1987.75,
+      "end": 1992.92,
+      "text": "specific technology or not choosing some specific technology yeah"
+    },
+    {
+      "id": 482,
+      "start": 1996.2,
+      "end": 1999.48,
+      "text": "well yeah thank you that was it"
+    }
+  ]
+}

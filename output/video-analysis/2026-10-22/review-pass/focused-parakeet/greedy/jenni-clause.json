@@ -1,0 +1,161 @@
+{
+  "text": "customer, deliver some feature to a customer, you probably",
+  "sentences": [
+    {
+      "text": " customer, deliver some feature to a customer, you probably",
+      "start": 0.24,
+      "end": 5.04,
+      "duration": 4.8,
+      "confidence": 0.968,
+      "tokens": [
+        {
+          "text": " c",
+          "start": 0.24,
+          "end": 0.32,
+          "duration": 0.08,
+          "confidence": 0.876
+        },
+        {
+          "text": "ust",
+          "start": 0.32,
+          "end": 0.32,
+          "duration": 0.0,
+          "confidence": 1.0
+        },
+        {
+          "text": "om",
+          "start": 0.32,
+          "end": 0.4,
+          "duration": 0.08,
+          "confidence": 1.0
+        },
+        {
+          "text": "er",
+          "start": 0.4,
+          "end": 0.48,
+          "duration": 0.08,
+          "confidence": 0.992
+        },
+        {
+          "text": ",",
+          "start": 0.48,
+          "end": 0.64,
+          "duration": 0.16,
+          "confidence": 0.868
+        },
+        {
+          "text": " del",
+          "start": 0.64,
+          "end": 0.8,
+          "duration": 0.16,
+          "confidence": 0.957
+        },
+        {
+          "text": "iver",
+          "start": 0.8,
+          "end": 0.96,
+          "duration": 0.16,
+          "confidence": 0.991
+        },
+        {
+          "text": " some",
+          "start": 1.2,
+          "end": 1.44,
+          "duration": 0.24,
+          "confidence": 0.993
+        },
+        {
+          "text": " fe",
+          "start": 1.68,
+          "end": 1.84,
+          "duration": 0.16,
+          "confidence": 0.991
+        },
+        {
+          "text": "at",
+          "start": 1.84,
+          "end": 2.0,
+          "duration": 0.16,
+          "confidence": 0.994
+        },
+        {
+          "text": "ure",
+          "start": 2.0,
+          "end": 2.16,
+          "duration": 0.16,
+          "confidence": 0.964
+        },
+        {
+          "text": " to",
+          "start": 2.16,
+          "end": 2.4,
+          "duration": 0.24,
+          "confidence": 0.989
+        },
+        {
+          "text": " a",
+          "start": 2.4,
+          "end": 2.56,
+          "duration": 0.16,
+          "confidence": 0.915
+        },
+        {
+          "text": " c",
+          "start": 2.56,
+          "end": 2.72,
+          "duration": 0.16,
+          "confidence": 0.996
+        },
+        {
+          "text": "ust",
+          "start": 2.72,
+          "end": 2.88,
+          "duration": 0.16,
+          "confidence": 1.0
+        },
+        {
+          "text": "om",
+          "start": 2.88,
+          "end": 3.2,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": "er",
+          "start": 3.2,
+          "end": 3.52,
+          "duration": 0.32,
+          "confidence": 1.0
+        },
+        {
+          "text": ",",
+          "start": 4.16,
+          "end": 4.4,
+          "duration": 0.24,
+          "confidence": 0.873
+        },
+        {
+          "text": " you",
+          "start": 4.4,
+          "end": 4.72,
+          "duration": 0.32,
+          "confidence": 0.968
+        },
+        {
+          "text": " probab",
+          "start": 4.72,
+          "end": 4.88,
+          "duration": 0.16,
+          "confidence": 0.988
+        },
+        {
+          "text": "ly",
+          "start": 4.88,
+          "end": 5.04,
+          "duration": 0.16,
+          "confidence": 1.0
+        }
+      ]
+    }
+  ]
+}
