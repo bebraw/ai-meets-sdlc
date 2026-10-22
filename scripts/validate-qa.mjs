@@ -1,17 +1,11 @@
 import assert from "node:assert/strict";
-import { execFile } from "node:child_process";
-import { access, mkdtemp, readFile, rm } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { promisify } from "node:util";
 import { chromium } from "playwright";
-import { unstable_dev } from "wrangler";
+import { createWorkerFixture } from "../test/helpers/worker-fixture.mjs";
 
-const execute = promisify(execFile);
-const persistenceDirectory = await mkdtemp(
-  path.join(tmpdir(), "sdlcai-qa-browser-"),
-);
-let worker, browser;
+let fixture, browser;
 const authorization = `Basic ${Buffer.from("qa-browser-admin:qa-browser-password").toString("base64")}`;
 const roomId = "industry-perspectives-morning";
 const secondRoom = "views-from-academia";
@@ -32,22 +26,7 @@ async function findBrowser() {
   throw new Error("No Chromium browser found for the QA browser check.");
 }
 try {
-  await execute(path.resolve("node_modules/.bin/wrangler"), [
-    "d1",
-    "migrations",
-    "apply",
-    "ai-meets-sdlc-interests",
-    "--local",
-    "--persist-to",
-    persistenceDirectory,
-  ]);
-  worker = await unstable_dev("worker/index.ts", {
-    config: "wrangler.jsonc",
-    local: true,
-    logLevel: "error",
-    persist: true,
-    persistTo: persistenceDirectory,
-    experimental: { disableExperimentalWarning: true, forceLocal: true },
+  fixture = await createWorkerFixture({
     vars: {
       ADMIN_USERNAME: "qa-browser-admin",
       ADMIN_PASSWORD: "qa-browser-password",
@@ -55,6 +34,7 @@ try {
       TURNSTILE_SITE_KEY: "",
     },
   });
+  const { worker } = fixture;
   const origin = `http://127.0.0.1:${worker.port}`;
   const getAdmin = async () => {
     const response = await fetch(`${origin}/api/admin/qa`, {
@@ -348,17 +328,22 @@ try {
     })
     .waitFor();
   assert.deepEqual(errors, []);
-  console.log(
-    "QA browser check passed: live moderation, voting, MC screen, reusable links, revocation, mobile layout, accessibility, drafts, and native forms.",
-  );
 } finally {
   // Run pagehide so live EventSource streams close before Chromium or Workerd
   // exits. Force-closing the browser can reset active streams during teardown.
-  for (const context of browser?.contexts() ?? []) {
-    for (const page of context.pages()) await page.goto("about:blank");
-    await context.close();
+  try {
+    try {
+      for (const context of browser?.contexts() ?? []) {
+        for (const page of context.pages()) await page.goto("about:blank");
+        await context.close();
+      }
+    } finally {
+      await browser?.close();
+    }
+  } finally {
+    await fixture?.dispose();
   }
-  await browser?.close();
-  await worker?.stop();
-  await rm(persistenceDirectory, { recursive: true, force: true });
 }
+console.log(
+  "QA browser check passed: live moderation, voting, MC screen, reusable links, revocation, mobile layout, accessibility, drafts, and native forms.",
+);

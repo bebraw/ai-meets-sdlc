@@ -1,13 +1,8 @@
 import assert from "node:assert/strict";
-import { execFile } from "node:child_process";
-import { access, mkdtemp, rm } from "node:fs/promises";
-import { tmpdir } from "node:os";
-import path from "node:path";
-import { promisify } from "node:util";
+import { access } from "node:fs/promises";
 import { chromium } from "playwright";
-import { unstable_dev } from "wrangler";
+import { createWorkerFixture } from "../test/helpers/worker-fixture.mjs";
 
-const execFileAsync = promisify(execFile);
 const activityPath = "/api/admin/change-history";
 const authorization = `Basic ${Buffer.from("interest-admin:local-test-password").toString("base64")}`;
 
@@ -32,33 +27,11 @@ async function findBrowser() {
   throw new Error("No Chromium browser found for the activity browser check.");
 }
 
-const persistenceDirectory = await mkdtemp(
-  path.join(tmpdir(), "sdlcai-activity-browser-"),
-);
-let worker;
+let fixture;
 let browser;
 
 try {
-  await execFileAsync(
-    path.resolve("node_modules/.bin/wrangler"),
-    [
-      "d1",
-      "migrations",
-      "apply",
-      "ai-meets-sdlc-interests",
-      "--local",
-      "--persist-to",
-      persistenceDirectory,
-    ],
-    { cwd: process.cwd() },
-  );
-  worker = await unstable_dev("worker/index.ts", {
-    config: "wrangler.jsonc",
-    experimental: { disableExperimentalWarning: true, forceLocal: true },
-    local: true,
-    logLevel: "error",
-    persist: true,
-    persistTo: persistenceDirectory,
+  fixture = await createWorkerFixture({
     vars: {
       ADMIN_PASSWORD: "local-test-password",
       ADMIN_USERNAME: "interest-admin",
@@ -66,6 +39,7 @@ try {
       TURNSTILE_SITE_KEY: "",
     },
   });
+  const { worker } = fixture;
   browser = await chromium.launch({ executablePath: await findBrowser() });
   const context = await browser.newContext({
     extraHTTPHeaders: { authorization },
@@ -108,9 +82,11 @@ try {
       .querySelector("[data-activity-status]")
       ?.textContent?.includes("HTTP 400"),
   );
-  console.log("Admin activity browser check passed.");
 } finally {
-  await browser?.close();
-  await worker?.stop();
-  await rm(persistenceDirectory, { force: true, recursive: true });
+  try {
+    await browser?.close();
+  } finally {
+    await fixture?.dispose();
+  }
 }
+console.log("Admin activity browser check passed.");
