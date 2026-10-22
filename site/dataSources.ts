@@ -551,7 +551,7 @@ function getScheduleItems(speakersById) {
       ...item,
       talks,
       recording: recordings.sessions.find(
-        ({ sessionId, published }) => published && sessionId === item.id,
+        ({ sessionId }) => sessionId === item.id,
       ),
       anchor,
       anchorHref: `#${anchor}`,

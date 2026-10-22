@@ -103,7 +103,6 @@ function validateRecordings(recordings) {
       !isObject(recording) ||
       !sessionIds.has(recording.sessionId) ||
       seen.has(recording.sessionId) ||
-      typeof recording.published !== "boolean" ||
       !watchUrl.test(recording.url) ||
       !isNonEmptyString(recording.label)
     ) {

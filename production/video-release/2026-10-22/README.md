@@ -46,9 +46,9 @@ Individual talk links belong in the site's existing recording-link editor and
 canonical `speaker_recording_links` table. The public schedule then displays
 **Watch talk** beside the existing presentation materials. The collection-level
 highlights and playlist links, and session Q&A links, live in
-`site/data/recordings.json`. Set a session recording's `published` flag only
-after YouTube confirms that video is public. This keeps pending videos out of
-the public programme.
+`site/data/recordings.json`. All fourteen URLs are approved for public release
+and connected to the archive. YouTube makes the videos available automatically
+when processing finishes.
 
 All fourteen titles and descriptions were compared with their saved YouTube
 Studio values; results are in `metadata-verification.json`. Current public
@@ -69,5 +69,6 @@ checks were still pending. Studio confirmed that each will become public when
 standard-definition processing finishes.
 
 Transfer, processing and public publication are distinct states in `release.json`.
-Direct recording links are added to the public programme after Studio confirms
-public visibility.
+The archive contains the approved recording URLs, including videos still
+processing on YouTube. Check per-item status before describing the whole
+collection as publicly watchable.
