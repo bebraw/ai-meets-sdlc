@@ -72,3 +72,20 @@ Transfer, processing and public publication are distinct states in `release.json
 The archive contains the approved recording URLs, including videos still
 processing on YouTube. Check per-item status before describing the whole
 collection as publicly watchable.
+
+## Release screenshots
+
+These captures preserve the site integration as reviewed on 22 October 2026.
+They are historical snapshots, rather than a current publication-status report.
+
+- [Homepage channel link](../../../output/images/sdlcai-youtube-channel-live.png)
+  shows the YouTube link beside the seminar archive.
+- [First talk link](../../../output/images/sdlcai-mo-recording-live.jpg) shows
+  Mo's recording during the initial archive integration, before the other talk
+  links were added.
+- [Archive overview](../../../output/images/sdlcai-recordings-archive-live.jpg)
+  shows the recording resources, highlights and playlist links before the archive
+  navigation was renamed.
+- [Schedule introduction](../../../output/images/sdlcai-talks-and-qa-live.jpg)
+  shows the final “Talks & recordings” navigation and links to the playlist and
+  event highlights.

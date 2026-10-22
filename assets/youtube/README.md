@@ -16,6 +16,13 @@ The channel uses the SDLCAI name and `@SDLCAI` handle, with links to
 <https://sdlcai.org/> and <https://sdlcai.org/2026/>. The business contact matches
 the public contact page: `info@futurefrontend.com`.
 
+Historical setup screenshots accompany the graphics:
+
+- [Studio preview](exports/sdlcai-channel-studio-preview-v01.png) shows the
+  banner, profile picture and channel details before publication.
+- [Published channel](exports/sdlcai-channel-published-v01.png) shows the
+  branding in place before the seminar recordings were uploaded.
+
 ## Recommended title
 
 SDLCAI 2026 — AI Meets SDLC | Live from Aalto University
