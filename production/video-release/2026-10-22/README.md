@@ -63,6 +63,11 @@ advanced-feature verification, and Studio confirmed all three feature tiers as
 enabled. The final four uploads were accepted and all fourteen custom thumbnails
 and English subtitle tracks have been saved.
 
+All fourteen 4K transfers are complete and public publication has been requested.
+The user explicitly approved publishing the final four while YouTube's content
+checks were still pending. Studio confirmed that each will become public when
+standard-definition processing finishes.
+
 Transfer, processing and public publication are distinct states in `release.json`.
-Videos are added to the public programme after Studio confirms public visibility.
-The last four videos remain private until YouTube's content checks complete.
+Direct recording links are added to the public programme after Studio confirms
+public visibility.

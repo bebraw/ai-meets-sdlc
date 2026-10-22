@@ -26,7 +26,8 @@
     "id": "PLA44jDnIP4sk",
     "url": "https://www.youtube.com/playlist?list=PLA44jDnIP4sk",
     "sortOrder": "date-added-oldest",
-    "orderVerifiedThrough": "sini-talk"
+    "orderVerifiedThrough": "final-panel",
+    "orderVerifiedAt": "2026-10-22T13:35:06.777Z"
   },
   "items": [
     {
@@ -45,7 +46,8 @@
       "captionsStatus": "uploaded-english",
       "thumbnailStatus": "uploaded-custom",
       "metadataWordingVerified": true,
-      "transferStatus": "complete"
+      "transferStatus": "complete",
+      "publicationRequested": true
     },
     {
       "order": 2,
@@ -56,9 +58,7 @@
       "thumbnailPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/graphics/thumbnails-v02/mo-talk.png",
       "captionPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/transcripts/final-v02/mo-talk.en.srt",
       "durationSeconds": 2150,
-      "speakerIds": [
-        "mo-khazali"
-      ],
+      "speakerIds": ["mo-khazali"],
       "youtubeId": "l8quIPHmakI",
       "uploadStatus": "public",
       "talkId": "mo-khazali-industry-perspective",
@@ -69,7 +69,8 @@
       "publicVerifiedAt": "2026-10-22T13:09:47.831Z",
       "archiveIntegration": "published-via-existing-recording-link-editor",
       "archiveUrl": "https://www.sdlcai.org/2026/schedule/#mo-khazali-industry-perspective",
-      "transferStatus": "complete"
+      "transferStatus": "complete",
+      "publicationRequested": true
     },
     {
       "order": 3,
@@ -80,9 +81,7 @@
       "thumbnailPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/graphics/thumbnails-v02/ohans-talk.png",
       "captionPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/transcripts/final-v02/ohans-talk.en.srt",
       "durationSeconds": 1929,
-      "speakerIds": [
-        "ohans-emmanuel"
-      ],
+      "speakerIds": ["ohans-emmanuel"],
       "youtubeId": "xi1AY-G3Ycc",
       "uploadStatus": "public-after-processing",
       "talkId": "ohans-emmanuel-industry-perspective",
@@ -91,7 +90,8 @@
       "thumbnailStatus": "uploaded-custom",
       "metadataWordingVerified": true,
       "publicMaterialsRefreshedAt": "2026-10-22T13:12:31.619Z",
-      "transferStatus": "complete"
+      "transferStatus": "complete",
+      "publicationRequested": true
     },
     {
       "order": 4,
@@ -102,9 +102,7 @@
       "thumbnailPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/graphics/thumbnails-v02/jenni-talk.png",
       "captionPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/transcripts/final-v02/jenni-talk.en.srt",
       "durationSeconds": 1530,
-      "speakerIds": [
-        "jenni-kylmakoski"
-      ],
+      "speakerIds": ["jenni-kylmakoski"],
       "youtubeId": "1bT23mhlzGg",
       "uploadStatus": "public",
       "talkId": "jenni-kylmakoski-industry-perspective",
@@ -114,7 +112,8 @@
       "metadataWordingVerified": true,
       "transferStatus": "complete",
       "publicVerifiedAt": "2026-10-22T13:31:17.698Z",
-      "archiveIntegration": "published-via-existing-recording-link-editor"
+      "archiveIntegration": "published-via-existing-recording-link-editor",
+      "publicationRequested": true
     },
     {
       "order": 5,
@@ -125,9 +124,7 @@
       "thumbnailPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/graphics/thumbnails-v02/tapio-talk.png",
       "captionPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/transcripts/final-v02/tapio-talk.en.srt",
       "durationSeconds": 1359,
-      "speakerIds": [
-        "tapio-pitkaranta"
-      ],
+      "speakerIds": ["tapio-pitkaranta"],
       "youtubeId": "dGI7WlgL-JM",
       "uploadStatus": "public-after-processing",
       "talkId": "agentic-discovery",
@@ -136,7 +133,8 @@
       "thumbnailStatus": "uploaded-custom",
       "metadataWordingVerified": true,
       "publicMaterialsRefreshedAt": "2026-10-22T13:12:31.621Z",
-      "transferStatus": "complete"
+      "transferStatus": "complete",
+      "publicationRequested": true
     },
     {
       "order": 6,
@@ -147,9 +145,7 @@
       "thumbnailPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/graphics/thumbnails-v02/joongi-talk.png",
       "captionPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/transcripts/final-v02/joongi-talk.en.srt",
       "durationSeconds": 1162,
-      "speakerIds": [
-        "joongi-shin"
-      ],
+      "speakerIds": ["joongi-shin"],
       "youtubeId": "JTTq9MNefTU",
       "uploadStatus": "public",
       "talkId": "joongi-shin-ui-perspective",
@@ -159,7 +155,8 @@
       "metadataWordingVerified": true,
       "transferStatus": "complete",
       "publicVerifiedAt": "2026-10-22T13:31:30.844Z",
-      "archiveIntegration": "published-via-existing-recording-link-editor"
+      "archiveIntegration": "published-via-existing-recording-link-editor",
+      "publicationRequested": true
     },
     {
       "order": 7,
@@ -170,10 +167,7 @@
       "thumbnailPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/graphics/thumbnails-v02/research-panel.png",
       "captionPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/transcripts/final-v02/research-panel.en.srt",
       "durationSeconds": 2731,
-      "speakerIds": [
-        "tapio-pitkaranta",
-        "joongi-shin"
-      ],
+      "speakerIds": ["tapio-pitkaranta", "joongi-shin"],
       "youtubeId": "HAhvn3aAbDQ",
       "uploadStatus": "public-after-processing",
       "metadataStatus": "complete",
@@ -181,7 +175,8 @@
       "thumbnailStatus": "uploaded-custom",
       "metadataWordingVerified": true,
       "publicMaterialsRefreshedAt": "2026-10-22T13:12:31.622Z",
-      "transferStatus": "complete"
+      "transferStatus": "complete",
+      "publicationRequested": true
     },
     {
       "order": 8,
@@ -192,9 +187,7 @@
       "thumbnailPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/graphics/thumbnails-v02/jussi-talk.png",
       "captionPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/transcripts/final-v02/jussi-talk.en.srt",
       "durationSeconds": 1247,
-      "speakerIds": [
-        "jussi-hacklin"
-      ],
+      "speakerIds": ["jussi-hacklin"],
       "youtubeId": "VpoYC7DaOjs",
       "uploadStatus": "public",
       "talkId": "driving-ai-adoption-regulated-environment",
@@ -204,7 +197,8 @@
       "metadataWordingVerified": true,
       "transferStatus": "complete",
       "publicVerifiedAt": "2026-10-22T13:31:40.570Z",
-      "archiveIntegration": "published-via-existing-recording-link-editor"
+      "archiveIntegration": "published-via-existing-recording-link-editor",
+      "publicationRequested": true
     },
     {
       "order": 9,
@@ -215,9 +209,7 @@
       "thumbnailPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/graphics/thumbnails-v02/viljami-talk.png",
       "captionPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/transcripts/final-v02/viljami-talk.en.srt",
       "durationSeconds": 1335,
-      "speakerIds": [
-        "viljami-kuosmanen"
-      ],
+      "speakerIds": ["viljami-kuosmanen"],
       "youtubeId": "SL6QypO5BxA",
       "uploadStatus": "public-after-processing",
       "talkId": "non-engineers-vibe-code-production",
@@ -225,7 +217,8 @@
       "metadataStatus": "complete",
       "metadataWordingVerified": true,
       "captionsStatus": "uploaded-english",
-      "transferStatus": "complete"
+      "transferStatus": "complete",
+      "publicationRequested": true
     },
     {
       "order": 10,
@@ -236,9 +229,7 @@
       "thumbnailPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/graphics/thumbnails-v02/sini-talk.png",
       "captionPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/transcripts/final-v02/sini-talk.en.srt",
       "durationSeconds": 1690,
-      "speakerIds": [
-        "sini-tistelgren"
-      ],
+      "speakerIds": ["sini-tistelgren"],
       "youtubeId": "tOGTv8fR4Wc",
       "uploadStatus": "public-after-processing",
       "talkId": "ai-factory-fundamentals",
@@ -246,7 +237,8 @@
       "metadataWordingVerified": true,
       "metadataStatus": "complete",
       "captionsStatus": "uploaded-english",
-      "transferStatus": "complete"
+      "transferStatus": "complete",
+      "publicationRequested": true
     },
     {
       "order": 11,
@@ -257,18 +249,16 @@
       "thumbnailPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/graphics/thumbnails-v02/industry-panel.png",
       "captionPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/transcripts/final-v02/industry-panel.en.srt",
       "durationSeconds": 991.12,
-      "speakerIds": [
-        "jussi-hacklin",
-        "viljami-kuosmanen",
-        "sini-tistelgren"
-      ],
+      "speakerIds": ["jussi-hacklin", "viljami-kuosmanen", "sini-tistelgren"],
       "youtubeId": "q-4H3JMNDE4",
-      "uploadStatus": "uploading-waiting-for-content-checks",
+      "uploadStatus": "public-after-processing",
       "metadataStatus": "complete",
       "captionsStatus": "uploaded-english",
       "thumbnailStatus": "uploaded-custom",
       "transferStatus": "complete",
-      "metadataWordingVerified": true
+      "metadataWordingVerified": true,
+      "publicationRequested": true,
+      "pendingChecksPublicationApproved": true
     },
     {
       "order": 12,
@@ -279,17 +269,17 @@
       "thumbnailPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/graphics/thumbnails-v02/zak-talk.png",
       "captionPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/transcripts/final-v02/zak-talk.en.srt",
       "durationSeconds": 1255,
-      "speakerIds": [
-        "zak-allal"
-      ],
+      "speakerIds": ["zak-allal"],
       "youtubeId": "gVXx5fOUXbs",
-      "uploadStatus": "uploading-waiting-for-content-checks",
+      "uploadStatus": "public-after-processing",
       "talkId": "zak-allal-industry-perspective",
       "metadataStatus": "complete",
       "captionsStatus": "uploaded-english",
       "thumbnailStatus": "uploaded-custom",
       "metadataWordingVerified": true,
-      "transferStatus": "complete"
+      "transferStatus": "complete",
+      "publicationRequested": true,
+      "pendingChecksPublicationApproved": true
     },
     {
       "order": 13,
@@ -300,16 +290,17 @@
       "thumbnailPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/graphics/thumbnails-v02/waseem-talk.png",
       "captionPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/transcripts/final-v02/waseem-talk.en.srt",
       "durationSeconds": 1854,
-      "speakerIds": [
-        "muhammad-waseem"
-      ],
+      "speakerIds": ["muhammad-waseem"],
       "youtubeId": "o_WaA-EaBqo",
-      "uploadStatus": "uploading-waiting-for-content-checks",
+      "uploadStatus": "public-after-processing",
       "talkId": "genai-software-engineering",
       "metadataStatus": "complete",
       "captionsStatus": "uploaded-english",
       "thumbnailStatus": "uploaded-custom",
-      "metadataWordingVerified": true
+      "metadataWordingVerified": true,
+      "transferStatus": "complete",
+      "publicationRequested": true,
+      "pendingChecksPublicationApproved": true
     },
     {
       "order": 14,
@@ -320,19 +311,19 @@
       "thumbnailPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/graphics/thumbnails-v02/final-panel.png",
       "captionPath": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/transcripts/final-v02/final-panel.en.srt",
       "durationSeconds": 2008,
-      "speakerIds": [
-        "zak-allal",
-        "muhammad-waseem"
-      ],
+      "speakerIds": ["zak-allal", "muhammad-waseem"],
       "youtubeId": "r3WhRG2l3ho",
-      "uploadStatus": "uploading-waiting-for-content-checks",
+      "uploadStatus": "public-after-processing",
       "metadataStatus": "complete",
       "captionsStatus": "uploaded-english",
       "thumbnailStatus": "uploaded-custom",
-      "metadataWordingVerified": true
+      "metadataWordingVerified": true,
+      "transferStatus": "complete",
+      "publicationRequested": true,
+      "pendingChecksPublicationApproved": true
     }
   ],
-  "releaseStatus": "twelve-transferred; final-two-uploading; processing-in-progress",
+  "releaseStatus": "all-fourteen-transfers-complete; public-publication-requested; YouTube-processing-in-progress",
   "youtubeFeatureLimits": {
     "phoneVerification": "enabled",
     "advancedVerification": "enabled-confirmed-in-Studio",
@@ -341,5 +332,11 @@
     "remainingUploads": [],
     "customThumbnailsPending": [],
     "externalDescriptionLinks": "enabled-by-advanced-verification"
+  },
+  "pendingChecksPublicationAuthorization": {
+    "approved": true,
+    "scope": ["industry-panel", "zak-talk", "waseem-talk", "final-panel"],
+    "warningAcknowledged": "Potential strikes or visibility restrictions if unfinished YouTube content checks later find issues",
+    "date": "2026-10-22"
   }
 }
