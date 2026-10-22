@@ -1,0 +1,24 @@
+{
+  "playlistUrl": "https://www.youtube.com/playlist?list=PLA44jDnIP4sk",
+  "highlightsUrl": "https://www.youtube.com/watch?v=XnokXHcg3Ls",
+  "sessions": [
+    {
+      "sessionId": "views-from-academia",
+      "published": false,
+      "url": "https://www.youtube.com/watch?v=HAhvn3aAbDQ",
+      "label": "Watch Q&A with Tapio Pitkäranta and Joongi Shin"
+    },
+    {
+      "sessionId": "views-from-industry",
+      "published": false,
+      "url": "https://www.youtube.com/watch?v=q-4H3JMNDE4",
+      "label": "Watch Q&A with Jussi Hacklin, Viljami Kuosmanen and Sini Tistelgrén"
+    },
+    {
+      "sessionId": "academia",
+      "published": false,
+      "url": "https://www.youtube.com/watch?v=r3WhRG2l3ho",
+      "label": "Watch Q&A with Zak Allal and Muhammad Waseem"
+    }
+  ]
+}

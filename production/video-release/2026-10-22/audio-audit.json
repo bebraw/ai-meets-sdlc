@@ -1,0 +1,3486 @@
+{
+  "status": "passed",
+  "createdAt": "2026-10-22T12:05:17.942724+00:00",
+  "sources": [
+    {
+      "path": "/Volumes/LaCie/SDLCAI/2026/primary_camera/Ohjelma_alku.mp4",
+      "bytes": 164515638749,
+      "codec": "aac",
+      "sampleRate": 48000,
+      "channels": 8,
+      "bitRate": 151659
+    },
+    {
+      "path": "/Volumes/LaCie/SDLCAI/2026/primary_camera/Ohjelma_loppu.mp4",
+      "bytes": 63571767184,
+      "codec": "aac",
+      "sampleRate": 48000,
+      "channels": 8,
+      "bitRate": 153282
+    },
+    {
+      "path": "/Volumes/LaCie/SDLCAI/2026/secondary_camera/Varakamera-moniraitaääni-alku.mp4",
+      "bytes": 164843336129,
+      "codec": "aac",
+      "sampleRate": 48000,
+      "channels": 8,
+      "bitRate": 189964
+    },
+    {
+      "path": "/Volumes/LaCie/SDLCAI/2026/secondary_camera/Varakamera-moniraitaääni-loppu.mp4",
+      "bytes": 63877672626,
+      "codec": "aac",
+      "sampleRate": 48000,
+      "channels": 8,
+      "bitRate": 192173
+    }
+  ],
+  "deliveries": [
+    {
+      "id": "mo-talk",
+      "masterPath": "exports/talks-v02/mo-talk-4k.mp4",
+      "sourceExtraction": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/mo-talk-with-handles.wav",
+      "sourceExtractionCodec": "pcm_s24le",
+      "sourceExtractionRate": 48000,
+      "normalizedIntermediate": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/mixes-v01/mo-talk-normalized-with-cards.wav",
+      "intermediateCodec": "pcm_s24le",
+      "intermediateBits": "24",
+      "finalCodec": "aac",
+      "finalProfile": "LC",
+      "finalRate": 48000,
+      "finalChannels": 2,
+      "finalBitRate": 211435,
+      "normalization": {
+        "integratedLUFS": -16,
+        "truePeakDBTP": -1.5,
+        "loudnessRangeLU": 11
+      },
+      "waveformChecks": [
+        {
+          "bodySeconds": 30,
+          "outputSeconds": 33,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999975
+        },
+        {
+          "bodySeconds": 1070.5,
+          "outputSeconds": 1073.5,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999907
+        },
+        {
+          "bodySeconds": 2111.0,
+          "outputSeconds": 2114.0,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999941
+        }
+      ]
+    },
+    {
+      "id": "ohans-talk",
+      "masterPath": "exports/talks-v02/ohans-talk-4k.mp4",
+      "sourceExtraction": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/ohans-talk-with-handles.wav",
+      "sourceExtractionCodec": "pcm_s24le",
+      "sourceExtractionRate": 48000,
+      "normalizedIntermediate": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/mixes-v01/ohans-talk-normalized-with-cards.wav",
+      "intermediateCodec": "pcm_s24le",
+      "intermediateBits": "24",
+      "finalCodec": "aac",
+      "finalProfile": "LC",
+      "finalRate": 48000,
+      "finalChannels": 2,
+      "finalBitRate": 215575,
+      "normalization": {
+        "integratedLUFS": -16,
+        "truePeakDBTP": -1.5,
+        "loudnessRangeLU": 11
+      },
+      "waveformChecks": [
+        {
+          "bodySeconds": 30,
+          "outputSeconds": 33,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999964
+        },
+        {
+          "bodySeconds": 960.0,
+          "outputSeconds": 963.0,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999927
+        },
+        {
+          "bodySeconds": 1890.0,
+          "outputSeconds": 1893.0,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999948
+        }
+      ]
+    },
+    {
+      "id": "jenni-talk",
+      "masterPath": "exports/talks-v02/jenni-talk-4k.mp4",
+      "sourceExtraction": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/jenni-talk-with-handles.wav",
+      "sourceExtractionCodec": "pcm_s24le",
+      "sourceExtractionRate": 48000,
+      "normalizedIntermediate": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/mixes-v01/jenni-talk-normalized-with-cards.wav",
+      "intermediateCodec": "pcm_s24le",
+      "intermediateBits": "24",
+      "finalCodec": "aac",
+      "finalProfile": "LC",
+      "finalRate": 48000,
+      "finalChannels": 2,
+      "finalBitRate": 214772,
+      "normalization": {
+        "integratedLUFS": -16,
+        "truePeakDBTP": -1.5,
+        "loudnessRangeLU": 11
+      },
+      "waveformChecks": [
+        {
+          "bodySeconds": 30,
+          "outputSeconds": 33,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999944
+        },
+        {
+          "bodySeconds": 760.5,
+          "outputSeconds": 763.5,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999969
+        },
+        {
+          "bodySeconds": 1491.0,
+          "outputSeconds": 1494.0,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999977
+        }
+      ]
+    },
+    {
+      "id": "tapio-talk",
+      "masterPath": "exports/talks-v02/tapio-talk-4k.mp4",
+      "sourceExtraction": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/tapio-talk-with-handles.wav",
+      "sourceExtractionCodec": "pcm_s24le",
+      "sourceExtractionRate": 48000,
+      "normalizedIntermediate": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/mixes-v01/tapio-talk-normalized-with-cards.wav",
+      "intermediateCodec": "pcm_s24le",
+      "intermediateBits": "24",
+      "finalCodec": "aac",
+      "finalProfile": "LC",
+      "finalRate": 48000,
+      "finalChannels": 2,
+      "finalBitRate": 215723,
+      "normalization": {
+        "integratedLUFS": -16,
+        "truePeakDBTP": -1.5,
+        "loudnessRangeLU": 11
+      },
+      "waveformChecks": [
+        {
+          "bodySeconds": 30,
+          "outputSeconds": 33,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999944
+        },
+        {
+          "bodySeconds": 675.0,
+          "outputSeconds": 678.0,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999939
+        },
+        {
+          "bodySeconds": 1320.0,
+          "outputSeconds": 1323.0,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999904
+        }
+      ]
+    },
+    {
+      "id": "joongi-talk",
+      "masterPath": "exports/talks-v02/joongi-talk-4k.mp4",
+      "sourceExtraction": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/joongi-talk-with-handles.wav",
+      "sourceExtractionCodec": "pcm_s24le",
+      "sourceExtractionRate": 48000,
+      "normalizedIntermediate": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/mixes-v01/joongi-talk-normalized-with-cards.wav",
+      "intermediateCodec": "pcm_s24le",
+      "intermediateBits": "24",
+      "finalCodec": "aac",
+      "finalProfile": "LC",
+      "finalRate": 48000,
+      "finalChannels": 2,
+      "finalBitRate": 204548,
+      "normalization": {
+        "integratedLUFS": -16,
+        "truePeakDBTP": -1.5,
+        "loudnessRangeLU": 11
+      },
+      "waveformChecks": [
+        {
+          "bodySeconds": 30,
+          "outputSeconds": 33,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999895
+        },
+        {
+          "bodySeconds": 576.5,
+          "outputSeconds": 579.5,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999917
+        },
+        {
+          "bodySeconds": 1123.0,
+          "outputSeconds": 1126.0,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999904
+        }
+      ]
+    },
+    {
+      "id": "research-panel",
+      "masterPath": "exports/talks-v02/research-panel-4k.mp4",
+      "sourceExtraction": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/research-panel-with-handles.wav",
+      "sourceExtractionCodec": "pcm_s24le",
+      "sourceExtractionRate": 48000,
+      "normalizedIntermediate": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/mixes-v01/research-panel-normalized-with-cards.wav",
+      "intermediateCodec": "pcm_s24le",
+      "intermediateBits": "24",
+      "finalCodec": "aac",
+      "finalProfile": "LC",
+      "finalRate": 48000,
+      "finalChannels": 2,
+      "finalBitRate": 216182,
+      "normalization": {
+        "integratedLUFS": -16,
+        "truePeakDBTP": -1.5,
+        "loudnessRangeLU": 11
+      },
+      "waveformChecks": [
+        {
+          "bodySeconds": 30,
+          "outputSeconds": 33,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999931
+        },
+        {
+          "bodySeconds": 1361.0,
+          "outputSeconds": 1364.0,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999872
+        },
+        {
+          "bodySeconds": 2692.0,
+          "outputSeconds": 2695.0,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999948
+        }
+      ]
+    },
+    {
+      "id": "jussi-talk",
+      "masterPath": "exports/talks-v02/jussi-talk-4k.mp4",
+      "sourceExtraction": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/jussi-talk-with-handles.wav",
+      "sourceExtractionCodec": "pcm_s24le",
+      "sourceExtractionRate": 48000,
+      "normalizedIntermediate": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/mixes-v01/jussi-talk-normalized-with-cards.wav",
+      "intermediateCodec": "pcm_s24le",
+      "intermediateBits": "24",
+      "finalCodec": "aac",
+      "finalProfile": "LC",
+      "finalRate": 48000,
+      "finalChannels": 2,
+      "finalBitRate": 213631,
+      "normalization": {
+        "integratedLUFS": -16,
+        "truePeakDBTP": -1.5,
+        "loudnessRangeLU": 11
+      },
+      "waveformChecks": [
+        {
+          "bodySeconds": 30,
+          "outputSeconds": 33,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999895
+        },
+        {
+          "bodySeconds": 619.0,
+          "outputSeconds": 622.0,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999908
+        },
+        {
+          "bodySeconds": 1208.0,
+          "outputSeconds": 1211.0,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999949
+        }
+      ]
+    },
+    {
+      "id": "viljami-talk",
+      "masterPath": "exports/talks-v02/viljami-talk-4k.mp4",
+      "sourceExtraction": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/viljami-talk-with-handles.wav",
+      "sourceExtractionCodec": "pcm_s24le",
+      "sourceExtractionRate": 48000,
+      "normalizedIntermediate": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/mixes-v01/viljami-talk-normalized-with-cards.wav",
+      "intermediateCodec": "pcm_s24le",
+      "intermediateBits": "24",
+      "finalCodec": "aac",
+      "finalProfile": "LC",
+      "finalRate": 48000,
+      "finalChannels": 2,
+      "finalBitRate": 185097,
+      "normalization": {
+        "integratedLUFS": -16,
+        "truePeakDBTP": -1.5,
+        "loudnessRangeLU": 11
+      },
+      "waveformChecks": [
+        {
+          "bodySeconds": 30,
+          "outputSeconds": 33,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999967
+        },
+        {
+          "bodySeconds": 663.0,
+          "outputSeconds": 666.0,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999975
+        },
+        {
+          "bodySeconds": 1296.0,
+          "outputSeconds": 1299.0,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999959
+        }
+      ]
+    },
+    {
+      "id": "sini-talk",
+      "masterPath": "exports/talks-v02/sini-talk-4k.mp4",
+      "sourceExtraction": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/sini-talk-with-handles.wav",
+      "sourceExtractionCodec": "pcm_s24le",
+      "sourceExtractionRate": 48000,
+      "normalizedIntermediate": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/mixes-v01/sini-talk-normalized-with-cards.wav",
+      "intermediateCodec": "pcm_s24le",
+      "intermediateBits": "24",
+      "finalCodec": "aac",
+      "finalProfile": "LC",
+      "finalRate": 48000,
+      "finalChannels": 2,
+      "finalBitRate": 217561,
+      "normalization": {
+        "integratedLUFS": -16,
+        "truePeakDBTP": -1.5,
+        "loudnessRangeLU": 11
+      },
+      "waveformChecks": [
+        {
+          "bodySeconds": 30,
+          "outputSeconds": 33,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999969
+        },
+        {
+          "bodySeconds": 840.5,
+          "outputSeconds": 843.5,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999966
+        },
+        {
+          "bodySeconds": 1651.0,
+          "outputSeconds": 1654.0,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999968
+        }
+      ]
+    },
+    {
+      "id": "industry-panel",
+      "masterPath": "exports/talks-v02/industry-panel-4k.mp4",
+      "sourceExtraction": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/industry-panel-extended-v1-with-handles.wav",
+      "sourceExtractionCodec": "pcm_s24le",
+      "sourceExtractionRate": 48000,
+      "normalizedIntermediate": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/mixes-v01/industry-panel-normalized-with-cards.wav",
+      "intermediateCodec": "pcm_s24le",
+      "intermediateBits": "24",
+      "finalCodec": "aac",
+      "finalProfile": "LC",
+      "finalRate": 48000,
+      "finalChannels": 2,
+      "finalBitRate": 184950,
+      "normalization": {
+        "integratedLUFS": -16,
+        "truePeakDBTP": -1.5,
+        "loudnessRangeLU": 11
+      },
+      "waveformChecks": [
+        {
+          "bodySeconds": 30,
+          "outputSeconds": 33,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999967
+        },
+        {
+          "bodySeconds": 491.0599999999995,
+          "outputSeconds": 494.0599999999995,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999884
+        },
+        {
+          "bodySeconds": 952.119999999999,
+          "outputSeconds": 955.119999999999,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999951
+        }
+      ]
+    },
+    {
+      "id": "zak-talk",
+      "masterPath": "exports/talks-v02/zak-talk-4k.mp4",
+      "sourceExtraction": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/zak-talk-with-handles.wav",
+      "sourceExtractionCodec": "pcm_s24le",
+      "sourceExtractionRate": 48000,
+      "normalizedIntermediate": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/mixes-v01/zak-talk-normalized-with-cards.wav",
+      "intermediateCodec": "pcm_s24le",
+      "intermediateBits": "24",
+      "finalCodec": "aac",
+      "finalProfile": "LC",
+      "finalRate": 48000,
+      "finalChannels": 2,
+      "finalBitRate": 212412,
+      "normalization": {
+        "integratedLUFS": -16,
+        "truePeakDBTP": -1.5,
+        "loudnessRangeLU": 11
+      },
+      "waveformChecks": [
+        {
+          "bodySeconds": 30,
+          "outputSeconds": 33,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999916
+        },
+        {
+          "bodySeconds": 623.0,
+          "outputSeconds": 626.0,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999947
+        },
+        {
+          "bodySeconds": 1216.0,
+          "outputSeconds": 1219.0,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999936
+        }
+      ]
+    },
+    {
+      "id": "waseem-talk",
+      "masterPath": "exports/talks-v02/waseem-talk-4k.mp4",
+      "sourceExtraction": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/waseem-talk-with-handles.wav",
+      "sourceExtractionCodec": "pcm_s24le",
+      "sourceExtractionRate": 48000,
+      "normalizedIntermediate": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/mixes-v01/waseem-talk-normalized-with-cards.wav",
+      "intermediateCodec": "pcm_s24le",
+      "intermediateBits": "24",
+      "finalCodec": "aac",
+      "finalProfile": "LC",
+      "finalRate": 48000,
+      "finalChannels": 2,
+      "finalBitRate": 214940,
+      "normalization": {
+        "integratedLUFS": -16,
+        "truePeakDBTP": -1.5,
+        "loudnessRangeLU": 11
+      },
+      "waveformChecks": [
+        {
+          "bodySeconds": 30,
+          "outputSeconds": 33,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999973
+        },
+        {
+          "bodySeconds": 922.5,
+          "outputSeconds": 925.5,
+          "lagSeconds": 0.0,
+          "correlation": 0.999997
+        },
+        {
+          "bodySeconds": 1815.0,
+          "outputSeconds": 1818.0,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999973
+        }
+      ]
+    },
+    {
+      "id": "final-panel",
+      "masterPath": "exports/talks-v02/final-panel-4k.mp4",
+      "sourceExtraction": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/final-panel-with-handles.wav",
+      "sourceExtractionCodec": "pcm_s24le",
+      "sourceExtractionRate": 48000,
+      "normalizedIntermediate": "/Volumes/LaCie/SDLCAI/2026/post-production-2026-10-18/audio/mixes-v01/final-panel-normalized-with-cards.wav",
+      "intermediateCodec": "pcm_s24le",
+      "intermediateBits": "24",
+      "finalCodec": "aac",
+      "finalProfile": "LC",
+      "finalRate": 48000,
+      "finalChannels": 2,
+      "finalBitRate": 222118,
+      "normalization": {
+        "integratedLUFS": -16,
+        "truePeakDBTP": -1.5,
+        "loudnessRangeLU": 11
+      },
+      "waveformChecks": [
+        {
+          "bodySeconds": 30,
+          "outputSeconds": 33,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999923
+        },
+        {
+          "bodySeconds": 999.5,
+          "outputSeconds": 1002.5,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999961
+        },
+        {
+          "bodySeconds": 1969.0,
+          "outputSeconds": 1972.0,
+          "lagSeconds": 0.0,
+          "correlation": 0.9999969
+        }
+      ]
+    },
+    {
+      "id": "mood",
+      "masterPath": "exports/mood-v07-4k.mp4",
+      "finalCodec": "aac",
+      "finalProfile": "LC",
+      "finalRate": 48000,
+      "finalChannels": 2,
+      "finalBitRate": 356608,
+      "source": "48 kHz, 24-bit final mix with lossless normalized music and voice stems.",
+      "audioIdentityEvidence": "exports/mood-qc-v07.json"
+    }
+  ],
+  "rawComparisons": [
+    {
+      "videoId": "mo-talk",
+      "bodySeconds": 1070.5,
+      "primaryFile": "/Volumes/LaCie/SDLCAI/2026/primary_camera/Ohjelma_alku.mp4",
+      "primaryFileSeconds": 2255.5,
+      "secondaryFile": "/Volumes/LaCie/SDLCAI/2026/secondary_camera/Varakamera-moniraitaääni-alku.mp4",
+      "secondaryFileSeconds": 2252.3,
+      "primaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -26.919,
+          "peakDbFS": -9.909,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -26.918,
+          "peakDbFS": -9.909,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        }
+      ],
+      "secondaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -27.032,
+          "peakDbFS": -9.825,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -27.032,
+          "peakDbFS": -9.825,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -42.965,
+          "peakDbFS": -26.646,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -44.196,
+          "peakDbFS": -27.626,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -22.204,
+          "peakDbFS": -2.922,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -45.501,
+          "peakDbFS": -27.015,
+          "clippedSamples": 0
+        }
+      ],
+      "backupChannelsAgainstProgramme": [
+        {
+          "channel": 0,
+          "lagSeconds": 0.003,
+          "correlation": 0.97522
+        },
+        {
+          "channel": 1,
+          "lagSeconds": 0.003,
+          "correlation": 0.9752201
+        },
+        {
+          "channel": 2,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 3,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 4,
+          "lagSeconds": 0.034125,
+          "correlation": 0.1611451
+        },
+        {
+          "channel": 5,
+          "lagSeconds": 0.0235,
+          "correlation": -0.1960801
+        },
+        {
+          "channel": 6,
+          "lagSeconds": 0.030125,
+          "correlation": 0.0309855
+        },
+        {
+          "channel": 7,
+          "lagSeconds": 0.02775,
+          "correlation": -0.1934701
+        }
+      ],
+      "programmeStereoCorrelation": 0.9999982,
+      "programmeMonoRmsDbFS": -26.919
+    },
+    {
+      "videoId": "ohans-talk",
+      "bodySeconds": 960.0,
+      "primaryFile": "/Volumes/LaCie/SDLCAI/2026/primary_camera/Ohjelma_alku.mp4",
+      "primaryFileSeconds": 4397.0,
+      "secondaryFile": "/Volumes/LaCie/SDLCAI/2026/secondary_camera/Varakamera-moniraitaääni-alku.mp4",
+      "secondaryFileSeconds": 4393.8,
+      "primaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -31.108,
+          "peakDbFS": -10.724,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -31.108,
+          "peakDbFS": -10.741,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        }
+      ],
+      "secondaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -31.218,
+          "peakDbFS": -10.928,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -31.218,
+          "peakDbFS": -10.928,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -46.807,
+          "peakDbFS": -27.599,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -46.289,
+          "peakDbFS": -30.013,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -46.064,
+          "peakDbFS": -29.751,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -33.155,
+          "peakDbFS": -11.094,
+          "clippedSamples": 0
+        }
+      ],
+      "backupChannelsAgainstProgramme": [
+        {
+          "channel": 0,
+          "lagSeconds": 0.003625,
+          "correlation": 0.9776521
+        },
+        {
+          "channel": 1,
+          "lagSeconds": 0.003625,
+          "correlation": 0.9776529
+        },
+        {
+          "channel": 2,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 3,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 4,
+          "lagSeconds": 0.028375,
+          "correlation": 0.1290434
+        },
+        {
+          "channel": 5,
+          "lagSeconds": 0.023625,
+          "correlation": -0.2151203
+        },
+        {
+          "channel": 6,
+          "lagSeconds": 0.033,
+          "correlation": 0.1622436
+        },
+        {
+          "channel": 7,
+          "lagSeconds": 0.03675,
+          "correlation": 0.0604462
+        }
+      ],
+      "programmeStereoCorrelation": 0.9999945,
+      "programmeMonoRmsDbFS": -31.108
+    },
+    {
+      "videoId": "jenni-talk",
+      "bodySeconds": 760.5,
+      "primaryFile": "/Volumes/LaCie/SDLCAI/2026/primary_camera/Ohjelma_alku.mp4",
+      "primaryFileSeconds": 6233.5,
+      "secondaryFile": "/Volumes/LaCie/SDLCAI/2026/secondary_camera/Varakamera-moniraitaääni-alku.mp4",
+      "secondaryFileSeconds": 6230.3,
+      "primaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -30.644,
+          "peakDbFS": -11.051,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -30.644,
+          "peakDbFS": -10.991,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        }
+      ],
+      "secondaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -30.732,
+          "peakDbFS": -11.491,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -30.732,
+          "peakDbFS": -11.491,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -32.522,
+          "peakDbFS": -10.35,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -49.794,
+          "peakDbFS": -32.289,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -44.333,
+          "peakDbFS": -28.125,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -49.236,
+          "peakDbFS": -32.098,
+          "clippedSamples": 0
+        }
+      ],
+      "backupChannelsAgainstProgramme": [
+        {
+          "channel": 0,
+          "lagSeconds": 0.006875,
+          "correlation": 0.9754144
+        },
+        {
+          "channel": 1,
+          "lagSeconds": 0.006875,
+          "correlation": 0.9754144
+        },
+        {
+          "channel": 2,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 3,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 4,
+          "lagSeconds": -0.031375,
+          "correlation": -0.0107726
+        },
+        {
+          "channel": 5,
+          "lagSeconds": 0.03225,
+          "correlation": -0.244134
+        },
+        {
+          "channel": 6,
+          "lagSeconds": 0.027125,
+          "correlation": 0.2203755
+        },
+        {
+          "channel": 7,
+          "lagSeconds": 0.039875,
+          "correlation": -0.2789231
+        }
+      ],
+      "programmeStereoCorrelation": 0.9999922,
+      "programmeMonoRmsDbFS": -30.644
+    },
+    {
+      "videoId": "tapio-talk",
+      "bodySeconds": 675.0,
+      "primaryFile": "/Volumes/LaCie/SDLCAI/2026/primary_camera/Ohjelma_alku.mp4",
+      "primaryFileSeconds": 9141.0,
+      "secondaryFile": "/Volumes/LaCie/SDLCAI/2026/secondary_camera/Varakamera-moniraitaääni-alku.mp4",
+      "secondaryFileSeconds": 9137.8,
+      "primaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -29.486,
+          "peakDbFS": -10.495,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -29.486,
+          "peakDbFS": -10.495,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        }
+      ],
+      "secondaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -29.581,
+          "peakDbFS": -10.653,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -29.581,
+          "peakDbFS": -10.653,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -44.508,
+          "peakDbFS": -24.933,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -45.432,
+          "peakDbFS": -26.508,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -24.03,
+          "peakDbFS": -3.34,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -44.833,
+          "peakDbFS": -25.005,
+          "clippedSamples": 0
+        }
+      ],
+      "backupChannelsAgainstProgramme": [
+        {
+          "channel": 0,
+          "lagSeconds": 0.0005,
+          "correlation": 0.9611049
+        },
+        {
+          "channel": 1,
+          "lagSeconds": 0.0005,
+          "correlation": 0.96111
+        },
+        {
+          "channel": 2,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 3,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 4,
+          "lagSeconds": 0.03575,
+          "correlation": 0.2117337
+        },
+        {
+          "channel": 5,
+          "lagSeconds": 0.024375,
+          "correlation": 0.2738747
+        },
+        {
+          "channel": 6,
+          "lagSeconds": 0.02225,
+          "correlation": -0.0537028
+        },
+        {
+          "channel": 7,
+          "lagSeconds": 0.03375,
+          "correlation": 0.2303984
+        }
+      ],
+      "programmeStereoCorrelation": 0.9999726,
+      "programmeMonoRmsDbFS": -29.486
+    },
+    {
+      "videoId": "joongi-talk",
+      "bodySeconds": 576.5,
+      "primaryFile": "/Volumes/LaCie/SDLCAI/2026/primary_camera/Ohjelma_alku.mp4",
+      "primaryFileSeconds": 10444.5,
+      "secondaryFile": "/Volumes/LaCie/SDLCAI/2026/secondary_camera/Varakamera-moniraitaääni-alku.mp4",
+      "secondaryFileSeconds": 10441.3,
+      "primaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -30.529,
+          "peakDbFS": -9.765,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -30.529,
+          "peakDbFS": -9.765,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        }
+      ],
+      "secondaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -30.662,
+          "peakDbFS": -10.086,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -30.663,
+          "peakDbFS": -10.086,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -47.549,
+          "peakDbFS": -32.163,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -50.806,
+          "peakDbFS": -34.433,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -48.252,
+          "peakDbFS": -32.886,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -32.953,
+          "peakDbFS": -13.936,
+          "clippedSamples": 0
+        }
+      ],
+      "backupChannelsAgainstProgramme": [
+        {
+          "channel": 0,
+          "lagSeconds": 0.008625,
+          "correlation": 0.9758487
+        },
+        {
+          "channel": 1,
+          "lagSeconds": 0.008625,
+          "correlation": 0.975841
+        },
+        {
+          "channel": 2,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 3,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 4,
+          "lagSeconds": 0.02925,
+          "correlation": 0.1554713
+        },
+        {
+          "channel": 5,
+          "lagSeconds": 0.0325,
+          "correlation": 0.1737955
+        },
+        {
+          "channel": 6,
+          "lagSeconds": 0.031125,
+          "correlation": 0.1730667
+        },
+        {
+          "channel": 7,
+          "lagSeconds": 0.033625,
+          "correlation": -0.0723678
+        }
+      ],
+      "programmeStereoCorrelation": 0.9999982,
+      "programmeMonoRmsDbFS": -30.529
+    },
+    {
+      "videoId": "research-panel",
+      "bodySeconds": 30,
+      "primaryFile": "/Volumes/LaCie/SDLCAI/2026/primary_camera/Ohjelma_alku.mp4",
+      "primaryFileSeconds": 11157.0,
+      "secondaryFile": "/Volumes/LaCie/SDLCAI/2026/secondary_camera/Varakamera-moniraitaääni-alku.mp4",
+      "secondaryFileSeconds": 11153.8,
+      "primaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -35.059,
+          "peakDbFS": -12.771,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -35.059,
+          "peakDbFS": -12.771,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        }
+      ],
+      "secondaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -35.179,
+          "peakDbFS": -12.859,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -35.179,
+          "peakDbFS": -12.859,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -34.774,
+          "peakDbFS": -13.055,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -36.703,
+          "peakDbFS": -13.197,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -45.443,
+          "peakDbFS": -25.002,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -36.792,
+          "peakDbFS": -14.835,
+          "clippedSamples": 0
+        }
+      ],
+      "backupChannelsAgainstProgramme": [
+        {
+          "channel": 0,
+          "lagSeconds": 0.002125,
+          "correlation": 0.9462684
+        },
+        {
+          "channel": 1,
+          "lagSeconds": 0.002125,
+          "correlation": 0.9462686
+        },
+        {
+          "channel": 2,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 3,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 4,
+          "lagSeconds": -0.032125,
+          "correlation": -0.024754
+        },
+        {
+          "channel": 5,
+          "lagSeconds": -0.036125,
+          "correlation": 0.046792
+        },
+        {
+          "channel": 6,
+          "lagSeconds": 0.03625,
+          "correlation": -0.0995663
+        },
+        {
+          "channel": 7,
+          "lagSeconds": 0.03175,
+          "correlation": 0.0728027
+        }
+      ],
+      "programmeStereoCorrelation": 0.9999937,
+      "programmeMonoRmsDbFS": -35.059
+    },
+    {
+      "videoId": "research-panel",
+      "bodySeconds": 1361.0,
+      "primaryFile": "/Volumes/LaCie/SDLCAI/2026/primary_camera/Ohjelma_alku.mp4",
+      "primaryFileSeconds": 12488.0,
+      "secondaryFile": "/Volumes/LaCie/SDLCAI/2026/secondary_camera/Varakamera-moniraitaääni-alku.mp4",
+      "secondaryFileSeconds": 12484.8,
+      "primaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -35.858,
+          "peakDbFS": -14.258,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -35.858,
+          "peakDbFS": -14.258,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        }
+      ],
+      "secondaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -35.989,
+          "peakDbFS": -14.555,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -35.988,
+          "peakDbFS": -14.555,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -56.971,
+          "peakDbFS": -46.048,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -51.081,
+          "peakDbFS": -34.046,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -46.004,
+          "peakDbFS": -28.659,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -36.616,
+          "peakDbFS": -16.728,
+          "clippedSamples": 0
+        }
+      ],
+      "backupChannelsAgainstProgramme": [
+        {
+          "channel": 0,
+          "lagSeconds": 0.01,
+          "correlation": 0.9696313
+        },
+        {
+          "channel": 1,
+          "lagSeconds": 0.01,
+          "correlation": 0.9696373
+        },
+        {
+          "channel": 2,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 3,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 4,
+          "lagSeconds": 0.007375,
+          "correlation": -0.0015452
+        },
+        {
+          "channel": 5,
+          "lagSeconds": 0.009,
+          "correlation": 0.1064398
+        },
+        {
+          "channel": 6,
+          "lagSeconds": 0.02225,
+          "correlation": -0.1904461
+        },
+        {
+          "channel": 7,
+          "lagSeconds": 0.01825,
+          "correlation": 0.0606523
+        }
+      ],
+      "programmeStereoCorrelation": 0.9999949,
+      "programmeMonoRmsDbFS": -35.858
+    },
+    {
+      "videoId": "research-panel",
+      "bodySeconds": 2692.0,
+      "primaryFile": "/Volumes/LaCie/SDLCAI/2026/primary_camera/Ohjelma_alku.mp4",
+      "primaryFileSeconds": 13819.0,
+      "secondaryFile": "/Volumes/LaCie/SDLCAI/2026/secondary_camera/Varakamera-moniraitaääni-alku.mp4",
+      "secondaryFileSeconds": 13815.8,
+      "primaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -33.489,
+          "peakDbFS": -13.89,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -33.488,
+          "peakDbFS": -13.89,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        }
+      ],
+      "secondaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -33.607,
+          "peakDbFS": -13.833,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -33.607,
+          "peakDbFS": -13.833,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -40.492,
+          "peakDbFS": -13.456,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -44.135,
+          "peakDbFS": -23.308,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -29.299,
+          "peakDbFS": -11.066,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -44.277,
+          "peakDbFS": -23.885,
+          "clippedSamples": 0
+        }
+      ],
+      "backupChannelsAgainstProgramme": [
+        {
+          "channel": 0,
+          "lagSeconds": -0.002125,
+          "correlation": 0.9872505
+        },
+        {
+          "channel": 1,
+          "lagSeconds": -0.002125,
+          "correlation": 0.987251
+        },
+        {
+          "channel": 2,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 3,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 4,
+          "lagSeconds": -0.014875,
+          "correlation": -0.0520642
+        },
+        {
+          "channel": 5,
+          "lagSeconds": 0.038,
+          "correlation": -0.1060516
+        },
+        {
+          "channel": 6,
+          "lagSeconds": -0.0285,
+          "correlation": -0.0461871
+        },
+        {
+          "channel": 7,
+          "lagSeconds": 0.032875,
+          "correlation": 0.1001975
+        }
+      ],
+      "programmeStereoCorrelation": 0.9999879,
+      "programmeMonoRmsDbFS": -33.489
+    },
+    {
+      "videoId": "jussi-talk",
+      "bodySeconds": 619.0,
+      "primaryFile": "/Volumes/LaCie/SDLCAI/2026/primary_camera/Ohjelma_alku.mp4",
+      "primaryFileSeconds": 17530.0,
+      "secondaryFile": "/Volumes/LaCie/SDLCAI/2026/secondary_camera/Varakamera-moniraitaääni-alku.mp4",
+      "secondaryFileSeconds": 17526.8,
+      "primaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -29.095,
+          "peakDbFS": -10.497,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -29.095,
+          "peakDbFS": -10.497,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        }
+      ],
+      "secondaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -29.19,
+          "peakDbFS": -10.297,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -29.19,
+          "peakDbFS": -10.297,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -43.365,
+          "peakDbFS": -24.968,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -46.263,
+          "peakDbFS": -28.787,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -19.959,
+          "peakDbFS": -1.536,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -42.094,
+          "peakDbFS": -26.24,
+          "clippedSamples": 0
+        }
+      ],
+      "backupChannelsAgainstProgramme": [
+        {
+          "channel": 0,
+          "lagSeconds": 0.00425,
+          "correlation": 0.9147453
+        },
+        {
+          "channel": 1,
+          "lagSeconds": 0.00425,
+          "correlation": 0.914738
+        },
+        {
+          "channel": 2,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 3,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 4,
+          "lagSeconds": 0.029125,
+          "correlation": -0.1472772
+        },
+        {
+          "channel": 5,
+          "lagSeconds": 0.0315,
+          "correlation": 0.1577541
+        },
+        {
+          "channel": 6,
+          "lagSeconds": 0.036375,
+          "correlation": 0.0440015
+        },
+        {
+          "channel": 7,
+          "lagSeconds": 0.0395,
+          "correlation": 0.1467275
+        }
+      ],
+      "programmeStereoCorrelation": 0.9999961,
+      "programmeMonoRmsDbFS": -29.095
+    },
+    {
+      "videoId": "viljami-talk",
+      "bodySeconds": 663.0,
+      "primaryFile": "/Volumes/LaCie/SDLCAI/2026/primary_camera/Ohjelma_alku.mp4",
+      "primaryFileSeconds": 18890.0,
+      "secondaryFile": "/Volumes/LaCie/SDLCAI/2026/secondary_camera/Varakamera-moniraitaääni-alku.mp4",
+      "secondaryFileSeconds": 18886.8,
+      "primaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -28.903,
+          "peakDbFS": -11.856,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -28.902,
+          "peakDbFS": -11.855,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        }
+      ],
+      "secondaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -28.969,
+          "peakDbFS": -11.858,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -28.969,
+          "peakDbFS": -11.858,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -45.565,
+          "peakDbFS": -29.144,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -47.169,
+          "peakDbFS": -31.334,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -43.237,
+          "peakDbFS": -26.635,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -25.293,
+          "peakDbFS": -9.688,
+          "clippedSamples": 0
+        }
+      ],
+      "backupChannelsAgainstProgramme": [
+        {
+          "channel": 0,
+          "lagSeconds": 0.011875,
+          "correlation": 0.985169
+        },
+        {
+          "channel": 1,
+          "lagSeconds": 0.011875,
+          "correlation": 0.9851689
+        },
+        {
+          "channel": 2,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 3,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 4,
+          "lagSeconds": 0.011,
+          "correlation": 0.1772665
+        },
+        {
+          "channel": 5,
+          "lagSeconds": 0.011125,
+          "correlation": 0.2124974
+        },
+        {
+          "channel": 6,
+          "lagSeconds": 0.028875,
+          "correlation": 0.1297722
+        },
+        {
+          "channel": 7,
+          "lagSeconds": 0.037625,
+          "correlation": 0.0483931
+        }
+      ],
+      "programmeStereoCorrelation": 0.9999933,
+      "programmeMonoRmsDbFS": -28.903
+    },
+    {
+      "videoId": "sini-talk",
+      "bodySeconds": 840.5,
+      "primaryFile": "/Volumes/LaCie/SDLCAI/2026/primary_camera/Ohjelma_alku.mp4",
+      "primaryFileSeconds": 20453.5,
+      "secondaryFile": "/Volumes/LaCie/SDLCAI/2026/secondary_camera/Varakamera-moniraitaääni-alku.mp4",
+      "secondaryFileSeconds": 20450.3,
+      "primaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -30.675,
+          "peakDbFS": -11.877,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -30.675,
+          "peakDbFS": -11.876,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        }
+      ],
+      "secondaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -30.758,
+          "peakDbFS": -12.421,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -30.758,
+          "peakDbFS": -12.421,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -41.83,
+          "peakDbFS": -19.59,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -44.899,
+          "peakDbFS": -22.691,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -42.963,
+          "peakDbFS": -23.511,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -45.331,
+          "peakDbFS": -24.336,
+          "clippedSamples": 0
+        }
+      ],
+      "backupChannelsAgainstProgramme": [
+        {
+          "channel": 0,
+          "lagSeconds": -0.002375,
+          "correlation": 0.9802345
+        },
+        {
+          "channel": 1,
+          "lagSeconds": -0.002375,
+          "correlation": 0.9802332
+        },
+        {
+          "channel": 2,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 3,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 4,
+          "lagSeconds": 0.039875,
+          "correlation": 0.1554556
+        },
+        {
+          "channel": 5,
+          "lagSeconds": 0.02625,
+          "correlation": -0.1397436
+        },
+        {
+          "channel": 6,
+          "lagSeconds": 0.03,
+          "correlation": 0.1438546
+        },
+        {
+          "channel": 7,
+          "lagSeconds": 0.038375,
+          "correlation": 0.1752732
+        }
+      ],
+      "programmeStereoCorrelation": 0.9999981,
+      "programmeMonoRmsDbFS": -30.675
+    },
+    {
+      "videoId": "industry-panel",
+      "bodySeconds": 30,
+      "primaryFile": "/Volumes/LaCie/SDLCAI/2026/primary_camera/Ohjelma_alku.mp4",
+      "primaryFileSeconds": 21417,
+      "secondaryFile": "/Volumes/LaCie/SDLCAI/2026/secondary_camera/Varakamera-moniraitaääni-alku.mp4",
+      "secondaryFileSeconds": 21413.8,
+      "primaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -33.371,
+          "peakDbFS": -12.28,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -33.372,
+          "peakDbFS": -12.28,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        }
+      ],
+      "secondaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -33.461,
+          "peakDbFS": -12.261,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -33.461,
+          "peakDbFS": -12.261,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -34.9,
+          "peakDbFS": -13.014,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -40.424,
+          "peakDbFS": -20.529,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -39.65,
+          "peakDbFS": -22.067,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -26.956,
+          "peakDbFS": -8.421,
+          "clippedSamples": 0
+        }
+      ],
+      "backupChannelsAgainstProgramme": [
+        {
+          "channel": 0,
+          "lagSeconds": 0.008875,
+          "correlation": 0.9916492
+        },
+        {
+          "channel": 1,
+          "lagSeconds": 0.008875,
+          "correlation": 0.9916691
+        },
+        {
+          "channel": 2,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 3,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 4,
+          "lagSeconds": -0.033125,
+          "correlation": 0.0350897
+        },
+        {
+          "channel": 5,
+          "lagSeconds": 0.0185,
+          "correlation": -0.0784941
+        },
+        {
+          "channel": 6,
+          "lagSeconds": 0.02525,
+          "correlation": 0.1785265
+        },
+        {
+          "channel": 7,
+          "lagSeconds": 0.014,
+          "correlation": -0.0611761
+        }
+      ],
+      "programmeStereoCorrelation": 0.9999895,
+      "programmeMonoRmsDbFS": -33.371
+    },
+    {
+      "videoId": "industry-panel",
+      "bodySeconds": 491.0599999999995,
+      "primaryFile": "/Volumes/LaCie/SDLCAI/2026/primary_camera/Ohjelma_loppu.mp4",
+      "primaryFileSeconds": 280.9399999999987,
+      "secondaryFile": "/Volumes/LaCie/SDLCAI/2026/secondary_camera/Varakamera-moniraitaääni-loppu.mp4",
+      "secondaryFileSeconds": 277.7399999999987,
+      "primaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -31.98,
+          "peakDbFS": -11.41,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -31.98,
+          "peakDbFS": -11.41,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        }
+      ],
+      "secondaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -32.108,
+          "peakDbFS": -11.296,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -32.108,
+          "peakDbFS": -11.296,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -40.636,
+          "peakDbFS": -15.832,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -45.339,
+          "peakDbFS": -26.023,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -25.998,
+          "peakDbFS": -7.663,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -41.977,
+          "peakDbFS": -25.035,
+          "clippedSamples": 0
+        }
+      ],
+      "backupChannelsAgainstProgramme": [
+        {
+          "channel": 0,
+          "lagSeconds": -0.01525,
+          "correlation": 0.9333285
+        },
+        {
+          "channel": 1,
+          "lagSeconds": -0.01525,
+          "correlation": 0.9333654
+        },
+        {
+          "channel": 2,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 3,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 4,
+          "lagSeconds": -0.01275,
+          "correlation": 0.0315606
+        },
+        {
+          "channel": 5,
+          "lagSeconds": 0.03925,
+          "correlation": 0.199036
+        },
+        {
+          "channel": 6,
+          "lagSeconds": 0.039875,
+          "correlation": -0.056668
+        },
+        {
+          "channel": 7,
+          "lagSeconds": 0.029875,
+          "correlation": 0.1528892
+        }
+      ],
+      "programmeStereoCorrelation": 0.9999955,
+      "programmeMonoRmsDbFS": -31.98
+    },
+    {
+      "videoId": "industry-panel",
+      "bodySeconds": 952.119999999999,
+      "primaryFile": "/Volumes/LaCie/SDLCAI/2026/primary_camera/Ohjelma_loppu.mp4",
+      "primaryFileSeconds": 742.0,
+      "secondaryFile": "/Volumes/LaCie/SDLCAI/2026/secondary_camera/Varakamera-moniraitaääni-loppu.mp4",
+      "secondaryFileSeconds": 738.8,
+      "primaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -35.807,
+          "peakDbFS": -16.923,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -35.808,
+          "peakDbFS": -16.923,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        }
+      ],
+      "secondaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -35.886,
+          "peakDbFS": -16.692,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -35.886,
+          "peakDbFS": -16.692,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -47.843,
+          "peakDbFS": -20.871,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -48.73,
+          "peakDbFS": -33.804,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -41.725,
+          "peakDbFS": -24.072,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -48.938,
+          "peakDbFS": -32.963,
+          "clippedSamples": 0
+        }
+      ],
+      "backupChannelsAgainstProgramme": [
+        {
+          "channel": 0,
+          "lagSeconds": -0.0195,
+          "correlation": 0.9882724
+        },
+        {
+          "channel": 1,
+          "lagSeconds": -0.0195,
+          "correlation": 0.988272
+        },
+        {
+          "channel": 2,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 3,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 4,
+          "lagSeconds": 0.03125,
+          "correlation": -0.1892291
+        },
+        {
+          "channel": 5,
+          "lagSeconds": 0.0315,
+          "correlation": -0.3200204
+        },
+        {
+          "channel": 6,
+          "lagSeconds": 0.03325,
+          "correlation": 0.2597969
+        },
+        {
+          "channel": 7,
+          "lagSeconds": 0.03575,
+          "correlation": -0.3403893
+        }
+      ],
+      "programmeStereoCorrelation": 0.9999895,
+      "programmeMonoRmsDbFS": -35.807
+    },
+    {
+      "videoId": "zak-talk",
+      "bodySeconds": 623.0,
+      "primaryFile": "/Volumes/LaCie/SDLCAI/2026/primary_camera/Ohjelma_loppu.mp4",
+      "primaryFileSeconds": 3347.0,
+      "secondaryFile": "/Volumes/LaCie/SDLCAI/2026/secondary_camera/Varakamera-moniraitaääni-loppu.mp4",
+      "secondaryFileSeconds": 3343.8,
+      "primaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -27.763,
+          "peakDbFS": -10.439,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -27.763,
+          "peakDbFS": -10.439,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        }
+      ],
+      "secondaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -27.875,
+          "peakDbFS": -10.175,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -27.875,
+          "peakDbFS": -10.181,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -44.847,
+          "peakDbFS": -27.133,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -46.029,
+          "peakDbFS": -28.431,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -24.946,
+          "peakDbFS": -6.758,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -43.819,
+          "peakDbFS": -24.909,
+          "clippedSamples": 0
+        }
+      ],
+      "backupChannelsAgainstProgramme": [
+        {
+          "channel": 0,
+          "lagSeconds": -0.023125,
+          "correlation": 0.98364
+        },
+        {
+          "channel": 1,
+          "lagSeconds": -0.023125,
+          "correlation": 0.9836403
+        },
+        {
+          "channel": 2,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 3,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 4,
+          "lagSeconds": 0.0275,
+          "correlation": 0.4035794
+        },
+        {
+          "channel": 5,
+          "lagSeconds": 0.0335,
+          "correlation": 0.3920915
+        },
+        {
+          "channel": 6,
+          "lagSeconds": 0.0395,
+          "correlation": -0.1400451
+        },
+        {
+          "channel": 7,
+          "lagSeconds": 0.031375,
+          "correlation": 0.2763499
+        }
+      ],
+      "programmeStereoCorrelation": 0.9999988,
+      "programmeMonoRmsDbFS": -27.763
+    },
+    {
+      "videoId": "waseem-talk",
+      "bodySeconds": 922.5,
+      "primaryFile": "/Volumes/LaCie/SDLCAI/2026/primary_camera/Ohjelma_loppu.mp4",
+      "primaryFileSeconds": 4932.5,
+      "secondaryFile": "/Volumes/LaCie/SDLCAI/2026/secondary_camera/Varakamera-moniraitaääni-loppu.mp4",
+      "secondaryFileSeconds": 4929.3,
+      "primaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -27.068,
+          "peakDbFS": -9.787,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -27.068,
+          "peakDbFS": -9.787,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        }
+      ],
+      "secondaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -27.19,
+          "peakDbFS": -9.805,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -27.189,
+          "peakDbFS": -9.805,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -42.025,
+          "peakDbFS": -24.931,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -44.765,
+          "peakDbFS": -27.24,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -43.175,
+          "peakDbFS": -24.77,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -20.849,
+          "peakDbFS": -0.876,
+          "clippedSamples": 0
+        }
+      ],
+      "backupChannelsAgainstProgramme": [
+        {
+          "channel": 0,
+          "lagSeconds": -0.0175,
+          "correlation": 0.9726819
+        },
+        {
+          "channel": 1,
+          "lagSeconds": -0.0175,
+          "correlation": 0.9726848
+        },
+        {
+          "channel": 2,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 3,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 4,
+          "lagSeconds": 0.0185,
+          "correlation": -0.3476038
+        },
+        {
+          "channel": 5,
+          "lagSeconds": 0.034625,
+          "correlation": -0.3235687
+        },
+        {
+          "channel": 6,
+          "lagSeconds": 0.029625,
+          "correlation": 0.3447617
+        },
+        {
+          "channel": 7,
+          "lagSeconds": 0.033,
+          "correlation": -0.0541036
+        }
+      ],
+      "programmeStereoCorrelation": 0.9999955,
+      "programmeMonoRmsDbFS": -27.068
+    },
+    {
+      "videoId": "final-panel",
+      "bodySeconds": 30,
+      "primaryFile": "/Volumes/LaCie/SDLCAI/2026/primary_camera/Ohjelma_loppu.mp4",
+      "primaryFileSeconds": 5947.0,
+      "secondaryFile": "/Volumes/LaCie/SDLCAI/2026/secondary_camera/Varakamera-moniraitaääni-loppu.mp4",
+      "secondaryFileSeconds": 5943.8,
+      "primaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -32.137,
+          "peakDbFS": -12.883,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -32.137,
+          "peakDbFS": -12.883,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        }
+      ],
+      "secondaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -32.227,
+          "peakDbFS": -12.727,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -32.227,
+          "peakDbFS": -12.727,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -22.322,
+          "peakDbFS": 0.349,
+          "clippedSamples": 20
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -42.834,
+          "peakDbFS": -24.824,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -28.612,
+          "peakDbFS": -11.633,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -43.212,
+          "peakDbFS": -27.871,
+          "clippedSamples": 0
+        }
+      ],
+      "backupChannelsAgainstProgramme": [
+        {
+          "channel": 0,
+          "lagSeconds": -0.00675,
+          "correlation": 0.9779744
+        },
+        {
+          "channel": 1,
+          "lagSeconds": -0.00675,
+          "correlation": 0.9779745
+        },
+        {
+          "channel": 2,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 3,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 4,
+          "lagSeconds": 0.035125,
+          "correlation": 0.0003799
+        },
+        {
+          "channel": 5,
+          "lagSeconds": 0.039125,
+          "correlation": 0.2067097
+        },
+        {
+          "channel": 6,
+          "lagSeconds": 0.033875,
+          "correlation": -0.1782745
+        },
+        {
+          "channel": 7,
+          "lagSeconds": 0.03775,
+          "correlation": 0.4251971
+        }
+      ],
+      "programmeStereoCorrelation": 0.9999957,
+      "programmeMonoRmsDbFS": -32.137
+    },
+    {
+      "videoId": "final-panel",
+      "bodySeconds": 999.5,
+      "primaryFile": "/Volumes/LaCie/SDLCAI/2026/primary_camera/Ohjelma_loppu.mp4",
+      "primaryFileSeconds": 6916.5,
+      "secondaryFile": "/Volumes/LaCie/SDLCAI/2026/secondary_camera/Varakamera-moniraitaääni-loppu.mp4",
+      "secondaryFileSeconds": 6913.3,
+      "primaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -29.997,
+          "peakDbFS": -11.264,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -29.997,
+          "peakDbFS": -11.264,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        }
+      ],
+      "secondaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -30.071,
+          "peakDbFS": -11.697,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -30.071,
+          "peakDbFS": -11.697,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -41.627,
+          "peakDbFS": -23.85,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -27.658,
+          "peakDbFS": -10.278,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -44.221,
+          "peakDbFS": -29.435,
+          "clippedSamples": 0
+        }
+      ],
+      "backupChannelsAgainstProgramme": [
+        {
+          "channel": 0,
+          "lagSeconds": -0.0155,
+          "correlation": 0.9871683
+        },
+        {
+          "channel": 1,
+          "lagSeconds": -0.0155,
+          "correlation": 0.9871686
+        },
+        {
+          "channel": 2,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 3,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 4,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 5,
+          "lagSeconds": 0.037625,
+          "correlation": 0.2380605
+        },
+        {
+          "channel": 6,
+          "lagSeconds": 0.037,
+          "correlation": 0.085864
+        },
+        {
+          "channel": 7,
+          "lagSeconds": 0.03675,
+          "correlation": 0.3318641
+        }
+      ],
+      "programmeStereoCorrelation": 0.9999953,
+      "programmeMonoRmsDbFS": -29.997
+    },
+    {
+      "videoId": "final-panel",
+      "bodySeconds": 1969.0,
+      "primaryFile": "/Volumes/LaCie/SDLCAI/2026/primary_camera/Ohjelma_loppu.mp4",
+      "primaryFileSeconds": 7886.0,
+      "secondaryFile": "/Volumes/LaCie/SDLCAI/2026/secondary_camera/Varakamera-moniraitaääni-loppu.mp4",
+      "secondaryFileSeconds": 7882.8,
+      "primaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -34.168,
+          "peakDbFS": -18.013,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -34.168,
+          "peakDbFS": -18.01,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        }
+      ],
+      "secondaryChannels": [
+        {
+          "channel": 0,
+          "rmsDbFS": -34.203,
+          "peakDbFS": -18.233,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 1,
+          "rmsDbFS": -34.203,
+          "peakDbFS": -18.233,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 2,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 3,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 4,
+          "rmsDbFS": -240.0,
+          "peakDbFS": -240.0,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 5,
+          "rmsDbFS": -46.994,
+          "peakDbFS": -31.926,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 6,
+          "rmsDbFS": -43.737,
+          "peakDbFS": -27.996,
+          "clippedSamples": 0
+        },
+        {
+          "channel": 7,
+          "rmsDbFS": -31.726,
+          "peakDbFS": -17.378,
+          "clippedSamples": 0
+        }
+      ],
+      "backupChannelsAgainstProgramme": [
+        {
+          "channel": 0,
+          "lagSeconds": -0.02425,
+          "correlation": 0.9923097
+        },
+        {
+          "channel": 1,
+          "lagSeconds": -0.02425,
+          "correlation": 0.9923097
+        },
+        {
+          "channel": 2,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 3,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 4,
+          "lagSeconds": -0.04,
+          "correlation": 0.0
+        },
+        {
+          "channel": 5,
+          "lagSeconds": 0.02675,
+          "correlation": -0.479087
+        },
+        {
+          "channel": 6,
+          "lagSeconds": 0.034875,
+          "correlation": 0.3342597
+        },
+        {
+          "channel": 7,
+          "lagSeconds": 0.033,
+          "correlation": 0.1326863
+        }
+      ],
+      "programmeStereoCorrelation": 0.9999972,
+      "programmeMonoRmsDbFS": -34.168
+    }
+  ],
+  "scope": "Fresh technical channel, encoding, mono-compatibility and waveform checks. This is not a new subjective listening pass.",
+  "directListeningPerformed": false,
+  "notes": [
+    "Source AAC bitrate covers eight channels; it must not be interpreted as stereo-only bitrate.",
+    "A PCM intermediate preserves decoded samples but does not recover information removed by the original AAC recording.",
+    "Correlation identifies shared content and alignment; it does not alone rank perceptual quality."
+  ],
+  "officialEncodingGuidance": "https://support.google.com/youtube/answer/1722171",
+  "conclusion": "Retain the primary programme stereo feed for all 13 spoken cuts. The available original recordings are 48 kHz AAC; no uncompressed original programme master is present. The secondary recording provides the same programme feed plus separate microphone channels, rather than a higher-fidelity complete mix. The cuts preserve the selected programme feed through lossless 24-bit stereo intermediates and AAC-LC delivery encodes configured at 384 kbps.",
+  "checks": {
+    "spokenDeliveries": 13,
+    "freshFinalMasterWaveformWindows": 39,
+    "sourceChannelComparisonWindows": 19,
+    "minimumMasterToIntermediateCorrelation": 0.9999872,
+    "maximumAlignmentDifferenceSeconds": 0.0,
+    "allFinalAudio48kStereoAACLC": true,
+    "allSpokenIntermediates24bitPCM": true,
+    "sampledProgrammeChannelClippedSamples": 0,
+    "moodFinalMixAndSourcePreservation": "exports/mood-qc-v07.json"
+  },
+  "limitations": [
+    "This is a technical source and delivery audit combined with the user’s accepted playback review; no direct listening by the assistant is claimed.",
+    "Separate microphone tracks could support a different creative remix, but are not an identified higher-quality complete programme master.",
+    "Final AAC average bitrates vary with signal complexity; 384 kbps is the encoder target, not a claim that every second or file averages that rate."
+  ]
+}

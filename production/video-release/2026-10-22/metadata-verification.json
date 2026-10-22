@@ -1,0 +1,96 @@
+{
+  "checkedAt": "2026-10-22T13:33:04.996Z",
+  "comparison": "Saved title and description read through YouTube Studio; surrounding whitespace ignored.",
+  "publicMaterialsSource": "https://www.sdlcai.org/2026/schedule/",
+  "publicSlideLinksRefreshedFor": [
+    "ohans-talk",
+    "tapio-talk",
+    "research-panel"
+  ],
+  "items": [
+    {
+      "id": "mood",
+      "youtubeId": "XnokXHcg3Ls",
+      "titleMatches": true,
+      "descriptionMatches": true
+    },
+    {
+      "id": "mo-talk",
+      "youtubeId": "l8quIPHmakI",
+      "titleMatches": true,
+      "descriptionMatches": true
+    },
+    {
+      "id": "ohans-talk",
+      "youtubeId": "xi1AY-G3Ycc",
+      "titleMatches": true,
+      "descriptionMatches": true
+    },
+    {
+      "id": "jenni-talk",
+      "youtubeId": "1bT23mhlzGg",
+      "titleMatches": true,
+      "descriptionMatches": true
+    },
+    {
+      "id": "tapio-talk",
+      "youtubeId": "dGI7WlgL-JM",
+      "titleMatches": true,
+      "descriptionMatches": true
+    },
+    {
+      "id": "joongi-talk",
+      "youtubeId": "JTTq9MNefTU",
+      "titleMatches": true,
+      "descriptionMatches": true
+    },
+    {
+      "id": "research-panel",
+      "youtubeId": "HAhvn3aAbDQ",
+      "titleMatches": true,
+      "descriptionMatches": true
+    },
+    {
+      "id": "jussi-talk",
+      "youtubeId": "VpoYC7DaOjs",
+      "titleMatches": true,
+      "descriptionMatches": true
+    },
+    {
+      "id": "viljami-talk",
+      "youtubeId": "SL6QypO5BxA",
+      "titleMatches": true,
+      "descriptionMatches": true
+    },
+    {
+      "id": "sini-talk",
+      "youtubeId": "tOGTv8fR4Wc",
+      "titleMatches": true,
+      "descriptionMatches": true
+    },
+    {
+      "id": "industry-panel",
+      "youtubeId": "q-4H3JMNDE4",
+      "titleMatches": true,
+      "descriptionMatches": true
+    },
+    {
+      "id": "zak-talk",
+      "youtubeId": "gVXx5fOUXbs",
+      "titleMatches": true,
+      "descriptionMatches": true
+    },
+    {
+      "id": "waseem-talk",
+      "youtubeId": "o_WaA-EaBqo",
+      "titleMatches": true,
+      "descriptionMatches": true
+    },
+    {
+      "id": "final-panel",
+      "youtubeId": "r3WhRG2l3ho",
+      "titleMatches": true,
+      "descriptionMatches": true
+    }
+  ]
+}

@@ -4,6 +4,7 @@ import path from "node:path";
 import { raw } from "gustwind/htmlisp";
 import { Renderer, marked } from "marked";
 import schedule from "./data/schedule.json" with { type: "json" };
+import recordings from "./data/recordings.json" with { type: "json" };
 import discussionTables from "./data/discussion-tables.json" with { type: "json" };
 import venueSigns from "../assets/slides/venue-signs-manifest.json" with { type: "json" };
 import music from "./data/music.json" with { type: "json" };
@@ -91,6 +92,7 @@ function init() {
       })),
     organizerItems: () => organizerSeed.filter((person) => person.visible),
     scheduleItems: () => scheduleItems,
+    recordings: () => recordings,
     homeSpeakerGroups: () =>
       scheduleItems
         .filter((item) => item.talks?.length)
@@ -548,6 +550,9 @@ function getScheduleItems(speakersById) {
     return {
       ...item,
       talks,
+      recording: recordings.sessions.find(
+        ({ sessionId, published }) => published && sessionId === item.id,
+      ),
       anchor,
       anchorHref: `#${anchor}`,
       scheduleHref: `/2026/schedule/#${anchor}`,

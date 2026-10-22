@@ -1067,6 +1067,9 @@
       },
       "organizerItems": {
         "operation": "organizerItems"
+      },
+      "recordings": {
+        "operation": "recordings"
       }
     },
     "context": {
@@ -1090,6 +1093,9 @@
           },
           "scheduleItems": {
             "operation": "scheduleItems"
+          },
+          "recordings": {
+            "operation": "recordings"
           }
         },
         "context": {

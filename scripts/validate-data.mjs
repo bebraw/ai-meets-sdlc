@@ -62,6 +62,7 @@ validateSchedule(
   workspaceOnlySpeakerIds,
 );
 await validateSponsors(sponsors);
+validateRecordings(await readJson(path.resolve("site/data/recordings.json")));
 
 if (errors.length) {
   console.error("Data validation failed:");
@@ -74,6 +75,46 @@ if (errors.length) {
 }
 
 console.log("Data validation passed.");
+
+function validateRecordings(recordings) {
+  if (!isObject(recordings) || !Array.isArray(recordings.sessions)) {
+    errors.push("site/data/recordings.json must contain a sessions array.");
+    return;
+  }
+
+  const watchUrl = /^https:\/\/www\.youtube\.com\/watch\?v=[A-Za-z0-9_-]{11}$/;
+  if (!watchUrl.test(recordings.highlightsUrl)) {
+    errors.push("site/data/recordings.json has an invalid highlights URL.");
+  }
+  if (
+    !/^https:\/\/www\.youtube\.com\/playlist\?list=[A-Za-z0-9_-]+$/.test(
+      recordings.playlistUrl,
+    )
+  ) {
+    errors.push("site/data/recordings.json has an invalid playlist URL.");
+  }
+
+  const sessionIds = new Set(
+    Array.isArray(schedule?.items) ? schedule.items.map(({ id }) => id) : [],
+  );
+  const seen = new Set();
+  for (const recording of recordings.sessions) {
+    if (
+      !isObject(recording) ||
+      !sessionIds.has(recording.sessionId) ||
+      seen.has(recording.sessionId) ||
+      typeof recording.published !== "boolean" ||
+      !watchUrl.test(recording.url) ||
+      !isNonEmptyString(recording.label)
+    ) {
+      errors.push(
+        "site/data/recordings.json has an invalid or duplicate session recording.",
+      );
+      continue;
+    }
+    seen.add(recording.sessionId);
+  }
+}
 
 async function readJson(filePath) {
   try {
