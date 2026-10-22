@@ -13,6 +13,13 @@ under that year. The main navigation links to the archive, contact details and
 email updates. Former resource URLs permanently redirect into `/2026/`, keeping
 query parameters and existing talk/section anchors intact.
 
+The official channel is <https://www.youtube.com/@SDLCAI>, linked from the
+homepage, 2026 archive, programme and shared footer. It is also included in
+the site's identity links and event structured data. Channel branding sources
+and exports are in [the YouTube asset package](assets/youtube/README.md).
+When edited videos are published, add their URLs through the existing admin
+recording-link controls so each talk's public materials include its recording.
+
 Speaker materials still come from canonical D1 records and private R2 storage;
 archiving does not change sharing permission or publication state. Admin tools,
 speaker workspaces, registration access and public media APIs keep their URLs.

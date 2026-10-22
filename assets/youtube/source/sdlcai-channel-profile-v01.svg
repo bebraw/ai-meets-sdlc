@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800" role="img" aria-labelledby="title description">
+  <title id="title">SDLCAI channel picture</title>
+  <desc id="description">Official SDLCAI mark with padding to keep the entire logo visible in YouTube's circular profile crop.</desc>
+  <rect width="800" height="800" fill="#f6f4ef" />
+  <image x="120" y="120" width="560" height="560" href="../../logo.svg" />
+</svg>

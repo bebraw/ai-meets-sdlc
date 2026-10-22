@@ -1,5 +1,21 @@
 # SDLCAI 2026 YouTube stream package
 
+## Channel branding
+
+The evergreen channel graphics use the official logo and Finlandica fonts:
+
+- `exports/sdlcai-channel-banner-v01.png` — 2560 × 1440 banner, with essential
+  content inside the central all-devices crop.
+- `exports/sdlcai-channel-profile-v01.png` — 800 × 800 picture, padded for the
+  circular profile crop.
+- `exports/sdlcai-channel-watermark-v01.png` — 150 × 150 video watermark, set
+  to appear at the end of videos.
+
+Editable SVGs are in `source/` and are included in `npm run youtube:export`.
+The channel uses the SDLCAI name and `@SDLCAI` handle, with links to
+<https://sdlcai.org/> and <https://sdlcai.org/2026/>. The business contact matches
+the public contact page: `info@futurefrontend.com`.
+
 ## Recommended title
 
 SDLCAI 2026 — AI Meets SDLC | Live from Aalto University

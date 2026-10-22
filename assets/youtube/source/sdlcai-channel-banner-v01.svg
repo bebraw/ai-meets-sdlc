@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 2560 1440" role="img" aria-labelledby="title description">
+  <title id="title">SDLCAI — AI meets SDLC</title>
+  <desc id="description">SDLCAI channel banner. Practice, research and conversation about AI and software development. All essential content is inside the central mobile-safe area.</desc>
+  <defs>
+    <style>
+      @font-face { font-family: "Finlandica Headline"; src: url("../../fonts/FinlandicaHeadline-Black.woff2"); font-weight: 900; }
+      @font-face { font-family: "Finlandica Text"; src: url("../../fonts/FinlandicaText-Regular.woff2"); font-weight: 400; }
+      @font-face { font-family: "Finlandica Text"; src: url("../../fonts/FinlandicaText-Bold.woff2"); font-weight: 700; }
+      text { fill: #f6f4ef; font-family: "Finlandica Text", sans-serif; }
+      .headline { font-family: "Finlandica Headline", sans-serif; font-weight: 900; }
+      .label { font-weight: 700; letter-spacing: 2px; }
+    </style>
+    <pattern id="halftone" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.7" fill="#f6f4ef" opacity=".16" /></pattern>
+  </defs>
+  <rect width="2560" height="1440" fill="#101010" />
+  <circle cx="120" cy="720" r="490" fill="url(#halftone)" />
+  <circle cx="2530" cy="720" r="340" fill="url(#halftone)" />
+  <image x="574" y="600" width="240" height="240" href="../../logo.svg" />
+  <text x="874" y="622" font-size="24" class="label" data-safe="540 550 1480 340">SEMINARS ON AI + SOFTWARE DEVELOPMENT</text>
+  <text x="866" y="751" font-size="126" class="headline" data-safe="540 550 1480 340">AI MEETS SDLC.</text>
+  <text x="874" y="811" font-size="28" class="label" fill-opacity=".75" data-safe="540 550 1480 340">PRACTICE + RESEARCH + CONVERSATION</text>
+  <text x="874" y="858" font-size="27" data-safe="540 550 1480 340">sdlcai.org</text>
+</svg>

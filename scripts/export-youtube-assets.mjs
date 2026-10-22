@@ -10,6 +10,21 @@ const outputDir = path.join(rootDir, "assets", "youtube", "exports");
 
 const assets = [
   {
+    filename: "sdlcai-channel-banner-v01.svg",
+    width: 2560,
+    height: 1440,
+  },
+  {
+    filename: "sdlcai-channel-profile-v01.svg",
+    width: 800,
+    height: 800,
+  },
+  {
+    filename: "sdlcai-channel-watermark-v01.svg",
+    width: 150,
+    height: 150,
+  },
+  {
     filename: "sdlcai-2026-thumbnail.svg",
     width: 3840,
     height: 2160,
