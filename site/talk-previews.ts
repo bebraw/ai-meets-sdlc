@@ -1,5 +1,6 @@
 // Build-time only. These editorial drafts belong exclusively to protected admin routes.
 import library from "../output/video-analysis/2026-10-22/content-library.json" with { type: "json" };
+import { getTalkGraphics, talkGraphicPackUrl } from "./talk-graphics.ts";
 
 const basePath = "/admin/talk-previews/";
 const sourceTalks = library.items.filter((item) => item.kind === "talk");
@@ -17,6 +18,9 @@ function sourceUrl(value: string): string {
 }
 
 function getTalkCards() {
+  const graphics = new Map(
+    getTalkGraphics().map((graphic) => [graphic.id, graphic]),
+  );
   return sourceTalks.map((talk, index) => {
     if (!talk.talkUrl) throw new Error(`Missing programme link: ${talk.id}`);
     const programme = new URL(talk.talkUrl);
@@ -34,6 +38,7 @@ function getTalkCards() {
       summary: talk.shortSummary,
       topics: talk.topics.map((label) => ({ label })),
       previewLabel: `Read preview: ${talk.officialTitle}`,
+      graphic: graphics.get(talk.id)!,
     };
   });
 }
@@ -45,6 +50,7 @@ export function getTalkPreviews() {
   return {
     summary: `${items.length} talks · ${sourceTalks.reduce((total, talk) => total + talk.takeaways.length, 0)} timestamped key points`,
     items,
+    graphicPackUrl: talkGraphicPackUrl,
   };
 }
 

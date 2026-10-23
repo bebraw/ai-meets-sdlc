@@ -69,6 +69,83 @@
         </ul>
       </div>
     </header>
+    <section class="border-b border-ink" aria-labelledby="talk-graphic-heading">
+      <div class="mx-auto max-w-7xl px-5 py-8 md:px-8 md:py-12">
+        <h2
+          id="talk-graphic-heading"
+          class="font-headline text-3xl font-black uppercase"
+        >
+          Takeaway graphic
+        </h2>
+        <p class="mt-3 max-w-3xl leading-7 text-muted">
+          A draft for your article or social post. Review these three selected
+          takeaways alongside the full summary and qualifications before
+          sharing.
+        </p>
+        <figure class="mt-6">
+          <picture>
+            <source
+              media="(max-width: 639px)"
+              &srcset="talk.graphic.portrait.src"
+              width="1080"
+              height="1350"
+            />
+            <img
+              class="h-auto w-full border border-ink"
+              &src="talk.graphic.landscape.src"
+              &alt="talk.graphic.alt"
+              width="1200"
+              height="630"
+              loading="lazy"
+              decoding="async"
+              data-talk-graphic
+            />
+          </picture>
+          <figcaption class="mt-3 text-sm leading-6 text-muted">
+            Three paraphrased takeaways, with timestamps from the final
+            recording.
+          </figcaption>
+        </figure>
+        <div class="mt-5 flex flex-wrap gap-3">
+          <noop &foreach="talk.graphic.assets as asset">
+            <a
+              class="inline-flex min-h-11 items-center border border-ink px-4 py-3 text-sm font-bold transition hover:bg-ink hover:text-paper"
+              &href="asset.src"
+              &children="asset.downloadLabel"
+              download
+              data-talk-graphic-download
+            ></a>
+          </noop>
+          <a
+            class="inline-flex min-h-11 items-center px-3 py-2 font-bold underline underline-offset-4"
+            &href="talk.graphic.copyUrl"
+            download
+            >Download post copy &amp; alt text</a
+          >
+        </div>
+        <details class="mt-5 border-t border-ink/30 pt-4">
+          <summary class="min-h-11 cursor-pointer py-2 font-bold">
+            Read post copy &amp; alt text
+          </summary>
+          <div class="mt-4 grid gap-6 lg:grid-cols-2">
+            <div class="min-w-0">
+              <h3 class="font-bold">Draft post copy</h3>
+              <p
+                class="mt-3 break-words whitespace-pre-line leading-7 text-muted"
+                &children="talk.graphic.caption"
+              ></p>
+            </div>
+            <div class="min-w-0">
+              <h3 class="font-bold">Image alt text</h3>
+              <p
+                class="mt-3 break-words leading-7 text-muted"
+                &children="talk.graphic.alt"
+              ></p>
+            </div>
+          </div>
+        </details>
+      </div>
+    </section>
     <div
       class="mx-auto grid max-w-7xl gap-12 px-5 py-10 md:px-8 md:py-16 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-16"
     >

@@ -78,6 +78,20 @@ Review wording, context and source passages before any public release; exact
 quotation candidates and private analysis artifacts are not included in these
 views. `npm run content:browser-check` covers the inventory and talk previews.
 
+Each preview also includes a branded takeaway graphic with the existing speaker
+portrait, three sourced paraphrases and a recording reference. Download a
+1200 × 630 landscape PNG or 1080 × 1350 portrait PNG, plus draft post copy and
+alt text. The preview index offers all twenty images and ten text handoffs as a
+ZIP. All downloads stay under `/admin/talk-previews/` and require admin access.
+These are editorial drafts for review, not automatically published social posts.
+
+Edit `production/talk-graphics/2026/cards.json`, then run
+`npm run talks:graphics:export` to regenerate the PNGs and manifest. The export
+uses code-native layouts, brand fonts and the repository's speaker portraits.
+Commit the exports and manifest with the source edits. Builds verify source
+and image hashes, dimensions and file budgets before copying the files into
+protected routes; production builds do not need a browser to render the images.
+
 ## Requirements
 
 - Node 24 or newer. The repository includes `.node-version` for Cloudflare

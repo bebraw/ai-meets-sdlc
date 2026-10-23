@@ -21,6 +21,7 @@
     "site/scripts/**/*.ts",
     "site/content-inventory.ts",
     "site/talk-previews.ts",
+    "site/talk-graphics.ts",
     "worker/**/*.ts",
     "worker-configuration.d.ts"
   ]

@@ -23,6 +23,12 @@
         href="/admin/content-inventory/"
         >Back to content inventory</a
       >
+      <a
+        class="inline-flex min-h-11 w-fit items-center border border-paper px-4 py-3 text-sm font-bold transition hover:bg-paper hover:text-ink"
+        &href="previews.graphicPackUrl"
+        download
+        >Download all 20 graphics &amp; post copy (ZIP)</a
+      >
     </div>
   </section>
   <section
@@ -51,6 +57,16 @@
               <span &children="talk.duration"></span> recording
             </p>
           </div>
+          <img
+            class="mt-5 h-auto w-full border border-ink/30"
+            &src="talk.graphic.landscape.src"
+            &alt="talk.graphic.alt"
+            width="1200"
+            height="630"
+            loading="lazy"
+            decoding="async"
+            data-talk-graphic-thumbnail
+          />
           <p class="mt-5 font-bold" &children="talk.speakers"></p>
           <h3
             class="mt-2 font-headline text-3xl font-black uppercase leading-tight"

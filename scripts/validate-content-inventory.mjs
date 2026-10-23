@@ -4,6 +4,7 @@ import { chromium } from "playwright";
 import { closeBrowserServer } from "./layout-browser.mjs";
 import { createWorkerFixture } from "../test/helpers/worker-fixture.mjs";
 import { getTalkPreviews } from "../site/talk-previews.ts";
+import { unzipSync } from "fflate";
 
 const fixture = await createWorkerFixture({
   vars: {
@@ -195,6 +196,29 @@ try {
     .click();
   assert.equal(await page.locator("[data-talk-preview-card]").count(), 10);
   await page
+    .locator("[data-talk-graphic-thumbnail]")
+    .evaluateAll(async (images) => {
+      for (const image of images) image.loading = "eager";
+      await Promise.all(images.map((image) => image.decode()));
+    });
+  const packDownload = page.waitForEvent("download");
+  await page
+    .getByRole("link", {
+      name: "Download all 20 graphics & post copy (ZIP)",
+      exact: true,
+    })
+    .click();
+  const pack = await packDownload;
+  await pack.saveAs(".cache/content-inventory-review/takeaway-graphics.zip");
+  assert.equal(
+    Object.keys(
+      unzipSync(
+        await readFile(".cache/content-inventory-review/takeaway-graphics.zip"),
+      ),
+    ).length,
+    30,
+  );
+  await page
     .getByRole("link", {
       name: "Read preview: 1978: The Last Good Year",
       exact: true,
@@ -206,7 +230,31 @@ try {
     "https://www.youtube.com/watch?v=l8quIPHmakI&t=403s",
   );
   assert.equal(await page.locator("[data-talk-chapter]").count(), 10);
+  const pngDownload = page.waitForEvent("download");
+  await page
+    .getByRole("link", { name: "Portrait PNG · 1080 x 1350", exact: true })
+    .click();
+  await (
+    await pngDownload
+  ).saveAs(".cache/content-inventory-review/takeaway-portrait.png");
+  const png = await readFile(
+    ".cache/content-inventory-review/takeaway-portrait.png",
+  );
+  assert.equal(png.readUInt32BE(16), 1080);
+  assert.equal(png.readUInt32BE(20), 1350);
+  const copyDownload = page.waitForEvent("download");
+  await page
+    .getByRole("link", { name: "Download post copy & alt text", exact: true })
+    .click();
+  await (
+    await copyDownload
+  ).saveAs(".cache/content-inventory-review/takeaway-copy.txt");
+  assert.match(
+    await readFile(".cache/content-inventory-review/takeaway-copy.txt", "utf8"),
+    /ALT TEXT[\s\S]*SOURCE PASSAGES[\s\S]*CONTEXT & QUALIFICATIONS/,
+  );
   // Every talk has its own deep link and preserves the same reading structure.
+  await page.setViewportSize({ width: 320, height: 1000 });
   for (const talk of getTalkPreviews().items) {
     await page.goto(origin + talk.href);
     assert.equal(await page.locator("h1").textContent(), talk.title);
@@ -216,6 +264,16 @@ try {
       "noindex,nofollow,noarchive",
     );
     await page.setViewportSize({ width: 320, height: 1000 });
+    await page.locator("[data-talk-graphic]").evaluate(async (image) => {
+      image.loading = "eager";
+      await image.decode();
+    });
+    assert.match(
+      await page
+        .locator("[data-talk-graphic]")
+        .evaluate((image) => image.currentSrc),
+      /summary-portrait\.png$/,
+    );
     assert.equal(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth,
@@ -229,8 +287,21 @@ try {
     "/admin/talk-previews/genai-software-engineering/",
   ]) {
     await page.goto(origin + path);
+    if (path.endsWith("genai-software-engineering/"))
+      await page
+        .getByText("Read post copy & alt text", { exact: true })
+        .click();
     for (const width of [320, 768, 1440]) {
       await page.setViewportSize({ width, height: 1000 });
+      if (path.endsWith("genai-software-engineering/")) {
+        await page.waitForFunction(
+          (format) =>
+            document
+              .querySelector("[data-talk-graphic]")
+              .currentSrc.endsWith(`summary-${format}.png`),
+          width < 640 ? "portrait" : "landscape",
+        );
+      }
       for (const theme of ["light", "dark"]) {
         const current = await page.evaluate(() =>
           document.documentElement.classList.contains("dark")

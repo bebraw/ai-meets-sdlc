@@ -1,0 +1,195 @@
+{
+  "cards": [
+    {
+      "id": "mo-talk",
+      "speakerId": "mo-khazali",
+      "headline": "Measure the bottleneck",
+      "points": [
+        {
+          "takeaway": 1,
+          "text": "Tool activity alone does not establish customer value."
+        },
+        {
+          "takeaway": 4,
+          "text": "Turn recurring mistakes into checks and shared blueprints."
+        },
+        {
+          "takeaway": 5,
+          "text": "Track flow, failures, rework and customer outcomes."
+        }
+      ]
+    },
+    {
+      "id": "ohans-talk",
+      "speakerId": "ohans-emmanuel",
+      "headline": "Keep the delivery loop connected",
+      "points": [
+        {
+          "takeaway": 1,
+          "text": "Keep intent available to implementation, QA and operations."
+        },
+        {
+          "takeaway": 4,
+          "text": "Separate implementation from QA; combine adaptive and deterministic checks."
+        },
+        {
+          "takeaway": 5,
+          "text": "Feed production findings into the next plan and review."
+        }
+      ]
+    },
+    {
+      "id": "jenni-talk",
+      "speakerId": "jenni-kylmakoski",
+      "headline": "Leaders need hands-on experience",
+      "points": [
+        {
+          "takeaway": 1,
+          "text": "Build tools for your own work and validate the outputs."
+        },
+        {
+          "takeaway": 3,
+          "text": "Give permissions, logs and recovery explicit attention."
+        },
+        {
+          "takeaway": 5,
+          "text": "Maintain shared AI assets as software products."
+        }
+      ]
+    },
+    {
+      "id": "tapio-talk",
+      "speakerId": "tapio-pitkaranta",
+      "headline": "Make discovery tangible",
+      "points": [
+        {
+          "takeaway": 2,
+          "text": "Give people a probe they can inspect and challenge."
+        },
+        {
+          "takeaway": 3,
+          "text": "Test the understanding of the problem as well as the solution."
+        },
+        {
+          "takeaway": 4,
+          "text": "As building accelerates, ideas, orchestration and validation matter more."
+        }
+      ]
+    },
+    {
+      "id": "joongi-talk",
+      "speakerId": "joongi-shin",
+      "headline": "Design for the user’s goal",
+      "points": [
+        {
+          "takeaway": 2,
+          "text": "Help people envision outcomes and express what they need."
+        },
+        {
+          "takeaway": 3,
+          "text": "Evaluate both generation and the experience of using the result."
+        },
+        {
+          "takeaway": 5,
+          "text": "Questions can help, but repetitive or irrelevant prompts obstruct exploration."
+        }
+      ]
+    },
+    {
+      "id": "jussi-talk",
+      "speakerId": "jussi-hacklin",
+      "headline": "Support adoption around the tools",
+      "points": [
+        {
+          "takeaway": 1,
+          "text": "Work with legal specialists on regulatory and contract restrictions."
+        },
+        {
+          "takeaway": 2,
+          "text": "Back leadership expectations with guidance, training and community."
+        },
+        {
+          "takeaway": 3,
+          "text": "Give tools and quotas clear ownership and visibility."
+        }
+      ]
+    },
+    {
+      "id": "viljami-talk",
+      "speakerId": "viljami-kuosmanen",
+      "headline": "More proposals need more review",
+      "points": [
+        {
+          "takeaway": 1,
+          "text": "Put agents where the work and its context already happen."
+        },
+        {
+          "takeaway": 4,
+          "text": "Separate contribution, merge, CI and production permissions."
+        },
+        {
+          "takeaway": 5,
+          "text": "Contribution counts do not establish a delivery-speed improvement."
+        }
+      ]
+    },
+    {
+      "id": "sini-talk",
+      "speakerId": "sini-tistelgren",
+      "headline": "A prototype still needs a production path",
+      "points": [
+        {
+          "takeaway": 1,
+          "text": "Include architecture, access, release, operations and support."
+        },
+        {
+          "takeaway": 4,
+          "text": "Make control ownership and approval boundaries explicit."
+        },
+        {
+          "takeaway": 5,
+          "text": "Start with a bounded value stream and measure accepted delivery."
+        }
+      ]
+    },
+    {
+      "id": "zak-talk",
+      "speakerId": "zak-allal",
+      "photoPosition": "100% 24%",
+      "headline": "Make experiments cheap to repeat",
+      "points": [
+        {
+          "takeaway": 1,
+          "text": "The cost of repetition shapes which questions are feasible."
+        },
+        {
+          "takeaway": 2,
+          "text": "Preserve configurations and invest in orchestration."
+        },
+        {
+          "takeaway": 3,
+          "text": "When results are unstable, examine the premise and methodology."
+        }
+      ]
+    },
+    {
+      "id": "waseem-talk",
+      "speakerId": "muhammad-waseem",
+      "headline": "Understanding remains the hard part",
+      "points": [
+        {
+          "takeaway": 1,
+          "text": "Check whether a change preserves the wider system."
+        },
+        {
+          "takeaway": 3,
+          "text": "Record decision reasons, constraints and rejected options."
+        },
+        {
+          "takeaway": 5,
+          "text": "Combine deterministic checks with human judgement and value gates."
+        }
+      ]
+    }
+  ]
+}

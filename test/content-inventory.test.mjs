@@ -3,6 +3,8 @@ import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 import { getContentInventory } from "../site/content-inventory.ts";
 import { getTalkPreviews, getTalkPreview } from "../site/talk-previews.ts";
+import { getTalkGraphics, talkGraphicPackUrl } from "../site/talk-graphics.ts";
+import { unzipSync } from "fflate";
 import { createWorkerFixture } from "./helpers/worker-fixture.mjs";
 
 test("inventory preserves published sources, candidate status and attribution limits", async () => {
@@ -109,6 +111,48 @@ test("talk companions preserve sourced key points, context and editorial status"
   assert.throws(() => getTalkPreview("missing-talk"), /Unknown talk preview/);
 });
 
+test("takeaway graphics preserve attribution, source passages and review context", async () => {
+  const library = JSON.parse(
+    await readFile(
+      "output/video-analysis/2026-10-22/content-library.json",
+      "utf8",
+    ),
+  );
+  const graphics = getTalkGraphics();
+  assert.equal(graphics.length, 10);
+  for (const graphic of graphics) {
+    const talk = library.items.find((item) => item.id === graphic.id);
+    assert.ok(talk.speakerNames.includes(graphic.speaker));
+    assert.equal(graphic.points.length, 3);
+    assert.match(graphic.alt, /paraphrased/i);
+    assert.match(graphic.handoff, /EDITORIAL DRAFT/);
+    for (const point of graphic.points) {
+      assert.equal(
+        point.sourceUrl,
+        talk.takeaways[point.sourceIndex - 1].youtubeUrl,
+      );
+      assert.ok(graphic.handoff.includes(point.sourceUrl));
+    }
+    for (const qualification of talk.editorialCaveats)
+      assert.ok(graphic.handoff.includes(qualification));
+    assert.ok(
+      graphic.assets.every((asset) =>
+        asset.src.startsWith(`/admin/talk-previews/${graphic.slug}/`),
+      ),
+    );
+    assert.equal(graphic.landscape.width, 1200);
+    assert.equal(graphic.portrait.height, 1350);
+  }
+  assert.match(
+    graphics.find((graphic) => graphic.id === "viljami-talk").caption,
+    /do not establish a delivery-speed improvement/,
+  );
+  assert.match(
+    graphics.find((graphic) => graphic.id === "zak-talk").handoff,
+    /do not imply.*regulatory approval/,
+  );
+});
+
 test("editorial inventory and talk previews stay behind admin authentication and out of public scripts", async (t) => {
   const fixture = await createWorkerFixture({
     vars: {
@@ -128,6 +172,13 @@ test("editorial inventory and talk previews stay behind admin authentication and
     "/admin/talk-previews/genai-software-engineering/index.html",
     "/%61dmin/talk-previews/genai-software-engineering/",
     "/admin%2Ftalk-previews/genai-software-engineering/",
+    ...getTalkGraphics().flatMap((graphic) => [
+      ...graphic.assets.map((asset) => asset.src),
+      graphic.copyUrl,
+    ]),
+    talkGraphicPackUrl,
+    "/%61dmin/talk-previews/genai-software-engineering/summary-landscape.png",
+    "/admin%2Ftalk-previews/genai-software-engineering/summary-portrait.png",
   ]) {
     let response = await fixture.worker.fetch(`https://sdlcai.org${pathname}`, {
       redirect: "manual",
@@ -186,6 +237,43 @@ test("editorial inventory and talk previews stay behind admin authentication and
     assert.equal((html.match(/data-talk-key-point/g) ?? []).length, 5);
     assert.match(html, /Private editorial preview/);
   }
+  const graphicHeaders = {
+    authorization: `Basic ${Buffer.from("inventory-admin:local-inventory-password").toString("base64")}`,
+  };
+  for (const graphic of getTalkGraphics()) {
+    for (const asset of graphic.assets) {
+      const image = await fixture.worker.fetch(
+        `https://sdlcai.org${asset.src}`,
+        { headers: graphicHeaders },
+      );
+      assert.equal(image.status, 200);
+      assert.match(image.headers.get("content-type"), /image\/png/);
+      assert.match(image.headers.get("cache-control"), /no-store/);
+      const png = Buffer.from(await image.arrayBuffer());
+      assert.equal(png.subarray(0, 8).toString("hex"), "89504e470d0a1a0a");
+      assert.equal(png.readUInt32BE(16), asset.width);
+      assert.equal(png.readUInt32BE(20), asset.height);
+    }
+  }
+  const pack = await fixture.worker.fetch(
+    `https://sdlcai.org${talkGraphicPackUrl}`,
+    { headers: graphicHeaders },
+  );
+  assert.equal(pack.status, 200);
+  assert.match(pack.headers.get("cache-control"), /no-store/);
+  const entries = unzipSync(new Uint8Array(await pack.arrayBuffer()));
+  assert.equal(
+    Object.keys(entries).filter((key) => key.endsWith(".png")).length,
+    20,
+  );
+  assert.equal(
+    Object.keys(entries).filter((key) => key.endsWith(".txt")).length,
+    10,
+  );
+  assert.match(
+    new TextDecoder().decode(entries["mo-talk-copy.txt"]),
+    /EDITORIAL DRAFT/,
+  );
   const privatePhrase =
     "The deployment near miss and the permissions it exposed";
   for (const file of await readdir("build/assets")) {
