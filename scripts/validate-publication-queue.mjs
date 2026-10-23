@@ -119,7 +119,7 @@ try {
   await page.getByText("Compare the saved version", { exact: true }).click();
   assert.ok(
     (
-      await page.locator("[data-publication-conflict] pre").textContent()
+      await page.locator("[data-publication-conflict] dl").textContent()
     ).includes("Saved second-device version"),
   );
   await page

@@ -624,6 +624,48 @@ if (root) {
         if (error.current) {
           const current = error.current;
           const details = el("details");
+          const comparison = el("dl", "", "mt-4 grid gap-4");
+          const savedFields: Array<[string, string]> = [
+            [
+              current.channel === "newsletter" ? "Email subject" : "Title",
+              current.title,
+            ],
+            [
+              current.channel === "newsletter" ? "Email preheader" : "Subtitle",
+              current.subtitle,
+            ],
+            ["Listing summary", current.summary],
+            ["Draft copy", current.body],
+            ["Image alt text", current.altText],
+            ["Editorial notes", current.notes],
+            [
+              "Status",
+              publicationStatuses.find(
+                (status) => status.value === current.status,
+              )!.label,
+            ],
+            ["Publication date", current.publicationDate],
+            ["Publication URL", current.publicationUrl],
+          ];
+          if (current.assets.length)
+            savedFields.push([
+              "Graphic format",
+              current.graphicFormat === "portrait" ? "Portrait" : "Landscape",
+            ]);
+          for (const [label, value] of savedFields) {
+            if (!value) continue;
+            const row = el("div", "", "min-w-0");
+            append(
+              row,
+              el("dt", label, "text-sm font-bold"),
+              el(
+                "dd",
+                value,
+                "mt-1 whitespace-pre-wrap break-words text-sm leading-6",
+              ),
+            );
+            append(comparison, row);
+          }
           append(
             details,
             el(
@@ -631,11 +673,7 @@ if (root) {
               "Compare the saved version",
               "min-h-11 cursor-pointer py-2 font-bold",
             ),
-            el(
-              "pre",
-              JSON.stringify(editable(current), null, 2),
-              "mt-3 max-h-96 overflow-auto whitespace-pre-wrap break-words text-sm leading-6",
-            ),
+            comparison,
           );
           append(
             conflict,
