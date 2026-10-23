@@ -79,7 +79,7 @@ quotation candidates and private analysis artifacts are not included in these
 views. `npm run content:browser-check` covers the inventory and talk previews.
 
 Each preview also includes a branded takeaway graphic with the existing speaker
-portrait, three sourced paraphrases and a recording reference. Download a
+portrait, three sourced paraphrases, source timestamps and `sdlcai.org`. Download a
 1200 × 630 landscape PNG or 1080 × 1350 portrait PNG, plus draft post copy and
 alt text. The preview index offers all twenty images and ten text handoffs as a
 ZIP. All downloads stay under `/admin/talk-previews/` and require admin access.

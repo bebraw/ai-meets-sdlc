@@ -1,146 +1,146 @@
 {
   "schemaVersion": 1,
-  "inputVersion": "7ff1e9e3e41084ae9dbc1d631fcc23044d1295c9718b7104f1709bd29db80bdb",
+  "inputVersion": "8d44465a44728670eb3adc8a44bcb72eed37ad27d90fb2f0ed6b6f3790e6a169",
   "assets": [
     {
       "filename": "mo-talk-landscape.png",
       "width": 1200,
       "height": 630,
-      "bytes": 93370,
-      "sha256": "4b16e94da9ad38754c1680dcf39a4b89f68cc8685476e3d709e5098d0409b7f7"
+      "bytes": 89840,
+      "sha256": "8ee88668bdfc5315e359f81f779cf1912682ff3dfbfbbfb12579585208ce9f5d"
     },
     {
       "filename": "mo-talk-portrait.png",
       "width": 1080,
       "height": 1350,
-      "bytes": 148021,
-      "sha256": "52870e6dbbd3179ba1e8236feecaeb541a0f0dc1804bdf12bb9f73d7e253ad7f"
+      "bytes": 143515,
+      "sha256": "7f1d0f9af141a60ab79cf056f2ad11be35ef6cfce837d5475e326c4643e8c7dd"
     },
     {
       "filename": "ohans-talk-landscape.png",
       "width": 1200,
       "height": 630,
-      "bytes": 107993,
-      "sha256": "eb13f2df7a6ee84a842d6e27a8767724cba2c16f46e88d3072805239842c9b05"
+      "bytes": 103832,
+      "sha256": "007e2c3e4f25da0c735273010793e45d6adac064bd1fe6fa5a7392c8a2fc3bab"
     },
     {
       "filename": "ohans-talk-portrait.png",
       "width": 1080,
       "height": 1350,
-      "bytes": 166299,
-      "sha256": "b70cde837a03367700d9c5a135abee71cae6e5eb4e2d68339fda282fdec6224b"
+      "bytes": 160657,
+      "sha256": "f831ebbaffedaf170f5b076954dd0bd20abe079da97cf446c4a185790c491809"
     },
     {
       "filename": "jenni-talk-landscape.png",
       "width": 1200,
       "height": 630,
-      "bytes": 108140,
-      "sha256": "7b6738a27ea6d48504da5080bf474e8748de7f28e4860ca189905956767b47c5"
+      "bytes": 104016,
+      "sha256": "4c859f87ca167db678f5db4846e09d7e654ed2be1fcde172c4394f7e41cf50d2"
     },
     {
       "filename": "jenni-talk-portrait.png",
       "width": 1080,
       "height": 1350,
-      "bytes": 174333,
-      "sha256": "41e01b65fe6f82edc1be328b5fa88bc8f3653bd0c8091a3b94b58db162ef26b6"
+      "bytes": 168922,
+      "sha256": "9588c9a63b00c3f966d367634ae85691b62e7a0db758812fe8d5aa0615c8b59e"
     },
     {
       "filename": "tapio-talk-landscape.png",
       "width": 1200,
       "height": 630,
-      "bytes": 111209,
-      "sha256": "aff7067cc7a2430d48705ef5ee6e7bd816836a2fb024bcce82fb9b63f21b424b"
+      "bytes": 107139,
+      "sha256": "7e2fb0f77a13203d55c0a7a8804dd3cf43075d3ad087d9d71c89ab52ee7ace5c"
     },
     {
       "filename": "tapio-talk-portrait.png",
       "width": 1080,
       "height": 1350,
-      "bytes": 175772,
-      "sha256": "54dd0c018c2603a645ec4c4181eea6580224966b5672d23dc9d50c58bb22ddb9"
+      "bytes": 170110,
+      "sha256": "cfd1d29d6755ef08afca6b09ee7b2aa680d2ef1db42d25dcf66fa2a036f7d143"
     },
     {
       "filename": "joongi-talk-landscape.png",
       "width": 1200,
       "height": 630,
-      "bytes": 112639,
-      "sha256": "546f1409815bcaf82c54c42eb3c0c77522d10ba71c111915fe2c9c2c160e4992"
+      "bytes": 108789,
+      "sha256": "528be693991b73a645383a54501e171bb858a6022a816a268e3f367b82594744"
     },
     {
       "filename": "joongi-talk-portrait.png",
       "width": 1080,
       "height": 1350,
-      "bytes": 182504,
-      "sha256": "ec40f665e7e3d858f6b2df0c2335339933d599eab0010df23a4eac7559e0744b"
+      "bytes": 185633,
+      "sha256": "f329fea3d43bbe820d8ac79ae8379c844277cbc4742e50de581a4770a6bca102"
     },
     {
       "filename": "jussi-talk-landscape.png",
       "width": 1200,
       "height": 630,
-      "bytes": 113100,
-      "sha256": "3b2d3a5c26c6cdcc1149c83bbb77d468a01f91d6470dd3ad05e2c55d96c2380b"
+      "bytes": 108567,
+      "sha256": "5b916cad6efac8d0da4c14ae5e8ff721228dea426567f81403de5395ec8bb5f9"
     },
     {
       "filename": "jussi-talk-portrait.png",
       "width": 1080,
       "height": 1350,
-      "bytes": 176901,
-      "sha256": "63be303ba76c801d9bd465fd66b40bab97a76d86619cb8aa98c4f6d7b4786006"
+      "bytes": 170974,
+      "sha256": "2750b528387cd7f80d2208617cca4fca8b0061a7e168633f5f142986fa89da25"
     },
     {
       "filename": "viljami-talk-landscape.png",
       "width": 1200,
       "height": 630,
-      "bytes": 114539,
-      "sha256": "70c707b35faaece385adb64b7222df3a9b08910c8c899d998c76542c4e2bd374"
+      "bytes": 109418,
+      "sha256": "578481b9995a11bba4207a6a74a9f6847b00a05db4413a36cfc43aa0af16d8d2"
     },
     {
       "filename": "viljami-talk-portrait.png",
       "width": 1080,
       "height": 1350,
-      "bytes": 177650,
-      "sha256": "e7be26f85fbc6d3a151e4c4878cd2ddbb28d5668f20e1c67347d025f67e1a0bd"
+      "bytes": 170564,
+      "sha256": "ac106b84f8633495d64e88de190e4c555aa4eea5fa2a9009eb4dc391f9251379"
     },
     {
       "filename": "sini-talk-landscape.png",
       "width": 1200,
       "height": 630,
-      "bytes": 109155,
-      "sha256": "f678d31cf5f48a08cd745ec5eb9fffd9862bf518c57e6b724545e3a03c7d3701"
+      "bytes": 104497,
+      "sha256": "c70531855357742fb2a0edaa392478c591c6143478d20d1d524974e479d86128"
     },
     {
       "filename": "sini-talk-portrait.png",
       "width": 1080,
       "height": 1350,
-      "bytes": 166541,
-      "sha256": "b627764f4df4d5cc178c9a9dcc164b4b59644d6b8b904ea88401c9ccc9c744c8"
+      "bytes": 160176,
+      "sha256": "fe4b0e0b9675ec8ef1a25cde8ab1112e3be3e859297a859f9c3c5b7b9fe2b2ae"
     },
     {
       "filename": "zak-talk-landscape.png",
       "width": 1200,
       "height": 630,
-      "bytes": 107574,
-      "sha256": "3738062957cdc75c562ea04ffb2c7052c192309e1c66849453393c29a6264386"
+      "bytes": 102633,
+      "sha256": "ed02cb77953393ddc6f9f0980c55d58ef351ba1e8ff2b70b6c82fd3b5beb75ad"
     },
     {
       "filename": "zak-talk-portrait.png",
       "width": 1080,
       "height": 1350,
-      "bytes": 168951,
-      "sha256": "b1067354af599b42f68ab6c6c949ebf0810305752ed4e78aa6dcac9f5a4d97b7"
+      "bytes": 162261,
+      "sha256": "5857093ff5705a57e68f8f70933391c9c45fd13214ea6125e24ad708dc155d32"
     },
     {
       "filename": "waseem-talk-landscape.png",
       "width": 1200,
       "height": 630,
-      "bytes": 112891,
-      "sha256": "798ec1dab8ce078b9aefac6f695fb2366f0ff003fe71b1299289606b418568d7"
+      "bytes": 108467,
+      "sha256": "7edb9638b1a75bc05da35c26f3d09c9c8474123d7d552f26ffa0cbca6c7128d7"
     },
     {
       "filename": "waseem-talk-portrait.png",
       "width": 1080,
       "height": 1350,
-      "bytes": 179980,
-      "sha256": "f8feb76834c66673a92a1ae29e24fc07236f0fe7eb808a900004720b1871a6a6"
+      "bytes": 174259,
+      "sha256": "525cfaa9647ae772efbfdae033c9f5cfddf27859b5c66afe0babdf881e2c47f3"
     }
   ]
 }

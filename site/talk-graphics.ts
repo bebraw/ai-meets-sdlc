@@ -44,7 +44,7 @@ export function getTalkGraphics() {
         time: `${stamp(source.start)}–${stamp(source.end)}`,
       };
     });
-    const alt = `${card.headline}. ${speaker.name} at SDLCAI 2026. Three paraphrased talk takeaways: ${points.map((point, i) => `${i + 1}. ${point.text}`).join(" ")} Full recording: ${talk.youtubeUrl}`;
+    const alt = `${card.headline}. ${speaker.name} at SDLCAI 2026. Three paraphrased talk takeaways: ${points.map((point, i) => `${i + 1}. ${point.text}`).join(" ")} sdlcai.org`;
     const caption = `${card.headline}\n\nThree takeaways from ${speaker.name} at SDLCAI 2026:\n\n${points.map((point, i) => `${i + 1}. ${point.text}`).join("\n\n")}\n\nParaphrased from “${talk.officialTitle}”. Watch the full talk: ${talk.youtubeUrl}\n\n#SDLCAI`;
     const assets = talkGraphicPresets.map((preset) => ({
       ...preset,
@@ -61,7 +61,7 @@ export function getTalkGraphics() {
       photoPosition: card.photoPosition ?? "50% 24%",
       title: talk.officialTitle,
       youtubeUrl: talk.youtubeUrl,
-      shortSource: `youtu.be/${talk.youtubeId}`,
+      siteLabel: "sdlcai.org",
       points,
       alt,
       caption,
