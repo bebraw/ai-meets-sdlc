@@ -4,6 +4,31 @@ interface BackupManifest {
   rows_hash?: string;
 }
 
+export async function backupPublicationQueue(env: Env): Promise<void> {
+  const { results: rows } = await env.INTERESTS.prepare(
+    "SELECT * FROM publication_queue ORDER BY event_id, position, id",
+  ).all();
+  const rowsHash = await sha256Hex(JSON.stringify(rows));
+  const latest = await env.INTEREST_BACKUPS.get("publications/latest.json");
+  if (latest?.customMetadata?.rows_hash === rowsHash) return;
+  const exportedAt = new Date().toISOString();
+  const key = `publications/snapshots/${rowsHash}.json`;
+  const options = {
+    httpMetadata: { contentType: "application/json" },
+    customMetadata: { rows_hash: rowsHash },
+  };
+  await env.INTEREST_BACKUPS.put(
+    key,
+    JSON.stringify({ exported_at: exportedAt, rows }),
+    options,
+  );
+  await env.INTEREST_BACKUPS.put(
+    "publications/latest.json",
+    JSON.stringify({ key, exported_at: exportedAt, rows_hash: rowsHash }),
+    options,
+  );
+}
+
 export async function backupAttendees(env: Env): Promise<void> {
   // One D1 batch captures the roster and arrival ledger in a consistent snapshot.
   // Access credentials are deliberately excluded from recovery exports.

@@ -22,6 +22,10 @@ const speakerActions: Record<string, [string, string]> = {
 };
 
 const adminActions: Record<string, [string, string]> = {
+  "/api/admin/publication-queue": [
+    "Publication queue",
+    "saved draft and tracking",
+  ],
   "/api/admin/attendees": ["Attendees", "saved"],
   "/api/admin/attendees/catering": ["Catering mappings", "saved"],
   "/api/admin/attendees/access": ["Registration access", "managed"],

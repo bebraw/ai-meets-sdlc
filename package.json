@@ -69,7 +69,8 @@
     "badges:browser-check": "node scripts/validate-badges.mjs",
     "speaker-slides:browser-check": "node scripts/validate-speaker-slides.mjs",
     "feedback:browser-check": "node scripts/validate-feedback.mjs",
-    "photos:prototypes": "node prototypes/photo-exploration/server.mjs"
+    "photos:prototypes": "node prototypes/photo-exploration/server.mjs",
+    "publication:browser-check": "node scripts/validate-publication-queue.mjs"
   },
   "engines": {
     "node": "24.x"

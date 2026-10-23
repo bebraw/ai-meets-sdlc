@@ -664,6 +664,21 @@
             "operation": "seminar"
           }
         }
+      },
+      "publication-queue": {
+        "layout": "admin-publication-queue",
+        "scripts": [
+          {
+            "name": "admin-publication-queue"
+          }
+        ],
+        "context": {
+          "meta": {
+            "title": "SDLCAI Publication Queue",
+            "description": "Prepare and track the SDLCAI 2026 posts, announcement and newsletter.",
+            "robots": "noindex,nofollow,noarchive"
+          }
+        }
       }
     }
   },

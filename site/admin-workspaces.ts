@@ -5,6 +5,13 @@ export const adminWorkspaceGroups = [
     description: "Build on the seminar archive with articles and social posts.",
     items: [
       {
+        id: "publication-queue",
+        label: "Publication queue",
+        href: "/admin/publication-queue/",
+        description:
+          "Edit the 2026 LinkedIn, announcement and newsletter drafts, review copy, and track publication.",
+      },
+      {
         id: "content-inventory",
         label: "Content inventory",
         href: "/admin/content-inventory/",

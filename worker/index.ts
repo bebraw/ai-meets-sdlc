@@ -14,6 +14,7 @@ import {
   purgeExpiredFeedback,
 } from "./feedback.ts";
 import { handleNewsletterRequest, purgeNewsletterData } from "./newsletter.ts";
+import { handlePublicationQueue } from "./publication-queue.ts";
 import { privateMailResponse } from "./mail-utils.ts";
 import { backupMailingData } from "./mail-backups.ts";
 import { runMailrelaySync } from "./mailrelay.ts";
@@ -75,6 +76,7 @@ import {
   backupPosterProposals,
   backupCanonicalSpeakerContent,
   backupAttendees,
+  backupPublicationQueue,
 } from "./backups.ts";
 import {
   establishAdminSessionForBasicAuth,
@@ -268,6 +270,8 @@ const innerHandler = {
         ? withAdminSecurityHeaders(newsletterResponse)
         : newsletterResponse;
     }
+    if (url.pathname === "/api/admin/publication-queue")
+      return handlePublicationQueue(request, env);
     const attendeeResponse = await handleAttendeesRequest(request, env);
     if (attendeeResponse) return attendeeResponse;
     if (url.pathname === "/api/admin/attendees/catering")
@@ -705,6 +709,7 @@ const innerHandler = {
       ctx.waitUntil(backupPosterProposals(env));
       ctx.waitUntil(backupCanonicalSpeakerContent(env));
       ctx.waitUntil(backupAttendees(env));
+      ctx.waitUntil(backupPublicationQueue(env));
       ctx.waitUntil(backupEventPhotoReviews(env));
       ctx.waitUntil(backupMailingData(env));
       ctx.waitUntil(backupSpeakerReceipts(env));

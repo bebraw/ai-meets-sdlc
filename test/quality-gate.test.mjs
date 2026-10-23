@@ -78,6 +78,7 @@ test("CI browser groups cover every browser check exactly once", () => {
   const expected = [
     "activity:browser-check",
     "content:browser-check",
+    "publication:browser-check",
     "qa:browser-check",
     "attendees:browser-check",
     "dinner:browser-check",

@@ -730,3 +730,29 @@ that could resurrect deleted records or overwrite newer reviews.
 Automated tests exercise backup deduplication, changes within one day, failed
 writes, missing files, deletion handling, and restoring SQL plus encrypted file
 bytes. No new bucket, binding, secret, or migration is required for the backup job.
+
+## Publication queue
+
+`/admin/publication-queue/` edits the five prepared 2026 distribution drafts through
+the protected `GET` and `PUT /api/admin/publication-queue` endpoint. Migration 0042
+seeds the three LinkedIn posts, archive announcement and newsletter once from
+`production/content-inventory/2026/distribution-drafts.json`. Later deployments
+preserve edits in D1. The table has a composite event and draft key; the current
+API is explicitly scoped to event `2026`.
+
+The editor saves copy, channel-specific metadata, image alt text, graphic format,
+review status, publication date and publication URL. Scheduled and published
+items require a date; published website and LinkedIn items also require a URL.
+These fields record publication through the existing publishing tools. Saving
+does not send a campaign, post to LinkedIn or publish a website announcement.
+
+Writes require the existing admin session, same-origin verification and
+`x-admin-action: manage-publications`. Revision-checked updates return 409 for a
+stale editor; the browser retains its unsaved text and offers a comparison with
+the saved version. Successful writes appear in the activity log. The existing
+scheduled backup job saves changed rows to
+`publications/snapshots/<rows-hash>.json` with a `publications/latest.json` manifest
+in the private backup bucket. Snapshot rows include event IDs and draft revisions.
+
+Run `npm run publication:browser-check` after the Worker test build to exercise
+editing across sessions, conflicts, failed saves, downloads and accessibility.

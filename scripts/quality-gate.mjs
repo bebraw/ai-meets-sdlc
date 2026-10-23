@@ -9,6 +9,7 @@ export const browserGroups = {
   organizers: [
     "activity:browser-check",
     "content:browser-check",
+    "publication:browser-check",
     "qa:browser-check",
     "announcements:browser-check",
   ],
