@@ -3,6 +3,7 @@ import { access, mkdir, readFile } from "node:fs/promises";
 import { chromium } from "playwright";
 import { closeBrowserServer } from "./layout-browser.mjs";
 import { createWorkerFixture } from "../test/helpers/worker-fixture.mjs";
+import { getTalkPreviews } from "../site/talk-previews.ts";
 
 const fixture = await createWorkerFixture({
   vars: {
@@ -189,6 +190,106 @@ try {
       .isDisabled(),
     true,
   );
+  await page
+    .getByRole("link", { name: "Talk companion previews", exact: true })
+    .click();
+  assert.equal(await page.locator("[data-talk-preview-card]").count(), 10);
+  await page
+    .getByRole("link", {
+      name: "Read preview: 1978: The Last Good Year",
+      exact: true,
+    })
+    .click();
+  assert.equal(await page.locator("[data-talk-key-point]").count(), 5);
+  assert.equal(
+    await page.locator("[data-talk-key-point] a").first().getAttribute("href"),
+    "https://www.youtube.com/watch?v=l8quIPHmakI&t=403s",
+  );
+  assert.equal(await page.locator("[data-talk-chapter]").count(), 10);
+  // Every talk has its own deep link and preserves the same reading structure.
+  for (const talk of getTalkPreviews().items) {
+    await page.goto(origin + talk.href);
+    assert.equal(await page.locator("h1").textContent(), talk.title);
+    assert.equal(await page.locator("[data-talk-key-point]").count(), 5);
+    assert.equal(
+      await page.locator('meta[name="robots"]').getAttribute("content"),
+      "noindex,nofollow,noarchive",
+    );
+    await page.setViewportSize({ width: 320, height: 1000 });
+    assert.equal(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+      true,
+      `${talk.slug}: mobile overflow`,
+    );
+  }
+  for (const path of [
+    "/admin/talk-previews/",
+    "/admin/talk-previews/genai-software-engineering/",
+  ]) {
+    await page.goto(origin + path);
+    for (const width of [320, 768, 1440]) {
+      await page.setViewportSize({ width, height: 1000 });
+      for (const theme of ["light", "dark"]) {
+        const current = await page.evaluate(() =>
+          document.documentElement.classList.contains("dark")
+            ? "dark"
+            : "light",
+        );
+        if (current !== theme)
+          await page
+            .getByRole("button", { name: "Toggle dark mode", exact: true })
+            .click();
+        await page.mouse.move(0, 0);
+        await page.evaluate(async () => {
+          await document.fonts.ready;
+          await Promise.all(
+            document
+              .getAnimations()
+              .map((animation) => animation.finished.catch(() => {})),
+          );
+        });
+        assert.equal(
+          await page.evaluate(
+            () => document.documentElement.scrollWidth <= innerWidth,
+          ),
+          true,
+          `${path}: ${width}/${theme} overflow`,
+        );
+        await page.addScriptTag({ content: axe });
+        const violations = await page.evaluate(
+          async () =>
+            (
+              await axe.run(document, {
+                runOnly: {
+                  type: "tag",
+                  values: [
+                    "wcag2a",
+                    "wcag2aa",
+                    "wcag21aa",
+                    "wcag22aa",
+                    "best-practice",
+                  ],
+                },
+              })
+            ).violations,
+        );
+        assert.deepEqual(
+          violations.map((v) => ({
+            id: v.id,
+            targets: v.nodes.map((n) => n.target),
+          })),
+          [],
+          `${path}: ${width}/${theme}`,
+        );
+        await page.screenshot({
+          path: `.cache/content-inventory-review/${path.endsWith("genai-software-engineering/") ? "talk-detail" : "talk-index"}-${width}-${theme}.png`,
+          fullPage: true,
+        });
+      }
+    }
+  }
   await page.goto(origin + "/admin/");
   await page
     .getByRole("link", { name: /Content inventory/ })
@@ -199,7 +300,7 @@ try {
   await context.close();
   await browser.close();
   console.log(
-    "Content inventory browser checks passed: filters, accent-insensitive search, persistent shortlist, copy fallback, download, navigation, responsive layout and accessibility.",
+    "Content inventory and talk preview browser checks passed: filters, shortlist, handoff, ten talk pages, source timestamps, navigation, responsive layout and accessibility.",
   );
 } finally {
   if (server) await closeBrowserServer(server);

@@ -1,5 +1,6 @@
 import organizerSeed from "./data/organizers.json" with { type: "json" };
 import { getContentInventory } from "./content-inventory.ts";
+import { getTalkPreviews, getTalkPreview } from "./talk-previews.ts";
 import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { raw } from "gustwind/htmlisp";
@@ -36,6 +37,9 @@ function init() {
 
   return {
     contentInventory: getContentInventory,
+    talkPreviews: getTalkPreviews,
+    talkPreviewItems: () => getTalkPreviews().items,
+    talkPreview: (match) => getTalkPreview(match.slug),
     announcementFeed: () => ({
       title: "SDLCAI Announcements",
       description: "Official SDLCAI announcements and event updates.",

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 import { getContentInventory } from "../site/content-inventory.ts";
+import { getTalkPreviews, getTalkPreview } from "../site/talk-previews.ts";
 import { createWorkerFixture } from "./helpers/worker-fixture.mjs";
 
 test("inventory preserves published sources, candidate status and attribution limits", async () => {
@@ -67,7 +68,48 @@ test("inventory preserves published sources, candidate status and attribution li
   }
 });
 
-test("editorial inventory stays behind admin authentication and out of public scripts", async (t) => {
+test("talk companions preserve sourced key points, context and editorial status", () => {
+  const previews = getTalkPreviews();
+  assert.equal(previews.items.length, 10);
+  assert.equal(new Set(previews.items.map((item) => item.slug)).size, 10);
+  const talks = previews.items.map((item) => getTalkPreview(item.slug));
+  for (const talk of talks) {
+    assert.equal(talk.keyPoints.length, 5);
+    assert.ok(talk.chapters.length > 0);
+    assert.equal(new URL(talk.programmeUrl).hash, `#${talk.slug}`);
+    assert.ok(talk.qualifications.length > 0);
+    assert.match(talk.pageTitle, /Editorial preview/);
+    assert.doesNotMatch(
+      JSON.stringify(talk),
+      /127\.0\.0\.1|\/Volumes\/|\.wav|\.srt|quoteCandidates/,
+    );
+    for (const point of talk.keyPoints) {
+      assert.equal(
+        new URL(point.url).searchParams.get("v"),
+        new URL(talk.youtubeUrl).searchParams.get("v"),
+      );
+    }
+    for (const related of talk.related) {
+      assert.notEqual(related.id, talk.id);
+      assert.ok(previews.items.some((item) => item.href === related.href));
+      assert.ok(related.connection);
+    }
+  }
+  const zak = talks.find((talk) => talk.id === "zak-talk");
+  assert.match(zak.synopsis, /preprint/);
+  assert.match(
+    zak.qualifications.map((note) => note.text).join(" "),
+    /do not imply.*regulatory approval/,
+  );
+  assert.equal(talks.find((talk) => talk.id === "mo-talk").qa, undefined);
+  assert.match(
+    talks.find((talk) => talk.id === "joongi-talk").qa.title,
+    /Generative UI/,
+  );
+  assert.throws(() => getTalkPreview("missing-talk"), /Unknown talk preview/);
+});
+
+test("editorial inventory and talk previews stay behind admin authentication and out of public scripts", async (t) => {
   const fixture = await createWorkerFixture({
     vars: {
       ADMIN_USERNAME: "inventory-admin",
@@ -81,6 +123,11 @@ test("editorial inventory stays behind admin authentication and out of public sc
     "/admin/content-inventory/index.html",
     "/%61dmin/content-inventory/",
     "/admin%2Fcontent-inventory/",
+    "/admin/talk-previews/",
+    ...getTalkPreviews().items.map((item) => item.href),
+    "/admin/talk-previews/genai-software-engineering/index.html",
+    "/%61dmin/talk-previews/genai-software-engineering/",
+    "/admin%2Ftalk-previews/genai-software-engineering/",
   ]) {
     let response = await fixture.worker.fetch(`https://sdlcai.org${pathname}`, {
       redirect: "manual",
@@ -91,7 +138,10 @@ test("editorial inventory stays behind admin authentication and out of public sc
         "https://sdlcai.org",
       );
       assert.ok(location.pathname.startsWith("/admin/"));
-      assert.doesNotMatch(await response.text(), /data-inventory-item/);
+      assert.doesNotMatch(
+        await response.text(),
+        /data-inventory-item|data-talk-preview/,
+      );
       response = await fixture.worker.fetch(location.href, {
         redirect: "manual",
       });
@@ -100,7 +150,10 @@ test("editorial inventory stays behind admin authentication and out of public sc
       [303, 404].includes(response.status),
       `${pathname}: ${response.status}`,
     );
-    assert.doesNotMatch(await response.text(), /data-inventory-item/);
+    assert.doesNotMatch(
+      await response.text(),
+      /data-inventory-item|data-talk-preview/,
+    );
   }
   const response = await fixture.worker.fetch(
     "https://sdlcai.org/admin/content-inventory/",
@@ -117,6 +170,22 @@ test("editorial inventory stays behind admin authentication and out of public sc
     (await response.text()).match(/data-inventory-item/g).length,
     80,
   );
+  for (const item of getTalkPreviews().items) {
+    const preview = await fixture.worker.fetch(
+      `https://sdlcai.org${item.href}`,
+      {
+        headers: {
+          authorization: `Basic ${Buffer.from("inventory-admin:local-inventory-password").toString("base64")}`,
+        },
+      },
+    );
+    assert.equal(preview.status, 200);
+    assert.match(preview.headers.get("cache-control"), /no-store/);
+    assert.match(preview.headers.get("x-robots-tag"), /noindex/);
+    const html = await preview.text();
+    assert.equal((html.match(/data-talk-key-point/g) ?? []).length, 5);
+    assert.match(html, /Private editorial preview/);
+  }
   const privatePhrase =
     "The deployment near miss and the permissions it exposed";
   for (const file of await readdir("build/assets")) {

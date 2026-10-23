@@ -125,6 +125,35 @@ test("the programme lists each talk once with recordings and resources above clo
       (el) => attr(el, "data-talk-materials-pending") !== undefined,
     ),
   );
+  const previewUrl = `${origin}/admin/talk-previews/${talkId}/`;
+  const preview = await worker.fetch(previewUrl, { headers });
+  assert.equal(preview.status, 200);
+  assert.equal(preview.headers.get("x-sdlcai-content-source"), "d1");
+  assert.match(preview.headers.get("cache-control"), /no-store/);
+  const previewElements = walk(parse(await preview.text()));
+  const previewMaterials = previewElements.find(
+    (el) => attr(el, "data-talk-materials") !== undefined,
+  );
+  assert.ok(previewMaterials);
+  assert.equal(attr(previewMaterials, "hidden"), undefined);
+  assert.deepEqual(
+    walk(previewMaterials)
+      .filter((el) => el.tagName === "a")
+      .map((el) => [attr(el, "href"), content(el)]),
+    [
+      [resourceUrl, "Related resource"],
+      ["https://video.example.org/talk", "Watch talk"],
+    ],
+  );
+  assert.equal(
+    content(previewElements.find((el) => el.tagName === "h1")),
+    "1978: The Last Good Year",
+  );
+  assert.ok(
+    !previewElements.some(
+      (el) => attr(el, "data-talk-materials-pending") !== undefined,
+    ),
+  );
   const admin = await (
     await worker.fetch(`${origin}/api/admin/speakers`, { headers })
   ).json();
@@ -152,6 +181,11 @@ test("the programme lists each talk once with recordings and resources above clo
     ).status,
     200,
   );
+  const refreshedPreview = await (
+    await worker.fetch(previewUrl, { headers })
+  ).text();
+  assert.ok(refreshedPreview.includes(updated));
+  assert.ok(!refreshedPreview.includes("https://video.example.org/talk"));
   assert.equal(
     (
       await save("recordings", {

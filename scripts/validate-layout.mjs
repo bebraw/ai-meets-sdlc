@@ -17,6 +17,8 @@ const routes = [
   "/admin/",
   "/admin/activity/",
   "/admin/content-inventory/",
+  "/admin/talk-previews/",
+  "/admin/talk-previews/genai-software-engineering/",
   "/admin/login/",
   "/admin/dinner/",
   "/admin/discussion-tables/",

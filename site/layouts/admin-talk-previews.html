@@ -1,0 +1,75 @@
+<BaseLayout
+  &title="(id 'SDLCAI Talk Previews')"
+  &description="(id 'Review draft companion pages for the ten SDLCAI 2026 talks.')"
+  &url="(id 'https://sdlcai.org/admin/talk-previews/')"
+  &robots="(id 'noindex,nofollow,noarchive')"
+>
+  <AdminNavigation &current="(id 'talk-previews')"></AdminNavigation>
+  <AdminPageHeader
+    &eyebrow="(id 'Admin / Post-production / 2026')"
+    &title="(id 'Talk previews')"
+    &description="(id 'Read the talks through their key points, follow the source passages, and review the companion pages before public release.')"
+  ></AdminPageHeader>
+  <section class="border-b border-ink bg-ink text-paper">
+    <div class="mx-auto grid max-w-7xl gap-3 px-5 py-6 md:px-8">
+      <p class="font-bold">Private editorial previews</p>
+      <p class="max-w-3xl leading-7 text-paper/80">
+        These drafts summarize the speakers’ arguments. Review the wording and
+        qualifications against the recordings before publication. Key points
+        link to the passages they summarize.
+      </p>
+      <a
+        class="inline-flex min-h-11 w-fit items-center font-bold underline underline-offset-4"
+        href="/admin/content-inventory/"
+        >Back to content inventory</a
+      >
+    </div>
+  </section>
+  <section
+    class="mx-auto max-w-7xl px-5 py-10 md:px-8 md:py-16"
+    aria-labelledby="talk-list-heading"
+  >
+    <h2
+      id="talk-list-heading"
+      class="font-headline text-3xl font-black uppercase"
+    >
+      The talks
+    </h2>
+    <p class="mt-3 text-muted" &children="previews.summary"></p>
+    <div class="mt-8 grid gap-5 lg:grid-cols-2">
+      <noop &foreach="previews.items as talk">
+        <article
+          class="flex min-w-0 flex-col border border-ink p-5 md:p-7"
+          data-talk-preview-card
+        >
+          <div class="flex items-baseline justify-between gap-4">
+            <p
+              class="font-headline text-4xl font-black text-muted"
+              &children="talk.number"
+            ></p>
+            <p class="text-sm font-bold text-muted">
+              <span &children="talk.duration"></span> recording
+            </p>
+          </div>
+          <p class="mt-5 font-bold" &children="talk.speakers"></p>
+          <h3
+            class="mt-2 font-headline text-3xl font-black uppercase leading-tight"
+          >
+            <a
+              class="underline-offset-4 hover:underline"
+              &href="talk.href"
+              &children="talk.title"
+            ></a>
+          </h3>
+          <p class="mt-5 leading-7 text-muted" &children="talk.summary"></p>
+          <a
+            class="mt-6 inline-flex min-h-11 w-fit items-center border border-ink px-4 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+            &href="talk.href"
+            &aria-label="talk.previewLabel"
+            >Read preview</a
+          >
+        </article>
+      </noop>
+    </div>
+  </section>
+</BaseLayout>

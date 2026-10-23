@@ -526,6 +526,26 @@
           }
         }
       },
+      "talk-previews": {
+        "layout": "admin-talk-previews",
+        "dataSources": { "previews": { "operation": "talkPreviews" } },
+        "context": {
+          "meta": {
+            "title": "SDLCAI Talk Previews",
+            "description": "Review draft companion pages for the ten SDLCAI 2026 talks.",
+            "robots": "noindex,nofollow,noarchive"
+          }
+        },
+        "expand": {
+          "matchBy": {
+            "indexer": { "operation": "talkPreviewItems" },
+            "slug": "slug",
+            "name": "talkPreviewItems"
+          },
+          "layout": "admin-talk-preview",
+          "dataSources": { "talk": { "operation": "talkPreview" } }
+        }
+      },
       "content-inventory": {
         "layout": "admin-content-inventory",
         "scripts": [{ "name": "admin-content-inventory" }],

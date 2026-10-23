@@ -80,6 +80,7 @@ for (const pathname of [
   "/admin/venue-signs/",
   "/admin/music/",
   "/admin/content-inventory/",
+  "/admin/talk-previews/",
   "/admin/intro/",
   "/admin/attendees/",
   "/admin/attendee-messages/",
@@ -105,6 +106,10 @@ for (const pathname of [
   if (sitemap.includes(`<loc>https://sdlcai.org${pathname}</loc>`)) {
     failures.push(`sitemap.xml: includes private/internal route ${pathname}`);
   }
+}
+
+if (sitemap.includes("https://sdlcai.org/admin/talk-previews/")) {
+  failures.push("sitemap.xml: includes private talk companion previews");
 }
 
 for (const filePath of htmlFiles) {

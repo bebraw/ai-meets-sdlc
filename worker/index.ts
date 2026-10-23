@@ -92,6 +92,7 @@ import {
 import {
   serveCanonicalSpeakerPhoto,
   isCanonicalPublicHtmlPath,
+  isTalkPreviewHtmlPath,
   applyCanonicalContentToResponse,
 } from "./public-content.ts";
 import {
@@ -621,7 +622,8 @@ const innerHandler = {
         const [records, schedule, slides] = await Promise.all([
           readPublicCanonicalSpeakers(env),
           readScheduleOrder(env),
-          url.pathname === "/2026/schedule/"
+          url.pathname === "/2026/schedule/" ||
+          isTalkPreviewHtmlPath(url.pathname)
             ? readPublishedSlideLinks(env)
             : Promise.resolve(new Map<string, PublishedSlideLink[]>()),
         ]);

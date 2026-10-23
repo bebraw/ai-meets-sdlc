@@ -64,6 +64,20 @@ Inventory content comes from the build-time video content library and
 admin HTML; the client script contains filtering and shortlist behavior. The
 page also links to the photo media bank, full content library and public slides.
 
+Protected **Talk previews** at `/admin/talk-previews/` turn the same content
+library into ten draft companion pages. Each includes a summary, five paraphrased
+key points with source timestamps, recording chapters, materials, session Q&A
+where available and related talks connected through the library's themes.
+Context and qualifications remain visible for editorial review. The pages are
+linked from the inventory and admin navigation; they are not public archive
+pages. The build-time adapter is `site/talk-previews.ts` and the layouts are
+`site/layouts/admin-talk-preview.html` and `site/layouts/admin-talk-previews.html`.
+Materials are rendered from the same published D1 links as the public programme,
+so withdrawn files and later resource updates follow their existing permissions.
+Review wording, context and source passages before any public release; exact
+quotation candidates and private analysis artifacts are not included in these
+views. `npm run content:browser-check` covers the inventory and talk previews.
+
 ## Requirements
 
 - Node 24 or newer. The repository includes `.node-version` for Cloudflare

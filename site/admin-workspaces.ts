@@ -11,6 +11,13 @@ export const adminWorkspaceGroups = [
         description:
           "Browse published sources, review clips and quotations, and shortlist article and LinkedIn angles.",
       },
+      {
+        id: "talk-previews",
+        label: "Talk previews",
+        href: "/admin/talk-previews/",
+        description:
+          "Review draft talk companions with summaries, timestamped key points, chapters and materials.",
+      },
     ],
   },
   {
