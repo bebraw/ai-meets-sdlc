@@ -64,6 +64,11 @@ the page-specific action in successful Siteverify responses:
 speaker sign-in. The client loads at most one Turnstile script even when a page
 contains more than one widget.
 
+Mailing-list signup uses Turnstile's `interaction-only` appearance on both the
+homepage and `/subscribe/`. Routine checks run in the background; the widget
+appears when visitor interaction is required. The submit button still waits for
+successful verification, and the server still validates the token with Siteverify.
+
 `ADMIN_USERNAME` and `ADMIN_PASSWORD` are required locally to open `/admin/`.
 Prepare Wrangler's local `.dev.vars`, apply all local D1 migrations, and start
 the Worker:

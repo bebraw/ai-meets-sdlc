@@ -87,7 +87,7 @@ try {
     (route) =>
       route.fulfill({
         contentType: "application/javascript",
-        body: "const f=document.querySelector('[data-newsletter-form]');const i=document.createElement('input');i.type='hidden';i.name='cf-turnstile-response';i.value='local-test-token';f.append(i);const w=f.querySelector('[data-newsletter-turnstile]');const box=document.createElement('div');box.style.cssText='width:150px;height:140px';box.setAttribute('aria-hidden','true');w.append(box);window.turnstile={reset(){}};window.onNewsletterTurnstileSuccess();",
+        body: "const f=document.querySelector('[data-newsletter-form]');const i=document.createElement('input');i.type='hidden';i.name='cf-turnstile-response';i.value='local-test-token';f.append(i);const w=f.querySelector('[data-newsletter-turnstile]');const box=document.createElement('div');box.style.cssText='width:150px;height:140px';box.hidden=w.dataset.appearance==='interaction-only';box.setAttribute('aria-hidden','true');w.append(box);window.turnstile={reset(){}};window.onNewsletterTurnstileSuccess();",
       }),
   );
   await page.route("**/api/newsletter/subscribe", async (route) => {
