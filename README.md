@@ -47,6 +47,8 @@ a Substrate for the Agentic Web: From Documents to Affordances**, and Udayanto
 Dwi Atmojo's **Software Engineering in Safety and Mission Critical Applications**.
 Original PDFs and WebP previews are stored under `assets/posters/2026/`; the page
 content is in `site/layouts/posters.html`.
+Minimum Viable Disclosure also links to its
+[code and experiment repository](https://github.com/nderecash/disclosure-curve).
 
 ## Requirements
 
