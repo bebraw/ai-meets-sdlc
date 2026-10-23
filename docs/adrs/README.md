@@ -20,6 +20,7 @@ ADRs are grouped by lifecycle status:
 | ADR                                       | Status   | Summary                            |
 | ----------------------------------------- | -------- | ---------------------------------- |
 | [ADR-000](./proposed/ADR-000-template.md) | Proposed | Template for drafting future ADRs. |
+| [ADR-014](./proposed/ADR-014-separate-event-administration-from-shared-tools.md) | Proposed | Separate event datasets and workspaces from shared SDLCAI administration. |
 
 ## Accepted ADRs
 
