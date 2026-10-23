@@ -1,3 +1,4 @@
+import { getPublishedTalks } from "../site/published-talks.ts";
 import assert from "node:assert/strict";
 import { access, mkdir, readFile } from "node:fs/promises";
 import { chromium } from "playwright";
@@ -367,11 +368,128 @@ try {
     .first()
     .click();
   assert.equal(new URL(page.url()).pathname, "/admin/content-inventory/");
+  const publicContext = await browser.newContext({
+    acceptDownloads: true,
+    viewport: { width: 320, height: 1000 },
+  });
+  const publicPage = await publicContext.newPage();
+  publicPage.on("pageerror", (error) => errors.push(error.message));
+  for (const talk of getPublishedTalks().items) {
+    const response = await publicPage.goto(origin + talk.href);
+    assert.equal(response.status(), 200);
+    assert.equal(await publicPage.locator("h1").textContent(), talk.title);
+    assert.equal(await publicPage.locator("[data-talk-key-point]").count(), 5);
+    assert.equal(
+      await publicPage
+        .locator('meta[name="robots"][content*="noindex"]')
+        .count(),
+      0,
+    );
+    await publicPage.locator("[data-talk-graphic]").evaluate(async (image) => {
+      image.loading = "eager";
+      await image.decode();
+    });
+    assert.match(
+      await publicPage
+        .locator("[data-talk-graphic]")
+        .evaluate((image) => image.currentSrc),
+      /summary-portrait\.png\?v=/,
+    );
+    assert.equal(
+      await publicPage.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+      true,
+    );
+  }
+  await publicPage.goto(origin + "/2026/talks/");
+  assert.equal(
+    await publicPage.locator("[data-talk-summary-card]").count(),
+    10,
+  );
+  const publicPackDownload = publicPage.waitForEvent("download");
+  await publicPage
+    .getByRole("link", {
+      name: "Download all 20 graphics & post copy (ZIP)",
+      exact: true,
+    })
+    .click();
+  await (
+    await publicPackDownload
+  ).saveAs(".cache/content-inventory-review/public-takeaway-graphics.zip");
+  const publicEntries = unzipSync(
+    await readFile(
+      ".cache/content-inventory-review/public-takeaway-graphics.zip",
+    ),
+  );
+  assert.equal(Object.keys(publicEntries).length, 30);
+  for (const [name, data] of Object.entries(publicEntries))
+    if (name.endsWith(".txt"))
+      assert.doesNotMatch(
+        new TextDecoder().decode(data),
+        /EDITORIAL DRAFT|caption review|ASR|\/admin\//,
+      );
+  await publicPage.goto(origin + "/2026/talks/genai-software-engineering/");
+  await publicPage
+    .getByText("Read post copy & alt text", { exact: true })
+    .click();
+  for (const width of [320, 768, 1440]) {
+    await publicPage.setViewportSize({ width, height: 1000 });
+    for (const theme of ["light", "dark"]) {
+      await publicPage.evaluate((theme) => {
+        document.documentElement.classList.toggle("dark", theme === "dark");
+      }, theme);
+      await publicPage.evaluate(async () => {
+        await document.fonts.ready;
+        await Promise.all(
+          document.getAnimations().map((a) => a.finished.catch(() => {})),
+        );
+      });
+      assert.equal(
+        await publicPage.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth,
+        ),
+        true,
+        `public summary ${width}/${theme}`,
+      );
+      await publicPage.addScriptTag({ content: axe });
+      const violations = await publicPage.evaluate(
+        async () =>
+          (
+            await axe.run(document, {
+              runOnly: {
+                type: "tag",
+                values: [
+                  "wcag2a",
+                  "wcag2aa",
+                  "wcag21aa",
+                  "wcag22aa",
+                  "best-practice",
+                ],
+              },
+            })
+          ).violations,
+      );
+      assert.deepEqual(
+        violations.map((v) => ({
+          id: v.id,
+          targets: v.nodes.map((n) => n.target),
+        })),
+        [],
+        `public summary ${width}/${theme}`,
+      );
+      await publicPage.screenshot({
+        path: `.cache/content-inventory-review/public-talk-detail-${width}-${theme}.png`,
+        fullPage: true,
+      });
+    }
+  }
+  await publicContext.close();
   assert.deepEqual(errors, []);
   await context.close();
   await browser.close();
   console.log(
-    "Content inventory and talk preview browser checks passed: filters, shortlist, handoff, ten talk pages, source timestamps, navigation, responsive layout and accessibility.",
+    "Content inventory, protected previews and public talk summaries passed: filters, shortlist, handoffs, source timestamps, downloads, navigation, responsive graphics and accessibility.",
   );
 } finally {
   if (server) await closeBrowserServer(server);

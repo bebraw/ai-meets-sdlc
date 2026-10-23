@@ -528,7 +528,11 @@
       },
       "talk-previews": {
         "layout": "admin-talk-previews",
-        "dataSources": { "previews": { "operation": "talkPreviews" } },
+        "dataSources": {
+          "previews": {
+            "operation": "talkPreviews"
+          }
+        },
         "context": {
           "meta": {
             "title": "SDLCAI Talk Previews",
@@ -538,18 +542,32 @@
         },
         "expand": {
           "matchBy": {
-            "indexer": { "operation": "talkPreviewItems" },
+            "indexer": {
+              "operation": "talkPreviewItems"
+            },
             "slug": "slug",
             "name": "talkPreviewItems"
           },
           "layout": "admin-talk-preview",
-          "dataSources": { "talk": { "operation": "talkPreview" } }
+          "dataSources": {
+            "talk": {
+              "operation": "talkPreview"
+            }
+          }
         }
       },
       "content-inventory": {
         "layout": "admin-content-inventory",
-        "scripts": [{ "name": "admin-content-inventory" }],
-        "dataSources": { "inventory": { "operation": "contentInventory" } },
+        "scripts": [
+          {
+            "name": "admin-content-inventory"
+          }
+        ],
+        "dataSources": {
+          "inventory": {
+            "operation": "contentInventory"
+          }
+        },
         "context": {
           "meta": {
             "title": "SDLCAI Content Inventory",
@@ -1183,9 +1201,15 @@
       },
       "social-mentions": {
         "layout": "social-mentions",
-        "scripts": [{ "name": "index" }],
+        "scripts": [
+          {
+            "name": "index"
+          }
+        ],
         "dataSources": {
-          "socialMentionGroups": { "operation": "socialMentionGroups" }
+          "socialMentionGroups": {
+            "operation": "socialMentionGroups"
+          }
         },
         "context": {
           "meta": {
@@ -1302,6 +1326,35 @@
             "description": "Sponsorship recruitment for SDLCAI 2026 has closed. Sponsor benefits and practical information for our event partners.",
             "ogEyebrow": "Our sponsors",
             "ogDescription": "Thank you to the sponsors supporting SDLCAI 2026 at Aalto University."
+          }
+        }
+      },
+      "talks": {
+        "layout": "talk-summaries",
+        "dataSources": {
+          "talks": {
+            "operation": "publishedTalks"
+          }
+        },
+        "context": {
+          "meta": {
+            "title": "SDLCAI 2026 — Talk summaries",
+            "description": "Timestamped key points, recordings and shareable graphics from all ten SDLCAI 2026 talks."
+          }
+        },
+        "expand": {
+          "matchBy": {
+            "indexer": {
+              "operation": "publishedTalkItems"
+            },
+            "slug": "slug",
+            "name": "publishedTalkItems"
+          },
+          "layout": "talk-summary",
+          "dataSources": {
+            "talk": {
+              "operation": "publishedTalk"
+            }
           }
         }
       }

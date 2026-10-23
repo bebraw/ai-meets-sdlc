@@ -31,6 +31,7 @@ function getTalkCards() {
       id: talk.id,
       slug,
       href: `${basePath}${slug}/`,
+      publicHref: `/2026/talks/${slug}/`,
       number: String(index + 1).padStart(2, "0"),
       title: talk.officialTitle,
       speakers: talk.speakerNames.join(", "),

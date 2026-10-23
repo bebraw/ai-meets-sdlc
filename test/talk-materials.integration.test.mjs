@@ -154,6 +154,23 @@ test("the programme lists each talk once with recordings and resources above clo
       (el) => attr(el, "data-talk-materials-pending") !== undefined,
     ),
   );
+  const publicSummaryUrl = `${origin}/2026/talks/${talkId}/`;
+  const publicSummary = await worker.fetch(publicSummaryUrl);
+  assert.equal(publicSummary.status, 200);
+  assert.equal(publicSummary.headers.get("x-sdlcai-content-source"), "d1");
+  const publicElements = walk(parse(await publicSummary.text()));
+  const publicMaterials = publicElements.find(
+    (el) => attr(el, "data-talk-materials") !== undefined,
+  );
+  assert.deepEqual(
+    walk(publicMaterials)
+      .filter((el) => el.tagName === "a")
+      .map((el) => [attr(el, "href"), content(el)]),
+    [
+      [resourceUrl, "Related resource"],
+      ["https://video.example.org/talk", "Watch talk"],
+    ],
+  );
   const admin = await (
     await worker.fetch(`${origin}/api/admin/speakers`, { headers })
   ).json();
@@ -184,6 +201,9 @@ test("the programme lists each talk once with recordings and resources above clo
   const refreshedPreview = await (
     await worker.fetch(previewUrl, { headers })
   ).text();
+  const refreshedPublic = await (await worker.fetch(publicSummaryUrl)).text();
+  assert.ok(refreshedPublic.includes(updated));
+  assert.ok(!refreshedPublic.includes("https://video.example.org/talk"));
   assert.ok(refreshedPreview.includes(updated));
   assert.ok(!refreshedPreview.includes("https://video.example.org/talk"));
   assert.equal(

@@ -4,6 +4,10 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { zipSync, strToU8 } from "fflate";
 import { getTalkGraphics, talkGraphicPackUrl } from "../site/talk-graphics.ts";
+import {
+  getPublishedTalks,
+  publishedGraphicPackUrl,
+} from "../site/published-talks.ts";
 
 export const graphicsDirectory = "production/talk-graphics/2026";
 export const graphicsRoot = path.resolve(import.meta.dirname, "..");
@@ -67,7 +71,11 @@ export async function copyTalkGraphics({ buildDir = "build" } = {}) {
   if (manifest.assets.length !== getTalkGraphics().length * 2)
     throw new Error("Incomplete takeaway graphics manifest");
   const archive = {};
+  const publicArchive = {};
+  const published = getPublishedTalks().items;
   for (const card of getTalkGraphics()) {
+    const publicCard = published.find((item) => item.id === card.id);
+    if (!publicCard) throw new Error(`Missing published graphic: ${card.id}`);
     for (const asset of card.assets) {
       const filename = `${card.id}-${asset.id}.png`;
       const data = await readFile(path.join(base, "exports", filename));
@@ -87,6 +95,17 @@ export async function copyTalkGraphics({ buildDir = "build" } = {}) {
       await mkdir(path.dirname(destination), { recursive: true });
       await copyFile(path.join(base, "exports", filename), destination);
       archive[filename] = data;
+      const publicAsset = publicCard.graphic.assets.find(
+        (item) => item.id === asset.id,
+      );
+      const publicDestination = path.join(
+        graphicsRoot,
+        buildDir,
+        new URL(publicAsset.src, "https://sdlcai.org").pathname.slice(1),
+      );
+      await mkdir(path.dirname(publicDestination), { recursive: true });
+      await writeFile(publicDestination, data);
+      publicArchive[filename] = data;
     }
     const copy = strToU8(card.handoff);
     await writeFile(
@@ -94,9 +113,19 @@ export async function copyTalkGraphics({ buildDir = "build" } = {}) {
       copy,
     );
     archive[`${card.id}-copy.txt`] = copy;
+    const publicCopy = strToU8(publicCard.graphic.copy);
+    await writeFile(
+      path.join(graphicsRoot, buildDir, publicCard.graphic.copyUrl.slice(1)),
+      publicCopy,
+    );
+    publicArchive[`${card.id}-copy.txt`] = publicCopy;
   }
   const pack = path.join(graphicsRoot, buildDir, talkGraphicPackUrl.slice(1));
   await writeFile(pack, zipSync(archive));
+  await writeFile(
+    path.join(graphicsRoot, buildDir, publishedGraphicPackUrl.slice(1)),
+    zipSync(publicArchive),
+  );
   return manifest.assets.length;
 }
 
@@ -105,6 +134,6 @@ if (
   path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)
 ) {
   console.log(
-    `Copied ${await copyTalkGraphics()} takeaway graphics and editorial handoffs into protected admin routes.`,
+    `Copied ${await copyTalkGraphics()} takeaway graphics into public talk pages and protected editorial previews.`,
   );
 }

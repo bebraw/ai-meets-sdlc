@@ -72,6 +72,14 @@ export function getContentInventory() {
         ...(video.talkUrl
           ? [{ label: "Programme & materials", url: video.talkUrl }]
           : []),
+        ...(video.kind === "talk" && video.talkUrl
+          ? [
+              {
+                label: "Published summary & graphics",
+                url: `https://sdlcai.org/2026/talks/${new URL(video.talkUrl).hash.slice(1)}/`,
+              },
+            ]
+          : []),
       ],
     });
     for (const clip of video.clipCandidates) {

@@ -1,0 +1,343 @@
+<BaseLayout
+  &title="talk.pageTitle"
+  &description="talk.summary"
+  &ogDescription="talk.summary"
+  &url="talk.url"
+  &ogImage="talk.ogImage"
+  &ogImageAlt="talk.graphic.alt"
+  &ogType="(id 'article')"
+  &articlePublishedTime="talk.publishedTime"
+  &archive="(id true)"
+>
+  <div class="border-b border-ink">
+    <div class="mx-auto max-w-7xl px-5 py-3 md:px-8">
+      <a
+        class="inline-flex min-h-11 items-center text-sm font-bold underline underline-offset-4"
+        href="/2026/talks/"
+        >All ten talk summaries</a
+      >
+    </div>
+  </div>
+  <article>
+    <header class="border-b border-ink">
+      <div class="mx-auto max-w-7xl px-5 py-10 md:px-8 md:py-16">
+        <p class="font-headline text-sm font-black uppercase text-muted">
+          SDLCAI 2026 / Talk summary
+        </p>
+        <p class="mt-6 text-lg font-bold" &children="talk.speakers"></p>
+        <h1
+          class="mt-3 max-w-5xl font-headline text-[clamp(2.25rem,6vw,5.5rem)] font-black uppercase leading-[1.02]"
+          &children="talk.title"
+        ></h1>
+        <div
+          class="mt-8 grid gap-6 border-t border-ink pt-6 lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-12"
+        >
+          <p
+            class="max-w-3xl text-xl leading-8 text-muted"
+            &children="talk.summary"
+          ></p>
+          <div class="flex flex-col items-start gap-3">
+            <p class="text-sm font-bold text-muted">
+              <span &children="talk.duration"></span> · 13 October 2026
+            </p>
+            <a
+              class="inline-flex min-h-11 items-center border border-ink bg-ink px-5 py-3 text-sm font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
+              &href="talk.youtubeUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Watch full recording</a
+            >
+            <a
+              class="inline-flex min-h-11 items-center font-bold underline underline-offset-4"
+              &href="talk.programmeUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Programme &amp; current materials</a
+            >
+          </div>
+        </div>
+        <ul class="mt-6 flex flex-wrap gap-2" aria-label="Talk topics">
+          <noop &foreach="talk.topics as topic">
+            <li
+              class="border border-ink/40 px-3 py-1 text-sm leading-6 text-muted"
+              &children="topic.label"
+            ></li>
+          </noop>
+        </ul>
+      </div>
+    </header>
+    <section class="border-b border-ink" aria-labelledby="talk-graphic-heading">
+      <div class="mx-auto max-w-7xl px-5 py-8 md:px-8 md:py-12">
+        <h2
+          id="talk-graphic-heading"
+          class="font-headline text-3xl font-black uppercase"
+        >
+          Takeaway graphic
+        </h2>
+        <p class="mt-3 max-w-3xl leading-7 text-muted">
+          Share three selected takeaways from this talk. Download a landscape or
+          portrait card, with suggested post copy and image alt text.
+        </p>
+        <figure class="mt-6">
+          <picture>
+            <source
+              media="(max-width: 639px)"
+              &srcset="talk.graphic.portrait.src"
+              width="1080"
+              height="1350"
+            />
+            <img
+              class="h-auto w-full border border-ink"
+              &src="talk.graphic.landscape.src"
+              &alt="talk.graphic.alt"
+              width="1200"
+              height="630"
+              loading="lazy"
+              decoding="async"
+              data-talk-graphic
+            />
+          </picture>
+          <figcaption class="mt-3 text-sm leading-6 text-muted">
+            Three paraphrased takeaways, with timestamps from the final
+            recording.
+          </figcaption>
+        </figure>
+        <div class="mt-5 flex flex-wrap gap-3">
+          <noop &foreach="talk.graphic.assets as asset">
+            <a
+              class="inline-flex min-h-11 items-center border border-ink px-4 py-3 text-sm font-bold transition hover:bg-ink hover:text-paper"
+              &href="asset.src"
+              &children="asset.downloadLabel"
+              download
+              data-talk-graphic-download
+            ></a>
+          </noop>
+          <a
+            class="inline-flex min-h-11 items-center px-3 py-2 font-bold underline underline-offset-4"
+            &href="talk.graphic.copyUrl"
+            download
+            >Download post copy &amp; alt text</a
+          >
+        </div>
+        <details class="mt-5 border-t border-ink/30 pt-4">
+          <summary class="min-h-11 cursor-pointer py-2 font-bold">
+            Read post copy &amp; alt text
+          </summary>
+          <div class="mt-4 grid gap-6 lg:grid-cols-2">
+            <div class="min-w-0">
+              <h3 class="font-bold">Suggested post copy</h3>
+              <p
+                class="mt-3 break-words whitespace-pre-line leading-7 text-muted"
+                &children="talk.graphic.caption"
+              ></p>
+            </div>
+            <div class="min-w-0">
+              <h3 class="font-bold">Image alt text</h3>
+              <p
+                class="mt-3 break-words leading-7 text-muted"
+                &children="talk.graphic.alt"
+              ></p>
+            </div>
+          </div>
+        </details>
+      </div>
+    </section>
+    <div
+      class="mx-auto grid max-w-7xl gap-12 px-5 py-10 md:px-8 md:py-16 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-16"
+    >
+      <div class="min-w-0">
+        <section aria-labelledby="key-points-heading">
+          <h2
+            id="key-points-heading"
+            class="font-headline text-4xl font-black uppercase"
+          >
+            Key points
+          </h2>
+          <p class="mt-3 max-w-2xl leading-7 text-muted">
+            Paraphrased from the talk. Follow each timestamp to hear the
+            argument in context.
+          </p>
+          <ol class="mt-8 border-t border-ink">
+            <noop &foreach="talk.keyPoints as point">
+              <li
+                class="grid gap-3 border-b border-ink py-6 sm:grid-cols-[3rem_minmax(0,1fr)] sm:gap-5"
+                data-talk-key-point
+              >
+                <span
+                  class="font-headline text-3xl font-black text-muted"
+                  aria-hidden="true"
+                  &children="point.number"
+                ></span>
+                <div>
+                  <p class="text-lg leading-8" &children="point.point"></p>
+                  <a
+                    class="mt-3 inline-flex min-h-11 items-center gap-2 text-sm font-bold underline underline-offset-4"
+                    &href="point.url"
+                    &aria-label="point.sourceLabel"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    ><span &children="point.timeRange"></span
+                  ></a>
+                </div>
+              </li>
+            </noop>
+          </ol>
+        </section>
+        <section class="mt-12" aria-labelledby="synopsis-heading">
+          <h2
+            id="synopsis-heading"
+            class="font-headline text-3xl font-black uppercase"
+          >
+            The talk in context
+          </h2>
+          <p
+            class="mt-5 text-lg leading-8 text-muted"
+            &children="talk.synopsis"
+          ></p>
+        </section>
+        <section
+          class="mt-12 border border-ink p-5 md:p-6"
+          &visibleIf="talk.hasContext"
+          aria-labelledby="qualifications-heading"
+        >
+          <h2
+            id="qualifications-heading"
+            class="font-headline text-2xl font-black uppercase"
+          >
+            Context &amp; qualifications
+          </h2>
+          <ul class="mt-5 list-disc space-y-4 pl-5 leading-7 text-muted">
+            <noop &foreach="talk.context as note">
+              <li &children="note.text"></li>
+            </noop>
+          </ul>
+        </section>
+      </div>
+      <aside
+        class="min-w-0 border-t border-ink pt-8 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0"
+        aria-label="Recording navigation and materials"
+      >
+        <section aria-labelledby="chapters-heading">
+          <h2
+            id="chapters-heading"
+            class="font-headline text-3xl font-black uppercase"
+          >
+            Chapters
+          </h2>
+          <p class="mt-3 text-sm leading-6 text-muted">
+            Open a chapter on YouTube.
+          </p>
+          <ol class="mt-4 divide-y divide-ink/30 border-y border-ink/30">
+            <noop &foreach="talk.chapters as chapter">
+              <li>
+                <a
+                  class="grid min-h-11 grid-cols-[3.5rem_minmax(0,1fr)] items-baseline gap-3 py-4 underline-offset-4 hover:underline"
+                  &href="chapter.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-talk-chapter
+                  ><span
+                    class="text-sm font-bold tabular-nums text-muted"
+                    &children="chapter.time"
+                  ></span
+                  ><span
+                    class="text-sm font-bold leading-6"
+                    &children="chapter.title"
+                  ></span
+                ></a>
+              </li>
+            </noop>
+          </ol>
+        </section>
+        <section class="mt-10" aria-labelledby="materials-heading">
+          <h2
+            id="materials-heading"
+            class="font-headline text-2xl font-black uppercase"
+          >
+            Materials
+          </h2>
+          <div
+            class="mt-4 flex flex-wrap gap-3"
+            data-talk-materials
+            &data-canonical-talk-id="talk.slug"
+            hidden
+          ></div>
+          <p
+            class="mt-3 text-sm leading-6 text-muted"
+            data-talk-materials-pending
+            &data-canonical-talk-id="talk.slug"
+          >
+            See the
+            <a
+              class="font-bold underline underline-offset-4"
+              &href="talk.programmeUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              >programme entry</a
+            >
+            for current slides and resources.
+          </p>
+        </section>
+        <section
+          class="mt-10"
+          &visibleIf="talk.qa"
+          aria-labelledby="qa-heading"
+        >
+          <h2
+            id="qa-heading"
+            class="font-headline text-2xl font-black uppercase"
+          >
+            Session Q&amp;A
+          </h2>
+          <a
+            class="mt-3 inline-flex min-h-11 items-center font-bold leading-7 underline underline-offset-4"
+            &href="talk.qa.url"
+            &children="talk.qa.title"
+            target="_blank"
+            rel="noopener noreferrer"
+          ></a>
+        </section>
+      </aside>
+    </div>
+    <section
+      class="border-y border-ink"
+      &visibleIf="talk.related"
+      aria-labelledby="related-talks-heading"
+    >
+      <div class="mx-auto max-w-7xl px-5 py-10 md:px-8 md:py-12">
+        <h2
+          id="related-talks-heading"
+          class="font-headline text-3xl font-black uppercase"
+        >
+          Continue with another talk
+        </h2>
+        <p class="mt-3 leading-7 text-muted">
+          Explore related questions across the seminar.
+        </p>
+        <div class="mt-6 grid gap-5 lg:grid-cols-3">
+          <noop &foreach="talk.related as related">
+            <article class="min-w-0 border border-ink p-5">
+              <p
+                class="text-sm leading-6 text-muted"
+                &children="related.connection"
+              ></p>
+              <p
+                class="mt-4 text-sm font-bold"
+                &children="related.speakers"
+              ></p>
+              <h3
+                class="mt-2 font-headline text-2xl font-black uppercase leading-tight"
+              >
+                <a
+                  class="underline-offset-4 hover:underline"
+                  &href="related.href"
+                  &children="related.title"
+                ></a>
+              </h3>
+            </article>
+          </noop>
+        </div>
+      </div>
+    </section>
+  </article>
+</BaseLayout>

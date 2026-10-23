@@ -1,0 +1,101 @@
+<BaseLayout
+  &title="(id 'SDLCAI 2026 — Talk summaries')"
+  &description="(id 'Key points, recordings and shareable takeaway graphics from all ten SDLCAI 2026 talks.')"
+  &url="(id 'https://sdlcai.org/2026/talks/')"
+  &archive="(id true)"
+>
+  <header class="border-b border-ink">
+    <div class="mx-auto max-w-7xl px-5 py-10 md:px-8 md:py-16">
+      <p class="text-sm font-bold uppercase text-muted">
+        SDLCAI 2026 / From the recordings
+      </p>
+      <h1
+        class="mt-4 font-headline text-[clamp(2.5rem,8vw,6rem)] font-black uppercase leading-none"
+      >
+        Talk summaries
+      </h1>
+      <p class="mt-6 max-w-3xl text-xl leading-8 text-muted">
+        Revisit the ideas from all ten talks. Explore timestamped key points,
+        follow the full recordings and share a takeaway card.
+      </p>
+    </div>
+  </header>
+  <section class="border-b border-ink bg-ink text-paper">
+    <div class="mx-auto grid max-w-7xl gap-3 px-5 py-6 md:px-8">
+      <p class="font-bold">Ten talks. Fifty key points.</p>
+      <p class="max-w-3xl leading-7 text-paper/80">
+        Editorial summaries paraphrase the speakers’ arguments, with links to
+        the passages they draw on. Each talk includes landscape and portrait
+        graphics with speaker photos, post copy and image alt text.
+      </p>
+      <a
+        class="inline-flex min-h-11 w-fit items-center font-bold underline underline-offset-4"
+        href="/2026/schedule/"
+        >Explore the programme &amp; materials</a
+      >
+      <a
+        class="inline-flex min-h-11 w-fit items-center border border-paper px-4 py-3 text-sm font-bold transition hover:bg-paper hover:text-ink"
+        &href="talks.graphicPackUrl"
+        download
+        >Download all 20 graphics &amp; post copy (ZIP)</a
+      >
+    </div>
+  </section>
+  <section
+    class="mx-auto max-w-7xl px-5 py-10 md:px-8 md:py-16"
+    aria-labelledby="talk-list-heading"
+  >
+    <h2
+      id="talk-list-heading"
+      class="font-headline text-3xl font-black uppercase"
+    >
+      The talks
+    </h2>
+    <p class="mt-3 text-muted" &children="talks.summary"></p>
+    <div class="mt-8 grid gap-5 lg:grid-cols-2">
+      <noop &foreach="talks.items as talk">
+        <article
+          class="flex min-w-0 flex-col border border-ink p-5 md:p-7"
+          data-talk-summary-card
+        >
+          <div class="flex items-baseline justify-between gap-4">
+            <p
+              class="font-headline text-4xl font-black text-muted"
+              &children="talk.number"
+            ></p>
+            <p class="text-sm font-bold text-muted">
+              <span &children="talk.duration"></span> recording
+            </p>
+          </div>
+          <img
+            class="mt-5 h-auto w-full border border-ink/30"
+            &src="talk.graphic.landscape.src"
+            &alt="talk.graphic.alt"
+            width="1200"
+            height="630"
+            loading="lazy"
+            decoding="async"
+            data-talk-graphic-thumbnail
+          />
+          <p class="mt-5 font-bold" &children="talk.speakers"></p>
+          <h3
+            class="mt-2 font-headline text-3xl font-black uppercase leading-tight"
+          >
+            <a
+              class="underline-offset-4 hover:underline"
+              &href="talk.href"
+              &children="talk.title"
+            ></a>
+          </h3>
+          <p class="mt-5 leading-7 text-muted" &children="talk.summary"></p>
+          <a
+            class="mt-6 inline-flex min-h-11 w-fit items-center border border-ink px-4 py-2 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper"
+            &href="talk.href"
+            &aria-label="talk.previewLabel"
+            >Read summary</a
+          >
+        </article>
+      </noop>
+    </div>
+  </section>
+</BaseLayout>

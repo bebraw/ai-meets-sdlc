@@ -1,3 +1,4 @@
+import { getPublishedTalks } from "../site/published-talks.ts";
 import { access, readdir, readFile, stat } from "node:fs/promises";
 import path from "node:path";
 import { createHash } from "node:crypto";
@@ -112,7 +113,22 @@ if (sitemap.includes("https://sdlcai.org/admin/talk-previews/")) {
   failures.push("sitemap.xml: includes private talk companion previews");
 }
 
+const publicTalks = getPublishedTalks().items;
+for (const talk of publicTalks) {
+  if (!sitemap.includes(`<loc>https://sdlcai.org${talk.href}</loc>`))
+    failures.push(`Missing published talk in sitemap: ${talk.href}`);
+}
+if (!sitemap.includes("<loc>https://sdlcai.org/2026/talks/</loc>"))
+  failures.push("Missing talk summary index in sitemap");
 for (const filePath of htmlFiles) {
+  const publishedTalk = publicTalks.find(
+    (talk) =>
+      path.resolve(filePath) ===
+      path.resolve(buildDir, talk.href.slice(1), "index.html"),
+  );
+  const expectedImage = publishedTalk
+    ? `https://sdlcai.org${publishedTalk.graphic.landscape.src}`
+    : ogImageUrl;
   const html = await readFile(filePath, "utf8");
   const metaTags = html.match(/<meta\b[^>]*>/g) ?? [];
   // Standalone presentation layouts do not emit social metadata.
@@ -121,8 +137,8 @@ for (const filePath of htmlFiles) {
   );
   for (const [attribute, key, expected] of hasSocialMetadata
     ? [
-        ["property", "og:image", ogImageUrl],
-        ["name", "twitter:image", ogImageUrl],
+        ["property", "og:image", expectedImage],
+        ["name", "twitter:image", expectedImage],
         ["property", "og:image:width", "1200"],
         ["property", "og:image:height", "630"],
       ]

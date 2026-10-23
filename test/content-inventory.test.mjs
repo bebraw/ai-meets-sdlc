@@ -1,3 +1,8 @@
+import {
+  getPublishedTalks,
+  getPublishedTalk,
+  publishedGraphicPackUrl,
+} from "../site/published-talks.ts";
 import assert from "node:assert/strict";
 import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
@@ -237,6 +242,63 @@ test("editorial inventory and talk previews stay behind admin authentication and
     assert.equal((html.match(/data-talk-key-point/g) ?? []).length, 5);
     assert.match(html, /Private editorial preview/);
   }
+  const publicIndex = await fixture.worker.fetch(
+    "https://sdlcai.org/2026/talks/",
+  );
+  assert.equal(publicIndex.status, 200);
+  assert.equal(
+    ((await publicIndex.text()).match(/data-talk-summary-card/g) ?? []).length,
+    10,
+  );
+  const forbidden =
+    /EDITORIAL DRAFT|caption review|ASR|wording.*flagged|individual speaker is unconfirmed|quoteCandidates|inventoryUrl|\/admin\/|\/Volumes\/|\.srt/;
+  for (const card of getPublishedTalks().items) {
+    const published = getPublishedTalk(card.slug);
+    assert.doesNotMatch(JSON.stringify(published), forbidden);
+    const page = await fixture.worker.fetch(`https://sdlcai.org${card.href}`);
+    assert.equal(page.status, 200);
+    assert.doesNotMatch(page.headers.get("x-robots-tag") ?? "", /noindex/);
+    const html = await page.text();
+    assert.doesNotMatch(html, forbidden);
+    assert.equal((html.match(/data-talk-key-point/g) ?? []).length, 5);
+    assert.ok(html.includes(`content="${published.ogImage}"`));
+    for (const asset of card.graphic.assets) {
+      const response = await fixture.worker.fetch(
+        `https://sdlcai.org${asset.src}`,
+      );
+      assert.equal(response.status, 200);
+      const png = Buffer.from(await response.arrayBuffer());
+      assert.equal(png.subarray(0, 8).toString("hex"), "89504e470d0a1a0a");
+      assert.equal(png.readUInt32BE(16), asset.width);
+      assert.equal(png.readUInt32BE(20), asset.height);
+    }
+    const copy = await fixture.worker.fetch(
+      `https://sdlcai.org${card.graphic.copyUrl}`,
+    );
+    assert.equal(copy.status, 200);
+    assert.equal(await copy.text(), card.graphic.copy);
+    assert.doesNotMatch(card.graphic.copy, forbidden);
+  }
+  const publicPack = await fixture.worker.fetch(
+    `https://sdlcai.org${publishedGraphicPackUrl}`,
+  );
+  assert.equal(publicPack.status, 200);
+  const publicEntries = unzipSync(
+    new Uint8Array(await publicPack.arrayBuffer()),
+  );
+  assert.equal(Object.keys(publicEntries).length, 30);
+  for (const [filename, bytes] of Object.entries(publicEntries)) {
+    if (filename.endsWith(".txt"))
+      assert.doesNotMatch(new TextDecoder().decode(bytes), forbidden);
+  }
+  assert.match(
+    getPublishedTalk("zak-allal-industry-perspective").synopsis,
+    /intention to seek regulatory qualification/,
+  );
+  assert.doesNotMatch(
+    getPublishedTalk("zak-allal-industry-perspective").synopsis,
+    /has been sought/,
+  );
   const graphicHeaders = {
     authorization: `Basic ${Buffer.from("inventory-admin:local-inventory-password").toString("base64")}`,
   };

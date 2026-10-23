@@ -32,7 +32,8 @@ const socialLinks = [
 ] as const satisfies readonly [keyof SpeakerProfileContent, string][];
 
 export function isCanonicalPublicHtmlPath(pathname: string): boolean {
-  if (isTalkPreviewHtmlPath(pathname)) return true;
+  if (isTalkPreviewHtmlPath(pathname) || isPublishedTalkHtmlPath(pathname))
+    return true;
   return new Set([
     "/2026/",
     "/admin/slides/",
@@ -46,6 +47,12 @@ export function isCanonicalPublicHtmlPath(pathname: string): boolean {
     "/slides/schedule/",
     "/2026/speakers/",
   ]).has(pathname);
+}
+
+export function isPublishedTalkHtmlPath(pathname: string): boolean {
+  return /^\/2026\/talks\/[a-z0-9]+(?:-[a-z0-9]+)*\/(?:index\.html)?$/u.test(
+    pathname,
+  );
 }
 
 export function isTalkPreviewHtmlPath(pathname: string): boolean {

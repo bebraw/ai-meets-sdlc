@@ -6,6 +6,11 @@ import {
 
 function init() {
   return {
+    socialImage: (value?: string) =>
+      value || "https://sdlcai.org/og.png?v=20261018",
+    socialImageAlt: (value?: string) =>
+      value ||
+      "SDLCAI: AI meets SDLC. Seminars on AI across the software development lifecycle. Explore the 2026 archive and hear about future events.",
     adminWorkspaceGroups: () => adminWorkspaceGroups,
     adminNavigationGroups: getAdminNavigationGroups,
     adminGroupLabel: (current: string) => getAdminGroup(current)?.label,

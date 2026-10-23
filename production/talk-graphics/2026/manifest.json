@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "inputVersion": "8d44465a44728670eb3adc8a44bcb72eed37ad27d90fb2f0ed6b6f3790e6a169",
+  "inputVersion": "51984b753e2c382dd04f96837a99818fa84638c9b238ef3b3ed6afcbb1668ec2",
   "assets": [
     {
       "filename": "mo-talk-landscape.png",
@@ -13,29 +13,29 @@
       "filename": "mo-talk-portrait.png",
       "width": 1080,
       "height": 1350,
-      "bytes": 143515,
-      "sha256": "7f1d0f9af141a60ab79cf056f2ad11be35ef6cfce837d5475e326c4643e8c7dd"
+      "bytes": 143119,
+      "sha256": "a0042a15f37d3db3f2ed435d08e12fa997221f9702ca33a93d911b0d471af544"
     },
     {
       "filename": "ohans-talk-landscape.png",
       "width": 1200,
       "height": 630,
-      "bytes": 103832,
-      "sha256": "007e2c3e4f25da0c735273010793e45d6adac064bd1fe6fa5a7392c8a2fc3bab"
+      "bytes": 103765,
+      "sha256": "6a73d765b716ae19eb4ff75abc53077dbdc1a4307c5b5fedbc52f0657fb67f66"
     },
     {
       "filename": "ohans-talk-portrait.png",
       "width": 1080,
       "height": 1350,
-      "bytes": 160657,
-      "sha256": "f831ebbaffedaf170f5b076954dd0bd20abe079da97cf446c4a185790c491809"
+      "bytes": 161169,
+      "sha256": "901351193785cd274e491ebea04bc8805fe2243208ca219f4944619d4cd8d2ab"
     },
     {
       "filename": "jenni-talk-landscape.png",
       "width": 1200,
       "height": 630,
-      "bytes": 104016,
-      "sha256": "4c859f87ca167db678f5db4846e09d7e654ed2be1fcde172c4394f7e41cf50d2"
+      "bytes": 103959,
+      "sha256": "77ca4a42aa465384887d223a772511c8d050a24d61a57dbe4f1ccbdea1de06b2"
     },
     {
       "filename": "jenni-talk-portrait.png",
@@ -55,8 +55,8 @@
       "filename": "tapio-talk-portrait.png",
       "width": 1080,
       "height": 1350,
-      "bytes": 170110,
-      "sha256": "cfd1d29d6755ef08afca6b09ee7b2aa680d2ef1db42d25dcf66fa2a036f7d143"
+      "bytes": 170434,
+      "sha256": "60740bf3d1108bfc6a181f34b812b4fb500586f3d88e45a94b9314e06043646f"
     },
     {
       "filename": "joongi-talk-landscape.png",
@@ -69,22 +69,22 @@
       "filename": "joongi-talk-portrait.png",
       "width": 1080,
       "height": 1350,
-      "bytes": 185633,
-      "sha256": "f329fea3d43bbe820d8ac79ae8379c844277cbc4742e50de581a4770a6bca102"
+      "bytes": 185456,
+      "sha256": "b2458965dbb1439572cd9414a50660e6603d8727a86fad8e66ad16aab0a0e08b"
     },
     {
       "filename": "jussi-talk-landscape.png",
       "width": 1200,
       "height": 630,
-      "bytes": 108567,
-      "sha256": "5b916cad6efac8d0da4c14ae5e8ff721228dea426567f81403de5395ec8bb5f9"
+      "bytes": 108331,
+      "sha256": "dddbbd0ffd4b58a4db12174bc1941fd45d3abe1672656d44564b982a2b4649cb"
     },
     {
       "filename": "jussi-talk-portrait.png",
       "width": 1080,
       "height": 1350,
-      "bytes": 170974,
-      "sha256": "2750b528387cd7f80d2208617cca4fca8b0061a7e168633f5f142986fa89da25"
+      "bytes": 170502,
+      "sha256": "2919c4da675eb88767cdfb807c37afce5aa59bd3bae1b0c14d61e8db0ee907b4"
     },
     {
       "filename": "viljami-talk-landscape.png",
@@ -97,8 +97,8 @@
       "filename": "viljami-talk-portrait.png",
       "width": 1080,
       "height": 1350,
-      "bytes": 170564,
-      "sha256": "ac106b84f8633495d64e88de190e4c555aa4eea5fa2a9009eb4dc391f9251379"
+      "bytes": 171178,
+      "sha256": "e5921dfc91399043438da65838ba3ef4a4f141550f82e2270919c5ff69faa5d6"
     },
     {
       "filename": "sini-talk-landscape.png",
@@ -111,8 +111,8 @@
       "filename": "sini-talk-portrait.png",
       "width": 1080,
       "height": 1350,
-      "bytes": 160176,
-      "sha256": "fe4b0e0b9675ec8ef1a25cde8ab1112e3be3e859297a859f9c3c5b7b9fe2b2ae"
+      "bytes": 160123,
+      "sha256": "89890b25e749676c7fe1486686e35da8b5b82ff7874f37cda3c6368209abc37f"
     },
     {
       "filename": "zak-talk-landscape.png",

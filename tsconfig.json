@@ -23,6 +23,7 @@
     "site/talk-previews.ts",
     "site/talk-graphics.ts",
     "worker/**/*.ts",
-    "worker-configuration.d.ts"
+    "worker-configuration.d.ts",
+    "site/published-talks.ts"
   ]
 }

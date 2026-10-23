@@ -1,6 +1,7 @@
 import organizerSeed from "./data/organizers.json" with { type: "json" };
 import { getContentInventory } from "./content-inventory.ts";
 import { getTalkPreviews, getTalkPreview } from "./talk-previews.ts";
+import { getPublishedTalks, getPublishedTalk } from "./published-talks.ts";
 import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { raw } from "gustwind/htmlisp";
@@ -37,6 +38,9 @@ function init() {
 
   return {
     contentInventory: getContentInventory,
+    publishedTalks: getPublishedTalks,
+    publishedTalkItems: () => getPublishedTalks().items,
+    publishedTalk: (match) => getPublishedTalk(match.slug),
     talkPreviews: getTalkPreviews,
     talkPreviewItems: () => getTalkPreviews().items,
     talkPreview: (match) => getTalkPreview(match.slug),
@@ -164,6 +168,7 @@ function init() {
                 title: talk.title,
                 abstract: talk.abstract,
                 abstractHtml: talk.abstractHtml,
+                summaryHref: talk.summaryHref,
               },
             };
           }),
@@ -548,6 +553,7 @@ function getScheduleItems(speakersById) {
       return {
         ...talk,
         scheduleHref: `#${talk.id}`,
+        summaryHref: `/2026/talks/${talk.id}/`,
         abstractHtml: raw(renderDescriptionMarkdown(talk.abstract)),
         speakers: talkSpeakers,
       };
