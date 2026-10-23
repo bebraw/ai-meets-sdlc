@@ -48,7 +48,8 @@
       "metadataWordingVerified": true,
       "transferStatus": "complete",
       "publicationRequested": true,
-      "publicVerifiedAt": "2026-10-22T13:54:30.210Z"
+      "publicVerifiedAt": "2026-10-22T13:54:30.210Z",
+      "publicConfirmedOn": "2026-10-23"
     },
     {
       "order": 2,
@@ -71,7 +72,8 @@
       "archiveIntegration": "published-via-existing-recording-link-editor",
       "archiveUrl": "https://www.sdlcai.org/2026/schedule/#mo-khazali-industry-perspective",
       "transferStatus": "complete",
-      "publicationRequested": true
+      "publicationRequested": true,
+      "publicConfirmedOn": "2026-10-23"
     },
     {
       "order": 3,
@@ -84,7 +86,7 @@
       "durationSeconds": 1929,
       "speakerIds": ["ohans-emmanuel"],
       "youtubeId": "xi1AY-G3Ycc",
-      "uploadStatus": "public-after-processing",
+      "uploadStatus": "public",
       "talkId": "ohans-emmanuel-industry-perspective",
       "metadataStatus": "complete",
       "captionsStatus": "uploaded-english",
@@ -94,7 +96,8 @@
       "transferStatus": "complete",
       "publicationRequested": true,
       "archiveIntegration": "published-via-existing-recording-link-editor",
-      "archiveUrl": "https://www.sdlcai.org/2026/schedule/#ohans-emmanuel-industry-perspective"
+      "archiveUrl": "https://www.sdlcai.org/2026/schedule/#ohans-emmanuel-industry-perspective",
+      "publicConfirmedOn": "2026-10-23"
     },
     {
       "order": 4,
@@ -116,7 +119,8 @@
       "transferStatus": "complete",
       "publicVerifiedAt": "2026-10-22T13:54:30.249Z",
       "archiveIntegration": "published-via-existing-recording-link-editor",
-      "publicationRequested": true
+      "publicationRequested": true,
+      "publicConfirmedOn": "2026-10-23"
     },
     {
       "order": 5,
@@ -129,7 +133,7 @@
       "durationSeconds": 1359,
       "speakerIds": ["tapio-pitkaranta"],
       "youtubeId": "dGI7WlgL-JM",
-      "uploadStatus": "public-after-processing",
+      "uploadStatus": "public",
       "talkId": "agentic-discovery",
       "metadataStatus": "complete",
       "captionsStatus": "uploaded-english",
@@ -139,7 +143,8 @@
       "transferStatus": "complete",
       "publicationRequested": true,
       "archiveIntegration": "published-via-existing-recording-link-editor",
-      "archiveUrl": "https://www.sdlcai.org/2026/schedule/#agentic-discovery"
+      "archiveUrl": "https://www.sdlcai.org/2026/schedule/#agentic-discovery",
+      "publicConfirmedOn": "2026-10-23"
     },
     {
       "order": 6,
@@ -161,7 +166,8 @@
       "transferStatus": "complete",
       "publicVerifiedAt": "2026-10-22T13:54:30.270Z",
       "archiveIntegration": "published-via-existing-recording-link-editor",
-      "publicationRequested": true
+      "publicationRequested": true,
+      "publicConfirmedOn": "2026-10-23"
     },
     {
       "order": 7,
@@ -174,14 +180,15 @@
       "durationSeconds": 2731,
       "speakerIds": ["tapio-pitkaranta", "joongi-shin"],
       "youtubeId": "HAhvn3aAbDQ",
-      "uploadStatus": "public-after-processing",
+      "uploadStatus": "public",
       "metadataStatus": "complete",
       "captionsStatus": "uploaded-english",
       "thumbnailStatus": "uploaded-custom",
       "metadataWordingVerified": true,
       "publicMaterialsRefreshedAt": "2026-10-22T13:12:31.622Z",
       "transferStatus": "complete",
-      "publicationRequested": true
+      "publicationRequested": true,
+      "publicConfirmedOn": "2026-10-23"
     },
     {
       "order": 8,
@@ -203,7 +210,8 @@
       "transferStatus": "complete",
       "publicVerifiedAt": "2026-10-22T13:54:30.303Z",
       "archiveIntegration": "published-via-existing-recording-link-editor",
-      "publicationRequested": true
+      "publicationRequested": true,
+      "publicConfirmedOn": "2026-10-23"
     },
     {
       "order": 9,
@@ -216,7 +224,7 @@
       "durationSeconds": 1335,
       "speakerIds": ["viljami-kuosmanen"],
       "youtubeId": "SL6QypO5BxA",
-      "uploadStatus": "public-after-processing",
+      "uploadStatus": "public",
       "talkId": "non-engineers-vibe-code-production",
       "thumbnailStatus": "uploaded-custom",
       "metadataStatus": "complete",
@@ -225,7 +233,8 @@
       "transferStatus": "complete",
       "publicationRequested": true,
       "archiveIntegration": "published-via-existing-recording-link-editor",
-      "archiveUrl": "https://www.sdlcai.org/2026/schedule/#non-engineers-vibe-code-production"
+      "archiveUrl": "https://www.sdlcai.org/2026/schedule/#non-engineers-vibe-code-production",
+      "publicConfirmedOn": "2026-10-23"
     },
     {
       "order": 10,
@@ -238,7 +247,7 @@
       "durationSeconds": 1690,
       "speakerIds": ["sini-tistelgren"],
       "youtubeId": "tOGTv8fR4Wc",
-      "uploadStatus": "public-after-processing",
+      "uploadStatus": "public",
       "talkId": "ai-factory-fundamentals",
       "thumbnailStatus": "uploaded-custom",
       "metadataWordingVerified": true,
@@ -247,7 +256,8 @@
       "transferStatus": "complete",
       "publicationRequested": true,
       "archiveIntegration": "published-via-existing-recording-link-editor",
-      "archiveUrl": "https://www.sdlcai.org/2026/schedule/#ai-factory-fundamentals"
+      "archiveUrl": "https://www.sdlcai.org/2026/schedule/#ai-factory-fundamentals",
+      "publicConfirmedOn": "2026-10-23"
     },
     {
       "order": 11,
@@ -260,14 +270,15 @@
       "durationSeconds": 991.12,
       "speakerIds": ["jussi-hacklin", "viljami-kuosmanen", "sini-tistelgren"],
       "youtubeId": "q-4H3JMNDE4",
-      "uploadStatus": "public-after-processing",
+      "uploadStatus": "public",
       "metadataStatus": "complete",
       "captionsStatus": "uploaded-english",
       "thumbnailStatus": "uploaded-custom",
       "transferStatus": "complete",
       "metadataWordingVerified": true,
       "publicationRequested": true,
-      "pendingChecksPublicationApproved": true
+      "pendingChecksPublicationApproved": true,
+      "publicConfirmedOn": "2026-10-23"
     },
     {
       "order": 12,
@@ -280,7 +291,7 @@
       "durationSeconds": 1255,
       "speakerIds": ["zak-allal"],
       "youtubeId": "gVXx5fOUXbs",
-      "uploadStatus": "public-after-processing",
+      "uploadStatus": "public",
       "talkId": "zak-allal-industry-perspective",
       "metadataStatus": "complete",
       "captionsStatus": "uploaded-english",
@@ -290,7 +301,8 @@
       "publicationRequested": true,
       "pendingChecksPublicationApproved": true,
       "archiveIntegration": "published-via-existing-recording-link-editor",
-      "archiveUrl": "https://www.sdlcai.org/2026/schedule/#zak-allal-industry-perspective"
+      "archiveUrl": "https://www.sdlcai.org/2026/schedule/#zak-allal-industry-perspective",
+      "publicConfirmedOn": "2026-10-23"
     },
     {
       "order": 13,
@@ -303,7 +315,7 @@
       "durationSeconds": 1854,
       "speakerIds": ["muhammad-waseem"],
       "youtubeId": "o_WaA-EaBqo",
-      "uploadStatus": "public-after-processing",
+      "uploadStatus": "public",
       "talkId": "genai-software-engineering",
       "metadataStatus": "complete",
       "captionsStatus": "uploaded-english",
@@ -313,7 +325,8 @@
       "publicationRequested": true,
       "pendingChecksPublicationApproved": true,
       "archiveIntegration": "published-via-existing-recording-link-editor",
-      "archiveUrl": "https://www.sdlcai.org/2026/schedule/#genai-software-engineering"
+      "archiveUrl": "https://www.sdlcai.org/2026/schedule/#genai-software-engineering",
+      "publicConfirmedOn": "2026-10-23"
     },
     {
       "order": 14,
@@ -326,17 +339,18 @@
       "durationSeconds": 2008,
       "speakerIds": ["zak-allal", "muhammad-waseem"],
       "youtubeId": "r3WhRG2l3ho",
-      "uploadStatus": "public-after-processing",
+      "uploadStatus": "public",
       "metadataStatus": "complete",
       "captionsStatus": "uploaded-english",
       "thumbnailStatus": "uploaded-custom",
       "metadataWordingVerified": true,
       "transferStatus": "complete",
       "publicationRequested": true,
-      "pendingChecksPublicationApproved": true
+      "pendingChecksPublicationApproved": true,
+      "publicConfirmedOn": "2026-10-23"
     }
   ],
-  "releaseStatus": "5-public; 9-processing-for-automatic-publication; all-transfers-complete",
+  "releaseStatus": "closed; 14-public; all-transfers-complete",
   "youtubeFeatureLimits": {
     "phoneVerification": "enabled",
     "advancedVerification": "enabled-confirmed-in-Studio",
@@ -353,5 +367,12 @@
     "date": "2026-10-22"
   },
   "youtubeStatusCheckedAt": "2026-10-22T13:54:30.417Z",
-  "archiveIntegration": "All ten approved talk URLs in canonical recording-link editor; playlist, highlights and three Q&A URLs in site/data/recordings.json"
+  "archiveIntegration": "All ten approved talk URLs in canonical recording-link editor; playlist, highlights and three Q&A URLs in site/data/recordings.json",
+  "closeout": {
+    "status": "closed",
+    "closedOn": "2026-10-23",
+    "basis": "Organizer confirmed successful completion and requested closing the video release. Public YouTube metadata resolved for all fourteen video URLs, and the public playlist contained all fourteen in the approved order on 23 October 2026.",
+    "scope": "Fourteen published videos with saved English subtitles, custom thumbnails, titles, descriptions and archive links.",
+    "newPlaybackOrListeningReviewPerformed": false
+  }
 }

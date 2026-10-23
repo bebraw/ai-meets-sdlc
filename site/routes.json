@@ -526,6 +526,18 @@
           }
         }
       },
+      "content-inventory": {
+        "layout": "admin-content-inventory",
+        "scripts": [{ "name": "admin-content-inventory" }],
+        "dataSources": { "inventory": { "operation": "contentInventory" } },
+        "context": {
+          "meta": {
+            "title": "SDLCAI Content Inventory",
+            "description": "Review SDLCAI sources and plan articles and social posts.",
+            "robots": "noindex,nofollow,noarchive"
+          }
+        }
+      },
       "music": {
         "layout": "admin-music",
         "scripts": [

@@ -8,6 +8,7 @@ const consolePreload = new URL("./quality-console-errors.mjs", import.meta.url);
 export const browserGroups = {
   organizers: [
     "activity:browser-check",
+    "content:browser-check",
     "qa:browser-check",
     "announcements:browser-check",
   ],

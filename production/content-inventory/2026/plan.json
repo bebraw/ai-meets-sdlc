@@ -1,0 +1,87 @@
+{
+  "audience": "Senior engineers and software delivery leaders, with research context.",
+  "positioning": "Practical lessons from SDLCAI about how AI changes software delivery, review, understanding and discovery. Use named examples, preserve trade-offs, and give readers something to examine in their own team.",
+  "linkedinApproach": "Lead with one engineering question or concrete example. Add a useful qualification and a timestamped source. Use LinkedIn to introduce the discussion and point to the full article or recording.",
+  "series": [
+    {
+      "id": "series-delivery",
+      "title": "Where does the bottleneck move when code gets cheaper?",
+      "summary": "Compare faster implementation with the work of choosing, reviewing, verifying and operating changes. Frame this around delivery outcomes rather than output volume.",
+      "question": "Which part of your delivery flow becomes constrained as implementation speeds up?",
+      "linkedinAngle": "Introduce Mo's bottleneck argument, then connect it to Sini's production journey. Invite readers to describe what actually queues up in their team.",
+      "qualification": "The seminar examples support a comparison of experiences, not a universal productivity estimate.",
+      "evidence": [
+        { "videoId": "mo-talk", "start": 1903, "end": 2139 },
+        { "videoId": "sini-talk", "start": 94, "end": 238 },
+        { "videoId": "waseem-talk", "start": 899, "end": 1018 }
+      ]
+    },
+    {
+      "id": "series-ownership",
+      "title": "Who owns a change proposed by an agent?",
+      "summary": "Explore the boundaries between proposing, planning, testing, approving and deploying. Use concrete incidents and different review models to make the choices visible.",
+      "question": "What can an agent change, and what evidence does a person need before approving it?",
+      "linkedinAngle": "Start with Viljami's deployment near miss. Pair the incident with Ohans's earlier plan review and link to the full explanations.",
+      "qualification": "The speakers describe different operating models. A second model does not by itself establish independent verification.",
+      "evidence": [
+        { "videoId": "viljami-talk", "start": 1057, "end": 1152 },
+        { "videoId": "ohans-talk", "start": 542, "end": 637 },
+        { "videoId": "sini-talk", "start": 1307, "end": 1394 }
+      ]
+    },
+    {
+      "id": "series-understanding",
+      "title": "Keeping engineering understanding current",
+      "summary": "Connect system understanding, decision rationale and shared context with the cost of maintaining that knowledge. Examine ownership and relevance rather than simply producing more documentation.",
+      "question": "How do people and agents learn why the system works this way, and who keeps that explanation useful?",
+      "linkedinAngle": "Pair Waseem's argument about knowledge outside the code with the final Q&A's concern about decision-record overhead.",
+      "qualification": "Keep the final Q&A quote attributed to the session unless the individual speaker is confirmed. Selected editorial wording is not a verified verbatim quotation.",
+      "evidence": [
+        { "videoId": "waseem-talk", "start": 899, "end": 1018 },
+        { "videoId": "ohans-talk", "start": 913, "end": 920 },
+        { "videoId": "final-panel", "start": 1469, "end": 1560 }
+      ]
+    },
+    {
+      "id": "series-discovery",
+      "title": "What do we learn by building?",
+      "summary": "Bring the research sessions into a practical discussion of probes, generated interfaces and repeatable experiments. Show how building can change the problem a team is trying to solve.",
+      "question": "When is a prototype helping you discover the problem, and how will you evaluate what it teaches you?",
+      "linkedinAngle": "Introduce Tapio's probe, then retain Joongi's Q&A qualification that building and testing can change the problem itself.",
+      "qualification": "Preserve the differences between product discovery, interface research and scientific experimentation. Zak's medical examples describe research rather than established clinical outcomes.",
+      "evidence": [
+        { "videoId": "tapio-talk", "start": 754, "end": 847 },
+        { "videoId": "research-panel", "start": 836, "end": 983 },
+        { "videoId": "zak-talk", "start": 194, "end": 331 }
+      ]
+    }
+  ],
+  "starterShortlist": [
+    "series-delivery",
+    "mo-talk-clip-02",
+    "viljami-talk-clip-02",
+    "research-panel-clip-01",
+    "final-panel-clip-02"
+  ],
+  "posters": [
+    {
+      "id": "minimum-viable-disclosure",
+      "title": "Minimum Viable Disclosure",
+      "people": ["Moses Nderemani"],
+      "summary": "Data minimisation, recommendation quality and re-identification risk, including the effect of popularity bias.",
+      "repository": "https://github.com/nderecash/disclosure-curve"
+    },
+    {
+      "id": "hypermedia-agentic-web",
+      "title": "Hypermedia as a Substrate for the Agentic Web",
+      "people": ["Juho Vepsäläinen", "Fernando Miguel Carvalho"],
+      "summary": "Exposing state-dependent actions through hypermedia, with a shared model for human and agent interfaces."
+    },
+    {
+      "id": "safety-mission-critical-software-engineering",
+      "title": "Software Engineering in Safety and Mission Critical Applications",
+      "people": ["Udayanto Dwi Atmojo"],
+      "summary": "AI-assisted engineering for safety and mission critical systems, with examples from Aalto University's industrial automation research."
+    }
+  ]
+}

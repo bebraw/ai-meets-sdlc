@@ -23,3 +23,11 @@ utilities and are not part of the site build.
 All timestamps refer to the final edited videos, with title cards included.
 Audio extracts, sampled images, logs, and Python caches remain local and are
 ignored. No source media or captions were changed by this analysis.
+
+All fourteen public YouTube URLs and start-time links were added on 23 October
+2026, including chapters, takeaways, quotations, clips and cross-session evidence.
+Run `python3 output/video-analysis/2026-10-22/public_links.py` to refresh these
+links from the release manifest and regenerate `page-blocks.json`; the external
+media drive is not needed. Local review links remain available for editing.
+The protected content inventory at `/admin/content-inventory/` uses this library
+at build time. Editorial candidates are not embedded in public JavaScript.

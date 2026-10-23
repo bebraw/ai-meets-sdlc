@@ -50,6 +50,20 @@ content is in `site/layouts/posters.html`.
 Minimum Viable Disclosure also links to its
 [code and experiment repository](https://github.com/nderecash/disclosure-curve).
 
+The protected **Content inventory** workspace at `/admin/content-inventory/`
+brings together the fourteen recordings, 29 clip candidates, 22 quote candidates,
+three posters, eight cross-session themes and four draft article/LinkedIn angles.
+It is linked from **Post-production** on the admin desk and workspace menu.
+Search or filter by type, review state and speaker, then save a browser-local
+shortlist and copy or download an editorial handoff. The positioning targets
+senior engineers and delivery leaders, with research context. Candidate excerpts
+and series angles retain their editorial review requirements.
+
+Inventory content comes from the build-time video content library and
+`production/content-inventory/2026/plan.json`. It is rendered only into protected
+admin HTML; the client script contains filtering and shortlist behavior. The
+page also links to the photo media bank, full content library and public slides.
+
 ## Requirements
 
 - Node 24 or newer. The repository includes `.node-version` for Cloudflare

@@ -19,6 +19,7 @@
   },
   "include": [
     "site/scripts/**/*.ts",
+    "site/content-inventory.ts",
     "worker/**/*.ts",
     "worker-configuration.d.ts"
   ]

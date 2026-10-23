@@ -9,5 +9,13 @@
     "status": "Opening content and heading hierarchy inspected in Chrome.",
     "file": "library-preview.png"
   },
-  "companion": "content-library.json"
+  "companion": "content-library.json",
+  "publicLinks": {
+    "addedOn": "2026-10-23",
+    "videos": 14,
+    "timestampedCandidates": 51,
+    "updatedNativeBlocks": 146,
+    "originalContextLinks": 2,
+    "readBackVerified": true
+  }
 }

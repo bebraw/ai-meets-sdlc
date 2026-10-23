@@ -1,5 +1,19 @@
 export const adminWorkspaceGroups = [
   {
+    id: "post-production",
+    label: "Post-production",
+    description: "Build on the seminar archive with articles and social posts.",
+    items: [
+      {
+        id: "content-inventory",
+        label: "Content inventory",
+        href: "/admin/content-inventory/",
+        description:
+          "Browse published sources, review clips and quotations, and shortlist article and LinkedIn angles.",
+      },
+    ],
+  },
+  {
     id: "people",
     label: "People",
     description: "Prepare registration, badges, and the event team.",

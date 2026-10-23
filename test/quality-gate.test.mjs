@@ -77,6 +77,7 @@ test("quality gate runs all successful steps and permits warnings", async () => 
 test("CI browser groups cover every browser check exactly once", () => {
   const expected = [
     "activity:browser-check",
+    "content:browser-check",
     "qa:browser-check",
     "attendees:browser-check",
     "dinner:browser-check",

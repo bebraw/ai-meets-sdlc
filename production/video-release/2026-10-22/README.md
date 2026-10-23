@@ -47,8 +47,7 @@ canonical `speaker_recording_links` table. The public schedule then displays
 **Watch talk** beside the existing presentation materials. The collection-level
 highlights and playlist links, and session Q&A links, live in
 `site/data/recordings.json`. All fourteen URLs are approved for public release
-and connected to the archive. YouTube makes the videos available automatically
-when processing finishes.
+and connected to the archive.
 
 All fourteen titles and descriptions were compared with their saved YouTube
 Studio values; results are in `metadata-verification.json`. Current public
@@ -63,15 +62,14 @@ advanced-feature verification, and Studio confirmed all three feature tiers as
 enabled. The final four uploads were accepted and all fourteen custom thumbnails
 and English subtitle tracks have been saved.
 
-All fourteen 4K transfers are complete and public publication has been requested.
-The user explicitly approved publishing the final four while YouTube's content
-checks were still pending. Studio confirmed that each will become public when
-standard-definition processing finishes.
+The release was closed on 23 October 2026 at the organizer's request. All fourteen
+videos are published, with their English subtitle tracks, custom thumbnails,
+metadata and archive links saved. Fresh public metadata checks resolved all
+fourteen URLs, and the public playlist contained every video in the approved
+order. The organizer confirmed successful completion.
 
-Transfer, processing and public publication are distinct states in `release.json`.
-The archive contains the approved recording URLs, including videos still
-processing on YouTube. Check per-item status before describing the whole
-collection as publicly watchable.
+The earlier Studio check timestamps remain in `release.json` as historical
+evidence. The closeout does not claim a new playback or listening review.
 
 ## Release screenshots
 

@@ -16,6 +16,7 @@ const routes = [
   "/404/",
   "/admin/",
   "/admin/activity/",
+  "/admin/content-inventory/",
   "/admin/login/",
   "/admin/dinner/",
   "/admin/discussion-tables/",

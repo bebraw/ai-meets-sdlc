@@ -5,9 +5,12 @@ import re
 import subprocess
 from datetime import datetime, timezone
 from library_tools import HERE, ROOT, read_json, stamp
+from public_links import add_public_links
 
 
 def save(name, value):
+    if name == 'content-library.json':
+        add_public_links(value)
     (HERE / name).write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
 
 
@@ -259,6 +262,7 @@ def run():
 
 
 def make_page(library):
+    add_public_links(library)
     items=library['items']; by_id={x['id']:x for x in items}
     review_status='**Review status.** All final captions were read. Quote windows were checked with fresh local ASR and proposed clips were sampled visually. Three wording differences and panel attribution checks remain flagged. Quotes and clip ranges need a listening/viewing pass before publication; the library is not a record of independent fact checking.'
     if library.get('reviewPass'):
@@ -270,12 +274,12 @@ def make_page(library):
     if library.get('editorialChoices'):
         review_status='**Editorial wording.** The four ambiguous phrases are selected for reuse as “a customer”, “prompt-survey”, “humans” and “you’re”. The survey term and human/agent comparison are contextual corrections; these candidates are labelled as lightly edited wording. Recognition alternatives remain in the review record. Twenty-one attributions are supported by metadata or context; use the final Q&A session label without an individual speaker name for its quote. Direct listening is not claimed, and clip boundaries remain candidates for review.'
     def evidence(refs):
-        return ' · '.join(f"[{link_label(by_id[e['videoId']])} {stamp(e['start'])}–{stamp(e['end'])}]({by_id[e['videoId']]['reviewUrl']})" for e in refs)
+        return ' · '.join(f"[{link_label(by_id[e['videoId']])} {stamp(e['start'])}–{stamp(e['end'])}]({e['youtubeUrl']})" for e in refs)
     blocks=[
         'A private working library for the final SDLCAI 2026 edits: ten talks, three Q&As and the 2:08 mood film. It contains short and detailed summaries, takeaways, 22 quote candidates, 29 clip candidates and cross-session editorial angles.',
         'The most useful direction for reuse is what happens around generated output: deciding what to build, sharing context, understanding changes, verifying them and learning from what reaches production. The sessions offer different experiences and qualifications, not one proven method.',
         review_status,
-        '**Using the timecodes.** Times refer to the final edited videos, including their title cards. Local review links select a video; seek to the stated time manually. They work on this computer while the [review server](http://127.0.0.1:8766/) is running. Public YouTube video URLs can be added after upload.',
+        '**Using the timecodes.** Times refer to the final edited videos, including their title cards. YouTube links open the published videos at the start of the stated range, rounded down to a whole second. Local review links remain available for editing while the review server is running.',
         '# Cross session findings', library['synthesis']['overview'],
     ]
     for entry in library['synthesis']['themes']:
@@ -290,20 +294,20 @@ def make_page(library):
     blocks.append('# Session summaries and candidates')
     for item in items:
         blocks.extend(['## '+link_label(item),
-            '**'+item['officialTitle']+'** · '+stamp(item['durationSeconds'])+' · [Local review]('+item['reviewUrl']+')'+(' · [Session page]('+item['talkUrl']+')' if item.get('talkUrl') else ''),
+            '**'+item['officialTitle']+'** · '+stamp(item['durationSeconds'])+' · [Watch on YouTube]('+item['youtubeUrl']+') · [Local review]('+item['reviewUrl']+')'+(' · [Session page]('+item['talkUrl']+')' if item.get('talkUrl') else ''),
             '**Short summary**\n\n'+item['shortSummary'],
             '**Detailed summary**\n\n'+item['longSummary'],
-            '**Takeaways**\n\n'+'\n'.join(f"- {stamp(t['start'])}–{stamp(t['end'])}: {t['point']}" for t in item['takeaways'])])
+            '**Takeaways**\n\n'+'\n'.join(f"- [{stamp(t['start'])}–{stamp(t['end'])}]({t['youtubeUrl']}): {t['point']}" for t in item['takeaways'])])
         quotes=[]
         for q in item['quoteCandidates']:
-            s=f"- **{q['startTimecode']}–{q['endTimecode']} · {q['speaker']}:** “{q['text']}”\n  {q['verificationNote']}"
+            s=f"- **[{q['startTimecode']}–{q['endTimecode']}]({q['youtubeUrl']}) · {q['speaker']}:** “{q['text']}”\n  {q['verificationNote']}"
             if q.get('attributionBasis'):s+=' '+q['attributionBasis']
             if q.get('suggestedParaphrase'):s+=' Suggested paraphrase (not verbatim): '+q['suggestedParaphrase']
             if q.get('originalContext'):
-                o=q['originalContext'];s+=f" Original context: {link_label(by_id[o['videoId']])}, {stamp(o['start'])}–{stamp(o['end'])}."
+                o=q['originalContext'];s+=f" Original context: [{link_label(by_id[o['videoId']])}, {stamp(o['start'])}–{stamp(o['end'])}]({o['youtubeUrl']})."
             quotes.append(s)
         blocks.append('**Quote candidates**\n\n'+'\n'.join(quotes))
-        blocks.append('**Clip candidates**\n\n'+'\n'.join(f"- **{c['startTimecode']}–{c['endTimecode']} · {c['title']}** ({c['durationSeconds']:g}s). {c['why']} Audience: {c['audience']}." for c in item['clipCandidates']))
+        blocks.append('**Clip candidates**\n\n'+'\n'.join(f"- **[{c['startTimecode']}–{c['endTimecode']}]({c['youtubeUrl']}) · {c['title']}** ({c['durationSeconds']:g}s). {c['why']} Audience: {c['audience']}." for c in item['clipCandidates']))
         blocks.append('**Further uses**\n\n'+'\n'.join('- '+r for r in item['reuseAngles']))
         blocks.append('**Editorial notes**\n\n'+'\n'.join('- '+c for c in item['editorialCaveats']))
         if item.get('materials'):

@@ -1,0 +1,353 @@
+<BaseLayout
+  &title="(id 'SDLCAI Content Inventory')"
+  &description="(id 'Review SDLCAI sources and plan articles and social posts.')"
+  &url="(id 'https://sdlcai.org/admin/content-inventory/')"
+  &robots="(id 'noindex,nofollow,noarchive')"
+>
+  <AdminNavigation &current="(id 'content-inventory')"></AdminNavigation>
+  <AdminPageHeader
+    &eyebrow="(id 'Admin / Post-production')"
+    &title="(id 'Content inventory')"
+    &description="(id 'Find published sources, review excerpts, and prepare the next articles and LinkedIn posts.')"
+  ></AdminPageHeader>
+  <div data-content-inventory &data-starter="inventory.starter">
+    <section class="border-b border-ink">
+      <div
+        class="mx-auto grid max-w-7xl gap-8 px-5 py-8 md:px-8 lg:grid-cols-2"
+      >
+        <div>
+          <h2 class="font-headline text-2xl font-black uppercase">
+            Audience &amp; positioning draft
+          </h2>
+          <p
+            class="mt-3 font-bold leading-7"
+            &children="inventory.audience"
+          ></p>
+          <p
+            class="mt-3 max-w-xl leading-7 text-muted"
+            &children="inventory.positioning"
+          ></p>
+          <p
+            class="mt-3 max-w-xl text-sm leading-6 text-muted"
+            &children="inventory.linkedinApproach"
+          ></p>
+        </div>
+        <div
+          class="border-t border-ink pt-5 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0"
+        >
+          <p
+            class="font-bold leading-7"
+            &children="inventory.releaseSummary"
+          ></p>
+          <p class="mt-3 leading-7 text-muted">
+            The recordings are published. Excerpt candidates and series angles
+            still need editorial review. A shortlist is a working selection.
+          </p>
+          <div
+            class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm font-bold underline underline-offset-4"
+          >
+            <a
+              class="inline-flex min-h-11 items-center"
+              href="https://www.youtube.com/playlist?list=PLA44jDnIP4sk"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Seminar playlist</a
+            >
+            <a
+              class="inline-flex min-h-11 items-center"
+              href="/2026/schedule/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Talks &amp; slides</a
+            >
+            <a class="inline-flex min-h-11 items-center" href="/admin/photos/"
+              >Photo media bank</a
+            >
+            <a
+              class="inline-flex min-h-11 items-center"
+              href="https://chatgpt.com/space/page_ecef7cecff0c8191bdc10459f4898460"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Full content library</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+    <section
+      class="mx-auto max-w-7xl px-5 py-8 md:px-8 md:py-12"
+      aria-labelledby="inventory-heading"
+    >
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h2
+            id="inventory-heading"
+            class="font-headline text-4xl font-black uppercase"
+          >
+            Browse the material
+          </h2>
+          <p
+            class="mt-3 text-sm leading-6 text-muted"
+            &children="inventory.summary"
+          ></p>
+        </div>
+        <a
+          class="inline-flex min-h-11 items-center font-bold underline underline-offset-4"
+          href="#inventory-shortlist"
+          >Go to shortlist</a
+        >
+      </div>
+      <form
+        class="mt-6 grid gap-4 border-y border-ink py-5 md:grid-cols-2 lg:grid-cols-5"
+        data-inventory-filters
+        hidden
+        role="search"
+        aria-label="Filter content inventory"
+      >
+        <label
+          class="grid min-w-0 gap-2 text-sm font-bold lg:col-span-2"
+          for="inventory-search"
+          >Search content
+          <input
+            class="min-h-11 min-w-0 w-full border border-ink bg-paper px-3 py-2 font-normal"
+            id="inventory-search"
+            type="search"
+            placeholder="Topic, title or speaker"
+            data-inventory-search
+          />
+        </label>
+        <div class="grid min-w-0 gap-2 text-sm font-bold">
+          <label for="inventory-kind">Content type</label>
+          <select
+            class="min-h-11 w-full border border-ink bg-paper px-3 py-2 font-normal"
+            id="inventory-kind"
+            data-inventory-kind
+          >
+            <option value="all">All content</option>
+            <option value="video">Recordings</option>
+            <option value="clip">Clip candidates</option>
+            <option value="quote">Quote candidates</option>
+            <option value="poster">Posters</option>
+            <option value="theme">Cross-session themes</option>
+            <option value="series">Article &amp; LinkedIn angles</option>
+          </select>
+        </div>
+        <div class="grid min-w-0 gap-2 text-sm font-bold">
+          <label for="inventory-status">Review state</label>
+          <select
+            class="min-h-11 w-full border border-ink bg-paper px-3 py-2 font-normal"
+            id="inventory-status"
+            data-inventory-state
+          >
+            <option value="all">All states</option>
+            <option value="published">Published sources</option>
+            <option value="review">Needs review</option>
+            <option value="draft">Editorial drafts</option>
+          </select>
+        </div>
+        <div class="grid min-w-0 gap-2 text-sm font-bold">
+          <label for="inventory-person">Speaker or author</label>
+          <select
+            class="min-h-11 w-full border border-ink bg-paper px-3 py-2 font-normal"
+            id="inventory-person"
+            data-inventory-person
+          >
+            <option value="all">Everyone</option>
+            <noop &foreach="inventory.people as person"
+              ><option &value="person.name" &children="person.name"></option
+            ></noop>
+          </select>
+        </div>
+        <div
+          class="flex flex-wrap items-center justify-between gap-3 md:col-span-2 lg:col-span-5"
+        >
+          <p
+            class="text-sm leading-6 text-muted"
+            data-inventory-visible
+            role="status"
+            aria-live="polite"
+          ></p>
+          <button
+            class="min-h-11 px-3 py-2 text-sm font-bold underline underline-offset-4"
+            type="reset"
+          >
+            Clear filters
+          </button>
+        </div>
+      </form>
+      <noscript
+        ><p class="mt-5 border border-ink p-4 leading-7">
+          Enable JavaScript to filter and shortlist. Source links and editorial
+          notes remain available below.
+        </p></noscript
+      >
+      <div
+        class="mt-8 grid min-w-0 gap-8 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-12"
+      >
+        <aside
+          id="inventory-shortlist"
+          class="min-w-0 self-start border border-ink p-5 lg:sticky lg:top-6 lg:col-start-2 lg:row-start-1"
+          aria-labelledby="shortlist-heading"
+        >
+          <h2
+            id="shortlist-heading"
+            class="font-headline text-2xl font-black uppercase"
+          >
+            Working shortlist
+          </h2>
+          <p class="mt-3 text-sm leading-6 text-muted" data-inventory-storage>
+            Selections are saved in this browser. Download a copy to share your
+            handoff.
+          </p>
+          <p class="mt-4 font-bold" data-inventory-selected>0 selected</p>
+          <ol
+            class="mt-3 max-h-64 list-inside list-decimal space-y-3 overflow-y-auto text-sm leading-6"
+            data-inventory-shortlist
+            tabindex="0"
+            aria-label="Selected content"
+          ></ol>
+          <div class="mt-5 grid gap-2" data-inventory-actions hidden>
+            <button
+              class="min-h-11 border border-ink bg-ink px-4 py-3 text-sm font-bold uppercase text-paper transition hover:bg-paper hover:text-ink"
+              data-inventory-starter
+              type="button"
+            >
+              Add suggested starting set
+            </button>
+            <button
+              class="min-h-11 border border-ink px-4 py-3 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper disabled:opacity-40"
+              data-inventory-copy
+              type="button"
+              disabled
+            >
+              Copy editorial handoff
+            </button>
+            <button
+              class="min-h-11 border border-ink px-4 py-3 text-sm font-bold uppercase transition hover:bg-ink hover:text-paper disabled:opacity-40"
+              data-inventory-download
+              type="button"
+              disabled
+            >
+              Download handoff
+            </button>
+            <button
+              class="min-h-11 px-4 py-2 text-sm font-bold underline underline-offset-4 disabled:opacity-40"
+              data-inventory-clear
+              type="button"
+              disabled
+            >
+              Clear shortlist
+            </button>
+          </div>
+          <p
+            class="mt-3 text-sm leading-6"
+            data-inventory-notice
+            role="status"
+            aria-live="polite"
+          ></p>
+          <label
+            class="mt-3 grid gap-2 text-sm font-bold"
+            data-inventory-fallback
+            hidden
+            for="inventory-handoff"
+            >Select and copy your handoff
+            <textarea
+              class="min-h-48 w-full border border-ink bg-paper p-3 font-normal"
+              id="inventory-handoff"
+              readonly
+            ></textarea>
+          </label>
+        </aside>
+        <div class="min-w-0 lg:col-start-1 lg:row-start-1">
+          <p
+            class="border-y border-ink py-8 leading-7"
+            data-inventory-empty
+            hidden
+          >
+            No items match these filters. Try another topic or clear the
+            filters.
+          </p>
+          <div class="border-t border-ink" data-inventory-list>
+            <noop &foreach="inventory.items as item">
+              <article
+                class="min-w-0 border-b border-ink py-6"
+                &id="item.id"
+                data-inventory-item
+                &data-kind="item.kind"
+                &data-state="item.status"
+                &data-people="item.peopleFilter"
+              >
+                <div
+                  class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-xs font-bold uppercase leading-5 text-muted"
+                >
+                  <span &children="item.kindLabel"></span
+                  ><span
+                    class="border border-ink/30 px-2 py-1"
+                    &children="item.statusLabel"
+                  ></span>
+                </div>
+                <h3
+                  class="mt-3 break-words text-xl font-bold leading-7 md:text-2xl md:leading-8"
+                  data-item-title
+                  &id="item.headingId"
+                  &children="item.title"
+                ></h3>
+                <p
+                  class="mt-2 text-sm leading-6 text-muted"
+                  data-item-context
+                  &children="item.context"
+                ></p>
+                <p
+                  class="mt-3 max-w-3xl leading-7"
+                  data-item-summary
+                  &children="item.summary"
+                ></p>
+                <div
+                  class="mt-3 flex flex-wrap gap-x-5 gap-y-1"
+                  data-item-links
+                >
+                  <noop &foreach="item.links as link"
+                    ><a
+                      class="inline-flex min-h-11 items-center text-sm font-bold underline underline-offset-4"
+                      &href="link.url"
+                      &children="link.label"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    ></a
+                  ></noop>
+                </div>
+                <details class="mt-3" &visibleIf="item.notes.length">
+                  <summary
+                    class="flex min-h-11 cursor-pointer items-center text-sm font-bold underline underline-offset-4"
+                  >
+                    Editorial notes &amp; context
+                  </summary>
+                  <ul
+                    class="mt-2 space-y-3 border-l border-ink/30 pl-4 text-sm leading-7 text-muted"
+                    data-item-notes
+                  >
+                    <noop &foreach="item.notes as note"
+                      ><li &children="note"></li
+                    ></noop>
+                  </ul>
+                </details>
+                <label
+                  class="mt-3 inline-flex min-h-11 cursor-pointer items-center gap-3 text-sm font-bold"
+                  ><input
+                    class="h-5 w-5 shrink-0 accent-ink"
+                    type="checkbox"
+                    &value="item.id"
+                    &aria-labelledby="item.pickLabelledBy"
+                    data-inventory-pick
+                    disabled
+                  />
+                  <span &id="item.pickTextId">Add to shortlist</span></label
+                >
+              </article>
+            </noop>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

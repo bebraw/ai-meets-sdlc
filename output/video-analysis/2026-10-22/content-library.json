@@ -59,27 +59,32 @@
           {
             "videoId": "mo-talk",
             "start": 1903,
-            "end": 2139
+            "end": 2139,
+            "youtubeUrl": "https://www.youtube.com/watch?v=l8quIPHmakI&t=1903s"
           },
           {
             "videoId": "ohans-talk",
             "start": 1499,
-            "end": 1918
+            "end": 1918,
+            "youtubeUrl": "https://www.youtube.com/watch?v=xi1AY-G3Ycc&t=1499s"
           },
           {
             "videoId": "sini-talk",
             "start": 94,
-            "end": 238
+            "end": 238,
+            "youtubeUrl": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=94s"
           },
           {
             "videoId": "viljami-talk",
             "start": 1198,
-            "end": 1291
+            "end": 1291,
+            "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=1198s"
           },
           {
             "videoId": "research-panel",
             "start": 1493,
-            "end": 1640
+            "end": 1640,
+            "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=1493s"
           }
         ],
         "reuseImplication": "Build an archive introduction around shifting constraints, then link to concrete examples rather than claiming a universal productivity multiplier."
@@ -92,27 +97,32 @@
           {
             "videoId": "ohans-talk",
             "start": 423,
-            "end": 541
+            "end": 541,
+            "youtubeUrl": "https://www.youtube.com/watch?v=xi1AY-G3Ycc&t=423s"
           },
           {
             "videoId": "viljami-talk",
             "start": 240,
-            "end": 320
+            "end": 320,
+            "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=240s"
           },
           {
             "videoId": "sini-talk",
             "start": 580,
-            "end": 829
+            "end": 829,
+            "youtubeUrl": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=580s"
           },
           {
             "videoId": "waseem-talk",
             "start": 899,
-            "end": 1018
+            "end": 1018,
+            "youtubeUrl": "https://www.youtube.com/watch?v=o_WaA-EaBqo&t=899s"
           },
           {
             "videoId": "final-panel",
             "start": 1469,
-            "end": 1560
+            "end": 1560,
+            "youtubeUrl": "https://www.youtube.com/watch?v=r3WhRG2l3ho&t=1469s"
           }
         ],
         "reuseImplication": "A practical article can compare shared intent, packaged documentation and decision records, including ownership and maintenance."
@@ -125,27 +135,32 @@
           {
             "videoId": "jenni-talk",
             "start": 960,
-            "end": 1149
+            "end": 1149,
+            "youtubeUrl": "https://www.youtube.com/watch?v=1bT23mhlzGg&t=960s"
           },
           {
             "videoId": "viljami-talk",
             "start": 1057,
-            "end": 1178
+            "end": 1178,
+            "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=1057s"
           },
           {
             "videoId": "ohans-talk",
             "start": 1078,
-            "end": 1499
+            "end": 1499,
+            "youtubeUrl": "https://www.youtube.com/watch?v=xi1AY-G3Ycc&t=1078s"
           },
           {
             "videoId": "sini-talk",
             "start": 1307,
-            "end": 1394
+            "end": 1394,
+            "youtubeUrl": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=1307s"
           },
           {
             "videoId": "waseem-talk",
             "start": 1346,
-            "end": 1447
+            "end": 1447,
+            "youtubeUrl": "https://www.youtube.com/watch?v=o_WaA-EaBqo&t=1346s"
           }
         ],
         "reuseImplication": "Use a permissions-and-review story with explicit examples of who may propose, test, approve, merge and deploy."
@@ -158,22 +173,26 @@
           {
             "videoId": "jenni-talk",
             "start": 1160,
-            "end": 1377
+            "end": 1377,
+            "youtubeUrl": "https://www.youtube.com/watch?v=1bT23mhlzGg&t=1160s"
           },
           {
             "videoId": "jussi-talk",
             "start": 452,
-            "end": 577
+            "end": 577,
+            "youtubeUrl": "https://www.youtube.com/watch?v=VpoYC7DaOjs&t=452s"
           },
           {
             "videoId": "viljami-talk",
             "start": 156,
-            "end": 382
+            "end": 382,
+            "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=156s"
           },
           {
             "videoId": "mo-talk",
             "start": 1155,
-            "end": 1543
+            "end": 1543,
+            "youtubeUrl": "https://www.youtube.com/watch?v=l8quIPHmakI&t=1155s"
           }
         ],
         "reuseImplication": "Compare concrete adoption mechanisms; avoid presenting formal training or a particular chat tool as a requirement for every organisation."
@@ -186,17 +205,20 @@
           {
             "videoId": "tapio-talk",
             "start": 754,
-            "end": 875
+            "end": 875,
+            "youtubeUrl": "https://www.youtube.com/watch?v=dGI7WlgL-JM&t=754s"
           },
           {
             "videoId": "joongi-talk",
             "start": 412,
-            "end": 504
+            "end": 504,
+            "youtubeUrl": "https://www.youtube.com/watch?v=JTTq9MNefTU&t=412s"
           },
           {
             "videoId": "research-panel",
             "start": 836,
-            "end": 983
+            "end": 983,
+            "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=836s"
           }
         ],
         "reuseImplication": "Pair the probe explanation with the Q&A qualification in an article or discussion clip."
@@ -209,27 +231,32 @@
           {
             "videoId": "mo-talk",
             "start": 403,
-            "end": 754
+            "end": 754,
+            "youtubeUrl": "https://www.youtube.com/watch?v=l8quIPHmakI&t=403s"
           },
           {
             "videoId": "sini-talk",
             "start": 1571,
-            "end": 1664
+            "end": 1664,
+            "youtubeUrl": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=1571s"
           },
           {
             "videoId": "viljami-talk",
             "start": 1198,
-            "end": 1291
+            "end": 1291,
+            "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=1198s"
           },
           {
             "videoId": "industry-panel",
             "start": 674,
-            "end": 814
+            "end": 814,
+            "youtubeUrl": "https://www.youtube.com/watch?v=q-4H3JMNDE4&t=674s"
           },
           {
             "videoId": "joongi-talk",
             "start": 728,
-            "end": 932
+            "end": 932,
+            "youtubeUrl": "https://www.youtube.com/watch?v=JTTq9MNefTU&t=728s"
           }
         ],
         "reuseImplication": "A measurement story can ask what changed for the customer or delivery flow, while keeping cost, adoption, volume and quality measures distinct."
@@ -242,27 +269,32 @@
           {
             "videoId": "zak-talk",
             "start": 146,
-            "end": 331
+            "end": 331,
+            "youtubeUrl": "https://www.youtube.com/watch?v=gVXx5fOUXbs&t=146s"
           },
           {
             "videoId": "zak-talk",
             "start": 708,
-            "end": 792
+            "end": 792,
+            "youtubeUrl": "https://www.youtube.com/watch?v=gVXx5fOUXbs&t=708s"
           },
           {
             "videoId": "zak-talk",
             "start": 981,
-            "end": 1167
+            "end": 1167,
+            "youtubeUrl": "https://www.youtube.com/watch?v=gVXx5fOUXbs&t=981s"
           },
           {
             "videoId": "final-panel",
             "start": 487,
-            "end": 625
+            "end": 625,
+            "youtubeUrl": "https://www.youtube.com/watch?v=r3WhRG2l3ho&t=487s"
           },
           {
             "videoId": "research-panel",
             "start": 1493,
-            "end": 1640
+            "end": 1640,
+            "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=1493s"
           }
         ],
         "reuseImplication": "Connect research infrastructure to evaluation capacity without presenting a preprint as an established clinical result."
@@ -275,17 +307,20 @@
           {
             "videoId": "joongi-talk",
             "start": 149,
-            "end": 302
+            "end": 302,
+            "youtubeUrl": "https://www.youtube.com/watch?v=JTTq9MNefTU&t=149s"
           },
           {
             "videoId": "joongi-talk",
             "start": 790,
-            "end": 1120
+            "end": 1120,
+            "youtubeUrl": "https://www.youtube.com/watch?v=JTTq9MNefTU&t=790s"
           },
           {
             "videoId": "research-panel",
             "start": 1222,
-            "end": 1479
+            "end": 1479,
+            "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=1222s"
           }
         ],
         "reuseImplication": "Use this as a product-design story that includes the generation experience and the resulting interface."
@@ -300,17 +335,20 @@
           {
             "videoId": "tapio-talk",
             "start": 138,
-            "end": 291
+            "end": 291,
+            "youtubeUrl": "https://www.youtube.com/watch?v=dGI7WlgL-JM&t=138s"
           },
           {
             "videoId": "tapio-talk",
             "start": 754,
-            "end": 875
+            "end": 875,
+            "youtubeUrl": "https://www.youtube.com/watch?v=dGI7WlgL-JM&t=754s"
           },
           {
             "videoId": "research-panel",
             "start": 836,
-            "end": 983
+            "end": 983,
+            "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=836s"
           }
         ],
         "reuseImplication": "Preserve the exchange rather than editing the qualification out of a discovery narrative."
@@ -323,17 +361,20 @@
           {
             "videoId": "viljami-talk",
             "start": 1057,
-            "end": 1178
+            "end": 1178,
+            "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=1057s"
           },
           {
             "videoId": "sini-talk",
             "start": 1307,
-            "end": 1394
+            "end": 1394,
+            "youtubeUrl": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=1307s"
           },
           {
             "videoId": "ohans-talk",
             "start": 542,
-            "end": 784
+            "end": 784,
+            "youtubeUrl": "https://www.youtube.com/watch?v=xi1AY-G3Ycc&t=542s"
           }
         ],
         "reuseImplication": "Compare the responsibility boundaries and the kinds of changes each speaker is describing."
@@ -346,17 +387,20 @@
           {
             "videoId": "waseem-talk",
             "start": 899,
-            "end": 1018
+            "end": 1018,
+            "youtubeUrl": "https://www.youtube.com/watch?v=o_WaA-EaBqo&t=899s"
           },
           {
             "videoId": "viljami-talk",
             "start": 240,
-            "end": 320
+            "end": 320,
+            "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=240s"
           },
           {
             "videoId": "final-panel",
             "start": 1469,
-            "end": 1560
+            "end": 1560,
+            "youtubeUrl": "https://www.youtube.com/watch?v=r3WhRG2l3ho&t=1469s"
           }
         ],
         "reuseImplication": "Follow an article about recording why with questions about ownership, relevance and maintenance."
@@ -369,17 +413,20 @@
           {
             "videoId": "jussi-talk",
             "start": 549,
-            "end": 687
+            "end": 687,
+            "youtubeUrl": "https://www.youtube.com/watch?v=VpoYC7DaOjs&t=549s"
           },
           {
             "videoId": "industry-panel",
             "start": 390,
-            "end": 672
+            "end": 672,
+            "youtubeUrl": "https://www.youtube.com/watch?v=q-4H3JMNDE4&t=390s"
           },
           {
             "videoId": "mo-talk",
             "start": 403,
-            "end": 754
+            "end": 754,
+            "youtubeUrl": "https://www.youtube.com/watch?v=l8quIPHmakI&t=403s"
           }
         ],
         "reuseImplication": "Keep adoption, expenditure and delivery impact separate in comparisons and headlines."
@@ -389,10 +436,8 @@
       {
         "use": "2026 archive and video cards",
         "proposal": "Use each short summary as a starting point for a video card and each long summary for an archive entry. Preserve the official title, speaker and materials link.",
-        "inputs": [
-          "all per-video summaries"
-        ],
-        "nextStep": "Add actual YouTube video URLs after upload; current review links are local."
+        "inputs": ["all per-video summaries"],
+        "nextStep": "Published YouTube links and timestamp links are available for all sessions, takeaways, quotation candidates and clip candidates."
       },
       {
         "use": "Opening editorial article",
@@ -418,20 +463,13 @@
       {
         "use": "Clips and discussion prompts",
         "proposal": "Start with the bottleneck message, the deployment near miss, the discovery qualification and the documentation burden. Longer Q&A ranges retain the question and caveats.",
-        "inputs": [
-          "mo-talk",
-          "viljami-talk",
-          "research-panel",
-          "final-panel"
-        ],
+        "inputs": ["mo-talk", "viljami-talk", "research-panel", "final-panel"],
         "nextStep": "Watch and listen to the selected ranges, confirm wording and panel attribution, and tighten boundaries before rendering."
       },
       {
         "use": "Channel introduction",
         "proposal": "Use the existing 2:08 mood film as a candidate channel introduction or archive opener.",
-        "inputs": [
-          "mood"
-        ],
+        "inputs": ["mood"],
         "nextStep": "Approve the final film and preserve the required music and photograph credits when making derivatives."
       }
     ],
@@ -448,9 +486,7 @@
       "id": "mo-talk",
       "kind": "talk",
       "officialTitle": "1978: The Last Good Year",
-      "speakerNames": [
-        "Mo Khazali"
-      ],
+      "speakerNames": ["Mo Khazali"],
       "durationSeconds": 2150.0,
       "videoFile": "exports/talks-v02/mo-talk-4k.mp4",
       "reviewFile": "review/talks-v02/mo-talk-720p.mp4",
@@ -459,61 +495,71 @@
           "outputSeconds": 0,
           "title": "Opening film and introduction",
           "sourceSeconds": 1185.0,
-          "timestamp": "00:00"
+          "timestamp": "00:00",
+          "youtubeUrl": "https://www.youtube.com/watch?v=l8quIPHmakI"
         },
         {
           "outputSeconds": 97,
           "title": "Detroit in 1978: why automation was not enough",
           "sourceSeconds": 1279.66,
-          "timestamp": "01:37"
+          "timestamp": "01:37",
+          "youtubeUrl": "https://www.youtube.com/watch?v=l8quIPHmakI&t=97s"
         },
         {
           "outputSeconds": 403,
           "title": "AI adoption and misleading productivity metrics",
           "sourceSeconds": 1585.82,
-          "timestamp": "06:43"
+          "timestamp": "06:43",
+          "youtubeUrl": "https://www.youtube.com/watch?v=l8quIPHmakI&t=403s"
         },
         {
           "outputSeconds": 755,
           "title": "Redesigning the system: from steam engines to NUMMI",
           "sourceSeconds": 1937.78,
-          "timestamp": "12:35"
+          "timestamp": "12:35",
+          "youtubeUrl": "https://www.youtube.com/watch?v=l8quIPHmakI&t=755s"
         },
         {
           "outputSeconds": 1001,
           "title": "Building an AI platform team",
           "sourceSeconds": 2183.88,
-          "timestamp": "16:41"
+          "timestamp": "16:41",
+          "youtubeUrl": "https://www.youtube.com/watch?v=l8quIPHmakI&t=1001s"
         },
         {
           "outputSeconds": 1155,
           "title": "Kaizen and a learning organisation",
           "sourceSeconds": 2337.3,
-          "timestamp": "19:15"
+          "timestamp": "19:15",
+          "youtubeUrl": "https://www.youtube.com/watch?v=l8quIPHmakI&t=1155s"
         },
         {
           "outputSeconds": 1540,
           "title": "Right first time: blueprints and quality gates",
           "sourceSeconds": 2722.74,
-          "timestamp": "25:40"
+          "timestamp": "25:40",
+          "youtubeUrl": "https://www.youtube.com/watch?v=l8quIPHmakI&t=1540s"
         },
         {
           "outputSeconds": 1731,
           "title": "Just in time: redesigning the development week",
           "sourceSeconds": 2913.74,
-          "timestamp": "28:51"
+          "timestamp": "28:51",
+          "youtubeUrl": "https://www.youtube.com/watch?v=l8quIPHmakI&t=1731s"
         },
         {
           "outputSeconds": 1903,
           "title": "Measuring outcomes and building the right thing",
           "sourceSeconds": 3085.06,
-          "timestamp": "31:43"
+          "timestamp": "31:43",
+          "youtubeUrl": "https://www.youtube.com/watch?v=l8quIPHmakI&t=1903s"
         },
         {
           "outputSeconds": 2087,
           "title": "Takeaways: audit the flow and measure outcomes",
           "sourceSeconds": 3269.2,
-          "timestamp": "34:47"
+          "timestamp": "34:47",
+          "youtubeUrl": "https://www.youtube.com/watch?v=l8quIPHmakI&t=2087s"
         }
       ],
       "materials": [
@@ -545,27 +591,32 @@
         {
           "point": "Tool adoption and activity measures do not by themselves demonstrate customer value or an improved delivery system.",
           "start": 403,
-          "end": 754
+          "end": 754,
+          "youtubeUrl": "https://www.youtube.com/watch?v=l8quIPHmakI&t=403s"
         },
         {
           "point": "An AI platform team can turn local solutions into shared model access, observability, skills, standards and support.",
           "start": 1004,
-          "end": 1154
+          "end": 1154,
+          "youtubeUrl": "https://www.youtube.com/watch?v=l8quIPHmakI&t=1004s"
         },
         {
           "point": "Daily experiments and root-cause discussions develop a learning culture beyond a one-off rollout or workshop.",
           "start": 1155,
-          "end": 1543
+          "end": 1543,
+          "youtubeUrl": "https://www.youtube.com/watch?v=l8quIPHmakI&t=1155s"
         },
         {
           "point": "Reference blueprints and deterministic rules can prevent known classes of mistakes and reduce repeated correction.",
           "start": 1543,
-          "end": 1731
+          "end": 1731,
+          "youtubeUrl": "https://www.youtube.com/watch?v=l8quIPHmakI&t=1543s"
         },
         {
           "point": "Audit the whole flow and track outcomes, failures, rework and customer value as bottlenecks shift toward deciding what to build.",
           "start": 1903,
-          "end": 2139
+          "end": 2139,
+          "youtubeUrl": "https://www.youtube.com/watch?v=l8quIPHmakI&t=1903s"
         }
       ],
       "topics": [
@@ -585,9 +636,7 @@
           "videoId": "mo-talk",
           "quoteStart": 750.96,
           "quoteEnd": 754.78,
-          "cueIds": [
-            211
-          ],
+          "cueIds": [211],
           "audioStart": 744.96,
           "audioEnd": 760.78,
           "audio": "audio/mo-talk-q01.wav",
@@ -620,7 +669,8 @@
             "note": "The caption candidate is present in both fresh Whisper and independent-family Parakeet ASR after case and punctuation normalization. Editorial listening and approval remain pending."
           },
           "wordingStatus": "Supported by two ASR model families after normalization; not listening-approved.",
-          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim."
+          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=l8quIPHmakI&t=750s"
         },
         {
           "text": "we shouldn't measure AI by the code that it writes, but actually by the bottlenecks that it solves.",
@@ -629,10 +679,7 @@
           "videoId": "mo-talk",
           "quoteStart": 2121.61,
           "quoteEnd": 2130.71,
-          "cueIds": [
-            628,
-            629
-          ],
+          "cueIds": [628, 629],
           "audioStart": 2115.61,
           "audioEnd": 2136.71,
           "audio": "audio/mo-talk-q02.wav",
@@ -665,7 +712,8 @@
             "note": "The caption candidate is present in both fresh Whisper and independent-family Parakeet ASR after case and punctuation normalization. Editorial listening and approval remain pending."
           },
           "wordingStatus": "Supported by two ASR model families after normalization; not listening-approved.",
-          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim."
+          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=l8quIPHmakI&t=2121s"
         }
       ],
       "clipCandidates": [
@@ -680,7 +728,8 @@
           "endTimecode": "28:05",
           "durationSeconds": 96,
           "sampledFrame": "frames/mo-talk-01.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=l8quIPHmakI&t=1589s"
         },
         {
           "title": "Measure the bottlenecks AI solves",
@@ -693,7 +742,8 @@
           "endTimecode": "35:39",
           "durationSeconds": 52,
           "sampledFrame": "frames/mo-talk-02.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=l8quIPHmakI&t=2087s"
         }
       ],
       "reuseAngles": [
@@ -713,15 +763,15 @@
         "reviewMediaBytes": 1023332708,
         "reviewMediaMtimeNs": 1792400588360000000,
         "probedDurationSeconds": 2150.0
-      }
+      },
+      "youtubeId": "l8quIPHmakI",
+      "youtubeUrl": "https://www.youtube.com/watch?v=l8quIPHmakI"
     },
     {
       "id": "ohans-talk",
       "kind": "talk",
       "officialTitle": "Zero-trust harnesses for agentic software delivery",
-      "speakerNames": [
-        "Ohans Emmanuel"
-      ],
+      "speakerNames": ["Ohans Emmanuel"],
       "durationSeconds": 1929.0,
       "videoFile": "exports/talks-v02/ohans-talk-4k.mp4",
       "reviewFile": "review/talks-v02/ohans-talk-720p.mp4",
@@ -730,61 +780,71 @@
           "outputSeconds": 0,
           "title": "Introduction: what coding agents can and cannot do",
           "sourceSeconds": 3437,
-          "timestamp": "00:00"
+          "timestamp": "00:00",
+          "youtubeUrl": "https://www.youtube.com/watch?v=xi1AY-G3Ycc"
         },
         {
           "outputSeconds": 327,
           "title": "Software delivery starts with shared intent",
           "sourceSeconds": 3761.04,
-          "timestamp": "05:27"
+          "timestamp": "05:27",
+          "youtubeUrl": "https://www.youtube.com/watch?v=xi1AY-G3Ycc&t=327s"
         },
         {
           "outputSeconds": 539,
           "title": "Review implementation plans before pull requests",
           "sourceSeconds": 3973.74,
-          "timestamp": "08:59"
+          "timestamp": "08:59",
+          "youtubeUrl": "https://www.youtube.com/watch?v=xi1AY-G3Ycc&t=539s"
         },
         {
           "outputSeconds": 687,
           "title": "Pair models and move review into the build",
           "sourceSeconds": 4121.58,
-          "timestamp": "11:27"
+          "timestamp": "11:27",
+          "youtubeUrl": "https://www.youtube.com/watch?v=xi1AY-G3Ycc&t=687s"
         },
         {
           "outputSeconds": 889,
           "title": "Keeping a mental model of the system",
           "sourceSeconds": 4323.98,
-          "timestamp": "14:49"
+          "timestamp": "14:49",
+          "youtubeUrl": "https://www.youtube.com/watch?v=xi1AY-G3Ycc&t=889s"
         },
         {
           "outputSeconds": 1078,
           "title": "Independent QA and regression testing",
           "sourceSeconds": 4512.56,
-          "timestamp": "17:58"
+          "timestamp": "17:58",
+          "youtubeUrl": "https://www.youtube.com/watch?v=xi1AY-G3Ycc&t=1078s"
         },
         {
           "outputSeconds": 1329,
           "title": "Exploratory testing and the test pyramid",
           "sourceSeconds": 4763.02,
-          "timestamp": "22:09"
+          "timestamp": "22:09",
+          "youtubeUrl": "https://www.youtube.com/watch?v=xi1AY-G3Ycc&t=1329s"
         },
         {
           "outputSeconds": 1499,
           "title": "Post-deployment monitoring across the whole system",
           "sourceSeconds": 4933.62,
-          "timestamp": "24:59"
+          "timestamp": "24:59",
+          "youtubeUrl": "https://www.youtube.com/watch?v=xi1AY-G3Ycc&t=1499s"
         },
         {
           "outputSeconds": 1698,
           "title": "Persistent agents and feedback into the next plan",
           "sourceSeconds": 5132.48,
-          "timestamp": "28:18"
+          "timestamp": "28:18",
+          "youtubeUrl": "https://www.youtube.com/watch?v=xi1AY-G3Ycc&t=1698s"
         },
         {
           "outputSeconds": 1878,
           "title": "The complete delivery and verification loop",
           "sourceSeconds": 5312.32,
-          "timestamp": "31:18"
+          "timestamp": "31:18",
+          "youtubeUrl": "https://www.youtube.com/watch?v=xi1AY-G3Ycc&t=1878s"
         }
       ],
       "materials": [],
@@ -807,27 +867,32 @@
         {
           "point": "Keep shared intent accessible throughout delivery so implementation, QA and operations can refer to the same goal.",
           "start": 423,
-          "end": 541
+          "end": 541,
+          "youtubeUrl": "https://www.youtube.com/watch?v=xi1AY-G3Ycc&t=423s"
         },
         {
           "point": "Review implementation decisions early and use model pairing during the build to catch consequential errors before a large diff accumulates.",
           "start": 542,
-          "end": 784
+          "end": 784,
+          "youtubeUrl": "https://www.youtube.com/watch?v=xi1AY-G3Ycc&t=542s"
         },
         {
           "point": "Retain a human understanding of system architecture and data flow even when agents produce most changes.",
           "start": 889,
-          "end": 1078
+          "end": 1078,
+          "youtubeUrl": "https://www.youtube.com/watch?v=xi1AY-G3Ycc&t=889s"
         },
         {
           "point": "Separate the implementing agent from QA and combine adaptive checks with deterministic assertions and exploratory testing.",
           "start": 1078,
-          "end": 1499
+          "end": 1499,
+          "youtubeUrl": "https://www.youtube.com/watch?v=xi1AY-G3Ycc&t=1078s"
         },
         {
           "point": "Connect production signals and feed root-cause learning into the next task, plan and review.",
           "start": 1499,
-          "end": 1918
+          "end": 1918,
+          "youtubeUrl": "https://www.youtube.com/watch?v=xi1AY-G3Ycc&t=1499s"
         }
       ],
       "topics": [
@@ -847,10 +912,7 @@
           "videoId": "ohans-talk",
           "quoteStart": 913.5,
           "quoteEnd": 920.09,
-          "cueIds": [
-            217,
-            218
-          ],
+          "cueIds": [217, 218],
           "audioStart": 907.5,
           "audioEnd": 926.09,
           "audio": "audio/ohans-talk-q01.wav",
@@ -883,7 +945,8 @@
             "note": "The caption candidate is present in both fresh Whisper and independent-family Parakeet ASR after case and punctuation normalization. Editorial listening and approval remain pending."
           },
           "wordingStatus": "Supported by two ASR model families after normalization; not listening-approved.",
-          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim."
+          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=xi1AY-G3Ycc&t=913s"
         }
       ],
       "clipCandidates": [
@@ -898,7 +961,8 @@
           "endTimecode": "10:37",
           "durationSeconds": 95,
           "sampledFrame": "frames/ohans-talk-01.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=xi1AY-G3Ycc&t=542s"
         },
         {
           "title": "What independent QA needs beyond another model's approval",
@@ -911,7 +975,8 @@
           "endTimecode": "22:13",
           "durationSeconds": 163,
           "sampledFrame": "frames/ohans-talk-02.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=xi1AY-G3Ycc&t=1170s"
         }
       ],
       "reuseAngles": [
@@ -932,15 +997,15 @@
         "reviewMediaBytes": 887398051,
         "reviewMediaMtimeNs": 1792400901240000000,
         "probedDurationSeconds": 1929.0
-      }
+      },
+      "youtubeId": "xi1AY-G3Ycc",
+      "youtubeUrl": "https://www.youtube.com/watch?v=xi1AY-G3Ycc"
     },
     {
       "id": "jenni-talk",
       "kind": "talk",
       "officialTitle": "Why Leaders Should Use AI Themselves and Eat Their Own Dog Food?",
-      "speakerNames": [
-        "Jenni Kylmäkoski"
-      ],
+      "speakerNames": ["Jenni Kylmäkoski"],
       "durationSeconds": 1530.0,
       "videoFile": "exports/talks-v02/jenni-talk-4k.mp4",
       "reviewFile": "review/talks-v02/jenni-talk-720p.mp4",
@@ -949,55 +1014,64 @@
           "outputSeconds": 0,
           "title": "Introduction: why leaders need firsthand AI experience",
           "sourceSeconds": 5473,
-          "timestamp": "00:00"
+          "timestamp": "00:00",
+          "youtubeUrl": "https://www.youtube.com/watch?v=1bT23mhlzGg"
         },
         {
           "outputSeconds": 341,
           "title": "Using AI to build tools for leadership",
           "sourceSeconds": 5811.78,
-          "timestamp": "05:41"
+          "timestamp": "05:41",
+          "youtubeUrl": "https://www.youtube.com/watch?v=1bT23mhlzGg&t=341s"
         },
         {
           "outputSeconds": 543,
           "title": "Developer experience and getting started",
           "sourceSeconds": 6013.32,
-          "timestamp": "09:03"
+          "timestamp": "09:03",
+          "youtubeUrl": "https://www.youtube.com/watch?v=1bT23mhlzGg&t=543s"
         },
         {
           "outputSeconds": 690,
           "title": "Experimentation, sharing and empathy",
           "sourceSeconds": 6160.66,
-          "timestamp": "11:30"
+          "timestamp": "11:30",
+          "youtubeUrl": "https://www.youtube.com/watch?v=1bT23mhlzGg&t=690s"
         },
         {
           "outputSeconds": 826,
           "title": "Building a reusable AI toolbox",
           "sourceSeconds": 6296.0,
-          "timestamp": "13:46"
+          "timestamp": "13:46",
+          "youtubeUrl": "https://www.youtube.com/watch?v=1bT23mhlzGg&t=826s"
         },
         {
           "outputSeconds": 960,
           "title": "A Jira mistake: permissions, logging and guardrails",
           "sourceSeconds": 6430.92,
-          "timestamp": "16:00"
+          "timestamp": "16:00",
+          "youtubeUrl": "https://www.youtube.com/watch?v=1bT23mhlzGg&t=960s"
         },
         {
           "outputSeconds": 1160,
           "title": "Making time for learning and setting priorities",
           "sourceSeconds": 6630.12,
-          "timestamp": "19:20"
+          "timestamp": "19:20",
+          "youtubeUrl": "https://www.youtube.com/watch?v=1bT23mhlzGg&t=1160s"
         },
         {
           "outputSeconds": 1250,
           "title": "Treating AI assets as a product",
           "sourceSeconds": 6720.02,
-          "timestamp": "20:50"
+          "timestamp": "20:50",
+          "youtubeUrl": "https://www.youtube.com/watch?v=1bT23mhlzGg&t=1250s"
         },
         {
           "outputSeconds": 1381,
           "title": "Six lessons and a path to better leadership",
           "sourceSeconds": 6851.6,
-          "timestamp": "23:01"
+          "timestamp": "23:01",
+          "youtubeUrl": "https://www.youtube.com/watch?v=1bT23mhlzGg&t=1381s"
         }
       ],
       "materials": [
@@ -1025,27 +1099,32 @@
         {
           "point": "Leaders can learn the development experience by building tools for their own recurring work and validating the outputs.",
           "start": 341,
-          "end": 547
+          "end": 547,
+          "youtubeUrl": "https://www.youtube.com/watch?v=1bT23mhlzGg&t=341s"
         },
         {
           "point": "Onboarding, documentation, training and support shape whether shared AI assets are actually used.",
           "start": 547,
-          "end": 694
+          "end": 694,
+          "youtubeUrl": "https://www.youtube.com/watch?v=1bT23mhlzGg&t=547s"
         },
         {
           "point": "A model change can alter tool behaviour; least privilege, logging and recovery deserve explicit attention.",
           "start": 960,
-          "end": 1149
+          "end": 1149,
+          "youtubeUrl": "https://www.youtube.com/watch?v=1bT23mhlzGg&t=960s"
         },
         {
           "point": "Learning time must be included in priorities and delivery plans, or urgent commitments will displace it.",
           "start": 1160,
-          "end": 1250
+          "end": 1250,
+          "youtubeUrl": "https://www.youtube.com/watch?v=1bT23mhlzGg&t=1160s"
         },
         {
           "point": "Shared AI assets need a product lifecycle with requirements, tests, releases, documentation and maintenance.",
           "start": 1250,
-          "end": 1377
+          "end": 1377,
+          "youtubeUrl": "https://www.youtube.com/watch?v=1bT23mhlzGg&t=1250s"
         }
       ],
       "topics": [
@@ -1065,9 +1144,7 @@
           "videoId": "jenni-talk",
           "quoteStart": 1297.04,
           "quoteEnd": 1300.92,
-          "cueIds": [
-            256
-          ],
+          "cueIds": [256],
           "audioStart": 1291.04,
           "audioEnd": 1306.92,
           "audio": "audio/jenni-talk-q01.wav",
@@ -1100,7 +1177,8 @@
             "note": "The caption candidate is present in both fresh Whisper and independent-family Parakeet ASR after case and punctuation normalization. Editorial listening and approval remain pending."
           },
           "wordingStatus": "Supported by two ASR model families after normalization; not listening-approved.",
-          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim."
+          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=1bT23mhlzGg&t=1297s"
         },
         {
           "text": "Because if you overpromise something to your customer, deliver some feature to a customer, you probably end up sacrificing the learning as a first mitigation action if you run out of time.",
@@ -1109,11 +1187,7 @@
           "videoId": "jenni-talk",
           "quoteStart": 1232.0,
           "quoteEnd": 1250.0,
-          "cueIds": [
-            244,
-            245,
-            246
-          ],
+          "cueIds": [244, 245, 246],
           "audioStart": 1226.0,
           "audioEnd": 1256.0,
           "audio": "audio/jenni-talk-q02.wav",
@@ -1183,7 +1257,8 @@
             "type": "Retain the caption wording.",
             "reason": "The sentence crop supports “a customer” with both decoders, as does the clause crop with greedy decoding. Other windows return “your customer”; the article does not change the point.",
             "note": "Selected wording: “a customer”, supported by the complete-sentence crop and the existing captions. Some other windows render “your customer”; the full comparison is retained in the review notes."
-          }
+          },
+          "youtubeUrl": "https://www.youtube.com/watch?v=1bT23mhlzGg&t=1232s"
         }
       ],
       "clipCandidates": [
@@ -1198,7 +1273,8 @@
           "endTimecode": "19:09",
           "durationSeconds": 189,
           "sampledFrame": "frames/jenni-talk-01.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=1bT23mhlzGg&t=960s"
         },
         {
           "title": "Treat the AI toolbox as a product",
@@ -1211,7 +1287,8 @@
           "endTimecode": "22:57",
           "durationSeconds": 127,
           "sampledFrame": "frames/jenni-talk-02.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=1bT23mhlzGg&t=1250s"
         }
       ],
       "reuseAngles": [
@@ -1229,15 +1306,15 @@
         "reviewMediaBytes": 725704474,
         "reviewMediaMtimeNs": 1792401151310000000,
         "probedDurationSeconds": 1530.0
-      }
+      },
+      "youtubeId": "1bT23mhlzGg",
+      "youtubeUrl": "https://www.youtube.com/watch?v=1bT23mhlzGg"
     },
     {
       "id": "tapio-talk",
       "kind": "talk",
       "officialTitle": "The Agentic Probe: The Instrument of Agentic Discovery & Engineering",
-      "speakerNames": [
-        "Tapio Pitkäranta"
-      ],
+      "speakerNames": ["Tapio Pitkäranta"],
       "durationSeconds": 1359.0,
       "videoFile": "exports/talks-v02/tapio-talk-4k.mp4",
       "reviewFile": "review/talks-v02/tapio-talk-720p.mp4",
@@ -1246,55 +1323,64 @@
           "outputSeconds": 0,
           "title": "Introduction and the research behind agentic probes",
           "sourceSeconds": 8466,
-          "timestamp": "00:00"
+          "timestamp": "00:00",
+          "youtubeUrl": "https://www.youtube.com/watch?v=dGI7WlgL-JM"
         },
         {
           "outputSeconds": 138,
           "title": "The shift from agentic engineering to discovery",
           "sourceSeconds": 8601.68,
-          "timestamp": "02:18"
+          "timestamp": "02:18",
+          "youtubeUrl": "https://www.youtube.com/watch?v=dGI7WlgL-JM&t=138s"
         },
         {
           "outputSeconds": 345,
           "title": "A personal view of the current AI landscape",
           "sourceSeconds": 8808.0,
-          "timestamp": "05:45"
+          "timestamp": "05:45",
+          "youtubeUrl": "https://www.youtube.com/watch?v=dGI7WlgL-JM&t=345s"
         },
         {
           "outputSeconds": 652,
           "title": "Mapping discovery onto development processes",
           "sourceSeconds": 9115.46,
-          "timestamp": "10:52"
+          "timestamp": "10:52",
+          "youtubeUrl": "https://www.youtube.com/watch?v=dGI7WlgL-JM&t=652s"
         },
         {
           "outputSeconds": 754,
           "title": "Agentic probes: making problems and solutions tangible",
           "sourceSeconds": 9217.38,
-          "timestamp": "12:34"
+          "timestamp": "12:34",
+          "youtubeUrl": "https://www.youtube.com/watch?v=dGI7WlgL-JM&t=754s"
         },
         {
           "outputSeconds": 869,
           "title": "Agentic search and evidence gathering",
           "sourceSeconds": 9332.46,
-          "timestamp": "14:29"
+          "timestamp": "14:29",
+          "youtubeUrl": "https://www.youtube.com/watch?v=dGI7WlgL-JM&t=869s"
         },
         {
           "outputSeconds": 929,
           "title": "Experiments: building a probe factory",
           "sourceSeconds": 9392.06,
-          "timestamp": "15:29"
+          "timestamp": "15:29",
+          "youtubeUrl": "https://www.youtube.com/watch?v=dGI7WlgL-JM&t=929s"
         },
         {
           "outputSeconds": 1070,
           "title": "Exploring healthcare processes with agents",
           "sourceSeconds": 9533.4,
-          "timestamp": "17:50"
+          "timestamp": "17:50",
+          "youtubeUrl": "https://www.youtube.com/watch?v=dGI7WlgL-JM&t=1070s"
         },
         {
           "outputSeconds": 1243,
           "title": "Takeaways: discovery, engineering and moving bottlenecks",
           "sourceSeconds": 9706.52,
-          "timestamp": "20:43"
+          "timestamp": "20:43",
+          "youtubeUrl": "https://www.youtube.com/watch?v=dGI7WlgL-JM&t=1243s"
         }
       ],
       "materials": [
@@ -1322,27 +1408,32 @@
         {
           "point": "Discovery and engineering address different questions, and their boundary can overlap.",
           "start": 138,
-          "end": 291
+          "end": 291,
+          "youtubeUrl": "https://www.youtube.com/watch?v=dGI7WlgL-JM&t=138s"
         },
         {
           "point": "A tangible probe gives people something to react to when their intent is hard to specify in advance.",
           "start": 754,
-          "end": 847
+          "end": 847,
+          "youtubeUrl": "https://www.youtube.com/watch?v=dGI7WlgL-JM&t=754s"
         },
         {
           "point": "Probes can test the understanding of a problem as well as demonstrate a possible solution.",
           "start": 754,
-          "end": 875
+          "end": 875,
+          "youtubeUrl": "https://www.youtube.com/watch?v=dGI7WlgL-JM&t=754s"
         },
         {
           "point": "Scaling implementation shifts constraints toward idea generation, orchestration and human validation.",
           "start": 935,
-          "end": 1068
+          "end": 1068,
+          "youtubeUrl": "https://www.youtube.com/watch?v=dGI7WlgL-JM&t=935s"
         },
         {
           "point": "Agentic search can inform alternative process designs, but imagined healthcare workflows remain exploratory proposals.",
           "start": 1070,
-          "end": 1243
+          "end": 1243,
+          "youtubeUrl": "https://www.youtube.com/watch?v=dGI7WlgL-JM&t=1070s"
         }
       ],
       "topics": [
@@ -1361,10 +1452,7 @@
           "videoId": "tapio-talk",
           "quoteStart": 761.58,
           "quoteEnd": 772.29,
-          "cueIds": [
-            155,
-            156
-          ],
+          "cueIds": [155, 156],
           "audioStart": 755.58,
           "audioEnd": 778.29,
           "audio": "audio/tapio-talk-q01.wav",
@@ -1397,7 +1485,8 @@
             "note": "The caption candidate is present in both fresh Whisper and independent-family Parakeet ASR after case and punctuation normalization. Editorial listening and approval remain pending."
           },
           "wordingStatus": "Supported by two ASR model families after normalization; not listening-approved.",
-          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim."
+          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=dGI7WlgL-JM&t=761s"
         }
       ],
       "clipCandidates": [
@@ -1412,7 +1501,8 @@
           "endTimecode": "14:07",
           "durationSeconds": 93,
           "sampledFrame": "frames/tapio-talk-01.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=dGI7WlgL-JM&t=754s"
         },
         {
           "title": "When the person building the prototypes becomes the bottleneck",
@@ -1425,7 +1515,8 @@
           "endTimecode": "17:48",
           "durationSeconds": 133,
           "sampledFrame": "frames/tapio-talk-02.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=dGI7WlgL-JM&t=935s"
         }
       ],
       "reuseAngles": [
@@ -1444,15 +1535,15 @@
         "reviewMediaBytes": 600515129,
         "reviewMediaMtimeNs": 1792401346450000000,
         "probedDurationSeconds": 1359.0
-      }
+      },
+      "youtubeId": "dGI7WlgL-JM",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dGI7WlgL-JM"
     },
     {
       "id": "joongi-talk",
       "kind": "talk",
       "officialTitle": "Generative UI for users, not just for designers",
-      "speakerNames": [
-        "Joongi Shin"
-      ],
+      "speakerNames": ["Joongi Shin"],
       "durationSeconds": 1162.0,
       "videoFile": "exports/talks-v02/joongi-talk-4k.mp4",
       "reviewFile": "review/talks-v02/joongi-talk-720p.mp4",
@@ -1461,61 +1552,71 @@
           "outputSeconds": 0,
           "title": "Introduction: interfaces for everyday tasks",
           "sourceSeconds": 9868,
-          "timestamp": "00:00"
+          "timestamp": "00:00",
+          "youtubeUrl": "https://www.youtube.com/watch?v=JTTq9MNefTU"
         },
         {
           "outputSeconds": 103,
           "title": "The promise of generative UI and the designer–user gap",
           "sourceSeconds": 9968.02,
-          "timestamp": "01:43"
+          "timestamp": "01:43",
+          "youtubeUrl": "https://www.youtube.com/watch?v=JTTq9MNefTU&t=103s"
         },
         {
           "outputSeconds": 297,
           "title": "How a generative UI system works",
           "sourceSeconds": 10162.78,
-          "timestamp": "04:57"
+          "timestamp": "04:57",
+          "youtubeUrl": "https://www.youtube.com/watch?v=JTTq9MNefTU&t=297s"
         },
         {
           "outputSeconds": 412,
           "title": "Envisioning and articulating what you need",
           "sourceSeconds": 10277.14,
-          "timestamp": "06:52"
+          "timestamp": "06:52",
+          "youtubeUrl": "https://www.youtube.com/watch?v=JTTq9MNefTU&t=412s"
         },
         {
           "outputSeconds": 504,
           "title": "Three approaches: prompts, subtasks and surveys",
           "sourceSeconds": 10369.88,
-          "timestamp": "08:24"
+          "timestamp": "08:24",
+          "youtubeUrl": "https://www.youtube.com/watch?v=JTTq9MNefTU&t=504s"
         },
         {
           "outputSeconds": 728,
           "title": "The study: generating and using interfaces",
           "sourceSeconds": 10593.98,
-          "timestamp": "12:08"
+          "timestamp": "12:08",
+          "youtubeUrl": "https://www.youtube.com/watch?v=JTTq9MNefTU&t=728s"
         },
         {
           "outputSeconds": 790,
           "title": "Findings: usability, alignment and prior experience",
           "sourceSeconds": 10655.16,
-          "timestamp": "13:10"
+          "timestamp": "13:10",
+          "youtubeUrl": "https://www.youtube.com/watch?v=JTTq9MNefTU&t=790s"
         },
         {
           "outputSeconds": 932,
           "title": "What the findings mean for task-oriented users",
           "sourceSeconds": 10797.02,
-          "timestamp": "15:32"
+          "timestamp": "15:32",
+          "youtubeUrl": "https://www.youtube.com/watch?v=JTTq9MNefTU&t=932s"
         },
         {
           "outputSeconds": 1035,
           "title": "When follow-up questions fail",
           "sourceSeconds": 10900.0,
-          "timestamp": "17:15"
+          "timestamp": "17:15",
+          "youtubeUrl": "https://www.youtube.com/watch?v=JTTq9MNefTU&t=1035s"
         },
         {
           "outputSeconds": 1121,
           "title": "Takeaways: help users envision without designing",
           "sourceSeconds": 10986.92,
-          "timestamp": "18:41"
+          "timestamp": "18:41",
+          "youtubeUrl": "https://www.youtube.com/watch?v=JTTq9MNefTU&t=1121s"
         }
       ],
       "materials": [
@@ -1543,27 +1644,32 @@
         {
           "point": "Task-oriented users and designers have different goals and willingness to edit detailed interface specifications.",
           "start": 149,
-          "end": 302
+          "end": 302,
+          "youtubeUrl": "https://www.youtube.com/watch?v=JTTq9MNefTU&t=149s"
         },
         {
           "point": "Envisioning a useful outcome and expressing it in a prompt are separate sources of difficulty.",
           "start": 412,
-          "end": 504
+          "end": 504,
+          "youtubeUrl": "https://www.youtube.com/watch?v=JTTq9MNefTU&t=412s"
         },
         {
           "point": "Evaluate the process of generating an interface and the experience of using it, rather than the generated artefact alone.",
           "start": 728,
-          "end": 790
+          "end": 790,
+          "youtubeUrl": "https://www.youtube.com/watch?v=JTTq9MNefTU&t=728s"
         },
         {
           "point": "In the reported study, subtask–UI interaction felt least usable and prompt-only interaction felt least aligned with intent.",
           "start": 790,
-          "end": 932
+          "end": 932,
+          "youtubeUrl": "https://www.youtube.com/watch?v=JTTq9MNefTU&t=790s"
         },
         {
           "point": "Follow-up questions can reduce articulation effort, but persistent or irrelevant questioning can also obstruct exploration.",
           "start": 980,
-          "end": 1120
+          "end": 1120,
+          "youtubeUrl": "https://www.youtube.com/watch?v=JTTq9MNefTU&t=980s"
         }
       ],
       "topics": [
@@ -1583,10 +1689,7 @@
           "videoId": "joongi-talk",
           "quoteStart": 935.46,
           "quoteEnd": 942.04,
-          "cueIds": [
-            212,
-            213
-          ],
+          "cueIds": [212, 213],
           "audioStart": 929.46,
           "audioEnd": 948.04,
           "audio": "audio/joongi-talk-q01.wav",
@@ -1621,7 +1724,8 @@
             "beamText": "experience. So in the end, what does this all mean to us? I think the first uh insight I can share is that uh what works for designers may not really work for uh task oriented users. So we need really need to understand what's the difference between like designers or uh engineers whose task is or goal"
           },
           "wordingStatus": "Lightly edited speech; filler or restart difference flagged.",
-          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim."
+          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=JTTq9MNefTU&t=935s"
         },
         {
           "text": "the prompt-survey approach can also fail.",
@@ -1630,9 +1734,7 @@
           "videoId": "joongi-talk",
           "quoteStart": 1046.36,
           "quoteEnd": 1052.62,
-          "cueIds": [
-            238
-          ],
+          "cueIds": [238],
           "audioStart": 1040.36,
           "audioEnd": 1058.62,
           "audio": "audio/joongi-talk-q02.wav",
@@ -1700,7 +1802,8 @@
             "type": "Contextual correction in lightly edited wording.",
             "reason": "The slide and preceding sentence explicitly name the method “prompt-survey”. Recognizers repeatedly render “problem survey” in this utterance; “prompt-survey” preserves the intended technical reference.",
             "note": "Lightly edited wording: “prompt-survey” preserves the method named on the slide and in the preceding sentence. ASR renders “problem survey” in this utterance; that alternative remains in the review record."
-          }
+          },
+          "youtubeUrl": "https://www.youtube.com/watch?v=JTTq9MNefTU&t=1046s"
         }
       ],
       "clipCandidates": [
@@ -1715,7 +1818,8 @@
           "endTimecode": "17:16",
           "durationSeconds": 104,
           "sampledFrame": "frames/joongi-talk-01.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=JTTq9MNefTU&t=932s"
         },
         {
           "title": "When clarification questions get in the user's way",
@@ -1728,7 +1832,8 @@
           "endTimecode": "18:40",
           "durationSeconds": 84,
           "sampledFrame": "frames/joongi-talk-02.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=JTTq9MNefTU&t=1036s"
         }
       ],
       "reuseAngles": [
@@ -1747,15 +1852,15 @@
         "reviewMediaBytes": 574357899,
         "reviewMediaMtimeNs": 1792401614660000000,
         "probedDurationSeconds": 1162.0
-      }
+      },
+      "youtubeId": "JTTq9MNefTU",
+      "youtubeUrl": "https://www.youtube.com/watch?v=JTTq9MNefTU"
     },
     {
       "id": "jussi-talk",
       "kind": "talk",
       "officialTitle": "Driving AI adoption above targets in highly regulated environment",
-      "speakerNames": [
-        "Jussi Hacklin"
-      ],
+      "speakerNames": ["Jussi Hacklin"],
       "durationSeconds": 1247.0,
       "videoFile": "exports/talks-v02/jussi-talk-4k.mp4",
       "reviewFile": "review/talks-v02/jussi-talk-720p.mp4",
@@ -1764,61 +1869,71 @@
           "outputSeconds": 0,
           "title": "Introduction: AI adoption in a regulated company",
           "sourceSeconds": 16911,
-          "timestamp": "00:00"
+          "timestamp": "00:00",
+          "youtubeUrl": "https://www.youtube.com/watch?v=VpoYC7DaOjs"
         },
         {
           "outputSeconds": 123,
           "title": "Elisa’s AI journey from 2024 to 2026",
           "sourceSeconds": 17031.2,
-          "timestamp": "02:03"
+          "timestamp": "02:03",
+          "youtubeUrl": "https://www.youtube.com/watch?v=VpoYC7DaOjs&t=123s"
         },
         {
           "outputSeconds": 307,
           "title": "Working with regulation and customer contracts",
           "sourceSeconds": 17215.46,
-          "timestamp": "05:07"
+          "timestamp": "05:07",
+          "youtubeUrl": "https://www.youtube.com/watch?v=VpoYC7DaOjs&t=307s"
         },
         {
           "outputSeconds": 452,
           "title": "Guidance, training and developer communities",
           "sourceSeconds": 17360.62,
-          "timestamp": "07:32"
+          "timestamp": "07:32",
+          "youtubeUrl": "https://www.youtube.com/watch?v=VpoYC7DaOjs&t=452s"
         },
         {
           "outputSeconds": 573,
           "title": "Curating tools and managing token budgets",
           "sourceSeconds": 17481.4,
-          "timestamp": "09:33"
+          "timestamp": "09:33",
+          "youtubeUrl": "https://www.youtube.com/watch?v=VpoYC7DaOjs&t=573s"
         },
         {
           "outputSeconds": 688,
           "title": "Creating room for safe experiments",
           "sourceSeconds": 17596.54,
-          "timestamp": "11:28"
+          "timestamp": "11:28",
+          "youtubeUrl": "https://www.youtube.com/watch?v=VpoYC7DaOjs&t=688s"
         },
         {
           "outputSeconds": 741,
           "title": "Rethinking the software development lifecycle",
           "sourceSeconds": 17649.6,
-          "timestamp": "12:21"
+          "timestamp": "12:21",
+          "youtubeUrl": "https://www.youtube.com/watch?v=VpoYC7DaOjs&t=741s"
         },
         {
           "outputSeconds": 839,
           "title": "A live, secure shared context and feedback loops",
           "sourceSeconds": 17747.68,
-          "timestamp": "13:59"
+          "timestamp": "13:59",
+          "youtubeUrl": "https://www.youtube.com/watch?v=VpoYC7DaOjs&t=839s"
         },
         {
           "outputSeconds": 954,
           "title": "Key lessons: security, people and practical guidance",
           "sourceSeconds": 17862.84,
-          "timestamp": "15:54"
+          "timestamp": "15:54",
+          "youtubeUrl": "https://www.youtube.com/watch?v=VpoYC7DaOjs&t=954s"
         },
         {
           "outputSeconds": 1119,
           "title": "Leadership direction: stay the course and adapt",
           "sourceSeconds": 18027.18,
-          "timestamp": "18:39"
+          "timestamp": "18:39",
+          "youtubeUrl": "https://www.youtube.com/watch?v=VpoYC7DaOjs&t=1119s"
         }
       ],
       "materials": [
@@ -1846,27 +1961,32 @@
         {
           "point": "Regulatory obligations and customer-contract restrictions need active legal collaboration, rather than a single blanket rule for every part of the company.",
           "start": 312,
-          "end": 451
+          "end": 451,
+          "youtubeUrl": "https://www.youtube.com/watch?v=VpoYC7DaOjs&t=312s"
         },
         {
           "point": "Clear management expectations should be backed by accessible guidance, training and a developer community.",
           "start": 452,
-          "end": 577
+          "end": 577,
+          "youtubeUrl": "https://www.youtube.com/watch?v=VpoYC7DaOjs&t=452s"
         },
         {
           "point": "Central tool ownership and quota monitoring provide visibility while allowing teams to request capacity and propose useful additions.",
           "start": 549,
-          "end": 687
+          "end": 687,
+          "youtubeUrl": "https://www.youtube.com/watch?v=VpoYC7DaOjs&t=549s"
         },
         {
           "point": "Sandboxed experiments can test new development approaches without imposing every brownfield constraint on the experiment.",
           "start": 688,
-          "end": 739
+          "end": 739,
+          "youtubeUrl": "https://www.youtube.com/watch?v=VpoYC7DaOjs&t=688s"
         },
         {
           "point": "Shared context and feedback should connect product creation, development and operations; leadership should keep communicating the direction while adapting the tools.",
           "start": 839,
-          "end": 1237
+          "end": 1237,
+          "youtubeUrl": "https://www.youtube.com/watch?v=VpoYC7DaOjs&t=839s"
         }
       ],
       "topics": [
@@ -1886,9 +2006,7 @@
           "videoId": "jussi-talk",
           "quoteStart": 960.6,
           "quoteEnd": 966.14,
-          "cueIds": [
-            194
-          ],
+          "cueIds": [194],
           "audioStart": 954.6,
           "audioEnd": 972.14,
           "audio": "audio/jussi-talk-q01.wav",
@@ -1923,7 +2041,8 @@
             "beamText": "So uh then some key learnings along the way. So the regulation is a challenge, but it's not a not a pro uh roadblock. So there's definitely things how you can stay within the regulation because it's very difficult"
           },
           "wordingStatus": "Lightly edited speech; filler or restart difference flagged.",
-          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim."
+          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=VpoYC7DaOjs&t=960s"
         },
         {
           "text": "Aim for clarity, not quantity when it comes to guidelines.",
@@ -1932,9 +2051,7 @@
           "videoId": "jussi-talk",
           "quoteStart": 1097.32,
           "quoteEnd": 1100.26,
-          "cueIds": [
-            224
-          ],
+          "cueIds": [224],
           "audioStart": 1091.32,
           "audioEnd": 1106.26,
           "audio": "audio/jussi-talk-q02.wav",
@@ -1967,7 +2084,8 @@
             "note": "The caption candidate is present in both fresh Whisper and independent-family Parakeet ASR after case and punctuation normalization. Editorial listening and approval remain pending."
           },
           "wordingStatus": "Supported by two ASR model families after normalization; not listening-approved.",
-          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim."
+          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=VpoYC7DaOjs&t=1097s"
         }
       ],
       "clipCandidates": [
@@ -1982,7 +2100,8 @@
           "endTimecode": "07:31",
           "durationSeconds": 139,
           "sampledFrame": "frames/jussi-talk-01.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=VpoYC7DaOjs&t=312s"
         },
         {
           "title": "Clear direction matters more than telling everyone to use AI everywhere",
@@ -1995,7 +2114,8 @@
           "endTimecode": "20:37",
           "durationSeconds": 118,
           "sampledFrame": "frames/jussi-talk-02.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=VpoYC7DaOjs&t=1119s"
         }
       ],
       "reuseAngles": [
@@ -2015,15 +2135,15 @@
         "reviewMediaBytes": 605786854,
         "reviewMediaMtimeNs": 1792402473500000000,
         "probedDurationSeconds": 1247.0
-      }
+      },
+      "youtubeId": "VpoYC7DaOjs",
+      "youtubeUrl": "https://www.youtube.com/watch?v=VpoYC7DaOjs"
     },
     {
       "id": "viljami-talk",
       "kind": "talk",
       "officialTitle": "I Let Non-Engineers Vibe-Code Our Production Codebase",
-      "speakerNames": [
-        "Viljami Kuosmanen"
-      ],
+      "speakerNames": ["Viljami Kuosmanen"],
       "durationSeconds": 1335.0,
       "videoFile": "exports/talks-v02/viljami-talk-4k.mp4",
       "reviewFile": "review/talks-v02/viljami-talk-720p.mp4",
@@ -2032,61 +2152,71 @@
           "outputSeconds": 0,
           "title": "Introduction: opening the codebase to non-engineers",
           "sourceSeconds": 18227,
-          "timestamp": "00:00"
+          "timestamp": "00:00",
+          "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA"
         },
         {
           "outputSeconds": 156,
           "title": "The Slack coworker and pull-request workflow",
           "sourceSeconds": 18380.58,
-          "timestamp": "02:36"
+          "timestamp": "02:36",
+          "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=156s"
         },
         {
           "outputSeconds": 240,
           "title": "Giving agents codebase and business context",
           "sourceSeconds": 18464.62,
-          "timestamp": "04:00"
+          "timestamp": "04:00",
+          "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=240s"
         },
         {
           "outputSeconds": 323,
           "title": "Why Slack helped adoption spread",
           "sourceSeconds": 18547.54,
-          "timestamp": "05:23"
+          "timestamp": "05:23",
+          "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=323s"
         },
         {
           "outputSeconds": 384,
           "title": "Building Leidang and an agent-agnostic runtime",
           "sourceSeconds": 18608.48,
-          "timestamp": "06:24"
+          "timestamp": "06:24",
+          "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=384s"
         },
         {
           "outputSeconds": 471,
           "title": "Background agents and automatic triage",
           "sourceSeconds": 18695.64,
-          "timestamp": "07:51"
+          "timestamp": "07:51",
+          "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=471s"
         },
         {
           "outputSeconds": 518,
           "title": "Non-engineers, preview links and adoption numbers",
           "sourceSeconds": 18742.78,
-          "timestamp": "08:38"
+          "timestamp": "08:38",
+          "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=518s"
         },
         {
           "outputSeconds": 730,
           "title": "Examples from product, design, support and QA",
           "sourceSeconds": 18954.34,
-          "timestamp": "12:10"
+          "timestamp": "12:10",
+          "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=730s"
         },
         {
           "outputSeconds": 1055,
           "title": "A deployment near miss, guardrails and review bottlenecks",
           "sourceSeconds": 19279.34,
-          "timestamp": "17:35"
+          "timestamp": "17:35",
+          "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=1055s"
         },
         {
           "outputSeconds": 1246,
           "title": "Four lessons: coworker, access, guardrails and context",
           "sourceSeconds": 19470.56,
-          "timestamp": "20:46"
+          "timestamp": "20:46",
+          "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=1246s"
         }
       ],
       "materials": [
@@ -2114,27 +2244,32 @@
         {
           "point": "Put the agent where work and its context already happen; visible Slack threads also let colleagues learn from one another.",
           "start": 156,
-          "end": 382
+          "end": 382,
+          "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=156s"
         },
         {
           "point": "A shared body of codebase and business documentation is a central input to useful agent work.",
           "start": 240,
-          "end": 320
+          "end": 320,
+          "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=240s"
         },
         {
           "point": "Preview links let non-engineers inspect and test a change without a local development setup.",
           "start": 565,
-          "end": 631
+          "end": 631,
+          "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=565s"
         },
         {
           "point": "Contribution access, merge rights, CI permissions and production access need distinct controls.",
           "start": 1057,
-          "end": 1178
+          "end": 1178,
+          "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=1057s"
         },
         {
           "point": "More proposals create review and testing work; a high contribution count does not establish productivity, and some PRs should be discarded.",
           "start": 1198,
-          "end": 1291
+          "end": 1291,
+          "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=1198s"
         }
       ],
       "topics": [
@@ -2154,9 +2289,7 @@
           "videoId": "viljami-talk",
           "quoteStart": 1305.68,
           "quoteEnd": 1307.74,
-          "cueIds": [
-            387
-          ],
+          "cueIds": [387],
           "audioStart": 1299.68,
           "audioEnd": 1313.74,
           "audio": "audio/viljami-talk-q01.wav",
@@ -2189,7 +2322,8 @@
             "note": "The caption candidate is present in both fresh Whisper and independent-family Parakeet ASR after case and punctuation normalization. Editorial listening and approval remain pending."
           },
           "wordingStatus": "Supported by two ASR model families after normalization; not listening-approved.",
-          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim."
+          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=1305s"
         },
         {
           "text": "not every PR should ship.",
@@ -2198,9 +2332,7 @@
           "videoId": "viljami-talk",
           "quoteStart": 1228.03,
           "quoteEnd": 1230.37,
-          "cueIds": [
-            361
-          ],
+          "cueIds": [361],
           "audioStart": 1222.03,
           "audioEnd": 1236.37,
           "audio": "audio/viljami-talk-q02.wav",
@@ -2233,7 +2365,8 @@
             "note": "The caption candidate is present in both fresh Whisper and independent-family Parakeet ASR after case and punctuation normalization. Editorial listening and approval remain pending."
           },
           "wordingStatus": "Supported by two ASR model families after normalization; not listening-approved.",
-          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim."
+          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=1228s"
         }
       ],
       "clipCandidates": [
@@ -2248,7 +2381,8 @@
           "endTimecode": "06:22",
           "durationSeconds": 59,
           "sampledFrame": "frames/viljami-talk-01.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=323s"
         },
         {
           "title": "The deployment near miss and the permissions it exposed",
@@ -2261,7 +2395,8 @@
           "endTimecode": "19:12",
           "durationSeconds": 95,
           "sampledFrame": "frames/viljami-talk-02.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=1057s"
         }
       ],
       "reuseAngles": [
@@ -2282,15 +2417,15 @@
         "reviewMediaBytes": 629114543,
         "reviewMediaMtimeNs": 1792402805520000000,
         "probedDurationSeconds": 1335.0
-      }
+      },
+      "youtubeId": "SL6QypO5BxA",
+      "youtubeUrl": "https://www.youtube.com/watch?v=SL6QypO5BxA"
     },
     {
       "id": "sini-talk",
       "kind": "talk",
       "officialTitle": "AI Factory doesn't eliminate the fundamentals",
-      "speakerNames": [
-        "Sini Tistelgrén"
-      ],
+      "speakerNames": ["Sini Tistelgrén"],
       "durationSeconds": 1690.0,
       "videoFile": "exports/talks-v02/sini-talk-4k.mp4",
       "reviewFile": "review/talks-v02/sini-talk-720p.mp4",
@@ -2299,61 +2434,71 @@
           "outputSeconds": 0,
           "title": "Introduction: AI adoption across the SDLC",
           "sourceSeconds": 19613,
-          "timestamp": "00:00"
+          "timestamp": "00:00",
+          "youtubeUrl": "https://www.youtube.com/watch?v=tOGTv8fR4Wc"
         },
         {
           "outputSeconds": 94,
           "title": "Why a fast prototype still takes time to reach production",
           "sourceSeconds": 19704.38,
-          "timestamp": "01:34"
+          "timestamp": "01:34",
+          "youtubeUrl": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=94s"
         },
         {
           "outputSeconds": 240,
           "title": "Three different meanings of using AI",
           "sourceSeconds": 19850.96,
-          "timestamp": "04:00"
+          "timestamp": "04:00",
+          "youtubeUrl": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=240s"
         },
         {
           "outputSeconds": 390,
           "title": "The AI factory: six stations and six fundamentals",
           "sourceSeconds": 20000.28,
-          "timestamp": "06:30"
+          "timestamp": "06:30",
+          "youtubeUrl": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=390s"
         },
         {
           "outputSeconds": 580,
           "title": "Making enterprise architecture readable to agents",
           "sourceSeconds": 20190.0,
-          "timestamp": "09:40"
+          "timestamp": "09:40",
+          "youtubeUrl": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=580s"
         },
         {
           "outputSeconds": 831,
           "title": "Assessment findings and risk moving downstream",
           "sourceSeconds": 20441.1,
-          "timestamp": "13:51"
+          "timestamp": "13:51",
+          "youtubeUrl": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=831s"
         },
         {
           "outputSeconds": 1131,
           "title": "Following one change through the factory",
           "sourceSeconds": 20741.56,
-          "timestamp": "18:51"
+          "timestamp": "18:51",
+          "youtubeUrl": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=1131s"
         },
         {
           "outputSeconds": 1307,
           "title": "Making controls and audit evidence executable",
           "sourceSeconds": 20917.82,
-          "timestamp": "21:47"
+          "timestamp": "21:47",
+          "youtubeUrl": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=1307s"
         },
         {
           "outputSeconds": 1397,
           "title": "Autonomy levels, prototypes and changing roles",
           "sourceSeconds": 21007.86,
-          "timestamp": "23:17"
+          "timestamp": "23:17",
+          "youtubeUrl": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=1397s"
         },
         {
           "outputSeconds": 1568,
           "title": "Where to start and where to reinvest the time saved",
           "sourceSeconds": 21178.82,
-          "timestamp": "26:08"
+          "timestamp": "26:08",
+          "youtubeUrl": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=1568s"
         }
       ],
       "materials": [
@@ -2381,27 +2526,32 @@
         {
           "point": "A working prototype expresses intent but still needs the architecture, access, release, operations and support work required for production.",
           "start": 94,
-          "end": 238
+          "end": 238,
+          "youtubeUrl": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=94s"
         },
         {
           "point": "An AI factory should connect intent, design, build, verification, release and operation through shared fundamentals.",
           "start": 390,
-          "end": 484
+          "end": 484,
+          "youtubeUrl": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=390s"
         },
         {
           "point": "Agents need written domain rules, tested interfaces, decision reasons and bounded access to the architecture the organisation actually has.",
           "start": 580,
-          "end": 829
+          "end": 829,
+          "youtubeUrl": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=580s"
         },
         {
           "point": "Control ownership and independent verification matter; the author of a change should not be its sole approver.",
           "start": 1307,
-          "end": 1394
+          "end": 1394,
+          "youtubeUrl": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=1307s"
         },
         {
           "point": "Start with one bounded value stream and a baseline, then measure lead time, failed changes and the cost of accepted delivery rather than output volume alone.",
           "start": 1571,
-          "end": 1664
+          "end": 1664,
+          "youtubeUrl": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=1571s"
         }
       ],
       "topics": [
@@ -2421,9 +2571,7 @@
           "videoId": "sini-talk",
           "quoteStart": 1385.24,
           "quoteEnd": 1388.12,
-          "cueIds": [
-            295
-          ],
+          "cueIds": [295],
           "audioStart": 1379.24,
           "audioEnd": 1394.12,
           "audio": "audio/sini-talk-q01.wav",
@@ -2456,7 +2604,8 @@
             "note": "The caption candidate is present in both fresh Whisper and independent-family Parakeet ASR after case and punctuation normalization. Editorial listening and approval remain pending."
           },
           "wordingStatus": "Supported by two ASR model families after normalization; not listening-approved.",
-          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim."
+          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=1385s"
         },
         {
           "text": "the AI factory does not eliminate the fundamentals. It actually runs on them.",
@@ -2465,11 +2614,7 @@
           "videoId": "sini-talk",
           "quoteStart": 1668.78,
           "quoteEnd": 1677.78,
-          "cueIds": [
-            357,
-            358,
-            359
-          ],
+          "cueIds": [357, 358, 359],
           "audioStart": 1662.78,
           "audioEnd": 1683.78,
           "audio": "audio/sini-talk-q02.wav",
@@ -2502,7 +2647,8 @@
             "note": "The caption candidate is present in both fresh Whisper and independent-family Parakeet ASR after case and punctuation normalization. Editorial listening and approval remain pending."
           },
           "wordingStatus": "Supported by two ASR model families after normalization; not listening-approved.",
-          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim."
+          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=1668s"
         }
       ],
       "clipCandidates": [
@@ -2517,7 +2663,8 @@
           "endTimecode": "03:58",
           "durationSeconds": 144,
           "sampledFrame": "frames/sini-talk-01.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=94s"
         },
         {
           "title": "Turn delivery controls into executable evidence",
@@ -2530,7 +2677,8 @@
           "endTimecode": "23:14",
           "durationSeconds": 87,
           "sampledFrame": "frames/sini-talk-02.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=1307s"
         }
       ],
       "reuseAngles": [
@@ -2550,15 +2698,15 @@
         "reviewMediaBytes": 805031792,
         "reviewMediaMtimeNs": 1792403184210000000,
         "probedDurationSeconds": 1690.0
-      }
+      },
+      "youtubeId": "tOGTv8fR4Wc",
+      "youtubeUrl": "https://www.youtube.com/watch?v=tOGTv8fR4Wc"
     },
     {
       "id": "zak-talk",
       "kind": "talk",
       "officialTitle": "Medical Breakthroughs and Scientific Discoveries",
-      "speakerNames": [
-        "Zak Allal"
-      ],
+      "speakerNames": ["Zak Allal"],
       "durationSeconds": 1255.0,
       "videoFile": "exports/talks-v02/zak-talk-4k.mp4",
       "reviewFile": "review/talks-v02/zak-talk-720p.mp4",
@@ -2567,61 +2715,71 @@
           "outputSeconds": 0,
           "title": "Introduction: curiosity across disciplines",
           "sourceSeconds": 24321.12,
-          "timestamp": "00:00"
+          "timestamp": "00:00",
+          "youtubeUrl": "https://www.youtube.com/watch?v=gVXx5fOUXbs"
         },
         {
           "outputSeconds": 142,
           "title": "Engineering medical research and the cost of repetition",
           "sourceSeconds": 24460.9,
-          "timestamp": "02:22"
+          "timestamp": "02:22",
+          "youtubeUrl": "https://www.youtube.com/watch?v=gVXx5fOUXbs&t=142s"
         },
         {
           "outputSeconds": 331,
           "title": "Research tools and accessible supercomputers",
           "sourceSeconds": 24649.56,
-          "timestamp": "05:31"
+          "timestamp": "05:31",
+          "youtubeUrl": "https://www.youtube.com/watch?v=gVXx5fOUXbs&t=331s"
         },
         {
           "outputSeconds": 463,
           "title": "Questioning the categories used for human hearing",
           "sourceSeconds": 24781.34,
-          "timestamp": "07:43"
+          "timestamp": "07:43",
+          "youtubeUrl": "https://www.youtube.com/watch?v=gVXx5fOUXbs&t=463s"
         },
         {
           "outputSeconds": 603,
           "title": "High-throughput experiments and the Recursion example",
           "sourceSeconds": 24921.96,
-          "timestamp": "10:03"
+          "timestamp": "10:03",
+          "youtubeUrl": "https://www.youtube.com/watch?v=gVXx5fOUXbs&t=603s"
         },
         {
           "outputSeconds": 708,
           "title": "Building a research operating system with Rust, Julia and C++",
           "sourceSeconds": 25027.04,
-          "timestamp": "11:48"
+          "timestamp": "11:48",
+          "youtubeUrl": "https://www.youtube.com/watch?v=gVXx5fOUXbs&t=708s"
         },
         {
           "outputSeconds": 795,
           "title": "Rechecking the hearing-data premise",
           "sourceSeconds": 25113.84,
-          "timestamp": "13:15"
+          "timestamp": "13:15",
+          "youtubeUrl": "https://www.youtube.com/watch?v=gVXx5fOUXbs&t=795s"
         },
         {
           "outputSeconds": 876,
           "title": "Examining statistical and methodological errors",
           "sourceSeconds": 25194.22,
-          "timestamp": "14:36"
+          "timestamp": "14:36",
+          "youtubeUrl": "https://www.youtube.com/watch?v=gVXx5fOUXbs&t=876s"
         },
         {
           "outputSeconds": 981,
           "title": "The proposed five-dimensional hearing atlas",
           "sourceSeconds": 25299.62,
-          "timestamp": "16:21"
+          "timestamp": "16:21",
+          "youtubeUrl": "https://www.youtube.com/watch?v=gVXx5fOUXbs&t=981s"
         },
         {
           "outputSeconds": 1162,
           "title": "Curiosity, engineering and the closing message",
           "sourceSeconds": 25481.02,
-          "timestamp": "19:22"
+          "timestamp": "19:22",
+          "youtubeUrl": "https://www.youtube.com/watch?v=gVXx5fOUXbs&t=1162s"
         }
       ],
       "materials": [
@@ -2649,27 +2807,32 @@
         {
           "point": "The cost of repeating an experiment influences which questions researchers can afford to investigate.",
           "start": 146,
-          "end": 331
+          "end": 331,
+          "youtubeUrl": "https://www.youtube.com/watch?v=gVXx5fOUXbs&t=146s"
         },
         {
           "point": "Architecture, orchestration and repeatable configurations can be as important as adding a predictive model.",
           "start": 708,
-          "end": 792
+          "end": 792,
+          "youtubeUrl": "https://www.youtube.com/watch?v=gVXx5fOUXbs&t=708s"
         },
         {
           "point": "Unstable results can justify examining the original premise and methodology rather than choosing another model.",
           "start": 467,
-          "end": 608
+          "end": 608,
+          "youtubeUrl": "https://www.youtube.com/watch?v=gVXx5fOUXbs&t=467s"
         },
         {
           "point": "The proposed hearing atlas is presented as research under review, not an established clinical standard.",
           "start": 981,
-          "end": 1167
+          "end": 1167,
+          "youtubeUrl": "https://www.youtube.com/watch?v=gVXx5fOUXbs&t=981s"
         },
         {
           "point": "Curiosity and collaboration across engineering and domain expertise help define worthwhile experiments.",
           "start": 1168,
-          "end": 1244
+          "end": 1244,
+          "youtubeUrl": "https://www.youtube.com/watch?v=gVXx5fOUXbs&t=1168s"
         }
       ],
       "topics": [
@@ -2689,10 +2852,7 @@
           "videoId": "zak-talk",
           "quoteStart": 855.11,
           "quoteEnd": 863.7,
-          "cueIds": [
-            173,
-            174
-          ],
+          "cueIds": [173, 174],
           "audioStart": 849.11,
           "audioEnd": 869.7,
           "audio": "audio/zak-talk-q01.wav",
@@ -2725,7 +2885,8 @@
             "note": "The caption candidate is present in both fresh Whisper and independent-family Parakeet ASR after case and punctuation normalization. Editorial listening and approval remain pending."
           },
           "wordingStatus": "Supported by two ASR model families after normalization; not listening-approved.",
-          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim."
+          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=gVXx5fOUXbs&t=855s"
         }
       ],
       "clipCandidates": [
@@ -2740,7 +2901,8 @@
           "endTimecode": "05:31",
           "durationSeconds": 137,
           "sampledFrame": "frames/zak-talk-01.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=gVXx5fOUXbs&t=194s"
         },
         {
           "title": "A research system built for replaying experiments",
@@ -2753,7 +2915,8 @@
           "endTimecode": "13:12",
           "durationSeconds": 84,
           "sampledFrame": "frames/zak-talk-02.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=gVXx5fOUXbs&t=708s"
         }
       ],
       "reuseAngles": [
@@ -2774,15 +2937,15 @@
         "reviewMediaBytes": 582083262,
         "reviewMediaMtimeNs": 1792403520210000000,
         "probedDurationSeconds": 1255.0
-      }
+      },
+      "youtubeId": "gVXx5fOUXbs",
+      "youtubeUrl": "https://www.youtube.com/watch?v=gVXx5fOUXbs"
     },
     {
       "id": "waseem-talk",
       "kind": "talk",
       "officialTitle": "Code Was Never the Hard Part. Understanding Was—and Still Is.",
-      "speakerNames": [
-        "Muhammad Waseem"
-      ],
+      "speakerNames": ["Muhammad Waseem"],
       "durationSeconds": 1854.0,
       "videoFile": "exports/talks-v02/waseem-talk-4k.mp4",
       "reviewFile": "review/talks-v02/waseem-talk-720p.mp4",
@@ -2791,61 +2954,71 @@
           "outputSeconds": 0,
           "title": "Introduction: code is cheap, understanding is not",
           "sourceSeconds": 25607.12,
-          "timestamp": "00:00"
+          "timestamp": "00:00",
+          "youtubeUrl": "https://www.youtube.com/watch?v=o_WaA-EaBqo"
         },
         {
           "outputSeconds": 302,
           "title": "Write: faster helpers and a larger scope for mistakes",
           "sourceSeconds": 25906.54,
-          "timestamp": "05:02"
+          "timestamp": "05:02",
+          "youtubeUrl": "https://www.youtube.com/watch?v=o_WaA-EaBqo&t=302s"
         },
         {
           "outputSeconds": 429,
           "title": "Refactoring study: file correctness and repository risks",
           "sourceSeconds": 26033.92,
-          "timestamp": "07:09"
+          "timestamp": "07:09",
+          "youtubeUrl": "https://www.youtube.com/watch?v=o_WaA-EaBqo&t=429s"
         },
         {
           "outputSeconds": 661,
           "title": "Read: understanding and the review bottleneck",
           "sourceSeconds": 26265.88,
-          "timestamp": "11:01"
+          "timestamp": "11:01",
+          "youtubeUrl": "https://www.youtube.com/watch?v=o_WaA-EaBqo&t=661s"
         },
         {
           "outputSeconds": 899,
           "title": "Agent memory, tacit knowledge and decision context",
           "sourceSeconds": 26503.82,
-          "timestamp": "14:59"
+          "timestamp": "14:59",
+          "youtubeUrl": "https://www.youtube.com/watch?v=o_WaA-EaBqo&t=899s"
         },
         {
           "outputSeconds": 1018,
           "title": "Decide: when the next user is another agent",
           "sourceSeconds": 26622.66,
-          "timestamp": "16:58"
+          "timestamp": "16:58",
+          "youtubeUrl": "https://www.youtube.com/watch?v=o_WaA-EaBqo&t=1018s"
         },
         {
           "outputSeconds": 1271,
           "title": "Design for replacement and own your data",
           "sourceSeconds": 26875.7,
-          "timestamp": "21:11"
+          "timestamp": "21:11",
+          "youtubeUrl": "https://www.youtube.com/watch?v=o_WaA-EaBqo&t=1271s"
         },
         {
           "outputSeconds": 1346,
           "title": "Care: deterministic checks, human review and security",
           "sourceSeconds": 26950.7,
-          "timestamp": "22:26"
+          "timestamp": "22:26",
+          "youtubeUrl": "https://www.youtube.com/watch?v=o_WaA-EaBqo&t=1346s"
         },
         {
           "outputSeconds": 1599,
           "title": "Three gates: safe, grounded and measured",
           "sourceSeconds": 27203.14,
-          "timestamp": "26:39"
+          "timestamp": "26:39",
+          "youtubeUrl": "https://www.youtube.com/watch?v=o_WaA-EaBqo&t=1599s"
         },
         {
           "outputSeconds": 1663,
           "title": "Takeaways: measure the system and record the why",
           "sourceSeconds": 27267.28,
-          "timestamp": "27:43"
+          "timestamp": "27:43",
+          "youtubeUrl": "https://www.youtube.com/watch?v=o_WaA-EaBqo&t=1663s"
         }
       ],
       "materials": [
@@ -2873,27 +3046,32 @@
         {
           "point": "Measure whether generated changes fit and preserve the system, rather than judging a file or snippet in isolation.",
           "start": 429,
-          "end": 661
+          "end": 661,
+          "youtubeUrl": "https://www.youtube.com/watch?v=o_WaA-EaBqo&t=429s"
         },
         {
           "point": "Review and understanding have to keep pace with generated work; more code alone does not remove that constraint.",
           "start": 661,
-          "end": 898
+          "end": 898,
+          "youtubeUrl": "https://www.youtube.com/watch?v=o_WaA-EaBqo&t=661s"
         },
         {
           "point": "Decision rationale, rejected options, constraints and agreement need to be recorded because code does not contain all organisational knowledge.",
           "start": 899,
-          "end": 1018
+          "end": 1018,
+          "youtubeUrl": "https://www.youtube.com/watch?v=o_WaA-EaBqo&t=899s"
         },
         {
           "point": "Design for replacement of models, tools and agents while retaining ownership of the data and associated knowledge.",
           "start": 1271,
-          "end": 1346
+          "end": 1346,
+          "youtubeUrl": "https://www.youtube.com/watch?v=o_WaA-EaBqo&t=1271s"
         },
         {
           "point": "Use deterministic checks, human judgement and explicit gates for safety, architectural grounding and actual value.",
           "start": 1346,
-          "end": 1447
+          "end": 1447,
+          "youtubeUrl": "https://www.youtube.com/watch?v=o_WaA-EaBqo&t=1346s"
         }
       ],
       "topics": [
@@ -2913,9 +3091,7 @@
           "videoId": "waseem-talk",
           "quoteStart": 247.34,
           "quoteEnd": 250.94,
-          "cueIds": [
-            60
-          ],
+          "cueIds": [60],
           "audioStart": 241.34,
           "audioEnd": 256.94,
           "audio": "audio/waseem-talk-q01.wav",
@@ -2948,7 +3124,8 @@
             "note": "The caption candidate is present in both fresh Whisper and independent-family Parakeet ASR after case and punctuation normalization. Editorial listening and approval remain pending."
           },
           "wordingStatus": "Supported by two ASR model families after normalization; not listening-approved.",
-          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim."
+          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=o_WaA-EaBqo&t=247s"
         },
         {
           "text": "When agents make a decision, where is the why written?",
@@ -2957,10 +3134,7 @@
           "videoId": "waseem-talk",
           "quoteStart": 1686.9,
           "quoteEnd": 1698.64,
-          "cueIds": [
-            394,
-            395
-          ],
+          "cueIds": [394, 395],
           "audioStart": 1680.9,
           "audioEnd": 1704.64,
           "audio": "audio/waseem-talk-q02.wav",
@@ -2993,7 +3167,8 @@
             "note": "The caption candidate is present in both fresh Whisper and independent-family Parakeet ASR after case and punctuation normalization. Editorial listening and approval remain pending."
           },
           "wordingStatus": "Supported by two ASR model families after normalization; not listening-approved.",
-          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim."
+          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=o_WaA-EaBqo&t=1686s"
         }
       ],
       "clipCandidates": [
@@ -3008,7 +3183,8 @@
           "endTimecode": "16:58",
           "durationSeconds": 119,
           "sampledFrame": "frames/waseem-talk-01.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=o_WaA-EaBqo&t=899s"
         },
         {
           "title": "Three questions for an AI-assisted software team",
@@ -3021,7 +3197,8 @@
           "endTimecode": "29:24",
           "durationSeconds": 97,
           "sampledFrame": "frames/waseem-talk-02.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=o_WaA-EaBqo&t=1667s"
         }
       ],
       "reuseAngles": [
@@ -3041,16 +3218,15 @@
         "reviewMediaBytes": 887608844,
         "reviewMediaMtimeNs": 1792403913020000000,
         "probedDurationSeconds": 1854.0
-      }
+      },
+      "youtubeId": "o_WaA-EaBqo",
+      "youtubeUrl": "https://www.youtube.com/watch?v=o_WaA-EaBqo"
     },
     {
       "id": "research-panel",
       "kind": "qa",
       "officialTitle": "Agentic Discovery & Generative UI — Q&A",
-      "speakerNames": [
-        "Tapio Pitkäranta",
-        "Joongi Shin"
-      ],
+      "speakerNames": ["Tapio Pitkäranta", "Joongi Shin"],
       "durationSeconds": 2731.0,
       "videoFile": "exports/talks-v02/research-panel-4k.mp4",
       "reviewFile": "review/talks-v02/research-panel-720p.mp4",
@@ -3059,113 +3235,125 @@
           "outputSeconds": 0,
           "title": "Can design probes help users envision better interfaces?",
           "sourceSeconds": 11127,
-          "timestamp": "00:00"
+          "timestamp": "00:00",
+          "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ"
         },
         {
           "outputSeconds": 107,
           "title": "What prevents organisations from adopting probes?",
           "sourceSeconds": 11231.36,
-          "timestamp": "01:47"
+          "timestamp": "01:47",
+          "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=107s"
         },
         {
           "outputSeconds": 219,
           "title": "Is there enough reliable information for agentic discovery?",
           "sourceSeconds": 11343.96,
-          "timestamp": "03:39"
+          "timestamp": "03:39",
+          "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=219s"
         },
         {
           "outputSeconds": 538,
           "title": "How can AI understand vague user requests?",
           "sourceSeconds": 11662.44,
-          "timestamp": "08:58"
+          "timestamp": "08:58",
+          "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=538s"
         },
         {
           "outputSeconds": 672,
           "title": "Can sensitive information stay secure with AI agents?",
           "sourceSeconds": 11796.78,
-          "timestamp": "11:12"
+          "timestamp": "11:12",
+          "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=672s"
         },
         {
           "outputSeconds": 836,
           "title": "Has the bottleneck really moved from building to discovery?",
           "sourceSeconds": 11960.9,
-          "timestamp": "13:56"
+          "timestamp": "13:56",
+          "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=836s"
         },
         {
           "outputSeconds": 1016,
           "title": "What will children learn from growing up with AI?",
           "sourceSeconds": 12140.82,
-          "timestamp": "16:56"
+          "timestamp": "16:56",
+          "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=1016s"
         },
         {
           "outputSeconds": 1222,
           "title": "Who is responsible for accessibility in user-generated UI?",
           "sourceSeconds": 12346.44,
-          "timestamp": "20:22"
+          "timestamp": "20:22",
+          "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=1222s"
         },
         {
           "outputSeconds": 1493,
           "title": "Is AI accelerating research or overwhelming peer review?",
           "sourceSeconds": 12617.32,
-          "timestamp": "24:53"
+          "timestamp": "24:53",
+          "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=1493s"
         },
         {
           "outputSeconds": 1795,
           "title": "Did the study compare developers and designers?",
           "sourceSeconds": 12919.0,
-          "timestamp": "29:55"
+          "timestamp": "29:55",
+          "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=1795s"
         },
         {
           "outputSeconds": 1826,
           "title": "Which tools work for agentic probing?",
           "sourceSeconds": 12950.76,
-          "timestamp": "30:26"
+          "timestamp": "30:26",
+          "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=1826s"
         },
         {
           "outputSeconds": 1940,
           "title": "Do silos between product, design and engineering slow delivery?",
           "sourceSeconds": 13064.44,
-          "timestamp": "32:20"
+          "timestamp": "32:20",
+          "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=1940s"
         },
         {
           "outputSeconds": 2034,
           "title": "How can agents capture tacit organisational knowledge?",
           "sourceSeconds": 13158.98,
-          "timestamp": "33:54"
+          "timestamp": "33:54",
+          "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=2034s"
         },
         {
           "outputSeconds": 2199,
           "title": "Will user attention become the next bottleneck?",
           "sourceSeconds": 13323.2,
-          "timestamp": "36:39"
+          "timestamp": "36:39",
+          "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=2199s"
         },
         {
           "outputSeconds": 2352,
           "title": "What roles remain for people as AI capabilities grow?",
           "sourceSeconds": 13476.5,
-          "timestamp": "39:12"
+          "timestamp": "39:12",
+          "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=2352s"
         },
         {
           "outputSeconds": 2550,
           "title": "What quality checks should generative UI use?",
           "sourceSeconds": 13674.26,
-          "timestamp": "42:30"
+          "timestamp": "42:30",
+          "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=2550s"
         }
       ],
       "materials": [
         {
           "label": "Related resource",
           "url": "https://longshoreforrest.github.io/publications/agentic-discovery/",
-          "speakerNames": [
-            "Tapio Pitkäranta"
-          ]
+          "speakerNames": ["Tapio Pitkäranta"]
         },
         {
           "label": "Slides (PDF)",
           "url": "https://www.sdlcai.org/media/talks/joongi-shin-ui-perspective/d18b4c6d-4204-474b-88f9-0ffab2c9abf3.pdf",
-          "speakerNames": [
-            "Joongi Shin"
-          ]
+          "speakerNames": ["Joongi Shin"]
         }
       ],
       "existingSummary": "Tapio Pitkäranta and Joongi Shin answer audience questions on agentic discovery and generative UI, including reliable organisational knowledge, vague user intent, privacy, accessibility, research quality and the changing roles of people and software tools.",
@@ -3186,27 +3374,32 @@
         {
           "point": "A probe can help users reflect on what they want, but merely generating a prototype does not guarantee useful reflection.",
           "start": 3,
-          "end": 100
+          "end": 100,
+          "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=3s"
         },
         {
           "point": "Agentic discovery can miss known specifications and organisational context; experts still need to evaluate completeness and credibility.",
           "start": 219,
-          "end": 536
+          "end": 536,
+          "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=219s"
         },
         {
           "point": "Building and testing are also ways of discovering the problem, which qualifies a simple upstream-versus-downstream bottleneck story.",
           "start": 836,
-          "end": 983
+          "end": 983,
+          "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=836s"
         },
         {
           "point": "User-generated interfaces raise unresolved responsibility and accessibility questions; the panel does not offer a settled allocation of responsibility.",
           "start": 1222,
-          "end": 1479
+          "end": 1479,
+          "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=1222s"
         },
         {
           "point": "A larger volume of plausible research output can overload expert review; sources and the substance of a contribution still matter.",
           "start": 1493,
-          "end": 1640
+          "end": 1640,
+          "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=1493s"
         }
       ],
       "topics": [
@@ -3228,10 +3421,7 @@
           "videoId": "research-panel",
           "quoteStart": 949.0,
           "quoteEnd": 956.64,
-          "cueIds": [
-            176,
-            177
-          ],
+          "cueIds": [176, 177],
           "audioStart": 943.0,
           "audioEnd": 962.64,
           "audio": "audio/research-panel-q01.wav",
@@ -3270,7 +3460,8 @@
             "note": "The caption candidate is present in both fresh Whisper and independent-family Parakeet ASR after case and punctuation normalization. Editorial listening and approval remain pending."
           },
           "wordingStatus": "Supported by two ASR model families after normalization; not listening-approved.",
-          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim."
+          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=949s"
         }
       ],
       "clipCandidates": [
@@ -3285,7 +3476,8 @@
           "endTimecode": "16:23",
           "durationSeconds": 147,
           "sampledFrame": "frames/research-panel-01.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=836s"
         },
         {
           "title": "Who carries accessibility responsibility for generated interfaces?",
@@ -3298,7 +3490,8 @@
           "endTimecode": "24:39",
           "durationSeconds": 257,
           "sampledFrame": "frames/research-panel-02.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=1222s"
         },
         {
           "title": "Research output grows faster than expert review capacity",
@@ -3311,7 +3504,8 @@
           "endTimecode": "27:20",
           "durationSeconds": 147,
           "sampledFrame": "frames/research-panel-03.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ&t=1493s"
         }
       ],
       "reuseAngles": [
@@ -3334,17 +3528,15 @@
         "reviewMediaBytes": 1278613467,
         "reviewMediaMtimeNs": 1792402143210000000,
         "probedDurationSeconds": 2731.0
-      }
+      },
+      "youtubeId": "HAhvn3aAbDQ",
+      "youtubeUrl": "https://www.youtube.com/watch?v=HAhvn3aAbDQ"
     },
     {
       "id": "industry-panel",
       "kind": "qa",
       "officialTitle": "AI in Software Delivery — Industry Q&A",
-      "speakerNames": [
-        "Jussi Hacklin",
-        "Viljami Kuosmanen",
-        "Sini Tistelgrén"
-      ],
+      "speakerNames": ["Jussi Hacklin", "Viljami Kuosmanen", "Sini Tistelgrén"],
       "durationSeconds": 991.12,
       "videoFile": "exports/talks-v02/industry-panel-4k.mp4",
       "reviewFile": "review/talks-v02/industry-panel-720p.mp4",
@@ -3353,84 +3545,88 @@
           "outputSeconds": 0,
           "title": "Staff morale when non-engineers contribute code",
           "sourceSeconds": 21387,
-          "timestamp": "00:00"
+          "timestamp": "00:00",
+          "youtubeUrl": "https://www.youtube.com/watch?v=q-4H3JMNDE4"
         },
         {
           "outputSeconds": 71,
           "title": "Experimenting with tools inside vendor constraints",
           "sourceSeconds": 21455.82,
-          "timestamp": "01:11"
+          "timestamp": "01:11",
+          "youtubeUrl": "https://www.youtube.com/watch?v=q-4H3JMNDE4&t=71s"
         },
         {
           "outputSeconds": 137,
           "title": "Availability of slides and recordings",
           "sourceSeconds": 21521.58,
-          "timestamp": "02:17"
+          "timestamp": "02:17",
+          "youtubeUrl": "https://www.youtube.com/watch?v=q-4H3JMNDE4&t=137s"
         },
         {
           "outputSeconds": 164,
           "title": "Choosing the right work and validating business value",
           "sourceSeconds": 21548.7,
-          "timestamp": "02:44"
+          "timestamp": "02:44",
+          "youtubeUrl": "https://www.youtube.com/watch?v=q-4H3JMNDE4&t=164s"
         },
         {
           "outputSeconds": 227,
           "title": "Review workload and the changing engineer role",
           "sourceSeconds": 21611.54,
-          "timestamp": "03:47"
+          "timestamp": "03:47",
+          "youtubeUrl": "https://www.youtube.com/watch?v=q-4H3JMNDE4&t=227s"
         },
         {
           "outputSeconds": 390,
           "title": "Managing token budgets and subscriptions",
           "sourceSeconds": 21774.42,
-          "timestamp": "06:30"
+          "timestamp": "06:30",
+          "youtubeUrl": "https://www.youtube.com/watch?v=q-4H3JMNDE4&t=390s"
         },
         {
           "outputSeconds": 548,
           "title": "Local inference, security and hybrid infrastructure",
           "sourceSeconds": 21932.02,
-          "timestamp": "09:08"
+          "timestamp": "09:08",
+          "youtubeUrl": "https://www.youtube.com/watch?v=q-4H3JMNDE4&t=548s"
         },
         {
           "outputSeconds": 674,
           "title": "Code quality, bugs and release frequency",
           "sourceSeconds": 22058.56,
-          "timestamp": "11:14"
+          "timestamp": "11:14",
+          "youtubeUrl": "https://www.youtube.com/watch?v=q-4H3JMNDE4&t=674s"
         },
         {
           "outputSeconds": 814,
           "title": "Maintaining mental models and shared documentation",
           "sourceSeconds": 22198.48,
-          "timestamp": "13:34"
+          "timestamp": "13:34",
+          "youtubeUrl": "https://www.youtube.com/watch?v=q-4H3JMNDE4&t=814s"
         },
         {
           "outputSeconds": 895,
           "title": "How agile methods are evolving",
           "sourceSeconds": 22279.38,
-          "timestamp": "14:55"
+          "timestamp": "14:55",
+          "youtubeUrl": "https://www.youtube.com/watch?v=q-4H3JMNDE4&t=895s"
         }
       ],
       "materials": [
         {
           "label": "Slides (PDF)",
           "url": "https://www.sdlcai.org/media/talks/driving-ai-adoption-regulated-environment/0b20a9fb-eb1c-42c3-b080-034d9ba4d98e.pdf",
-          "speakerNames": [
-            "Jussi Hacklin"
-          ]
+          "speakerNames": ["Jussi Hacklin"]
         },
         {
           "label": "Slides (PDF)",
           "url": "https://www.sdlcai.org/media/talks/non-engineers-vibe-code-production/404574e7-178f-48ea-bca5-02245c74ab6a.pdf",
-          "speakerNames": [
-            "Viljami Kuosmanen"
-          ]
+          "speakerNames": ["Viljami Kuosmanen"]
         },
         {
           "label": "Slides (PDF)",
           "url": "https://www.sdlcai.org/media/talks/ai-factory-fundamentals/f58fdda9-1f7d-4dbb-b060-94eb6a581c49.pdf",
-          "speakerNames": [
-            "Sini Tistelgrén"
-          ]
+          "speakerNames": ["Sini Tistelgrén"]
         }
       ],
       "existingSummary": "Jussi Hacklin, Viljami Kuosmanen and Sini Tistelgrén answer audience questions about AI in software delivery. They discuss staff morale, tool choices in regulated environments, business validation, engineers’ review responsibilities, token budgets and local inference. The discussion also covers code quality, shared documentation and how agile methods are evolving.",
@@ -3451,27 +3647,32 @@
         {
           "point": "A sandbox experiment and a tool approved for a company portfolio can have different constraints and gates.",
           "start": 71,
-          "end": 134
+          "end": 134,
+          "youtubeUrl": "https://www.youtube.com/watch?v=q-4H3JMNDE4&t=71s"
         },
         {
           "point": "Generating features cheaply does not establish their value; prototypes still need business and customer validation.",
           "start": 164,
-          "end": 232
+          "end": 232,
+          "youtubeUrl": "https://www.youtube.com/watch?v=q-4H3JMNDE4&t=164s"
         },
         {
           "point": "Review, testing and judging whether a proposed change solves the problem are growing parts of engineering work.",
           "start": 232,
-          "end": 388
+          "end": 388,
+          "youtubeUrl": "https://www.youtube.com/watch?v=q-4H3JMNDE4&t=232s"
         },
         {
           "point": "Subscription costs, token quotas and local inference require different operational arrangements; no single cost model is presented as universally best.",
           "start": 390,
-          "end": 672
+          "end": 672,
+          "youtubeUrl": "https://www.youtube.com/watch?v=q-4H3JMNDE4&t=390s"
         },
         {
           "point": "Absolute bug counts and bugs per release can move differently; preserve the denominator when discussing reported quality outcomes.",
           "start": 674,
-          "end": 814
+          "end": 814,
+          "youtubeUrl": "https://www.youtube.com/watch?v=q-4H3JMNDE4&t=674s"
         }
       ],
       "topics": [
@@ -3492,17 +3693,13 @@
           "videoId": "industry-panel",
           "quoteStart": 884.36,
           "quoteEnd": 887.8,
-          "cueIds": [
-            213
-          ],
+          "cueIds": [213],
           "audioStart": 878.36,
           "audioEnd": 893.8,
           "audio": "audio/industry-panel-q01.wav",
           "asr": "asr/industry-panel-q01.json",
           "captionContext": "It's actually public. You can go and read it yourself on docs.epilot.io if you are interested. But it hasn't really changed, to be honest. The engineer still fully owns the code they write, the code they merge. So you build up that mental model as you do that, even if you don't write every single line.",
-          "overlappingListeningFlags": [
-            "industry-panel-126"
-          ],
+          "overlappingListeningFlags": ["industry-panel-126"],
           "start": 884.36,
           "end": 887.8,
           "startTimecode": "14:44",
@@ -3535,7 +3732,8 @@
             "note": "The caption candidate is present in both fresh Whisper and independent-family Parakeet ASR after case and punctuation normalization. Editorial listening and approval remain pending."
           },
           "wordingStatus": "Supported by two ASR model families after normalization; not listening-approved.",
-          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim."
+          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=q-4H3JMNDE4&t=884s"
         }
       ],
       "clipCandidates": [
@@ -3550,7 +3748,8 @@
           "endTimecode": "09:07",
           "durationSeconds": 157,
           "sampledFrame": "frames/industry-panel-01.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=q-4H3JMNDE4&t=390s"
         },
         {
           "title": "More bugs found and fewer bugs per release can both be true",
@@ -3563,7 +3762,8 @@
           "endTimecode": "13:34",
           "durationSeconds": 140,
           "sampledFrame": "frames/industry-panel-02.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=q-4H3JMNDE4&t=674s"
         }
       ],
       "reuseAngles": [
@@ -3584,16 +3784,15 @@
         "reviewMediaBytes": 472942349,
         "reviewMediaMtimeNs": 1792400038830000000,
         "probedDurationSeconds": 991.12
-      }
+      },
+      "youtubeId": "q-4H3JMNDE4",
+      "youtubeUrl": "https://www.youtube.com/watch?v=q-4H3JMNDE4"
     },
     {
       "id": "final-panel",
       "kind": "qa",
       "officialTitle": "AI, Scientific Discovery & Software Engineering — Q&A",
-      "speakerNames": [
-        "Zak Allal",
-        "Muhammad Waseem"
-      ],
+      "speakerNames": ["Zak Allal", "Muhammad Waseem"],
       "durationSeconds": 2008.0,
       "videoFile": "exports/talks-v02/final-panel-4k.mp4",
       "reviewFile": "review/talks-v02/final-panel-720p.mp4",
@@ -3602,83 +3801,90 @@
           "outputSeconds": 0,
           "title": "What does continuous hearing mean?",
           "sourceSeconds": 27514.12,
-          "timestamp": "00:00"
+          "timestamp": "00:00",
+          "youtubeUrl": "https://www.youtube.com/watch?v=r3WhRG2l3ho"
         },
         {
           "outputSeconds": 96,
           "title": "Why architecture decision records matter",
           "sourceSeconds": 27607.86,
-          "timestamp": "01:36"
+          "timestamp": "01:36",
+          "youtubeUrl": "https://www.youtube.com/watch?v=r3WhRG2l3ho&t=96s"
         },
         {
           "outputSeconds": 328,
           "title": "Where could AI and supercomputing help medicine?",
           "sourceSeconds": 27839.36,
-          "timestamp": "05:28"
+          "timestamp": "05:28",
+          "youtubeUrl": "https://www.youtube.com/watch?v=r3WhRG2l3ho&t=328s"
         },
         {
           "outputSeconds": 483,
           "title": "Can scientific discovery be automated?",
           "sourceSeconds": 27994.42,
-          "timestamp": "08:03"
+          "timestamp": "08:03",
+          "youtubeUrl": "https://www.youtube.com/watch?v=r3WhRG2l3ho&t=483s"
         },
         {
           "outputSeconds": 726,
           "title": "Computation, mathematical certainty and supercomputers",
           "sourceSeconds": 28237.92,
-          "timestamp": "12:06"
+          "timestamp": "12:06",
+          "youtubeUrl": "https://www.youtube.com/watch?v=r3WhRG2l3ho&t=726s"
         },
         {
           "outputSeconds": 852,
           "title": "Regulation, medical data and informed consent",
           "sourceSeconds": 28364.02,
-          "timestamp": "14:12"
+          "timestamp": "14:12",
+          "youtubeUrl": "https://www.youtube.com/watch?v=r3WhRG2l3ho&t=852s"
         },
         {
           "outputSeconds": 1044,
           "title": "Do breakthroughs require a PhD?",
           "sourceSeconds": 28555.88,
-          "timestamp": "17:24"
+          "timestamp": "17:24",
+          "youtubeUrl": "https://www.youtube.com/watch?v=r3WhRG2l3ho&t=1044s"
         },
         {
           "outputSeconds": 1233,
           "title": "Connecting medicine, mathematics and software skills",
           "sourceSeconds": 28745.1,
-          "timestamp": "20:33"
+          "timestamp": "20:33",
+          "youtubeUrl": "https://www.youtube.com/watch?v=r3WhRG2l3ho&t=1233s"
         },
         {
           "outputSeconds": 1469,
           "title": "Do decision records create a maintenance burden?",
           "sourceSeconds": 28980.56,
-          "timestamp": "24:29"
+          "timestamp": "24:29",
+          "youtubeUrl": "https://www.youtube.com/watch?v=r3WhRG2l3ho&t=1469s"
         },
         {
           "outputSeconds": 1563,
           "title": "What happens when only some teammates use AI?",
           "sourceSeconds": 29074.9,
-          "timestamp": "26:03"
+          "timestamp": "26:03",
+          "youtubeUrl": "https://www.youtube.com/watch?v=r3WhRG2l3ho&t=1563s"
         },
         {
           "outputSeconds": 1725,
           "title": "Can academia keep pace with AI development?",
           "sourceSeconds": 29236.68,
-          "timestamp": "28:45"
+          "timestamp": "28:45",
+          "youtubeUrl": "https://www.youtube.com/watch?v=r3WhRG2l3ho&t=1725s"
         }
       ],
       "materials": [
         {
           "label": "Slides (PDF)",
           "url": "https://www.sdlcai.org/media/talks/zak-allal-industry-perspective/ca321a78-3c93-4396-b728-07c1805ceae1.pdf",
-          "speakerNames": [
-            "Zak Allal"
-          ]
+          "speakerNames": ["Zak Allal"]
         },
         {
           "label": "Slides (PDF)",
           "url": "https://www.sdlcai.org/media/talks/genai-software-engineering/f491d4b2-18a5-4208-a7b2-19b48c192193.pdf",
-          "speakerNames": [
-            "Muhammad Waseem"
-          ]
+          "speakerNames": ["Muhammad Waseem"]
         }
       ],
       "existingSummary": "Zak Allal and Muhammad Waseem discuss continuous hearing, architecture decision records, and the role of AI and supercomputers in research. Audience questions lead to a discussion of medical applications, controlled experiments, privacy, multidisciplinary collaboration, the maintenance cost of decision records, mixed AI use in teams and academia’s changing role.",
@@ -3699,27 +3905,32 @@
         {
           "point": "Architectural decisions include reasons and quality trade-offs, not just diagrams or the resulting source code.",
           "start": 96,
-          "end": 288
+          "end": 288,
+          "youtubeUrl": "https://www.youtube.com/watch?v=r3WhRG2l3ho&t=96s"
         },
         {
           "point": "Research automation still needs checkpoints, structured data and provenance that connect results to their origin.",
           "start": 487,
-          "end": 625
+          "end": 625,
+          "youtubeUrl": "https://www.youtube.com/watch?v=r3WhRG2l3ho&t=487s"
         },
         {
           "point": "Combining domain, mathematical and software expertise can expose useful questions that one discipline misses.",
           "start": 1044,
-          "end": 1469
+          "end": 1469,
+          "youtubeUrl": "https://www.youtube.com/watch?v=r3WhRG2l3ho&t=1044s"
         },
         {
           "point": "Recording decisions has a maintenance cost for people and agents; more documentation is not automatically more useful context.",
           "start": 1469,
-          "end": 1560
+          "end": 1560,
+          "youtubeUrl": "https://www.youtube.com/watch?v=r3WhRG2l3ho&t=1469s"
         },
         {
           "point": "The panel does not supply comparative evidence about mixed AI and non-AI teammates; that question remains a research opportunity.",
           "start": 1563,
-          "end": 1721
+          "end": 1721,
+          "youtubeUrl": "https://www.youtube.com/watch?v=r3WhRG2l3ho&t=1563s"
         }
       ],
       "topics": [
@@ -3740,10 +3951,7 @@
           "videoId": "final-panel",
           "quoteStart": 1537.66,
           "quoteEnd": 1543.54,
-          "cueIds": [
-            373,
-            374
-          ],
+          "cueIds": [373, 374],
           "audioStart": 1531.66,
           "audioEnd": 1549.54,
           "audio": "audio/final-panel-q01.wav",
@@ -3818,7 +4026,8 @@
             "type": "Contextual correction in lightly edited wording.",
             "reason": "The answer compares maintenance burden for people with maintenance burden for agents. “Humans” fits that argument and the captions; the ASR alternatives “women” and “human” are retained as uncertain acoustic readings.",
             "note": "Lightly edited wording: “humans” preserves the comparison between people and agents. ASR alternatives “women” and “human” remain in the review record. Use the final Q&A session label without an individual speaker name; the respondent is unconfirmed."
-          }
+          },
+          "youtubeUrl": "https://www.youtube.com/watch?v=r3WhRG2l3ho&t=1537s"
         }
       ],
       "clipCandidates": [
@@ -3833,7 +4042,8 @@
           "endTimecode": "04:48",
           "durationSeconds": 192,
           "sampledFrame": "frames/final-panel-01.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=r3WhRG2l3ho&t=96s"
         },
         {
           "title": "When decision records become a maintenance burden",
@@ -3846,7 +4056,8 @@
           "endTimecode": "26:00",
           "durationSeconds": 91,
           "sampledFrame": "frames/final-panel-02.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=r3WhRG2l3ho&t=1469s"
         }
       ],
       "reuseAngles": [
@@ -3867,7 +4078,9 @@
         "reviewMediaBytes": 944150495,
         "reviewMediaMtimeNs": 1792404236490000000,
         "probedDurationSeconds": 2008.0
-      }
+      },
+      "youtubeId": "r3WhRG2l3ho",
+      "youtubeUrl": "https://www.youtube.com/watch?v=r3WhRG2l3ho"
     },
     {
       "id": "mood",
@@ -3881,37 +4094,44 @@
         {
           "outputSeconds": 0,
           "title": "SDLCAI — AI in software development",
-          "timestamp": "00:00"
+          "timestamp": "00:00",
+          "youtubeUrl": "https://www.youtube.com/watch?v=XnokXHcg3Ls"
         },
         {
           "outputSeconds": 16.783433333333335,
           "title": "Experience from software teams",
-          "timestamp": "00:16"
+          "timestamp": "00:16",
+          "youtubeUrl": "https://www.youtube.com/watch?v=XnokXHcg3Ls&t=16s"
         },
         {
           "outputSeconds": 35.20183333333333,
           "title": "Asking why we build",
-          "timestamp": "00:35"
+          "timestamp": "00:35",
+          "youtubeUrl": "https://www.youtube.com/watch?v=XnokXHcg3Ls&t=35s"
         },
         {
           "outputSeconds": 49.616233333333334,
           "title": "Research meets practice",
-          "timestamp": "00:49"
+          "timestamp": "00:49",
+          "youtubeUrl": "https://www.youtube.com/watch?v=XnokXHcg3Ls&t=49s"
         },
         {
           "outputSeconds": 70.40366666666667,
           "title": "Learning and exchanging ideas",
-          "timestamp": "01:10"
+          "timestamp": "01:10",
+          "youtubeUrl": "https://www.youtube.com/watch?v=XnokXHcg3Ls&t=70s"
         },
         {
           "outputSeconds": 87.22046666666667,
           "title": "Conversations beyond the talks",
-          "timestamp": "01:27"
+          "timestamp": "01:27",
+          "youtubeUrl": "https://www.youtube.com/watch?v=XnokXHcg3Ls&t=87s"
         },
         {
           "outputSeconds": 112.0119,
           "title": "Sponsor thanks and follow SDLCAI",
-          "timestamp": "01:52"
+          "timestamp": "01:52",
+          "youtubeUrl": "https://www.youtube.com/watch?v=XnokXHcg3Ls&t=112s"
         }
       ],
       "existingSummary": null,
@@ -3934,12 +4154,14 @@
         {
           "point": "The film connects software practice, research and conversation rather than presenting a single technical conclusion.",
           "start": 0,
-          "end": 112
+          "end": 112,
+          "youtubeUrl": "https://www.youtube.com/watch?v=XnokXHcg3Ls"
         },
         {
           "point": "Its two spoken messages concern the value of what is built and the learning that comes from experience.",
           "start": 35.2,
-          "end": 76.8
+          "end": 76.8,
+          "youtubeUrl": "https://www.youtube.com/watch?v=XnokXHcg3Ls&t=35s"
         }
       ],
       "topics": [
@@ -3956,16 +4178,14 @@
           "originalContext": {
             "videoId": "industry-panel",
             "start": 186.6,
-            "end": 195.08
+            "end": 195.08,
+            "youtubeUrl": "https://www.youtube.com/watch?v=q-4H3JMNDE4&t=186s"
           },
           "id": "mood-q01",
           "videoId": "mood",
           "quoteStart": 35.252,
           "quoteEnd": 43.502,
-          "cueIds": [
-            2,
-            3
-          ],
+          "cueIds": [2, 3],
           "audioStart": 29.252000000000002,
           "audioEnd": 49.502,
           "audio": "audio/mood-q01.wav",
@@ -4033,7 +4253,8 @@
             "type": "Retain the caption wording.",
             "reason": "“You’re” is supported by five of six fresh montage-audio results and by the sentence and wider-context crops of the original Q&A excerpt.",
             "note": "Selected wording: “you’re”, supported by most fresh montage runs and the original passage in sentence and wider context. The alternative “we’re” remains in the review notes."
-          }
+          },
+          "youtubeUrl": "https://www.youtube.com/watch?v=XnokXHcg3Ls&t=35s"
         },
         {
           "text": "We should not be afraid of making mistakes because mistakes teach us more.",
@@ -4041,15 +4262,14 @@
           "originalContext": {
             "videoId": "jenni-talk",
             "start": 1408.6,
-            "end": 1415
+            "end": 1415,
+            "youtubeUrl": "https://www.youtube.com/watch?v=1bT23mhlzGg&t=1408s"
           },
           "id": "mood-q02",
           "videoId": "mood",
           "quoteStart": 70.684,
           "quoteEnd": 76.48400000000001,
-          "cueIds": [
-            4
-          ],
+          "cueIds": [4],
           "audioStart": 64.684,
           "audioEnd": 82.48400000000001,
           "audio": "audio/mood-q02.wav",
@@ -4088,7 +4308,8 @@
             "note": "The caption candidate is present in both fresh Whisper and independent-family Parakeet ASR after case and punctuation normalization. Editorial listening and approval remain pending."
           },
           "wordingStatus": "Supported by two ASR model families after normalization; not listening-approved.",
-          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim."
+          "quotationStyle": "Caption-based candidate; not guaranteed strict verbatim.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=XnokXHcg3Ls&t=70s"
         }
       ],
       "clipCandidates": [
@@ -4103,7 +4324,8 @@
           "endTimecode": "00:49",
           "durationSeconds": 49.616,
           "sampledFrame": "frames/mood-01.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=XnokXHcg3Ls"
         },
         {
           "title": "Learning and exchanging ideas",
@@ -4116,7 +4338,8 @@
           "endTimecode": "01:27",
           "durationSeconds": 16.816,
           "sampledFrame": "frames/mood-02.jpg",
-          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering."
+          "status": "Candidate range; full viewing, listening, context and cut-boundary review required before rendering.",
+          "youtubeUrl": "https://www.youtube.com/watch?v=XnokXHcg3Ls&t=70s"
         }
       ],
       "reuseAngles": [
@@ -4136,7 +4359,9 @@
         "reviewMediaBytes": 172461995,
         "reviewMediaMtimeNs": 1792416507530000000,
         "probedDurationSeconds": 127.999979
-      }
+      },
+      "youtubeId": "XnokXHcg3Ls",
+      "youtubeUrl": "https://www.youtube.com/watch?v=XnokXHcg3Ls"
     }
   ],
   "reviewPass": {
@@ -5207,5 +5432,11 @@
       "review-pass/parakeet-review.json",
       "review-pass/focused-parakeet/review.json"
     ]
+  },
+  "publicLinks": {
+    "linkedOn": "2026-10-23",
+    "videoCount": 14,
+    "timebase": "Final edited videos, including title cards. Start times are rounded down to whole seconds.",
+    "playlistUrl": "https://www.youtube.com/playlist?list=PLA44jDnIP4sk"
   }
 }
