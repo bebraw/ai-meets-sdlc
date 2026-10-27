@@ -46,8 +46,13 @@ try {
         .selectOption("/events/2026/admin/");
       await page.waitForURL("**/events/2026/admin/");
       for (const width of [375, 768, 1024, 1440]) {
-        await page.setViewportSize({ width, height: 1000 });
-        await page.evaluate(async () => {
+        // A viewport change during a cross-document transition rejects its ready
+        // promise in Chromium. Start each responsive check on a blank page.
+        const responsivePage = await context.newPage();
+        responsivePage.on("pageerror", (error) => errors.push(error.message));
+        await responsivePage.setViewportSize({ width, height: 1000 });
+        await responsivePage.goto(origin + "/events/2026/admin/");
+        await responsivePage.evaluate(async () => {
           await document.fonts.ready;
           await Promise.all(
             document
@@ -55,31 +60,34 @@ try {
               .map((animation) => animation.finished.catch(() => {})),
           );
         });
-        assert.equal(await page.locator("h1").count(), 1);
-        const spacing = await page.locator("h1").evaluate((heading) => {
-          const title = heading.getBoundingClientRect();
-          const description =
-            heading.parentElement.nextElementSibling.getBoundingClientRect();
-          return {
-            stacked: description.top >= title.bottom,
-            gap: description.left - title.right,
-          };
-        });
+        assert.equal(await responsivePage.locator("h1").count(), 1);
+        const spacing = await responsivePage
+          .locator("h1")
+          .evaluate((heading) => {
+            const title = heading.getBoundingClientRect();
+            const description =
+              heading.parentElement.nextElementSibling.getBoundingClientRect();
+            return {
+              stacked: description.top >= title.bottom,
+              gap: description.left - title.right,
+            };
+          });
         assert.ok(
           width < 1024 ? spacing.stacked : spacing.gap >= 60,
           `${name}: heading and description are separated at ${width}px`,
         );
         assert.ok(
-          await page.evaluate(
+          await responsivePage.evaluate(
             () => document.documentElement.scrollWidth <= innerWidth,
           ),
           `${name}: event navigation fits ${width}px`,
         );
-        await page.screenshot({
+        await responsivePage.screenshot({
           path: `.cache/event-workspaces-review/${name}-${width}.png`,
           fullPage: false,
           animations: "disabled",
         });
+        await responsivePage.close();
       }
       await page.goto(origin + "/events/2026/admin/volunteers/");
       await page.locator("[data-volunteer-fields]").waitFor();
