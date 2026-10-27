@@ -1,0 +1,379 @@
+{
+  "schemaVersion": 1,
+  "preparedOn": "2026-10-27",
+  "status": "draft",
+  "publisherUrl": "https://www.linkedin.com/company/sdlcai/",
+  "audience": "Senior engineers and software delivery leaders, with research context.",
+  "linkedinPosts": [
+    {
+      "id": "spotlight-mo",
+      "talkId": "mo-talk",
+      "angle": "Talk spotlight: Measure the bottleneck",
+      "copy": "Measure the bottleneck\n\nMo Khazali uses automotive and factory-history analogies to argue that AI adoption needs a redesigned delivery system. Shared platforms, daily learning, early quality checks and customer-outcome measures matter more than token consumption or code output alone.\n\nThree takeaways, paraphrased from the talk:\n\n1. Tool activity alone does not establish customer value.\n\n2. Turn recurring mistakes into checks and shared blueprints.\n\n3. Track flow, failures, rework and customer outcomes.\n\nThe internal pilot comparison is observational; it does not isolate the effects of AI from changes to the delivery process.\n\nRead the summary, follow the source timestamps and watch the full presentation:\nhttps://sdlcai.org/2026/talks/mo-khazali-industry-perspective/\n\n#sdlcai #SoftwareEngineering",
+      "order": 6,
+      "status": "draft",
+      "speaker": "Mo Khazali",
+      "speakerLinkedinUrl": "https://www.linkedin.com/in/mohammadkhazali/",
+      "summaryUrl": "https://sdlcai.org/2026/talks/mo-khazali-industry-perspective/",
+      "portraitUrl": "https://sdlcai.org/2026/talks/mo-khazali-industry-perspective/summary-portrait.png?v=a0042a15f37d",
+      "landscapeUrl": "https://sdlcai.org/2026/talks/mo-khazali-industry-perspective/summary-landscape.png?v=8ee88668bdfc",
+      "altText": "Measure the bottleneck. Mo Khazali at SDLCAI 2026. Three paraphrased talk takeaways: 1. Tool activity alone does not establish customer value. 2. Turn recurring mistakes into checks and shared blueprints. 3. Track flow, failures, rework and customer outcomes. sdlcai.org",
+      "sources": [
+        {
+          "label": "Mo Khazali — talk summary",
+          "url": "https://sdlcai.org/2026/talks/mo-khazali-industry-perspective/"
+        },
+        {
+          "label": "Takeaway 01 6:43–12:34",
+          "url": "https://www.youtube.com/watch?v=l8quIPHmakI&t=403s"
+        },
+        {
+          "label": "Takeaway 02 25:43–28:51",
+          "url": "https://www.youtube.com/watch?v=l8quIPHmakI&t=1543s"
+        },
+        {
+          "label": "Takeaway 03 31:43–35:39",
+          "url": "https://www.youtube.com/watch?v=l8quIPHmakI&t=1903s"
+        },
+        {
+          "label": "Mo Khazali — LinkedIn profile for tagging",
+          "url": "https://www.linkedin.com/in/mohammadkhazali/"
+        }
+      ],
+      "editorialNote": "Talk spotlight, separate from the three longer delivery-series posts.\n\nUse a real LinkedIn mention for Mo Khazali when a matching profile can be selected in the composer.\n\nThe internal pilot comparison is observational; it does not isolate the effects of AI from changes to the delivery process."
+    },
+    {
+      "id": "spotlight-ohans",
+      "talkId": "ohans-talk",
+      "angle": "Talk spotlight: Keep the delivery loop connected",
+      "copy": "Keep the delivery loop connected\n\nOhans Emmanuel describes a connected delivery workflow that treats agent output as something to verify. Shared intent, early plan review, paired models, visual system understanding, independent QA and production feedback form a loop from deciding what to build through learning from what ships.\n\nThree takeaways, paraphrased from the talk:\n\n1. Keep intent available to implementation, QA and operations.\n\n2. Separate implementation from QA; combine adaptive and deterministic checks.\n\n3. Feed production findings into the next plan and review.\n\nThese practices describe the speaker’s team experience. Pairing models and using a separate QA agent add scrutiny, without establishing independent failure modes. Read-only infrastructure access still requires controls over data disclosure.\n\nRead the summary, follow the source timestamps and watch the full presentation:\nhttps://sdlcai.org/2026/talks/ohans-emmanuel-industry-perspective/\n\n#sdlcai #SoftwareEngineering",
+      "order": 7,
+      "status": "draft",
+      "speaker": "Ohans Emmanuel",
+      "speakerLinkedinUrl": "https://www.linkedin.com/in/ohans-emmanuel/",
+      "summaryUrl": "https://sdlcai.org/2026/talks/ohans-emmanuel-industry-perspective/",
+      "portraitUrl": "https://sdlcai.org/2026/talks/ohans-emmanuel-industry-perspective/summary-portrait.png?v=901351193785",
+      "landscapeUrl": "https://sdlcai.org/2026/talks/ohans-emmanuel-industry-perspective/summary-landscape.png?v=6a73d765b716",
+      "altText": "Keep the delivery loop connected. Ohans Emmanuel at SDLCAI 2026. Three paraphrased talk takeaways: 1. Keep intent available to implementation, QA and operations. 2. Separate implementation from QA; combine adaptive and deterministic checks. 3. Feed production findings into the next plan and review. sdlcai.org",
+      "sources": [
+        {
+          "label": "Ohans Emmanuel — talk summary",
+          "url": "https://sdlcai.org/2026/talks/ohans-emmanuel-industry-perspective/"
+        },
+        {
+          "label": "Takeaway 01 7:03–9:01",
+          "url": "https://www.youtube.com/watch?v=xi1AY-G3Ycc&t=423s"
+        },
+        {
+          "label": "Takeaway 02 17:58–24:59",
+          "url": "https://www.youtube.com/watch?v=xi1AY-G3Ycc&t=1078s"
+        },
+        {
+          "label": "Takeaway 03 24:59–31:58",
+          "url": "https://www.youtube.com/watch?v=xi1AY-G3Ycc&t=1499s"
+        },
+        {
+          "label": "Ohans Emmanuel — LinkedIn profile for tagging",
+          "url": "https://www.linkedin.com/in/ohans-emmanuel/"
+        }
+      ],
+      "editorialNote": "Talk spotlight, separate from the three longer delivery-series posts.\n\nUse a real LinkedIn mention for Ohans Emmanuel when a matching profile can be selected in the composer.\n\nThese practices describe the speaker’s team experience. Pairing models and using a separate QA agent add scrutiny, without establishing independent failure modes. Read-only infrastructure access still requires controls over data disclosure."
+    },
+    {
+      "id": "spotlight-jenni",
+      "talkId": "jenni-talk",
+      "angle": "Talk spotlight: Leaders need hands-on experience",
+      "copy": "Leaders need hands-on experience\n\nJenni Kylmäkoski explains why leaders should build and use AI tools themselves. Her reporting tools and an unintended Jira change reveal practical lessons about onboarding, permissions, observability, learning time and maintaining shared AI assets as products.\n\nThree takeaways, paraphrased from the talk:\n\n1. Build tools for your own work and validate the outputs.\n\n2. Give permissions, logs and recovery explicit attention.\n\n3. Maintain shared AI assets as software products.\n\nRead the summary, follow the source timestamps and watch the full presentation:\nhttps://sdlcai.org/2026/talks/jenni-kylmakoski-industry-perspective/\n\n#sdlcai #SoftwareEngineering",
+      "order": 8,
+      "status": "draft",
+      "speaker": "Jenni Kylmäkoski",
+      "speakerLinkedinUrl": "https://www.linkedin.com/in/jennikylmakoski/",
+      "summaryUrl": "https://sdlcai.org/2026/talks/jenni-kylmakoski-industry-perspective/",
+      "portraitUrl": "https://sdlcai.org/2026/talks/jenni-kylmakoski-industry-perspective/summary-portrait.png?v=9588c9a63b00",
+      "landscapeUrl": "https://sdlcai.org/2026/talks/jenni-kylmakoski-industry-perspective/summary-landscape.png?v=77ca4a42aa46",
+      "altText": "Leaders need hands-on experience. Jenni Kylmäkoski at SDLCAI 2026. Three paraphrased talk takeaways: 1. Build tools for your own work and validate the outputs. 2. Give permissions, logs and recovery explicit attention. 3. Maintain shared AI assets as software products. sdlcai.org",
+      "sources": [
+        {
+          "label": "Jenni Kylmäkoski — talk summary",
+          "url": "https://sdlcai.org/2026/talks/jenni-kylmakoski-industry-perspective/"
+        },
+        {
+          "label": "Takeaway 01 5:41–9:07",
+          "url": "https://www.youtube.com/watch?v=1bT23mhlzGg&t=341s"
+        },
+        {
+          "label": "Takeaway 02 16:00–19:09",
+          "url": "https://www.youtube.com/watch?v=1bT23mhlzGg&t=960s"
+        },
+        {
+          "label": "Takeaway 03 20:50–22:57",
+          "url": "https://www.youtube.com/watch?v=1bT23mhlzGg&t=1250s"
+        },
+        {
+          "label": "Jenni Kylmäkoski — LinkedIn profile for tagging",
+          "url": "https://www.linkedin.com/in/jennikylmakoski/"
+        }
+      ],
+      "editorialNote": "Talk spotlight, separate from the three longer delivery-series posts.\n\nUse a real LinkedIn mention for Jenni Kylmäkoski when a matching profile can be selected in the composer."
+    },
+    {
+      "id": "spotlight-tapio",
+      "talkId": "tapio-talk",
+      "angle": "Talk spotlight: Make discovery tangible",
+      "copy": "Make discovery tangible\n\nTapio Pitkäranta presents agentic probes as tangible experiments that help people clarify problems and explore solutions. Examples from a probe factory and a healthcare process exercise show how faster implementation can move the bottleneck toward ideas, orchestration and validation.\n\nThree takeaways, paraphrased from the talk:\n\n1. Give people a probe they can inspect and challenge.\n\n2. Test the understanding of the problem as well as the solution.\n\n3. As building accelerates, ideas, orchestration and validation matter more.\n\nThe healthcare examples are exploratory work in progress and imagined process alternatives, rather than demonstrated clinical outcomes.\n\nRead the summary, follow the source timestamps and watch the full presentation:\nhttps://sdlcai.org/2026/talks/agentic-discovery/\n\n#sdlcai #SoftwareEngineering",
+      "order": 9,
+      "status": "draft",
+      "speaker": "Tapio Pitkäranta",
+      "speakerLinkedinUrl": "https://www.linkedin.com/in/tapio-pitkaranta/",
+      "summaryUrl": "https://sdlcai.org/2026/talks/agentic-discovery/",
+      "portraitUrl": "https://sdlcai.org/2026/talks/agentic-discovery/summary-portrait.png?v=60740bf3d110",
+      "landscapeUrl": "https://sdlcai.org/2026/talks/agentic-discovery/summary-landscape.png?v=7e2fb0f77a13",
+      "altText": "Make discovery tangible. Tapio Pitkäranta at SDLCAI 2026. Three paraphrased talk takeaways: 1. Give people a probe they can inspect and challenge. 2. Test the understanding of the problem as well as the solution. 3. As building accelerates, ideas, orchestration and validation matter more. sdlcai.org",
+      "sources": [
+        {
+          "label": "Tapio Pitkäranta — talk summary",
+          "url": "https://sdlcai.org/2026/talks/agentic-discovery/"
+        },
+        {
+          "label": "Takeaway 01 12:34–14:07",
+          "url": "https://www.youtube.com/watch?v=dGI7WlgL-JM&t=754s"
+        },
+        {
+          "label": "Takeaway 02 12:34–14:35",
+          "url": "https://www.youtube.com/watch?v=dGI7WlgL-JM&t=754s"
+        },
+        {
+          "label": "Takeaway 03 15:35–17:48",
+          "url": "https://www.youtube.com/watch?v=dGI7WlgL-JM&t=935s"
+        },
+        {
+          "label": "Tapio Pitkäranta — LinkedIn profile for tagging",
+          "url": "https://www.linkedin.com/in/tapio-pitkaranta/"
+        }
+      ],
+      "editorialNote": "Talk spotlight, separate from the three longer delivery-series posts.\n\nUse a real LinkedIn mention for Tapio Pitkäranta when a matching profile can be selected in the composer.\n\nThe healthcare examples are exploratory work in progress and imagined process alternatives, rather than demonstrated clinical outcomes."
+    },
+    {
+      "id": "spotlight-joongi",
+      "talkId": "joongi-talk",
+      "angle": "Talk spotlight: Design for the user’s goal",
+      "copy": "Design for the user’s goal\n\nJoongi Shin studies generative UI for people who want to complete a task, rather than design an interface. His comparison of prompts, editable subtask representations and follow-up surveys shows why helping users form and express their intentions matters alongside generating working software.\n\nThree takeaways, paraphrased from the talk:\n\n1. Help people envision outcomes and express what they need.\n\n2. Evaluate both generation and the experience of using the result.\n\n3. Questions can help, but repetitive or irrelevant prompts obstruct exploration.\n\nThe findings concern perceptions in the described study. Associations between generation effort and later usability perceptions do not establish causation or a universally best interaction method.\n\nRead the summary, follow the source timestamps and watch the full presentation:\nhttps://sdlcai.org/2026/talks/joongi-shin-ui-perspective/\n\n#sdlcai #SoftwareEngineering",
+      "order": 10,
+      "status": "draft",
+      "speaker": "Joongi Shin",
+      "speakerLinkedinUrl": "https://www.linkedin.com/in/joongi-shin/",
+      "summaryUrl": "https://sdlcai.org/2026/talks/joongi-shin-ui-perspective/",
+      "portraitUrl": "https://sdlcai.org/2026/talks/joongi-shin-ui-perspective/summary-portrait.png?v=b2458965dbb1",
+      "landscapeUrl": "https://sdlcai.org/2026/talks/joongi-shin-ui-perspective/summary-landscape.png?v=528be693991b",
+      "altText": "Design for the user’s goal. Joongi Shin at SDLCAI 2026. Three paraphrased talk takeaways: 1. Help people envision outcomes and express what they need. 2. Evaluate both generation and the experience of using the result. 3. Questions can help, but repetitive or irrelevant prompts obstruct exploration. sdlcai.org",
+      "sources": [
+        {
+          "label": "Joongi Shin — talk summary",
+          "url": "https://sdlcai.org/2026/talks/joongi-shin-ui-perspective/"
+        },
+        {
+          "label": "Takeaway 01 6:52–8:24",
+          "url": "https://www.youtube.com/watch?v=JTTq9MNefTU&t=412s"
+        },
+        {
+          "label": "Takeaway 02 12:08–13:10",
+          "url": "https://www.youtube.com/watch?v=JTTq9MNefTU&t=728s"
+        },
+        {
+          "label": "Takeaway 03 16:20–18:40",
+          "url": "https://www.youtube.com/watch?v=JTTq9MNefTU&t=980s"
+        },
+        {
+          "label": "Joongi Shin — LinkedIn profile for tagging",
+          "url": "https://www.linkedin.com/in/joongi-shin/"
+        }
+      ],
+      "editorialNote": "Talk spotlight, separate from the three longer delivery-series posts.\n\nUse a real LinkedIn mention for Joongi Shin when a matching profile can be selected in the composer.\n\nThe findings concern perceptions in the described study. Associations between generation effort and later usability perceptions do not establish causation or a universally best interaction method."
+    },
+    {
+      "id": "spotlight-jussi",
+      "talkId": "jussi-talk",
+      "angle": "Talk spotlight: Support adoption around the tools",
+      "copy": "Support adoption around the tools\n\nJussi Hacklin describes how Elisa supports AI adoption within regulatory and customer-contract constraints. Legal collaboration, clear leadership expectations, practical guidance, shared tooling and bounded experiments form the basis for adoption across the software lifecycle.\n\nThree takeaways, paraphrased from the talk:\n\n1. Work with legal specialists on regulatory and contract restrictions.\n\n2. Back leadership expectations with guidance, training and community.\n\n3. Give tools and quotas clear ownership and visibility.\n\nThis account reflects Elisa’s operating context at the October 2026 event. Security depends on how components and data flows work together, as well as on the individual tools.\n\nRead the summary, follow the source timestamps and watch the full presentation:\nhttps://sdlcai.org/2026/talks/driving-ai-adoption-regulated-environment/\n\n#sdlcai #SoftwareEngineering",
+      "order": 11,
+      "status": "draft",
+      "speaker": "Jussi Hacklin",
+      "speakerLinkedinUrl": "https://www.linkedin.com/in/jussihacklin/",
+      "summaryUrl": "https://sdlcai.org/2026/talks/driving-ai-adoption-regulated-environment/",
+      "portraitUrl": "https://sdlcai.org/2026/talks/driving-ai-adoption-regulated-environment/summary-portrait.png?v=2919c4da675e",
+      "landscapeUrl": "https://sdlcai.org/2026/talks/driving-ai-adoption-regulated-environment/summary-landscape.png?v=dddbbd0ffd4b",
+      "altText": "Support adoption around the tools. Jussi Hacklin at SDLCAI 2026. Three paraphrased talk takeaways: 1. Work with legal specialists on regulatory and contract restrictions. 2. Back leadership expectations with guidance, training and community. 3. Give tools and quotas clear ownership and visibility. sdlcai.org",
+      "sources": [
+        {
+          "label": "Jussi Hacklin — talk summary",
+          "url": "https://sdlcai.org/2026/talks/driving-ai-adoption-regulated-environment/"
+        },
+        {
+          "label": "Takeaway 01 5:12–7:31",
+          "url": "https://www.youtube.com/watch?v=VpoYC7DaOjs&t=312s"
+        },
+        {
+          "label": "Takeaway 02 7:32–9:37",
+          "url": "https://www.youtube.com/watch?v=VpoYC7DaOjs&t=452s"
+        },
+        {
+          "label": "Takeaway 03 9:09–11:27",
+          "url": "https://www.youtube.com/watch?v=VpoYC7DaOjs&t=549s"
+        },
+        {
+          "label": "Jussi Hacklin — LinkedIn profile for tagging",
+          "url": "https://www.linkedin.com/in/jussihacklin/"
+        }
+      ],
+      "editorialNote": "Talk spotlight, separate from the three longer delivery-series posts.\n\nUse a real LinkedIn mention for Jussi Hacklin when a matching profile can be selected in the composer.\n\nThis account reflects Elisa’s operating context at the October 2026 event. Security depends on how components and data flows work together, as well as on the individual tools."
+    },
+    {
+      "id": "spotlight-viljami",
+      "talkId": "viljami-talk",
+      "angle": "Talk spotlight: More proposals need more review",
+      "copy": "More proposals need more review\n\nViljami Kuosmanen describes epilot's experiment giving non-engineers coding agents through Slack. Shared documentation, preview links and engineer review enabled contributions across product, design, support and QA, while a deployment near miss exposed permission gaps and review became a bottleneck.\n\nThree takeaways, paraphrased from the talk:\n\n1. Put agents where the work and its context already happen.\n\n2. Separate contribution, merge, CI and production permissions.\n\n3. Contribution counts do not establish a delivery-speed improvement.\n\nContribution counts do not establish a delivery-speed improvement; the speaker explicitly says strong speed data is not yet available. The attempted production deployment was detected and stopped.\n\nRead the summary, follow the source timestamps and watch the full presentation:\nhttps://sdlcai.org/2026/talks/non-engineers-vibe-code-production/\n\n#sdlcai #SoftwareEngineering",
+      "order": 12,
+      "status": "draft",
+      "speaker": "Viljami Kuosmanen",
+      "speakerLinkedinUrl": "https://www.linkedin.com/in/anttiviljami/",
+      "summaryUrl": "https://sdlcai.org/2026/talks/non-engineers-vibe-code-production/",
+      "portraitUrl": "https://sdlcai.org/2026/talks/non-engineers-vibe-code-production/summary-portrait.png?v=e5921dfc9139",
+      "landscapeUrl": "https://sdlcai.org/2026/talks/non-engineers-vibe-code-production/summary-landscape.png?v=578481b9995a",
+      "altText": "More proposals need more review. Viljami Kuosmanen at SDLCAI 2026. Three paraphrased talk takeaways: 1. Put agents where the work and its context already happen. 2. Separate contribution, merge, CI and production permissions. 3. Contribution counts do not establish a delivery-speed improvement. sdlcai.org",
+      "sources": [
+        {
+          "label": "Viljami Kuosmanen — talk summary",
+          "url": "https://sdlcai.org/2026/talks/non-engineers-vibe-code-production/"
+        },
+        {
+          "label": "Takeaway 01 2:36–6:22",
+          "url": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=156s"
+        },
+        {
+          "label": "Takeaway 02 17:37–19:38",
+          "url": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=1057s"
+        },
+        {
+          "label": "Takeaway 03 19:58–21:31",
+          "url": "https://www.youtube.com/watch?v=SL6QypO5BxA&t=1198s"
+        },
+        {
+          "label": "Viljami Kuosmanen — LinkedIn profile for tagging",
+          "url": "https://www.linkedin.com/in/anttiviljami/"
+        }
+      ],
+      "editorialNote": "Talk spotlight, separate from the three longer delivery-series posts.\n\nUse a real LinkedIn mention for Viljami Kuosmanen when a matching profile can be selected in the composer.\n\nContribution counts do not establish a delivery-speed improvement; the speaker explicitly says strong speed data is not yet available. The attempted production deployment was detected and stopped."
+    },
+    {
+      "id": "spotlight-sini",
+      "talkId": "sini-talk",
+      "angle": "Talk spotlight: A prototype still needs a production path",
+      "copy": "A prototype still needs a production path\n\nSini Tistelgrén describes an AI factory as a delivery system built on intent, architecture, security, independent verification, ownership and operational feedback. She explains why a quick prototype still needs a production path, and proposes bounded loops with executable controls and evidence.\n\nThree takeaways, paraphrased from the talk:\n\n1. Include architecture, access, release, operations and support.\n\n2. Make control ownership and approval boundaries explicit.\n\n3. Start with a bounded value stream and measure accepted delivery.\n\nThe delivery-address scenario illustrates a proposed flow of controls; it is not an observed customer case.\n\nRead the summary, follow the source timestamps and watch the full presentation:\nhttps://sdlcai.org/2026/talks/ai-factory-fundamentals/\n\n#sdlcai #SoftwareEngineering",
+      "order": 13,
+      "status": "draft",
+      "speaker": "Sini Tistelgrén",
+      "speakerLinkedinUrl": "https://www.linkedin.com/in/stistelgren/",
+      "summaryUrl": "https://sdlcai.org/2026/talks/ai-factory-fundamentals/",
+      "portraitUrl": "https://sdlcai.org/2026/talks/ai-factory-fundamentals/summary-portrait.png?v=89890b25e749",
+      "landscapeUrl": "https://sdlcai.org/2026/talks/ai-factory-fundamentals/summary-landscape.png?v=c70531855357",
+      "altText": "A prototype still needs a production path. Sini Tistelgrén at SDLCAI 2026. Three paraphrased talk takeaways: 1. Include architecture, access, release, operations and support. 2. Make control ownership and approval boundaries explicit. 3. Start with a bounded value stream and measure accepted delivery. sdlcai.org",
+      "sources": [
+        {
+          "label": "Sini Tistelgrén — talk summary",
+          "url": "https://sdlcai.org/2026/talks/ai-factory-fundamentals/"
+        },
+        {
+          "label": "Takeaway 01 1:34–3:58",
+          "url": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=94s"
+        },
+        {
+          "label": "Takeaway 02 21:47–23:14",
+          "url": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=1307s"
+        },
+        {
+          "label": "Takeaway 03 26:11–27:44",
+          "url": "https://www.youtube.com/watch?v=tOGTv8fR4Wc&t=1571s"
+        },
+        {
+          "label": "Sini Tistelgrén — LinkedIn profile for tagging",
+          "url": "https://www.linkedin.com/in/stistelgren/"
+        }
+      ],
+      "editorialNote": "Talk spotlight, separate from the three longer delivery-series posts.\n\nUse a real LinkedIn mention for Sini Tistelgrén when a matching profile can be selected in the composer.\n\nThe delivery-address scenario illustrates a proposed flow of controls; it is not an observed customer case."
+    },
+    {
+      "id": "spotlight-zak",
+      "talkId": "zak-talk",
+      "angle": "Talk spotlight: Make experiments cheap to repeat",
+      "copy": "Make experiments cheap to repeat\n\nZak Allal argues that lowering the cost of repeating experiments can change scientific discovery. He describes a clinical research system built with supercomputing, Rust, Julia and C++, and presents a proposed continuous hearing atlas as an example of questioning the assumptions behind existing categories.\n\nThree takeaways, paraphrased from the talk:\n\n1. The cost of repetition shapes which questions are feasible.\n\n2. Preserve configurations and invest in orchestration.\n\n3. When results are unstable, examine the premise and methodology.\n\nAt the event, the proposed hearing model was presented as a preprint under review, with an intention to seek regulatory qualification. This research status does not imply completed peer review or regulatory approval.\n\nRead the summary, follow the source timestamps and watch the full presentation:\nhttps://sdlcai.org/2026/talks/zak-allal-industry-perspective/\n\n#sdlcai #SoftwareEngineering",
+      "order": 14,
+      "status": "draft",
+      "speaker": "Zak Allal",
+      "speakerLinkedinUrl": "https://www.linkedin.com/in/7862266955/",
+      "summaryUrl": "https://sdlcai.org/2026/talks/zak-allal-industry-perspective/",
+      "portraitUrl": "https://sdlcai.org/2026/talks/zak-allal-industry-perspective/summary-portrait.png?v=5857093ff570",
+      "landscapeUrl": "https://sdlcai.org/2026/talks/zak-allal-industry-perspective/summary-landscape.png?v=ed02cb779533",
+      "altText": "Make experiments cheap to repeat. Zak Allal at SDLCAI 2026. Three paraphrased talk takeaways: 1. The cost of repetition shapes which questions are feasible. 2. Preserve configurations and invest in orchestration. 3. When results are unstable, examine the premise and methodology. sdlcai.org",
+      "sources": [
+        {
+          "label": "Zak Allal — talk summary",
+          "url": "https://sdlcai.org/2026/talks/zak-allal-industry-perspective/"
+        },
+        {
+          "label": "Takeaway 01 2:26–5:31",
+          "url": "https://www.youtube.com/watch?v=gVXx5fOUXbs&t=146s"
+        },
+        {
+          "label": "Takeaway 02 11:48–13:12",
+          "url": "https://www.youtube.com/watch?v=gVXx5fOUXbs&t=708s"
+        },
+        {
+          "label": "Takeaway 03 7:47–10:08",
+          "url": "https://www.youtube.com/watch?v=gVXx5fOUXbs&t=467s"
+        },
+        {
+          "label": "Zak Allal — LinkedIn profile for tagging",
+          "url": "https://www.linkedin.com/in/7862266955/"
+        }
+      ],
+      "editorialNote": "Talk spotlight, separate from the three longer delivery-series posts.\n\nUse a real LinkedIn mention for Zak Allal when a matching profile can be selected in the composer.\n\nAt the event, the proposed hearing model was presented as a preprint under review, with an intention to seek regulatory qualification. This research status does not imply completed peer review or regulatory approval."
+    },
+    {
+      "id": "spotlight-waseem",
+      "talkId": "waseem-talk",
+      "angle": "Talk spotlight: Understanding remains the hard part",
+      "copy": "Understanding remains the hard part\n\nMuhammad Waseem argues that AI makes code generation easier while understanding, integration and ownership remain difficult. He examines repository context, decision rationale and agent-facing applications, then proposes deterministic checks, human judgement and gates for safety, architectural fit and measurable value.\n\nThree takeaways, paraphrased from the talk:\n\n1. Check whether a change preserves the wider system.\n\n2. Record decision reasons, constraints and rejected options.\n\n3. Combine deterministic checks with human judgement and value gates.\n\nRead the summary, follow the source timestamps and watch the full presentation:\nhttps://sdlcai.org/2026/talks/genai-software-engineering/\n\n#sdlcai #SoftwareEngineering",
+      "order": 15,
+      "status": "draft",
+      "speaker": "Muhammad Waseem",
+      "speakerLinkedinUrl": "https://www.linkedin.com/in/muhammad-waseem-phd-98023a17/",
+      "summaryUrl": "https://sdlcai.org/2026/talks/genai-software-engineering/",
+      "portraitUrl": "https://sdlcai.org/2026/talks/genai-software-engineering/summary-portrait.png?v=525cfaa9647a",
+      "landscapeUrl": "https://sdlcai.org/2026/talks/genai-software-engineering/summary-landscape.png?v=7edb9638b1a7",
+      "altText": "Understanding remains the hard part. Muhammad Waseem at SDLCAI 2026. Three paraphrased talk takeaways: 1. Check whether a change preserves the wider system. 2. Record decision reasons, constraints and rejected options. 3. Combine deterministic checks with human judgement and value gates. sdlcai.org",
+      "sources": [
+        {
+          "label": "Muhammad Waseem — talk summary",
+          "url": "https://sdlcai.org/2026/talks/genai-software-engineering/"
+        },
+        {
+          "label": "Takeaway 01 7:09–11:01",
+          "url": "https://www.youtube.com/watch?v=o_WaA-EaBqo&t=429s"
+        },
+        {
+          "label": "Takeaway 02 14:59–16:58",
+          "url": "https://www.youtube.com/watch?v=o_WaA-EaBqo&t=899s"
+        },
+        {
+          "label": "Takeaway 03 22:26–24:07",
+          "url": "https://www.youtube.com/watch?v=o_WaA-EaBqo&t=1346s"
+        },
+        {
+          "label": "Muhammad Waseem — LinkedIn profile for tagging",
+          "url": "https://www.linkedin.com/in/muhammad-waseem-phd-98023a17/"
+        }
+      ],
+      "editorialNote": "Talk spotlight, separate from the three longer delivery-series posts.\n\nUse a real LinkedIn mention for Muhammad Waseem when a matching profile can be selected in the composer."
+    }
+  ]
+}

@@ -60,7 +60,17 @@ try {
   };
   await page.goto(url);
   await loaded(page);
-  assert.equal(await page.locator("[data-publication-item]").count(), 5);
+  assert.equal(await page.locator("[data-publication-item]").count(), 15);
+  await page.locator('[data-publication-item="spotlight-zak"]').click();
+  assert.match(
+    await page.getByLabel("Post copy", { exact: true }).inputValue(),
+    /#sdlcai/u,
+  );
+  assert.match(
+    await page.getByLabel("Post copy", { exact: true }).inputValue(),
+    /preprint under review/u,
+  );
+  await page.locator('[data-publication-item="delivery-01"]').click();
   assert.equal(
     await page
       .getByRole("button", { name: "Save changes", exact: true })
@@ -332,7 +342,7 @@ try {
   await secondContext.close();
   await browser.close();
   console.log(
-    "Publication queue passed: five drafts, edits across browser contexts, safe conflicts and failed saves, graphics, downloads, tracking, filters and responsive accessibility.",
+    "Publication queue passed: fifteen drafts, ten talk spotlights, edits across browser contexts, safe conflicts and failed saves, graphics, downloads, tracking, filters and responsive accessibility.",
   );
 } finally {
   if (server) await closeBrowserServer(server);

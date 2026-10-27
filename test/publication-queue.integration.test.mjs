@@ -2,6 +2,9 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { readFile, readdir } from "node:fs/promises";
 import drafts from "../production/content-inventory/2026/distribution-drafts.json" with { type: "json" };
+import spotlights from "../production/content-inventory/2026/presentation-posts.json" with { type: "json" };
+import plan from "../production/content-inventory/2026/linkedin-schedule.json" with { type: "json" };
+import { getPublishedTalks } from "../site/published-talks.ts";
 import { backupPublicationQueue } from "../worker/backups.ts";
 import { createWorkerFixture } from "./helpers/worker-fixture.mjs";
 
@@ -66,7 +69,7 @@ test("publication drafts stay protected, persist edits, isolate events and rejec
       body: JSON.stringify(data),
     });
 
-  await t.test("auth, discovery and original five drafts", async () => {
+  await t.test("auth, discovery and all fifteen drafts", async () => {
     assert.equal((await worker.fetch(endpoint)).status, 401);
     for (const path of [
       "/admin/publication-queue/",
@@ -96,14 +99,24 @@ test("publication drafts stay protected, persist edits, isolate events and rejec
     assert.match(page.headers.get("x-robots-tag"), /noindex/);
     assert.match(await page.text(), /data-publication-queue/);
     const items = await list();
-    assert.equal(items.length, 5);
+    assert.equal(items.length, 15);
     assert.deepEqual(
       items.map((i) => i.channel),
-      ["linkedin", "linkedin", "linkedin", "website", "newsletter"],
+      [
+        "linkedin",
+        "linkedin",
+        "linkedin",
+        "website",
+        "newsletter",
+        ...Array(10).fill("linkedin"),
+      ],
     );
     assert.ok(
       items.every(
-        (i) => i.eventId === "2026" && i.status === "draft" && i.revision === 1,
+        (i) =>
+          i.eventId === "2026" &&
+          i.status === "draft" &&
+          i.revision === (i.id.startsWith("delivery-") ? 2 : 1),
       ),
     );
     for (const post of drafts.linkedinPosts) {
@@ -116,6 +129,44 @@ test("publication drafts stay protected, persist edits, isolate events and rejec
     assert.equal(items[3].body, drafts.announcement.body);
     assert.equal(items[4].title, drafts.newsletter.subject);
     assert.equal(items[4].subtitle, drafts.newsletter.preheader);
+    assert.deepEqual(
+      new Set(spotlights.linkedinPosts.map((p) => p.talkId)),
+      new Set(getPublishedTalks().items.map((p) => p.id)),
+    );
+    for (const post of spotlights.linkedinPosts) {
+      const item = items.find((i) => i.id === post.id);
+      assert.equal(item.body, post.copy);
+      assert.equal(item.altText, post.altText);
+      assert.equal(item.assets.length, 2);
+      assert.ok(item.sources.some((s) => s.url === post.summaryUrl));
+      if (post.speakerLinkedinUrl)
+        assert.ok(item.sources.some((s) => s.url === post.speakerLinkedinUrl));
+      assert.ok(item.notes.includes("Awaiting verification"));
+    }
+    assert.equal(plan.entries.length, 13);
+    assert.deepEqual(
+      new Set(plan.entries.map((p) => p.id)),
+      new Set(items.filter((i) => i.channel === "linkedin").map((i) => i.id)),
+    );
+    for (const post of items.filter((i) => i.channel === "linkedin")) {
+      assert.match(post.body, /#sdlcai\b/u);
+      assert.ok(post.body.length <= 3000);
+      assert.equal(post.publicationDate, "");
+    }
+    for (const entry of plan.entries) {
+      const date = new Date(entry.scheduledFor);
+      assert.ok([2, 4].includes(date.getUTCDay()));
+      const time = new Intl.DateTimeFormat("en-GB", {
+        timeZone: "Europe/Paris",
+        hour: "2-digit",
+        minute: "2-digit",
+      }).format(date);
+      assert.equal(time, "09:00");
+      assert.equal(entry.status, "scheduled");
+      assert.equal(entry.verifiedInScheduledList, true);
+      assert.ok(entry.mentionUrl.startsWith("https://www.linkedin.com/in/"));
+      assert.equal(entry.previewAltVerified, true);
+    }
     for (const file of await readdir("build/assets"))
       if (file.endsWith(".js"))
         assert.ok(
@@ -190,7 +241,7 @@ test("publication drafts stay protected, persist edits, isolate events and rejec
     await runSql(
       "INSERT INTO publication_queue (event_id,id,channel,position,title,body) VALUES ('2027','delivery-01','linkedin',1,'Private 2027 draft','Future event copy')",
     );
-    assert.equal((await list()).length, 5);
+    assert.equal((await list()).length, 15);
     assert.equal(
       (await worker.fetch(endpoint + "?event=2027", { headers })).status,
       404,
@@ -205,7 +256,7 @@ test("publication drafts stay protected, persist edits, isolate events and rejec
       ).status,
       404,
     );
-    assert.equal((await list())[0].revision, 1);
+    assert.equal((await list())[0].revision, 2);
   });
 
   await t.test(
@@ -222,7 +273,7 @@ test("publication drafts stay protected, persist edits, isolate events and rejec
       });
       assert.equal(response.status, 200);
       item = (await response.json()).item;
-      assert.equal(item.revision, 2);
+      assert.equal(item.revision, 3);
       assert.equal(item.graphicFormat, "landscape");
       assert.equal((await list())[0].body, item.body);
       const competing = await Promise.all([
@@ -234,7 +285,7 @@ test("publication drafts stay protected, persist edits, isolate events and rejec
         .item;
       const conflict = await competing.find((r) => r.status === 409).json();
       assert.equal(conflict.current.body, winner.body);
-      assert.equal(winner.revision, 3);
+      assert.equal(winner.revision, 4);
       const published = await save({
         ...edit(winner),
         status: "published",
@@ -277,7 +328,7 @@ test("publication drafts stay protected, persist edits, isolate events and rejec
     const snapshot = await (
       await env.INTEREST_BACKUPS.get(manifest.key)
     ).json();
-    assert.equal(snapshot.rows.length, 6);
+    assert.equal(snapshot.rows.length, 16);
     assert.equal(
       snapshot.rows.find((i) => i.event_id === "2026" && i.id === "delivery-01")
         .status,

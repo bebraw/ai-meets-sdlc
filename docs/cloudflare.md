@@ -733,12 +733,28 @@ bytes. No new bucket, binding, secret, or migration is required for the backup j
 
 ## Publication queue
 
-`/admin/publication-queue/` edits the five prepared 2026 distribution drafts through
+`/admin/publication-queue/` edits the fifteen prepared 2026 distribution drafts through
 the protected `GET` and `PUT /api/admin/publication-queue` endpoint. Migration 0042
 seeds the three LinkedIn posts, archive announcement and newsletter once from
 `production/content-inventory/2026/distribution-drafts.json`. Later deployments
 preserve edits in D1. The table has a composite event and draft key; the current
 API is explicitly scoped to event `2026`.
+
+Migration 0043 adds the ten presentation spotlights from
+`production/content-inventory/2026/presentation-posts.json`, leaving the existing
+five drafts in place. It standardises `#sdlcai` in the three original LinkedIn
+posts, adds verified speaker-profile references where available, and appends the
+agreed publishing plan without replacing editorial copy or notes. The queue now
+contains thirteen LinkedIn posts, one website announcement and one newsletter.
+
+`production/content-inventory/2026/linkedin-schedule.json` records the agreed native
+LinkedIn scheduling plan: Tuesdays and Thursdays at 09:00 Europe/Paris, starting
+29 October 2026. It also contains the verified scheduling receipts for all thirteen
+posts, including the selected speaker profile, summary-card preview and time.
+Verify each post in LinkedIn before recording it as scheduled in the queue. Select real speaker
+mentions in LinkedIn's composer; plain copied names do not create tagged profiles.
+Using LinkedIn's native scheduler needs a Page super-admin or content-admin session
+and does not need a custom developer app or API credentials.
 
 The editor saves copy, channel-specific metadata, image alt text, graphic format,
 review status, publication date and publication URL. Scheduled and published

@@ -126,7 +126,7 @@ function saveFile(name: string, text: string) {
 
 const root = document.querySelector<HTMLElement>("[data-publication-queue]");
 if (root) {
-  const notice = el("p", "Loading the five prepared drafts…", "mb-6 leading-7");
+  const notice = el("p", "Loading the prepared drafts…", "mb-6 leading-7");
   notice.setAttribute("role", "status");
   notice.dataset.publicationNotice = "";
   const layout = el(
@@ -138,7 +138,11 @@ if (root) {
   sidebar.setAttribute("aria-label", "Publication drafts");
   const editor = el("div", "", "min-w-0");
   editor.dataset.publicationEditor = "";
-  const list = el("div", "", "mt-5 grid gap-3");
+  const list = el(
+    "div",
+    "",
+    "mt-5 grid max-h-[36rem] gap-3 overflow-y-auto pr-1",
+  );
   const channelFilter = el("select", "", controlClass);
   channelFilter.id = "publication-channel-filter";
   const statusFilter = el("select", "", controlClass);
