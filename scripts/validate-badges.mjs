@@ -35,10 +35,21 @@ try {
   await page.route("**/test-scripts/*.ts", async (route) => {
     const file = new URL(route.request().url()).pathname.split("/").at(-1);
     if (
-      !["badge-layout.ts", "badge-roles.ts", "admin-toolkit.ts"].includes(file)
+      ![
+        "badge-layout.ts",
+        "badge-roles.ts",
+        "admin-toolkit.ts",
+        "event-context.ts",
+        "event-paths.ts",
+      ].includes(file)
     )
       return route.abort();
-    const source = await readFile(`site/scripts/${file}`, "utf8");
+    const source = (
+      await readFile(
+        file === "event-paths.ts" ? `shared/${file}` : `site/scripts/${file}`,
+        "utf8",
+      )
+    ).replaceAll("../../shared/event-paths.ts", "./event-paths.ts");
     await route.fulfill({
       contentType: "text/javascript",
       body: ts.transpileModule(source, {

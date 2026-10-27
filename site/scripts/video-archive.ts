@@ -1,3 +1,4 @@
+import { eventFetch as fetch } from "./event-context.ts";
 import { Zip, ZipPassThrough } from "fflate";
 import { is4kPng, type VideoExportManifest } from "./video-export-contract.ts";
 

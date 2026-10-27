@@ -7,6 +7,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const consolePreload = new URL("./quality-console-errors.mjs", import.meta.url);
 export const browserGroups = {
   organizers: [
+    "events:browser-check",
     "activity:browser-check",
     "content:browser-check",
     "publication:browser-check",

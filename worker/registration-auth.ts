@@ -1,3 +1,4 @@
+import { eventLink } from "./event-workspaces.ts";
 import { hasAdminSession } from "./admin-auth.ts";
 import { decryptText, encryptText, hashText } from "./form-utils.ts";
 import { qaToken } from "./qa-auth.ts";
@@ -87,7 +88,7 @@ export async function readRegistrationGrants(
       let link: string | null = null;
       if (!row.revoked_at) {
         const url = new URL(
-          "/registration/access/",
+          eventLink("/registration/access/", env),
           env.PUBLIC_SITE_ORIGIN || new URL(request.url).origin,
         );
         url.hash = `token=${await decryptText(row.token_ciphertext, row.token_iv, env.EMAIL_ENCRYPTION_KEY!)}`;

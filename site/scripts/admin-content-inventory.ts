@@ -1,3 +1,4 @@
+import { eventStorageKey } from "./event-context.ts";
 import "./index.ts";
 
 const root = document.querySelector<HTMLElement>("[data-content-inventory]");
@@ -34,7 +35,7 @@ function setup(root: HTMLElement): void {
   const clear = get<HTMLButtonElement>("[data-inventory-clear]");
   const fallback = get<HTMLElement>("[data-inventory-fallback]");
   const handoff = get<HTMLTextAreaElement>("#inventory-handoff");
-  const storageKey = "sdlcai-2026-content-shortlist";
+  const storageKey = eventStorageKey("content-shortlist");
   let selected = new Set<string>();
   try {
     const saved: unknown = JSON.parse(localStorage.getItem(storageKey) ?? "[]");

@@ -44,8 +44,12 @@ async function readCatering(env: Env) {
         catering_reviews_ciphertext: string | null;
         catering_reviews_iv: string | null;
       }>(),
-      readSpeakerDinnerAdminItems(env),
-      readSpeakerDinnerSharedAdminItems(env),
+      env.SPEAKER_DINNER_RETENTION_UNTIL
+        ? readSpeakerDinnerAdminItems(env)
+        : Promise.resolve([]),
+      env.SPEAKER_DINNER_RETENTION_UNTIL
+        ? readSpeakerDinnerSharedAdminItems(env)
+        : Promise.resolve([]),
       readOrganizers(env),
       env.INTERESTS.prepare(
         "SELECT speaker_id, email_ciphertext, email_iv FROM speaker_contacts WHERE retention_until > ?",

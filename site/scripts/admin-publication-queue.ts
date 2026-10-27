@@ -1,3 +1,4 @@
+import { eventFetch as fetch } from "./event-context.ts";
 import "./index.ts";
 import "./admin-navigation.ts";
 import { append, button, el, message } from "./admin-toolkit.ts";

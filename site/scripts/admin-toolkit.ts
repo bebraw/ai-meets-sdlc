@@ -1,3 +1,4 @@
+import { eventFetch as fetch } from "./event-context.ts";
 export function el<K extends keyof HTMLElementTagNameMap>(
   tag: K,
   text = "",

@@ -1,4 +1,5 @@
 import scheduleData from "../site/data/schedule.json" with { type: "json" };
+import { currentEvent } from "./event-workspaces.ts";
 import speakersData from "../site/data/speakers.json" with { type: "json" };
 import { marked } from "marked";
 import * as v from "valibot";
@@ -153,6 +154,9 @@ export async function readCanonicalSpeakers(
       ORDER BY sort_order ASC, speaker_id ASC`,
   ).all<CanonicalSpeakerRow>();
   const records = result.results.map(parseCanonicalSpeakerRow);
+  // New databases contain no inherited speakers. Bundled identities describe
+  // the 2026 edition and must never be used to fill another event's empty roster.
+  if (currentEvent(env).id !== "2026" && records.length === 0) return [];
 
   if (
     records.length !== canonicalSpeakerIds.size ||

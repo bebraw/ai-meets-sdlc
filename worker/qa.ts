@@ -1,3 +1,4 @@
+import { currentEvent } from "./event-workspaces.ts";
 import { hasAdminSession } from "./admin-auth.ts";
 import {
   formatCsvValue,
@@ -48,6 +49,8 @@ const okResult = (message: string): QaResult => ({
 const value = (body: Record<string, unknown>, key: string): string =>
   typeof body[key] === "string" ? body[key] : "";
 export const qaHubName = "sdlcai-2026:qa-updates";
+const eventQaName = (env: Env, suffix: string) =>
+  `sdlcai-${currentEvent(env).id}:${suffix}`;
 
 export function withQaHeaders(response: Response): Response {
   const headers = new Headers(response.headers);
@@ -231,7 +234,7 @@ async function notify(env: Env): Promise<void> {
   // Persistence has already completed. A missed notification must not turn a
   // successful write into a failed POST; reconnect/fallback reads the authority.
   try {
-    await env.QA_UPDATES.getByName(qaHubName).notify();
+    await env.QA_UPDATES.getByName(eventQaName(env, "qa-updates")).notify();
   } catch {
     console.warn("qa_notification_unavailable");
   }
@@ -280,7 +283,9 @@ async function handle(request: Request, env: Env): Promise<Response> {
     if (request.method !== "GET") return html("Method not allowed.", 405);
     if (request.headers.get("sec-fetch-site") === "cross-site")
       return html("Request origin was not accepted.", 403);
-    return env.QA_UPDATES.getByName(qaHubName).fetch(request);
+    return env.QA_UPDATES.getByName(eventQaName(env, "qa-updates")).fetch(
+      request,
+    );
   }
   if (!["GET", "HEAD", "POST"].includes(request.method))
     return new Response("Method not allowed.", {
@@ -299,7 +304,7 @@ async function handle(request: Request, env: Env): Promise<Response> {
         request.headers.get("cf-connecting-ip") || "local",
       );
       if (
-        await env.QA_ROOMS.getByName("sdlcai-2026:qa-login").throttle(
+        await env.QA_ROOMS.getByName(eventQaName(env, "qa-login")).throttle(
           ipKey,
           30,
           10 * 60_000,
@@ -500,7 +505,7 @@ async function adminAction(
     const result = await env.INTERESTS.prepare(
       "INSERT INTO qa_rooms (id, title, object_name, position, created_at) SELECT ?, ?, ?, COALESCE(MAX(position), -1) + 1, ? FROM qa_rooms HAVING COUNT(*) < 64",
     )
-      .bind(id, title, `sdlcai-2026:${id}`, new Date().toISOString())
+      .bind(id, title, eventQaName(env, id), new Date().toISOString())
       .run();
     return result.meta.changes
       ? okResult("Room created and paused.")

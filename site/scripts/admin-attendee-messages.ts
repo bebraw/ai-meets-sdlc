@@ -1,3 +1,4 @@
+import { eventId, eventLabel } from "./event-context.ts";
 import "./index.ts";
 import "./admin-navigation.ts";
 import {
@@ -82,7 +83,7 @@ function setup(root: HTMLElement) {
     ),
     el(
       "p",
-      "Send welcome information, practical updates, or follow-up about SDLCAI 2026. Future event promotions belong in the separate, consent-based news list. Marketing campaigns await provider selection.",
+      `Send welcome information, practical updates, or follow-up about ${eventLabel()}. Future event promotions belong in the separate, consent-based news list. Marketing campaigns await provider selection.`,
       "max-w-4xl leading-7",
     ),
     audience,
@@ -154,7 +155,7 @@ function setup(root: HTMLElement) {
     reviewed,
     el(
       "span",
-      "I reviewed the message and recipient list. This email contains SDLCAI 2026 event information only.",
+      `I reviewed the message and recipient list. This email contains ${eventLabel()} event information only.`,
     ),
   );
   const sendButton = button("Send to attendees", () => void send());
@@ -300,6 +301,15 @@ function setup(root: HTMLElement) {
       control.disabled = value;
   }
   function useTemplate(kind: "welcome" | "followup") {
+    if (eventId() !== "2026") {
+      subject.input.value =
+        kind === "welcome"
+          ? `Welcome to ${eventLabel()}`
+          : `Thank you for joining ${eventLabel()}`;
+      body.value = "";
+      changed();
+      return;
+    }
     subject.input.value =
       kind === "welcome"
         ? "Welcome to SDLCAI 2026"

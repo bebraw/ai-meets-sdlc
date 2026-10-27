@@ -1,3 +1,4 @@
+import { eventFetch as fetch } from "./event-context.ts";
 import "./index.ts";
 import type { ScheduleGroup } from "../../worker/schedule-order.ts";
 

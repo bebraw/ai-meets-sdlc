@@ -1,8 +1,10 @@
 # ADR-014: Separate event administration from shared tools
 
-**Status:** Proposed — separate follow-up task; implementation deferred
+**Status:** Implemented
 
 **Date:** 2026-10-23
+
+**Implemented:** 2026-10-27
 
 ## Context
 
@@ -14,20 +16,28 @@ of the selected event.
 
 ## Decision
 
-Propose a shared SDLCAI admin area with an explicit event workspace for each
-edition. Treat 2026 as an event dataset, and review both navigation and stored
-data before implementing the separation.
+Use shared SDLCAI administration at `/admin/` and explicit event workspaces at
+`/events/<event-id>/admin/`. Each event owns a separate D1 database and separate
+upload, export and backup R2 bindings. The existing database remains the 2026
+dataset and temporarily houses shared newsletter tables; newsletter operations
+explicitly use the shared environment. New event schemas exclude those tables.
+
+The configured event catalog provides stable IDs, labels and resource bindings.
+Database ownership metadata is checked before event operations. New events start
+empty and do not inherit identities, attendees, access links, consent, content or
+deadlines. Organizer and speaker entries describe participation in an edition;
+only the admin account and common services are shared.
 
 | Scope                        | Tools and records                                                                                                                                                     |
 | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Shared SDLCAI administration | News subscribers, consent and unsubscribe history; common account and service settings where applicable.                                                              |
 | Individual event             | Programme and talks, speaker participation, attendees, badges, volunteers, event messages, feedback, Q&A, hospitality, photos, posters and post-production inventory. |
-| Requires scope review        | Organizer and speaker identities versus their event roles; interest lists and their original signup purpose; shared media reuse; activity-log views and exports.      |
+| Reviewed boundaries          | Speaker/organizer participation, original-purpose interest lists, activity and exports remain event-specific. Public brand assets can be deliberately reused.         |
 
-Use a stable event identifier with a display label such as **SDLCAI 2026**. An
-event selector should change the event workspace while shared tools remain
-directly accessible. The route shape, schema and storage arrangement remain
-design choices for the follow-up task.
+Use a stable event identifier with a display label such as **SDLCAI 2026**. The
+event selector changes the event workspace while shared tools remain
+directly accessible. Existing unprefixed admin tool, speaker, staff and media links stay attached to 2026. Shared news remains directly accessible from every event. Selection is
+carried in URLs, so simultaneous tabs cannot change each other's event.
 
 Keep news subscriptions separate from event participation: attending an event
 must not create marketing consent, and creating a new event must not copy private
@@ -38,7 +48,11 @@ attendee records into it.
 After adding the 2026 content inventory, the organizer identified the need to
 support a possible 2027 dataset without placing year-independent tools under 2026. This is separate from the completed post-production inventory work.
 
-## Follow-up scope and acceptance criteria
+## Implementation and acceptance criteria
+
+The [scope inventory and operational guide](../../event-administration.md) maps
+all current tables, API groups, resources, backups, scheduled jobs, access links
+and browser-local state. The following criteria are implemented:
 
 1. Map each workspace, API, database table, storage prefix, backup and scheduled
    job to shared or event scope. Review retention and access links alongside the
@@ -54,6 +68,12 @@ support a possible 2027 dataset without placing year-independent tools under 202
    remain isolated, while the shared mailing list remains available from either
    event context. Do not publish or populate a 2027 event until it is created.
 
+Edition-specific bundled tools are only available for their owning event until
+an adapter is explicitly added; they cannot fall back to 2026 content in a future
+workspace. Portable administration starts empty. The schema-only bootstrap and
+additive 2026 ownership marker make the migration reversible. Integration tests
+and Chromium/WebKit checks exercise two event fixtures; production has only 2026.
+
 ## Consequences
 
 **Positive:**
@@ -65,14 +85,14 @@ support a possible 2027 dataset without placing year-independent tools under 202
 
 **Negative:**
 
-- Navigation changes alone are insufficient; existing APIs, storage and lifecycle
-  jobs need a coordinated scope review and migration.
+- Each additional edition requires explicit resource provisioning and its own
+  content adapters for edition-specific materials.
 
 **Neutral:**
 
-- The current admin remains operational while this proposal is considered.
-- Shared versus event-specific organizer and speaker records need a decision
-  before implementation.
+- Existing admin tools remain operational through compatible 2026 routes.
+- Speaker and organizer participation stays event-specific; shared account
+  settings and newsletter consent stay independent of participation.
 
 ## Alternatives Considered
 

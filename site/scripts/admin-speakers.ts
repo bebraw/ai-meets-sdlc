@@ -1,3 +1,5 @@
+import { eventStorageKey } from "./event-context.ts";
+import { eventFetch as fetch } from "./event-context.ts";
 export {};
 import {
   maxSlideFileBytes,
@@ -212,7 +214,21 @@ let previewedRecipientCount: number | null = null;
 let previewToken: string | null = null;
 let announcementBusy = false;
 let announcementPreviewResizeObserver: ResizeObserver | null = null;
-const announcementDraftKey = "sdlcai-announcement-draft-v1";
+const announcementDraftKey = eventStorageKey("announcement-draft-v1");
+try {
+  if (
+    announcementDraftKey === "sdlcai-2026-announcement-draft-v1" &&
+    !localStorage.getItem(announcementDraftKey)
+  ) {
+    const previous = localStorage.getItem("sdlcai-announcement-draft-v1");
+    if (previous) {
+      localStorage.setItem(announcementDraftKey, previous);
+      localStorage.removeItem("sdlcai-announcement-draft-v1");
+    }
+  }
+} catch {
+  /* Draft storage is optional. */
+}
 const announcementDraftFields = [
   "category",
   "subject",

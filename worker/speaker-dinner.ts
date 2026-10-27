@@ -1,3 +1,4 @@
+import { eventLink } from "./event-workspaces.ts";
 import {
   jsonResponse,
   readFormDataWithinLimit,
@@ -186,7 +187,7 @@ export async function handleSpeakerDinnerInvite(
     .bind(speaker.speakerId, tokenHash, now, expiresAt, now)
     .run();
 
-  const inviteUrl = new URL("/speaker-dinner/", request.url);
+  const inviteUrl = new URL(eventLink("/speaker-dinner/", env), request.url);
   inviteUrl.hash = token;
 
   return jsonResponse(
@@ -451,7 +452,10 @@ export async function handleSpeakerDinnerSharedInvite(
     )
     .run();
 
-  const inviteUrl = new URL("/speaker-dinner/shared/", request.url);
+  const inviteUrl = new URL(
+    eventLink("/speaker-dinner/shared/", env),
+    request.url,
+  );
   inviteUrl.hash = token;
 
   return jsonResponse(
@@ -875,7 +879,10 @@ export async function readSpeakerDinnerSharedInvite(
     row.token_iv,
     env.EMAIL_ENCRYPTION_KEY,
   );
-  const inviteUrl = new URL("/speaker-dinner/shared/", request.url);
+  const inviteUrl = new URL(
+    eventLink("/speaker-dinner/shared/", env),
+    request.url,
+  );
   inviteUrl.hash = token;
   return { active: true, invite_url: inviteUrl.toString() };
 }

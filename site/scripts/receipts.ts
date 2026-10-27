@@ -1,3 +1,4 @@
+import { eventFetch as fetch } from "./event-context.ts";
 interface ReceiptItem {
   receipt_id: string;
   speaker_id: string;

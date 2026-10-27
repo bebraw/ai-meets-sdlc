@@ -56,6 +56,8 @@
     },
   },
   "vars": {
+    // Only explicitly provisioned editions appear in administration.
+    "EVENT_WORKSPACES": "[{\"id\":\"2026\",\"label\":\"SDLCAI 2026\",\"database\":\"INTERESTS\",\"uploads\":\"SPEAKER_UPLOADS\",\"exports\":\"SOCIAL_EXPORTS\",\"backups\":\"INTEREST_BACKUPS\"}]",
     // Daily pending speaker reviews at 09:00 Europe/Helsinki, with hourly retries.
     "SPEAKER_REVIEW_DIGEST_ENABLED": "true",
     "POSTER_REVIEW_DIGEST_ENABLED": "true",

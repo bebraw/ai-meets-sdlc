@@ -61,13 +61,6 @@ export const adminWorkspaceGroups = [
           "Review attendee ratings and comments, and share the public feedback form.",
       },
       {
-        id: "newsletter",
-        label: "SDLCAI news",
-        href: "/admin/newsletter/",
-        description:
-          "Review news subscribers and consent. Marketing signup is feature flagged.",
-      },
-      {
         id: "organizers",
         label: "Organizers",
         href: "/admin/organizers/",

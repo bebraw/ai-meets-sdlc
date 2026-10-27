@@ -1,4 +1,13 @@
 import { handleOrganizers, applyOrganizers } from "./organizers.ts";
+import { isEventPath, parseEventPath } from "../shared/event-paths.ts";
+import {
+  currentEvent,
+  eventEnvironment,
+  eventRouteAvailable,
+  eventWorkspaces,
+  sharedEnvironment,
+} from "./event-workspaces.ts";
+import { eventRequest, eventResponse } from "./event-responses.ts";
 import { getArchiveRedirect } from "./archive.ts";
 import { handleEventPhotos, backupEventPhotoReviews } from "./event-photos.ts";
 import { handleIntroVideoRequest } from "./intro-video.ts";
@@ -254,7 +263,11 @@ const innerHandler = {
       return isAdminProtected
         ? withAdminSecurityHeaders(messageResponse)
         : messageResponse;
-    const newsletterResponse = await handleNewsletterRequest(request, env);
+    const newsletterEnv = sharedEnvironment(env);
+    const newsletterResponse = await handleNewsletterRequest(
+      request,
+      newsletterEnv,
+    );
     if (newsletterResponse) {
       if (
         request.method === "POST" &&
@@ -265,7 +278,7 @@ const innerHandler = {
           "/api/admin/newsletter",
         ].includes(url.pathname)
       )
-        ctx.waitUntil(runMailrelaySync(env));
+        ctx.waitUntil(runMailrelaySync(newsletterEnv));
       return isAdminProtected
         ? withAdminSecurityHeaders(newsletterResponse)
         : newsletterResponse;
@@ -609,7 +622,14 @@ const innerHandler = {
     const feedbackResponse = await handleFeedbackRequest(request, env);
     if (feedbackResponse) return feedbackResponse;
 
-    const assetRequest = getAssetRequest(request, url);
+    const assetUrl =
+      url.pathname === "/admin/" && env !== sharedEnvironment(env)
+        ? new URL("/admin/event-workspace/", url)
+        : url;
+    const assetRequest = getAssetRequest(
+      new Request(assetUrl, request),
+      assetUrl,
+    );
     let response = await env.ASSETS.fetch(assetRequest);
 
     if (response.status === 404 && acceptsHtml(request)) {
@@ -690,39 +710,52 @@ const innerHandler = {
   },
 
   async scheduled(
-    event: ScheduledController,
-    env: Env,
+    controller: ScheduledController,
+    root: Env,
     ctx: ExecutionContext,
   ): Promise<void> {
-    if (event.cron === speakerReviewDigestCron) {
-      ctx.waitUntil(runMailrelaySync(env, 10));
-      ctx.waitUntil(sendPosterReviewDigest(env, new Date(event.scheduledTime)));
-      ctx.waitUntil(sendDataChangeDigest(env, new Date(event.scheduledTime)));
-      ctx.waitUntil(
-        sendSpeakerReviewDigest(env, new Date(event.scheduledTime)),
-      );
-      return;
+    // Shared consent/provider state is maintained exactly once, independently of editions.
+    if (controller.cron === speakerReviewDigestCron)
+      ctx.waitUntil(runMailrelaySync(root, 10));
+    else {
+      ctx.waitUntil(purgeNewsletterData(root));
+      if (root.INTEREST_BACKUPS)
+        ctx.waitUntil(backupMailingData(root, "shared"));
     }
-    // The hourly digest must not repeat the existing daily backups and cleanup.
-    if (env.INTEREST_BACKUPS) {
-      ctx.waitUntil(backupInterests(env));
-      ctx.waitUntil(backupPosterProposals(env));
-      ctx.waitUntil(backupCanonicalSpeakerContent(env));
-      ctx.waitUntil(backupAttendees(env));
-      ctx.waitUntil(backupPublicationQueue(env));
-      ctx.waitUntil(backupEventPhotoReviews(env));
-      ctx.waitUntil(backupMailingData(env));
-      ctx.waitUntil(backupSpeakerReceipts(env));
-    }
+    for (const workspace of eventWorkspaces(root)) {
+      const env = await eventEnvironment(root, workspace);
+      if (controller.cron === speakerReviewDigestCron) {
+        ctx.waitUntil(
+          sendPosterReviewDigest(env, new Date(controller.scheduledTime)),
+        );
+        ctx.waitUntil(
+          sendDataChangeDigest(env, new Date(controller.scheduledTime)),
+        );
+        ctx.waitUntil(
+          sendSpeakerReviewDigest(env, new Date(controller.scheduledTime)),
+        );
+        continue;
+      }
+      // The hourly digest must not repeat the existing daily backups and cleanup.
+      if (env.INTEREST_BACKUPS) {
+        ctx.waitUntil(backupInterests(env));
+        ctx.waitUntil(backupPosterProposals(env));
+        ctx.waitUntil(backupCanonicalSpeakerContent(env));
+        ctx.waitUntil(backupAttendees(env));
+        ctx.waitUntil(backupPublicationQueue(env));
+        ctx.waitUntil(backupEventPhotoReviews(env));
+        ctx.waitUntil(backupMailingData(env, "event"));
+        ctx.waitUntil(backupSpeakerReceipts(env));
+      }
 
-    if (shouldPurgeSpeakerDinnerData(env)) {
-      ctx.waitUntil(purgeSpeakerDinnerData(env));
-    }
+      if (shouldPurgeSpeakerDinnerData(env)) {
+        ctx.waitUntil(purgeSpeakerDinnerData(env));
+      }
 
-    ctx.waitUntil(purgeExpiredSpeakerWorkspaceData(env));
-    ctx.waitUntil(purgeNewsletterData(env));
-    ctx.waitUntil(purgeExpiredFeedback(env));
-    ctx.waitUntil(purgeSpeakerReviewDigests(env));
+      ctx.waitUntil(purgeExpiredSpeakerWorkspaceData(env));
+      ctx.waitUntil(purgeExpiredFeedback(env));
+      ctx.waitUntil(purgeSpeakerReviewDigests(env));
+    }
   },
 } satisfies ExportedHandler<Env>;
 
@@ -733,6 +766,66 @@ export default {
     env: Env,
     ctx: ExecutionContext,
   ): Promise<Response> {
+    const originalRequest = request;
+    const url = new URL(request.url);
+    const parsed = parseEventPath(url.pathname);
+    let events;
+    try {
+      events = eventWorkspaces(env);
+    } catch {
+      return new Response("Event configuration is unavailable.", {
+        status: 503,
+        headers: { "cache-control": "no-store" },
+      });
+    }
+    const shared =
+      (!parsed && ["/admin", "/admin/"].includes(url.pathname)) ||
+      !isEventPath(parsed?.path ?? url.pathname);
+    const workspace = parsed
+      ? events.find((item) => item.id === parsed.id)
+      : shared
+        ? null
+        : events.find((item) => item.id === "2026");
+    if (url.pathname.startsWith("/events/") && (!parsed || !workspace))
+      return new Response("Event not found.", {
+        status: 404,
+        headers: { "cache-control": "no-store" },
+      });
+    if (parsed) {
+      if (parsed.path === "/")
+        return Response.redirect(
+          `${url.origin}/events/${parsed.id}/admin/${url.search}`,
+          308,
+        );
+      if (
+        !isEventPath(parsed.path) &&
+        !/^\/(?:api\/(?:admin\/newsletter|newsletter\/)|admin\/newsletter\/)/u.test(
+          parsed.path,
+        )
+      )
+        return new Response("Not found.", { status: 404 });
+      if (isAdminProtectedPath(url.pathname)) {
+        const denied = await requireAdmin(originalRequest, env);
+        if (denied) return denied;
+      }
+      if (workspace && !eventRouteAvailable(parsed.path, workspace))
+        return withAdminSecurityHeaders(
+          new Response("This workspace has no content for this event.", {
+            status: 404,
+          }),
+        );
+      url.pathname = parsed.path;
+      request = eventRequest(request, url, parsed.id);
+    }
+    if (workspace && !shared && parsed) {
+      try {
+        env = await eventEnvironment(env, workspace);
+      } catch {
+        return withAdminSecurityHeaders(
+          new Response("Event storage is unavailable.", { status: 503 }),
+        );
+      }
+    }
     const audit = shouldRecordActivity(request);
     const bodyRequest =
       audit &&
@@ -751,6 +844,18 @@ export default {
         });
       }
     }
-    return response;
+    const adminHtml =
+      isAdminProtectedPath(url.pathname) &&
+      !url.pathname.startsWith("/api/") &&
+      response.headers.get("content-type")?.includes("text/html");
+    return parsed || adminHtml
+      ? eventResponse(
+          response,
+          originalRequest,
+          events,
+          shared ? null : currentEvent(env),
+          Boolean(parsed),
+        )
+      : response;
   },
 } satisfies ExportedHandler<Env>;

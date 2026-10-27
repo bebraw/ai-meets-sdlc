@@ -1,3 +1,4 @@
+import { eventLink } from "./event-workspaces.ts";
 import { hasAdminSession } from "./admin-auth.ts";
 import { decryptText, encryptText, hashText, sha256Hex } from "./form-utils.ts";
 import type { QaActor, QaGrant } from "./qa-types.ts";
@@ -155,7 +156,7 @@ export async function readQaGrants(
       let link: string | null = null;
       if (!row.revoked_at) {
         const url = new URL(
-          "/qa/access/",
+          eventLink("/qa/access/", env),
           env.PUBLIC_SITE_ORIGIN || new URL(request.url).origin,
         );
         url.hash = `token=${await decryptText(row.token_ciphertext, row.token_iv, env.EMAIL_ENCRYPTION_KEY!)}`;

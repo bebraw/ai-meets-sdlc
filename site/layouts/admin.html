@@ -1,7 +1,7 @@
 <BaseLayout
   &title="(id 'SDLCAI Admin')"
-  &description="(id 'Protected organizer tools for SDLCAI 2026.')"
-  &ogDescription="(id 'Protected organizer tools for SDLCAI 2026.')"
+  &description="(id 'Protected tools for the selected SDLCAI event.')"
+  &ogDescription="(id 'Protected tools for the selected SDLCAI event.')"
   &url="(id 'https://sdlcai.org/admin/')"
   &ogType="(id 'website')"
   &robots="(id 'noindex,nofollow,noarchive')"
@@ -9,7 +9,7 @@
   <AdminNavigation &current="(id '')"></AdminNavigation>
   <AdminPageHeader
     &eyebrow="(id 'Admin / Control room')"
-    &title="(id 'Admin desk')"
+    &title="(id 'Event workspace')"
     &description="(id 'Manage the seminar archive, prepare articles and social posts, and coordinate event administration. Choose a workspace below or switch with All workspaces.')"
   ></AdminPageHeader>
   <div class="bg-ink text-paper">
@@ -17,7 +17,7 @@
       <section
         class="border-b border-paper/30 px-5 py-8 md:px-8 md:py-10"
         &aria-labelledby="adminGroup.id"
-        data-admin-workspace-group
+        &data-admin-workspace-group="adminGroup.id"
       >
         <div
           class="mx-auto grid min-w-0 max-w-7xl gap-6 lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-10"

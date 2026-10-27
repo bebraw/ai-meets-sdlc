@@ -362,12 +362,15 @@ try {
       }
     }
   }
-  await page.goto(origin + "/admin/");
+  await page.goto(origin + "/events/2026/admin/");
   await page
     .getByRole("link", { name: /Content inventory/ })
     .first()
     .click();
-  assert.equal(new URL(page.url()).pathname, "/admin/content-inventory/");
+  assert.equal(
+    new URL(page.url()).pathname,
+    "/events/2026/admin/content-inventory/",
+  );
   const publicContext = await browser.newContext({
     acceptDownloads: true,
     viewport: { width: 320, height: 1000 },

@@ -1,3 +1,5 @@
+import { eventLocalPath, eventUrl } from "./event-context.ts";
+import { eventFetch as fetch } from "./event-context.ts";
 const root = document.querySelector<HTMLElement>("[data-qa-content]");
 const connection = document.querySelector<HTMLElement>("[data-qa-connection]");
 let generation = 0;
@@ -149,10 +151,10 @@ root?.addEventListener("submit", async (event) => {
     }
     if (
       response.status === 403 &&
-      location.pathname.startsWith("/qa/") &&
-      location.pathname !== "/qa/"
+      eventLocalPath().startsWith("/qa/") &&
+      eventLocalPath() !== "/qa/"
     ) {
-      const url = new URL("/qa/access/", location.origin);
+      const url = new URL(eventUrl("/qa/access/"));
       url.searchParams.set("notice", notice);
       location.assign(url.href);
     }
@@ -187,7 +189,7 @@ root?.addEventListener("click", async (event) => {
 
 const accessInput =
   document.querySelector<HTMLInputElement>("#qa-access-token");
-if (location.pathname === "/qa/access/" && accessInput) {
+if (eventLocalPath() === "/qa/access/" && accessInput) {
   const token = new URLSearchParams(location.hash.slice(1)).get("token");
   if (token && /^[A-Za-z0-9_-]{43}$/u.test(token)) accessInput.value = token;
   history.replaceState(null, "", `${location.pathname}${location.search}`);
@@ -204,7 +206,7 @@ if (location.pathname === "/qa/access/" && accessInput) {
       return;
     }
     if (events) return;
-    events = new EventSource("/api/qa/events");
+    events = new EventSource(eventUrl("/api/qa/events"));
     events.addEventListener("qa-change", scheduleRefresh);
     events.onopen = () => {
       clearInterval(polling);

@@ -1,3 +1,4 @@
+import { currentEvent } from "./event-workspaces.ts";
 import { escapeHtml } from "./speaker-workspace-utils.ts";
 import { hashText } from "./form-utils.ts";
 
@@ -26,6 +27,8 @@ export async function signMailToken(
   env: Env,
   purpose: string,
 ): Promise<string> {
+  if (currentEvent(env).id !== "2026")
+    purpose = `event:${currentEvent(env).id}:${purpose}`;
   const data = base64url(
     btoa(String.fromCharCode(...encoder.encode(JSON.stringify(payload)))),
   );
@@ -36,6 +39,8 @@ export async function verifyMailToken(
   env: Env,
   purpose: string,
 ): Promise<Record<string, unknown> | null> {
+  if (currentEvent(env).id !== "2026")
+    purpose = `event:${currentEvent(env).id}:${purpose}`;
   if (token.length > 4096 || !/^[\w-]+\.[\w-]{43}$/u.test(token)) return null;
   try {
     const [data, signature] = token.split(".");

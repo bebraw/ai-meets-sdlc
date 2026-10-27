@@ -50,6 +50,13 @@ content is in `site/layouts/posters.html`.
 Minimum Viable Disclosure also links to its
 [code and experiment repository](https://github.com/nderecash/disclosure-curve).
 
+Shared administration is at `/admin/`, with SDLCAI news independent of event
+selection. **SDLCAI 2026** opens `/events/2026/admin/`; existing admin tool,
+speaker and staff URLs continue to use the 2026 dataset. Each future event needs
+its own D1 database and storage bindings and starts empty. No 2027 dataset is
+created. See [event administration](docs/event-administration.md) for the scope
+inventory, provisioning, migration, retention and compatibility rules.
+
 The protected **Content inventory** workspace at `/admin/content-inventory/`
 brings together the fourteen recordings, 29 clip candidates, 22 quote candidates,
 three posters, eight cross-session themes and four draft article/LinkedIn angles.

@@ -1,3 +1,5 @@
+import { eventLocalPath, eventUrl } from "./event-context.ts";
+import { eventFetch as fetch } from "./event-context.ts";
 import "./index.ts";
 import {
   append,
@@ -48,11 +50,11 @@ async function api<T>(
   if (!response.ok) {
     if (
       response.status === 401 &&
-      location.pathname === "/registration/" &&
+      eventLocalPath() === "/registration/" &&
       url !== "/api/registration/session"
     ) {
       root?.replaceChildren();
-      location.replace("/registration/access/");
+      location.replace(eventUrl("/registration/access/"));
     }
     throw new Error(result.error ?? "Unable to save. Reload and try again.");
   }
@@ -111,7 +113,7 @@ function setupAccess(root: HTMLElement) {
     void api("/api/registration/session", action, "POST", {
       token: input.input.value.trim(),
     })
-      .then(() => location.assign("/registration/"))
+      .then(() => location.assign(eventUrl("/registration/")))
       .catch((error: unknown) => {
         status.textContent = message(error);
         submit.disabled = false;
@@ -211,7 +213,7 @@ function setupList(root: HTMLElement) {
   append(toolbar, reload);
   if (admin) {
     const badges = el("a", "Open badge studio →", buttonClass);
-    badges.href = "/admin/badges/";
+    badges.href = eventUrl("/admin/badges/");
     append(
       toolbar,
       addAttendee,
@@ -236,7 +238,7 @@ function setupList(root: HTMLElement) {
       () =>
         void work(async () => {
           await api("/api/registration/session", action, "DELETE");
-          location.assign("/registration/access/");
+          location.assign(eventUrl("/registration/access/"));
         }),
     );
     append(toolbar, signOut);
@@ -905,7 +907,9 @@ function setupList(root: HTMLElement) {
             `Prepare ${count} spare ${spareRole} badge${count === 1 ? "" : "s"} →`,
             "font-bold underline",
           );
-          spares.href = `/admin/badges/?${spareRole === "sponsor" ? "sponsor-spares" : "spares"}=${count}`;
+          spares.href = eventUrl(
+            `/admin/badges/?${spareRole === "sponsor" ? "sponsor-spares" : "spares"}=${count}`,
+          );
           append(preview, el("p", note), spares);
         }
         for (const person of imported.slice(0, 5))

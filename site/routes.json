@@ -253,7 +253,7 @@
     }
   },
   "admin": {
-    "layout": "admin",
+    "layout": "admin-shared",
     "scripts": [
       {
         "name": "admin-navigation"
@@ -267,9 +267,9 @@
     "context": {
       "meta": {
         "title": "SDLCAI Admin",
-        "description": "Protected organizer tools for SDLCAI 2026.",
+        "description": "Shared SDLCAI tools and event workspaces.",
         "ogEyebrow": "Admin",
-        "ogDescription": "Protected organizer tools for SDLCAI 2026."
+        "ogDescription": "Shared SDLCAI tools and event workspaces."
       }
     },
     "routes": {
@@ -676,6 +676,21 @@
           "meta": {
             "title": "SDLCAI Publication Queue",
             "description": "Prepare and track the SDLCAI 2026 posts, announcement and newsletter.",
+            "robots": "noindex,nofollow,noarchive"
+          }
+        }
+      },
+      "event-workspace": {
+        "layout": "admin",
+        "scripts": [
+          {
+            "name": "admin-navigation"
+          }
+        ],
+        "context": {
+          "meta": {
+            "title": "SDLCAI Event workspace",
+            "description": "Protected event administration.",
             "robots": "noindex,nofollow,noarchive"
           }
         }

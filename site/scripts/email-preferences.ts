@@ -1,3 +1,4 @@
+import { eventFetch as fetch } from "./event-context.ts";
 import "./index.ts";
 import { append, buttonClass, el, message } from "./admin-toolkit.ts";
 const root = document.querySelector<HTMLElement>("[data-email-preferences]");

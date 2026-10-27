@@ -20,7 +20,6 @@ ADRs are grouped by lifecycle status:
 | ADR                                       | Status   | Summary                            |
 | ----------------------------------------- | -------- | ---------------------------------- |
 | [ADR-000](./proposed/ADR-000-template.md) | Proposed | Template for drafting future ADRs. |
-| [ADR-014](./proposed/ADR-014-separate-event-administration-from-shared-tools.md) | Proposed | Separate event datasets and workspaces from shared SDLCAI administration. |
 
 ## Accepted ADRs
 
@@ -47,6 +46,8 @@ No accepted-only ADRs are currently pending implementation.
 | [ADR-012](./implemented/ADR-012-integrate-event-qa-with-revocable-staff-links.md) | Implemented | Integrate persistent Q&A rooms with moderated questions and reusable, revocable staff access. |
 
 | [ADR-013](./implemented/ADR-013-manage-attendees-with-scoped-registration-access.md) | Implemented | Manage imported attendees and badge sources with atomic arrival tracking and revocable registration staff links. |
+
+| [ADR-014](./implemented/ADR-014-separate-event-administration-from-shared-tools.md) | Implemented | Separate event databases, workspaces and lifecycle work from shared SDLCAI news administration. |
 
 ## Creating a New ADR
 

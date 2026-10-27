@@ -341,7 +341,9 @@ try {
         /\/4k\.mp4$/,
       );
 
-      await page.goto(`${origin}/admin/`);
+      // This check serves build files directly; the Worker maps the explicit
+      // 2026 event desk to this template and scopes its links at runtime.
+      await page.goto(`${origin}/admin/event-workspace/`);
       const eventDay = page.locator("[data-admin-workspace-group]", {
         has: page.locator("h2#event-day"),
       });

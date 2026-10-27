@@ -1,3 +1,5 @@
+import { parseEventPath } from "../shared/event-paths.ts";
+
 interface AdminBindings {
   ADMIN_PASSWORD?: string;
   ADMIN_USERNAME?: string;
@@ -18,6 +20,7 @@ const adminSessionPattern =
   /^v1\.(\d{10})\.([A-Za-z0-9_-]{43})\.([A-Za-z0-9_-]{43})$/u;
 
 export function isAdminProtectedPath(pathname: string): boolean {
+  pathname = parseEventPath(pathname)?.path ?? pathname;
   return (
     pathname === "/admin/" ||
     (pathname.startsWith("/admin/") && pathname !== adminLoginPath) ||
@@ -90,7 +93,9 @@ export async function requireAdmin(
 
   if (
     (request.method === "GET" || request.method === "HEAD") &&
-    !url.pathname.startsWith("/api/admin/")
+    !(parseEventPath(url.pathname)?.path ?? url.pathname).startsWith(
+      "/api/admin/",
+    )
   ) {
     const loginUrl = new URL(adminLoginPath, url.origin);
     loginUrl.searchParams.set("next", `${url.pathname}${url.search}`);
@@ -461,7 +466,9 @@ function getSafeAdminNextPath(
     if (
       candidate.origin !== requestOrigin ||
       !isAdminProtectedPath(candidate.pathname) ||
-      candidate.pathname.startsWith("/api/admin/") ||
+      (
+        parseEventPath(candidate.pathname)?.path ?? candidate.pathname
+      ).startsWith("/api/admin/") ||
       candidate.pathname === "/admin/logout" ||
       candidate.pathname === "/admin/logout/"
     ) {

@@ -1,3 +1,4 @@
+import { eventStorageKey } from "./event-context.ts";
 import "./index.ts";
 import music from "../data/music.json" with { type: "json" };
 import {
@@ -10,7 +11,7 @@ const root = document.querySelector<HTMLElement>("[data-admin-music]");
 if (root) setup(root);
 
 function setup(root: HTMLElement): void {
-  const storageKey = "sdlcai-2026-music-shortlist";
+  const storageKey = eventStorageKey("music-shortlist");
   const tracks = music.tracks;
   const tracksById = new Map(tracks.map((track) => [track.id, track]));
   const picks = root.querySelectorAll<HTMLInputElement>("[data-music-pick]");

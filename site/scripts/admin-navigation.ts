@@ -32,3 +32,9 @@ if (menu) {
 }
 
 export {};
+
+const eventSelector = document.querySelector("[data-admin-event-selector]");
+if (eventSelector instanceof HTMLSelectElement)
+  eventSelector.addEventListener("change", () => {
+    location.assign(eventSelector.value);
+  });

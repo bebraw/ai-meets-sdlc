@@ -12,14 +12,33 @@
       >
         <span
           class="text-[0.65rem] font-bold uppercase tracking-widest text-paper/70"
-          >SDLCAI / 2026</span
+          data-admin-scope-label
+          >Shared SDLCAI</span
         >
-        <span class="font-headline text-xl font-black uppercase"
+        <span
+          data-admin-desk-label
+          class="font-headline text-xl font-black uppercase"
           >Admin desk</span
         >
       </a>
       <div class="flex flex-wrap items-center gap-2">
-        <details class="admin-workspace-menu" data-admin-workspace-menu>
+        <span data-admin-event-controls></span>
+        <a
+          class="min-h-11 px-3 py-3 text-xs font-bold uppercase underline"
+          href="/admin/newsletter/"
+          >SDLCAI news</a
+        >
+        <a
+          class="min-h-11 px-3 py-3 text-xs font-bold uppercase underline"
+          href="/admin/"
+          data-shared-admin-link
+          >Shared tools</a
+        >
+        <details
+          class="admin-workspace-menu"
+          data-event-navigation
+          data-admin-workspace-menu
+        >
           <summary
             class="flex min-h-11 cursor-pointer list-none items-center gap-3 border border-paper/50 px-3 py-2 text-xs font-bold uppercase transition hover:bg-paper hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper"
           >
@@ -43,7 +62,7 @@
             <noop
               &foreach="(adminNavigationGroups (get props current)) as adminGroup"
             >
-              <div>
+              <div &data-admin-navigation-group="adminGroup.id">
                 <h2
                   class="mb-3 border-b border-paper/30 pb-2 font-headline text-xl font-black uppercase"
                   &children="adminGroup.label"
@@ -88,6 +107,7 @@
     <div
       class="mt-4 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-paper/30 pt-3"
       &visibleIf="(adminGroupLabel (get props current))"
+      data-event-navigation
     >
       <p
         class="font-headline text-base font-black uppercase text-paper/70"

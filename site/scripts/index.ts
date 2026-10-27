@@ -1,3 +1,4 @@
+import { eventFetch as fetch } from "./event-context.ts";
 import type { DinnerCateringData } from "./dinner-diets.ts";
 
 declare global {

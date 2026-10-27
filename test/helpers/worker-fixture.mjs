@@ -2,13 +2,16 @@ import { createTestHarness, unstable_splitSqlQuery } from "wrangler";
 
 // test:prepare compiles once before Node starts its isolated test-file processes.
 // Each fixture still owns a fresh runtime and all of its D1/R2/DO storage.
-export async function createWorkerFixture({ vars = {} } = {}) {
+export async function createWorkerFixture({
+  vars = {},
+  configPath = "wrangler.jsonc",
+} = {}) {
   // Production enables sync; fixtures only contact a provider when a test opts in.
   vars = { MAILRELAY_SYNC_ENABLED: "false", ...vars };
   const server = createTestHarness({
     workers: [
       {
-        configPath: "wrangler.jsonc",
+        configPath,
         prebuiltWorkerDir: ".cache/test-worker",
         vars,
         secrets: vars,
@@ -65,6 +68,7 @@ export async function createWorkerFixture({ vars = {} } = {}) {
         stop: dispose,
       },
       env,
+      scheduled: (options) => handle.scheduled(options),
       async runSql(sql) {
         const statements = unstable_splitSqlQuery(sql).map((query) =>
           env.INTERESTS.prepare(query),

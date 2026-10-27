@@ -1,3 +1,4 @@
+import { eventLink, currentEvent } from "./event-workspaces.ts";
 import {
   isLikelyEmail,
   jsonResponse as json,
@@ -260,6 +261,7 @@ async function handle(
       })),
       excluded: audience.excluded,
       text_body: eventMessageText(
+        env,
         input.text_body,
         "[personal unsubscribe link]",
       ),
@@ -509,12 +511,17 @@ async function renderText(env: Env, recipient: Recipient, body: string) {
     "attendee-message-unsubscribe",
   );
   return eventMessageText(
+    env,
     body,
-    `${mailOrigin(env)}/event-email/unsubscribe/#token=${token}`,
+    `${mailOrigin(env)}${eventLink("/event-email/unsubscribe/", env)}#token=${token}`,
   );
 }
-function eventMessageText(body: string, unsubscribeUrl: string): string {
-  return `${body}\n\nSDLCAI / Toska Osuuskunta\nQuestions? Reply to info@sdlcai.org.\nYou received this because you registered for SDLCAI 2026.\nUnsubscribe from SDLCAI 2026 event emails:\n${unsubscribeUrl}`;
+function eventMessageText(
+  env: Env,
+  body: string,
+  unsubscribeUrl: string,
+): string {
+  return `${body}\n\nSDLCAI / Toska Osuuskunta\nQuestions? Reply to info@sdlcai.org.\nYou received this because you registered for ${currentEvent(env).label}.\nUnsubscribe from ${currentEvent(env).label} event emails:\n${unsubscribeUrl}`;
 }
 async function deliver(
   env: Env,
@@ -535,7 +542,7 @@ async function deliver(
     text,
     html: mailHtml(text),
     headers: {
-      "List-Unsubscribe": `<${mailOrigin(env)}${unsubscribePath}?token=${token}>`,
+      "List-Unsubscribe": `<${mailOrigin(env)}${eventLink(unsubscribePath, env)}?token=${token}>`,
       "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
     },
   });
@@ -583,7 +590,6 @@ async function unsubscribe(request: Request, env: Env): Promise<Response> {
     .bind(payload.email_hash, new Date().toISOString())
     .run();
   return json({
-    message:
-      "You are unsubscribed from SDLCAI 2026 event emails. This does not cancel your registration.",
+    message: `You are unsubscribed from ${currentEvent(env).label} event emails. This does not cancel your registration.`,
   });
 }
