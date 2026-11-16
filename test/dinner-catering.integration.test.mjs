@@ -246,6 +246,96 @@ test("dinner reviews are encrypted, apply to speakers and guests, reject stale s
   assert.equal((await send(changed.catering, guestReview)).status, 409);
 });
 
+test("repeated dinner purges preserve empty reviews, revisions and digest tracking", async (t) => {
+  const fixture = await createReceiptFixture({ vars: futureDinner });
+  t.after(() => fixture.dispose());
+  const { worker, runSql, env } = fixture;
+  const purge = async () => {
+    const response = await worker.fetch(
+      origin + "/api/admin/speaker-dinner/purge",
+      {
+        method: "POST",
+        headers: {
+          ...headers,
+          "x-admin-action": "purge-speaker-dinner-data",
+          "content-type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({ confirmation: "DELETE" }),
+      },
+    );
+    assert.equal(response.status, 200, await response.clone().text());
+  };
+  const state = async () => ({
+    dinner: (await runSql("SELECT * FROM speaker_dinner_catering"))[0],
+    attendees: (await runSql("SELECT * FROM attendee_roster"))[0],
+    changes: await runSql(
+      "SELECT * FROM organizer_data_changes ORDER BY change_id",
+    ),
+  });
+
+  await runSql("DELETE FROM organizer_data_changes");
+  const empty = await state();
+  await purge();
+  assert.deepEqual(await state(), empty, "An initially empty purge is silent");
+
+  const reviews = await encryptText(
+    JSON.stringify([{ note: "Private catering instructions" }]),
+    "isolated-receipt-test-encryption",
+  );
+  const preserved = await encryptText("[]", "isolated-receipt-test-encryption");
+  await env.INTERESTS.batch([
+    env.INTERESTS.prepare(
+      "UPDATE speaker_dinner_catering SET reviews_ciphertext = ?, reviews_iv = ? WHERE id = 1",
+    ).bind(reviews.ciphertext, reviews.iv),
+    env.INTERESTS.prepare(
+      `UPDATE attendee_roster SET catering_reviews_ciphertext = ?, catering_reviews_iv = ?,
+       ciphertext = ?, iv = ?, catering_ciphertext = ?, catering_iv = ?,
+       catering_reserved_meals = 12 WHERE id = 1`,
+    ).bind(
+      reviews.ciphertext,
+      reviews.iv,
+      preserved.ciphertext,
+      preserved.iv,
+      preserved.ciphertext,
+      preserved.iv,
+    ),
+  ]);
+  await runSql("DELETE FROM organizer_data_changes");
+  const before = await state();
+  await purge();
+  const cleared = await state();
+  assert.deepEqual(cleared.dinner, {
+    ...before.dinner,
+    reviews_ciphertext: null,
+    reviews_iv: null,
+    revision: before.dinner.revision + 1,
+  });
+  assert.deepEqual(cleared.attendees, {
+    ...before.attendees,
+    catering_reviews_ciphertext: null,
+    catering_reviews_iv: null,
+    catering_revision: before.attendees.catering_revision + 1,
+  });
+  assert.deepEqual(
+    cleared.changes.map(({ table_name, operation }) => ({
+      table_name,
+      operation,
+    })),
+    [
+      { table_name: "speaker_dinner_catering", operation: "updated" },
+      { table_name: "attendee_roster", operation: "updated" },
+    ],
+    "Removing stored reviews remains visible in the digest",
+  );
+
+  for (let day = 0; day < 7; day++) await purge();
+  assert.deepEqual(
+    await state(),
+    cleared,
+    "A week of repeated cleanup leaves revisions and digest events unchanged",
+  );
+});
+
 test("expired dinner classifications are withheld and cannot be saved", async (t) => {
   const fixture = await createReceiptFixture({
     vars: {
