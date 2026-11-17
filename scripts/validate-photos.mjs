@@ -190,6 +190,33 @@ try {
     });
     surface.setDefaultTimeout(15000);
   }
+  for (const prefix of ["", "/events/2026"]) {
+    const catalogResponse = admin.waitForResponse(
+      (response) =>
+        new URL(response.url()).pathname ===
+        `${prefix}/api/admin/photos/catalog`,
+    );
+    await admin.goto(`${origin}${prefix}/admin/photos/`);
+    assert.equal((await catalogResponse).status(), 200);
+    await admin.waitForFunction(
+      (count) => document.querySelectorAll(".card").length === count,
+      seed.photos.length,
+    );
+    assert.equal(await admin.locator("#status").textContent(), "");
+    assert.equal(await admin.locator("#search").isEnabled(), true);
+    assert.equal(
+      await admin
+        .getByRole("link", { name: "Admin desk", exact: true })
+        .getAttribute("href"),
+      `${prefix}/admin/`,
+    );
+    assert.equal(
+      await admin
+        .getByRole("link", { name: "Download catalog JSON", exact: true })
+        .getAttribute("href"),
+      `${prefix}/api/admin/photos/catalog`,
+    );
+  }
   const enterFullscreen = async (surface, native = true) => {
     await surface
       .getByRole("button", { name: "Full screen", exact: true })
@@ -541,7 +568,7 @@ try {
   assert.match(strFromU8(zip["CREDITS.txt"]), /Juho Vepsäläinen.*CC BY 4.0/);
   assert.ok(zip["catalog.json"]);
 
-  await admin.goto(`${origin}/admin/photos/`);
+  await admin.goto(`${origin}/events/2026/admin/photos/`);
   await admin.waitForFunction(
     (count) => document.querySelectorAll(".card").length === count,
     seed.photos.length,
@@ -569,7 +596,15 @@ try {
     await admin.locator('[name="caption"]').inputValue(),
     "Hosted browser check caption",
   );
+  const savedPhoto = admin.waitForResponse(
+    (response) =>
+      response.request().method() === "POST" &&
+      new URL(response.url()).pathname.startsWith(
+        "/events/2026/api/admin/photos/photo-",
+      ),
+  );
   await admin.getByRole("button", { name: "Save photo details" }).click();
+  assert.equal((await savedPhoto).status(), 200);
   await admin
     .getByText("Saved to the photo catalog.", { exact: true })
     .waitFor();
@@ -584,6 +619,23 @@ try {
   await admin.getByRole("button", { name: "Close", exact: true }).click();
   await admin.locator("#tag").selectOption("browser-review-tag");
   assert.equal(await admin.locator(".card").count(), 1);
+  await admin.locator(".card input[type=checkbox]").check();
+  const scopedDownload = admin.waitForResponse(
+    (response) =>
+      response.request().method() === "POST" &&
+      new URL(response.url()).pathname === "/events/2026/api/photos/download",
+  );
+  const adminDownload = admin.waitForEvent("download");
+  await admin.getByRole("button", { name: "Download selection ZIP" }).click();
+  assert.equal((await scopedDownload).status(), 200);
+  const adminZip = unzipSync(
+    new Uint8Array(await readFile(await (await adminDownload).path())),
+  );
+  assert.ok(adminZip["CREDITS.txt"]);
+  assert.equal(
+    JSON.parse(strFromU8(adminZip["catalog.json"])).photos.length,
+    1,
+  );
   await admin.reload();
   await admin
     .getByText("Hosted browser check caption", { exact: true })

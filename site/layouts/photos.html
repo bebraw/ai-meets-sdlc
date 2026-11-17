@@ -880,8 +880,13 @@
       const label = (value) =>
         ({ dj: "DJ", "q-and-a": "Q&A" })[value] ||
         value.replaceAll("-", " ").replace(/^./, (c) => c.toUpperCase());
-      const hosted = /^\/(?:admin|2026)\/photos\/?$/.test(location.pathname);
-      const organizer = hosted && location.pathname.startsWith("/admin/");
+      const hostedRoute =
+        /^(\/events\/[a-z0-9]+(?:-[a-z0-9]+)*)?\/(admin|2026)\/photos\/?$/.exec(
+          location.pathname,
+        );
+      const hosted = Boolean(hostedRoute);
+      const organizer = hostedRoute?.[2] === "admin";
+      const hostedUrl = (path) => `${hostedRoute?.[1] ?? ""}${path}`;
       const mine =
         hosted && new URLSearchParams(location.search).get("mine") === "1";
       let catalog,
@@ -1304,7 +1309,9 @@
           ].map((input) => input.value);
           data.revision = current.revision ?? 0;
           const response = await fetch(
-            `${hosted ? "/api/admin/photos" : "/api/photos"}/${current.id}`,
+            hostedUrl(
+              `${hosted ? "/api/admin/photos" : "/api/photos"}/${current.id}`,
+            ),
             {
               method: "POST",
               headers: {
@@ -1363,7 +1370,7 @@
         try {
           const variant = $("#download-size").value;
           const response = await fetch(
-            hosted ? "/api/photos/download" : "/api/download",
+            hostedUrl(hosted ? "/api/photos/download" : "/api/download"),
             {
               method: "POST",
               headers: { "content-type": "application/json" },
@@ -1403,7 +1410,7 @@
           ["Speakers", "/2026/speakers/"],
           ["Photos", "/2026/photos/"],
           ["Photo timeline", "/2026/timeline/"],
-          ...(organizer ? [["Admin desk", "/admin/"]] : []),
+          ...(organizer ? [["Admin desk", hostedUrl("/admin/")]] : []),
         ]) {
           const link = make("a", name);
           link.href = href;
@@ -1412,11 +1419,11 @@
         document.querySelector("header").append(nav);
         for (const link of document.querySelectorAll("footer a")) {
           if (link.getAttribute("href") === "/catalog.json")
-            link.href = organizer
-              ? "/api/admin/photos/catalog"
-              : "/api/photos/catalog";
+            link.href = hostedUrl(
+              organizer ? "/api/admin/photos/catalog" : "/api/photos/catalog",
+            );
           else if (link.getAttribute("href") === "/CREDITS.txt")
-            link.href = "/api/photos/credits";
+            link.href = hostedUrl("/api/photos/credits");
           else link.hidden = true;
         }
         if (!organizer) {
@@ -1439,13 +1446,15 @@
         status("Loading photos…");
         try {
           const response = await fetch(
-            hosted
-              ? organizer
-                ? "/api/admin/photos/catalog"
-                : mine
-                  ? "/api/speaker/photo-bank"
-                  : "/api/photos/catalog"
-              : "/api/catalog",
+            hostedUrl(
+              hosted
+                ? organizer
+                  ? "/api/admin/photos/catalog"
+                  : mine
+                    ? "/api/speaker/photo-bank"
+                    : "/api/photos/catalog"
+                : "/api/catalog",
+            ),
           );
           if (!response.ok)
             throw new Error("Could not load the photo catalog.");
