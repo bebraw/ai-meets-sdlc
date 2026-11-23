@@ -155,7 +155,9 @@ try {
       await page
         .getByRole("link", { name: "SDLCAI news", exact: true })
         .click();
-      await page.waitForURL("**/admin/newsletter/");
+      await page.waitForURL("**/admin/newsletter/", {
+        waitUntil: "domcontentloaded",
+      });
       await sharedRequest;
       assert.equal(
         await page.locator("[data-admin-scope-label]").textContent(),
