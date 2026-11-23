@@ -32,6 +32,12 @@ try {
   const errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
   const origin = `http://127.0.0.1:${fixture.worker.port}`;
+  await page.route("**/toolkit/blocks/badge-artwork.mjs", (route) =>
+    route.fulfill({
+      contentType: "text/javascript",
+      path: "toolkit/blocks/badge-artwork.mjs",
+    }),
+  );
   await page.route("**/test-scripts/*.ts", async (route) => {
     const file = new URL(route.request().url()).pathname.split("/").at(-1);
     if (

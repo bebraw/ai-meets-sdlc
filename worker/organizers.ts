@@ -1,22 +1,14 @@
+import {
+  d1OrganizerStore,
+  type Organizer,
+} from "../toolkit/blocks/organizer-store.mjs";
 import { withAdminSecurityHeaders } from "./admin-auth.ts";
 import { jsonResponse, requireAdminAction } from "./form-utils.ts";
 import { readJsonWithinLimit, isRecord } from "./speaker-workspace-utils.ts";
 
-export interface Organizer {
-  id: string;
-  name: string;
-  company: string;
-  photo: string;
-  visible: number;
-  badge: number;
-  position: number;
-  revision: number;
-}
+export type { Organizer };
 export async function readOrganizers(env: Env): Promise<Organizer[]> {
-  const { results } = await env.INTERESTS.prepare(
-    "SELECT id, name, company, photo, visible, badge, position, revision FROM organizers ORDER BY position, id",
-  ).all<Organizer>();
-  return results;
+  return d1OrganizerStore(env.INTERESTS).list();
 }
 export async function handleOrganizers(
   request: Request,
@@ -51,12 +43,11 @@ async function handle(request: Request, env: Env): Promise<Response> {
   )
     return jsonResponse({ error: "Reload organizers before editing." }, 400);
   if (request.method === "DELETE") {
-    const result = await env.INTERESTS.prepare(
-      "DELETE FROM organizers WHERE id = ? AND revision = ?",
-    )
-      .bind(id, revision)
-      .run();
-    return result.meta.changes ? jsonResponse({ ok: true }) : conflict();
+    const changes = await d1OrganizerStore(env.INTERESTS).remove(
+      id,
+      Number(revision),
+    );
+    return changes ? jsonResponse({ ok: true }) : conflict();
   }
   const name =
     typeof body.name === "string" ? body.name.trim().normalize("NFC") : "";
@@ -90,22 +81,20 @@ async function handle(request: Request, env: Env): Promise<Response> {
     photo,
     body.visible ? 1 : 0,
     body.badge ? 1 : 0,
-    body.position,
+    Number(body.position),
     new Date().toISOString(),
   ];
   if (request.method === "POST") {
-    await env.INTERESTS.prepare(
-      "INSERT INTO organizers (name, company, photo, visible, badge, position, updated_at, id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-    )
-      .bind(...values, crypto.randomUUID())
-      .run();
+    await d1OrganizerStore(env.INTERESTS).create(crypto.randomUUID(), values);
   } else {
-    const result = await env.INTERESTS.prepare(
-      "UPDATE organizers SET name = ?, company = ?, photo = ?, visible = ?, badge = ?, position = ?, updated_at = ?, revision = revision + 1 WHERE id = ? AND revision = ?",
+    if (
+      !(await d1OrganizerStore(env.INTERESTS).update(
+        id,
+        Number(revision),
+        values,
+      ))
     )
-      .bind(...values, id, revision)
-      .run();
-    if (!result.meta.changes) return conflict();
+      return conflict();
   }
   return jsonResponse({ organizers: await readOrganizers(env) });
 }

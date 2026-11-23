@@ -107,7 +107,7 @@ test("CI browser groups cover every browser check exactly once", () => {
       .slice(1)
       .map(({ name }) => name)
       .sort(),
-    expected,
+    ["toolkit:check", ...expected].sort(),
   );
 });
 
@@ -119,6 +119,7 @@ test("integration sharding preserves build/validation and rejects options that c
     "--test",
     "--test-timeout=180000",
     "--test-shard=2/4",
+    "test/*.test.mjs",
   ]);
   assert.equal(steps[2].name, "validate");
   for (const args of [

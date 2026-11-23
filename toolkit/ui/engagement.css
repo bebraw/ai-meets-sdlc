@@ -1,0 +1,64 @@
+.qa-stage {
+  background: var(--dark);
+  color: var(--paper);
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  gap: 1rem;
+  padding: clamp(1.25rem, 4vw, 3.5rem);
+  min-height: min(24rem, 70vh);
+}
+.qa-stage h2 {
+  font-size: 1rem;
+  color: var(--leaf);
+  margin: 0;
+}
+.qa-stage p[aria-live] {
+  align-self: center;
+  margin: 0;
+  font-size: clamp(1.8rem, 4vw, 4rem);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+.qa-stage:fullscreen {
+  box-sizing: border-box;
+  width: 100vw;
+  height: 100vh;
+  padding: 6vh 7vw;
+}
+.qa-stage:fullscreen p[aria-live] {
+  font-size: clamp(2.5rem, 5vw, 7rem);
+}
+.qa-stage .qa-actions button {
+  color: var(--dark);
+  background: var(--paper);
+}
+.qa-actions,
+.qa-queue-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+}
+.qa-queue-header {
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+}
+.qa-queue-header h2 {
+  margin: 0;
+}
+.qa-queue article {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.qa-queue article p {
+  margin: 0.3rem 0 0.6rem;
+  font-size: 1.2rem;
+  overflow-wrap: anywhere;
+}
+.qa-queue article small,
+.qa-queue-header span {
+  text-transform: capitalize;
+}
+.qa-error:empty {
+  display: none;
+}

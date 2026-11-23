@@ -1,6 +1,7 @@
 {
   "name": "ai-meets-sdlc",
   "private": true,
+  "workspaces": ["toolkit"],
   "type": "module",
   "scripts": {
     "build": "npm run build:site && npm run talks:graphics:copy && npm run event:build && npm run social:manifest",
@@ -55,7 +56,8 @@
     "mailing:browser-check": "node scripts/validate-mailing.mjs",
     "start": "gustwind --develop --port 3000",
     "serve": "gustwind --serve --port 3000 --input ./build",
-    "test": "npm run worker:test-build && node --test --test-timeout=180000",
+    "test": "npm run worker:test-build && node --test --test-timeout=180000 \"test/*.test.mjs\"",
+    "toolkit:check": "npm test -w @sdlcai/event-toolkit && node toolkit/checks/consumer.mjs",
     "test:prepare": "wrangler deploy scripts/test-worker/index.mjs --dry-run --outdir .cache/test-worker",
     "types:check": "tsc --noEmit",
     "types:generate": "wrangler types worker-configuration.d.ts",

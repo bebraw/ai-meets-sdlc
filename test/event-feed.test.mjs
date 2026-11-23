@@ -3,7 +3,7 @@ import { readFile, mkdtemp, mkdir, writeFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
-import schema from "../site/data/event.schema.json" with { type: "json" };
+import schema from "../toolkit/blocks/event-feed.schema.json" with { type: "json" };
 import { validateFeed } from "../scripts/event-feed-validation.mjs";
 import { plainText, sessionContent } from "../worker/event-feed-data.ts";
 import {

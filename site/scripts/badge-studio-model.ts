@@ -1,4 +1,5 @@
 import * as v from "valibot";
+import { lanyardsCount } from "../../toolkit/blocks/lanyard-count.mjs";
 import {
   badgeSettingsSchema,
   badgeRoles,
@@ -115,19 +116,28 @@ export function summarizeBadges(
   people: readonly BadgePerson[],
   spareBadges: Readonly<Record<SpareBadgeRole, number>>,
 ): BadgeSummary {
-  const rows = badgeRoles.map((role) => {
-    const named = people.filter(
-      (person) => person.included && person.role === role,
-    ).length;
-    const spares =
-      role === "attendee" || role === "sponsor" ? spareBadges[role] : 0;
-    return { role, named, spares, lanyards: named + spares };
+  const summary = lanyardsCount<BadgeRole>({
+    people,
+    spares: [
+      { role: "attendee", count: spareBadges.attendee },
+      { role: "sponsor", count: spareBadges.sponsor },
+    ],
+    colors: badgeRoles.map((role) => ({
+      role,
+      color: badgeRoleAppearance[role].colorName,
+    })),
   });
+  const rows = summary.roles.map(({ role, named, spares, total }) => ({
+    role,
+    named,
+    spares,
+    lanyards: total,
+  }));
   return {
     rows,
     named: rows.reduce((total, row) => total + row.named, 0),
     spares: rows.reduce((total, row) => total + row.spares, 0),
-    lanyards: rows.reduce((total, row) => total + row.lanyards, 0),
+    lanyards: summary.total,
     unresolvedDuplicateRows: duplicateIds(people).size,
   };
 }

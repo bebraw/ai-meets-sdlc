@@ -17,10 +17,9 @@ ADRs are grouped by lifecycle status:
 
 ## Proposed ADRs
 
-| ADR                                                               | Status   | Summary                                                                                        |
-| ----------------------------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------- |
-| [ADR-000](./proposed/ADR-000-template.md)                         | Proposed | Template for drafting future ADRs.                                                             |
-| [ADR-015](./proposed/ADR-015-extract-a-portable-event-toolkit.md) | Proposed | Offer event tools through a human UI, MCP and package imports, starting with printable badges. |
+| ADR                                       | Status   | Summary                            |
+| ----------------------------------------- | -------- | ---------------------------------- |
+| [ADR-000](./proposed/ADR-000-template.md) | Proposed | Template for drafting future ADRs. |
 
 ## Accepted ADRs
 
@@ -49,6 +48,8 @@ No accepted-only ADRs are currently pending implementation.
 | [ADR-013](./implemented/ADR-013-manage-attendees-with-scoped-registration-access.md) | Implemented | Manage imported attendees and badge sources with atomic arrival tracking and revocable registration staff links. |
 
 | [ADR-014](./implemented/ADR-014-separate-event-administration-from-shared-tools.md) | Implemented | Separate event databases, workspaces and lifecycle work from shared SDLCAI news administration. |
+
+| [ADR-015](./implemented/ADR-015-extract-a-portable-event-toolkit.md) | Implemented | Package 19 organizer workflows for the browser, MCP and JavaScript, with SQLite as the reference store. |
 
 ## Creating a New ADR
 

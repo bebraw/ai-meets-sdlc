@@ -1,0 +1,62 @@
+{
+  "name": "@sdlcai/event-toolkit",
+  "version": "0.1.0",
+  "description": "Composable event organizer tools with a web workspace, MCP server and JavaScript API",
+  "type": "module",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.mjs"
+    },
+    "./http": "./http.mjs",
+    "./mcp": "./mcp.mjs",
+    "./providers": {
+      "types": "./provider-adapters.d.mts",
+      "default": "./provider-adapters.mjs"
+    },
+    "./storage": {
+      "types": "./storage.d.mts",
+      "default": "./storage.mjs"
+    },
+    "./badge-artwork": {
+      "types": "./blocks/badge-artwork.d.mts",
+      "default": "./blocks/badge-artwork.mjs"
+    },
+    "./organizer-store": {
+      "types": "./blocks/organizer-store.d.mts",
+      "default": "./blocks/organizer-store.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "event-toolkit": "./cli.mjs"
+  },
+  "files": [
+    "*.mjs",
+    "index.d.ts",
+    "storage.d.mts",
+    "provider-adapters.d.mts",
+    "blocks",
+    "assets",
+    "ui",
+    "examples",
+    "README.md"
+  ],
+  "scripts": {
+    "start": "node cli.mjs ui",
+    "mcp": "node cli.mjs mcp",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.2",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "nodemailer": "10.6.1",
+    "playwright": "1.63.0",
+    "qrcode": "1.5.4"
+  }
+}

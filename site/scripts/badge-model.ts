@@ -1,3 +1,5 @@
+import { readCsvPeople } from "../../toolkit/blocks/registration-csv.mjs";
+export { parseCsv } from "../../toolkit/blocks/registration-csv.mjs";
 import * as v from "valibot";
 import { badgeRoles } from "./badge-roles.ts";
 export { badgeRoles, badgeRoleAppearance } from "./badge-roles.ts";
@@ -80,61 +82,6 @@ export interface CsvRecord {
   row: number;
   cells: string[];
 }
-export function parseCsv(
-  input: string,
-  delimiter: string,
-  maxRecords = 2001,
-): CsvRecord[] {
-  if (![",", ";", "\t"].includes(delimiter))
-    throw new Error("Choose a CSV delimiter.");
-  const source = input.replace(/^\uFEFF/u, "").replace(/\r\n?/gu, "\n");
-  const records: CsvRecord[] = [];
-  let cells: string[] = [];
-  let cell = "";
-  let quoted = false;
-  let closed = false;
-  let line = 1;
-  let start = 1;
-  const finish = () => {
-    cells.push(cell);
-    if (cells.some((c) => c.trim())) records.push({ row: start, cells });
-    cells = [];
-    cell = "";
-    closed = false;
-    start = line + 1;
-  };
-  for (let i = 0; i < source.length; i++) {
-    const char = source[i]!;
-    if (quoted) {
-      if (char === '"') {
-        if (source[i + 1] === '"') {
-          cell += '"';
-          i++;
-        } else {
-          quoted = false;
-          closed = true;
-        }
-      } else cell += char;
-    } else if (char === delimiter) {
-      cells.push(cell);
-      cell = "";
-      closed = false;
-    } else if (char === "\n") finish();
-    else if (char === '"' && !cell && !closed) quoted = true;
-    else {
-      if (closed || char === '"')
-        throw new Error(`Malformed CSV quoting on line ${line}.`);
-      cell += char;
-    }
-    if (char === "\n") line++;
-  }
-  if (quoted) throw new Error(`Unclosed quote starting on line ${start}.`);
-  if (cell || cells.length || closed) finish();
-  if (!records.length) throw new Error("CSV is empty.");
-  if (records.length > maxRecords)
-    throw new Error("Import at most 2,000 rows.");
-  return records;
-}
 export function importCsv(
   records: CsvRecord[],
   mapping: {
@@ -146,38 +93,8 @@ export function importCsv(
   },
   source: string,
 ): BadgePerson[] {
-  const header = records[0];
-  if (!header) throw new Error("CSV is empty.");
-  if (mapping.name < 0 && (mapping.first < 0 || mapping.last < 0))
-    throw new Error("Map a full name, or both first and last names.");
-  return records.slice(1).map((record) => {
-    if (record.cells.length !== header.cells.length)
-      throw new Error(
-        `Row ${record.row}: expected ${header.cells.length} columns, found ${record.cells.length}.`,
-      );
-    const get = (index: number) =>
-      (record.cells[index] ?? "").trim().normalize("NFC");
-    const name =
-      mapping.name >= 0
-        ? get(mapping.name)
-        : [get(mapping.first), get(mapping.last)].filter(Boolean).join(" ");
-    if (!name || name.length > 300)
-      throw new Error(`Row ${record.row}: name is missing or too long.`);
-    const email = get(mapping.email).toLowerCase();
-    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/u.test(email))
-      throw new Error(`Row ${record.row}: invalid attendee email.`);
-    const company = get(mapping.company);
-    if (company.length > 300 || email.length > 254)
-      throw new Error(`Row ${record.row}: field is too long.`);
-    return {
-      id: crypto.randomUUID(),
-      name,
-      company: badgeCompany(email, company),
-      email,
-      source: `${source} / row ${record.row}`,
-      role: "attendee",
-      included: true,
-      duplicateReviewed: false,
-    };
-  });
+  return readCsvPeople(records, mapping, source).map((person) => ({
+    ...person,
+    company: badgeCompany(person.email, person.company),
+  }));
 }

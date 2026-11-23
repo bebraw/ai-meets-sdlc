@@ -3,7 +3,7 @@ import { parse } from "parse5";
 import seminar from "../site/data/seminar.json" with { type: "json" };
 import schedule from "../site/data/schedule.json" with { type: "json" };
 import speakers from "../site/data/speakers.json" with { type: "json" };
-import schema from "../site/data/event.schema.json" with { type: "json" };
+import schema from "../toolkit/blocks/event-feed.schema.json" with { type: "json" };
 import { formatSpeakerName } from "../site/scripts/speaker-name.ts";
 import {
   plainText,
