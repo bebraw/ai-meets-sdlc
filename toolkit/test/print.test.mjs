@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { blocks } from "../blocks/print.mjs";
+import { blocks } from "../dist/blocks/print.mjs";
 
 const operations = new Map(
   blocks.flatMap((block) => block.operations.map((op) => [op.name, op])),

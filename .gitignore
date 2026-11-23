@@ -22,3 +22,5 @@ build/
 # Generated event-photo derivatives and local review state.
 /output/media-bank/
 /production/media-bank/curation.json
+
+/toolkit/dist/

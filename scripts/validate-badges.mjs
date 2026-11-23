@@ -32,10 +32,18 @@ try {
   const errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
   const origin = `http://127.0.0.1:${fixture.worker.port}`;
-  await page.route("**/toolkit/blocks/badge-artwork.mjs", (route) =>
+  await page.route("**/toolkit/blocks/badge-artwork.mts", async (route) =>
     route.fulfill({
       contentType: "text/javascript",
-      path: "toolkit/blocks/badge-artwork.mjs",
+      body: ts.transpileModule(
+        await readFile("toolkit/blocks/badge-artwork.mts", "utf8"),
+        {
+          compilerOptions: {
+            target: ts.ScriptTarget.ES2022,
+            module: ts.ModuleKind.ESNext,
+          },
+        },
+      ).outputText,
     }),
   );
   await page.route("**/test-scripts/*.ts", async (route) => {

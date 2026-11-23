@@ -1,7 +1,14 @@
 import assert from "node:assert/strict";
 import { spawn, execFileSync } from "node:child_process";
 import { once } from "node:events";
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import {
+  copyFile,
+  mkdir,
+  mkdtemp,
+  readFile,
+  rm,
+  writeFile,
+} from "node:fs/promises";
 import { createRequire } from "node:module";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
@@ -99,6 +106,10 @@ try {
       version: "1.0.0",
       type: "module",
       private: true,
+      devDependencies: {
+        "@types/node": createRequire(import.meta.url)("../package.json")
+          .devDependencies["@types/node"],
+      },
     }),
   );
   const [packed] = JSON.parse(
@@ -220,6 +231,41 @@ try {
     uri: "event-toolkit://catalog",
   });
   const catalog = JSON.parse(catalogResource.contents[0].text);
+  const names = catalog.flatMap((block) =>
+    block.operations.map((operation) => operation.name),
+  );
+  await copyFile(
+    new URL("./typed-consumer.mts", import.meta.url),
+    join(project, "consumer.mts"),
+  );
+  await writeFile(
+    join(project, "catalog-names.mts"),
+    [
+      'import type { OperationName } from "@sdlcai/event-toolkit";',
+      "const names = " +
+        JSON.stringify(names) +
+        " as const satisfies readonly OperationName[];",
+      "const complete: Exclude<OperationName, typeof names[number]> extends never ? true : false = true;",
+      "void complete;",
+    ].join("\n"),
+  );
+  execFileSync(
+    process.execPath,
+    [
+      createRequire(import.meta.url).resolve("typescript/bin/tsc"),
+      "--noEmit",
+      "--strict",
+      "--types",
+      "node",
+      "--module",
+      "NodeNext",
+      "--target",
+      "ES2023",
+      "consumer.mts",
+      "catalog-names.mts",
+    ],
+    { cwd: project, stdio: "inherit", timeout: 30000 },
+  );
   assert.deepEqual(
     catalog.map((b) => b.id).sort(),
     Object.keys(samples).sort(),
@@ -330,6 +376,19 @@ try {
       mcpResult && Object.keys(mcpResult).length,
       name + " returned structured data",
     );
+    if (name === "programme_build_feed") {
+      // Blank required collections and a nullable summary can be supplied by the form.
+      const { id, title, contentStatus, url } = spec.example.sessions[0];
+      const form = await callUi(block.id, name, {
+        event: spec.example.event,
+        updatedAt: spec.example.updatedAt,
+        sessions: [{ id, title, contentStatus, url }],
+      });
+      assert.equal(form.status, 200, JSON.stringify(form.body));
+      assert.deepEqual(form.body.data.feed.speakers, []);
+      assert.deepEqual(form.body.data.feed.sessions[0].speakerIds, []);
+      assert.equal(form.body.data.feed.sessions[0].summary, null);
+    }
     if (name === "lanyards_count") {
       const excluded = await callUi(block.id, name, undefined, async () => {
         const included = page.locator('[data-path="people.0.included"]');

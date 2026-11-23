@@ -6,11 +6,11 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 import { promisify } from "node:util";
-import { startWeb } from "../http.mjs";
-import { createToolkit } from "../index.mjs";
-import { createMcpServer } from "../mcp.mjs";
-import { openStorage } from "../storage.mjs";
-import { splitResult } from "../artifacts.mjs";
+import { startWeb } from "../dist/http.mjs";
+import { createToolkit } from "../dist/index.mjs";
+import { createMcpServer } from "../dist/mcp.mjs";
+import { openStorage } from "../dist/storage.mjs";
+import { splitResult } from "../dist/artifacts.mjs";
 
 const execute = promisify(execFile);
 
@@ -73,7 +73,7 @@ test("the public workspace serves badge proofs, artwork and the packaged font", 
 test("concurrent processes initialize one durable key and event database; mismatched backups are rejected", async (t) => {
   const directory = await mkdtemp(join(tmpdir(), "event-toolkit-host-"));
   t.after(() => rm(directory, { recursive: true, force: true }));
-  const storageModule = new URL("../storage.mjs", import.meta.url).href;
+  const storageModule = new URL("../dist/storage.mjs", import.meta.url).href;
   const worker = `import {openStorage} from ${JSON.stringify(storageModule)};
     const storage=openStorage({directory:process.argv[1], eventId:"weekend"});
     const connection=storage.event();

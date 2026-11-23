@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chromium } from "playwright";
-import { createToolkit } from "../index.mjs";
-import { startWeb } from "../http.mjs";
+import { createToolkit } from "../dist/index.mjs";
+import { startWeb } from "../dist/http.mjs";
 
 test("participant UI displays the published consent and questions, and the stage shows only the MC selection", async (t) => {
   const sent = [];

@@ -1,7 +1,7 @@
 {
   "name": "@sdlcai/event-toolkit",
   "version": "0.1.0",
-  "description": "Composable event organizer tools with a web workspace, MCP server and JavaScript API",
+  "description": "Composable event organizer tools with a web workspace, MCP server and TypeScript API",
   "type": "module",
   "license": "UNLICENSED",
   "engines": {
@@ -9,26 +9,32 @@
   },
   "exports": {
     ".": {
-      "types": "./index.d.ts",
-      "default": "./index.mjs"
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
     },
-    "./http": "./http.mjs",
-    "./mcp": "./mcp.mjs",
+    "./http": {
+      "types": "./dist/http.d.mts",
+      "default": "./dist/http.mjs"
+    },
+    "./mcp": {
+      "types": "./dist/mcp.d.mts",
+      "default": "./dist/mcp.mjs"
+    },
     "./providers": {
-      "types": "./provider-adapters.d.mts",
-      "default": "./provider-adapters.mjs"
+      "types": "./dist/provider-adapters.d.mts",
+      "default": "./dist/provider-adapters.mjs"
     },
     "./storage": {
-      "types": "./storage.d.mts",
-      "default": "./storage.mjs"
+      "types": "./dist/storage.d.mts",
+      "default": "./dist/storage.mjs"
     },
     "./badge-artwork": {
-      "types": "./blocks/badge-artwork.d.mts",
-      "default": "./blocks/badge-artwork.mjs"
+      "types": "./dist/blocks/badge-artwork.d.mts",
+      "default": "./dist/blocks/badge-artwork.mjs"
     },
     "./organizer-store": {
-      "types": "./blocks/organizer-store.d.mts",
-      "default": "./blocks/organizer-store.mjs"
+      "types": "./dist/blocks/organizer-store.d.mts",
+      "default": "./dist/blocks/organizer-store.mjs"
     },
     "./package.json": "./package.json"
   },
@@ -36,27 +42,43 @@
     "event-toolkit": "./cli.mjs"
   },
   "files": [
-    "*.mjs",
-    "index.d.ts",
-    "storage.d.mts",
-    "provider-adapters.d.mts",
-    "blocks",
+    "dist",
     "assets",
-    "ui",
+    "cli.mjs",
     "examples",
-    "README.md"
+    "README.md",
+    "ui/*.css",
+    "ui/*.html",
+    "*.mts",
+    "blocks/*.mts",
+    "blocks/*.json",
+    "ui/*.ts",
+    "scripts/build.mts",
+    "tsconfig.json"
   ],
   "scripts": {
     "start": "node cli.mjs ui",
     "mcp": "node cli.mjs mcp",
-    "test": "node --test test/*.test.mjs"
+    "test": "npm run build && node --test test/*.test.mjs",
+    "build": "node scripts/build.mts",
+    "prepack": "npm run build",
+    "dev": "npm run build && npm start"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.32.2",
-    "ajv": "8.20.0",
-    "ajv-formats": "3.0.1",
+    "@valibot/to-json-schema": "1.8.0",
     "nodemailer": "10.6.1",
     "playwright": "1.63.0",
-    "qrcode": "1.5.4"
+    "qrcode": "1.5.4",
+    "valibot": "1.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "25.6.0",
+    "@types/nodemailer": "8.0.2",
+    "@types/qrcode": "1.5.6",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "miniflare": "5.20261006.1-alpha",
+    "typescript": "6.0.3"
   }
 }

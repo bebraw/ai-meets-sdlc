@@ -1,7 +1,7 @@
 import {
   d1OrganizerStore,
   type Organizer,
-} from "../toolkit/blocks/organizer-store.mjs";
+} from "../toolkit/blocks/organizer-store.mts";
 import { withAdminSecurityHeaders } from "./admin-auth.ts";
 import { jsonResponse, requireAdminAction } from "./form-utils.ts";
 import { readJsonWithinLimit, isRecord } from "./speaker-workspace-utils.ts";

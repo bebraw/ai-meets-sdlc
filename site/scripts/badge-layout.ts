@@ -1,15 +1,15 @@
 import {
   loadBadgeFont as loadFont,
   renderBadgeArtwork,
-} from "../../toolkit/blocks/badge-artwork.mjs";
-import type { BadgeFont } from "../../toolkit/blocks/badge-artwork.mjs";
+} from "../../toolkit/blocks/badge-artwork.mts";
+import type { BadgeFont } from "../../toolkit/blocks/badge-artwork.mts";
 import type { BadgePerson, BadgeSettings } from "./badge-model.ts";
 import { badgeRoleAppearance } from "./badge-roles.ts";
 import type { SpareBadgeRole } from "./badge-studio-model.ts";
 export {
   fontCoverage,
   type BadgeFont,
-} from "../../toolkit/blocks/badge-artwork.mjs";
+} from "../../toolkit/blocks/badge-artwork.mts";
 
 export async function loadBadgeFont(bytes?: ArrayBuffer): Promise<BadgeFont> {
   if (!bytes) {

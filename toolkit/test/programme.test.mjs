@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createToolkit } from "../index.mjs";
+import { createToolkit } from "../dist/index.mjs";
 
 test("programme outputs retain public feed validation, date locality and HTML escaping", async (t) => {
   const kit = createToolkit({ enabled: ["programme-feed", "schedule"] });
@@ -21,10 +21,7 @@ test("programme outputs retain public feed validation, date locality and HTML es
   await assert.rejects(kit.run(feed.name, wrong), /Unknown speaker/);
   const privateRoster = structuredClone(feed.example);
   privateRoster.speakers[0].email = "private@example.org";
-  await assert.rejects(
-    kit.run(feed.name, privateRoster),
-    /additional properties/,
-  );
+  await assert.rejects(kit.run(feed.name, privateRoster), /speakers\.0\.email/);
   const timetable = structuredClone(schedule.example);
   timetable.sessions[0].title = "<Untrusted>";
   const page = await kit.run(schedule.name, timetable);
@@ -33,6 +30,31 @@ test("programme outputs retain public feed validation, date locality and HTML es
   await assert.rejects(
     kit.run(schedule.name, { ...timetable, timeZone: "Invalid/Zone" }),
   );
+});
+test("feed inputs validate calendar dates, timestamp offsets and unique speaker references", async (t) => {
+  const kit = createToolkit({ enabled: ["programme-feed"] });
+  t.after(() => kit.close());
+  const [feed] = kit.catalog()[0].operations;
+  const input = structuredClone(feed.example);
+  input.updatedAt = "2024-02-29t09:00:00.123456+02:00";
+  const result = await kit.run(feed.name, input);
+  assert.equal(result.feed.updatedAt, input.updatedAt);
+
+  for (const invalid of ["2025-02-29", "2024-02-30T09:00:00Z"]) {
+    await assert.rejects(
+      kit.run(feed.name, {
+        ...input,
+        event: { ...input.event, startDate: invalid },
+      }),
+      /event\.startDate/,
+    );
+  }
+  await assert.rejects(
+    kit.run(feed.name, { ...input, updatedAt: "2024-02-29T09:00:00+25:00" }),
+    /updatedAt/,
+  );
+  input.sessions[0].speakerIds.push(input.sessions[0].speakerIds[0]);
+  await assert.rejects(kit.run(feed.name, input), /sessions\.0\.speakerIds/);
 });
 test("catering keeps source answers distinct, applies organizer reviews and counts reserved meals once", async (t) => {
   const kit = createToolkit({ enabled: ["catering"] });

@@ -4,13 +4,13 @@ import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { convertV4MiniflareOptions, Miniflare } from "miniflare";
 import { chromium } from "playwright";
-import { createToolkit } from "../index.mjs";
-import { startWeb } from "../http.mjs";
-import { createMcpServer } from "../mcp.mjs";
+import { createToolkit } from "../dist/index.mjs";
+import { startWeb } from "../dist/http.mjs";
+import { createMcpServer } from "../dist/mcp.mjs";
 import {
   d1OrganizerStore,
   organizerSchema,
-} from "../blocks/organizer-store.mjs";
+} from "../dist/blocks/organizer-store.mjs";
 
 test("D1 directory edits through MCP are visible in the browser and reject stale or unauthorized writes", async (t) => {
   const mf = new Miniflare(

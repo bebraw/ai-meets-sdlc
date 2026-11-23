@@ -3,7 +3,7 @@ import path from "node:path";
 import { parse } from "parse5";
 import Ajv from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
-import { validateProgramme } from "../toolkit/blocks/programme-validation.mjs";
+import { validateProgramme } from "../toolkit/blocks/programme-validation.mts";
 
 export function elements(node) {
   return [node, ...(node.childNodes ?? []).flatMap(elements)];

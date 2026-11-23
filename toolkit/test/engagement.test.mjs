@@ -6,7 +6,7 @@ import test from "node:test";
 import { DatabaseSync } from "node:sqlite";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
-import { createToolkit } from "../index.mjs";
+import { createToolkit } from "../dist/index.mjs";
 
 const guest = { actor: "guest-one", role: "public" };
 const visitor = { actor: "guest-two", role: "attendee" };

@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { createToolkit } from "../index.mjs";
-import { startWeb } from "../http.mjs";
+import { createToolkit } from "../dist/index.mjs";
+import { startWeb } from "../dist/http.mjs";
 
 test("HTTP and API share event permissions, schema checks and artifact ownership", async (t) => {
   const kit = createToolkit({ enabled: ["organizer-directory", "schedule"] });

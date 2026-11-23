@@ -1,5 +1,5 @@
 import * as v from "valibot";
-import { lanyardsCount } from "../../toolkit/blocks/lanyard-count.mjs";
+import { lanyardsCount } from "../../toolkit/blocks/lanyard-count.mts";
 import {
   badgeSettingsSchema,
   badgeRoles,

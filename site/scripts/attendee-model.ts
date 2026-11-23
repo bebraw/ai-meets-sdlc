@@ -1,9 +1,9 @@
-import { importTicketStatus } from "../../toolkit/blocks/registration-csv.mjs";
+import { importTicketStatus } from "../../toolkit/blocks/registration-csv.mts";
 export {
   attendeeColumnAliases,
   prepareAttendeeCsv,
   detectAttendeeMapping,
-} from "../../toolkit/blocks/registration-csv.mjs";
+} from "../../toolkit/blocks/registration-csv.mts";
 import * as v from "valibot";
 import { badgeCompany, importCsv, type CsvRecord } from "./badge-model.ts";
 

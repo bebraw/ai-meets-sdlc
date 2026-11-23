@@ -6,9 +6,9 @@ import { test } from "node:test";
 import { DatabaseSync } from "node:sqlite";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
-import { createToolkit } from "../index.mjs";
-import { directory } from "../blocks/organizer-directory.mjs";
-import { d1OrganizerStore } from "../blocks/organizer-store.mjs";
+import { createToolkit } from "../dist/index.mjs";
+import { directory } from "../dist/blocks/organizer-directory.mjs";
+import { d1OrganizerStore } from "../dist/blocks/organizer-store.mjs";
 
 const visitor = { actor: "visitor", role: "public" };
 const owner = { actor: "owner", role: "organizer" };

@@ -1,6 +1,6 @@
 # Event organizer toolkit
 
-An organizer can import a ticket export, print badges, run a registration desk or collect speaker materials from one workspace. Each of the 19 blocks also exposes the same operations to a JavaScript application and a Model Context Protocol (MCP) client. Choose the blocks your event needs. The reference host runs on Node.js 24 or later with SQLite.
+An organizer can import a ticket export, print badges, run a registration desk or collect speaker materials from one workspace. Each of the 19 blocks also exposes the same operations to a TypeScript or JavaScript application and a Model Context Protocol (MCP) client. Choose the blocks your event needs. The reference host runs on Node.js 24 or later with SQLite.
 
 ## Install in a fresh project
 
@@ -25,7 +25,7 @@ npx event-toolkit ui
 
 Use the private organizer link printed in the terminal. The default host is `127.0.0.1:3000`. Opening the plain URL gives a visitor the public workspace. Chromium renders print files and talk artwork. For an existing Chromium installation, set `TOOLKIT_CHROMIUM_PATH` to its executable. The roster, proposal and other data workflows can run without a browser installation on the server.
 
-From a checkout with dependencies installed, `npm start -w @sdlcai/event-toolkit` starts the same workspace. Run `npm run toolkit:check` from the repository root to run the block tests and repeat the separate-project installation check.
+From a checkout with dependencies installed, `npm run dev -w @sdlcai/event-toolkit` compiles the TypeScript and starts the same workspace. Run `npm run toolkit:check` from the repository root to run the block tests and repeat the separate-project installation check.
 
 Version 0.1.0 is distributed here as a tarball. Its software license is marked `UNLICENSED`. The bundled Noto Sans font carries its own [SIL Open Font License](assets/print/OFL.txt).
 
@@ -94,7 +94,7 @@ An assistant can read the `event-toolkit://catalog` resource to inspect operatio
 
 `npx event-toolkit catalog` prints the role-filtered catalog as JSON, which also works with coding assistants that read local files.
 
-### Embed in JavaScript
+### Embed in TypeScript or JavaScript
 
 ```js
 import { createToolkit } from "@sdlcai/event-toolkit";
@@ -105,11 +105,15 @@ try {
     people: [{ role: "speaker" }, { role: "attendee" }],
     spares: [{ role: "attendee", count: 10 }],
   });
-  console.log(order);
+  console.log(order.total, order.byColor);
 } finally {
   await app.close();
 }
 ```
+
+TypeScript infers the input and result from the operation name. For example, `order.total` is a number. Import `OperationInput<"lanyards_count">` or `OperationResult<"lanyards_count">` as types when declaring your own functions.
+
+The package ships compiled ES modules, generated TypeScript declarations and the TypeScript source. Each operation declares its input once in Valibot. The toolkit validates input before opening the operation’s storage or calling a provider, and converts the schema to JSON Schema for browser forms and MCP discovery.
 
 Try any block from the catalog by passing its ID to the example below. It uses fictional data and an in-memory database. For file-producing operations, an optional second argument saves the artifact to a new file.
 

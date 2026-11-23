@@ -1,5 +1,5 @@
-import { readCsvPeople } from "../../toolkit/blocks/registration-csv.mjs";
-export { parseCsv } from "../../toolkit/blocks/registration-csv.mjs";
+import { readCsvPeople } from "../../toolkit/blocks/registration-csv.mts";
+export { parseCsv } from "../../toolkit/blocks/registration-csv.mts";
 import * as v from "valibot";
 import { badgeRoles } from "./badge-roles.ts";
 export { badgeRoles, badgeRoleAppearance } from "./badge-roles.ts";

@@ -1,8 +1,8 @@
-export * from "../../toolkit/blocks/diets.mjs";
+export * from "../../toolkit/blocks/diets.mts";
 import {
   dietRequirementsText,
   type CateringSummary,
-} from "../../toolkit/blocks/diets.mjs";
+} from "../../toolkit/blocks/diets.mts";
 
 export function cateringSummaryText(
   summary: CateringSummary,
