@@ -17,9 +17,10 @@ ADRs are grouped by lifecycle status:
 
 ## Proposed ADRs
 
-| ADR                                       | Status   | Summary                            |
-| ----------------------------------------- | -------- | ---------------------------------- |
-| [ADR-000](./proposed/ADR-000-template.md) | Proposed | Template for drafting future ADRs. |
+| ADR                                                               | Status   | Summary                                                                                        |
+| ----------------------------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------- |
+| [ADR-000](./proposed/ADR-000-template.md)                         | Proposed | Template for drafting future ADRs.                                                             |
+| [ADR-015](./proposed/ADR-015-extract-a-portable-event-toolkit.md) | Proposed | Offer event tools through a human UI, MCP and package imports, starting with printable badges. |
 
 ## Accepted ADRs
 
