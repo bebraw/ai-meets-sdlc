@@ -37,6 +37,7 @@ export const browserGroups = {
 const npmStep = (name) => ({ name, command: "npm", args: ["run", name] });
 const defaultSteps = [
   "quality:build",
+  "toolkit:check",
   ...Object.values(browserGroups).flat(),
 ].map(npmStep);
 
@@ -76,6 +77,7 @@ export function selectSteps(args) {
           "--test",
           "--test-timeout=180000",
           ...(shard ? [`--test-shard=${shard}`] : []),
+          "test/*.test.mjs",
         ],
       },
       npmStep("validate"),
@@ -84,6 +86,7 @@ export function selectSteps(args) {
   if (shard !== undefined) {
     throw new Error("--shard requires --group=integration");
   }
+  if (group === "toolkit") return [npmStep("toolkit:check")];
   if (!Object.hasOwn(browserGroups, group)) {
     throw new Error(`Unknown quality-gate group: ${group ?? "(missing)"}`);
   }

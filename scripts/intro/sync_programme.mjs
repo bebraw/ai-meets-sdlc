@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import Ajv from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
 import { parse } from "parse5";
-import schema from "../../site/data/event.schema.json" with { type: "json" };
+import schema from "../../toolkit/blocks/event-feed.schema.json" with { type: "json" };
 import { attr, elements, textContent } from "../event-feed-validation.mjs";
 
 const sourceURL = "https://sdlcai.org/event.json";

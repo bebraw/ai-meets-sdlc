@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Event toolkit</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/engagement.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <a class="skip" href="#workspace">Skip to workspace</a>
+    <header>
+      <a class="wordmark" href="/"
+        >Event toolkit<span aria-hidden="true">.</span></a
+      >
+      <div>
+        <span id="event-name"></span
+        ><button id="account" type="button">Sign in</button>
+      </div>
+    </header>
+    <div id="shell">
+      <aside>
+        <label for="search">Find a tool</label
+        ><input id="search" type="search" placeholder="Search tools" />
+        <nav id="catalog" aria-label="Event tools"></nav>
+      </aside>
+      <main id="workspace" tabindex="-1">
+        <h1 id="title">Event workspace</h1>
+        <p id="description"></p>
+        <div id="tool" hidden>
+          <div class="operation-bar">
+            <label for="operation">Action</label
+            ><select id="operation"></select>
+          </div>
+          <p id="purpose"></p>
+          <form id="inputs">
+            <div class="form-head">
+              <h2>Inputs</h2>
+              <button id="example" type="button" class="quiet">
+                Use example
+              </button>
+            </div>
+            <div id="fields"></div>
+            <details id="advanced">
+              <summary>Edit as JSON</summary>
+              <label class="sr" for="input-json">Operation input as JSON</label
+              ><textarea id="input-json" rows="10" spellcheck="false"></textarea
+              ><button id="apply-json" type="button">Apply JSON</button>
+            </details>
+            <div id="challenge"></div>
+            <button id="run" type="submit">Run action</button>
+          </form>
+          <section id="result" aria-live="polite" aria-label="Result"></section>
+        </div>
+        <p id="notice" role="status"></p>
+      </main>
+    </div>
+    <dialog id="access-dialog">
+      <form id="access-form">
+        <h2>Workspace access</h2>
+        <label for="credential">Access token</label
+        ><input
+          type="password"
+          id="credential"
+          autocomplete="current-password"
+          required
+        />
+        <p id="login-error" role="status"></p>
+        <div class="actions">
+          <button type="submit">Sign in</button
+          ><button type="button" id="cancel">Cancel</button>
+        </div>
+      </form>
+    </dialog>
+  </body>
+</html>

@@ -2,6 +2,12 @@
 
 Website for the SDLCAI seminar, subtitled "AI meets SDLC", held 13 October 2026 at Marsio Saastamoinen Foundation Stage, Espoo, Finland.
 
+## Reuse a tool for your event
+
+The **event toolkit** packages 19 workflows that an organizer can run independently, including badge printing, registration, speaker workspaces and moderated Q&A. Choose the blocks you need and use them from the browser, a coding assistant over MCP, or a TypeScript or JavaScript application. The reference host runs on Node.js and stores records in SQLite. See the [organizer guide](toolkit/GUIDE.md) for a badge walkthrough or the [tool catalog, installation guide and working examples](toolkit/README.md) for package details.
+
+## SDLCAI website
+
 The site is built with Gustwind and HTMLisp, styled with Tailwind CSS, and
 deployed as a Cloudflare Worker with static assets. The production domain is
 `sdlcai.org`.

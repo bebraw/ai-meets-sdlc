@@ -49,6 +49,8 @@ No accepted-only ADRs are currently pending implementation.
 
 | [ADR-014](./implemented/ADR-014-separate-event-administration-from-shared-tools.md) | Implemented | Separate event databases, workspaces and lifecycle work from shared SDLCAI news administration. |
 
+| [ADR-015](./implemented/ADR-015-extract-a-portable-event-toolkit.md) | Implemented | Package 19 organizer workflows for the browser, MCP and JavaScript, with SQLite as the reference store. |
+
 ## Creating a New ADR
 
 1. Copy [`ADR-000-template.md`](./proposed/ADR-000-template.md).

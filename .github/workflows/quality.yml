@@ -84,11 +84,38 @@ jobs:
       - name: Build and run browser group
         run: npm run quality:gate -- --group=${{ matrix.group }}
 
+  toolkit:
+    name: Portable toolkit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
+      options: --ipc=host
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - run: npm run toolkit:check
+        env:
+          TOOLKIT_PACK_DESTINATION: .cache/toolkit-pack
+      - uses: actions/upload-artifact@v7
+        with:
+          name: event-toolkit
+          path: .cache/toolkit-pack/sdlcai-event-toolkit-*.tgz
+          include-hidden-files: true
+          if-no-files-found: error
+          compression-level: 0
+
   quality:
     # Preserve the required branch-protection check, including on failure/skip.
     name: Quality gate
     if: ${{ always() }}
-    needs: [integration, browser]
+    needs: [integration, browser, toolkit]
     runs-on: ubuntu-24.04
     timeout-minutes: 1
     steps:
@@ -96,6 +123,8 @@ jobs:
         env:
           INTEGRATION_RESULT: ${{ needs.integration.result }}
           BROWSER_RESULT: ${{ needs.browser.result }}
+          TOOLKIT_RESULT: ${{ needs.toolkit.result }}
         run: |
           test "$INTEGRATION_RESULT" = success
           test "$BROWSER_RESULT" = success
+          test "$TOOLKIT_RESULT" = success

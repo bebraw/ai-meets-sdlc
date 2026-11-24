@@ -1,0 +1,259 @@
+<BaseLayout
+  &title="meta.title"
+  &description="meta.description"
+  &ogDescription="meta.ogDescription"
+  &url="meta.url"
+  &ogType="(id 'website')"
+>
+  <section class="border-b border-ink">
+    <div
+      class="mx-auto grid max-w-7xl items-center gap-10 px-5 py-12 md:grid-cols-[1.3fr_1fr] md:px-8 md:py-20"
+    >
+      <div class="min-w-0">
+        <h1 class="font-headline font-black uppercase leading-[0.9]">
+          <span class="block text-[clamp(2rem,5.2vw,4.5rem)]"
+            >Event organizer</span
+          >
+          <span class="block text-[clamp(4.6rem,12vw,10rem)]">Toolkit</span>
+        </h1>
+        <p class="mt-6 max-w-xl text-xl leading-snug md:text-2xl">
+          Use the pieces of SDLCAI that fit your event. Print a set of name
+          badges, run a check-in desk or give your speakers a place to submit
+          their talks.
+        </p>
+        <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3 font-bold">
+          <a
+            class="border border-ink bg-ink px-5 py-3 text-paper hover:bg-paper hover:text-ink"
+            href="#try-badges"
+            >Try it with badges</a
+          >
+          <a class="underline underline-offset-4" href="#blocks"
+            >Browse all 19 blocks</a
+          >
+        </div>
+      </div>
+      <figure class="min-w-0 border border-ink">
+        <div
+          class="relative grid place-items-center overflow-hidden p-6 md:p-10"
+        >
+          <div
+            aria-hidden="true"
+            class="pointer-events-none absolute inset-0 text-muted/20 halftone"
+          ></div>
+          <LazyImage
+            &src="(id '/assets/toolkit/badge-proof.webp')"
+            &alt="(id 'A round Field Notes speaker badge for Zoë Marin with a circular trim guide.')"
+            &width="(id '928')"
+            &height="(id '928')"
+            &className="(id 'relative w-full max-w-72 -rotate-3 border border-black/15 shadow-lg')"
+          ></LazyImage>
+        </div>
+        <figcaption class="border-t border-ink bg-paper px-4 py-3 text-sm">
+          <strong>Badge proof.</strong> A sample from the toolkit with the print
+          trim guide visible.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="try-badges" class="scroll-mt-4 border-b border-ink">
+    <div
+      class="mx-auto grid max-w-7xl gap-8 px-5 py-12 md:grid-cols-[0.8fr_1.2fr] md:px-8 md:py-16"
+    >
+      <div>
+        <h2
+          class="max-w-md font-headline text-4xl font-black uppercase leading-none md:text-6xl"
+        >
+          Print your first badge
+        </h2>
+        <p class="mt-4 max-w-md text-lg leading-snug text-muted">
+          Try a fictional roster on your own computer. You need Node.js 24 and
+          Chromium for the print renderer.
+        </p>
+      </div>
+      <ol
+        class="min-w-0 list-decimal space-y-5 pl-6 text-lg leading-snug marker:font-bold"
+      >
+        <li class="pl-1">
+          <a
+            class="font-bold underline underline-offset-4"
+            href="https://github.com/bebraw/ai-meets-sdlc/archive/fdf247620ea2cd71713921cdbb3095625340e723.zip"
+            >Download the source ZIP</a
+          >
+          for version 0.1.0. Unzip it and open a terminal in the directory
+          containing the root <code>package.json</code>.
+        </li>
+        <li class="min-w-0 pl-1">
+          Install the dependencies and start the browser workspace with the
+          badge block enabled.
+          <pre
+            class="mt-3 overflow-x-auto border-l-4 border-signal bg-ink p-4 font-mono text-sm leading-relaxed text-paper"
+            tabindex="0"
+            aria-label="Badge workspace commands"
+          ><code>npm ci
+npx playwright install chromium
+export TOOLKIT_BLOCKS=badges
+npm run dev -w @sdlcai/event-toolkit</code></pre>
+        </li>
+        <li class="pl-1">
+          Open the private organizer link printed in the terminal. Choose
+          <strong>Print name badges</strong>, select the PDF export action and
+          click <strong>Use example</strong>. Edit a name and run the export.
+          The toolkit checks every row before offering
+          <strong>Download badges.pdf</strong>.
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="blocks" class="scroll-mt-4 border-b border-ink">
+    <div class="mx-auto max-w-7xl px-5 py-12 md:px-8 md:py-16">
+      <h2
+        class="font-headline text-4xl font-black uppercase leading-none md:text-6xl"
+      >
+        The 19 blocks
+      </h2>
+      <p class="mt-4 max-w-3xl text-lg leading-snug text-muted">
+        Choose a task below. Use its block ID in <code>TOOLKIT_BLOCKS</code> to
+        enable it. Combine IDs with commas, such as
+        <code class="break-words">registration-import,check-in</code>, to go
+        from a ticket CSV to an arrivals desk.
+      </p>
+      <div class="mt-9 grid gap-x-12 gap-y-10 lg:grid-cols-2">
+        <noop &foreach="toolkitGroups as group">
+          <section class="min-w-0 border-t-2 border-ink pt-3">
+            <h3
+              class="font-headline text-2xl font-black uppercase leading-tight md:text-3xl"
+              &children="group.title"
+            ></h3>
+            <dl class="mt-3">
+              <noop &foreach="group.blocks as block">
+                <div
+                  class="grid gap-1 border-t border-ink/25 py-3 sm:grid-cols-[0.9fr_1.1fr] sm:gap-4"
+                  &id="block.id"
+                >
+                  <dt>
+                    <span class="block font-bold" &children="block.name"></span>
+                    <code
+                      class="block text-xs text-muted"
+                      &children="block.id"
+                    ></code>
+                  </dt>
+                  <dd class="leading-snug" &children="block.description"></dd>
+                </div>
+              </noop>
+            </dl>
+          </section>
+        </noop>
+      </div>
+    </div>
+  </section>
+
+  <section id="interfaces" class="border-b border-ink">
+    <div class="mx-auto max-w-7xl px-5 py-12 md:px-8 md:py-16">
+      <h2
+        class="max-w-3xl font-headline text-4xl font-black uppercase leading-none md:text-6xl"
+      >
+        Use it in your own workflow
+      </h2>
+      <p class="mt-4 max-w-3xl text-lg leading-snug text-muted">
+        The browser, AI assistants and your application can call the same 80
+        operations. Each sees the blocks and actions enabled for its role.
+      </p>
+      <div class="mt-8 grid gap-8 lg:grid-cols-2">
+        <section class="min-w-0 border-t-2 border-ink pt-4">
+          <h3 class="font-headline text-2xl font-black uppercase">
+            Connect an AI assistant
+          </h3>
+          <p class="mt-3 leading-relaxed">
+            In a client that supports the Model Context Protocol (MCP),
+            configure a stdio server. Use Node as the command and the absolute
+            path to the built checkout’s <code>toolkit/cli.mjs</code> followed
+            by <code>mcp</code> as the arguments.
+          </p>
+          <p class="mt-3 leading-relaxed">
+            For badge preparation, enable
+            <code class="break-words">registration-import,badges,lanyards</code>
+            in the client’s environment. Ask your assistant to read
+            <code class="break-words">event-toolkit://catalog</code> for the
+            available tools, input schemas and examples.
+          </p>
+          <blockquote class="mt-4 border-l-4 border-signal pl-4 text-lg">
+            “Import this ticket CSV, check that every name fits on a badge and
+            count lanyards by color. Include ten spare attendee lanyards.”
+          </blockquote>
+          <a
+            class="mt-4 inline-block font-bold underline underline-offset-4"
+            href="https://github.com/bebraw/ai-meets-sdlc/blob/fdf247620ea2cd71713921cdbb3095625340e723/toolkit/README.md#connect-an-mcp-client"
+            >Copy the MCP client configuration</a
+          >
+        </section>
+        <section class="min-w-0 border-t-2 border-ink pt-4">
+          <h3 class="font-headline text-2xl font-black uppercase">
+            Call it from TypeScript
+          </h3>
+          <p class="mt-3 leading-relaxed">
+            Install the package from its tarball in your application. The
+            operation name selects its input and result types. This example
+            orders one speaker lanyard and two attendee spares.
+          </p>
+          <pre
+            class="mt-4 overflow-x-auto border border-ink/25 bg-ink p-4 font-mono text-sm leading-relaxed text-paper"
+            tabindex="0"
+            aria-label="TypeScript lanyard example"
+          ><code>import { createToolkit } from "@sdlcai/event-toolkit";
+
+const kit = createToolkit({ enabled: ["lanyards"] });
+try {
+  const order = await kit.run("lanyards_count", {
+    people: [{ role: "speaker" }],
+    spares: [{ role: "attendee", count: 2 }],
+  });
+  console.log(order.total); // 3
+} finally {
+  await kit.close();
+}</code></pre>
+          <a
+            class="mt-4 inline-block font-bold underline underline-offset-4"
+            href="https://github.com/bebraw/ai-meets-sdlc/blob/fdf247620ea2cd71713921cdbb3095625340e723/toolkit/README.md#install-in-a-fresh-project"
+            >Install in a fresh project</a
+          >
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-ink">
+    <div
+      class="mx-auto grid max-w-7xl gap-6 px-5 py-12 md:grid-cols-[0.8fr_1.2fr] md:px-8 md:py-16"
+    >
+      <h2
+        class="max-w-md font-headline text-4xl font-black uppercase leading-none md:text-6xl"
+      >
+        Host it for your event
+      </h2>
+      <div class="max-w-2xl space-y-4 text-lg leading-snug">
+        <p>
+          The reference host runs on Node.js with SQLite. Print tools work from
+          the data you supply. For workflows such as check-in, give the UI and
+          MCP server the same event ID and persistent data directory so both can
+          see an arrival as soon as it is recorded.
+        </p>
+        <p>
+          Bring your own storage, email and form verification through adapters.
+          Cloudflare D1 is an option for the organizer directory. The reference
+          host can run on your own server.
+        </p>
+        <p class="text-base text-muted">
+          Version 0.1.0 is distributed as a tarball. Its software license is
+          currently marked <code>UNLICENSED</code>.
+        </p>
+        <a
+          class="inline-block font-bold underline underline-offset-4"
+          href="https://github.com/bebraw/ai-meets-sdlc/blob/fdf247620ea2cd71713921cdbb3095625340e723/toolkit/README.md"
+          >Read the installation and hosting guide</a
+        >
+      </div>
+    </div>
+  </section>
+</BaseLayout>

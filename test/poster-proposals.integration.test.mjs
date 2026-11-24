@@ -1,14 +1,8 @@
 import assert from "node:assert/strict";
-import { execFile } from "node:child_process";
-import { mkdtemp, rm } from "node:fs/promises";
-import { tmpdir } from "node:os";
-import path from "node:path";
-import { promisify } from "node:util";
 import test from "node:test";
-import { unstable_dev } from "wrangler";
+import { createWorkerFixture } from "./helpers/worker-fixture.mjs";
 import { validateTurnstileOutcome } from "../worker/turnstile.ts";
 
-const execFileAsync = promisify(execFile);
 const adminAuthorization = `Basic ${Buffer.from(
   "poster-admin:local-test-password",
 ).toString("base64")}`;
@@ -74,38 +68,7 @@ test("Turnstile outcomes require the configured action and hostname", () => {
 });
 
 test("poster proposals can be submitted, reviewed, and exported", async (t) => {
-  const persistenceDirectory = await mkdtemp(
-    path.join(tmpdir(), "sdlcai-poster-test-"),
-  );
-
-  t.after(async () => {
-    await rm(persistenceDirectory, { force: true, recursive: true });
-  });
-
-  await execFileAsync(
-    path.resolve("node_modules/.bin/wrangler"),
-    [
-      "d1",
-      "migrations",
-      "apply",
-      "ai-meets-sdlc-interests",
-      "--local",
-      "--persist-to",
-      persistenceDirectory,
-    ],
-    { cwd: process.cwd() },
-  );
-
-  const worker = await unstable_dev("worker/index.ts", {
-    config: "wrangler.jsonc",
-    experimental: {
-      disableExperimentalWarning: true,
-      forceLocal: true,
-    },
-    local: true,
-    logLevel: "error",
-    persist: true,
-    persistTo: persistenceDirectory,
+  const { worker, dispose } = await createWorkerFixture({
     vars: {
       ADMIN_PASSWORD: "local-test-password",
       ADMIN_USERNAME: "poster-admin",
@@ -118,9 +81,7 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
     },
   });
 
-  t.after(async () => {
-    await worker.stop();
-  });
+  t.after(dispose);
 
   const proposalFields = {
     abstract:
@@ -1194,38 +1155,7 @@ test("poster proposals can be submitted, reviewed, and exported", async (t) => {
 });
 
 test("poster proposal validation and Turnstile fail closed", async (t) => {
-  const persistenceDirectory = await mkdtemp(
-    path.join(tmpdir(), "sdlcai-poster-validation-test-"),
-  );
-
-  t.after(async () => {
-    await rm(persistenceDirectory, { force: true, recursive: true });
-  });
-
-  await execFileAsync(
-    path.resolve("node_modules/.bin/wrangler"),
-    [
-      "d1",
-      "migrations",
-      "apply",
-      "ai-meets-sdlc-interests",
-      "--local",
-      "--persist-to",
-      persistenceDirectory,
-    ],
-    { cwd: process.cwd() },
-  );
-
-  const worker = await unstable_dev("worker/index.ts", {
-    config: "wrangler.jsonc",
-    experimental: {
-      disableExperimentalWarning: true,
-      forceLocal: true,
-    },
-    local: true,
-    logLevel: "error",
-    persist: true,
-    persistTo: persistenceDirectory,
+  const { worker, dispose } = await createWorkerFixture({
     vars: {
       ADMIN_PASSWORD: "local-test-password",
       ADMIN_USERNAME: "poster-admin",
@@ -1238,9 +1168,7 @@ test("poster proposal validation and Turnstile fail closed", async (t) => {
     },
   });
 
-  t.after(async () => {
-    await worker.stop();
-  });
+  t.after(dispose);
 
   const response = await worker.fetch(`${origin}/api/poster-proposals`, {
     method: "POST",
@@ -1290,24 +1218,7 @@ test("poster proposal validation and Turnstile fail closed", async (t) => {
 });
 
 test("poster proposal deadline is enforced before accepting data", async (t) => {
-  const persistenceDirectory = await mkdtemp(
-    path.join(tmpdir(), "sdlcai-poster-deadline-test-"),
-  );
-
-  t.after(async () => {
-    await rm(persistenceDirectory, { force: true, recursive: true });
-  });
-
-  const worker = await unstable_dev("worker/index.ts", {
-    config: "wrangler.jsonc",
-    experimental: {
-      disableExperimentalWarning: true,
-      forceLocal: true,
-    },
-    local: true,
-    logLevel: "error",
-    persist: true,
-    persistTo: persistenceDirectory,
+  const { worker, dispose } = await createWorkerFixture({
     vars: {
       ADMIN_PASSWORD: "local-test-password",
       ADMIN_USERNAME: "poster-admin",
@@ -1318,9 +1229,7 @@ test("poster proposal deadline is enforced before accepting data", async (t) => 
     },
   });
 
-  t.after(async () => {
-    await worker.stop();
-  });
+  t.after(dispose);
 
   const response = await worker.fetch(`${origin}/api/poster-proposals`, {
     method: "POST",
