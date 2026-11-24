@@ -270,6 +270,16 @@ try {
     catalog.map((b) => b.id).sort(),
     Object.keys(samples).sort(),
   );
+  const guide = await readFile(join(installedDir, "GUIDE.md"), "utf8");
+  const documentedBlocks = Array.from(
+    guide.matchAll(/^\|[^|\n]+\|\s*`([a-z0-9-]+)`\s*\|/gm),
+    (row) => row[1],
+  );
+  assert.deepEqual(
+    documentedBlocks.sort(),
+    catalog.map((block) => block.id).sort(),
+    "The installed organizer guide must cover every available block exactly once.",
+  );
   browser = await chromium.launch({
     executablePath: env.TOOLKIT_CHROMIUM_PATH || undefined,
   });

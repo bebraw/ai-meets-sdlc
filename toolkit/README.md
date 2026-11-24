@@ -2,6 +2,8 @@
 
 An organizer can import a ticket export, print badges, run a registration desk or collect speaker materials from one workspace. Each of the 19 blocks also exposes the same operations to a TypeScript or JavaScript application and a Model Context Protocol (MCP) client. Choose the blocks your event needs. The reference host runs on Node.js 24 or later with SQLite.
 
+Start with the [organizer guide](GUIDE.md) for a badge walkthrough and a catalog grouped by task.
+
 ## Install in a fresh project
 
 The **Portable toolkit** job on a successful pull-request quality run attaches the tested tarball as the `event-toolkit` artifact. Download and unzip it, or create the package from this repository.

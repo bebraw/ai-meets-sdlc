@@ -889,6 +889,22 @@
       }
     }
   },
+  "toolkit": {
+    "layout": "toolkit",
+    "scripts": [{ "name": "index" }],
+    "dataSources": {
+      "toolkitGroups": { "operation": "toolkitGroups" }
+    },
+    "context": {
+      "meta": {
+        "title": "Event organizer toolkit | SDLCAI",
+        "description": "Explore 19 reusable event tools, from printable name badges to speaker submissions and audience Q&A. Run them in a browser, connect an AI assistant or use TypeScript.",
+        "ogEyebrow": "Event organizer toolkit",
+        "ogDescription": "Choose the tools for your event and try them locally with a sample badge.",
+        "url": "https://sdlcai.org/toolkit/"
+      }
+    }
+  },
   "contact": {
     "layout": "contact",
     "scripts": [

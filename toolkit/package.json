@@ -47,6 +47,7 @@
     "cli.mjs",
     "examples",
     "README.md",
+    "GUIDE.md",
     "ui/*.css",
     "ui/*.html",
     "*.mts",

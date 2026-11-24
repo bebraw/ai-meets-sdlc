@@ -39,6 +39,7 @@ const routes = [
   "/event-email/unsubscribe/",
   "/admin/posters/",
   "/admin/speakers/",
+  "/toolkit/",
   "/contact/",
   "/2026/faq/",
   "/2026/for-sponsors/",

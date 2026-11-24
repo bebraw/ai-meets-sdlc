@@ -56,6 +56,7 @@ function init() {
     announcementItem: (match) =>
       getAnnouncementItem(announcementItemsBySlug, match.slug),
     seminar: () => seminar,
+    toolkitGroups: getToolkitGroups,
     socialMentionGroups: () =>
       socialMentions.groups.map((group, index) => ({
         ...group,
@@ -300,6 +301,28 @@ function parseFrontMatter(source, fileName) {
   }
 
   return frontMatter;
+}
+
+// The published Markdown guide also serves the installed package and coding assistants.
+function getToolkitGroups() {
+  const markdown = readFileSync(
+    new URL("../toolkit/GUIDE.md", import.meta.url),
+    "utf8",
+  );
+  const groups = [];
+  let title = "";
+  for (const token of marked.lexer(markdown)) {
+    if (token.type === "heading" && token.depth === 2) title = token.text;
+    if (token.type === "table") {
+      const blocks = token.rows.map(([name, id, description]) => ({
+        name: name.text,
+        id: id.text.replace(/^`|`$/g, ""),
+        description: description.text,
+      }));
+      groups.push({ title, blocks });
+    }
+  }
+  return groups;
 }
 
 function renderMarkdown(markdown) {
