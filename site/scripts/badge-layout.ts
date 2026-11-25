@@ -54,7 +54,7 @@ export function renderBadge(
     preview,
     false,
     badgeRoleAppearance[person.role],
-    "/assets/logo.svg",
+    settings.showLogo === false ? null : "/assets/logo.svg",
   );
 }
 export function renderSpareBadge(
@@ -70,6 +70,6 @@ export function renderSpareBadge(
     preview,
     true,
     badgeRoleAppearance[role],
-    "/assets/logo.svg",
+    settings.showLogo === false ? null : "/assets/logo.svg",
   );
 }

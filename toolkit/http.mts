@@ -43,8 +43,17 @@ const assets = new Map<string, [string, string]>([
   ["/engagement.css", ["../ui/engagement.css", "text/css"]],
   ["/style.css", ["../ui/style.css", "text/css"]],
   ["/badge-proof.js", ["./ui/badge-proof.js", "text/javascript"]],
+  [
+    "/blocks/badge-sheets.mjs",
+    ["./blocks/badge-sheets.mjs", "text/javascript"],
+  ],
+  ["/badge-sheets.mjs", ["./blocks/badge-sheets.mjs", "text/javascript"]],
   ["/badge-artwork.mjs", ["./blocks/badge-artwork.mjs", "text/javascript"]],
   ["/blocks/print-fonts.mjs", ["./blocks/print-fonts.mjs", "text/javascript"]],
+  [
+    "/blocks/registration-csv.mjs",
+    ["./blocks/registration-csv.mjs", "text/javascript"],
+  ],
   ...printFontIds.map((id): [string, [string, string]] => [
     printFontUrl(id),
     ["../assets/print/" + printFonts[id].file, "font/ttf"],

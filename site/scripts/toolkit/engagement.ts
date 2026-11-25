@@ -53,53 +53,135 @@ function dinner(root: HTMLElement) {
 }
 
 function questions(root: HTMLElement) {
-  const question = input("Will the session slides be available?");
-  question.maxLength = 1000;
-  question.required = true;
-  const view = result("Moderation queue");
-  const queue = el("p", "Question queue empty.");
-  const screen = el("p", "Stage screen waiting for the MC.");
+  const view = panel("Approved questions by vote count");
+  const list = el("ol");
+  list.className = "space-y-3";
+  list.setAttribute("role", "list");
+  const status = el("p");
+  status.setAttribute("role", "status");
+
   const stage = el("section");
   stage.setAttribute("aria-label", "Stage screen preview");
   stage.className =
     "mt-4 border-t-4 border-signal bg-[#101010] px-5 py-4 text-[#f6f4ef]";
   const stageTitle = el("h4", "Main stage");
   stageTitle.className = "mb-3 text-sm font-bold uppercase";
+  const screen = el("p", "Stage screen waiting for the MC.");
   screen.className = "font-headline text-2xl leading-tight";
   stage.replaceChildren(stageTitle, screen);
-  view.body.replaceChildren(queue, stage);
-  let step = 0;
-  const advance = button("Submit as attendee", () => {
-    if (!question.value.trim()) {
+
+  const question = input("Will the session slides be available?");
+  question.maxLength = 1000;
+  question.required = true;
+  const label = el("div");
+  label.replaceChildren(field("Attendee question", question));
+  let pending = false;
+  const submit = button("Submit as attendee", () => {
+    const text = question.value.trim();
+    if (!text) {
       question.setCustomValidity("Enter a question.");
       question.reportValidity();
       return;
     }
-    const quote = "“" + question.value.trim() + "”";
-    step++;
-    if (step === 1) {
-      queue.textContent = "Pending moderator review · " + quote;
-      // The moderator may edit the submitted wording before approval.
-      advance.textContent = "Approve as moderator";
+    pending = !pending;
+    if (pending) {
+      status.textContent = "Pending moderator review · “" + text + "”";
+      submit.textContent = "Approve as moderator";
       label.replaceChildren(field("Question for moderator review", question));
-      question.focus();
-    } else if (step === 2) {
-      question.readOnly = true;
-      queue.textContent = "Approved for the audience queue · " + quote;
-      advance.textContent = "Show on stage as MC";
-    } else if (step === 3) {
-      screen.textContent = quote;
-      advance.textContent = "Mark answered as MC";
     } else {
-      queue.textContent = "Question answered · " + quote;
-      screen.textContent = "Stage screen cleared.";
-      advance.disabled = true;
+      addQuestion(text, 0, true);
+      draw();
+      question.value = "";
+      status.textContent = "Approved for the audience queue · “" + text + "”";
+      submit.textContent = "Submit as attendee";
+      label.replaceChildren(field("Attendee question", question));
     }
+    question.focus();
   });
   question.addEventListener("input", () => question.setCustomValidity(""));
-  const label = el("div");
-  label.replaceChildren(field("Attendee question", question));
-  root.replaceChildren(label, advance, view.panel);
+
+  const questions: {
+    text: string;
+    votes: number;
+    row: HTMLLIElement;
+    present: HTMLButtonElement;
+    count: HTMLElement;
+  }[] = [];
+  let selected: (typeof questions)[number] | undefined;
+  function addQuestion(text: string, votes: number, own = false) {
+    const row = el("li");
+    row.className = "grid gap-2 border-t border-ink/30 pt-3";
+    const count = el("span");
+    const vote = button(own ? "Your question" : "Vote", () => {
+      item.votes++;
+      vote.textContent = "Voted";
+      vote.disabled = true;
+      draw();
+      status.textContent =
+        "Vote recorded for “" + item.text + "”. " + count.textContent + ".";
+      present.focus();
+    });
+    vote.disabled = own;
+    vote.setAttribute(
+      "aria-label",
+      own ? "You submitted this question" : "Vote for “" + text + "”",
+    );
+    const present = button("Show on stage", () => {
+      selected = item;
+      draw();
+      status.textContent = "The MC put “" + item.text + "” on stage.";
+      answer.focus();
+    });
+    present.setAttribute("aria-label", "Show “" + text + "” on stage as MC");
+    const item = { text, votes, row, present, count };
+    const actions = el("div");
+    actions.className = "demo-actions";
+    actions.replaceChildren(vote, present);
+    row.replaceChildren(el("strong", text), count, actions);
+    questions.push(item);
+  }
+  function draw() {
+    // Stable sorting preserves submission order when two questions have the same vote count.
+    const ranked = [...questions].sort((a, b) => b.votes - a.votes);
+    for (const item of ranked) {
+      item.count.textContent =
+        item.votes + (item.votes === 1 ? " vote" : " votes");
+      item.present.disabled = item === selected;
+      item.present.textContent =
+        item === selected ? "On stage" : "Show on stage";
+    }
+    list.replaceChildren(...ranked.map((item) => item.row));
+    empty.hidden = Boolean(ranked.length);
+    screen.textContent = selected
+      ? selected.text
+      : "Stage screen waiting for the MC.";
+    answer.disabled = clear.disabled = !selected;
+  }
+  function leaveStage(answered: boolean) {
+    if (!selected) return;
+    const previous = selected;
+    if (answered) questions.splice(questions.indexOf(previous), 1);
+    selected = undefined;
+    draw();
+    status.textContent = answered
+      ? "Marked answered · “" + previous.text + "”"
+      : "Stage screen cleared. The question is still open for votes.";
+    (answered ? (questions[0]?.present ?? question) : previous.present).focus();
+  }
+  const answer = button("Mark answered as MC", () => leaveStage(true));
+  const clear = button("Clear stage screen", () => leaveStage(false));
+  const stageActions = el("div");
+  stageActions.className = "demo-actions";
+  stageActions.replaceChildren(answer, clear);
+  const empty = el(
+    "p",
+    "The queue is empty. Submit a question to start again.",
+  );
+  addQuestion("How did you test the change?", 4);
+  addQuestion("Could you show a worked example?", 1);
+  view.body.replaceChildren(list, empty, stage, stageActions);
+  root.replaceChildren(label, submit, status, view.panel);
+  draw();
 }
 
 function feedback(root: HTMLElement) {

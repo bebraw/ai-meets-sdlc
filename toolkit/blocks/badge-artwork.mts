@@ -1,7 +1,10 @@
+import { planBadgeSheets, type BadgePaper } from "./badge-sheets.mts";
 import type { PrintFontId } from "./print-fonts.mjs";
 
 export const badgeShapes = ["circle", "square", "rounded-square"] as const;
 export type BadgeShape = (typeof badgeShapes)[number];
+export const badgeAttachments = ["lanyard", "holder"] as const;
+export type BadgeAttachment = (typeof badgeAttachments)[number];
 
 export interface BadgeFont {
   family: string;
@@ -9,6 +12,10 @@ export interface BadgeFont {
 }
 export interface BadgeGeometry {
   shape?: BadgeShape;
+  attachment?: BadgeAttachment;
+  paper?: BadgePaper;
+  sheetMargin?: number;
+  cutMarks?: boolean;
   font?: PrintFontId;
   diameter: number;
   bleed: number;
@@ -177,6 +184,34 @@ function badgeParagraphs(value: string) {
     );
 }
 
+function wrapBadgeLines(
+  paragraphs: ReturnType<typeof badgeParagraphs>,
+  fits: (line: string, index: number) => boolean,
+) {
+  const lines = [];
+  for (const words of paragraphs) {
+    let line = "";
+    for (const { text, gap } of words) {
+      const candidate = line ? line + gap + text : text;
+      if (line && !fits(candidate, lines.length)) {
+        lines.push(line);
+        line = text;
+      } else line = candidate;
+    }
+    if (line) lines.push(line);
+  }
+  return lines;
+}
+
+// Account for glyphs whose ink extends past their nominal advance width.
+function lineHalfWidth(m: TextMetrics) {
+  return Math.max(
+    m.width / 2,
+    m.actualBoundingBoxLeft - m.width / 2,
+    m.actualBoundingBoxRight - m.width / 2,
+  );
+}
+
 export function renderBadgeArtwork(
   person: Required<BadgePerson>,
   settings: BadgeGeometry,
@@ -188,7 +223,8 @@ export function renderBadgeArtwork(
 ) {
   const d = settings.diameter,
     b = settings.bleed,
-    shape = settings.shape ?? "circle";
+    shape = settings.shape ?? "circle",
+    attachment = settings.attachment ?? "lanyard";
   const trimRadius =
     shape === "circle" ? d / 2 : shape === "rounded-square" ? d / 6 : 0;
   // Insetting a rounded corner reduces its radius by the same distance.
@@ -226,6 +262,7 @@ export function renderBadgeArtwork(
     height: `${page}mm`,
     role: "img",
     "data-badge-shape": shape,
+    "data-badge-attachment": attachment,
     "aria-label": spare
       ? `Spare ${person.role} badge`
       : `${person.role} badge for ${person.name}`,
@@ -270,43 +307,64 @@ export function renderBadgeArtwork(
     label: string,
   ) {
     if (!value.trim()) return;
-    const width = 2 * Math.min(safeHalfWidth(top), safeHalfWidth(bottom)) - 2;
-    if (width <= 0 || bottom <= top) {
+    const bandWidth =
+      2 * Math.min(safeHalfWidth(top), safeHalfWidth(bottom)) - 2;
+    if ((label !== "Name" && bandWidth <= 0) || bottom <= top) {
       issues.push(`${label}: print settings leave no safe space.`);
       return;
     }
     const paragraphs = badgeParagraphs(value);
     let selected = null;
-    for (let sizePt = maxPt; sizePt >= minPt; sizePt -= 0.5) {
+    sizes: for (let sizePt = maxPt; sizePt >= minPt; sizePt -= 0.5) {
       const size = sizePt * pt;
-      ctx.font = `${weight} ${size}px "${font.family}"`;
-      const widthOf = (s: string) => {
-        const m = ctx.measureText(s);
-        return Math.max(
-          m.width,
-          m.actualBoundingBoxLeft + m.actualBoundingBoxRight,
-        );
-      };
-      const lines = [];
-      for (const words of paragraphs) {
-        let line = "";
-        for (const { text, gap } of words) {
-          const candidate = line ? line + gap + text : text;
-          if (line && widthOf(candidate) > width) {
-            lines.push(line);
-            line = text;
-          } else line = candidate;
-        }
-        if (line) lines.push(line);
-      }
       const step = size * 1.5;
-      if (
-        lines.length <= maxLines &&
-        lines.length * step <= bottom - top &&
-        lines.every((line) => widthOf(line) <= width)
+      ctx.font = `${weight} ${size}px "${font.family}"`;
+      for (
+        let count = 1;
+        count <= maxLines && count * step <= bottom - top;
+        count++
       ) {
-        selected = { lines, size, step };
-        break;
+        const spareHeight = bottom - top - count * step;
+        const centered = top + spareHeight / 2;
+        // A wide name can sit closer to the broadest part of a curved badge.
+        const nearMiddle = Math.min(
+          top + spareHeight,
+          Math.max(top, d / 2 - (count * step) / 2),
+        );
+        const starts =
+          label === "Name" && nearMiddle !== centered
+            ? [centered, nearMiddle]
+            : [centered];
+        for (const start of starts) {
+          const fits = (text: string, index: number) => {
+            if (index >= count) return false;
+            const m = ctx.measureText(text);
+            if (label !== "Name")
+              return (
+                Math.max(
+                  m.width,
+                  m.actualBoundingBoxLeft + m.actualBoundingBoxRight,
+                ) <= bandWidth
+              );
+            const midline = start + (index + 0.5) * step;
+            const halfHeight =
+              (m.actualBoundingBoxAscent + m.actualBoundingBoxDescent) / 2;
+            return (
+              midline - halfHeight >= top &&
+              midline + halfHeight <= bottom &&
+              lineHalfWidth(m) + 1 <=
+                Math.min(
+                  safeHalfWidth(midline - halfHeight),
+                  safeHalfWidth(midline + halfHeight),
+                )
+            );
+          };
+          const lines = wrapBadgeLines(paragraphs, fits);
+          if (lines.length === count && lines.every(fits)) {
+            selected = { lines, size, step, start };
+            break sizes;
+          }
+        }
       }
     }
     if (!selected) {
@@ -315,9 +373,8 @@ export function renderBadgeArtwork(
       );
       return;
     }
-    const { lines, size, step } = selected;
+    const { lines, size, step, start } = selected;
     ctx.font = `${weight} ${size}px "${font.family}"`;
-    const start = top + (bottom - top - step * lines.length) / 2;
     lines.forEach((line, i) => {
       const m = ctx.measureText(line);
       const baseline =
@@ -325,17 +382,12 @@ export function renderBadgeArtwork(
         step * i +
         (step - m.actualBoundingBoxAscent - m.actualBoundingBoxDescent) / 2 +
         m.actualBoundingBoxAscent;
-      const half = Math.max(
-        m.width / 2,
-        m.actualBoundingBoxLeft - m.width / 2,
-        m.actualBoundingBoxRight - m.width / 2,
-      );
       const bounds: [number, number] = [
         baseline - m.actualBoundingBoxAscent,
         baseline + m.actualBoundingBoxDescent,
       ];
       if (
-        bounds.some((y) => half > safeHalfWidth(y)) ||
+        bounds.some((y) => lineHalfWidth(m) > safeHalfWidth(y)) ||
         bounds[0] < top ||
         bounds[1] > bottom
       )
@@ -356,8 +408,14 @@ export function renderBadgeArtwork(
     });
   }
   // Separate vertical bands prevent name/company/logo/role collisions.
-  const logoTop = settings.top + 2,
-    logoSize = 16;
+  const textTop =
+    Math.max(settings.safe, attachment === "lanyard" ? settings.top : 0) + 2;
+  const logoSize = 16;
+  const cornerX = Math.max(0, logoSize / 2 - (safeHalfSide - safeRadius));
+  // Keep the top corners of the logo inside the safe outline on curved cards.
+  const curveInset =
+    safeRadius - Math.sqrt(Math.max(0, safeRadius ** 2 - cornerX ** 2));
+  const logoTop = Math.max(textTop, settings.safe + curveInset + 2);
   if (
     logo &&
     logoSize / 2 >
@@ -378,7 +436,7 @@ export function renderBadgeArtwork(
     );
   block(
     person.name,
-    logoTop + logoSize + 3,
+    logo ? logoTop + logoSize + 3 : textTop,
     d * 0.69,
     settings.maxName,
     settings.minName,
@@ -408,6 +466,8 @@ export function renderBadgeArtwork(
           "data-badge-outline": "safe",
         }),
       );
+    }
+    if (preview && attachment === "lanyard") {
       const clip = svg("clipPath", { id: "badge-trim-" + crypto.randomUUID() });
       clip.appendChild(outline(0, {}));
       const defs = svg("defs", {});
@@ -415,6 +475,7 @@ export function renderBadgeArtwork(
       content.appendChild(defs);
       content.appendChild(
         svg("rect", {
+          "data-badge-guide": "lanyard",
           x: d / 2 - 16,
           y: 0,
           width: 32,
@@ -453,6 +514,7 @@ export function prepareBadgeRun(input: BadgeRunInput) {
     ...defaultGeometry,
     ...input.settings,
     shape: input.settings?.shape ?? "circle",
+    attachment: input.settings?.attachment ?? "lanyard",
     font: input.settings?.font ?? "noto-sans",
   };
   const palette = new Map(Object.entries(defaultColors));
@@ -492,11 +554,14 @@ export function prepareBadgeRun(input: BadgeRunInput) {
   const badges = rows.reduce((count, entry) => count + entry.quantity, 0);
   if (!badges || badges > 4000)
     throw new Error("Select between one and 4,000 named and spare badges.");
+  const plan = planBadgeSheets(settings, badges);
   return {
     rows,
     settings,
     badges,
-    widthMm: settings.diameter + 2 * settings.bleed,
-    pageCount: badges * (settings.doubleSided ? 2 : 1),
+    plan,
+    widthMm: plan.widthMm,
+    heightMm: plan.heightMm,
+    pageCount: plan.pageCount,
   };
 }

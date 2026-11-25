@@ -10,11 +10,12 @@ export const venueGuides: Record<string, BlockGuide> = {
       "Detect the delimiter and common ticket fields, or map your own column names.",
       "Keep cancelled tickets identifiable and leave unassigned Tito tickets available for the desk.",
       "Supply the previous roster on a repeat import to update matching records and preserve their IDs.",
+      "Use the imported records to prepare badges, review a check-in roster or prepare the catering brief.",
     ],
     related: ["check-in", "badges", "catering"],
     demoTitle: "Turn a ticket export into a roster",
     demoIntro:
-      "Edit a name or change a ticket status in this fictional Tito export. Import the rows to see how the toolkit reads them.",
+      "One guest has a paid ticket, one has a refund and the third ticket has no name yet. Change a ticket status and import again to see how many badges, desk records and meals you need.",
   },
   "check-in": {
     input: "A registration roster and a desk link issued by an organizer.",
@@ -39,12 +40,13 @@ export const venueGuides: Record<string, BlockGuide> = {
     actions: [
       "Choose a circle, square or rounded square and preview it in the role color.",
       "Choose a font, set the trim width and bleed, and check each name for fit and missing characters.",
-      "Export the checked artwork as a PDF with the requested spares and optional reverse sides.",
+      "Print at actual size on individual pages, A4 or US Letter. Include spares, cut marks and matching backs.",
+      "Choose a punched badge or a holder insert. Omitting the logo gives longer names more room.",
     ],
     related: ["registration-import", "lanyards"],
     demoTitle: "Proof a speaker badge",
     demoIntro:
-      "Try a longer name, switch the shape and compare fonts. The dashed line marks the safe area used to fit the text.",
+      "Try a longer name, switch the attachment and compare fonts. Choose a sheet size to see the print layout, then copy your setup into the workspace.",
   },
   lanyards: {
     input:

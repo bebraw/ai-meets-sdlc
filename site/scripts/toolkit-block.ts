@@ -9,11 +9,14 @@ if (root && reset) {
   const mount = demos[root.dataset.toolkitDemo ?? ""];
   if (!mount)
     throw new Error("Missing toolkit example for " + root.dataset.toolkitDemo);
-  const showExample = () => {
-    root.replaceChildren();
-    mount(root);
-  };
-  showExample();
+  root.replaceChildren();
+  mount(root);
   reset.hidden = false;
-  reset.addEventListener("click", showExample);
+  let mounted = root;
+  reset.addEventListener("click", () => {
+    const next = mounted.cloneNode(false) as HTMLElement;
+    mounted.replaceWith(next);
+    mounted = next;
+    mount(next);
+  });
 }

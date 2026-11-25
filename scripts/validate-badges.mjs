@@ -32,7 +32,7 @@ try {
   const errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
   const origin = `http://127.0.0.1:${fixture.worker.port}`;
-  for (const module of ["badge-artwork", "print-fonts"]) {
+  for (const module of ["badge-artwork", "badge-sheets", "print-fonts"]) {
     const path = `toolkit/blocks/${module}.mts`;
     await page.route(`**/${path}`, async (route) =>
       route.fulfill({
@@ -1048,6 +1048,73 @@ try {
     ).toString("latin1"),
     /Lora/,
   );
+  await page.getByText("Printer settings", { exact: true }).click();
+  await page.getByLabel("Attachment", { exact: true }).selectOption("holder");
+  await page.getByLabel("Include event logo").uncheck();
+  assert.equal(
+    await page.getByLabel("Top hole exclusion (mm)").isVisible(),
+    false,
+  );
+  assert.equal(await page.locator(".badge-preview image").count(), 0);
+  await page.getByLabel("Trim width (mm)").fill("80");
+  await page.getByLabel("Trim width (mm)").press("Tab");
+  await page.getByLabel("Bleed per edge (mm)").fill("2");
+  await page.getByLabel("Bleed per edge (mm)").press("Tab");
+  await spareCount.fill("7");
+  await spareCount.press("Tab");
+  const paper = page.getByLabel("Print paper");
+  for (const [id, width, height, capacity] of [
+    ["a4", 210, 297, 6],
+    ["letter", 215.9, 279.4, 4],
+  ]) {
+    await paper.selectOption(id);
+    await page
+      .locator("[data-sheet-summary]")
+      .getByText(new RegExp(capacity + " per sheet"))
+      .waitFor();
+    await printRun("spares");
+    const pages = page.locator(".badge-print-sheet");
+    assert.equal(await pages.count(), 4);
+    const first = pages.first().locator(":scope > svg");
+    assert.equal(await first.getAttribute("width"), width + "mm");
+    assert.equal(await first.getAttribute("height"), height + "mm");
+    assert.equal(await first.locator("[data-cut-marks]").count(), capacity);
+    assert.equal(
+      await pages.last().locator("[data-badge-index]").count(),
+      7 - capacity,
+    );
+    assert.equal(await pages.locator("image").count(), 0);
+    const bytes = await page.pdf({
+      preferCSSPageSize: true,
+      printBackground: true,
+    });
+    assert.equal(
+      [...bytes.toString("latin1").matchAll(/\/Type \/Page\b/g)].length,
+      4,
+    );
+  }
+  await page.getByLabel("Print sheet cut marks").uncheck();
+  await page.getByLabel("Printer margin (mm)").fill("12");
+  await page.getByLabel("Printer margin (mm)").press("Tab");
+  await page
+    .getByRole("button", { name: "Save print settings", exact: true })
+    .click();
+  await page
+    .getByText("Print settings and badge text saved.", { exact: true })
+    .waitFor();
+  await page.reload();
+  await page.getByText(ready, { exact: true }).waitFor();
+  assert.equal(await paper.inputValue(), "letter");
+  assert.equal(
+    await page.getByLabel("Attachment", { exact: true }).inputValue(),
+    "holder",
+  );
+  assert.equal(await page.getByLabel("Printer margin (mm)").inputValue(), "12");
+  assert.equal(
+    await page.getByLabel("Print sheet cut marks").isChecked(),
+    false,
+  );
+  assert.equal(await page.getByLabel("Include event logo").isChecked(), false);
   assert.deepEqual(errors, []);
   console.log(
     "Badge browser checks passed: lanyard summaries, retired badges, search-independent totals, copy/download and clipboard fallback, independent attendee and sponsor spares, saved quantities, role-specific artwork and print runs, PDF pagination, repeated backs, Unicode, overflow, live records, duplicates, print preferences, source corrections, desktop/mobile layout and accessibility.",

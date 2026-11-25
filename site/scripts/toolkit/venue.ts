@@ -1,13 +1,39 @@
-import { append, button, el, field, input, panel, select } from "./controls.ts";
-import { importRegistrations } from "../../../toolkit/blocks/registration-csv.mts";
+import {
+  append,
+  button,
+  copySetup,
+  el,
+  field,
+  input,
+  panel,
+  select,
+} from "./controls.ts";
+import {
+  importRegistrations,
+  prepareRegistrationHandoffs,
+  registrationExample,
+} from "../../../toolkit/blocks/registration-csv.mts";
 import { lanyardsCount } from "../../../toolkit/blocks/lanyard-count.mts";
 import {
   badgeShapes,
+  badgeAttachments,
   prepareBadgeRun,
   renderBadgeArtwork,
 } from "../../../toolkit/blocks/badge-artwork.mts";
 import { loadBadgeFont } from "../badge-layout.ts";
-import { fontSelect, badgeShapeSelect } from "../print-options.ts";
+import {
+  planBadgeSheets,
+  renderBadgeSheet,
+  badgePaperSizes,
+} from "../../../toolkit/blocks/badge-sheets.mts";
+import { fieldNotesLogo } from "../../../toolkit/blocks/print-examples.mts";
+import {
+  attachmentSelect,
+  paperSelect,
+  sheetDescription,
+  fontSelect,
+  badgeShapeSelect,
+} from "../print-options.ts";
 import { printFontIds } from "../../../toolkit/blocks/print-fonts.mts";
 import {
   renderVenueSheets,
@@ -33,8 +59,7 @@ function registrationImport(root: HTMLElement) {
   csv.rows = 4;
   csv.maxLength = 6000;
   csv.spellcheck = false;
-  csv.value =
-    "Ticket Full Name,Ticket Reference,Ticket Status\nZoë Marin,FN-1,paid\nAlex Li,FN-2,refunded";
+  csv.value = registrationExample.csv;
   const result = panel("Imported roster");
   const summary = status();
   const rows = el("tbody");
@@ -47,12 +72,23 @@ function registrationImport(root: HTMLElement) {
   }
   table.appendChild(rows);
   table.style.overflowWrap = "anywhere";
-  append(result.body, summary, table);
+  const destinations = el("ul");
+  append(result.body, summary, table, destinations);
+  csv.addEventListener("input", () => {
+    summary.textContent =
+      "Import the edited rows to update the roster and counts.";
+    table.hidden = true;
+    destinations.replaceChildren();
+  });
 
   function run() {
     rows.replaceChildren();
+    destinations.replaceChildren();
     try {
       const roster = importRegistrations({ csv: csv.value, source: "tito" });
+      const { badges, desk, meals } = prepareRegistrationHandoffs(
+        roster.records,
+      );
       for (const record of roster.records) {
         const row = rows.insertRow();
         for (const value of [
@@ -64,6 +100,24 @@ function registrationImport(root: HTMLElement) {
         }
       }
       summary.textContent = `${roster.imported} ${roster.imported === 1 ? "registration" : "registrations"} imported.`;
+      for (const [id, label] of [
+        ["badges", `Name badge guide · ${badges.length} eligible`],
+        [
+          "check-in",
+          `Check-in guide · ${desk.length} ${desk.length === 1 ? "ticket" : "tickets"}, ${meals.length} active`,
+        ],
+        [
+          "catering",
+          `Catering guide · ${meals.length} ${meals.length === 1 ? "meal" : "meals"}`,
+        ],
+      ] as const) {
+        const link = el("a", label);
+        link.href = "/toolkit/" + id + "/";
+        link.className = "underline underline-offset-4";
+        const item = el("li");
+        item.appendChild(link);
+        destinations.appendChild(item);
+      }
       table.hidden = false;
     } catch (error) {
       summary.textContent =
@@ -134,60 +188,156 @@ function badges(root: HTMLElement) {
   const role = select(["speaker", "attendee", "organizer", "sponsor"]);
   const shape = badgeShapeSelect();
   const typeface = fontSelect();
+  const attachment = attachmentSelect();
+  const logo = select(["No logo", "Field Notes logo"]);
+  const paper = paperSelect();
+  function numberField(value: number, min: number, max: number, step: number) {
+    const control = input(String(value), "number");
+    Object.assign(control, {
+      min: String(min),
+      max: String(max),
+      step: String(step),
+      required: true,
+    });
+    return control;
+  }
+  const trim = numberField(100, 70, 150, 0.5);
+  const bleed = numberField(0, 0, 10, 0.5);
+  const margin = numberField(5, 0, 50, 0.5);
+  const spares = numberField(0, 0, 2000, 1);
+  const marks = select(["Show cut marks", "Omit cut marks"]);
+  const sides = select(["Front only", "Matching back"]);
+  const sheetControls = controls(
+    field("Printer margin (mm)", margin),
+    field("Cut marks", marks),
+  );
+  const printSettings = el("details");
+  const advanced = el("div");
+  advanced.className = "mt-3 grid gap-3";
+  append(
+    advanced,
+    controls(
+      field("Trim width (mm)", trim),
+      field("Bleed per edge (mm)", bleed),
+    ),
+    controls(
+      field("Spare attendee badges", spares),
+      field("Printed sides", sides),
+    ),
+    sheetControls,
+  );
+  append(printSettings, el("summary", "Print settings"), advanced);
   const result = panel("Badge proof");
   const drawing = el("div");
   const finding = status("Loading the print font…");
-  append(result.body, drawing, finding);
+  const sheet = el("figure");
+  sheet.className = "demo-sheet";
+  const counts = status();
+  function setup() {
+    if (!name.value.trim()) throw Error("Enter a display name.");
+    for (const control of [
+      trim,
+      bleed,
+      spares,
+      ...(paper.value === "single" ? [] : [margin]),
+    ]) {
+      if (!control.validity.valid)
+        throw Error("Check " + control.labels?.[0]?.textContent + ".");
+    }
+    const sheetPaper = badgePaperSizes[paper.selectedIndex] ?? "single";
+    const settings = {
+      shape: badgeShapes[shape.selectedIndex] ?? "circle",
+      font: printFontIds[typeface.selectedIndex] ?? "noto-sans",
+      attachment: badgeAttachments[attachment.selectedIndex] ?? "lanyard",
+      paper: sheetPaper,
+      diameter: trim.valueAsNumber,
+      bleed: bleed.valueAsNumber,
+      doubleSided: sides.selectedIndex === 1,
+      ...(sheetPaper === "single"
+        ? {}
+        : {
+            sheetMargin: margin.valueAsNumber,
+            cutMarks: marks.selectedIndex === 0,
+          }),
+    };
+    return {
+      people: [{ name: name.value, company: "Field Notes", role: role.value }],
+      ...(spares.valueAsNumber
+        ? { spares: [{ role: "attendee", count: spares.valueAsNumber }] }
+        : {}),
+      ...(logo.selectedIndex === 1 ? { logo: fieldNotesLogo } : {}),
+      settings,
+    };
+  }
+  append(result.body, drawing, finding, sheet, counts);
   append(
     root,
     controls(field("Display name", name), field("Badge role", role)),
     controls(field("Badge shape", shape), field("Print font", typeface)),
+    controls(field("Attachment", attachment), field("Event logo", logo)),
+    field("Print paper", paper),
+    printSettings,
     result.panel,
+    copySetup(root, "Print name badges and select Preflight", () => {
+      const input = setup();
+      planBadgeSheets(input.settings, 1 + spares.valueAsNumber);
+      return input;
+    }),
   );
   let revision = 0;
   async function draw() {
     const current = ++revision;
+    sheetControls.hidden = paper.value === "single";
     try {
-      const fontId = printFontIds[typeface.selectedIndex] ?? "noto-sans";
-      const font = await loadBadgeFont(fontId);
+      const input = setup();
+      const run = prepareBadgeRun(input);
+      const plan = run.plan;
+      const font = await loadBadgeFont(input.settings.font);
       if (current !== revision) return;
-      const run = prepareBadgeRun({
-        people: [
-          { name: name.value, company: "Field Notes", role: role.value },
-        ],
-        settings: {
-          shape: badgeShapes[shape.selectedIndex] ?? "circle",
-          font: fontId,
-        },
-      });
-      const row = run.rows[0]!;
-      const { svg, issues } = renderBadgeArtwork(
-        row.person,
-        run.settings,
-        font,
-        true,
-        false,
-        row.appearance,
-        null,
-      );
+      const render = (row: (typeof run.rows)[number], preview: boolean) =>
+        renderBadgeArtwork(
+          row.person,
+          preview ? run.settings : { ...run.settings, guides: true },
+          font,
+          preview,
+          row.source === "spares",
+          row.appearance,
+          input.logo ?? null,
+        );
+      const { svg, issues } = render(run.rows[0]!, true);
       svg.style.cssText =
         "display:block;width:100%;max-width:16rem;height:auto;margin:auto";
       drawing.replaceChildren(svg);
       finding.textContent = issues.length
         ? issues.join(" ")
         : "Name and affiliation fit within the safe area.";
+      sheet.replaceChildren();
+      if (plan.paper !== "single") {
+        const copies = run.rows.map((row) => render(row, false).svg);
+        const front = renderBadgeSheet(
+          plan,
+          plan.pages[0]!,
+          (index) => copies[index ? 1 : 0]!,
+        );
+        append(
+          sheet,
+          front,
+          el("figcaption", "First sheet · outlines show badge placement"),
+        );
+      }
+      counts.textContent = sheetDescription(plan);
     } catch (error) {
       if (current !== revision) return;
       drawing.replaceChildren();
+      sheet.replaceChildren();
+      counts.textContent = "";
       finding.textContent =
         error instanceof Error
           ? error.message
           : "The badge proof could not load.";
     }
   }
-  name.addEventListener("input", draw);
-  for (const choice of [role, shape, typeface])
-    choice.addEventListener("change", draw);
+  root.addEventListener("input", draw);
   void draw();
 }
 
@@ -297,7 +447,13 @@ function paperProof() {
       entries: [row],
     });
   }
-  return { holder, draw, fontField: field("Print font", typeface), fontStatus };
+  return {
+    holder,
+    draw,
+    font: () => printFontIds[typeface.selectedIndex] ?? "noto-sans",
+    fontField: field("Print font", typeface),
+    fontStatus,
+  };
 }
 
 function venueSigns(root: HTMLElement) {
@@ -306,16 +462,22 @@ function venueSigns(root: HTMLElement) {
   const direction = select(["Left", "Right", "Ahead"]);
   const result = panel("A4 venue sign");
   const proof = paperProof();
+  function entry() {
+    return {
+      title: destination.value,
+      direction:
+        direction.value === "Left"
+          ? ("left" as const)
+          : direction.value === "Right"
+            ? ("right" as const)
+            : ("ahead" as const),
+    };
+  }
   function draw() {
-    const arrow =
-      direction.value === "Left"
-        ? "left"
-        : direction.value === "Right"
-          ? "right"
-          : "ahead";
+    const row = entry();
     proof.draw(
-      { title: destination.value, direction: arrow },
-      `A4 sign for ${destination.value || "an unnamed destination"}, pointing ${arrow}.`,
+      row,
+      `A4 sign for ${row.title || "an unnamed destination"}, pointing ${row.direction}.`,
     );
   }
   destination.addEventListener("input", draw);
@@ -329,6 +491,14 @@ function venueSigns(root: HTMLElement) {
       proof.fontField,
     ),
     result.panel,
+    copySetup(root, "Print venue signs", () => {
+      if (!destination.value.trim()) throw Error("Enter a destination.");
+      return {
+        eventName: "Field Notes Forum",
+        font: proof.font(),
+        signs: [entry()],
+      };
+    }),
   );
   draw();
 }
@@ -340,9 +510,16 @@ function tableTents(root: HTMLElement) {
   question.maxLength = 280;
   const result = panel("A4 fold layout");
   const proof = paperProof();
+  function entry() {
+    return {
+      label: "Table 3",
+      topic: topic.value,
+      ...(question.value.trim() ? { question: question.value } : {}),
+    };
+  }
   function draw() {
     proof.draw(
-      { label: "Table 3", topic: topic.value, question: question.value },
+      entry(),
       `Two faces for Table 3. ${topic.value}. ${question.value}`,
     );
   }
@@ -357,6 +534,14 @@ function tableTents(root: HTMLElement) {
       proof.fontField,
     ),
     result.panel,
+    copySetup(root, "Print discussion table tents", () => {
+      if (!topic.value.trim()) throw Error("Enter a discussion topic.");
+      return {
+        eventName: "Field Notes Forum",
+        font: proof.font(),
+        tables: [entry()],
+      };
+    }),
   );
   draw();
 }

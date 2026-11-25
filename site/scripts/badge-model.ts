@@ -1,5 +1,9 @@
 import { readCsvPeople } from "../../toolkit/blocks/registration-csv.mts";
-import { badgeShapes } from "../../toolkit/blocks/badge-artwork.mts";
+import {
+  badgeShapes,
+  badgeAttachments,
+} from "../../toolkit/blocks/badge-artwork.mts";
+import { badgePaperSizes } from "../../toolkit/blocks/badge-sheets.mts";
 import { printFontIds } from "../../toolkit/blocks/print-fonts.mts";
 export { parseCsv } from "../../toolkit/blocks/registration-csv.mts";
 import * as v from "valibot";
@@ -22,6 +26,11 @@ const mm = (min: number, max: number) =>
 export const badgeSettingsSchema = v.object({
   shape: v.optional(v.picklist(badgeShapes), "circle"),
   font: v.optional(v.picklist(printFontIds), "noto-sans"),
+  attachment: v.optional(v.picklist(badgeAttachments), "lanyard"),
+  showLogo: v.optional(v.boolean(), true),
+  paper: v.optional(v.picklist(badgePaperSizes), "single"),
+  sheetMargin: v.optional(mm(0, 50), 5),
+  cutMarks: v.optional(v.boolean(), true),
   diameter: mm(70, 150),
   bleed: mm(0, 10),
   safe: mm(3, 15),
@@ -49,6 +58,11 @@ export function badgeCompany(email: string, company: string): string {
 export const defaultSettings: BadgeSettings = {
   shape: "circle",
   font: "noto-sans",
+  attachment: "lanyard",
+  showLogo: true,
+  paper: "single",
+  sheetMargin: 5,
+  cutMarks: true,
   diameter: 100,
   bleed: 0,
   safe: 5,

@@ -407,6 +407,38 @@ try {
       });
       assert.equal(excluded.body.data.total, mcpResult.total - 1);
     }
+    if (name === "venue_signs_export_pdf") {
+      const copied = {
+        eventName: "Field Notes Forum",
+        signs: [{ title: "Quiet room", direction: "left" }],
+        font: "lora",
+      };
+      const result = await callUi(block.id, name, undefined, async () => {
+        // Simulate a fast paste before the browser dispatches the details toggle.
+        await page.evaluate(async (setup) => {
+          const details = document.querySelector("#advanced");
+          const toggled = new Promise((resolve) =>
+            details.addEventListener("toggle", resolve, { once: true }),
+          );
+          details.querySelector("summary").click();
+          const editor = document.querySelector("#input-json");
+          editor.value = JSON.stringify(setup);
+          editor.dispatchEvent(new Event("input", { bubbles: true }));
+          await toggled;
+        }, copied);
+        await page.getByRole("button", { name: "Apply JSON" }).click();
+        assert.equal(
+          await page.locator('[data-path="signs.0.title"]').inputValue(),
+          "Quiet room",
+        );
+        assert.equal(
+          await page.locator('[data-path="font"]').inputValue(),
+          "lora",
+        );
+      });
+      assert.equal(result.status, 200, JSON.stringify(result.body));
+      assert.equal(result.body.data.pageCount, 1);
+    }
     if (name === "registration_import_csv") {
       const previous = mcpResult.records.map((record) => ({
         ...record,
@@ -473,6 +505,28 @@ try {
         "rounded-square",
       );
       assert.ok(await proof.locator('[data-badge-outline="safe"]').isVisible());
+      await page.getByLabel("Paper size", { exact: true }).selectOption("a4");
+      await page.getByLabel("Trim size (mm)", { exact: true }).fill("80");
+      await page.getByLabel("Double-sided", { exact: true }).check();
+      const sheet = page.locator(".badge-sheet-preview > div > svg");
+      await sheet.locator('[data-badge-index="2"]').waitFor();
+      assert.equal(await sheet.locator("[data-cut-marks]").count(), 3);
+      const cutMarks = page.getByLabel("Sheet cut marks", { exact: true });
+      await cutMarks.uncheck();
+      await sheet
+        .locator("[data-cut-marks]")
+        .first()
+        .waitFor({ state: "detached" });
+      await page.getByLabel("Print page to preview", { exact: true }).fill("2");
+      await page
+        .locator('.badge-sheet-preview [data-sheet-side="back"]')
+        .waitFor();
+      const [firstX, secondX] = await sheet
+        .locator("[data-badge-index]")
+        .evaluateAll((nodes) =>
+          nodes.slice(0, 2).map((node) => Number(node.getAttribute("x"))),
+        );
+      assert.ok(firstX > secondX);
       await page.locator('[data-path="people.1.name"]').fill("Kaisa Vale");
       await proof.getByText("Kaisa Vale", { exact: true }).waitFor();
       await selector.selectOption("spares.1");

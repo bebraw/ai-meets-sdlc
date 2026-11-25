@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { blocks as printBlocks } from "../toolkit/dist/blocks/print.mjs";
 
 async function checkTitleFit(title, path, width) {
   const brokenWords = await title.evaluate(async (heading) => {
@@ -25,6 +26,90 @@ async function checkTitleFit(title, path, width) {
     [],
     `Title word wrapping at ${path} (${width}px)`,
   );
+}
+
+async function checkPrintSetups(page) {
+  async function copy(block, operation, manual = false) {
+    await page.evaluate((fallback) => {
+      Object.defineProperty(navigator, "clipboard", {
+        configurable: true,
+        value: {
+          async writeText(text) {
+            if (fallback) throw new Error("Clipboard unavailable");
+            window.copiedSetup = text;
+          },
+        },
+      });
+    }, manual);
+    await page.getByRole("button", { name: "Copy setup" }).click();
+    await page.getByText(/Edit as JSON.+Apply JSON/).waitFor();
+    const raw = manual
+      ? await page.getByLabel("Setup JSON to copy").inputValue()
+      : await page.evaluate(() => window.copiedSetup);
+    const setup = JSON.parse(raw);
+    printBlocks
+      .find((b) => b.id === block)
+      .operations.find((o) => o.name === operation)
+      .prepare(setup);
+    return setup;
+  }
+  await page.goto("/toolkit/badges/");
+  await page.getByLabel("Display name").fill("River Chen");
+  await page.getByLabel("Badge shape").selectOption("rounded-square");
+  await page.getByLabel("Print font").selectOption("lora");
+  await page.getByLabel("Attachment").selectOption("holder");
+  await page.getByLabel("Event logo").selectOption("Field Notes logo");
+  await page.getByLabel("Print paper").selectOption("a4");
+  await page.getByText("Print settings", { exact: true }).click();
+  await page.getByLabel("Trim width (mm)").fill("80");
+  await page.getByLabel("Bleed per edge (mm)").fill("2");
+  await page.getByLabel("Spare attendee badges").fill("7");
+  await page.getByLabel("Printed sides").selectOption("Matching back");
+  await page
+    .getByText("6 per sheet · 2 sheets · 4 PDF pages at 210 × 297 mm.")
+    .waitFor();
+  assert.equal(await page.locator("figure [data-cut-marks]").count(), 6);
+  const badge = await copy("badges", "badges_preflight");
+  assert.equal(badge.people[0].name, "River Chen");
+  assert.ok(badge.logo.startsWith("data:image/"));
+  assert.deepEqual(badge.spares, [{ role: "attendee", count: 7 }]);
+  assert.deepEqual(badge.settings, {
+    shape: "rounded-square",
+    font: "lora",
+    attachment: "holder",
+    paper: "a4",
+    diameter: 80,
+    bleed: 2,
+    doubleSided: true,
+    sheetMargin: 5,
+    cutMarks: true,
+  });
+  await page.getByLabel("Display name").fill("");
+  await page.getByRole("button", { name: "Copy setup" }).click();
+  assert.equal(
+    await page.getByText("Setup copied.", { exact: false }).count(),
+    0,
+  );
+
+  await page.goto("/toolkit/venue-signs/");
+  await page.getByLabel("Destination").fill("Quiet room");
+  await page.getByLabel("Direction").selectOption("Right");
+  await page.getByLabel("Print font").selectOption("fira-code");
+  assert.deepEqual(await copy("venue-signs", "venue_signs_export_pdf", true), {
+    eventName: "Field Notes Forum",
+    font: "fira-code",
+    signs: [{ title: "Quiet room", direction: "right" }],
+  });
+
+  await page.goto("/toolkit/table-tents/");
+  await page.getByLabel("Discussion topic").fill("Code review");
+  await page.getByLabel("Starter question").fill("");
+  await page.getByLabel("Print font").selectOption("lora");
+  assert.deepEqual(await copy("table-tents", "table_tents_export_pdf"), {
+    eventName: "Field Notes Forum",
+    font: "lora",
+    tables: [{ label: "Table 3", topic: "Code review" }],
+  });
 }
 
 export async function validateToolkitExplorer(page) {
@@ -101,22 +186,51 @@ export async function validateToolkitExplorer(page) {
   });
   assert.match(await stageOperation.innerText(), /Organizer, MC/);
   const preview = page.locator(".demo-result");
+  const questionRow = (text) =>
+    preview
+      .getByRole("listitem")
+      .filter({ has: page.getByText(text, { exact: true }) });
+  const leader = questionRow("How did you test the change?");
+  const example = questionRow("Could you show a worked example?");
+  const screen = page.getByRole("region", { name: "Stage screen preview" });
+  assert.match(await leader.innerText(), /4 votes/);
+  const vote = example.getByRole("button", { name: /^Vote for/ });
+  await vote.focus();
+  await vote.press("Enter");
+  assert.match(await example.innerText(), /2 votes/);
+  assert.ok(await vote.isDisabled());
+  assert.match(await screen.innerText(), /waiting for the MC/);
   await page
     .getByLabel("Attendee question")
     .fill("May we share the recording?");
   await page.getByRole("button", { name: "Submit as attendee" }).click();
-  assert.match(await preview.innerText(), /pending moderator review/i);
-  await page.getByRole("button", { name: "Approve as moderator" }).click();
-  assert.match(await preview.innerText(), /stage screen waiting/i);
-  await page.getByRole("button", { name: "Show on stage as MC" }).click();
   assert.match(
-    await page
-      .getByRole("region", { name: "Stage screen preview" })
-      .innerText(),
-    /May we share the recording\?/i,
+    await page.locator("[data-toolkit-demo] [role=status]").innerText(),
+    /Pending moderator review/,
   );
+  assert.equal(await questionRow("May we share the recording?").count(), 0);
+  await page.getByRole("button", { name: "Approve as moderator" }).click();
+  const submitted = questionRow("May we share the recording?");
+  assert.match(await submitted.innerText(), /0 votes/);
+  assert.ok(
+    await submitted
+      .getByRole("button", { name: "You submitted this question" })
+      .isDisabled(),
+  );
+  await example.getByRole("button", { name: /on stage as MC/ }).click();
+  assert.match(await screen.innerText(), /Could you show a worked example/);
+  await leader.getByRole("button", { name: /on stage as MC/ }).click();
+  assert.match(await screen.innerText(), /How did you test the change/);
+  await page.getByRole("button", { name: "Clear stage screen" }).click();
+  assert.match(await screen.innerText(), /waiting for the MC/);
+  assert.equal(await leader.count(), 1);
+  await submitted.getByRole("button", { name: /on stage as MC/ }).click();
+  await page.getByRole("button", { name: "Mark answered as MC" }).click();
+  assert.equal(await submitted.count(), 0);
+  assert.match(await screen.innerText(), /waiting for the MC/);
   await page.getByRole("button", { name: "Reset example" }).click();
-  assert.match(await preview.innerText(), /question queue empty/i);
+  assert.match(await example.innerText(), /1 vote\b/);
+  assert.ok(await vote.isEnabled());
   assert.equal(
     await page.getByLabel("Attendee question").inputValue(),
     "Will the session slides be available?",
@@ -128,4 +242,5 @@ export async function validateToolkitExplorer(page) {
   await page.getByLabel("Speaker color").selectOption("Blue");
   assert.match(await preview.innerText(), /14 blue lanyards/);
   assert.doesNotMatch(await preview.innerText(), /red lanyards/);
+  await checkPrintSetups(page);
 }

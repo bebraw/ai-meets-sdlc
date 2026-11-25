@@ -166,6 +166,35 @@
     margin-top: 0.45rem;
   }
 
+  .demo-sheet:not(:empty) {
+    display: grid;
+    justify-items: center;
+    gap: 0.5rem;
+    padding-block: 1rem 0.25rem;
+    border-top: 1px solid color-mix(in srgb, var(--color-ink) 22%, transparent);
+    font-size: 0.875rem;
+  }
+
+  .demo-sheet > svg {
+    display: block;
+    width: 100%;
+    max-width: 18rem;
+    height: auto;
+    border: 1px solid #aaa;
+    background: white;
+  }
+
+  .demo-sheet [data-badge-outline="trim"] {
+    stroke: #666;
+    stroke-width: 1px;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .demo-sheet [data-cut-marks] {
+    stroke-width: 0.75px;
+    vector-effect: non-scaling-stroke;
+  }
+
   .demo-result table {
     width: 100%;
     text-align: left;

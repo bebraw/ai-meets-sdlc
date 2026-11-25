@@ -1,4 +1,9 @@
+import { badgePaperLabels, type BadgePaper } from "../blocks/badge-sheets.mjs";
 import { printFonts, type PrintFontId } from "../blocks/print-fonts.mjs";
+import {
+  prepareRegistrationHandoffs,
+  type RegistrationRecord,
+} from "../blocks/registration-csv.mjs";
 import { prepareEngagementForm, renderEngagementResult } from "./engagement.js";
 import { prepareWorkflowForm, renderWorkflowResult } from "./workflows.js";
 import { attachBadgeProof } from "./badge-proof.js";
@@ -66,6 +71,15 @@ let badgeProof: ReturnType<typeof attachBadgeProof> | undefined;
 let serial = 0;
 let widget: string | undefined;
 const lastInputs = new Map<string, Inputs>();
+let registrationDraft = 0;
+class RequestError extends Error {
+  constructor(
+    message: string,
+    readonly status: number,
+  ) {
+    super(message);
+  }
+}
 async function api<T = unknown>(path: string, body?: unknown): Promise<T> {
   const response = await fetch(
     path,
@@ -79,10 +93,11 @@ async function api<T = unknown>(path: string, body?: unknown): Promise<T> {
   );
   const data: unknown = await response.json();
   if (!response.ok)
-    throw Error(
+    throw new RequestError(
       isRecord(data) && typeof data.error === "string"
         ? data.error
         : response.statusText,
+      response.status,
     );
   return data as T;
 }
@@ -113,6 +128,68 @@ function newButton(text: string, callback: () => void) {
   b.addEventListener("click", callback);
   return b;
 }
+function registrationActions(
+  records: RegistrationRecord[],
+  result: HTMLElement,
+  navigate: Navigate,
+) {
+  const permitted = new Set(
+    profile.blocks.flatMap((b) => b.operations.map((o) => o.name)),
+  );
+  if (
+    !["badges_export_pdf", "checkin_register", "catering_prepare_brief"].some(
+      (name) => permitted.has(name),
+    )
+  )
+    return;
+  try {
+    const { badges, desk, meals } = prepareRegistrationHandoffs(records);
+    const actions = node("div", undefined, "qa-actions");
+    const add = (
+      name: string,
+      label: string,
+      count: number,
+      inputs: Inputs,
+    ) => {
+      if (!permitted.has(name)) return;
+      const control = newButton(label, () => navigate(name, inputs));
+      control.disabled = count === 0;
+      actions.append(control);
+    };
+    add(
+      "badges_export_pdf",
+      "Prepare badges (" + badges.length + ")",
+      badges.length,
+      { people: badges },
+    );
+    add(
+      "checkin_register",
+      `Open check-in roster (${desk.length} ${desk.length === 1 ? "ticket" : "tickets"}, ${meals.length} active)`,
+      desk.length,
+      { people: desk },
+    );
+    add(
+      "catering_prepare_brief",
+      `Prepare catering brief (${meals.length} ${meals.length === 1 ? "meal" : "meals"})`,
+      meals.length,
+      {
+        eventName:
+          [...profile.eventLabel.trim()].slice(0, 240).join("") || "Event",
+        people: meals,
+      },
+    );
+    result.append(node("h3", "Use these registrations"), actions);
+  } catch (error) {
+    result.append(
+      node(
+        "p",
+        "Review the roster before continuing. " + message(error),
+        "error",
+      ),
+    );
+  }
+}
+
 let fieldCount = 0;
 function makeControl(
   parent: HTMLElement,
@@ -233,19 +310,25 @@ function makeControl(
   let field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
   if (schema.enum) {
     field = node("select");
-    const placeholder =
-      key === "shape"
-        ? "Default (Circle)"
-        : key === "font"
-          ? "Default (Noto Sans)"
-          : "Choose…";
+    const defaults: Record<string, string> = {
+      shape: "Circle",
+      font: "Noto Sans",
+      paper: badgePaperLabels.single,
+      attachment: "Lanyard",
+    };
+    const placeholder = defaults[key]
+      ? `Default (${defaults[key]})`
+      : "Choose…";
     field.append(new Option(placeholder, ""));
     for (const value of schema.enum) {
       const id = String(value);
       let label = id;
       if (key === "font" && Object.hasOwn(printFonts, id))
         label = printFonts[id as PrintFontId].label;
-      if (key === "shape") label = human(id.replaceAll("-", " "));
+      if (key === "paper" && Object.hasOwn(badgePaperLabels, id))
+        label = badgePaperLabels[id as BadgePaper];
+      if (key === "shape" || key === "attachment")
+        label = human(id.replaceAll("-", " "));
       field.append(new Option(label, id));
     }
   } else if (
@@ -277,7 +360,7 @@ function makeControl(
   label.htmlFor = field.id;
   let changed = false;
   if (field instanceof HTMLInputElement && field.type === "checkbox") {
-    field.checked = (value ?? schema.default) === true;
+    field.checked = (value ?? schema.default ?? key === "cutMarks") === true;
     field.addEventListener("change", () => {
       changed = true;
     });
@@ -367,6 +450,7 @@ function notice(text: string) {
 }
 function form(value: unknown = {}) {
   if (!op) return;
+  if (op.name === "registration_import_csv") registrationDraft++;
   if (!isRecord(value)) throw Error("Enter a valid JSON object.");
   badgeProof?.dispose();
   badgeProof = undefined;
@@ -579,6 +663,7 @@ $("inputs").onsubmit = async (event) => {
   const button = $("run", "button"),
     result = $("result"),
     current = serial;
+  const submittedDraft = registrationDraft;
   button.disabled = true;
   result.replaceChildren();
   notice("Working…");
@@ -592,6 +677,13 @@ $("inputs").onsubmit = async (event) => {
       input,
     );
     if (current !== serial) return;
+    if (
+      op.name === "registration_import_csv" &&
+      submittedDraft !== registrationDraft
+    ) {
+      notice("Import the edited rows to update the roster and counts.");
+      return;
+    }
     if (
       submittedProof &&
       submittedProof === badgeProof &&
@@ -641,6 +733,13 @@ $("inputs").onsubmit = async (event) => {
       );
       route().catch((error) => notice(message(error)));
     };
+    if (op.name === "registration_import_csv") {
+      registrationActions(
+        (data as { records: RegistrationRecord[] }).records,
+        result,
+        navigate,
+      );
+    }
     if (
       !renderEngagementResult(op, data, result, call) &&
       !renderWorkflowResult(op, data, result, call, navigate, input)
@@ -657,6 +756,23 @@ $("inputs").onsubmit = async (event) => {
   } catch (error) {
     if (current === serial) {
       result.append(node("p", message(error), "error"));
+      if (
+        op.name === "checkin_register" &&
+        error instanceof RequestError &&
+        error.status === 409
+      ) {
+        result.append(
+          newButton("Refresh roster version for review", () => {
+            try {
+              const inputs = reader!();
+              delete inputs.rosterRevision;
+              void action("checkin_register", inputs);
+            } catch (error) {
+              notice(message(error));
+            }
+          }),
+        );
+      }
       notice("");
     }
   } finally {
@@ -666,19 +782,29 @@ $("inputs").onsubmit = async (event) => {
     }
   }
 };
+$("fields").addEventListener("input", () => {
+  if (op?.name !== "registration_import_csv") return;
+  registrationDraft++;
+  if ($("result").childElementCount) {
+    $("result").replaceChildren();
+    notice("Import the edited rows to update the roster and counts.");
+  }
+});
 $("example").onclick = () => form(structuredClone(op?.example || {}));
-$("advanced", "details").ontoggle = () => {
-  if ($("advanced", "details").open && reader)
+const advanced = $("advanced", "details");
+// Snapshot before the editor opens. A deferred toggle event can arrive after paste.
+advanced.querySelector("summary")!.addEventListener("click", () => {
+  if (!advanced.open && reader)
     try {
       $("input-json", "textarea").value = JSON.stringify(reader(), null, 2);
     } catch (e) {
       notice(message(e));
     }
-};
+});
 $("apply-json").onclick = () => {
   try {
     form(JSON.parse($("input-json", "textarea").value));
-    $("advanced", "details").open = false;
+    advanced.open = false;
   } catch {
     notice("Enter a valid JSON object.");
   }

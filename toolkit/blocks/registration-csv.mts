@@ -305,6 +305,78 @@ export type RegistrationRecord = {
   sourceKey: string;
 } & Record<string, unknown>;
 
+export const registrationExample = {
+  source: "tito" as const,
+  csv: [
+    "Ticket Full Name,Ticket Company Name,Ticket Email,Ticket Reference,Ticket Status,Food restrictions",
+    "Zoë Marin,Field Notes,zoe@example.test,FN-1,paid,Vegan",
+    "Alex Li,Diagram Lab,alex@example.test,FN-2,refunded,Tree nut allergy",
+    ",,,FN-3,paid,",
+  ].join("\n"),
+};
+
+export function prepareRegistrationHandoffs(records: RegistrationRecord[]) {
+  const badges: { name: string; company: string; role: string }[] = [];
+  const meals: { diet: string }[] = [];
+  const desk = records.map((record) => {
+    // Repeat imports can retain rows and custom fields from a previous roster.
+    // Only the fields understood by each destination travel with the handoff.
+    const text = (key: string, max: number, fallback = "") => {
+      const value = record[key] ?? fallback;
+      if (typeof value !== "string" || [...value].length > max)
+        throw new Error(
+          "Check the " + key + " on registration " + record.sourceKey + ".",
+        );
+      return value;
+    };
+    const id = text("id", 150),
+      source = text("source", 64),
+      sourceKey = text("sourceKey", 340);
+    const name = text("name", 300).trim(),
+      company = text("company", 300);
+    const email = text("email", 254),
+      ticketCode = text("ticketCode", 120);
+    const type = text("type", 64, "attendee").trim() || "attendee";
+    const status = record.status;
+    if (
+      !id.trim() ||
+      !source.trim() ||
+      !sourceKey.trim() ||
+      (!name && !ticketCode.trim()) ||
+      (status !== "active" && status !== "cancelled")
+    )
+      throw new Error(
+        "Check the ticket identity, holder and status on registration " +
+          sourceKey +
+          ".",
+      );
+    if (status === "active") {
+      meals.push({ diet: text("diet", 2000) });
+      if (name && !record.unassigned && record.badge !== false) {
+        if ([...type].length > 36)
+          throw new Error(
+            "Badge roles accept up to 36 characters. Check registration " +
+              sourceKey +
+              ".",
+          );
+        badges.push({ name, company, role: type });
+      }
+    }
+    return {
+      id,
+      name,
+      company,
+      email,
+      ticketCode,
+      type,
+      status,
+      source,
+      sourceKey,
+    };
+  });
+  return { badges, desk, meals };
+}
+
 export function importRegistrations({
   csv,
   source,

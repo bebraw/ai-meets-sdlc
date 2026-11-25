@@ -1,3 +1,4 @@
+import { fieldNotesLogo } from "./print-examples.mjs";
 import { printFontIds, printFonts, printFontUrl } from "./print-fonts.mjs";
 import {
   strictJsonObject,
@@ -13,11 +14,19 @@ import {
   list,
   color,
 } from "./supplied-fields.mjs";
-import { badgeShapes, prepareBadgeRun } from "./badge-artwork.mjs";
+import {
+  badgeAttachments,
+  badgeShapes,
+  prepareBadgeRun,
+} from "./badge-artwork.mjs";
+import { badgePaperSizes } from "./badge-sheets.mjs";
 import { lanyardsCount } from "./lanyard-count.mjs";
 import { printPdf, withPrintPage } from "./print-browser.mjs";
 import { printResults } from "./print-results.mjs";
-import { importRegistrations } from "./registration-csv.mjs";
+import {
+  importRegistrations,
+  registrationExample,
+} from "./registration-csv.mjs";
 import {
   renderVenueSheets,
   venueSheetCss,
@@ -37,6 +46,33 @@ const logo = v.pipe(
   v.description("Embedded PNG, JPEG, WebP or SVG logo as a base64 data URL."),
 );
 const geometry = partialJsonObject({
+  paper: v.pipe(
+    v.picklist(badgePaperSizes),
+    v.title("Paper size"),
+    v.description(
+      "One badge per page by default. Pack badges onto A4 or US Letter sheets for an office printer.",
+    ),
+  ),
+  sheetMargin: v.pipe(
+    boundedNumber(0, 50),
+    v.title("Printer margin (mm)"),
+    v.description(
+      "Keep artwork and cut marks this far from each sheet edge. A4 and US Letter default to 5 mm.",
+    ),
+  ),
+  cutMarks: v.pipe(
+    v.boolean(),
+    v.title("Sheet cut marks"),
+    v.description(
+      "Mark each trim edge on A4 and US Letter. Enabled by default. Each mark extends 4 mm beyond the bleed.",
+    ),
+  ),
+  attachment: v.pipe(
+    v.picklist(badgeAttachments),
+    v.description(
+      "Reserve space at the top for a lanyard attachment, or use the full safe area in a holder.",
+    ),
+  ),
   shape: v.pipe(
     v.picklist(badgeShapes),
     v.description("Cut outline. Round badges are the default."),
@@ -62,7 +98,13 @@ const geometry = partialJsonObject({
   maxName: integer(24, 40),
   companySize: integer(9, 16),
   guides: v.boolean(),
-  doubleSided: v.boolean(),
+  doubleSided: v.pipe(
+    v.boolean(),
+    v.title("Double-sided"),
+    v.description(
+      "Print each badge on both sides. For A4 or US Letter, flip on the long edge and print at 100%.",
+    ),
+  ),
 });
 const badgeSchema = strictJsonObject({
   people: list(
@@ -79,11 +121,7 @@ const badgeSchema = strictJsonObject({
   logo: v.optional(logo),
 });
 const badgeExample = {
-  logo:
-    "data:image/svg+xml;base64," +
-    Buffer.from(
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><rect width="48" height="48" rx="8" fill="#7746b5"/><path d="M12 12h24v5H18v5h14v5H18v9h-6z" fill="white"/></svg>',
-    ).toString("base64"),
+  logo: fieldNotesLogo,
   people: [
     { name: "Zoë Marin", company: "Field Notes", role: "speaker" },
     { name: "Ari Chen", company: "Local Lab", role: "speaker" },
@@ -100,42 +138,44 @@ async function badgeRun(
   input: v.InferOutput<typeof badgeSchema>,
   exportPdf: boolean,
 ) {
-  const { rows, settings, badges, widthMm, pageCount } = prepareBadgeRun(input);
+  const { rows, settings, badges, plan } = prepareBadgeRun(input);
   return withPrintPage(async (page) => {
     await page.addStyleTag({
-      content: `@page{size:${widthMm}mm ${widthMm}mm;margin:0}article{width:${widthMm}mm;height:${widthMm}mm}`,
+      content: `@page{size:${plan.widthMm}mm ${plan.heightMm}mm;margin:0}article{width:${plan.widthMm}mm;height:${plan.heightMm}mm;overflow:hidden}`,
     });
     const issues = await page.evaluate(
-      async ({ rows, settings, logo, fontUrl, fontWeight, preview }) => {
-        const artworkPath: string = "/badge-artwork.mjs";
-        const {
-          loadBadgeFont,
-          renderBadgeArtwork,
-          verifyBadgeLogo,
-        }: typeof import("./badge-artwork.mjs") = await import(artworkPath);
+      async ({ rows, settings, plan, logo, fontUrl, fontWeight, preview }) => {
+        const { loadBadgeFont, renderBadgeArtwork, verifyBadgeLogo } =
+          await import("./badge-artwork.mjs");
         const font = await loadBadgeFont(
           await (await fetch(fontUrl)).arrayBuffer(),
           fontWeight,
         );
         await verifyBadgeLogo(logo);
+        const { renderBadgeSheet } = await import("./badge-sheets.mjs");
         const issues = [];
+        const copies: SVGSVGElement[] = [];
         for (const { person, quantity, source, row, appearance } of rows) {
           const result = renderBadgeArtwork(
             person,
             settings,
             font,
-            preview,
+            preview && plan.paper === "single",
             source === "spares",
             appearance,
             logo,
           );
           if (result.issues.length)
             issues.push({ row, source, messages: result.issues });
+          for (let i = 0; i < quantity; i++) copies.push(result.svg);
+        }
+        // The preflight checks every row but only returns a proof of the first page.
+        for (const page of preview ? plan.pages.slice(0, 1) : plan.pages) {
           const sheet = document.createElement("article");
-          sheet.append(result.svg);
-          const copies = quantity * (settings.doubleSided ? 2 : 1);
-          for (let index = 0; index < copies; index++)
-            document.body.append(index ? sheet.cloneNode(true) : sheet);
+          sheet.appendChild(
+            renderBadgeSheet(plan, page, (index) => copies[index]!),
+          );
+          document.body.appendChild(sheet);
         }
         await document.fonts.ready;
         return issues;
@@ -143,6 +183,7 @@ async function badgeRun(
       {
         rows,
         settings,
+        plan,
         logo: input.logo ?? null,
         fontUrl: printFontUrl(settings.font),
         fontWeight: printFonts[settings.font].weight,
@@ -152,9 +193,15 @@ async function badgeRun(
     const summary = {
       ready: issues.length === 0,
       badges,
-      pageCount,
-      widthMm,
-      heightMm: widthMm,
+      pageCount: plan.pageCount,
+      widthMm: plan.widthMm,
+      heightMm: plan.heightMm,
+      paper: plan.paper,
+      badgeSizeMm: plan.badgeSizeMm,
+      sheetCount: plan.sheetCount,
+      perSheet: plan.perSheet,
+      columns: plan.columns,
+      rows: plan.rows,
       issues,
     };
     if (exportPdf)
@@ -303,7 +350,7 @@ export const blocks = [
         name: "badges_preflight",
         outputSchema: printResults.badges_preflight,
         description:
-          "Preview the first badge and check every row for missing glyphs and fit.",
+          "Preview the first print page and check every badge for missing glyphs and fit.",
         schema: badgeSchema,
         example: badgeExample,
         run: (input) => badgeRun(input, false),
@@ -311,7 +358,8 @@ export const blocks = [
       defineOperation({
         name: "badges_export_pdf",
         outputSchema: printResults.badges_export_pdf,
-        description: "Prepare a printable PDF when every row passes preflight.",
+        description:
+          "Prepare an actual-size PDF on single-badge pages, A4 or US Letter when every row passes preflight.",
         schema: badgeSchema,
         example: badgeExample,
         run: (input) => badgeRun(input, true),
@@ -362,10 +410,7 @@ export const blocks = [
         description:
           "Normalize registration records. Supply previous records to preserve their IDs on reimport.",
         schema: registrationSchema,
-        example: {
-          source: "tito",
-          csv: "Ticket Full Name,Ticket Company Name,Ticket Email,Ticket Reference\nZoë Marin,Field Notes,zoe@example.test,FN-1",
-        },
+        example: registrationExample,
         run: importRegistrations,
       }),
     ],

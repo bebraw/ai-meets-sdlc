@@ -22,6 +22,10 @@ const assets = new Map([
   ]),
   ["/font.ttf", resource(fontFile, "font/ttf")],
   ["/badge-artwork.mjs", resource(artworkFile, "text/javascript")],
+  [
+    "/badge-sheets.mjs",
+    resource(new URL("./badge-sheets.mjs", import.meta.url), "text/javascript"),
+  ],
 ]);
 
 /** Serve only local package assets. A print run makes no external requests. */

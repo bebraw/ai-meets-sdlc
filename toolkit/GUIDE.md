@@ -17,6 +17,8 @@ npm run dev -w @sdlcai/event-toolkit
 
 Use a comma-separated list of block IDs in `TOOLKIT_BLOCKS`. For example, `registration-import,check-in` gives you the CSV importer and arrivals desk.
 
+To prepare for registration day, enable `registration-import,badges,check-in,catering`. In **Import a registration CSV**, choose **Use example** and run the import. The example has one named paid ticket, one refund and one paid ticket awaiting a name. **Prepare badges** opens one named badge for review. **Open check-in roster** lets you review all three tickets and save them to the desk. **Prepare catering brief** counts two meals and carries over the dietary answer from the named guest.
+
 ## Registration and the venue
 
 | Block               | Block ID              | What you can do                                                                   |

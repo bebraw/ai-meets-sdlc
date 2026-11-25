@@ -35,6 +35,10 @@ Name badges, venue signs, table tents and talk graphics can use Noto Sans (the d
 
 In **Print name badges**, choose a person or spare under **Badge to preview**. Your browser redraws its SVG as you edit the text, role colors, logo or paper settings. Preflight checks every row and marks entries that need attention. The PDF export repeats those checks before producing the print file.
 
+Use a holder insert to fit text above the usual lanyard clearance. Leaving the logo out also gives names more room. Keep one badge per page for custom stock, or choose A4 or US Letter for office printers. Set the printer margin, bleed and cut marks and read the sheet and PDF page counts in the proof. Print at 100% and choose long-edge duplex for matching backs.
+
+In the public badge, venue sign and table tent demos, **Copy setup** captures the current design. Open the matching print block in your workspace, select **Edit as JSON**, paste and choose **Apply JSON** to continue with your own event.
+
 ## Choose blocks
 
 By default the workspace enables all 19. To run a registration desk, for example, set `TOOLKIT_BLOCKS=registration-import,check-in` before starting the UI or MCP server. The catalog lists only enabled operations available to the caller and gives their schemas, descriptions and sample inputs.

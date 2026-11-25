@@ -38,6 +38,56 @@ export function button(text: string, onClick: () => void) {
   return control;
 }
 
+export function copySetup(
+  root: HTMLElement,
+  operation: string,
+  read: () => object,
+) {
+  const wrapper = el("div");
+  const feedback = el("p");
+  feedback.setAttribute("role", "status");
+  const manual = el("textarea");
+  manual.readOnly = true;
+  manual.rows = 6;
+  const manualField = field("Setup JSON to copy", manual);
+  manualField.hidden = true;
+  const instructions = `In your toolkit workspace, open ${operation}, choose Edit as JSON, paste the setup and select Apply JSON.`;
+  let revision = 0;
+  root.addEventListener("input", () => {
+    revision++;
+    manualField.hidden = true;
+    feedback.textContent = "";
+  });
+  const action = button("Copy setup", async () => {
+    const current = ++revision;
+    let json: string;
+    try {
+      json = JSON.stringify(read(), null, 2);
+    } catch (error) {
+      feedback.textContent =
+        error instanceof Error
+          ? error.message
+          : "Check the settings before copying.";
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(json);
+      if (current !== revision) return;
+      manualField.hidden = true;
+      feedback.textContent = "Setup copied. " + instructions;
+    } catch {
+      if (current !== revision) return;
+      manual.value = json;
+      manualField.hidden = false;
+      manual.focus();
+      manual.select();
+      feedback.textContent = "Copy the selected JSON. " + instructions;
+    }
+  });
+  append(wrapper, action, manualField, feedback);
+  return wrapper;
+}
+
 export function panel(title: string) {
   const panel = el("section");
   panel.className = "demo-result";

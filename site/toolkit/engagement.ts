@@ -28,7 +28,7 @@ export const engagementGuides: Record<string, BlockGuide> = {
     related: ["schedule", "event-feedback"],
     demoTitle: "Put a question on stage",
     demoIntro:
-      "Ask a question as an attendee, approve it as the moderator, then choose when the audience sees it on stage.",
+      "Two approved questions have different vote counts. Vote as an attendee, choose either question as MC, or submit another for moderation.",
   },
   "event-feedback": {
     input:

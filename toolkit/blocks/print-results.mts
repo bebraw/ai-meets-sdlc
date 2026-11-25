@@ -4,6 +4,12 @@ const badgeSummary = resultSchema(
   {
     ready: "boolean",
     badges: "integer",
+    paper: { enum: ["single", "a4", "letter"] },
+    badgeSizeMm: "number",
+    sheetCount: "integer",
+    perSheet: "integer",
+    columns: "integer",
+    rows: "integer",
     pageCount: "integer",
     heightMm: "number",
     widthMm: "number",
@@ -20,7 +26,20 @@ const badgeSummary = resultSchema(
     },
     artifact: "object",
   },
-  ["ready", "badges", "pageCount", "heightMm", "widthMm", "issues"],
+  [
+    "ready",
+    "badges",
+    "paper",
+    "badgeSizeMm",
+    "sheetCount",
+    "perSheet",
+    "columns",
+    "rows",
+    "pageCount",
+    "heightMm",
+    "widthMm",
+    "issues",
+  ],
 );
 const sheet = resultSchema(
   {
