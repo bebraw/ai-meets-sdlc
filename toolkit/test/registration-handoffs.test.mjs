@@ -3,7 +3,34 @@ import test from "node:test";
 import { chromium } from "playwright";
 import { createToolkit } from "../dist/index.mjs";
 import { startWeb } from "../dist/http.mjs";
-import { registrationExample } from "../dist/blocks/registration-csv.mjs";
+import {
+  importRegistrations,
+  registrationExample,
+} from "../dist/blocks/registration-csv.mjs";
+
+const partialCsv = "Ticket Full Name,Ticket Reference\nAlex Kane,FN-2";
+
+test("partial exports preserve stored data and explicit corrections take effect", () => {
+  const initial = importRegistrations(registrationExample);
+  const merged = importRegistrations({
+    source: "tito",
+    csv: partialCsv,
+    previous: initial.records,
+  });
+  const retained = merged.records.find((p) => p.ticketCode === "FN-2");
+  assert.equal(retained.status, "cancelled");
+  assert.equal(retained.email, "alex@example.test");
+  assert.equal(retained.company, "Diagram Lab");
+  const cleared = importRegistrations({
+    source: "tito",
+    csv: "Ticket Full Name,Ticket Reference,Company,Email,Status\nAlex Kane,FN-2,,,paid",
+    previous: merged.records,
+  });
+  const amended = cleared.records.find((p) => p.ticketCode === "FN-2");
+  assert.equal(amended.status, "active");
+  assert.equal(amended.email, "");
+  assert.equal(amended.company, "");
+});
 
 test("imported tickets open reviewed badge, desk and catering actions", async (t) => {
   const kit = createToolkit({
@@ -102,6 +129,19 @@ test("imported tickets open reviewed badge, desk and catering actions", async (t
     revision: 1,
     assignName: "Noa Hall",
   });
+  const assigned = await kit.run("checkin_roster", {});
+  const guest = assigned.people.find((p) => p.id === claim);
+  await kit.run("checkin_register", {
+    rosterRevision: assigned.rosterRevision,
+    people: [
+      {
+        ...guest,
+        email: "noa@example.test",
+        company: "Desk Co",
+        type: "volunteer",
+      },
+    ],
+  });
   const current = await kit.run("checkin_roster", {});
   const repeated = await importSample(
     registrationExample.csv.replace("Zoë Marin", "Zoë Vale"),
@@ -125,7 +165,50 @@ test("imported tickets open reviewed badge, desk and catering actions", async (t
   );
   const arrival = roster.people.find((p) => p.id === claim);
   assert.equal(arrival.name, "Noa Hall");
+  assert.equal(arrival.email, "noa@example.test");
+  assert.equal(arrival.company, "Desk Co");
+  assert.equal(arrival.type, "volunteer");
   assert.ok(arrival.arrivedAt);
+
+  await importSample(partialCsv);
+  await click("Open check-in roster (1 ticket)");
+  await run("checkin_register");
+  const alex = (await kit.run("checkin_roster", {})).people.find(
+    (p) => p.ticketCode === "FN-2",
+  );
+  assert.equal(alex.name, "Alex Kane");
+  assert.equal(alex.company, "Diagram Lab");
+  assert.equal(alex.email, "alex@example.test");
+  assert.equal(alex.status, "cancelled");
+
+  // A desk role may be longer than badge lettering allows. Its badge
+  // validation must not block either of the independent destinations.
+  await importSample();
+  await page.locator("#advanced summary").click();
+  await page.locator("#input-json").fill(
+    JSON.stringify({
+      ...registrationExample,
+      previous: initial.records.map((r) => ({
+        ...r,
+        type: "Volunteer supporting the technical programme",
+      })),
+    }),
+  );
+  await click("Apply JSON");
+  await run("registration_import_csv");
+  await page
+    .getByText(/Prepare badges — Check the type on registration/)
+    .waitFor();
+  assert.equal(
+    await page.getByRole("button", { name: /^Prepare badges/ }).count(),
+    0,
+  );
+  await page
+    .getByRole("button", { name: "Open check-in roster (3 tickets, 2 active)" })
+    .waitFor();
+  await page
+    .getByRole("button", { name: "Prepare catering brief (2 meals)" })
+    .waitFor();
 
   const limitedKit = createToolkit({
     enabled: ["registration-import", "catering"],
@@ -161,4 +244,15 @@ test("imported tickets open reviewed badge, desk and catering actions", async (t
   await page
     .getByRole("button", { name: "Prepare catering brief (3 meals)" })
     .waitFor();
+
+  // A saved link to a disabled tool must not keep the prior import runnable.
+  await page.goto(origin + "/#operation=checkin_register");
+  await page
+    .getByText("Sign in with access to the requested action.")
+    .waitFor();
+  assert.equal(await page.locator("#tool").isVisible(), false);
+  assert.equal(await page.locator("#run").isDisabled(), true);
+  assert.equal(await field("csv").count(), 0);
+  assert.equal(await page.locator("#input-json").inputValue(), "");
+  await importSample();
 });

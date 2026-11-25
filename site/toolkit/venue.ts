@@ -18,6 +18,8 @@ export const venueGuides: Record<string, BlockGuide> = {
       "One guest has a paid ticket, one has a refund and the third ticket has no name yet. Change a ticket status and import again to see how many badges, desk records and meals you need.",
   },
   "check-in": {
+    accessNote:
+      "Desk staff need an active desk grant for lookups and arrivals. Organizers can review the full roster and undo arrivals.",
     input: "A registration roster and a desk link issued by an organizer.",
     output:
       "Arrival status for each guest and a history of check-ins and corrections.",

@@ -17,6 +17,8 @@ export const programmeGuides: Record<string, BlockGuide> = {
       "Alex has submitted a poster on accessible diagrams. Change the review decision and see the handoff to the registration desk.",
   },
   "speaker-workspace": {
+    accessNote:
+      "A private invitation opens one talk. Signed-in speakers can access their assigned workspace. Anyone can read approved programme entries and their released materials.",
     input:
       "Assign a talk to a speaker and give them a private invitation link. They supply their profile, talk copy and any PDF materials.",
     output:

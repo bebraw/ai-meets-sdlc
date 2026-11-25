@@ -3,6 +3,7 @@ export interface BlockGuide {
   output: string;
   actions: string[];
   related: string[];
+  accessNote?: string;
   demoTitle: string;
   demoIntro: string;
 }

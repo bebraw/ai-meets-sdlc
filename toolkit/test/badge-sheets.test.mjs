@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { planBadgeSheets } from "../dist/blocks/badge-sheets.mjs";
+import { prepareBadgeRun } from "../dist/blocks/badge-artwork.mjs";
+import { withPrintPage } from "../dist/blocks/print-browser.mjs";
 import { createToolkit } from "../dist/index.mjs";
 
 const settings = {
@@ -140,4 +142,65 @@ test("preflight and PDF agree on A4 and Letter dimensions, duplex pages and spar
   } finally {
     await kit.close();
   }
+});
+
+test("single-page and sheet renderers restore the physical size of a scaled source proof", async () => {
+  const results = await withPrintPage((page) =>
+    page.evaluate(async () => {
+      const { planBadgeSheets, renderBadgeSheet } =
+        await import("./badge-sheets.mjs");
+      const source = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "svg",
+      );
+      source.setAttribute("viewBox", "0 0 86 86");
+      const fill = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "rect",
+      );
+      fill.setAttribute("width", "86");
+      fill.setAttribute("height", "86");
+      source.appendChild(fill);
+      source.style.cssText =
+        "width:100%;height:auto;max-width:12rem;max-height:12rem";
+      return ["single", "a4"].map((paper) => {
+        const plan = planBadgeSheets({ paper, diameter: 80, bleed: 3 }, 1);
+        const result = renderBadgeSheet(plan, plan.pages[0], () => source);
+        document.body.append(result);
+        const badge =
+          paper === "single"
+            ? result
+            : result.querySelector("[data-badge-index]");
+        const box = badge.getBoundingClientRect();
+        return [
+          (box.width * 25.4) / 96,
+          (box.height * 25.4) / 96,
+          source.style.maxWidth,
+        ];
+      });
+    }),
+  );
+  for (const [width, height, originalMaxWidth] of results) {
+    assert.ok(
+      Math.abs(width - 86) < 0.1 && Math.abs(height - 86) < 0.1,
+      `Printed badge measures ${width} × ${height} mm`,
+    );
+    assert.equal(originalMaxWidth, "12rem");
+  }
+});
+
+test("embedded badge settings keep their defaults when optional values are undefined", () => {
+  const people = [{ name: "Ada", role: "speaker" }];
+  const original = prepareBadgeRun({ people });
+  const embedded = prepareBadgeRun({
+    people,
+    settings: {
+      diameter: undefined,
+      bleed: undefined,
+      minName: undefined,
+      guides: undefined,
+    },
+  });
+  assert.deepEqual(embedded.settings, original.settings);
+  assert.deepEqual(embedded.plan, original.plan);
 });

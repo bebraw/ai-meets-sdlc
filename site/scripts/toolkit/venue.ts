@@ -10,7 +10,8 @@ import {
 } from "./controls.ts";
 import {
   importRegistrations,
-  prepareRegistrationHandoffs,
+  registrationBadgePeople,
+  registrationMeals,
   registrationExample,
 } from "../../../toolkit/blocks/registration-csv.mts";
 import { lanyardsCount } from "../../../toolkit/blocks/lanyard-count.mts";
@@ -86,9 +87,9 @@ function registrationImport(root: HTMLElement) {
     destinations.replaceChildren();
     try {
       const roster = importRegistrations({ csv: csv.value, source: "tito" });
-      const { badges, desk, meals } = prepareRegistrationHandoffs(
-        roster.records,
-      );
+      const badges = registrationBadgePeople(roster.records);
+      const meals = registrationMeals(roster.records);
+      const tickets = roster.records.length;
       for (const record of roster.records) {
         const row = rows.insertRow();
         for (const value of [
@@ -104,7 +105,7 @@ function registrationImport(root: HTMLElement) {
         ["badges", `Name badge guide · ${badges.length} eligible`],
         [
           "check-in",
-          `Check-in guide · ${desk.length} ${desk.length === 1 ? "ticket" : "tickets"}, ${meals.length} active`,
+          `Check-in guide · ${tickets} ${tickets === 1 ? "ticket" : "tickets"}, ${meals.length} active`,
         ],
         [
           "catering",
@@ -418,6 +419,19 @@ function paperProof() {
   const typeface = fontSelect();
   const fontStatus = status();
   let revision = 0;
+  function checkFit() {
+    if (paper.style.visibility === "hidden") return;
+    const overflow = Array.from(
+      paper.querySelectorAll<HTMLElement>(".face, .sign"),
+    ).some(
+      (item) =>
+        item.scrollHeight > item.clientHeight + 1 ||
+        item.scrollWidth > item.clientWidth + 1,
+    );
+    fontStatus.textContent = overflow
+      ? "Text exceeds the preview. Shorten the copy before printing."
+      : "";
+  }
   async function changeFont() {
     const current = ++revision;
     paper.style.visibility = "hidden";
@@ -426,7 +440,7 @@ function paperProof() {
       if (current !== revision) return;
       paper.style.fontFamily = font.family;
       paper.style.visibility = "";
-      fontStatus.textContent = "";
+      checkFit();
     } catch (error) {
       if (current !== revision) return;
       fontStatus.textContent =
@@ -446,6 +460,7 @@ function paperProof() {
       eventName: "Field Notes Forum",
       entries: [row],
     });
+    checkFit();
   }
   return {
     holder,

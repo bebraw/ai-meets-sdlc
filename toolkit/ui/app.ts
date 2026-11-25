@@ -1,13 +1,19 @@
 import { badgePaperLabels, type BadgePaper } from "../blocks/badge-sheets.mjs";
 import { printFonts, type PrintFontId } from "../blocks/print-fonts.mjs";
 import {
-  prepareRegistrationHandoffs,
-  type RegistrationRecord,
+  registrationBadgePeople,
+  registrationDeskPeople,
+  registrationMeals,
 } from "../blocks/registration-csv.mjs";
 import { prepareEngagementForm, renderEngagementResult } from "./engagement.js";
 import { prepareWorkflowForm, renderWorkflowResult } from "./workflows.js";
 import { attachBadgeProof } from "./badge-proof.js";
-import type { Block, JsonSchema, Role } from "../contracts.mjs";
+import type {
+  Block,
+  JsonSchema,
+  OperationResult,
+  Role,
+} from "../contracts.mjs";
 import {
   element as node,
   message,
@@ -129,65 +135,67 @@ function newButton(text: string, callback: () => void) {
   return b;
 }
 function registrationActions(
-  records: RegistrationRecord[],
+  imported: OperationResult<"registration_import_csv">,
+  source: string,
   result: HTMLElement,
   navigate: Navigate,
 ) {
   const permitted = new Set(
     profile.blocks.flatMap((b) => b.operations.map((o) => o.name)),
   );
-  if (
-    !["badges_export_pdf", "checkin_register", "catering_prepare_brief"].some(
-      (name) => permitted.has(name),
-    )
-  )
-    return;
-  try {
-    const { badges, desk, meals } = prepareRegistrationHandoffs(records);
-    const actions = node("div", undefined, "qa-actions");
-    const add = (
-      name: string,
-      label: string,
-      count: number,
-      inputs: Inputs,
-    ) => {
-      if (!permitted.has(name)) return;
-      const control = newButton(label, () => navigate(name, inputs));
-      control.disabled = count === 0;
+  const actions = node("div", undefined, "qa-actions");
+  const add = (
+    name: string,
+    title: string,
+    people: () => Inputs[],
+    summary: (count: number) => string,
+    otherInputs: Inputs = {},
+  ) => {
+    if (!permitted.has(name)) return;
+    try {
+      const rows = people();
+      const control = newButton(title + " (" + summary(rows.length) + ")", () =>
+        navigate(name, { ...otherInputs, people: rows }),
+      );
+      control.disabled = rows.length === 0;
       actions.append(control);
-    };
-    add(
-      "badges_export_pdf",
-      "Prepare badges (" + badges.length + ")",
-      badges.length,
-      { people: badges },
-    );
-    add(
-      "checkin_register",
-      `Open check-in roster (${desk.length} ${desk.length === 1 ? "ticket" : "tickets"}, ${meals.length} active)`,
-      desk.length,
-      { people: desk },
-    );
-    add(
-      "catering_prepare_brief",
-      `Prepare catering brief (${meals.length} ${meals.length === 1 ? "meal" : "meals"})`,
-      meals.length,
-      {
-        eventName:
-          [...profile.eventLabel.trim()].slice(0, 240).join("") || "Event",
-        people: meals,
-      },
-    );
+    } catch (error) {
+      actions.append(node("p", title + " — " + message(error), "error"));
+    }
+  };
+  add(
+    "badges_export_pdf",
+    "Prepare badges",
+    () => registrationBadgePeople(imported.records),
+    String,
+  );
+  add(
+    "checkin_register",
+    "Open check-in roster",
+    () => registrationDeskPeople(imported.records, source, imported.mapping),
+    (count) => {
+      const tickets = count + (count === 1 ? " ticket" : " tickets");
+      return imported.mapping.status < 0
+        ? tickets
+        : tickets +
+            ", " +
+            imported.records.filter((record) => record.status === "active")
+              .length +
+            " active";
+    },
+  );
+  add(
+    "catering_prepare_brief",
+    "Prepare catering brief",
+    () => registrationMeals(imported.records),
+    (count) => count + (count === 1 ? " meal" : " meals"),
+    {
+      eventName:
+        [...profile.eventLabel.trim()].slice(0, 240).join("") || "Event",
+    },
+  );
+  if (actions.childElementCount)
     result.append(node("h3", "Use these registrations"), actions);
-  } catch (error) {
-    result.append(
-      node(
-        "p",
-        "Review the roster before continuing. " + message(error),
-        "error",
-      ),
-    );
-  }
 }
 
 let fieldCount = 0;
@@ -468,19 +476,26 @@ function form(value: unknown = {}) {
   $("result").replaceChildren();
   notice("");
 }
-async function action(name: string | null, initial?: Inputs) {
-  const current = ++serial;
+function clearAction() {
+  serial++;
   badgeProof?.dispose();
   badgeProof = undefined;
+  reader = undefined;
+  op = undefined;
+  $("fields").replaceChildren();
+  $("result").replaceChildren();
+  $("input-json", "textarea").value = "";
+  $("run", "button").disabled = true;
+  setupChallenge();
+  notice("");
+}
+async function action(name: string | null, initial?: Inputs) {
+  clearAction();
+  const current = serial;
   op = block?.operations.find((o) => o.name === name) || block?.operations[0];
   if (!op) return;
   $("operation", "select").value = op.name;
   $("purpose").textContent = op.description;
-  $("run", "button").disabled = true;
-  $("fields").replaceChildren();
-  $("result").replaceChildren();
-  reader = undefined;
-  notice("");
   try {
     const previous = initial || lastInputs.get(op.name) || {};
     const prepared =
@@ -507,17 +522,26 @@ async function action(name: string | null, initial?: Inputs) {
 async function route() {
   const p = params();
   const requested = p.get("operation");
+  const blockId = p.get("block");
   block =
-    profile.blocks.find((b) =>
-      requested
-        ? b.operations.some((o) => o.name === requested)
-        : b.id === p.get("block"),
-    ) || profile.blocks[0];
+    requested || blockId
+      ? profile.blocks.find((b) =>
+          requested
+            ? b.operations.some((o) => o.name === requested)
+            : b.id === blockId,
+        )
+      : profile.blocks[0];
   nav();
   $("tool").hidden = !block;
   if (!block) {
+    clearAction();
     $("title").textContent = "Event workspace";
-    $("description").textContent = "Sign in to use the installed tools.";
+    $("description").textContent =
+      requested || blockId
+        ? "This tool is unavailable in your workspace."
+        : "Sign in to use the installed tools.";
+    document.title = "Event workspace";
+    if (requested) notice("Sign in with access to the requested action.");
     return;
   }
   $("title").textContent = block.title;
@@ -536,13 +560,11 @@ async function route() {
       if (!isRecord(value)) throw Error("Invalid action link.");
       initial = value;
     } catch {
+      clearAction();
+      $("tool").hidden = true;
       notice("Invalid action link.");
       return;
     }
-  }
-  if (requested && !block.operations.some((o) => o.name === requested)) {
-    notice("Sign in with access to the requested action.");
-    return;
   }
   await action(requested, initial);
 }
@@ -735,7 +757,8 @@ $("inputs").onsubmit = async (event) => {
     };
     if (op.name === "registration_import_csv") {
       registrationActions(
-        (data as { records: RegistrationRecord[] }).records,
+        data as OperationResult<"registration_import_csv">,
+        String(input.source),
         result,
         navigate,
       );

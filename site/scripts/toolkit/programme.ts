@@ -346,14 +346,26 @@ function catering(root: HTMLElement) {
       groups,
     );
   }
+  const save = button("Download catering-brief.txt", () =>
+    download("catering-brief.txt", "text/plain", brief),
+  );
+  function markEdited() {
+    if (save.disabled) return;
+    save.disabled = true;
+    view.body.textContent =
+      "Update the meal counts to prepare the edited brief.";
+  }
+  reply.addEventListener("input", markEdited);
+  reserved.addEventListener("change", markEdited);
   root.replaceChildren(
     field("Third guest’s dietary response", reply),
     field("Additional reserved meals", reserved),
-    button("Update meal counts", update),
+    button("Update meal counts", () => {
+      update();
+      save.disabled = false;
+    }),
     view.panel,
-    button("Download catering-brief.txt", () =>
-      download("catering-brief.txt", "text/plain", brief),
-    ),
+    save,
   );
   update();
 }

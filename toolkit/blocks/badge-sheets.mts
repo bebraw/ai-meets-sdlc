@@ -111,8 +111,25 @@ export function renderBadgeSheet(
   page: BadgeSheetPage,
   artwork: (badgeIndex: number) => SVGSVGElement,
 ) {
+  // The source may have been scaled for a preview. On single-badge pages
+  // dimensions use physical units; nested badges use millimetres in the sheet viewBox.
+  function copyArtwork(index: number, size: string) {
+    const badge = artwork(index).cloneNode(true) as SVGSVGElement;
+    for (const property of [
+      "width",
+      "height",
+      "min-width",
+      "max-width",
+      "min-height",
+      "max-height",
+    ])
+      badge.style.removeProperty(property);
+    badge.setAttribute("width", size);
+    badge.setAttribute("height", size);
+    return badge;
+  }
   if (plan.paper === "single")
-    return artwork(page.slots[0]!.badgeIndex).cloneNode(true) as SVGSVGElement;
+    return copyArtwork(page.slots[0]!.badgeIndex, plan.badgeSizeMm + "mm");
   const sheet = document.createElementNS(ns, "svg");
   sheet.setAttribute("viewBox", `0 0 ${plan.widthMm} ${plan.heightMm}`);
   sheet.setAttribute("width", plan.widthMm + "mm");
@@ -124,17 +141,10 @@ export function renderBadgeSheet(
   );
   sheet.dataset.sheetSide = page.side;
   for (const { badgeIndex, xMm, yMm } of page.slots) {
-    const badge = artwork(badgeIndex).cloneNode(true) as SVGSVGElement;
+    const badge = copyArtwork(badgeIndex, String(plan.badgeSizeMm));
     badge.dataset.badgeIndex = String(badgeIndex);
     badge.setAttribute("x", String(xMm));
     badge.setAttribute("y", String(yMm));
-    badge.setAttribute("width", String(plan.badgeSizeMm));
-    badge.setAttribute("height", String(plan.badgeSizeMm));
-    // Show a source proof at its original trim size even if its standalone
-    // preview had inline CSS that scaled it to fit a narrow container.
-    badge.style.removeProperty("width");
-    badge.style.removeProperty("height");
-    badge.style.removeProperty("max-width");
     sheet.appendChild(badge);
     if (plan.cutMarks) {
       const right = xMm + plan.badgeSizeMm,

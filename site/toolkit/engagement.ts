@@ -2,6 +2,8 @@ import type { BlockGuide } from "./types.ts";
 
 export const engagementGuides: Record<string, BlockGuide> = {
   "dinner-rsvps": {
+    accessNote:
+      "Guests need their individual invitation link to read or change a reply. Organizers can review all invitations.",
     input:
       "A guest list, a reply deadline and the date to delete private replies.",
     actions: [

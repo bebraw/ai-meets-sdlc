@@ -315,66 +315,95 @@ export const registrationExample = {
   ].join("\n"),
 };
 
-export function prepareRegistrationHandoffs(records: RegistrationRecord[]) {
-  const badges: { name: string; company: string; role: string }[] = [];
-  const meals: { diet: string }[] = [];
-  const desk = records.map((record) => {
-    // Repeat imports can retain rows and custom fields from a previous roster.
-    // Only the fields understood by each destination travel with the handoff.
-    const text = (key: string, max: number, fallback = "") => {
-      const value = record[key] ?? fallback;
-      if (typeof value !== "string" || [...value].length > max)
-        throw new Error(
-          "Check the " + key + " on registration " + record.sourceKey + ".",
-        );
-      return value;
-    };
-    const id = text("id", 150),
-      source = text("source", 64),
-      sourceKey = text("sourceKey", 340);
-    const name = text("name", 300).trim(),
-      company = text("company", 300);
-    const email = text("email", 254),
-      ticketCode = text("ticketCode", 120);
-    const type = text("type", 64, "attendee").trim() || "attendee";
-    const status = record.status;
+// Historical imports may retain organizer-supplied fields. Each destination
+// validates only the information it will receive.
+function registrationText(
+  record: RegistrationRecord,
+  key: string,
+  max: number,
+) {
+  const value = record[key] ?? "";
+  if (typeof value !== "string" || [...value].length > max)
+    throw new Error(
+      "Check the " + key + " on registration " + record.sourceKey + ".",
+    );
+  return value;
+}
+
+function ticketStatus(record: RegistrationRecord) {
+  if (record.status !== "active" && record.status !== "cancelled")
+    throw new Error(
+      "Check the status on registration " + record.sourceKey + ".",
+    );
+  return record.status;
+}
+
+export function registrationBadgePeople(records: RegistrationRecord[]) {
+  return records.flatMap((record) => {
+    if (
+      ticketStatus(record) !== "active" ||
+      record.unassigned ||
+      record.badge === false
+    )
+      return [];
+    const name = registrationText(record, "name", 300).trim();
+    if (!name) return [];
+    return [
+      {
+        name,
+        company: registrationText(record, "company", 300),
+        role: registrationText(record, "type", 36).trim() || "attendee",
+      },
+    ];
+  });
+}
+
+export function registrationMeals(records: RegistrationRecord[]) {
+  return records
+    .filter((record) => ticketStatus(record) === "active")
+    .map((record) => ({ diet: registrationText(record, "diet", 2000) }));
+}
+
+export function registrationDeskPeople(
+  records: RegistrationRecord[],
+  source: string,
+  mapping: TicketMapping,
+) {
+  return records.map((record) => {
+    const id = registrationText(record, "id", 150),
+      origin = registrationText(record, "source", 64),
+      sourceKey = registrationText(record, "sourceKey", 340);
+    const name = registrationText(record, "name", 300).trim(),
+      ticketCode = registrationText(record, "ticketCode", 120);
     if (
       !id.trim() ||
-      !source.trim() ||
+      !origin.trim() ||
       !sourceKey.trim() ||
-      (!name && !ticketCode.trim()) ||
-      (status !== "active" && status !== "cancelled")
+      (!name && !ticketCode.trim())
     )
       throw new Error(
-        "Check the ticket identity, holder and status on registration " +
-          sourceKey +
-          ".",
+        "Check the identity and holder on registration " + sourceKey + ".",
       );
-    if (status === "active") {
-      meals.push({ diet: text("diet", 2000) });
-      if (name && !record.unassigned && record.badge !== false) {
-        if ([...type].length > 36)
-          throw new Error(
-            "Badge roles accept up to 36 characters. Check registration " +
-              sourceKey +
-              ".",
-          );
-        badges.push({ name, company, role: type });
-      }
-    }
+    const status = ticketStatus(record);
+    const company = registrationText(record, "company", 300);
+    const email = registrationText(record, "email", 254);
+    const type = registrationText(record, "type", 64).trim();
+    // Empty defaults in a partial export must not clear fields at the desk.
+    // A new desk registration supplies its own defaults for omitted fields.
+    const supplied = (key: keyof TicketMapping) =>
+      origin !== source || mapping[key] >= 0;
     return {
       id,
       name,
-      company,
-      email,
-      ticketCode,
-      type,
-      status,
-      source,
+      source: origin,
       sourceKey,
+      ...(ticketCode || supplied("ticketCode") ? { ticketCode } : {}),
+      ...(email || supplied("email") ? { email } : {}),
+      ...(company || supplied("company") ? { company } : {}),
+      ...(status === "cancelled" || supplied("status") ? { status } : {}),
+      ...(type && type !== "attendee" ? { type } : {}),
     };
   });
-  return { badges, desk, meals };
 }
 
 export function importRegistrations({
@@ -465,16 +494,19 @@ export function importRegistrations({
       source,
       sourceKey,
       name,
-      company: get("company"),
-      email,
-      ticketCode,
+      company: columns.company < 0 ? (old?.company ?? "") : get("company"),
+      email: columns.email < 0 ? (old?.email ?? "") : email,
+      ticketCode: columns.ticketCode < 0 ? (old?.ticketCode ?? "") : ticketCode,
       orderCode:
-        get("orderCode") ||
+        (columns.orderCode < 0 ? old?.orderCode : get("orderCode")) ||
         (source === "tito" ? (ticketCode.match(/^(.+)-\d+$/u)?.[1] ?? "") : ""),
       type: old?.type ?? "attendee",
       badge: old?.badge ?? !unassigned,
       unassigned,
-      status: importTicketStatus(header, row, columns.status),
+      status:
+        columns.status < 0 && old?.status === "cancelled"
+          ? "cancelled"
+          : importTicketStatus(header, row, columns.status),
     };
     if (columns.diet >= 0) record.diet = get("diet");
     if (keepDeskAssignment)

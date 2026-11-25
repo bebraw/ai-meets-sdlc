@@ -1115,6 +1115,30 @@ try {
     false,
   );
   assert.equal(await page.getByLabel("Include event logo").isChecked(), false);
+  // A saved font can become temporarily unavailable. Keep the roster and controls usable.
+  const namedBeforeFontFailure = await page.getByRole("article").count();
+  await page.route("**/assets/print-fonts/Lora.ttf", (route) =>
+    route.fulfill({ status: 503 }),
+  );
+  await page.reload();
+  await page
+    .getByText(
+      "Could not load Lora. Choose another print font or reload to retry.",
+      { exact: true },
+    )
+    .waitFor();
+  assert.equal(await page.getByRole("article").count(), namedBeforeFontFailure);
+  assert.ok(await typeface.isVisible());
+  assert.equal(await page.locator(".badge-preview svg").count(), 0);
+  await page
+    .getByRole("button", { name: "Print / save PDF — spares", exact: true })
+    .click();
+  await page
+    .getByText("The badge font has not loaded.", { exact: true })
+    .waitFor();
+  await typeface.selectOption("noto-sans");
+  await page.locator(".badge-preview svg").waitFor();
+  await printRun("spares");
   assert.deepEqual(errors, []);
   console.log(
     "Badge browser checks passed: lanyard summaries, retired badges, search-independent totals, copy/download and clipboard fallback, independent attendee and sponsor spares, saved quantities, role-specific artwork and print runs, PDF pagination, repeated backs, Unicode, overflow, live records, duplicates, print preferences, source corrections, desktop/mobile layout and accessibility.",

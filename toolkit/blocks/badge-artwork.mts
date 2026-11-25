@@ -207,8 +207,8 @@ function wrapBadgeLines(
 function lineHalfWidth(m: TextMetrics) {
   return Math.max(
     m.width / 2,
-    m.actualBoundingBoxLeft - m.width / 2,
-    m.actualBoundingBoxRight - m.width / 2,
+    m.actualBoundingBoxLeft,
+    m.actualBoundingBoxRight,
   );
 }
 
@@ -296,6 +296,16 @@ export function renderBadgeArtwork(
     );
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d")!;
+  // Match the SVG's middle anchor and reading direction. Both ink bounds are
+  // now measured from the badge center, including overhanging accents.
+  ctx.textAlign = "center";
+  function direction(line: string) {
+    return /[\p{Script=Arabic}\p{Script=Hebrew}]/u.test(line) ? "rtl" : "ltr";
+  }
+  function measure(line: string) {
+    ctx.direction = direction(line);
+    return ctx.measureText(line);
+  }
   function block(
     value: string,
     top: number,
@@ -338,14 +348,8 @@ export function renderBadgeArtwork(
         for (const start of starts) {
           const fits = (text: string, index: number) => {
             if (index >= count) return false;
-            const m = ctx.measureText(text);
-            if (label !== "Name")
-              return (
-                Math.max(
-                  m.width,
-                  m.actualBoundingBoxLeft + m.actualBoundingBoxRight,
-                ) <= bandWidth
-              );
+            const m = measure(text);
+            if (label !== "Name") return 2 * lineHalfWidth(m) <= bandWidth;
             const midline = start + (index + 0.5) * step;
             const halfHeight =
               (m.actualBoundingBoxAscent + m.actualBoundingBoxDescent) / 2;
@@ -376,7 +380,7 @@ export function renderBadgeArtwork(
     const { lines, size, step, start } = selected;
     ctx.font = `${weight} ${size}px "${font.family}"`;
     lines.forEach((line, i) => {
-      const m = ctx.measureText(line);
+      const m = measure(line);
       const baseline =
         start +
         step * i +
@@ -399,9 +403,7 @@ export function renderBadgeArtwork(
         "font-weight": weight,
         "font-family": font.family,
         "text-anchor": "middle",
-        direction: /[\p{Script=Arabic}\p{Script=Hebrew}]/u.test(line)
-          ? "rtl"
-          : "ltr",
+        direction: direction(line),
       });
       node.textContent = line;
       content.appendChild(node);
@@ -510,9 +512,14 @@ const defaultColors = {
 
 /** Assemble distinct printable rows. Repeated spare copies and backs share one proof. */
 export function prepareBadgeRun(input: BadgeRunInput) {
+  // Embedded callers can explicitly pass undefined for an optional setting.
+  const overrides = { ...input.settings };
+  for (const key of Object.keys(overrides) as (keyof typeof overrides)[]) {
+    if (overrides[key] === undefined) delete overrides[key];
+  }
   const settings = {
     ...defaultGeometry,
-    ...input.settings,
+    ...overrides,
     shape: input.settings?.shape ?? "circle",
     attachment: input.settings?.attachment ?? "lanyard",
     font: input.settings?.font ?? "noto-sans",

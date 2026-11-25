@@ -102,9 +102,16 @@ async function checkPrintSetups(page) {
   });
 
   await page.goto("/toolkit/table-tents/");
+  await page.getByLabel("Discussion topic").fill("W".repeat(100));
+  await page.getByLabel("Starter question").fill("W".repeat(280));
+  const overflow = page.getByText(
+    "Text exceeds the preview. Shorten the copy before printing.",
+  );
+  await overflow.waitFor();
   await page.getByLabel("Discussion topic").fill("Code review");
   await page.getByLabel("Starter question").fill("");
   await page.getByLabel("Print font").selectOption("lora");
+  await overflow.waitFor({ state: "hidden" });
   assert.deepEqual(await copy("table-tents", "table_tents_export_pdf"), {
     eventName: "Field Notes Forum",
     font: "lora",
@@ -139,6 +146,19 @@ export async function validateToolkitExplorer(page) {
     titles.add(title);
     await page.setViewportSize({ width: 1024, height: phone.height });
     await checkTitleFit(heading, path, 1024);
+    const leftColumnGap = await page
+      .locator(".toolkit-intro")
+      .evaluate(
+        (header) =>
+          document
+            .querySelector('[aria-labelledby="actions-heading"]')
+            .getBoundingClientRect().top -
+          header.getBoundingClientRect().bottom,
+      );
+    assert.ok(
+      leftColumnGap < 64,
+      "Block capabilities separated from the introduction at " + path,
+    );
     await page.setViewportSize(phone);
     await checkTitleFit(heading, path, phone.width);
     const actions = page
@@ -243,4 +263,18 @@ export async function validateToolkitExplorer(page) {
   assert.match(await preview.innerText(), /14 blue lanyards/);
   assert.doesNotMatch(await preview.innerText(), /red lanyards/);
   await checkPrintSetups(page);
+  await page.goto("/toolkit/catering/");
+  const download = page.getByRole("button", {
+    name: "Download catering-brief.txt",
+  });
+  assert.ok(await download.isEnabled());
+  await page.getByLabel("Third guest’s dietary response").fill("Vegetarian");
+  assert.ok(
+    await download.isDisabled(),
+    "The download must reflect the latest dietary response.",
+  );
+  await page.getByLabel("Additional reserved meals").selectOption("2");
+  await page.getByRole("button", { name: "Update meal counts" }).click();
+  await page.getByText("5 meals to prepare", { exact: true }).waitFor();
+  assert.ok(await download.isEnabled());
 }

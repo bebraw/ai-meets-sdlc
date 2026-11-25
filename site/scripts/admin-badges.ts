@@ -400,7 +400,9 @@ function setup(root: HTMLElement): void {
       return;
     }
     if (!person || !font) {
-      previewStatus.textContent = "Select a person to inspect their badge.";
+      previewStatus.textContent = font
+        ? "Select a person to inspect their badge."
+        : "Choose a print font in Printer settings to preview this badge.";
       return;
     }
     const result = renderBadge(person, workspace.settings, font);
@@ -948,7 +950,15 @@ function setup(root: HTMLElement): void {
   async function load() {
     const result = await api<BadgeStudioData>("/api/admin/badges", "");
     const saved = parsePrintPreferences(result.preferences);
-    if (!customFontName) font = await loadBadgeFont(saved.settings.font);
+    let fontError = "";
+    if (!customFontName) {
+      try {
+        font = await loadBadgeFont(saved.settings.font);
+      } catch (error) {
+        font = undefined;
+        fontError = message(error);
+      }
+    }
     sourcePeople = result.people;
     signatures = result.signatures;
     spareBadges.attendee = saved.spareAttendeeBadges;
@@ -1032,6 +1042,12 @@ function setup(root: HTMLElement): void {
       .filter((role) => requestedSpares[role] !== undefined)
       .map((role) => `${spareBadges[role]} spare ${role} badges`)
       .join(" and ");
+    if (fontError) {
+      settingsPanel.open = true;
+      status.textContent =
+        fontError + " Choose another print font or reload to retry.";
+      return;
+    }
     status.textContent = dirty
       ? `${preparedSpares} prepared. Adjust the count and save print settings to keep it.`
       : "Badge studio ready. People are loaded from attendee and team records.";

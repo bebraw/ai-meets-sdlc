@@ -109,3 +109,55 @@ test("name bands use the space left by logos and attachments in proofs and print
     );
   }
 });
+
+test("badge preflight measures accented ink from the centered text anchor", async () => {
+  const result = await withPrintPage((page) =>
+    page.evaluate(async () => {
+      const { loadBadgeFont, renderBadgeArtwork, prepareBadgeRun } =
+        await import("./badge-artwork.mjs");
+      const {
+        rows: [row],
+        settings,
+      } = prepareBadgeRun({
+        people: [{ name: "Ήφαιστος", role: "guest" }],
+        settings: {
+          font: "fira-code",
+          diameter: 90,
+          safe: 9,
+          shape: "square",
+          attachment: "holder",
+          maxName: 40,
+          minName: 24,
+        },
+      });
+      const font = await loadBadgeFont(
+        await (await fetch("/assets/print-fonts/FiraCode.ttf")).arrayBuffer(),
+        "300 700",
+      );
+      const { svg, issues } = renderBadgeArtwork(
+        row.person,
+        settings,
+        font,
+        false,
+        false,
+        row.appearance,
+        null,
+      );
+      const name = svg.querySelector("text");
+      const ctx = document.createElement("canvas").getContext("2d");
+      ctx.font =
+        "700 " + name.getAttribute("font-size") + 'px "' + font.family + '"';
+      ctx.textAlign = "left";
+      const metrics = ctx.measureText(name.textContent);
+      const left =
+        (settings.diameter - metrics.width) / 2 - metrics.actualBoundingBoxLeft;
+      return { issues, name: name.textContent, left, safe: settings.safe };
+    }),
+  );
+  assert.deepEqual(result.issues, []);
+  assert.equal(result.name, "Ήφαιστος");
+  assert.ok(
+    result.left >= result.safe,
+    `Leftmost ink starts at ${result.left} mm, outside the ${result.safe} mm safe margin`,
+  );
+});

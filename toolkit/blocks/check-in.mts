@@ -263,14 +263,17 @@ export const checkin = {
                   targetId,
                 );
             }
-            const name = row.name.trim() || old?.name || "";
+            // An export may still show an unassigned ticket after the desk
+            // recorded its holder. Keep that holder's details on replay.
+            const holder = old?.assignedAtDesk && !row.name.trim() ? old : row;
+            const name = holder.name.trim() || old?.name || "";
             if (!name && !row.ticketCode?.trim())
               fail("An unassigned registration needs a ticket code.");
             const details = {
               name,
-              company: (row.company ?? old?.company ?? "").trim(),
-              email: (row.email ?? old?.email ?? "").trim().toLowerCase(),
-              type: row.type ?? old?.type ?? "attendee",
+              company: (holder.company ?? old?.company ?? "").trim(),
+              email: (holder.email ?? old?.email ?? "").trim().toLowerCase(),
+              type: holder.type ?? old?.type ?? "attendee",
               ticketCode: (row.ticketCode ?? old?.ticketCode ?? "").trim(),
               source: row.source ?? old?.source ?? "manual",
               sourceKey: proposedKey,
