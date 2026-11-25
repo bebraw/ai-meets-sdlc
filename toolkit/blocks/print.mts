@@ -16,11 +16,12 @@ import { prepareBadgeRun } from "./badge-artwork.mjs";
 import { lanyardsCount } from "./lanyard-count.mjs";
 import { printPdf, withPrintPage } from "./print-browser.mjs";
 import { printResults } from "./print-results.mjs";
+import { importRegistrations } from "./registration-csv.mjs";
 import {
-  detectAttendeeMapping,
-  importTicketStatus,
-  prepareAttendeeCsv,
-} from "./registration-csv.mjs";
+  renderVenueSheets,
+  venueSheetCss,
+  type VenuePrintEntry,
+} from "./venue-sheet.mjs";
 
 const role = text(36);
 const colors = list(
@@ -179,122 +180,6 @@ const registrationSchema = strictJsonObject({
   previous: v.optional(list(previousRecord, 2000)),
 });
 
-function importRegistrations({
-  csv,
-  source,
-  delimiter = "auto",
-  mapping = {},
-  previous = [],
-}: v.InferOutput<typeof registrationSchema>) {
-  const data = prepareAttendeeCsv(csv, delimiter);
-  const [header, ...rows] = data.records;
-  const columns = { ...detectAttendeeMapping(header.cells), ...mapping };
-  if (Object.values(columns).some((n) => n >= header.cells.length))
-    throw new Error("A mapped column is outside the CSV header.");
-  if (columns.name < 0 && (columns.first < 0 || columns.last < 0))
-    throw new Error("Map a full name or first and last names.");
-  if (columns.ticketCode < 0 && columns.email < 0)
-    throw new Error("Map a ticket code or attendee email.");
-  if (!rows.length || rows.length > 2000)
-    throw new Error("Import 1 to 2,000 registration rows.");
-  const records = new Map<string, v.InferOutput<typeof previousRecord>>(),
-    ids = new Set<string>();
-  for (const p of previous) {
-    const key = JSON.stringify([p.source, p.sourceKey]);
-    if (records.has(key) || ids.has(p.id))
-      throw new Error(
-        "Previous registrations must have distinct IDs and source keys.",
-      );
-    ids.add(p.id);
-    records.set(key, { ...p });
-  }
-  const seen = new Set();
-  for (const row of rows) {
-    if (row.cells.length !== header.cells.length)
-      throw new Error(
-        `Row ${row.row}: expected ${header.cells.length} columns, found ${row.cells.length}.`,
-      );
-    const get = (key: keyof typeof columns) =>
-      (row.cells[columns[key]] ?? "").trim().normalize("NFC");
-    const name =
-      columns.name >= 0
-        ? get("name")
-        : [get("first"), get("last")].filter(Boolean).join(" ");
-    const email = get("email").toLowerCase(),
-      ticketCode = get("ticketCode");
-    const unassigned =
-      source === "tito" &&
-      Boolean(ticketCode) &&
-      !name &&
-      !email &&
-      columns.email >= 0;
-    if ((!name && !unassigned) || (!email && !ticketCode))
-      throw new Error(
-        `Row ${row.row}: supply a name and a ticket code or attendee email.`,
-      );
-    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/u.test(email))
-      throw new Error(`Row ${row.row}: invalid attendee email.`);
-    if (
-      name.length > 300 ||
-      get("company").length > 300 ||
-      email.length > 254 ||
-      ticketCode.length > 100 ||
-      get("orderCode").length > 100 ||
-      get("diet").length > 2000
-    )
-      throw new Error(`Row ${row.row}: field is too long.`);
-    const sourceKey = ticketCode
-      ? `ticket:${ticketCode.toLowerCase()}`
-      : `email:${email}`;
-    if (seen.has(sourceKey))
-      throw new Error(
-        `Row ${row.row}: repeated ticket code or email within this source.`,
-      );
-    seen.add(sourceKey);
-    const key = JSON.stringify([source, sourceKey]),
-      old = records.get(key);
-    const keepDeskAssignment = old?.assignedAtDesk && unassigned;
-    const record: v.InferOutput<typeof previousRecord> = {
-      ...old,
-      id: old?.id ?? crypto.randomUUID(),
-      source,
-      sourceKey,
-      name,
-      company: get("company"),
-      email,
-      ticketCode,
-      orderCode:
-        get("orderCode") ||
-        (source === "tito" ? (ticketCode.match(/^(.+)-\d+$/u)?.[1] ?? "") : ""),
-      type: old?.type ?? "attendee",
-      badge: old?.badge ?? !unassigned,
-      unassigned,
-      status: importTicketStatus(header, row, columns.status),
-    };
-    if (columns.diet >= 0) record.diet = get("diet");
-    if (keepDeskAssignment)
-      Object.assign(record, {
-        name: old.name,
-        email: old.email,
-        company: old.company,
-        unassigned: false,
-        diet: old.diet,
-      });
-    else if (old?.assignedAtDesk) record.assignedAtDesk = false;
-    if (old?.unassigned && !unassigned) record.badge = true;
-    records.set(key, record);
-  }
-  if (records.size > 2000)
-    throw new Error("The merged roster exceeds 2,000 registrations.");
-  return {
-    records: [...records.values()],
-    imported: rows.length,
-    delimiter: data.delimiter,
-    ignoredRows: data.ignoredRows,
-    mapping: columns,
-  };
-}
-
 const signSchema = strictJsonObject({
   eventName: text(120),
   accent: v.optional(color),
@@ -326,12 +211,9 @@ const tentSchema = strictJsonObject({
 });
 type SignInput = v.InferOutput<typeof signSchema>;
 type TentInput = v.InferOutput<typeof tentSchema>;
-type PrintEntry =
-  | TentInput["tables"][number]
-  | (SignInput["signs"][number] & { qr?: string });
 async function printSigns(input: SignInput | TentInput) {
   const tents = "tables" in input;
-  let entries: PrintEntry[];
+  let entries: VenuePrintEntry[];
   if (tents) entries = input.tables;
   else {
     const qr = input.signs.some((row) => row.url)
@@ -353,80 +235,24 @@ async function printSigns(input: SignInput | TentInput) {
     );
   }
   return withPrintPage(async (page) => {
-    await page.addStyleTag({
-      content: `@page{size:A4 portrait;margin:0}article{width:210mm;height:297mm;overflow:hidden;--accent:${input.accent ?? "#245c49"}}.sign{padding:14mm;display:flex;flex-direction:column;gap:8mm}.brand{font-size:18pt;font-weight:700;color:var(--accent)}h1,p{margin:0}h1{font-size:46pt;line-height:1.07;overflow-wrap:anywhere}p{font-size:20pt;line-height:1.25;overflow-wrap:anywhere}.arrow{height:45mm;width:45mm;color:var(--accent)}.qr{width:48mm;height:48mm;align-self:start;margin-top:auto}.face{height:99mm;padding:8mm 12mm;display:flex;flex-direction:column;justify-content:center;gap:3mm;overflow:hidden}.face h1{font-size:27pt}.face p{font-size:13pt}.face .brand{font-size:11pt}.face:first-child{transform:rotate(180deg)}.fold{height:0;border-top:0.3mm dashed #888;position:relative;margin-bottom:-0.3mm}`,
+    await page.addStyleTag({ content: venueSheetCss });
+    await page.evaluate(renderVenueSheets, {
+      eventName: input.eventName,
+      entries,
+      accent: input.accent,
     });
-    await page.evaluate(
-      async ({ eventName, entries, tents }) => {
-        function element<K extends keyof HTMLElementTagNameMap>(
-          tag: K,
-          value?: string | null,
-          cls?: string,
-        ): HTMLElementTagNameMap[K] {
-          const node = document.createElement(tag);
-          if (value) node.textContent = value;
-          if (cls) node.className = cls;
-          return node;
-        }
-        for (const [index, row] of entries.entries()) {
-          const sheet = element("article");
-          document.body.append(sheet);
-          if ("topic" in row) {
-            const face = element("section", null, "face");
-            face.append(
-              element("div", `${eventName} · ${row.label}`, "brand"),
-              element("h1", row.topic),
-            );
-            if (row.question) face.append(element("p", row.question));
-            sheet.append(
-              face,
-              element("div", null, "fold"),
-              face.cloneNode(true),
-              element("div", null, "fold"),
-            );
-          } else {
-            sheet.className = "sign";
-            sheet.append(element("div", eventName, "brand"));
-            if (row.direction) {
-              const ns = "http://www.w3.org/2000/svg",
-                arrow = document.createElementNS(ns, "svg"),
-                path = document.createElementNS(ns, "path");
-              arrow.setAttribute("viewBox", "0 0 100 100");
-              arrow.setAttribute("class", "arrow");
-              arrow.setAttribute("aria-label", row.direction);
-              path.setAttribute("d", "M10 39 H57 V16 L92 50 L57 84 V61 H10 Z");
-              path.setAttribute("fill", "currentColor");
-              path.setAttribute(
-                "transform",
-                `rotate(${{ right: 0, left: 180, ahead: -90 }[row.direction]} 50 50)`,
-              );
-              arrow.append(path);
-              sheet.append(arrow);
-            }
-            sheet.append(element("h1", row.title));
-            if (row.detail) sheet.append(element("p", row.detail));
-            if (row.qr) {
-              const image = element("img", null, "qr");
-              image.src = row.qr;
-              image.alt = "QR code";
-              sheet.append(image);
-            }
-          }
-          sheet.dataset.index = String(index + 1);
-        }
-        await document.fonts.ready;
-        await Promise.all([...document.images].map((image) => image.decode()));
-        for (const node of document.querySelectorAll(tents ? ".face" : ".sign"))
-          if (
-            node.scrollHeight > node.clientHeight + 1 ||
-            node.scrollWidth > node.clientWidth + 1
-          )
-            throw new Error(
-              `Page ${node.closest("article")?.dataset.index} exceeds the print area. Shorten the text.`,
-            );
-      },
-      { eventName: input.eventName, entries, tents },
-    );
+    await page.evaluate(async (tents) => {
+      await document.fonts.ready;
+      await Promise.all([...document.images].map((image) => image.decode()));
+      for (const node of document.querySelectorAll(tents ? ".face" : ".sign"))
+        if (
+          node.scrollHeight > node.clientHeight + 1 ||
+          node.scrollWidth > node.clientWidth + 1
+        )
+          throw new Error(
+            `Page ${node.closest("article")?.dataset.index} exceeds the print area. Shorten the text.`,
+          );
+    }, tents);
     return {
       pageCount: entries.length,
       widthMm: 210,

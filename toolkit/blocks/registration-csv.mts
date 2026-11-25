@@ -298,3 +298,132 @@ export function importTicketStatus(
     `Row ${record.row}: unknown ticket status. Map a valid status column or remove inactive tickets before importing.`,
   );
 }
+
+export type RegistrationRecord = {
+  id: string;
+  source: string;
+  sourceKey: string;
+} & Record<string, unknown>;
+
+export function importRegistrations({
+  csv,
+  source,
+  delimiter = "auto",
+  mapping = {},
+  previous = [],
+}: {
+  csv: string;
+  source: "tito" | "webropol" | "csv";
+  delimiter?: string;
+  mapping?: Partial<TicketMapping>;
+  previous?: RegistrationRecord[];
+}) {
+  const data = prepareAttendeeCsv(csv, delimiter);
+  const header = data.records[0]!;
+  const rows = data.records.slice(1);
+  const columns = { ...detectAttendeeMapping(header.cells), ...mapping };
+  if (Object.values(columns).some((n) => n >= header.cells.length))
+    throw new Error("A mapped column is outside the CSV header.");
+  if (columns.name < 0 && (columns.first < 0 || columns.last < 0))
+    throw new Error("Map a full name or first and last names.");
+  if (columns.ticketCode < 0 && columns.email < 0)
+    throw new Error("Map a ticket code or attendee email.");
+  if (!rows.length || rows.length > 2000)
+    throw new Error("Import 1 to 2,000 registration rows.");
+  const records = new Map<string, RegistrationRecord>(),
+    ids = new Set<string>();
+  for (const p of previous) {
+    const key = JSON.stringify([p.source, p.sourceKey]);
+    if (records.has(key) || ids.has(p.id))
+      throw new Error(
+        "Previous registrations must have distinct IDs and source keys.",
+      );
+    ids.add(p.id);
+    records.set(key, { ...p });
+  }
+  const seen = new Set();
+  for (const row of rows) {
+    if (row.cells.length !== header.cells.length)
+      throw new Error(
+        `Row ${row.row}: expected ${header.cells.length} columns, found ${row.cells.length}.`,
+      );
+    const get = (key: keyof typeof columns) =>
+      (row.cells[columns[key]] ?? "").trim().normalize("NFC");
+    const name =
+      columns.name >= 0
+        ? get("name")
+        : [get("first"), get("last")].filter(Boolean).join(" ");
+    const email = get("email").toLowerCase(),
+      ticketCode = get("ticketCode");
+    const unassigned =
+      source === "tito" &&
+      Boolean(ticketCode) &&
+      !name &&
+      !email &&
+      columns.email >= 0;
+    if ((!name && !unassigned) || (!email && !ticketCode))
+      throw new Error(
+        `Row ${row.row}: supply a name and a ticket code or attendee email.`,
+      );
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/u.test(email))
+      throw new Error(`Row ${row.row}: invalid attendee email.`);
+    if (
+      name.length > 300 ||
+      get("company").length > 300 ||
+      email.length > 254 ||
+      ticketCode.length > 100 ||
+      get("orderCode").length > 100 ||
+      get("diet").length > 2000
+    )
+      throw new Error(`Row ${row.row}: field is too long.`);
+    const sourceKey = ticketCode
+      ? `ticket:${ticketCode.toLowerCase()}`
+      : `email:${email}`;
+    if (seen.has(sourceKey))
+      throw new Error(
+        `Row ${row.row}: repeated ticket code or email within this source.`,
+      );
+    seen.add(sourceKey);
+    const key = JSON.stringify([source, sourceKey]),
+      old = records.get(key);
+    const keepDeskAssignment = old?.assignedAtDesk && unassigned;
+    const record: RegistrationRecord = {
+      ...old,
+      id: old?.id ?? crypto.randomUUID(),
+      source,
+      sourceKey,
+      name,
+      company: get("company"),
+      email,
+      ticketCode,
+      orderCode:
+        get("orderCode") ||
+        (source === "tito" ? (ticketCode.match(/^(.+)-\d+$/u)?.[1] ?? "") : ""),
+      type: old?.type ?? "attendee",
+      badge: old?.badge ?? !unassigned,
+      unassigned,
+      status: importTicketStatus(header, row, columns.status),
+    };
+    if (columns.diet >= 0) record.diet = get("diet");
+    if (keepDeskAssignment)
+      Object.assign(record, {
+        name: old.name,
+        email: old.email,
+        company: old.company,
+        unassigned: false,
+        diet: old.diet,
+      });
+    else if (old?.assignedAtDesk) record.assignedAtDesk = false;
+    if (old?.unassigned && !unassigned) record.badge = true;
+    records.set(key, record);
+  }
+  if (records.size > 2000)
+    throw new Error("The merged roster exceeds 2,000 registrations.");
+  return {
+    records: [...records.values()],
+    imported: rows.length,
+    delimiter: data.delimiter,
+    ignoredRows: data.ignoredRows,
+    mapping: columns,
+  };
+}

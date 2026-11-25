@@ -255,3 +255,26 @@ export function dietRequirementsText(summary: CateringSummary) {
     ...(summary.groups.length ? [] : ["No dietary requirements reported.", ""]),
   ];
 }
+
+export function prepareCateringBrief(
+  eventName: string,
+  people: readonly DietPerson[],
+  reservedMeals: number,
+) {
+  const summary = summarizeAttendeeDiets(people);
+  summary.active += reservedMeals;
+  summary.missing += reservedMeals;
+  const lines = [
+    eventName,
+    "Catering brief",
+    "",
+    "Meals: " + summary.active,
+    "Reserved: " + reservedMeals,
+    "No restrictions: " + summary.noRestrictions,
+    "Missing information: " + summary.missing,
+    "Needs review: " + summary.needsReview,
+    "",
+    ...dietRequirementsText(summary),
+  ];
+  return { summary, text: lines.join("\n") };
+}

@@ -6,6 +6,7 @@ import path from "node:path";
 import { spawn } from "node:child_process";
 import { chromium } from "playwright";
 import { closeBrowserServer, runBrowserCheck } from "./layout-browser.mjs";
+import { validateToolkitExplorer } from "./validate-toolkit-explorer.mjs";
 
 const buildDir = path.resolve("build");
 const routes = [
@@ -753,6 +754,20 @@ async function validateMobileSafari(serverPort, failures) {
   try {
     const browser = await webkit.connect(browserServer.wsEndpoint(), {
       timeout: 30000,
+    });
+    const toolkitContext = await browser.newContext({
+      ...baseDevice,
+      baseURL: `http://127.0.0.1:${serverPort}`,
+      viewport: { width: 320, height: 740 },
+    });
+    await runBrowserCheck({
+      label: "Toolkit discovery and interactive examples on mobile Safari",
+      timeoutMs: 60000,
+      run: async () => {
+        const page = await toolkitContext.newPage();
+        await validateToolkitExplorer(page);
+      },
+      close: () => toolkitContext.close(),
     });
     await runWithConcurrency(
       jobs,
