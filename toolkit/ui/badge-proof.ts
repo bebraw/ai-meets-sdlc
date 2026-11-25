@@ -9,19 +9,29 @@ import {
   verifyBadgeLogo,
 } from "../blocks/badge-artwork.mjs";
 
-let fontPromise: Promise<BadgeFont> | undefined;
-function bundledFont() {
-  fontPromise ??= fetch("/badge-font.ttf")
+import {
+  printFonts,
+  printFontUrl,
+  type PrintFontId,
+} from "../blocks/print-fonts.mjs";
+
+const bundledFonts = new Map<PrintFontId, Promise<BadgeFont>>();
+function bundledFont(id: PrintFontId) {
+  const existing = bundledFonts.get(id);
+  if (existing) return existing;
+  const font = fetch(printFontUrl(id))
     .then((response) => {
-      if (!response.ok) throw Error("Could not load the bundled badge font.");
+      if (!response.ok)
+        throw Error("Could not load " + printFonts[id].label + ".");
       return response.arrayBuffer();
     })
-    .then(loadBadgeFont)
+    .then((bytes) => loadBadgeFont(bytes, printFonts[id].weight))
     .catch((error) => {
-      fontPromise = undefined;
+      bundledFonts.delete(id);
       throw error;
     });
-  return fontPromise;
+  bundledFonts.set(id, font);
+  return font;
 }
 function element<K extends keyof HTMLElementTagNameMap>(
   tag: K,
@@ -92,7 +102,7 @@ export function attachBadgeProof(fields: HTMLElement, read: () => Draft) {
     findings.replaceChildren();
     if (!current || !row) return;
     try {
-      const font = await bundledFont();
+      const font = await bundledFont(current.settings.font);
       if (token !== paint || !panel.isConnected) return;
       if (logo !== verifiedLogo) {
         await verifyBadgeLogo(logo);
@@ -110,7 +120,7 @@ export function attachBadgeProof(fields: HTMLElement, read: () => Draft) {
         row.person,
         current.settings,
         font,
-        false,
+        true,
         row.source === "spares",
         row.appearance,
         logo,

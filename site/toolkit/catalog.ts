@@ -63,6 +63,9 @@ export async function getToolkitCatalog() {
       if (!name || !id || !description || !guide || !entries?.size)
         throw new Error("Missing toolkit block guide or operations for " + id);
       const href = "/toolkit/" + id + "/";
+      const longestWord = Math.max(
+        ...name.split(/\s+/u).map((word) => [...word].length),
+      );
       return {
         ...guide,
         group,
@@ -72,6 +75,7 @@ export async function getToolkitCatalog() {
         href,
         url: "https://sdlcai.org" + href,
         title: name + " | Event organizer toolkit | SDLCAI",
+        titleStyle: "--toolkit-word-length: " + longestWord,
         enableCommand: "export TOOLKIT_BLOCKS=" + id,
         operationLabel:
           entries.size + (entries.size === 1 ? " operation" : " operations"),

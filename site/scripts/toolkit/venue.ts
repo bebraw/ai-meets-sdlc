@@ -2,10 +2,13 @@ import { append, button, el, field, input, panel, select } from "./controls.ts";
 import { importRegistrations } from "../../../toolkit/blocks/registration-csv.mts";
 import { lanyardsCount } from "../../../toolkit/blocks/lanyard-count.mts";
 import {
+  badgeShapes,
   prepareBadgeRun,
   renderBadgeArtwork,
 } from "../../../toolkit/blocks/badge-artwork.mts";
-import { loadBadgeFont, type BadgeFont } from "../badge-layout.ts";
+import { loadBadgeFont } from "../badge-layout.ts";
+import { fontSelect, badgeShapeSelect } from "../print-options.ts";
+import { printFontIds } from "../../../toolkit/blocks/print-fonts.mts";
 import {
   renderVenueSheets,
   venueSheetCss,
@@ -125,19 +128,12 @@ function checkIn(root: HTMLElement) {
   update();
 }
 
-let printFont: Promise<BadgeFont> | undefined;
-function getPrintFont() {
-  printFont ??= loadBadgeFont().catch((error: unknown) => {
-    printFont = undefined;
-    throw error;
-  });
-  return printFont;
-}
-
 function badges(root: HTMLElement) {
   const name = input("Zoë Marin");
   name.maxLength = 300;
   const role = select(["speaker", "attendee", "organizer", "sponsor"]);
+  const shape = badgeShapeSelect();
+  const typeface = fontSelect();
   const result = panel("Badge proof");
   const drawing = el("div");
   const finding = status("Loading the print font…");
@@ -145,41 +141,54 @@ function badges(root: HTMLElement) {
   append(
     root,
     controls(field("Display name", name), field("Badge role", role)),
+    controls(field("Badge shape", shape), field("Print font", typeface)),
     result.panel,
   );
-  void getPrintFont()
-    .then((font) => {
-      function draw() {
-        const run = prepareBadgeRun({
-          people: [
-            { name: name.value, company: "Field Notes", role: role.value },
-          ],
-        });
-        const row = run.rows[0]!;
-        const { svg, issues } = renderBadgeArtwork(
-          row.person,
-          run.settings,
-          font,
-          true,
-          false,
-          row.appearance,
-          null,
-        );
-        svg.style.cssText =
-          "display:block;width:100%;max-width:16rem;height:auto;margin:auto";
-        drawing.replaceChildren(svg);
-        finding.textContent = issues.length
-          ? issues.join(" ")
-          : "Name and affiliation fit within the safe area.";
-      }
-      name.addEventListener("input", draw);
-      role.addEventListener("change", draw);
-      draw();
-    })
-    .catch(() => {
+  let revision = 0;
+  async function draw() {
+    const current = ++revision;
+    try {
+      const fontId = printFontIds[typeface.selectedIndex] ?? "noto-sans";
+      const font = await loadBadgeFont(fontId);
+      if (current !== revision) return;
+      const run = prepareBadgeRun({
+        people: [
+          { name: name.value, company: "Field Notes", role: role.value },
+        ],
+        settings: {
+          shape: badgeShapes[shape.selectedIndex] ?? "circle",
+          font: fontId,
+        },
+      });
+      const row = run.rows[0]!;
+      const { svg, issues } = renderBadgeArtwork(
+        row.person,
+        run.settings,
+        font,
+        true,
+        false,
+        row.appearance,
+        null,
+      );
+      svg.style.cssText =
+        "display:block;width:100%;max-width:16rem;height:auto;margin:auto";
+      drawing.replaceChildren(svg);
+      finding.textContent = issues.length
+        ? issues.join(" ")
+        : "Name and affiliation fit within the safe area.";
+    } catch (error) {
+      if (current !== revision) return;
+      drawing.replaceChildren();
       finding.textContent =
-        "The print font could not load. Reset the example to try again.";
-    });
+        error instanceof Error
+          ? error.message
+          : "The badge proof could not load.";
+    }
+  }
+  name.addEventListener("input", draw);
+  for (const choice of [role, shape, typeface])
+    choice.addEventListener("change", draw);
+  void draw();
 }
 
 function lanyards(root: HTMLElement) {
@@ -256,12 +265,28 @@ function paperProof() {
     },
   );
   const paper = el("div");
-  paper.style.fontFamily = "sans-serif";
-  void getPrintFont()
-    .then((font) => {
+  const typeface = fontSelect();
+  const fontStatus = status();
+  let revision = 0;
+  async function changeFont() {
+    const current = ++revision;
+    paper.style.visibility = "hidden";
+    try {
+      const font = await loadBadgeFont(printFontIds[typeface.selectedIndex]);
+      if (current !== revision) return;
       paper.style.fontFamily = font.family;
-    })
-    .catch(() => {});
+      paper.style.visibility = "";
+      fontStatus.textContent = "";
+    } catch (error) {
+      if (current !== revision) return;
+      fontStatus.textContent =
+        error instanceof Error
+          ? error.message
+          : "The print font could not load.";
+    }
+  }
+  typeface.addEventListener("change", changeFont);
+  void changeFont();
   append(shadow, style, paper);
   function draw(row: VenuePrintEntry, label: string) {
     holder.setAttribute("aria-label", label);
@@ -272,7 +297,7 @@ function paperProof() {
       entries: [row],
     });
   }
-  return { holder, draw };
+  return { holder, draw, fontField: field("Print font", typeface), fontStatus };
 }
 
 function venueSigns(root: HTMLElement) {
@@ -295,10 +320,14 @@ function venueSigns(root: HTMLElement) {
   }
   destination.addEventListener("input", draw);
   direction.addEventListener("change", draw);
-  result.body.appendChild(proof.holder);
+  append(result.body, proof.holder, proof.fontStatus);
   append(
     root,
-    controls(field("Destination", destination), field("Direction", direction)),
+    controls(
+      field("Destination", destination),
+      field("Direction", direction),
+      proof.fontField,
+    ),
     result.panel,
   );
   draw();
@@ -319,12 +348,13 @@ function tableTents(root: HTMLElement) {
   }
   topic.addEventListener("input", draw);
   question.addEventListener("input", draw);
-  result.body.appendChild(proof.holder);
+  append(result.body, proof.holder, proof.fontStatus);
   append(
     root,
     controls(
       field("Discussion topic", topic),
       field("Starter question", question),
+      proof.fontField,
     ),
     result.panel,
   );

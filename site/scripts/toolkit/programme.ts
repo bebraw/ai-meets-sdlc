@@ -1,3 +1,8 @@
+import { fontSelect } from "../print-options.ts";
+import {
+  printFontIds,
+  printFontCss,
+} from "../../../toolkit/blocks/print-fonts.mts";
 import {
   buildProgrammeFeed,
   feedExample,
@@ -219,6 +224,7 @@ function graphics(root: HTMLElement) {
     Sky: "#baddff",
   };
   const accent = select(Object.keys(colors));
+  const font = fontSelect();
   const view = panel("Artwork preview");
   const preview = el("iframe");
   preview.title = "Sample talk announcement";
@@ -252,17 +258,21 @@ function graphics(root: HTMLElement) {
       accent: colors[accent.value]!,
     });
     preview.srcdoc =
-      '<!doctype html><html lang="en"><meta charset="utf-8"><title>Talk announcement</title><style>@font-face{font-family:Print;src:url(/assets/badges/NotoSans.ttf);font-weight:100 900}*{box-sizing:border-box}html,body{margin:0}' +
+      '<!doctype html><html lang="en"><meta charset="utf-8"><title>Talk announcement</title><style>' +
+      printFontCss(printFontIds[font.selectedIndex]) +
+      "*{box-sizing:border-box}html,body{margin:0}" +
       css +
       "</style><body>" +
       html +
       "</body></html>";
   }
   title.addEventListener("input", () => title.setCustomValidity(""));
+  font.addEventListener("change", update);
   view.body.replaceChildren(preview, status);
   root.replaceChildren(
     field("Talk title", title),
     field("Accent color", accent),
+    field("Typeface", font),
     button("Update artwork", update),
     view.panel,
   );

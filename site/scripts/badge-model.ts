@@ -1,4 +1,6 @@
 import { readCsvPeople } from "../../toolkit/blocks/registration-csv.mts";
+import { badgeShapes } from "../../toolkit/blocks/badge-artwork.mts";
+import { printFontIds } from "../../toolkit/blocks/print-fonts.mts";
 export { parseCsv } from "../../toolkit/blocks/registration-csv.mts";
 import * as v from "valibot";
 import { badgeRoles } from "./badge-roles.ts";
@@ -18,6 +20,8 @@ export const badgePersonSchema = v.object({
 const mm = (min: number, max: number) =>
   v.pipe(v.number(), v.minValue(min), v.maxValue(max));
 export const badgeSettingsSchema = v.object({
+  shape: v.optional(v.picklist(badgeShapes), "circle"),
+  font: v.optional(v.picklist(printFontIds), "noto-sans"),
   diameter: mm(70, 150),
   bleed: mm(0, 10),
   safe: mm(3, 15),
@@ -43,6 +47,8 @@ export function badgeCompany(email: string, company: string): string {
     : company;
 }
 export const defaultSettings: BadgeSettings = {
+  shape: "circle",
+  font: "noto-sans",
   diameter: 100,
   bleed: 0,
   safe: 5,

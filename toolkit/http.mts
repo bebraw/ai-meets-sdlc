@@ -1,6 +1,11 @@
 import { createServer } from "node:http";
 import { randomBytes, createHmac, timingSafeEqual } from "node:crypto";
 import { readFile } from "node:fs/promises";
+import {
+  printFontIds,
+  printFonts,
+  printFontUrl,
+} from "./blocks/print-fonts.mjs";
 import { artifactStore, splitResult } from "./artifacts.mjs";
 import * as v from "valibot";
 import { principalSchema } from "./index.mjs";
@@ -39,6 +44,11 @@ const assets = new Map<string, [string, string]>([
   ["/style.css", ["../ui/style.css", "text/css"]],
   ["/badge-proof.js", ["./ui/badge-proof.js", "text/javascript"]],
   ["/badge-artwork.mjs", ["./blocks/badge-artwork.mjs", "text/javascript"]],
+  ["/blocks/print-fonts.mjs", ["./blocks/print-fonts.mjs", "text/javascript"]],
+  ...printFontIds.map((id): [string, [string, string]] => [
+    printFontUrl(id),
+    ["../assets/print/" + printFonts[id].file, "font/ttf"],
+  ]),
   ["/badge-font.ttf", ["../assets/print/NotoSans.ttf", "font/ttf"]],
 ]);
 const failure = (message: string, status: number) =>

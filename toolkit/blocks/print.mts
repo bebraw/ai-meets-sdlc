@@ -1,3 +1,4 @@
+import { printFontIds, printFonts, printFontUrl } from "./print-fonts.mjs";
 import {
   strictJsonObject,
   partialJsonObject,
@@ -12,7 +13,7 @@ import {
   list,
   color,
 } from "./supplied-fields.mjs";
-import { prepareBadgeRun } from "./badge-artwork.mjs";
+import { badgeShapes, prepareBadgeRun } from "./badge-artwork.mjs";
 import { lanyardsCount } from "./lanyard-count.mjs";
 import { printPdf, withPrintPage } from "./print-browser.mjs";
 import { printResults } from "./print-results.mjs";
@@ -36,9 +37,20 @@ const logo = v.pipe(
   v.description("Embedded PNG, JPEG, WebP or SVG logo as a base64 data URL."),
 );
 const geometry = partialJsonObject({
+  shape: v.pipe(
+    v.picklist(badgeShapes),
+    v.description("Cut outline. Round badges are the default."),
+  ),
+  font: v.pipe(
+    v.picklist(printFontIds),
+    v.description("Bundled typeface for badge text. Noto Sans is the default."),
+  ),
   diameter: v.pipe(
     boundedNumber(70, 150),
-    v.description("Trim diameter in mm (default 100)."),
+    v.title("Trim size (mm)"),
+    v.description(
+      "Diameter of a circle or side of a square, before bleed. Defaults to 100 mm.",
+    ),
   ),
   bleed: v.pipe(
     boundedNumber(0, 10),
@@ -77,7 +89,12 @@ const badgeExample = {
     { name: "Ari Chen", company: "Local Lab", role: "speaker" },
   ],
   spares: [{ role: "attendee", count: 1 }],
-  settings: { diameter: 100, bleed: 3 },
+  settings: {
+    shape: "circle" as const,
+    font: "noto-sans" as const,
+    diameter: 100,
+    bleed: 3,
+  },
 };
 async function badgeRun(
   input: v.InferOutput<typeof badgeSchema>,
@@ -89,7 +106,7 @@ async function badgeRun(
       content: `@page{size:${widthMm}mm ${widthMm}mm;margin:0}article{width:${widthMm}mm;height:${widthMm}mm}`,
     });
     const issues = await page.evaluate(
-      async ({ rows, settings, logo }) => {
+      async ({ rows, settings, logo, fontUrl, fontWeight, preview }) => {
         const artworkPath: string = "/badge-artwork.mjs";
         const {
           loadBadgeFont,
@@ -97,7 +114,8 @@ async function badgeRun(
           verifyBadgeLogo,
         }: typeof import("./badge-artwork.mjs") = await import(artworkPath);
         const font = await loadBadgeFont(
-          await (await fetch("/font.ttf")).arrayBuffer(),
+          await (await fetch(fontUrl)).arrayBuffer(),
+          fontWeight,
         );
         await verifyBadgeLogo(logo);
         const issues = [];
@@ -106,7 +124,7 @@ async function badgeRun(
             person,
             settings,
             font,
-            false,
+            preview,
             source === "spares",
             appearance,
             logo,
@@ -122,7 +140,14 @@ async function badgeRun(
         await document.fonts.ready;
         return issues;
       },
-      { rows, settings, logo: input.logo ?? null },
+      {
+        rows,
+        settings,
+        logo: input.logo ?? null,
+        fontUrl: printFontUrl(settings.font),
+        fontWeight: printFonts[settings.font].weight,
+        preview: !exportPdf,
+      },
     );
     const summary = {
       ready: issues.length === 0,
@@ -183,6 +208,7 @@ const registrationSchema = strictJsonObject({
 const signSchema = strictJsonObject({
   eventName: text(120),
   accent: v.optional(color),
+  font: v.optional(v.picklist(printFontIds)),
   signs: list(
     strictJsonObject({
       title: text(100),
@@ -199,6 +225,7 @@ const signSchema = strictJsonObject({
 const tentSchema = strictJsonObject({
   eventName: text(120),
   accent: v.optional(color),
+  font: v.optional(v.picklist(printFontIds)),
   tables: list(
     strictJsonObject({
       label: text(50),
@@ -262,14 +289,15 @@ async function printSigns(input: SignInput | TentInput) {
         tents ? "table-tents.pdf" : "venue-signs.pdf",
       ),
     };
-  });
+  }, input.font);
 }
 
 export const blocks = [
   {
     id: "badges",
     title: "Print name badges",
-    description: "Check round badge artwork and export a measured PDF.",
+    description:
+      "Proof circular, square or rounded-square badges with a chosen typeface and export a measured PDF.",
     operations: [
       defineOperation({
         name: "badges_preflight",

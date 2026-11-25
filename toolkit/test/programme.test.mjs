@@ -83,3 +83,26 @@ test("catering keeps source answers distinct, applies organizer reviews and coun
   assert.match(report.artifact.bytes.toString(), /Eggs/);
   assert.doesNotMatch(report.artifact.bytes.toString(), /SDLCAI|Marsio/);
 });
+
+test("talk graphics render each bundled typeface and retain the default Noto Sans artwork", async (t) => {
+  const kit = createToolkit({ enabled: ["talk-graphics"] });
+  t.after(() => kit.close());
+  const [
+    {
+      operations: [operation],
+    },
+  ] = kit.catalog();
+  const render = async (font) => {
+    const input = { ...operation.example };
+    if (font) input.font = font;
+    const { artifact } = await kit.run(operation.name, input);
+    return Buffer.from(artifact.bytes);
+  };
+  const original = await render();
+  assert.deepEqual(await render("noto-sans"), original);
+  const serif = await render("lora");
+  const mono = await render("fira-code");
+  assert.ok(
+    !original.equals(serif) && !original.equals(mono) && !serif.equals(mono),
+  );
+});

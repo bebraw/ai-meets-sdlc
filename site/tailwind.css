@@ -56,6 +56,22 @@
 }
 
 @layer components {
+  .toolkit-intro {
+    container-type: inline-size;
+  }
+
+  .toolkit-title {
+    /* The catalog's uppercase words average at most 0.83em per letter
+       across Finlandica Headline Black and the Georgia Bold fallback. */
+    font-size: min(
+      clamp(2.75rem, 6vw, 5.5rem),
+      calc(100cqi / var(--toolkit-word-length) / 0.85)
+    );
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+  }
+
   .toolkit-workbench {
     background: color-mix(in srgb, var(--color-muted) 6%, var(--color-paper));
     box-shadow: 4px 4px 0 color-mix(in srgb, var(--color-ink) 16%, transparent);

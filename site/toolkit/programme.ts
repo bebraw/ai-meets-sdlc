@@ -63,12 +63,12 @@ export const programmeGuides: Record<string, BlockGuide> = {
   },
   "talk-graphics": {
     input:
-      "Bring an event name, approved talk title and speaker name. Add a caption, accent color or portrait and choose the image dimensions.",
+      "Bring an event name, approved talk title and speaker name. Choose a typeface, accent color and image dimensions. Add a caption or portrait as needed.",
     output:
       "A PNG sized for the intended channel. The renderer checks that the copy fits before exporting.",
     actions: [
       "Lay out the event, session and speaker together with an optional portrait.",
-      "Set width, height and accent color to match the publication.",
+      "Choose Noto Sans, Lora or Fira Code and set the image size and accent color.",
       "Check the text fit and export a PNG. Shorten the copy or increase the dimensions when a graphic is too crowded.",
     ],
     related: ["speaker-workspace", "publication-queue"],

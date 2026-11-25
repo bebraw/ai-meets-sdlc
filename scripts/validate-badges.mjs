@@ -32,20 +32,20 @@ try {
   const errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
   const origin = `http://127.0.0.1:${fixture.worker.port}`;
-  await page.route("**/toolkit/blocks/badge-artwork.mts", async (route) =>
-    route.fulfill({
-      contentType: "text/javascript",
-      body: ts.transpileModule(
-        await readFile("toolkit/blocks/badge-artwork.mts", "utf8"),
-        {
+  for (const module of ["badge-artwork", "print-fonts"]) {
+    const path = `toolkit/blocks/${module}.mts`;
+    await page.route(`**/${path}`, async (route) =>
+      route.fulfill({
+        contentType: "text/javascript",
+        body: ts.transpileModule(await readFile(path, "utf8"), {
           compilerOptions: {
             target: ts.ScriptTarget.ES2022,
             module: ts.ModuleKind.ESNext,
           },
-        },
-      ).outputText,
-    }),
-  );
+        }).outputText,
+      }),
+    );
+  }
   await page.route("**/test-scripts/*.ts", async (route) => {
     const file = new URL(route.request().url()).pathname.split("/").at(-1);
     if (
@@ -501,7 +501,11 @@ try {
         font,
       );
       if (result.issues.length) throw new Error(result.issues.join(" "));
-      colors.push(result.svg.querySelector("rect").getAttribute("fill"));
+      colors.push(
+        result.svg
+          .querySelector('[data-badge-outline="bleed"]')
+          .getAttribute("fill"),
+      );
       section.appendChild(result.svg);
     }
     document.body.appendChild(section);
@@ -780,7 +784,9 @@ try {
     ["SPONSOR"],
   );
   assert.equal(
-    await page.locator(".badge-preview rect").first().getAttribute("fill"),
+    await page
+      .locator('.badge-preview [data-badge-outline="bleed"]')
+      .getAttribute("fill"),
     "#64c4bc",
   );
   await page
@@ -1007,6 +1013,41 @@ try {
     .waitFor();
   assert.equal(await page.evaluate(() => window.__printed), false);
   assert.deepEqual((await send("GET")).attendees, registrationsBeforeSpares);
+  const printerSettings = page
+    .locator("details")
+    .filter({ has: page.getByText("Printer settings", { exact: true }) });
+  if (!(await printerSettings.evaluate((panel) => panel.open)))
+    await printerSettings.locator("summary").click();
+  const shape = page.getByLabel("Badge shape", { exact: true });
+  const typeface = page.getByLabel("Print font", { exact: true });
+  await shape.selectOption("rounded-square");
+  await typeface.selectOption("lora");
+  await spareCount.fill("1");
+  await spareCount.press("Tab");
+  await page
+    .getByRole("button", { name: "Save print settings", exact: true })
+    .click();
+  await page
+    .getByText("Print settings and badge text saved.", { exact: true })
+    .waitFor();
+  await page.reload();
+  await page.getByText(ready, { exact: true }).waitFor();
+  assert.equal(await shape.inputValue(), "rounded-square");
+  assert.equal(await typeface.inputValue(), "lora");
+  await printRun("spares");
+  assert.equal(
+    await page
+      .locator('.badge-print-sheet svg[data-badge-shape="rounded-square"]')
+      .count(),
+    2,
+    "The front and repeated back use the saved shape.",
+  );
+  assert.match(
+    (
+      await page.pdf({ preferCSSPageSize: true, printBackground: true })
+    ).toString("latin1"),
+    /Lora/,
+  );
   assert.deepEqual(errors, []);
   console.log(
     "Badge browser checks passed: lanyard summaries, retired badges, search-independent totals, copy/download and clipboard fallback, independent attendee and sponsor spares, saved quantities, role-specific artwork and print runs, PDF pagination, repeated backs, Unicode, overflow, live records, duplicates, print preferences, source corrections, desktop/mobile layout and accessibility.",

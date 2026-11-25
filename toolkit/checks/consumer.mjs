@@ -441,7 +441,9 @@ try {
       await proof.getByText("Ari Chen", { exact: true }).waitFor();
       assert.equal(await proof.getAttribute("width"), "106mm");
       assert.equal(
-        await proof.locator(":scope > rect").getAttribute("fill"),
+        await proof
+          .locator('[data-badge-outline="bleed"]')
+          .getAttribute("fill"),
         "#d4c5df",
       );
       assert.equal(
@@ -461,6 +463,16 @@ try {
           ),
         ),
       );
+      const shape = page.getByLabel("Shape", { exact: true });
+      const font = page.getByLabel("Font", { exact: true });
+      await shape.selectOption({ label: "Rounded square" });
+      await font.selectOption({ label: "Lora" });
+      await proof.locator('[data-badge-outline="trim"][rx]').waitFor();
+      assert.equal(
+        await proof.getAttribute("data-badge-shape"),
+        "rounded-square",
+      );
+      assert.ok(await proof.locator('[data-badge-outline="safe"]').isVisible());
       await page.locator('[data-path="people.1.name"]').fill("Kaisa Vale");
       await proof.getByText("Kaisa Vale", { exact: true }).waitFor();
       await selector.selectOption("spares.1");

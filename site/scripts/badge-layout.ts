@@ -3,6 +3,11 @@ import {
   renderBadgeArtwork,
 } from "../../toolkit/blocks/badge-artwork.mts";
 import type { BadgeFont } from "../../toolkit/blocks/badge-artwork.mts";
+import {
+  printFonts,
+  printFontUrl,
+  type PrintFontId,
+} from "../../toolkit/blocks/print-fonts.mts";
 import type { BadgePerson, BadgeSettings } from "./badge-model.ts";
 import { badgeRoleAppearance } from "./badge-roles.ts";
 import type { SpareBadgeRole } from "./badge-studio-model.ts";
@@ -11,13 +16,30 @@ export {
   type BadgeFont,
 } from "../../toolkit/blocks/badge-artwork.mts";
 
-export async function loadBadgeFont(bytes?: ArrayBuffer): Promise<BadgeFont> {
-  if (!bytes) {
-    const response = await fetch("/assets/badges/NotoSans.ttf");
-    if (!response.ok) throw new Error("Badge font failed to load.");
-    bytes = await response.arrayBuffer();
+const bundledFonts = new Map<PrintFontId, Promise<BadgeFont>>();
+
+export function loadBadgeFont(
+  source: ArrayBuffer | PrintFontId = "noto-sans",
+): Promise<BadgeFont> {
+  if (typeof source !== "string") return loadFont(source);
+  let pending = bundledFonts.get(source);
+  if (!pending) {
+    pending = fetch(printFontUrl(source))
+      .then(async (response) => {
+        if (!response.ok)
+          throw new Error("Could not load " + printFonts[source].label + ".");
+        return loadFont(
+          await response.arrayBuffer(),
+          printFonts[source].weight,
+        );
+      })
+      .catch((error) => {
+        bundledFonts.delete(source);
+        throw error;
+      });
+    bundledFonts.set(source, pending);
   }
-  return loadFont(bytes);
+  return pending;
 }
 export function renderBadge(
   person: BadgePerson,

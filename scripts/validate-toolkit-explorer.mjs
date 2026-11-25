@@ -1,6 +1,34 @@
 import assert from "node:assert/strict";
 
+async function checkTitleFit(title, path, width) {
+  const brokenWords = await title.evaluate(async (heading) => {
+    await document.fonts.ready;
+    const column = heading.getBoundingClientRect();
+    const text = heading.firstChild;
+    const range = document.createRange();
+    const failures = [];
+    for (const word of text.textContent.matchAll(/\S+/gu)) {
+      range.setStart(text, word.index);
+      range.setEnd(text, word.index + word[0].length);
+      const rects = [...range.getClientRects()];
+      if (
+        rects.length !== 1 ||
+        rects[0].left < column.left - 1 ||
+        rects[0].right > column.right + 1
+      )
+        failures.push(word[0]);
+    }
+    return failures;
+  });
+  assert.deepEqual(
+    brokenWords,
+    [],
+    `Title word wrapping at ${path} (${width}px)`,
+  );
+}
+
 export async function validateToolkitExplorer(page) {
+  const phone = page.viewportSize();
   await page.goto("/toolkit/");
   const paths = await page
     .locator("#blocks li")
@@ -17,14 +45,17 @@ export async function validateToolkitExplorer(page) {
     const id = path.split("/")[2];
     const demo = page.locator(`[data-toolkit-demo="${id}"]`);
     await page.getByRole("button", { name: "Reset example" }).waitFor();
-    const title = (
-      await page.locator("article > div > header h1").innerText()
-    ).trim();
+    const heading = page.locator("article > div > header h1");
+    const title = (await heading.innerText()).trim();
     assert.ok(
       title && !titles.has(title),
       "Missing or duplicate guide title at " + path,
     );
     titles.add(title);
+    await page.setViewportSize({ width: 1024, height: phone.height });
+    await checkTitleFit(heading, path, 1024);
+    await page.setViewportSize(phone);
+    await checkTitleFit(heading, path, phone.width);
     const actions = page
       .getByRole("region", { name: "What you can do" })
       .getByRole("listitem");

@@ -1,3 +1,4 @@
+import { printFonts, type PrintFontId } from "../blocks/print-fonts.mjs";
 import { prepareEngagementForm, renderEngagementResult } from "./engagement.js";
 import { prepareWorkflowForm, renderWorkflowResult } from "./workflows.js";
 import { attachBadgeProof } from "./badge-proof.js";
@@ -232,8 +233,21 @@ function makeControl(
   let field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
   if (schema.enum) {
     field = node("select");
-    field.append(new Option("Choose…", ""));
-    for (const v of schema.enum) field.append(new Option(String(v), String(v)));
+    const placeholder =
+      key === "shape"
+        ? "Default (Circle)"
+        : key === "font"
+          ? "Default (Noto Sans)"
+          : "Choose…";
+    field.append(new Option(placeholder, ""));
+    for (const value of schema.enum) {
+      const id = String(value);
+      let label = id;
+      if (key === "font" && Object.hasOwn(printFonts, id))
+        label = printFonts[id as PrintFontId].label;
+      if (key === "shape") label = human(id.replaceAll("-", " "));
+      field.append(new Option(label, id));
+    }
   } else if (
     generic ||
     key === "csv" ||

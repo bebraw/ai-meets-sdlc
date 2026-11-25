@@ -37,14 +37,14 @@ export const venueGuides: Record<string, BlockGuide> = {
     output:
       "A badge proof, fit and font findings for each row, and a print PDF when all rows pass.",
     actions: [
-      "Preview a person’s badge or a spare badge in its role color.",
-      "Adjust the trim diameter, bleed and text sizing, then check names for overflow and missing characters.",
+      "Choose a circle, square or rounded square and preview it in the role color.",
+      "Choose a font, set the trim width and bleed, and check each name for fit and missing characters.",
       "Export the checked artwork as a PDF with the requested spares and optional reverse sides.",
     ],
     related: ["registration-import", "lanyards"],
     demoTitle: "Proof a speaker badge",
     demoIntro:
-      "Change the name and role on the sample badge. The preview uses the toolkit’s print artwork and checks the text against the safe area.",
+      "Try a longer name, switch the shape and compare fonts. The dashed line marks the safe area used to fit the text.",
   },
   lanyards: {
     input:
@@ -68,12 +68,12 @@ export const venueGuides: Record<string, BlockGuide> = {
     actions: [
       "Point guests left, right or straight ahead and add directions below the destination.",
       "Turn a programme or room URL into a QR code on the printed sign.",
-      "Set the event accent color and export a single replacement sign or the whole pack.",
+      "Choose a font and accent color, then export a replacement sign or the whole pack.",
     ],
     related: ["table-tents", "schedule"],
     demoTitle: "Point guests to registration",
     demoIntro:
-      "Hang this sign at a different junction. Change the arrow and destination to see the A4 artwork update.",
+      "Change the destination, arrow and font to see how the sign will read at the venue.",
   },
   "table-tents": {
     input:
@@ -83,7 +83,7 @@ export const venueGuides: Record<string, BlockGuide> = {
     actions: [
       "Give every table its own topic, number or name.",
       "Add a starter question that guests can read from either side.",
-      "Export the full group of cards with fold guides and your event’s accent color.",
+      "Choose the font and accent color, then export the full group of cards with fold guides.",
     ],
     related: ["venue-signs"],
     demoTitle: "Lay out a discussion card",

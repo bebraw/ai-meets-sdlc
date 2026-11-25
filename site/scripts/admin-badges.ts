@@ -29,6 +29,9 @@ import {
   renderSpareBadge,
   type BadgeFont,
 } from "./badge-layout.ts";
+import { badgeShapeSelect, fontSelect } from "./print-options.ts";
+import { badgeShapes } from "../../toolkit/blocks/badge-artwork.mts";
+import { printFontIds } from "../../toolkit/blocks/print-fonts.mts";
 const root = document.querySelector<HTMLElement>("[data-admin-badges]");
 if (root) setup(root);
 function setup(root: HTMLElement): void {
@@ -52,6 +55,7 @@ function setup(root: HTMLElement): void {
   };
   let requestedSparesApplied = false;
   let font: BadgeFont | undefined;
+  let customFontName = "";
   const layoutIssues = new Map<string, string[]>();
   let sourcePeople: BadgePerson[] = [];
   let signatures: Record<string, string> = {};
@@ -509,8 +513,54 @@ function setup(root: HTMLElement): void {
     while (settingsPanel.children.length > 1)
       settingsPanel.lastElementChild!.remove();
     const fields = el("div", "", "grid gap-4 mt-5 sm:grid-cols-2");
+    const shape = badgeShapeSelect(workspace.settings.shape);
+    shape.addEventListener("change", () => {
+      workspace.settings.shape = badgeShapes[shape.selectedIndex] ?? "circle";
+      invalidate();
+      showPreview(previewingSpare);
+    });
+    const typeface = fontSelect(workspace.settings.font);
+    if (customFontName)
+      typeface.add(
+        new Option(customFontName + " (this tab)", "custom", false, true),
+      );
+    typeface.addEventListener(
+      "change",
+      () =>
+        void work(async () => {
+          const choice = printFontIds[typeface.selectedIndex];
+          if (!choice) return;
+          try {
+            font = await loadBadgeFont(choice);
+          } catch (error) {
+            typeface.value = customFontName
+              ? "custom"
+              : workspace.settings.font;
+            throw error;
+          }
+          workspace.settings.font = choice;
+          customFontName = "";
+          if (typeface.options.length > printFontIds.length)
+            typeface.remove(printFontIds.length);
+          custom.input.value = "";
+          invalidate();
+          showPreview(previewingSpare);
+        }),
+    );
+    for (const [id, label, select] of [
+      ["badge-shape", "Badge shape", shape],
+      ["badge-font", "Print font", typeface],
+    ] as const) {
+      const wrapper = el("div", "", "grid gap-2 text-sm font-bold");
+      const caption = el("label", label);
+      caption.htmlFor = select.id = id;
+      select.className =
+        "min-w-0 w-full border border-ink bg-paper px-3 py-2 font-normal";
+      append(wrapper, caption, select);
+      append(fields, wrapper);
+    }
     const specs = [
-      ["diameter", "Diameter (mm)", 70, 150],
+      ["diameter", "Trim width (mm)", 70, 150],
       ["bleed", "Bleed per edge (mm)", 0, 10],
       ["safe", "Safe inset (mm)", 3, 15],
       ["top", "Top hole exclusion (mm)", 10, 30],
@@ -536,7 +586,7 @@ function setup(root: HTMLElement): void {
       append(fields, f.label);
     }
     for (const [key, label] of [
-      ["guides", "Print circular trim guide"],
+      ["guides", "Print trim guide"],
       ["doubleSided", "Repeat each badge for an identical back"],
     ] as const) {
       const f = field(label, "", "checkbox");
@@ -554,7 +604,7 @@ function setup(root: HTMLElement): void {
       fields,
       el(
         "p",
-        "One square PDF page per badge side. Page size = diameter + twice the bleed. Print at 100%, with background graphics on and headers/footers off. Confirm duplex order and color requirements with your printer.",
+        "Trim width is the circle diameter or square side length. Each PDF page includes the bleed on both edges. Print at 100% with background graphics on and headers and footers off.",
         "mt-4 text-sm leading-6",
       ),
     );
@@ -573,8 +623,14 @@ function setup(root: HTMLElement): void {
           if (file.size > 10 * 1024 * 1024)
             throw new Error("Font must be under 10 MB.");
           font = await loadBadgeFont(await file.arrayBuffer());
+          customFontName = file.name;
+          if (typeface.options.length > printFontIds.length)
+            typeface.remove(printFontIds.length);
+          typeface.add(
+            new Option(customFontName + " (this tab)", "custom", false, true),
+          );
           invalidate();
-          showPreview();
+          showPreview(previewingSpare);
           status.textContent =
             "Custom font loaded for this tab. Reload it after reopening the workspace.";
         }),
@@ -823,9 +879,10 @@ function setup(root: HTMLElement): void {
   const save = button("Save print settings", () => void work(savePreferences));
   async function load() {
     const result = await api<BadgeStudioData>("/api/admin/badges", "");
+    const saved = parsePrintPreferences(result.preferences);
+    if (!customFontName) font = await loadBadgeFont(saved.settings.font);
     sourcePeople = result.people;
     signatures = result.signatures;
-    const saved = parsePrintPreferences(result.preferences);
     spareBadges.attendee = saved.spareAttendeeBadges;
     spareBadges.sponsor = saved.spareSponsorBadges;
     retiredLegacyIds = saved.retiredLegacyIds;
@@ -929,8 +986,5 @@ function setup(root: HTMLElement): void {
   window.addEventListener("beforeunload", (event) => {
     if (dirty) event.preventDefault();
   });
-  void work(async () => {
-    font = await loadBadgeFont();
-    await load();
-  });
+  void work(load);
 }

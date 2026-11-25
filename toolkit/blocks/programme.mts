@@ -17,6 +17,7 @@ import {
 } from "./programme-render.mjs";
 import { resultSchema } from "../result-schema.mjs";
 import { dietCategories, prepareCateringBrief } from "./diets.mjs";
+import { printFontIds } from "./print-fonts.mjs";
 import { withPrintPage } from "./print-browser.mjs";
 
 const artifact = (name: string, mimeType: string, body: string) => ({
@@ -189,6 +190,7 @@ const graphic = defineOperation({
     eventName: text(100),
     title: text(300),
     speaker: text(160),
+    font: v.optional(v.picklist(printFontIds)),
     caption: v.optional(text(400)),
     width: v.optional(integer(480, 2160)),
     height: v.optional(integer(480, 2160)),
@@ -216,6 +218,7 @@ const graphic = defineOperation({
     speaker,
     caption = "",
     portrait,
+    font,
     width = 1200,
     height = 630,
     accent = "#b5e9b0",
@@ -248,7 +251,7 @@ const graphic = defineOperation({
           bytes: await page.screenshot({ type: "png" }),
         },
       };
-    });
+    }, font);
   },
 });
 export const blocks = [

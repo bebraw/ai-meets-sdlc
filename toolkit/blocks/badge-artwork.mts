@@ -1,8 +1,15 @@
+import type { PrintFontId } from "./print-fonts.mjs";
+
+export const badgeShapes = ["circle", "square", "rounded-square"] as const;
+export type BadgeShape = (typeof badgeShapes)[number];
+
 export interface BadgeFont {
   family: string;
   has(code: number): boolean;
 }
 export interface BadgeGeometry {
+  shape?: BadgeShape;
+  font?: PrintFontId;
   diameter: number;
   bleed: number;
   safe: number;
@@ -48,10 +55,13 @@ export async function verifyBadgeLogo(logo: string | null) {
     throw new Error("The supplied badge logo could not be decoded.");
   }
 }
-export async function loadBadgeFont(bytes: ArrayBuffer): Promise<BadgeFont> {
+export async function loadBadgeFont(
+  bytes: ArrayBuffer,
+  weight = "100 900",
+): Promise<BadgeFont> {
   const has = fontCoverage(bytes);
   const family = `BadgeFont${crypto.randomUUID().replaceAll("-", "")}`;
-  const face = new FontFace(family, bytes, { weight: "100 900" });
+  const face = new FontFace(family, bytes, { weight });
   await face.load();
   document.fonts.add(face);
   return { family, has };
@@ -128,6 +138,45 @@ function svg<K extends keyof SVGElementTagNameMap>(
     node.setAttribute(key, String(value));
   return node;
 }
+// Keep space-delimited names intact. Scripts that commonly omit spaces
+// can wrap at word boundaries identified by the browser's dictionary.
+let wordSegmenter: Intl.Segmenter | undefined;
+function badgeParagraphs(value: string) {
+  return value
+    .normalize("NFC")
+    .split("\n")
+    .map((paragraph) =>
+      paragraph
+        .trim()
+        .split(/\s+/u)
+        .flatMap((word, index) => {
+          const gap = index === 0 ? "" : " ";
+          if (
+            !/[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Thai}\p{Script=Lao}\p{Script=Khmer}\p{Script=Myanmar}]/u.test(
+              word,
+            )
+          )
+            return [{ text: word, gap }];
+          const starts = [0];
+          wordSegmenter ??= new Intl.Segmenter(undefined, {
+            granularity: "word",
+          });
+          for (const part of wordSegmenter.segment(word)) {
+            if (
+              part.index &&
+              part.isWordLike &&
+              !/[\p{Ps}\p{Pi}]/u.test(word[part.index - 1]!)
+            )
+              starts.push(part.index);
+          }
+          return starts.map((start, i) => ({
+            text: word.slice(start, starts[i + 1]),
+            gap: i ? "" : gap,
+          }));
+        }),
+    );
+}
+
 export function renderBadgeArtwork(
   person: Required<BadgePerson>,
   settings: BadgeGeometry,
@@ -139,7 +188,35 @@ export function renderBadgeArtwork(
 ) {
   const d = settings.diameter,
     b = settings.bleed,
-    r = d / 2 - settings.safe;
+    shape = settings.shape ?? "circle";
+  const trimRadius =
+    shape === "circle" ? d / 2 : shape === "rounded-square" ? d / 6 : 0;
+  // Insetting a rounded corner reduces its radius by the same distance.
+  const safeHalfSide = d / 2 - settings.safe;
+  const safeRadius = Math.max(0, trimRadius - settings.safe);
+  function safeHalfWidth(y: number) {
+    const distanceY = Math.abs(y - d / 2);
+    if (distanceY > safeHalfSide) return -1;
+    const cornerY = Math.max(0, distanceY - (safeHalfSide - safeRadius));
+    return (
+      safeHalfSide -
+      safeRadius +
+      Math.sqrt(Math.max(0, safeRadius ** 2 - cornerY ** 2))
+    );
+  }
+  function outline(inset: number, attributes: Record<string, string | number>) {
+    const size = d - 2 * inset;
+    return shape === "circle"
+      ? svg("circle", { cx: d / 2, cy: d / 2, r: size / 2, ...attributes })
+      : svg("rect", {
+          x: inset,
+          y: inset,
+          width: size,
+          height: size,
+          rx: shape === "square" ? 0 : Math.max(0, trimRadius - inset),
+          ...attributes,
+        });
+  }
   const page = d + b * 2;
   const issues: string[] = [];
   const { foreground: color, background } = appearance;
@@ -148,12 +225,17 @@ export function renderBadgeArtwork(
     width: `${page}mm`,
     height: `${page}mm`,
     role: "img",
+    "data-badge-shape": shape,
     "aria-label": spare
       ? `Spare ${person.role} badge`
       : `${person.role} badge for ${person.name}`,
   });
   root.appendChild(
-    svg("rect", { width: page, height: page, fill: background }),
+    outline(-b, {
+      "data-badge-outline": "bleed",
+      transform: `translate(${b} ${b})`,
+      fill: background,
+    }),
   );
   const content = svg("g", { transform: `translate(${b} ${b})`, fill: color });
   root.appendChild(content);
@@ -188,19 +270,12 @@ export function renderBadgeArtwork(
     label: string,
   ) {
     if (!value.trim()) return;
-    const halfHeight = Math.max(
-      Math.abs(top - d / 2),
-      Math.abs(bottom - d / 2),
-    );
-    const width =
-      2 * Math.sqrt(Math.max(0, r * r - halfHeight * halfHeight)) - 2;
+    const width = 2 * Math.min(safeHalfWidth(top), safeHalfWidth(bottom)) - 2;
     if (width <= 0 || bottom <= top) {
       issues.push(`${label}: print settings leave no safe space.`);
       return;
     }
-    const graphemes = new Intl.Segmenter(undefined, {
-      granularity: "grapheme",
-    });
+    const paragraphs = badgeParagraphs(value);
     let selected = null;
     for (let sizePt = maxPt; sizePt >= minPt; sizePt -= 0.5) {
       const size = sizePt * pt;
@@ -213,25 +288,14 @@ export function renderBadgeArtwork(
         );
       };
       const lines = [];
-      for (const paragraph of value.normalize("NFC").split("\n")) {
+      for (const words of paragraphs) {
         let line = "";
-        for (const word of paragraph.trim().split(/\s+/u)) {
-          const candidate = line ? `${line} ${word}` : word;
-          if (widthOf(candidate) <= width) {
-            line = candidate;
-            continue;
-          }
-          if (line) {
+        for (const { text, gap } of words) {
+          const candidate = line ? line + gap + text : text;
+          if (line && widthOf(candidate) > width) {
             lines.push(line);
-            line = "";
-          }
-          for (const { segment } of graphemes.segment(word)) {
-            if (line && widthOf(line + segment) > width) {
-              lines.push(line);
-              line = "";
-            }
-            line += segment;
-          }
+            line = text;
+          } else line = candidate;
         }
         if (line) lines.push(line);
       }
@@ -271,7 +335,7 @@ export function renderBadgeArtwork(
         baseline + m.actualBoundingBoxDescent,
       ];
       if (
-        bounds.some((y) => half * half + (y - d / 2) ** 2 > r * r) ||
+        bounds.some((y) => half > safeHalfWidth(y)) ||
         bounds[0] < top ||
         bounds[1] > bottom
       )
@@ -294,9 +358,13 @@ export function renderBadgeArtwork(
   // Separate vertical bands prevent name/company/logo/role collisions.
   const logoTop = settings.top + 2,
     logoSize = 16;
-  if (logo && (logoSize / 2) ** 2 + (logoTop - d / 2) ** 2 > r * r)
+  if (
+    logo &&
+    logoSize / 2 >
+      Math.min(safeHalfWidth(logoTop), safeHalfWidth(logoTop + logoSize))
+  )
     issues.push(
-      "Logo is outside the safe circle. Adjust the top exclusion or diameter.",
+      "Logo exceeds the safe area. Adjust the top exclusion or trim size.",
     );
   if (logo)
     content.appendChild(
@@ -330,28 +398,21 @@ export function renderBadgeArtwork(
   );
   block(person.role.toUpperCase(), d * 0.83, d * 0.9, 10, 9, 1, 700, "Role");
   if (preview || settings.guides) {
-    content.appendChild(
-      svg("circle", {
-        cx: d / 2,
-        cy: d / 2,
-        r: d / 2,
-        fill: "none",
-        stroke: "#888",
-        "stroke-width": 0.2,
-      }),
-    );
+    const guide = { fill: "none", stroke: "#888", "stroke-width": 0.2 };
+    content.appendChild(outline(0, { ...guide, "data-badge-outline": "trim" }));
     if (preview) {
       content.appendChild(
-        svg("circle", {
-          cx: d / 2,
-          cy: d / 2,
-          r,
-          fill: "none",
-          stroke: "#888",
-          "stroke-width": 0.2,
+        outline(settings.safe, {
+          ...guide,
           "stroke-dasharray": "1 1",
+          "data-badge-outline": "safe",
         }),
       );
+      const clip = svg("clipPath", { id: "badge-trim-" + crypto.randomUUID() });
+      clip.appendChild(outline(0, {}));
+      const defs = svg("defs", {});
+      defs.appendChild(clip);
+      content.appendChild(defs);
       content.appendChild(
         svg("rect", {
           x: d / 2 - 16,
@@ -360,6 +421,7 @@ export function renderBadgeArtwork(
           height: settings.top,
           fill: "#888",
           opacity: 0.18,
+          "clip-path": `url(#${clip.id})`,
         }),
       );
     }
@@ -387,7 +449,12 @@ const defaultColors = {
 
 /** Assemble distinct printable rows. Repeated spare copies and backs share one proof. */
 export function prepareBadgeRun(input: BadgeRunInput) {
-  const settings = { ...defaultGeometry, ...input.settings };
+  const settings = {
+    ...defaultGeometry,
+    ...input.settings,
+    shape: input.settings?.shape ?? "circle",
+    font: input.settings?.font ?? "noto-sans",
+  };
   const palette = new Map(Object.entries(defaultColors));
   for (const entry of input.colors ?? []) palette.set(entry.role, entry);
   const rows: PrintRow[] = [];

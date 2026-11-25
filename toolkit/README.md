@@ -29,7 +29,9 @@ Use the private organizer link printed in the terminal. The default host is `127
 
 From a checkout with dependencies installed, `npm run dev -w @sdlcai/event-toolkit` compiles the TypeScript and starts the same workspace. Run `npm run toolkit:check` from the repository root to run the block tests and repeat the separate-project installation check.
 
-Version 0.1.0 is distributed here as a tarball. Its software license is marked `UNLICENSED`. The bundled Noto Sans font carries its own [SIL Open Font License](assets/print/OFL.txt).
+Version 0.1.0 is distributed here as a tarball. Its software license is marked `UNLICENSED`. The bundled Noto Sans, Lora and Fira Code typefaces carry the [SIL Open Font License](assets/print/SOURCES.md).
+
+Name badges, venue signs, table tents and talk graphics can use Noto Sans (the default), Lora or Fira Code. Each font ships with the toolkit for offline previews and exports.
 
 In **Print name badges**, choose a person or spare under **Badge to preview**. Your browser redraws its SVG as you edit the text, role colors, logo or paper settings. Preflight checks every row and marks entries that need attention. The PDF export repeats those checks before producing the print file.
 
