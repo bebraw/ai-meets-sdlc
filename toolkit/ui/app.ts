@@ -1,7 +1,19 @@
+import { badgePaperLabels, type BadgePaper } from "../blocks/badge-sheets.mjs";
+import { printFonts, type PrintFontId } from "../blocks/print-fonts.mjs";
+import {
+  registrationBadgePeople,
+  registrationDeskPeople,
+  registrationMeals,
+} from "../blocks/registration-csv.mjs";
 import { prepareEngagementForm, renderEngagementResult } from "./engagement.js";
 import { prepareWorkflowForm, renderWorkflowResult } from "./workflows.js";
 import { attachBadgeProof } from "./badge-proof.js";
-import type { Block, JsonSchema, Role } from "../contracts.mjs";
+import type {
+  Block,
+  JsonSchema,
+  OperationResult,
+  Role,
+} from "../contracts.mjs";
 import {
   element as node,
   message,
@@ -65,6 +77,15 @@ let badgeProof: ReturnType<typeof attachBadgeProof> | undefined;
 let serial = 0;
 let widget: string | undefined;
 const lastInputs = new Map<string, Inputs>();
+let registrationDraft = 0;
+class RequestError extends Error {
+  constructor(
+    message: string,
+    readonly status: number,
+  ) {
+    super(message);
+  }
+}
 async function api<T = unknown>(path: string, body?: unknown): Promise<T> {
   const response = await fetch(
     path,
@@ -78,10 +99,11 @@ async function api<T = unknown>(path: string, body?: unknown): Promise<T> {
   );
   const data: unknown = await response.json();
   if (!response.ok)
-    throw Error(
+    throw new RequestError(
       isRecord(data) && typeof data.error === "string"
         ? data.error
         : response.statusText,
+      response.status,
     );
   return data as T;
 }
@@ -112,6 +134,70 @@ function newButton(text: string, callback: () => void) {
   b.addEventListener("click", callback);
   return b;
 }
+function registrationActions(
+  imported: OperationResult<"registration_import_csv">,
+  source: string,
+  result: HTMLElement,
+  navigate: Navigate,
+) {
+  const permitted = new Set(
+    profile.blocks.flatMap((b) => b.operations.map((o) => o.name)),
+  );
+  const actions = node("div", undefined, "qa-actions");
+  const add = (
+    name: string,
+    title: string,
+    people: () => Inputs[],
+    summary: (count: number) => string,
+    otherInputs: Inputs = {},
+  ) => {
+    if (!permitted.has(name)) return;
+    try {
+      const rows = people();
+      const control = newButton(title + " (" + summary(rows.length) + ")", () =>
+        navigate(name, { ...otherInputs, people: rows }),
+      );
+      control.disabled = rows.length === 0;
+      actions.append(control);
+    } catch (error) {
+      actions.append(node("p", title + " — " + message(error), "error"));
+    }
+  };
+  add(
+    "badges_export_pdf",
+    "Prepare badges",
+    () => registrationBadgePeople(imported.records),
+    String,
+  );
+  add(
+    "checkin_register",
+    "Open check-in roster",
+    () => registrationDeskPeople(imported.records, source, imported.mapping),
+    (count) => {
+      const tickets = count + (count === 1 ? " ticket" : " tickets");
+      return imported.mapping.status < 0
+        ? tickets
+        : tickets +
+            ", " +
+            imported.records.filter((record) => record.status === "active")
+              .length +
+            " active";
+    },
+  );
+  add(
+    "catering_prepare_brief",
+    "Prepare catering brief",
+    () => registrationMeals(imported.records),
+    (count) => count + (count === 1 ? " meal" : " meals"),
+    {
+      eventName:
+        [...profile.eventLabel.trim()].slice(0, 240).join("") || "Event",
+    },
+  );
+  if (actions.childElementCount)
+    result.append(node("h3", "Use these registrations"), actions);
+}
+
 let fieldCount = 0;
 function makeControl(
   parent: HTMLElement,
@@ -232,8 +318,27 @@ function makeControl(
   let field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
   if (schema.enum) {
     field = node("select");
-    field.append(new Option("Choose…", ""));
-    for (const v of schema.enum) field.append(new Option(String(v), String(v)));
+    const defaults: Record<string, string> = {
+      shape: "Circle",
+      font: "Noto Sans",
+      paper: badgePaperLabels.single,
+      attachment: "Lanyard",
+    };
+    const placeholder = defaults[key]
+      ? `Default (${defaults[key]})`
+      : "Choose…";
+    field.append(new Option(placeholder, ""));
+    for (const value of schema.enum) {
+      const id = String(value);
+      let label = id;
+      if (key === "font" && Object.hasOwn(printFonts, id))
+        label = printFonts[id as PrintFontId].label;
+      if (key === "paper" && Object.hasOwn(badgePaperLabels, id))
+        label = badgePaperLabels[id as BadgePaper];
+      if (key === "shape" || key === "attachment")
+        label = human(id.replaceAll("-", " "));
+      field.append(new Option(label, id));
+    }
   } else if (
     generic ||
     key === "csv" ||
@@ -263,7 +368,7 @@ function makeControl(
   label.htmlFor = field.id;
   let changed = false;
   if (field instanceof HTMLInputElement && field.type === "checkbox") {
-    field.checked = (value ?? schema.default) === true;
+    field.checked = (value ?? schema.default ?? key === "cutMarks") === true;
     field.addEventListener("change", () => {
       changed = true;
     });
@@ -353,6 +458,7 @@ function notice(text: string) {
 }
 function form(value: unknown = {}) {
   if (!op) return;
+  if (op.name === "registration_import_csv") registrationDraft++;
   if (!isRecord(value)) throw Error("Enter a valid JSON object.");
   badgeProof?.dispose();
   badgeProof = undefined;
@@ -370,19 +476,26 @@ function form(value: unknown = {}) {
   $("result").replaceChildren();
   notice("");
 }
-async function action(name: string | null, initial?: Inputs) {
-  const current = ++serial;
+function clearAction() {
+  serial++;
   badgeProof?.dispose();
   badgeProof = undefined;
+  reader = undefined;
+  op = undefined;
+  $("fields").replaceChildren();
+  $("result").replaceChildren();
+  $("input-json", "textarea").value = "";
+  $("run", "button").disabled = true;
+  setupChallenge();
+  notice("");
+}
+async function action(name: string | null, initial?: Inputs) {
+  clearAction();
+  const current = serial;
   op = block?.operations.find((o) => o.name === name) || block?.operations[0];
   if (!op) return;
   $("operation", "select").value = op.name;
   $("purpose").textContent = op.description;
-  $("run", "button").disabled = true;
-  $("fields").replaceChildren();
-  $("result").replaceChildren();
-  reader = undefined;
-  notice("");
   try {
     const previous = initial || lastInputs.get(op.name) || {};
     const prepared =
@@ -409,17 +522,26 @@ async function action(name: string | null, initial?: Inputs) {
 async function route() {
   const p = params();
   const requested = p.get("operation");
+  const blockId = p.get("block");
   block =
-    profile.blocks.find((b) =>
-      requested
-        ? b.operations.some((o) => o.name === requested)
-        : b.id === p.get("block"),
-    ) || profile.blocks[0];
+    requested || blockId
+      ? profile.blocks.find((b) =>
+          requested
+            ? b.operations.some((o) => o.name === requested)
+            : b.id === blockId,
+        )
+      : profile.blocks[0];
   nav();
   $("tool").hidden = !block;
   if (!block) {
+    clearAction();
     $("title").textContent = "Event workspace";
-    $("description").textContent = "Sign in to use the installed tools.";
+    $("description").textContent =
+      requested || blockId
+        ? "This tool is unavailable in your workspace."
+        : "Sign in to use the installed tools.";
+    document.title = "Event workspace";
+    if (requested) notice("Sign in with access to the requested action.");
     return;
   }
   $("title").textContent = block.title;
@@ -438,13 +560,11 @@ async function route() {
       if (!isRecord(value)) throw Error("Invalid action link.");
       initial = value;
     } catch {
+      clearAction();
+      $("tool").hidden = true;
       notice("Invalid action link.");
       return;
     }
-  }
-  if (requested && !block.operations.some((o) => o.name === requested)) {
-    notice("Sign in with access to the requested action.");
-    return;
   }
   await action(requested, initial);
 }
@@ -565,6 +685,7 @@ $("inputs").onsubmit = async (event) => {
   const button = $("run", "button"),
     result = $("result"),
     current = serial;
+  const submittedDraft = registrationDraft;
   button.disabled = true;
   result.replaceChildren();
   notice("Working…");
@@ -578,6 +699,13 @@ $("inputs").onsubmit = async (event) => {
       input,
     );
     if (current !== serial) return;
+    if (
+      op.name === "registration_import_csv" &&
+      submittedDraft !== registrationDraft
+    ) {
+      notice("Import the edited rows to update the roster and counts.");
+      return;
+    }
     if (
       submittedProof &&
       submittedProof === badgeProof &&
@@ -627,6 +755,14 @@ $("inputs").onsubmit = async (event) => {
       );
       route().catch((error) => notice(message(error)));
     };
+    if (op.name === "registration_import_csv") {
+      registrationActions(
+        data as OperationResult<"registration_import_csv">,
+        String(input.source),
+        result,
+        navigate,
+      );
+    }
     if (
       !renderEngagementResult(op, data, result, call) &&
       !renderWorkflowResult(op, data, result, call, navigate, input)
@@ -643,6 +779,23 @@ $("inputs").onsubmit = async (event) => {
   } catch (error) {
     if (current === serial) {
       result.append(node("p", message(error), "error"));
+      if (
+        op.name === "checkin_register" &&
+        error instanceof RequestError &&
+        error.status === 409
+      ) {
+        result.append(
+          newButton("Refresh roster version for review", () => {
+            try {
+              const inputs = reader!();
+              delete inputs.rosterRevision;
+              void action("checkin_register", inputs);
+            } catch (error) {
+              notice(message(error));
+            }
+          }),
+        );
+      }
       notice("");
     }
   } finally {
@@ -652,19 +805,29 @@ $("inputs").onsubmit = async (event) => {
     }
   }
 };
+$("fields").addEventListener("input", () => {
+  if (op?.name !== "registration_import_csv") return;
+  registrationDraft++;
+  if ($("result").childElementCount) {
+    $("result").replaceChildren();
+    notice("Import the edited rows to update the roster and counts.");
+  }
+});
 $("example").onclick = () => form(structuredClone(op?.example || {}));
-$("advanced", "details").ontoggle = () => {
-  if ($("advanced", "details").open && reader)
+const advanced = $("advanced", "details");
+// Snapshot before the editor opens. A deferred toggle event can arrive after paste.
+advanced.querySelector("summary")!.addEventListener("click", () => {
+  if (!advanced.open && reader)
     try {
       $("input-json", "textarea").value = JSON.stringify(reader(), null, 2);
     } catch (e) {
       notice(message(e));
     }
-};
+});
 $("apply-json").onclick = () => {
   try {
     form(JSON.parse($("input-json", "textarea").value));
-    $("advanced", "details").open = false;
+    advanced.open = false;
   } catch {
     notice("Enter a valid JSON object.");
   }

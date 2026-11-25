@@ -2,6 +2,7 @@ import organizerSeed from "./data/organizers.json" with { type: "json" };
 import { getContentInventory } from "./content-inventory.ts";
 import { getTalkPreviews, getTalkPreview } from "./talk-previews.ts";
 import { getPublishedTalks, getPublishedTalk } from "./published-talks.ts";
+import { getToolkitCatalog } from "./toolkit/catalog.ts";
 import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { raw } from "gustwind/htmlisp";
@@ -23,6 +24,8 @@ import {
 } from "./scripts/speaker-name.ts";
 
 function init() {
+  let toolkitCatalog: ReturnType<typeof getToolkitCatalog> | undefined;
+  const toolkit = () => (toolkitCatalog ??= getToolkitCatalog());
   const announcementItems = getAnnouncementItems();
   const announcementItemsBySlug = getAnnouncementItemsBySlug(announcementItems);
   const speakersById = getSpeakersById();
@@ -56,7 +59,9 @@ function init() {
     announcementItem: (match) =>
       getAnnouncementItem(announcementItemsBySlug, match.slug),
     seminar: () => seminar,
-    toolkitGroups: getToolkitGroups,
+    toolkitGroups: async () => (await toolkit()).groups,
+    toolkitBlockItems: async () => (await toolkit()).items,
+    toolkitBlock: async ({ id }) => (await toolkit()).block(id),
     socialMentionGroups: () =>
       socialMentions.groups.map((group, index) => ({
         ...group,
@@ -301,28 +306,6 @@ function parseFrontMatter(source, fileName) {
   }
 
   return frontMatter;
-}
-
-// The published Markdown guide also serves the installed package and coding assistants.
-function getToolkitGroups() {
-  const markdown = readFileSync(
-    new URL("../toolkit/GUIDE.md", import.meta.url),
-    "utf8",
-  );
-  const groups = [];
-  let title = "";
-  for (const token of marked.lexer(markdown)) {
-    if (token.type === "heading" && token.depth === 2) title = token.text;
-    if (token.type === "table") {
-      const blocks = token.rows.map(([name, id, description]) => ({
-        name: name.text,
-        id: id.text.replace(/^`|`$/g, ""),
-        description: description.text,
-      }));
-      groups.push({ title, blocks });
-    }
-  }
-  return groups;
 }
 
 function renderMarkdown(markdown) {

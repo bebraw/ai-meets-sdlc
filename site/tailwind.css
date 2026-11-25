@@ -56,6 +56,181 @@
 }
 
 @layer components {
+  .toolkit-intro {
+    container-type: inline-size;
+  }
+
+  .toolkit-title {
+    /* The catalog's uppercase words average at most 0.83em per letter
+       across Finlandica Headline Black and the Georgia Bold fallback. */
+    font-size: min(
+      clamp(2.75rem, 6vw, 5.5rem),
+      calc(100cqi / var(--toolkit-word-length) / 0.85)
+    );
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+  }
+
+  .toolkit-workbench {
+    background: color-mix(in srgb, var(--color-muted) 6%, var(--color-paper));
+    box-shadow: 4px 4px 0 color-mix(in srgb, var(--color-ink) 16%, transparent);
+  }
+
+  .toolkit-demo {
+    display: grid;
+    gap: 1rem;
+    overflow-wrap: anywhere;
+  }
+
+  .toolkit-demo label {
+    display: grid;
+    min-width: 0;
+    gap: 0.3rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  .toolkit-demo :is(input, select, textarea) {
+    border: 1px solid var(--color-muted);
+    padding: 0.5rem 0.65rem;
+    min-height: 44px;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    color: var(--color-ink);
+    background-color: var(--color-paper);
+    font: inherit;
+    font-weight: 400;
+  }
+
+  .toolkit-demo textarea {
+    min-height: 6rem;
+    resize: vertical;
+  }
+
+  .toolkit-demo button {
+    justify-self: start;
+    min-height: 44px;
+    border: 1px solid var(--color-ink);
+    padding: 0.5rem 1rem;
+    background: var(--color-ink);
+    color: var(--color-paper);
+    font-weight: 700;
+  }
+
+  .toolkit-demo button:enabled:hover {
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  .toolkit-demo :disabled {
+    opacity: 0.55;
+    cursor: default;
+  }
+
+  .toolkit-demo :focus-visible,
+  .toolkit-entry:focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+
+  .demo-controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+    gap: 1rem;
+  }
+
+  .demo-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .demo-result {
+    min-width: 0;
+    padding: 1rem;
+    border: 1px solid color-mix(in srgb, var(--color-ink) 32%, transparent);
+    background: var(--color-paper);
+  }
+
+  .demo-result h3 {
+    margin-bottom: 0.7rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px solid
+      color-mix(in srgb, var(--color-ink) 22%, transparent);
+    font-weight: 700;
+  }
+
+  .demo-result > div > * + * {
+    margin-top: 0.45rem;
+  }
+
+  .demo-sheet:not(:empty) {
+    display: grid;
+    justify-items: center;
+    gap: 0.5rem;
+    padding-block: 1rem 0.25rem;
+    border-top: 1px solid color-mix(in srgb, var(--color-ink) 22%, transparent);
+    font-size: 0.875rem;
+  }
+
+  .demo-sheet > svg {
+    display: block;
+    width: 100%;
+    max-width: 18rem;
+    height: auto;
+    border: 1px solid #aaa;
+    background: white;
+  }
+
+  .demo-sheet [data-badge-outline="trim"] {
+    stroke: #666;
+    stroke-width: 1px;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .demo-sheet [data-cut-marks] {
+    stroke-width: 0.75px;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .demo-result table {
+    width: 100%;
+    text-align: left;
+    font-size: 0.9rem;
+  }
+
+  .demo-result :is(th, td) {
+    padding: 0.3rem;
+    vertical-align: top;
+    border-bottom: 1px solid
+      color-mix(in srgb, var(--color-ink) 18%, transparent);
+  }
+
+  .toolkit-chevron {
+    display: inline-block;
+    width: 0.55em;
+    height: 0.55em;
+    border: solid currentColor;
+    border-width: 2px 2px 0 0;
+    transform: rotate(45deg);
+  }
+
+  .toolkit-back {
+    transform: rotate(-135deg);
+  }
+
+  .toolkit-disclosure {
+    margin-left: 0.3em;
+    vertical-align: 0.15em;
+    transform: rotate(135deg);
+  }
+
+  details[open] .toolkit-disclosure {
+    transform: rotate(-45deg);
+  }
+
   .feedback-rating {
     min-width: 0;
     padding: 1rem;

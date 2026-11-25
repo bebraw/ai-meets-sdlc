@@ -1176,12 +1176,18 @@ The 2,000-person limit applies to the attendee roster; the combined badge run
 includes additional team and earlier records. Print preferences are bounded by
 request and encrypted storage size rather than a combined record count.
 
-Printer settings start at 100 mm diameter with one badge per PDF page. Adjust
-bleed, safe margin, top clearance, readable font sizes, trim guide, and repeated
-front/back pages as needed. Print buttons recheck layout and font coverage and
-block unresolved problems. Custom TTF/OTF fonts are tab-local and must be loaded
-again after a reload. The bundled Noto Sans is licensed under the SIL Open Font
-License; its source and license are in `assets/badges/`.
+Printer settings start with a 100 mm round badge on its own page. Choose A4
+or US Letter to print several badges at actual size. The proof shows badges
+per sheet, physical sheets and PDF pages for the full run. Set the printer
+margin and bleed before printing. Enable cut marks to locate the trim edges,
+and enable the trim guide to trace a round or rounded-square outline. For
+matching backs, print at 100% using long-edge duplex.
+
+Choose a punched lanyard badge or a holder insert, and toggle the event logo.
+The proof uses the space available for the name and affiliation. Print buttons
+check text fit and font coverage. Choose Noto Sans, Lora or Fira Code, or load
+a custom TTF/OTF font for the current tab. The bundled typefaces carry the
+[SIL Open Font License](toolkit/assets/print/SOURCES.md).
 
 Sponsor badges have a teal background and a **SPONSOR** label. They are included
 in the full badge run and can be generated separately with

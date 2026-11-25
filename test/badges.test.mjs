@@ -69,7 +69,22 @@ test("lanyard quantities include selected badges and role-specific spares, with 
   assert.equal(empty.lanyards, 7);
 });
 test("spare badge preferences accept whole counts and keep older saved runs compatible", () => {
-  const oldPreferences = { settings: defaultSettings, overrides: [] };
+  const legacySettings = {
+    diameter: 100,
+    bleed: 0,
+    safe: 5,
+    top: 14,
+    minName: 18,
+    maxName: 30,
+    companySize: 12,
+    guides: false,
+    doubleSided: false,
+  };
+  const oldPreferences = { settings: legacySettings, overrides: [] };
+  assert.deepEqual(
+    parsePrintPreferences(oldPreferences).settings,
+    defaultSettings,
+  );
   assert.equal(parsePrintPreferences(oldPreferences).spareAttendeeBadges, 0);
   assert.equal(parsePrintPreferences(oldPreferences).spareSponsorBadges, 0);
   assert.equal(

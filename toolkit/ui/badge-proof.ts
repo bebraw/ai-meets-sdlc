@@ -9,19 +9,34 @@ import {
   verifyBadgeLogo,
 } from "../blocks/badge-artwork.mjs";
 
-let fontPromise: Promise<BadgeFont> | undefined;
-function bundledFont() {
-  fontPromise ??= fetch("/badge-font.ttf")
+import {
+  badgePaperLabels,
+  renderBadgeSheet,
+  type BadgeSheetPlan,
+} from "../blocks/badge-sheets.mjs";
+import {
+  printFonts,
+  printFontUrl,
+  type PrintFontId,
+} from "../blocks/print-fonts.mjs";
+
+const bundledFonts = new Map<PrintFontId, Promise<BadgeFont>>();
+function bundledFont(id: PrintFontId) {
+  const existing = bundledFonts.get(id);
+  if (existing) return existing;
+  const font = fetch(printFontUrl(id))
     .then((response) => {
-      if (!response.ok) throw Error("Could not load the bundled badge font.");
+      if (!response.ok)
+        throw Error("Could not load " + printFonts[id].label + ".");
       return response.arrayBuffer();
     })
-    .then(loadBadgeFont)
+    .then((bytes) => loadBadgeFont(bytes, printFonts[id].weight))
     .catch((error) => {
-      fontPromise = undefined;
+      bundledFonts.delete(id);
       throw error;
     });
-  return fontPromise;
+  bundledFonts.set(id, font);
+  return font;
 }
 function element<K extends keyof HTMLElementTagNameMap>(
   tag: K,
@@ -65,6 +80,22 @@ export function attachBadgeProof(fields: HTMLElement, read: () => Draft) {
   artwork.className = "badge-artwork";
   findings.id = "badge-findings";
   findings.setAttribute("role", "status");
+  const sheetPreview = element("section");
+  sheetPreview.className = "badge-sheet-preview";
+  const pageInput = element("input");
+  pageInput.type = "number";
+  pageInput.min = "1";
+  pageInput.step = "1";
+  pageInput.value = "1";
+  const pageLabel = element("label", "Print page to preview");
+  pageLabel.htmlFor = pageInput.id = "badge-sheet-page";
+  const sheetArtwork = element("div");
+  sheetPreview.append(
+    pageLabel,
+    pageInput,
+    sheetArtwork,
+    element("small", "Outlines show badge placement."),
+  );
   panel.append(
     element("h2", "Badge proof"),
     label,
@@ -72,10 +103,13 @@ export function attachBadgeProof(fields: HTMLElement, read: () => Draft) {
     artwork,
     findings,
     summary,
+    sheetPreview,
   );
   fields.after(panel);
 
   let run: ReturnType<typeof prepareBadgeRun> | undefined,
+    plan: BadgeSheetPlan | undefined,
+    copies: PrintRow[] = [],
     logo: string | null = null,
     verifiedLogo: string | null = null,
     revision = 0,
@@ -89,10 +123,11 @@ export function attachBadgeProof(fields: HTMLElement, read: () => Draft) {
     const current = run;
     const row = current?.rows[select.selectedIndex];
     artwork.replaceChildren();
+    sheetArtwork.replaceChildren();
     findings.replaceChildren();
     if (!current || !row) return;
     try {
-      const font = await bundledFont();
+      const font = await bundledFont(current.settings.font);
       if (token !== paint || !panel.isConnected) return;
       if (logo !== verifiedLogo) {
         await verifyBadgeLogo(logo);
@@ -110,12 +145,29 @@ export function attachBadgeProof(fields: HTMLElement, read: () => Draft) {
         row.person,
         current.settings,
         font,
-        false,
+        true,
         row.source === "spares",
         row.appearance,
         logo,
       );
       artwork.append(svg);
+      const page = plan?.pages[pageInput.valueAsNumber - 1];
+      if (plan && plan.paper !== "single" && page) {
+        sheetArtwork.append(
+          renderBadgeSheet(plan, page, (i) => {
+            const copy = copies[i]!;
+            return renderBadgeArtwork(
+              copy.person,
+              { ...current.settings, guides: true },
+              font,
+              false,
+              copy.source === "spares",
+              copy.appearance,
+              logo,
+            ).svg;
+          }),
+        );
+      }
       const messages = new Set([...(checked.get(key(row)) ?? []), ...issues]);
       if (messages.size) {
         const list = element("ul");
@@ -168,6 +220,13 @@ export function attachBadgeProof(fields: HTMLElement, read: () => Draft) {
           count: spare?.role ? (spare.count ?? 0) : 0,
         })),
       });
+      plan = run.plan;
+      copies = run.rows.flatMap((row) =>
+        Array<PrintRow>(row.quantity).fill(row),
+      );
+      sheetPreview.hidden = plan.paper === "single";
+      pageInput.max = String(plan.pageCount);
+      if (!pageInput.value || !pageInput.validity.valid) pageInput.value = "1";
       for (const row of run.rows) {
         const title =
           row.source === "people"
@@ -189,19 +248,20 @@ export function attachBadgeProof(fields: HTMLElement, read: () => Draft) {
       if (checked.size && !checked.has(select.value))
         select.value = checked.keys().next().value!;
       select.disabled = false;
+      const pages = `${plan.pageCount} ${plan.pageCount === 1 ? "page" : "pages"}`;
+      const dimensions = `${plan.widthMm} × ${plan.heightMm} mm`;
       summary.textContent =
-        run.pageCount +
-        " " +
-        (run.pageCount === 1 ? "page" : "pages") +
-        " · " +
-        run.widthMm +
-        " × " +
-        run.widthMm +
-        " mm";
+        plan.paper === "single"
+          ? `${pages} · ${dimensions}`
+          : `${plan.sheetCount} ${badgePaperLabels[plan.paper]} ${plan.sheetCount === 1 ? "sheet" : "sheets"} · ${pages} · ${plan.columns} across × ${plan.rows} down · ${dimensions}. Print at 100%${run.settings.doubleSided ? " and flip on the long edge" : ""}.`;
       void draw();
     } catch (error) {
       ++paint;
       run = undefined;
+      plan = undefined;
+      copies = [];
+      sheetPreview.hidden = true;
+      sheetArtwork.replaceChildren();
       select.disabled = true;
       artwork.replaceChildren();
       summary.textContent = "";
@@ -215,6 +275,7 @@ export function attachBadgeProof(fields: HTMLElement, read: () => Draft) {
     clearTimeout(timer);
     timer = window.setTimeout(rebuild, 100);
   }
+  pageInput.addEventListener("input", draw);
   select.addEventListener("change", draw);
   fields.addEventListener("input", changed);
   const observer = new MutationObserver(changed);

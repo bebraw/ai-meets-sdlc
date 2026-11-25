@@ -32,6 +32,10 @@
       "types": "./dist/blocks/badge-artwork.d.mts",
       "default": "./dist/blocks/badge-artwork.mjs"
     },
+    "./badge-sheets": {
+      "types": "./dist/blocks/badge-sheets.d.mts",
+      "default": "./dist/blocks/badge-sheets.mjs"
+    },
     "./organizer-store": {
       "types": "./dist/blocks/organizer-store.d.mts",
       "default": "./dist/blocks/organizer-store.mjs"

@@ -29,6 +29,23 @@ import {
   renderSpareBadge,
   type BadgeFont,
 } from "./badge-layout.ts";
+import {
+  attachmentSelect,
+  badgeShapeSelect,
+  fontSelect,
+  paperSelect,
+  sheetDescription,
+} from "./print-options.ts";
+import {
+  badgePaperSizes,
+  planBadgeSheets,
+  renderBadgeSheet,
+} from "../../toolkit/blocks/badge-sheets.mts";
+import {
+  badgeShapes,
+  badgeAttachments,
+} from "../../toolkit/blocks/badge-artwork.mts";
+import { printFontIds } from "../../toolkit/blocks/print-fonts.mts";
 const root = document.querySelector<HTMLElement>("[data-admin-badges]");
 if (root) setup(root);
 function setup(root: HTMLElement): void {
@@ -52,6 +69,7 @@ function setup(root: HTMLElement): void {
   };
   let requestedSparesApplied = false;
   let font: BadgeFont | undefined;
+  let customFontName = "";
   const layoutIssues = new Map<string, string[]>();
   let sourcePeople: BadgePerson[] = [];
   let signatures: Record<string, string> = {};
@@ -237,6 +255,13 @@ function setup(root: HTMLElement): void {
     "Select a person to inspect their badge.",
     "text-sm leading-6",
   );
+  const printSummary = el(
+    "p",
+    "",
+    "mt-3 border-t border-ink/25 pt-3 text-sm font-bold",
+  );
+  printSummary.setAttribute("role", "status");
+  printSummary.dataset.sheetSummary = "";
   const proofNavigation = el(
     "div",
     "",
@@ -269,6 +294,7 @@ function setup(root: HTMLElement): void {
     ),
     preview,
     previewStatus,
+    printSummary,
   );
   const count = el("p", "", "my-5 font-bold");
   const list = el("div", "", "grid gap-4");
@@ -349,6 +375,17 @@ function setup(root: HTMLElement): void {
   }
   function showPreview(spare: SpareBadgeRole | false = false) {
     previewingSpare = spare;
+    try {
+      const quantity =
+        workspace.people.filter((p) => p.included).length +
+        spareBadges.attendee +
+        spareBadges.sponsor;
+      printSummary.textContent =
+        "Full run · " +
+        sheetDescription(planBadgeSheets(workspace.settings, quantity));
+    } catch (error) {
+      printSummary.textContent = message(error);
+    }
     const person =
       workspace.people.find((p) => p.id === selected) ?? workspace.people[0];
     preview.replaceChildren();
@@ -363,7 +400,9 @@ function setup(root: HTMLElement): void {
       return;
     }
     if (!person || !font) {
-      previewStatus.textContent = "Select a person to inspect their badge.";
+      previewStatus.textContent = font
+        ? "Select a person to inspect their badge."
+        : "Choose a print font in Printer settings to preview this badge.";
       return;
     }
     const result = renderBadge(person, workspace.settings, font);
@@ -509,9 +548,76 @@ function setup(root: HTMLElement): void {
     while (settingsPanel.children.length > 1)
       settingsPanel.lastElementChild!.remove();
     const fields = el("div", "", "grid gap-4 mt-5 sm:grid-cols-2");
+    const shape = badgeShapeSelect(workspace.settings.shape);
+    shape.addEventListener("change", () => {
+      workspace.settings.shape = badgeShapes[shape.selectedIndex] ?? "circle";
+      invalidate();
+      showPreview(previewingSpare);
+    });
+    const attachment = attachmentSelect(workspace.settings.attachment);
+    attachment.addEventListener("change", () => {
+      workspace.settings.attachment =
+        badgeAttachments[attachment.selectedIndex] ?? "lanyard";
+      invalidate();
+      updateFields();
+      showPreview(previewingSpare);
+    });
+    const paper = paperSelect(workspace.settings.paper);
+    paper.addEventListener("change", () => {
+      workspace.settings.paper =
+        badgePaperSizes[paper.selectedIndex] ?? "single";
+      invalidate();
+      updateFields();
+      showPreview(previewingSpare);
+    });
+    const typeface = fontSelect(workspace.settings.font);
+    if (customFontName)
+      typeface.add(
+        new Option(customFontName + " (this tab)", "custom", false, true),
+      );
+    typeface.addEventListener(
+      "change",
+      () =>
+        void work(async () => {
+          const choice = printFontIds[typeface.selectedIndex];
+          if (!choice) return;
+          try {
+            font = await loadBadgeFont(choice);
+          } catch (error) {
+            typeface.value = customFontName
+              ? "custom"
+              : workspace.settings.font;
+            throw error;
+          }
+          workspace.settings.font = choice;
+          customFontName = "";
+          if (typeface.options.length > printFontIds.length)
+            typeface.remove(printFontIds.length);
+          custom.input.value = "";
+          invalidate();
+          showPreview(previewingSpare);
+        }),
+    );
+    for (const [id, label, select] of [
+      ["badge-shape", "Badge shape", shape],
+      ["badge-font", "Print font", typeface],
+      ["badge-attachment", "Attachment", attachment],
+      ["badge-paper", "Print paper", paper],
+    ] as const) {
+      const wrapper = el("div", "", "grid gap-2 text-sm font-bold");
+      const caption = el("label", label);
+      caption.htmlFor = select.id = id;
+      select.className =
+        "min-w-0 w-full border border-ink bg-paper px-3 py-2 font-normal";
+      append(wrapper, caption, select);
+      append(fields, wrapper);
+    }
+    const sheetFields: HTMLElement[] = [];
+    let holeField: HTMLElement;
     const specs = [
-      ["diameter", "Diameter (mm)", 70, 150],
+      ["diameter", "Trim width (mm)", 70, 150],
       ["bleed", "Bleed per edge (mm)", 0, 10],
+      ["sheetMargin", "Printer margin (mm)", 0, 50],
       ["safe", "Safe inset (mm)", 3, 15],
       ["top", "Top hole exclusion (mm)", 10, 30],
       ["minName", "Minimum name size (pt)", 14, 24],
@@ -533,10 +639,14 @@ function setup(root: HTMLElement): void {
         invalidate();
         showPreview(previewingSpare);
       });
+      if (key === "sheetMargin") sheetFields.push(f.label);
+      if (key === "top") holeField = f.label;
       append(fields, f.label);
     }
     for (const [key, label] of [
-      ["guides", "Print circular trim guide"],
+      ["guides", "Print trim guide"],
+      ["showLogo", "Include event logo"],
+      ["cutMarks", "Print sheet cut marks"],
       ["doubleSided", "Repeat each badge for an identical back"],
     ] as const) {
       const f = field(label, "", "checkbox");
@@ -547,14 +657,21 @@ function setup(root: HTMLElement): void {
         invalidate();
         showPreview(previewingSpare);
       });
+      if (key === "cutMarks") sheetFields.push(f.label);
       append(fields, f.label);
     }
+    function updateFields() {
+      for (const field of sheetFields)
+        field.hidden = workspace.settings.paper === "single";
+      holeField.hidden = workspace.settings.attachment === "holder";
+    }
+    updateFields();
     append(
       settingsPanel,
       fields,
       el(
         "p",
-        "One square PDF page per badge side. Page size = diameter + twice the bleed. Print at 100%, with background graphics on and headers/footers off. Confirm duplex order and color requirements with your printer.",
+        "Trim width is the circle diameter or square side length. Print at 100% with background graphics on and headers and footers off. For matching backs on A4 or US Letter, choose double-sided printing and flip on the long edge.",
         "mt-4 text-sm leading-6",
       ),
     );
@@ -573,8 +690,14 @@ function setup(root: HTMLElement): void {
           if (file.size > 10 * 1024 * 1024)
             throw new Error("Font must be under 10 MB.");
           font = await loadBadgeFont(await file.arrayBuffer());
+          customFontName = file.name;
+          if (typeface.options.length > printFontIds.length)
+            typeface.remove(printFontIds.length);
+          typeface.add(
+            new Option(customFontName + " (this tab)", "custom", false, true),
+          );
           invalidate();
-          showPreview();
+          showPreview(previewingSpare);
           status.textContent =
             "Custom font loaded for this tab. Reload it after reopening the workspace.";
         }),
@@ -722,15 +845,8 @@ function setup(root: HTMLElement): void {
     const duplicates = duplicateIds(workspace.people);
     layoutIssues.clear();
     const errors: string[] = [];
-    const sheets: HTMLElement[] = [];
-    function addSheet(svg: SVGSVGElement, spare?: SpareBadgeRole) {
-      const sheet = el("section", "", "badge-print-sheet");
-      if (spare) sheet.dataset.spareBadge = spare;
-      append(sheet, svg);
-      sheets.push(sheet);
-      if (workspace.settings.doubleSided)
-        sheets.push(sheet.cloneNode(true) as HTMLElement);
-    }
+    const plan = planBadgeSheets(workspace.settings, total);
+    const artwork: SVGSVGElement[] = [];
     for (let i = 0; i < people.length; i++) {
       const person = people[i]!;
       const rendered = renderBadge(person, workspace.settings, font, false);
@@ -741,7 +857,7 @@ function setup(root: HTMLElement): void {
         errors.push(
           `${person.name || "Unnamed badge"}: ${rendered.issues.join(" ")}`,
         );
-      addSheet(rendered.svg);
+      artwork.push(rendered.svg);
       if (i % 50 === 0) {
         status.textContent = `Checking badge ${i + 1} of ${people.length}…`;
         await new Promise((resolve) => setTimeout(resolve, 0));
@@ -758,27 +874,37 @@ function setup(root: HTMLElement): void {
       );
       if (rendered.issues.length)
         errors.push(`Spare ${spareRole} badges: ${rendered.issues.join(" ")}`);
-      for (let i = 0; i < quantity; i++)
-        addSheet(rendered.svg.cloneNode(true) as SVGSVGElement, spareRole);
+      rendered.svg.dataset.spareBadge = spareRole;
+      for (let i = 0; i < quantity; i++) artwork.push(rendered.svg);
     }
     renderList();
     if (errors.length) {
       status.textContent = `${errors.length} badges need attention. See the notes beside each badge below. ${errors.slice(0, 3).join(" | ")}`;
       return;
     }
-    const size = workspace.settings.diameter + 2 * workspace.settings.bleed;
-    pageStyle.textContent = `@media print{@page{size:${size}mm ${size}mm;margin:0}.badge-print-sheet{width:${size}mm;height:${size}mm}}`;
+    pageStyle.textContent = `@media print{@page{size:${plan.widthMm}mm ${plan.heightMm}mm;margin:0}.badge-print-sheet{width:${plan.widthMm}mm;height:${plan.heightMm}mm}}`;
     const spareSummary = Object.entries(spareCounts)
       .filter(([, quantity]) => quantity)
       .map(([role, quantity]) => `${quantity} spare ${role} badges`)
       .join(" and ");
-    status.textContent = `${total} badges passed layout and duplicate checks. ${sheets.length} PDF pages at ${size} × ${size} mm.${spareSummary ? ` Includes ${spareSummary}.` : ""}${dirty ? " Save to keep these edits." : ""}`;
+    status.textContent = `${total} badges passed layout and duplicate checks. ${sheetDescription(plan)}${spareSummary ? ` Includes ${spareSummary}.` : ""}${dirty ? " Save to keep these edits." : ""}`;
     if (print) {
-      append(printRoot, ...sheets);
+      for (const page of plan.pages) {
+        const sheet = el("section", "", "badge-print-sheet");
+        const svg = renderBadgeSheet(plan, page, (index) => artwork[index]!);
+        if (svg.dataset.spareBadge) {
+          sheet.dataset.spareBadge = svg.dataset.spareBadge;
+          delete svg.dataset.spareBadge;
+        }
+        append(sheet, svg);
+        append(printRoot, sheet);
+      }
       await document.fonts.ready;
-      const logo = new Image();
-      logo.src = "/assets/logo.svg";
-      await logo.decode();
+      if (workspace.settings.showLogo) {
+        const logo = new Image();
+        logo.src = "/assets/logo.svg";
+        await logo.decode();
+      }
       printRoot.setAttribute("data-ready", "true");
       window.print();
     }
@@ -823,9 +949,18 @@ function setup(root: HTMLElement): void {
   const save = button("Save print settings", () => void work(savePreferences));
   async function load() {
     const result = await api<BadgeStudioData>("/api/admin/badges", "");
+    const saved = parsePrintPreferences(result.preferences);
+    let fontError = "";
+    if (!customFontName) {
+      try {
+        font = await loadBadgeFont(saved.settings.font);
+      } catch (error) {
+        font = undefined;
+        fontError = message(error);
+      }
+    }
     sourcePeople = result.people;
     signatures = result.signatures;
-    const saved = parsePrintPreferences(result.preferences);
     spareBadges.attendee = saved.spareAttendeeBadges;
     spareBadges.sponsor = saved.spareSponsorBadges;
     retiredLegacyIds = saved.retiredLegacyIds;
@@ -907,6 +1042,12 @@ function setup(root: HTMLElement): void {
       .filter((role) => requestedSpares[role] !== undefined)
       .map((role) => `${spareBadges[role]} spare ${role} badges`)
       .join(" and ");
+    if (fontError) {
+      settingsPanel.open = true;
+      status.textContent =
+        fontError + " Choose another print font or reload to retry.";
+      return;
+    }
     status.textContent = dirty
       ? `${preparedSpares} prepared. Adjust the count and save print settings to keep it.`
       : "Badge studio ready. People are loaded from attendee and team records.";
@@ -929,8 +1070,5 @@ function setup(root: HTMLElement): void {
   window.addEventListener("beforeunload", (event) => {
     if (dirty) event.preventDefault();
   });
-  void work(async () => {
-    font = await loadBadgeFont();
-    await load();
-  });
+  void work(load);
 }

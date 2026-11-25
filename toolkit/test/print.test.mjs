@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { blocks } from "../dist/blocks/print.mjs";
+import { withPrintPage } from "../dist/blocks/print-browser.mjs";
 
 const operations = new Map(
   blocks.flatMap((block) => block.operations.map((op) => [op.name, op])),
@@ -39,6 +40,91 @@ test("badge proof and PDF share geometry, repeated backs and font preflight", as
   assert.equal(invalid.issues[0].row, 2);
   assert.match(invalid.issues[0].messages.join(" "), /font lacks/iu);
   assert.equal(invalid.artifact, undefined);
+});
+
+test("badge bleed, cut guides and text fit follow the selected outline", async () => {
+  const results = await withPrintPage((page) =>
+    page.evaluate(async () => {
+      const { loadBadgeFont, prepareBadgeRun, renderBadgeArtwork } =
+        await import("/badge-artwork.mjs");
+      const font = await loadBadgeFont(
+        await (await fetch("/font.ttf")).arrayBuffer(),
+      );
+      function render(shape, name = "Zoë Marin", role = "WWWWWWWWWWWWWWWW") {
+        const { rows, settings } = prepareBadgeRun({
+          people: [{ name, role }],
+          settings: { shape, diameter: 100, bleed: 3, safe: 5 },
+        });
+        const { svg, issues } = renderBadgeArtwork(
+          rows[0].person,
+          settings,
+          font,
+          true,
+          false,
+          rows[0].appearance,
+          null,
+        );
+        const metric = (outline, key) =>
+          Number(
+            svg
+              .querySelector('[data-badge-outline="' + outline + '"]')
+              .getAttribute(key),
+          );
+        const dimension = shape === "circle" ? "r" : "width";
+        return {
+          sizes: ["bleed", "trim", "safe"].map((key) => metric(key, dimension)),
+          corners: ["bleed", "trim", "safe"].map((key) => metric(key, "rx")),
+          issues,
+          text: Array.from(
+            svg.querySelectorAll("text"),
+            (node) => node.textContent,
+          ),
+        };
+      }
+      return {
+        circle: render("circle"),
+        square: render("square"),
+        rounded: render("rounded-square"),
+        longName: render("square", "W".repeat(22), "Guest"),
+      };
+    }),
+  );
+  assert.deepEqual(results.circle.sizes, [53, 50, 45]);
+  assert.deepEqual(results.square.sizes, [106, 100, 90]);
+  assert.deepEqual(results.square.corners, [0, 0, 0]);
+  assert.deepEqual(results.rounded.sizes, results.square.sizes);
+  const [bleed, trim, safe] = results.rounded.corners;
+  assert.ok(trim > 5 && trim < 50);
+  assert.ok(
+    Math.abs(bleed - trim - 3) < 1e-8 && Math.abs(trim - safe - 5) < 1e-8,
+  );
+  assert.match(results.circle.issues.join(" "), /role does not fit/i);
+  assert.deepEqual(results.square.issues, []);
+  assert.deepEqual(results.rounded.issues, []);
+  assert.match(results.longName.issues.join(" "), /name does not fit/i);
+  assert.equal(
+    results.longName.text.some((line) => /^W+$/.test(line)),
+    false,
+  );
+});
+
+test("badge PDFs embed the selected typeface at the requested physical size", async () => {
+  for (const [font, shape, embedded] of [
+    ["noto-sans", "circle", /NotoSans/],
+    ["lora", "rounded-square", /Lora/],
+    ["fira-code", "square", /FiraCode/],
+  ]) {
+    const result = await run("badges_export_pdf", {
+      people: [{ name: "Alex Li", role: "speaker" }],
+      settings: { shape, font, diameter: 90, bleed: 4 },
+    });
+    assert.deepEqual(result.issues, []);
+    verifyPdf(result, 1, 98, 98);
+    assert.match(
+      Buffer.from(result.artifact.bytes).toString("latin1"),
+      embedded,
+    );
+  }
 });
 
 test("venue signs and opposing-face table tents have physical A4 pages", async () => {

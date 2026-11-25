@@ -1,4 +1,4 @@
-import type { ProgrammeInput } from "./programme.mjs";
+import type { ProgrammeInput } from "./programme-feed.mjs";
 export function validateProgramme(feed: ProgrammeInput) {
   new Intl.DateTimeFormat("en", { timeZone: feed.event.timeZone });
   const ids = {

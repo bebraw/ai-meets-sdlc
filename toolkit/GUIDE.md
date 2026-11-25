@@ -4,7 +4,7 @@ Choose the pieces of SDLCAI you need for your own event. The 19 blocks below cov
 
 ## Try a block
 
-- **In a browser.** From the [version 0.1.0 source ZIP](https://github.com/bebraw/ai-meets-sdlc/archive/fdf247620ea2cd71713921cdbb3095625340e723.zip), open a terminal in the extracted repository. With Node.js 24 installed, run the commands below and open the private organizer link. Select **Print name badges**, the PDF export action and **Use example**. Edit a name, run the export and download the PDF.
+- **In a browser.** Open a terminal in your checkout or download and extract the [source ZIP](https://github.com/bebraw/ai-meets-sdlc/archive/refs/heads/main.zip). With Node.js 24 installed, run the commands below and open the private organizer link. Select **Print name badges**, the PDF export action and **Use example**. Choose a shape and font, edit a name, run the export and download the PDF.
 - **With an AI assistant.** Connect the [stdio MCP server](README.md#connect-an-mcp-client). Ask the assistant to read `event-toolkit://catalog`, import a ticket CSV and check that every name fits on a badge. The catalog supplies the allowed operations, examples and input schemas.
 - **In your application.** [Install the tarball](README.md#install-in-a-fresh-project) and call `createToolkit({ enabled: ["lanyards"] })`. Use `kit.run("lanyards_count", input)` to get an order by color. The [TypeScript example](README.md#embed-in-typescript-or-javascript) shows the input and result.
 
@@ -16,6 +16,8 @@ npm run dev -w @sdlcai/event-toolkit
 ```
 
 Use a comma-separated list of block IDs in `TOOLKIT_BLOCKS`. For example, `registration-import,check-in` gives you the CSV importer and arrivals desk.
+
+To prepare for registration day, enable `registration-import,badges,check-in,catering`. In **Import a registration CSV**, choose **Use example** and run the import. The example has one named paid ticket, one refund and one paid ticket awaiting a name. **Prepare badges** opens one named badge for review. **Open check-in roster** lets you review all three tickets and save them to the desk. **Prepare catering brief** counts two meals and carries over the dietary answer from the named guest.
 
 ## Registration and the venue
 
@@ -60,4 +62,4 @@ Use a comma-separated list of block IDs in `TOOLKIT_BLOCKS`. For example, `regis
 
 Run the reference host on Node.js with SQLite. The browser and MCP share records when they use the same event ID and persistent data directory. Storage, mail delivery and form verification have replaceable adapters. Cloudflare D1 is one option for the organizer directory. See the [hosting and storage guide](README.md) for configuration and backups.
 
-Version 0.1.0 is available as a tarball. Its software license is marked `UNLICENSED`.
+Version 0.1.0 is available as a tarball. Its software license is marked `UNLICENSED`. The bundled [print fonts](assets/print/SOURCES.md) carry the SIL Open Font License.

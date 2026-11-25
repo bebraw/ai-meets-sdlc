@@ -32,20 +32,20 @@ try {
   const errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
   const origin = `http://127.0.0.1:${fixture.worker.port}`;
-  await page.route("**/toolkit/blocks/badge-artwork.mts", async (route) =>
-    route.fulfill({
-      contentType: "text/javascript",
-      body: ts.transpileModule(
-        await readFile("toolkit/blocks/badge-artwork.mts", "utf8"),
-        {
+  for (const module of ["badge-artwork", "badge-sheets", "print-fonts"]) {
+    const path = `toolkit/blocks/${module}.mts`;
+    await page.route(`**/${path}`, async (route) =>
+      route.fulfill({
+        contentType: "text/javascript",
+        body: ts.transpileModule(await readFile(path, "utf8"), {
           compilerOptions: {
             target: ts.ScriptTarget.ES2022,
             module: ts.ModuleKind.ESNext,
           },
-        },
-      ).outputText,
-    }),
-  );
+        }).outputText,
+      }),
+    );
+  }
   await page.route("**/test-scripts/*.ts", async (route) => {
     const file = new URL(route.request().url()).pathname.split("/").at(-1);
     if (
@@ -501,7 +501,11 @@ try {
         font,
       );
       if (result.issues.length) throw new Error(result.issues.join(" "));
-      colors.push(result.svg.querySelector("rect").getAttribute("fill"));
+      colors.push(
+        result.svg
+          .querySelector('[data-badge-outline="bleed"]')
+          .getAttribute("fill"),
+      );
       section.appendChild(result.svg);
     }
     document.body.appendChild(section);
@@ -780,7 +784,9 @@ try {
     ["SPONSOR"],
   );
   assert.equal(
-    await page.locator(".badge-preview rect").first().getAttribute("fill"),
+    await page
+      .locator('.badge-preview [data-badge-outline="bleed"]')
+      .getAttribute("fill"),
     "#64c4bc",
   );
   await page
@@ -1007,6 +1013,132 @@ try {
     .waitFor();
   assert.equal(await page.evaluate(() => window.__printed), false);
   assert.deepEqual((await send("GET")).attendees, registrationsBeforeSpares);
+  const printerSettings = page
+    .locator("details")
+    .filter({ has: page.getByText("Printer settings", { exact: true }) });
+  if (!(await printerSettings.evaluate((panel) => panel.open)))
+    await printerSettings.locator("summary").click();
+  const shape = page.getByLabel("Badge shape", { exact: true });
+  const typeface = page.getByLabel("Print font", { exact: true });
+  await shape.selectOption("rounded-square");
+  await typeface.selectOption("lora");
+  await spareCount.fill("1");
+  await spareCount.press("Tab");
+  await page
+    .getByRole("button", { name: "Save print settings", exact: true })
+    .click();
+  await page
+    .getByText("Print settings and badge text saved.", { exact: true })
+    .waitFor();
+  await page.reload();
+  await page.getByText(ready, { exact: true }).waitFor();
+  assert.equal(await shape.inputValue(), "rounded-square");
+  assert.equal(await typeface.inputValue(), "lora");
+  await printRun("spares");
+  assert.equal(
+    await page
+      .locator('.badge-print-sheet svg[data-badge-shape="rounded-square"]')
+      .count(),
+    2,
+    "The front and repeated back use the saved shape.",
+  );
+  assert.match(
+    (
+      await page.pdf({ preferCSSPageSize: true, printBackground: true })
+    ).toString("latin1"),
+    /Lora/,
+  );
+  await page.getByText("Printer settings", { exact: true }).click();
+  await page.getByLabel("Attachment", { exact: true }).selectOption("holder");
+  await page.getByLabel("Include event logo").uncheck();
+  assert.equal(
+    await page.getByLabel("Top hole exclusion (mm)").isVisible(),
+    false,
+  );
+  assert.equal(await page.locator(".badge-preview image").count(), 0);
+  await page.getByLabel("Trim width (mm)").fill("80");
+  await page.getByLabel("Trim width (mm)").press("Tab");
+  await page.getByLabel("Bleed per edge (mm)").fill("2");
+  await page.getByLabel("Bleed per edge (mm)").press("Tab");
+  await spareCount.fill("7");
+  await spareCount.press("Tab");
+  const paper = page.getByLabel("Print paper");
+  for (const [id, width, height, capacity] of [
+    ["a4", 210, 297, 6],
+    ["letter", 215.9, 279.4, 4],
+  ]) {
+    await paper.selectOption(id);
+    await page
+      .locator("[data-sheet-summary]")
+      .getByText(new RegExp(capacity + " per sheet"))
+      .waitFor();
+    await printRun("spares");
+    const pages = page.locator(".badge-print-sheet");
+    assert.equal(await pages.count(), 4);
+    const first = pages.first().locator(":scope > svg");
+    assert.equal(await first.getAttribute("width"), width + "mm");
+    assert.equal(await first.getAttribute("height"), height + "mm");
+    assert.equal(await first.locator("[data-cut-marks]").count(), capacity);
+    assert.equal(
+      await pages.last().locator("[data-badge-index]").count(),
+      7 - capacity,
+    );
+    assert.equal(await pages.locator("image").count(), 0);
+    const bytes = await page.pdf({
+      preferCSSPageSize: true,
+      printBackground: true,
+    });
+    assert.equal(
+      [...bytes.toString("latin1").matchAll(/\/Type \/Page\b/g)].length,
+      4,
+    );
+  }
+  await page.getByLabel("Print sheet cut marks").uncheck();
+  await page.getByLabel("Printer margin (mm)").fill("12");
+  await page.getByLabel("Printer margin (mm)").press("Tab");
+  await page
+    .getByRole("button", { name: "Save print settings", exact: true })
+    .click();
+  await page
+    .getByText("Print settings and badge text saved.", { exact: true })
+    .waitFor();
+  await page.reload();
+  await page.getByText(ready, { exact: true }).waitFor();
+  assert.equal(await paper.inputValue(), "letter");
+  assert.equal(
+    await page.getByLabel("Attachment", { exact: true }).inputValue(),
+    "holder",
+  );
+  assert.equal(await page.getByLabel("Printer margin (mm)").inputValue(), "12");
+  assert.equal(
+    await page.getByLabel("Print sheet cut marks").isChecked(),
+    false,
+  );
+  assert.equal(await page.getByLabel("Include event logo").isChecked(), false);
+  // A saved font can become temporarily unavailable. Keep the roster and controls usable.
+  const namedBeforeFontFailure = await page.getByRole("article").count();
+  await page.route("**/assets/print-fonts/Lora.ttf", (route) =>
+    route.fulfill({ status: 503 }),
+  );
+  await page.reload();
+  await page
+    .getByText(
+      "Could not load Lora. Choose another print font or reload to retry.",
+      { exact: true },
+    )
+    .waitFor();
+  assert.equal(await page.getByRole("article").count(), namedBeforeFontFailure);
+  assert.ok(await typeface.isVisible());
+  assert.equal(await page.locator(".badge-preview svg").count(), 0);
+  await page
+    .getByRole("button", { name: "Print / save PDF — spares", exact: true })
+    .click();
+  await page
+    .getByText("The badge font has not loaded.", { exact: true })
+    .waitFor();
+  await typeface.selectOption("noto-sans");
+  await page.locator(".badge-preview svg").waitFor();
+  await printRun("spares");
   assert.deepEqual(errors, []);
   console.log(
     "Badge browser checks passed: lanyard summaries, retired badges, search-independent totals, copy/download and clipboard fallback, independent attendee and sponsor spares, saved quantities, role-specific artwork and print runs, PDF pagination, repeated backs, Unicode, overflow, live records, duplicates, print preferences, source corrections, desktop/mobile layout and accessibility.",

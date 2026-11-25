@@ -423,6 +423,21 @@ dialog label {
   width: min(100%, 36rem);
   margin-bottom: 0.5rem;
 }
+.badge-sheet-preview {
+  grid-column: 1 / -1;
+}
+.badge-sheet-preview > div > svg {
+  display: block;
+  width: min(100%, 24rem);
+  height: auto;
+  margin-top: 0.75rem;
+  border: 1px solid var(--line);
+  background: white;
+}
+.badge-sheet-preview input {
+  max-width: 5rem;
+  margin-left: 0.5rem;
+}
 .badge-artwork svg {
   display: block;
   width: 100%;
@@ -442,4 +457,15 @@ dialog label {
   .badge-review {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+.badge-sheet-preview [data-badge-outline="trim"] {
+  stroke: #666;
+  stroke-width: 1px;
+  vector-effect: non-scaling-stroke;
+}
+
+.badge-sheet-preview [data-cut-marks] {
+  stroke-width: 0.75px;
+  vector-effect: non-scaling-stroke;
 }

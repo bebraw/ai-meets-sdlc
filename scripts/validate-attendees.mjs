@@ -932,8 +932,11 @@ try {
   await admin.waitForFunction(() => window.__sponsorPrinted);
   assert.equal(await admin.locator(".badge-print-sheet").count(), 1);
   const printedBadge = admin.locator(".badge-print-sheet svg");
+  assert.equal(await printedBadge.getAttribute("data-badge-shape"), "circle");
   assert.equal(
-    await printedBadge.locator("rect").getAttribute("fill"),
+    await printedBadge
+      .locator('[data-badge-outline="bleed"]')
+      .getAttribute("fill"),
     "#64c4bc",
   );
   assert.ok(

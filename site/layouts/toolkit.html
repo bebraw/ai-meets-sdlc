@@ -24,11 +24,11 @@
         <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3 font-bold">
           <a
             class="border border-ink bg-ink px-5 py-3 text-paper hover:bg-paper hover:text-ink"
-            href="#try-badges"
-            >Try it with badges</a
+            href="#blocks"
+            >Explore the 19 blocks</a
           >
-          <a class="underline underline-offset-4" href="#blocks"
-            >Browse all 19 blocks</a
+          <a class="underline underline-offset-4" href="/toolkit/badges/"
+            >Try the badge editor</a
           >
         </div>
       </div>
@@ -56,19 +56,86 @@
     </div>
   </section>
 
-  <section id="try-badges" class="scroll-mt-4 border-b border-ink">
+  <section id="blocks" class="scroll-mt-4 border-b border-ink">
+    <div class="mx-auto max-w-7xl px-5 py-12 md:px-8 md:py-16">
+      <h2
+        class="font-headline text-4xl font-black uppercase leading-none md:text-6xl"
+      >
+        Explore the blocks
+      </h2>
+      <p class="mt-4 max-w-2xl text-xl leading-snug">
+        Choose a job for your event. Each guide shows what you can do and lets
+        you try it with sample data in your browser.
+      </p>
+      <nav
+        aria-label="Block groups"
+        class="mt-6 flex flex-wrap gap-x-6 gap-y-1"
+      >
+        <noop &foreach="toolkitGroups as group">
+          <a
+            class="inline-flex min-h-11 items-center font-bold underline underline-offset-4"
+            &href="group.href"
+            &children="group.title"
+          ></a>
+        </noop>
+      </nav>
+      <div class="mt-8 grid items-start gap-x-12 gap-y-10 lg:grid-cols-2">
+        <noop &foreach="toolkitGroups as group">
+          <section
+            class="min-w-0 scroll-mt-5 border-t-2 border-ink pt-3"
+            &id="group.id"
+          >
+            <h3
+              class="font-headline text-2xl font-black uppercase leading-tight md:text-3xl"
+              &children="group.title"
+            ></h3>
+            <ul class="mt-3">
+              <noop &foreach="group.blocks as block">
+                <li class="border-t border-ink/25" &id="block.id">
+                  <a
+                    class="toolkit-entry group grid grid-cols-[1fr_auto] gap-x-4 gap-y-1 py-4"
+                    &href="block.href"
+                  >
+                    <strong
+                      class="text-xl leading-tight underline-offset-4 group-hover:underline"
+                      &children="block.name"
+                    ></strong>
+                    <span
+                      aria-hidden="true"
+                      class="toolkit-chevron row-span-3 self-center"
+                    ></span>
+                    <span
+                      class="leading-snug text-muted"
+                      &children="block.description"
+                    ></span>
+                    <span
+                      class="mt-1 text-sm font-bold"
+                      &children="block.demoTitle"
+                    ></span>
+                  </a>
+                </li>
+              </noop>
+            </ul>
+          </section>
+        </noop>
+      </div>
+    </div>
+  </section>
+
+  <section id="setup" class="scroll-mt-4 border-b border-ink">
     <div
       class="mx-auto grid max-w-7xl gap-8 px-5 py-12 md:grid-cols-[0.8fr_1.2fr] md:px-8 md:py-16"
     >
-      <div>
+      <div id="try-badges">
         <h2
           class="max-w-md font-headline text-4xl font-black uppercase leading-none md:text-6xl"
         >
-          Print your first badge
+          Run the toolkit locally
         </h2>
         <p class="mt-4 max-w-md text-lg leading-snug text-muted">
-          Try a fictional roster on your own computer. You need Node.js 24 and
-          Chromium for the print renderer.
+          Use Node.js 24 to run a workspace for your own event. This example
+          starts with name badges. Chromium renders print files and talk
+          graphics.
         </p>
       </div>
       <ol
@@ -77,15 +144,16 @@
         <li class="pl-1">
           <a
             class="font-bold underline underline-offset-4"
-            href="https://github.com/bebraw/ai-meets-sdlc/archive/fdf247620ea2cd71713921cdbb3095625340e723.zip"
+            href="https://github.com/bebraw/ai-meets-sdlc/archive/refs/heads/main.zip"
             >Download the source ZIP</a
           >
-          for version 0.1.0. Unzip it and open a terminal in the directory
+          or use your existing checkout. Open a terminal in the directory
           containing the root <code>package.json</code>.
         </li>
         <li class="min-w-0 pl-1">
           Install the dependencies and start the browser workspace with the
-          badge block enabled.
+          badge block enabled. To try a different block, use the block ID from
+          its guide.
           <pre
             class="mt-3 overflow-x-auto border-l-4 border-signal bg-ink p-4 font-mono text-sm leading-relaxed text-paper"
             tabindex="0"
@@ -103,49 +171,6 @@ npm run dev -w @sdlcai/event-toolkit</code></pre>
           <strong>Download badges.pdf</strong>.
         </li>
       </ol>
-    </div>
-  </section>
-
-  <section id="blocks" class="scroll-mt-4 border-b border-ink">
-    <div class="mx-auto max-w-7xl px-5 py-12 md:px-8 md:py-16">
-      <h2
-        class="font-headline text-4xl font-black uppercase leading-none md:text-6xl"
-      >
-        The 19 blocks
-      </h2>
-      <p class="mt-4 max-w-3xl text-lg leading-snug text-muted">
-        Choose a task below. Use its block ID in <code>TOOLKIT_BLOCKS</code> to
-        enable it. Combine IDs with commas, such as
-        <code class="break-words">registration-import,check-in</code>, to go
-        from a ticket CSV to an arrivals desk.
-      </p>
-      <div class="mt-9 grid gap-x-12 gap-y-10 lg:grid-cols-2">
-        <noop &foreach="toolkitGroups as group">
-          <section class="min-w-0 border-t-2 border-ink pt-3">
-            <h3
-              class="font-headline text-2xl font-black uppercase leading-tight md:text-3xl"
-              &children="group.title"
-            ></h3>
-            <dl class="mt-3">
-              <noop &foreach="group.blocks as block">
-                <div
-                  class="grid gap-1 border-t border-ink/25 py-3 sm:grid-cols-[0.9fr_1.1fr] sm:gap-4"
-                  &id="block.id"
-                >
-                  <dt>
-                    <span class="block font-bold" &children="block.name"></span>
-                    <code
-                      class="block text-xs text-muted"
-                      &children="block.id"
-                    ></code>
-                  </dt>
-                  <dd class="leading-snug" &children="block.description"></dd>
-                </div>
-              </noop>
-            </dl>
-          </section>
-        </noop>
-      </div>
     </div>
   </section>
 
@@ -184,7 +209,7 @@ npm run dev -w @sdlcai/event-toolkit</code></pre>
           </blockquote>
           <a
             class="mt-4 inline-block font-bold underline underline-offset-4"
-            href="https://github.com/bebraw/ai-meets-sdlc/blob/fdf247620ea2cd71713921cdbb3095625340e723/toolkit/README.md#connect-an-mcp-client"
+            href="https://github.com/bebraw/ai-meets-sdlc/blob/main/toolkit/README.md#connect-an-mcp-client"
             >Copy the MCP client configuration</a
           >
         </section>
@@ -215,7 +240,7 @@ try {
 }</code></pre>
           <a
             class="mt-4 inline-block font-bold underline underline-offset-4"
-            href="https://github.com/bebraw/ai-meets-sdlc/blob/fdf247620ea2cd71713921cdbb3095625340e723/toolkit/README.md#install-in-a-fresh-project"
+            href="https://github.com/bebraw/ai-meets-sdlc/blob/main/toolkit/README.md#install-in-a-fresh-project"
             >Install in a fresh project</a
           >
         </section>
@@ -250,7 +275,7 @@ try {
         </p>
         <a
           class="inline-block font-bold underline underline-offset-4"
-          href="https://github.com/bebraw/ai-meets-sdlc/blob/fdf247620ea2cd71713921cdbb3095625340e723/toolkit/README.md"
+          href="https://github.com/bebraw/ai-meets-sdlc/blob/main/toolkit/README.md"
           >Read the installation and hosting guide</a
         >
       </div>

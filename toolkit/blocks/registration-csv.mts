@@ -298,3 +298,236 @@ export function importTicketStatus(
     `Row ${record.row}: unknown ticket status. Map a valid status column or remove inactive tickets before importing.`,
   );
 }
+
+export type RegistrationRecord = {
+  id: string;
+  source: string;
+  sourceKey: string;
+} & Record<string, unknown>;
+
+export const registrationExample = {
+  source: "tito" as const,
+  csv: [
+    "Ticket Full Name,Ticket Company Name,Ticket Email,Ticket Reference,Ticket Status,Food restrictions",
+    "Zoë Marin,Field Notes,zoe@example.test,FN-1,paid,Vegan",
+    "Alex Li,Diagram Lab,alex@example.test,FN-2,refunded,Tree nut allergy",
+    ",,,FN-3,paid,",
+  ].join("\n"),
+};
+
+// Historical imports may retain organizer-supplied fields. Each destination
+// validates only the information it will receive.
+function registrationText(
+  record: RegistrationRecord,
+  key: string,
+  max: number,
+) {
+  const value = record[key] ?? "";
+  if (typeof value !== "string" || [...value].length > max)
+    throw new Error(
+      "Check the " + key + " on registration " + record.sourceKey + ".",
+    );
+  return value;
+}
+
+function ticketStatus(record: RegistrationRecord) {
+  if (record.status !== "active" && record.status !== "cancelled")
+    throw new Error(
+      "Check the status on registration " + record.sourceKey + ".",
+    );
+  return record.status;
+}
+
+export function registrationBadgePeople(records: RegistrationRecord[]) {
+  return records.flatMap((record) => {
+    if (
+      ticketStatus(record) !== "active" ||
+      record.unassigned ||
+      record.badge === false
+    )
+      return [];
+    const name = registrationText(record, "name", 300).trim();
+    if (!name) return [];
+    return [
+      {
+        name,
+        company: registrationText(record, "company", 300),
+        role: registrationText(record, "type", 36).trim() || "attendee",
+      },
+    ];
+  });
+}
+
+export function registrationMeals(records: RegistrationRecord[]) {
+  return records
+    .filter((record) => ticketStatus(record) === "active")
+    .map((record) => ({ diet: registrationText(record, "diet", 2000) }));
+}
+
+export function registrationDeskPeople(
+  records: RegistrationRecord[],
+  source: string,
+  mapping: TicketMapping,
+) {
+  return records.map((record) => {
+    const id = registrationText(record, "id", 150),
+      origin = registrationText(record, "source", 64),
+      sourceKey = registrationText(record, "sourceKey", 340);
+    const name = registrationText(record, "name", 300).trim(),
+      ticketCode = registrationText(record, "ticketCode", 120);
+    if (
+      !id.trim() ||
+      !origin.trim() ||
+      !sourceKey.trim() ||
+      (!name && !ticketCode.trim())
+    )
+      throw new Error(
+        "Check the identity and holder on registration " + sourceKey + ".",
+      );
+    const status = ticketStatus(record);
+    const company = registrationText(record, "company", 300);
+    const email = registrationText(record, "email", 254);
+    const type = registrationText(record, "type", 64).trim();
+    // Empty defaults in a partial export must not clear fields at the desk.
+    // A new desk registration supplies its own defaults for omitted fields.
+    const supplied = (key: keyof TicketMapping) =>
+      origin !== source || mapping[key] >= 0;
+    return {
+      id,
+      name,
+      source: origin,
+      sourceKey,
+      ...(ticketCode || supplied("ticketCode") ? { ticketCode } : {}),
+      ...(email || supplied("email") ? { email } : {}),
+      ...(company || supplied("company") ? { company } : {}),
+      ...(status === "cancelled" || supplied("status") ? { status } : {}),
+      ...(type && type !== "attendee" ? { type } : {}),
+    };
+  });
+}
+
+export function importRegistrations({
+  csv,
+  source,
+  delimiter = "auto",
+  mapping = {},
+  previous = [],
+}: {
+  csv: string;
+  source: "tito" | "webropol" | "csv";
+  delimiter?: string;
+  mapping?: Partial<TicketMapping>;
+  previous?: RegistrationRecord[];
+}) {
+  const data = prepareAttendeeCsv(csv, delimiter);
+  const header = data.records[0]!;
+  const rows = data.records.slice(1);
+  const columns = { ...detectAttendeeMapping(header.cells), ...mapping };
+  if (Object.values(columns).some((n) => n >= header.cells.length))
+    throw new Error("A mapped column is outside the CSV header.");
+  if (columns.name < 0 && (columns.first < 0 || columns.last < 0))
+    throw new Error("Map a full name or first and last names.");
+  if (columns.ticketCode < 0 && columns.email < 0)
+    throw new Error("Map a ticket code or attendee email.");
+  if (!rows.length || rows.length > 2000)
+    throw new Error("Import 1 to 2,000 registration rows.");
+  const records = new Map<string, RegistrationRecord>(),
+    ids = new Set<string>();
+  for (const p of previous) {
+    const key = JSON.stringify([p.source, p.sourceKey]);
+    if (records.has(key) || ids.has(p.id))
+      throw new Error(
+        "Previous registrations must have distinct IDs and source keys.",
+      );
+    ids.add(p.id);
+    records.set(key, { ...p });
+  }
+  const seen = new Set();
+  for (const row of rows) {
+    if (row.cells.length !== header.cells.length)
+      throw new Error(
+        `Row ${row.row}: expected ${header.cells.length} columns, found ${row.cells.length}.`,
+      );
+    const get = (key: keyof typeof columns) =>
+      (row.cells[columns[key]] ?? "").trim().normalize("NFC");
+    const name =
+      columns.name >= 0
+        ? get("name")
+        : [get("first"), get("last")].filter(Boolean).join(" ");
+    const email = get("email").toLowerCase(),
+      ticketCode = get("ticketCode");
+    const unassigned =
+      source === "tito" &&
+      Boolean(ticketCode) &&
+      !name &&
+      !email &&
+      columns.email >= 0;
+    if ((!name && !unassigned) || (!email && !ticketCode))
+      throw new Error(
+        `Row ${row.row}: supply a name and a ticket code or attendee email.`,
+      );
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/u.test(email))
+      throw new Error(`Row ${row.row}: invalid attendee email.`);
+    if (
+      name.length > 300 ||
+      get("company").length > 300 ||
+      email.length > 254 ||
+      ticketCode.length > 100 ||
+      get("orderCode").length > 100 ||
+      get("diet").length > 2000
+    )
+      throw new Error(`Row ${row.row}: field is too long.`);
+    const sourceKey = ticketCode
+      ? `ticket:${ticketCode.toLowerCase()}`
+      : `email:${email}`;
+    if (seen.has(sourceKey))
+      throw new Error(
+        `Row ${row.row}: repeated ticket code or email within this source.`,
+      );
+    seen.add(sourceKey);
+    const key = JSON.stringify([source, sourceKey]),
+      old = records.get(key);
+    const keepDeskAssignment = old?.assignedAtDesk && unassigned;
+    const record: RegistrationRecord = {
+      ...old,
+      id: old?.id ?? crypto.randomUUID(),
+      source,
+      sourceKey,
+      name,
+      company: columns.company < 0 ? (old?.company ?? "") : get("company"),
+      email: columns.email < 0 ? (old?.email ?? "") : email,
+      ticketCode: columns.ticketCode < 0 ? (old?.ticketCode ?? "") : ticketCode,
+      orderCode:
+        (columns.orderCode < 0 ? old?.orderCode : get("orderCode")) ||
+        (source === "tito" ? (ticketCode.match(/^(.+)-\d+$/u)?.[1] ?? "") : ""),
+      type: old?.type ?? "attendee",
+      badge: old?.badge ?? !unassigned,
+      unassigned,
+      status:
+        columns.status < 0 && old?.status === "cancelled"
+          ? "cancelled"
+          : importTicketStatus(header, row, columns.status),
+    };
+    if (columns.diet >= 0) record.diet = get("diet");
+    if (keepDeskAssignment)
+      Object.assign(record, {
+        name: old.name,
+        email: old.email,
+        company: old.company,
+        unassigned: false,
+        diet: old.diet,
+      });
+    else if (old?.assignedAtDesk) record.assignedAtDesk = false;
+    if (old?.unassigned && !unassigned) record.badge = true;
+    records.set(key, record);
+  }
+  if (records.size > 2000)
+    throw new Error("The merged roster exceeds 2,000 registrations.");
+  return {
+    records: [...records.values()],
+    imported: rows.length,
+    delimiter: data.delimiter,
+    ignoredRows: data.ignoredRows,
+    mapping: columns,
+  };
+}
